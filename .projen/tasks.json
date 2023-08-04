@@ -140,18 +140,6 @@
         }
       ]
     },
-    "post-upgrade": {
-      "name": "post-upgrade",
-      "description": "Runs after upgrading dependencies",
-      "steps": [
-        {
-          "exec": "lerna run upgrade --stream"
-        },
-        {
-          "exec": "npx projen"
-        }
-      ]
-    },
     "pre-compile": {
       "name": "pre-compile",
       "description": "Prepare the project for compilation",
@@ -186,45 +174,6 @@
         },
         {
           "exec": "lerna run test:watch --stream"
-        }
-      ]
-    },
-    "upgrade": {
-      "name": "upgrade",
-      "description": "upgrade dependencies",
-      "env": {
-        "CI": "0"
-      },
-      "steps": [
-        {
-          "exec": "yarn upgrade npm-check-updates"
-        },
-        {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='lerna'"
-        },
-        {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='lerna'"
-        },
-        {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='lerna'"
-        },
-        {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='lerna'"
-        },
-        {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='lerna'"
-        },
-        {
-          "exec": "yarn install --check-files"
-        },
-        {
-          "exec": "yarn upgrade"
-        },
-        {
-          "exec": "npx projen"
-        },
-        {
-          "spawn": "post-upgrade"
         }
       ]
     }

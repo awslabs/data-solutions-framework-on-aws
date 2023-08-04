@@ -36,5 +36,6 @@ dist
 junit.xml
 /coverage/
 !/.mergify.yml
+!/.github/dependabot.yml
 !/.npmrc
 !/lerna.json

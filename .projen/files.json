@@ -1,6 +1,7 @@
 {
   "files": [
     ".gitattributes",
+    ".github/dependabot.yml",
     ".gitignore",
     ".mergify.yml",
     ".npmignore",

@@ -2,6 +2,7 @@
 
 *.snap linguist-generated
 /.gitattributes linguist-generated
+/.github/dependabot.yml linguist-generated
 /.gitignore linguist-generated
 /.mergify.yml linguist-generated
 /.npmignore linguist-generated
