@@ -35,7 +35,8 @@ const rootProject = new LernaProject({
   packageName: 'aws-data-solutions-framework',
 
   gitignore: [
-      '.idea'
+      '.idea',
+      'dist'
   ]
 });
 
