@@ -1,6 +1,6 @@
 const { awscdk } = require('projen');
 const { LernaProject } = require("lerna-projen");
-const {DependabotScheduleInterval} = require("projen/lib/github/dependabot");
+const { DependabotScheduleInterval } = require("projen/lib/github/dependabot");
 
 const CDK_VERSION = '2.84.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
