@@ -1,0 +1,25 @@
+name: Check GitHub workflows
+# See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-third-party-actions
+
+on:
+  push:
+    paths:
+      - ".github/workflows/**"
+  pull_request:
+    types: 
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    paths:
+      - ".github/workflows/**"
+
+jobs:
+  enforce_pinned_workflows:
+    name: Enforce pinned workflows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
+      - name: Ensure 3rd party workflows have SHA pinned
+        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@21991cec25093947ff3f62e4c223df0260c39944 # v2.1.2
