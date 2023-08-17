@@ -972,9 +972,9 @@
   integrity sha512-bUBrPjEry2QUTsnuEjzjbS7voGWCc30W0qzgMf90GPeDGFRakvrz47ju+oqDAKCXLUCe39u57/ORMl/O/04/9g==
 
 "@types/node@^16":
-  version "16.18.39"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.39.tgz#aa39a1a87a40ef6098ee69689a1acb0c1b034832"
-  integrity sha512-8q9ZexmdYYyc5/cfujaXb4YOucpQxAV4RMG0himLyDUOEr8Mr79VrqsFI+cQ2M2h89YIuy95lbxuYjxT4Hk4kQ==
+  version "16.18.41"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.41.tgz#61b14360fd3f7444b326ac3207c83005371e3f8a"
+  integrity sha512-YZJjn+Aaw0xihnpdImxI22jqGbp0DCgTFKRycygjGx/Y27NnWFJa5FJ7P+MRT3u07dogEeMVh70pWpbIQollTA==
 
 "@types/semver@^7.3.12":
   version "7.5.0"
