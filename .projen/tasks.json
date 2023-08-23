@@ -70,7 +70,7 @@
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "node .projenrc.js"
+          "exec": "ts-node --skip-project .projenrc.ts"
         },
         {
           "exec": "lerna run default --stream"
@@ -157,23 +157,7 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --passWithNoTests --updateSnapshot",
-          "receiveArgs": true
-        },
-        {
           "exec": "lerna run test --stream"
-        }
-      ]
-    },
-    "test:watch": {
-      "name": "test:watch",
-      "description": "Run jest in watch mode",
-      "steps": [
-        {
-          "exec": "jest --watch"
-        },
-        {
-          "exec": "lerna run test:watch --stream"
         }
       ]
     }

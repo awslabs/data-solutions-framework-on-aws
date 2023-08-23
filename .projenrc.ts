@@ -1,12 +1,13 @@
-const { awscdk } = require('projen');
-const { LernaProject } = require("lerna-projen");
-const { DependabotScheduleInterval } = require("projen/lib/github/dependabot");
+import { LernaProject } from 'lerna-projen';
+import { awscdk } from 'projen';
+import { DependabotScheduleInterval } from 'projen/lib/github';
 
 const CDK_VERSION = '2.84.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
+const JSII_VERSION = '~5.0.0';
 
-const repository = 'git@github.com:awslabs/aws-data-solutions-framework.git';
-const authorName = 'Amazon Web Services';
+const repositoryUrl = 'git@github.com:awslabs/aws-data-solutions-framework.git';
+const author = 'Amazon Web Services';
 const authorAddress = 'https://aws.amazon.com';
 const authorOrganization = true;
 const license = 'MIT-0';
@@ -17,12 +18,19 @@ const release = false; /* to update and configure when ready to release */
 
 const rootProject = new LernaProject({
   name: 'aws-data-solutions-framework',
-  devDeps: ['lerna-projen'],
+  devDeps: [
+    'lerna-projen',
+    'ts-node',
+    'typescript'
+  ],
+  peerDeps: [
+    '@types/node@^16',
+  ],
 
   defaultReleaseBranch,
-  repository,
-  authorName,
-  authorAddress,
+  repository: repositoryUrl,
+  authorName: author,
+  authorUrl: authorAddress,
   authorOrganization,
   license,
   copyrightOwner,
@@ -41,12 +49,16 @@ const rootProject = new LernaProject({
   packageName: 'aws-data-solutions-framework',
 
   gitignore: [
-      '.idea',
-      'dist'
-  ]
+    '.idea',
+    'dist'
+  ],
+
+  projenrcTs: true,
+
+  jest: false
 });
 
-const framework = new awscdk.AwsCdkConstructLibrary({
+new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
 
@@ -56,8 +68,8 @@ const framework = new awscdk.AwsCdkConstructLibrary({
 
   defaultReleaseBranch,
 
-  repository,
-  authorName,
+  repositoryUrl,
+  author,
   authorAddress,
   authorOrganization,
   license,
@@ -76,28 +88,9 @@ const framework = new awscdk.AwsCdkConstructLibrary({
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
-  jsiiVersion: '~5.0.0',
+  jsiiVersion: JSII_VERSION,
 
-  // publishToNuget: {
-  //   dotNetNamespace: 'Acme.HelloNamespace',
-  //   packageId: 'Acme.HelloPackage'
-  // },
-  // publishToMaven: {
-  //   javaPackage: 'com.acme.hello',
-  //   mavenArtifactId: 'hello-jsii',
-  //   mavenGroupId: 'com.acme.hello'
-  //   serverId: 'github',
-  //   repositoryUrl: 'https://maven.pkg.github.com/example/hello-jsii',
-  // },
-  // publishToPypi: {
-  //   distName: 'acme.hello-jsii',
-  //   module: 'acme.hello_jsii'
-  // },
-
-  // deps: [],                /* Runtime dependencies of this module. */
   devDeps: [
-    'jsii-rosetta@5.0.x',
-    '@types/jest',
     'cdk-nag@^2.0.0',
     'jest-runner-groups',
   ],
@@ -107,7 +100,7 @@ const framework = new awscdk.AwsCdkConstructLibrary({
       runner: 'groups',
     },
   },
-
 });
+
 
 rootProject.synth();

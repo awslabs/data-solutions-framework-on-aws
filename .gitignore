@@ -32,9 +32,6 @@ jspm_packages/
 .idea
 dist
 !/.projenrc.js
-/test-reports/
-junit.xml
-/coverage/
 !/.mergify.yml
 !/.github/dependabot.yml
 !/.npmrc
