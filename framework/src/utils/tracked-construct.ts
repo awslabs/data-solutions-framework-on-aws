@@ -1,23 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-
 import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { ContextOptions } from './context-options';
+
 /**
  * The properties for the TrackedConstructProps construct.
  */
 export interface TrackedConstructProps {
   /**
-   * Unique code used to measure the number of CloudFormation deployments
+   * Unique code used to measure the number of CloudFormation deployments of this construct.
+   *
+   * *Pattern* : `^[A-Za-z0-9]+$`
    */
-  readonly trackingCode: string;
+  readonly trackingTag: string;
 }
 
 /**
+ * Format is "Description (uksb_12345abcde) (tag:construct1-construct2)"
+ */
+const trackingRegExp = new RegExp('(.+) \\(' + ContextOptions.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
+const TAG_SEPARATOR = '-';
+
+/**
  * @internal
- * A type of CDK Construct that is tracked via a unique code in Stack labels.
- * It is  used to measure the number of deployments.
+ * A type of CDK Construct that is tracked via a unique code in CloudFormation Stack description.
+ * It is used to measure the number of deployments.
  */
 export class TrackedConstruct extends Construct {
 
@@ -30,10 +39,23 @@ export class TrackedConstruct extends Construct {
   constructor(scope: Construct, id: string, props: TrackedConstructProps) {
     super(scope, id);
 
-    if (!scope.node.tryGetContext('@aws-analytics-reference-architecture/disableConstructsDeploymentTracking')) {
+    if (!scope.node.tryGetContext(ContextOptions.DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING)) {
       const stack = Stack.of(this);
-      const description = `${stack.templateOptions.description} (${props.trackingCode})`;
-      stack.templateOptions.description = description;
+      const currentDescription = stack.templateOptions.description || '';
+
+      stack.templateOptions.description = this.updateDescription(currentDescription, props);
+    }
+  }
+
+  private updateDescription(currentDescription: string, props: TrackedConstructProps) {
+    const fullDescription = trackingRegExp.exec(currentDescription);
+
+    const tag = props.trackingTag.replaceAll(TAG_SEPARATOR, '_'); // make sure there's no separator in the tag name
+    if (fullDescription == null) {
+      return `${currentDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tag})`;
+    } else {
+      let tags = fullDescription[2] + TAG_SEPARATOR + tag;
+      return `${fullDescription[1]} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tags})`;
     }
   }
 }
