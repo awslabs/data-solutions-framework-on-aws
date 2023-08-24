@@ -13,7 +13,7 @@ const config = {
   title: niceProjectName,
   tagline: 'Accelerate your Data Journey with pre-packaged data solutions on AWS 🚀',
   url: 'https://' + organization + '.github.io',
-  baseUrl: '/' + projectName + '/',
+  baseUrl: '/',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
