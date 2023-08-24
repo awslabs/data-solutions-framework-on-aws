@@ -8,12 +8,12 @@
  */
 
 import { App, Stack } from 'aws-cdk-lib';
+import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { Construct } from 'constructs';
+import { TrackedConstructProps } from '../../../lib/utils/tracked-construct';
 import { ContextOptions } from '../../../src/utils/context-options';
 import { TrackedConstruct } from '../../../src/utils/tracked-construct';
-import { Construct } from "constructs";
-import { TrackedConstructProps } from "../../../lib/utils/tracked-construct";
-import { Bucket } from "aws-cdk-lib/aws-s3";
-import { Match, Template } from "aws-cdk-lib/assertions";
 
 test('tracked construct add tracking code and tag to description if not explicitly disabled', () => {
   // GIVEN
@@ -91,10 +91,10 @@ class TestTrackedConstruct extends TrackedConstruct {
 
   constructor(scope: Construct, id: string) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: "TestTrackedConstruct",
+      trackingTag: 'TestTrackedConstruct',
     };
     super(scope, id, trackedConstructProps);
-    new Bucket(this, "TestTrackedConstructWithBucket");
+    new Bucket(this, 'TestTrackedConstructWithBucket');
   }
 }
 
@@ -115,15 +115,15 @@ test('tracked construct add adsf:owned tag to the inner resources', () => {
 
   // THEN
   template.hasResource('AWS::S3::Bucket',
-      Match.objectLike({
-        Properties: {
-          Tags: [
-            {
-              Key: `${ContextOptions.ADSF_AWS_TAG}:owned`,
-              Value: 'true'
-            }
-          ]
-        }
-      })
+    Match.objectLike({
+      Properties: {
+        Tags: [
+          {
+            Key: `${ContextOptions.ADSF_AWS_TAG}:owned`,
+            Value: 'true',
+          },
+        ],
+      },
+    }),
   );
 });
