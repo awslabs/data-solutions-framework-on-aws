@@ -7,8 +7,8 @@
  * @group unit/best-practice/tracked-construct
  */
 
-import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { App, Aspects, Stack } from 'aws-cdk-lib';
+import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AwsSolutionsChecks } from 'cdk-nag';
 import { TrackedConstruct } from '../../../src/utils/tracked-construct';
@@ -19,7 +19,7 @@ const mockApp = new App();
 const trackedConstructStack = new Stack(mockApp, 'tracked-construct');
 
 // Instantiate TrackedConstruct Construct
-new TrackedConstruct(trackedConstructStack, 'TrackedConstruct', {trackingTag: "TAG"});
+new TrackedConstruct(trackedConstructStack, 'TrackedConstruct', { trackingTag: 'TAG' });
 
 Aspects.of(trackedConstructStack).add(new AwsSolutionsChecks({ verbose: true }));
 

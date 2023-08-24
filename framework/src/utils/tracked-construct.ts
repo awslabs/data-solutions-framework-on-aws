@@ -50,7 +50,7 @@ export class TrackedConstruct extends Construct {
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
     const fullDescription = trackingRegExp.exec(currentDescription);
 
-    const tag = props.trackingTag.replaceAll(TAG_SEPARATOR, '_'); // make sure there's no separator in the tag name
+    const tag = props.trackingTag.split(TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
       return `${currentDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tag})`;
     } else {
