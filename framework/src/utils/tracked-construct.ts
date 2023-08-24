@@ -12,7 +12,7 @@ export interface TrackedConstructProps {
   /**
    * Unique code used to measure the number of CloudFormation deployments of this construct.
    *
-   * *Pattern* : `^[A-Za-z0-9]+$`
+   * *Pattern* : `^[A-Za-z0-9-_]+$`
    */
   readonly trackingTag: string;
 }
@@ -21,7 +21,7 @@ export interface TrackedConstructProps {
  * Format is "Description (uksb_12345abcde) (tag:construct1-construct2)"
  */
 const trackingRegExp = new RegExp('(.+) \\(' + ContextOptions.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
-const TRACKING_TAG_SEPARATOR = '-';
+const TRACKING_TAG_SEPARATOR = ',';
 const ADSF_OWNED_TAG = `${ContextOptions.ADSF_AWS_TAG}:owned`;
 
 /**
