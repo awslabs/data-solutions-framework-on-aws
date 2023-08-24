@@ -10,6 +10,10 @@
 import { App, Stack } from 'aws-cdk-lib';
 import { ContextOptions } from '../../../src/utils/context-options';
 import { TrackedConstruct } from '../../../src/utils/tracked-construct';
+import { Construct } from "constructs";
+import { TrackedConstructProps } from "../../../lib/utils/tracked-construct";
+import { Bucket } from "aws-cdk-lib/aws-s3";
+import { Match, Template } from "aws-cdk-lib/assertions";
 
 test('tracked construct add tracking code and tag to description if not explicitly disabled', () => {
   // GIVEN
@@ -81,4 +85,45 @@ test('tracked construct add tracking code and tag without separator to descripti
 
   // THEN
   expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:my_construct_1)`);
+});
+
+class TestTrackedConstruct extends TrackedConstruct {
+
+  constructor(scope: Construct, id: string) {
+    const trackedConstructProps: TrackedConstructProps = {
+      trackingTag: "TestTrackedConstruct",
+    };
+    super(scope, id, trackedConstructProps);
+    new Bucket(this, "TestTrackedConstructWithBucket");
+  }
+}
+
+test('tracked construct add adsf:owned tag to the inner resources', () => {
+  // GIVEN
+  const initialStackDescription = 'My Analytics stack';
+
+  const testApp = new App();
+  const exampleStack = new Stack(testApp, 'testTrackedConstruct', {
+    description: initialStackDescription,
+  });
+
+  // WHEN
+  new TestTrackedConstruct(exampleStack, 'MyTestTrackedConstruct');
+  const template = Template.fromStack(exampleStack);
+
+  console.log(JSON.stringify(template));
+
+  // THEN
+  template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: {
+          Tags: [
+            {
+              Key: `${ContextOptions.ADSF_AWS_TAG}:owned`,
+              Value: 'true'
+            }
+          ]
+        }
+      })
+  );
 });

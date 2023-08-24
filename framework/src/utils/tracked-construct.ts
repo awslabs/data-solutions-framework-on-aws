@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Stack } from 'aws-cdk-lib';
+import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ContextOptions } from './context-options';
 
@@ -21,7 +21,8 @@ export interface TrackedConstructProps {
  * Format is "Description (uksb_12345abcde) (tag:construct1-construct2)"
  */
 const trackingRegExp = new RegExp('(.+) \\(' + ContextOptions.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
-const TAG_SEPARATOR = '-';
+const TRACKING_TAG_SEPARATOR = '-';
+const ADSF_OWNED_TAG = `${ContextOptions.ADSF_AWS_TAG}:owned`;
 
 /**
  * @internal
@@ -45,16 +46,18 @@ export class TrackedConstruct extends Construct {
 
       stack.templateOptions.description = this.updateDescription(currentDescription, props);
     }
+
+    Tags.of(scope).add(ADSF_OWNED_TAG, 'true');
   }
 
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
     const fullDescription = trackingRegExp.exec(currentDescription);
 
-    const tag = props.trackingTag.split(TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
+    const tag = props.trackingTag.split(TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
       return `${currentDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tag})`;
     } else {
-      let tags = fullDescription[2] + TAG_SEPARATOR + tag;
+      let tags = fullDescription[2] + TRACKING_TAG_SEPARATOR + tag;
       return `${fullDescription[1]} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tags})`;
     }
   }
