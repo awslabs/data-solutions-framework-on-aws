@@ -58,7 +58,7 @@ const rootProject = new LernaProject({
   jest: false
 });
 
-new awscdk.AwsCdkConstructLibrary({
+const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
 
@@ -92,6 +92,7 @@ new awscdk.AwsCdkConstructLibrary({
 
   devDeps: [
     'cdk-nag@^2.0.0',
+    `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'jest-runner-groups',
   ],
 
@@ -102,5 +103,38 @@ new awscdk.AwsCdkConstructLibrary({
   },
 });
 
+fwkProject.testTask.reset('jest --group=-e2e');
+
+fwkProject.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'jest --group=unit'
+});
+
+fwkProject.addTask('test:nag', {
+  description: 'Run unit tests',
+  exec: 'jest --group=unit/best-practice'
+});
+
+fwkProject.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'jest --group=e2e'
+});
+
+rootProject.testTask.reset('jest --group=-e2e');
+
+rootProject.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'jest --group=unit'
+});
+
+rootProject.addTask('test:nag', {
+  description: 'Run unit tests',
+  exec: 'jest --group=unit/best-practice'
+});
+
+rootProject.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'jest --group=e2e'
+});
 
 rootProject.synth();
