@@ -8,7 +8,6 @@ const projectName = 'aws-data-solutions-framework'
 const niceProjectName = 'AWS Data Solutions Framework'
 const organization = 'awslabs'
 
-/** @type {{onBrokenLinks: string, organizationName: string, plugins: string[], title: string, url: string, onBrokenMarkdownLinks: string, i18n: {defaultLocale: string, locales: string[]}, trailingSlash: boolean, baseUrl: string, presets: [string,Options][], githubHost: string, tagline: string, themeConfig: ThemeConfig & UserThemeConfig & AlgoliaThemeConfig, projectName: string}} */
 const config = {
   title: niceProjectName,
   tagline: 'Accelerate your Data Journey with pre-packaged data solutions on AWS 🚀',
@@ -46,10 +45,10 @@ const config = {
           blogSidebarTitle: 'All posts',
           blogSidebarCount: 'ALL',
           showReadingTime: true,
-          readingTime: ({content, frontMatter, defaultReadingTime}) =>
-              defaultReadingTime({content, options: {wordsPerMinute: 300}}),
+          readingTime: ({ content, frontMatter, defaultReadingTime }) =>
+            defaultReadingTime({ content, options: { wordsPerMinute: 300 } }),
           editUrl:
-              'https://github.com/' + organization + '/' + projectName + '/blob/main/website/',
+            'https://github.com/' + organization + '/' + projectName + '/blob/main/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -59,80 +58,88 @@ const config = {
   ],
 
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      navbar: {
-        // title: 'AWS DSF',
-        logo: {
-          alt: niceProjectName + 'Logo',
-          src: 'img/header-icon.png',
+  {
+    navbar: {
+      // title: 'AWS DSF',
+      logo: {
+        alt: niceProjectName + 'Logo',
+        src: 'img/header-icon.png',
+      },
+      items: [
+        {
+          type: 'doc',
+          docId: 'intro',
+          position: 'left',
+          label: 'Introduction',
         },
-        items: [
-          {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Introduction',
-          },
-          {
-            type: 'doc',
-            docId: 'solutions/index',
-            position: 'left',
-            label: 'AWS Data Solutions'
-          },
-          {
-            type: 'doc',
-            docId: 'constructs/index',
-            position: 'left',
-            label: 'Solutions Framework',
-          },
-          {
-            href: 'https://github.com/' + organization + '/' + projectName,
-            label: 'GitHub',
-            position: 'right',
-          },
-        ],
-      },
-      colorMode: {
-        defaultMode: 'light',
-        disableSwitch: false,
-        respectPrefersColorScheme: true,
-      },
-      docs: {
-        sidebar: {
-          hideable: true,
-          autoCollapseCategories: true,
-        }
+        {
+          type: 'doc',
+          docId: 'solutions/index',
+          position: 'left',
+          label: 'AWS Data Solutions'
         },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Get Started',
-            items: [
-              {
-                label: 'Docs',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Get Involved',
-            items: [
-              {
-                label: 'Github',
-                href: 'https://github.com/' + organization + '/' + projectName,
-              }
-            ],
-          },
-        ],
-        copyright: `Amazon.com, Inc. or its affiliates. All Rights Reserved`,
-      },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme
-      },
-    }),
+        {
+          type: 'doc',
+          docId: 'constructs/index',
+          position: 'left',
+          label: 'Solutions Framework',
+        },
+        {
+          href: 'https://github.com/' + organization + '/' + projectName,
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    docs: {
+      sidebar: {
+        hideable: true,
+        autoCollapseCategories: true,
+      }
+    },
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Get Started',
+          items: [
+            {
+              label: 'Docs',
+              to: '/docs/intro',
+            },
+          ],
+        },
+        {
+          title: 'Get Involved',
+          items: [
+            {
+              label: 'Github',
+              href: 'https://github.com/' + organization + '/' + projectName,
+            }
+          ],
+        },
+      ],
+      copyright: `Amazon.com, Inc. or its affiliates. All Rights Reserved`,
+    },
+    prism: {
+      theme: lightCodeTheme,
+      darkTheme: darkCodeTheme
+    },
+    mermaid: {
+      theme: { light: 'forest', dark: 'dark' },
+    },
+  },
+
+  markdown: {
+    mermaid: true,
+  },
+
+  themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [require.resolve('docusaurus-lunr-search')],
 };
