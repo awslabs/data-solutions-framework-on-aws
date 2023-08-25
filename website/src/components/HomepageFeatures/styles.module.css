@@ -1,0 +1,17 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+  /*background: whitesmoke;*/
+}
+
+.featureSvg {
+  color: var(--ifm-color-primary);
+  height: 250px;
+  width: 250px;
+}
+
+.heading {
+  font-weight: bold;
+}
