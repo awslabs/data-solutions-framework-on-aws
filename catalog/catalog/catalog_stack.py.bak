@@ -1,0 +1,49 @@
+from aws_cdk import (
+    Stack,
+    aws_servicecatalog as sc,
+    aws_s3 as s3,
+    RemovalPolicy,
+    aws_iam as iam,
+)
+from constructs import Construct
+from framework.solutions.data_lake.data_lake import DataLakeProductStack
+
+
+class CatalogStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        tag_options = sc.TagOptions(self, 'TagOptions', allowed_values_for_tags = scope.node.try_get_context("tag_options"))
+
+        dsf_portfolio = sc.Portfolio(self, 'DsfPortfolio',
+            display_name='AWS Data Solutions',
+            description='Portfolio with data products from the AWS Data Solutions Framework',
+            provider_name='AWS',
+            tag_options=tag_options)
+        
+        product_bucket = s3.Bucket(self, 'AssetBucket',
+                                   bucket_name='user-defined-bucket-for-product-stack-assets', 
+                                   auto_delete_objects=True, 
+                                   removal_policy=RemovalPolicy.DESTROY)
+
+        
+        data_lake_product_stack_history = sc.ProductStackHistory(self, "DataLakeProductStackHistory",
+            product_stack=DataLakeProductStack(self, "DataLakeProductStack", asset_bucket=product_bucket),
+            current_version_name="v1",
+            current_version_locked=True
+        )
+        
+        data_lake_product = sc.CloudFormationProduct(self, "DataLakeProduct",
+            product_name='DataLake', 
+            owner='AWS',
+            description='Data Lake solution with storage and catalog following analytics best practices',
+            distributor='AWS',
+            product_versions = [
+               data_lake_product_stack_history.current_version()
+            ]
+         )
+
+        dsf_portfolio.add_product(data_lake_product)
+
+        dsf_portfolio.give_access_to_role(iam.Role.from_role_arn(self, 'Consumer', role_arn='arn:aws:iam::668876353122:role/gromav'))
