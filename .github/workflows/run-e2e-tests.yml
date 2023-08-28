@@ -48,7 +48,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: |
             yarn.lock
-            solutions/yarn.lock
+            framework/yarn.lock
       - name: Install dependencies
         run: yarn install --check-files
       - name: Build
