@@ -93,8 +93,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'cdk-nag@^2.0.0',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    '@jest/globals',
-    'ts-jest',
+    '@types/jest',
     'jest-runner-groups',
   ],
 
