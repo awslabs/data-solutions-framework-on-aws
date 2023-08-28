@@ -15,9 +15,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
+      - name: Setup dependency cache
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: |
+            yarn.lock
+            framework/yarn.lock
+            solutions/yarn.lock
       - name: Install dependencies
         run: yarn install --check-files
       - name: Build
