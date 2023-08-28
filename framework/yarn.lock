@@ -959,9 +959,9 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@^29.5.3":
-  version "29.5.3"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.3.tgz#7a35dc0044ffb8b56325c6802a4781a626b05777"
-  integrity sha512-1Nq7YrO/vJE/FYnqYyw0FS8LdrjExSgIiHyKg7xPpn+yi8Q4huZryKnkJatN1ZRH89Kw2v33/8ZMB7DuZeSLlA==
+  version "29.5.4"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.4.tgz#9d0a16edaa009a71e6a71a999acd582514dab566"
+  integrity sha512-PhglGmhWeD46FYOVLt3X7TiWjzwuVGW9wG/4qocPevXMjCmrIc5b6db9WjeGE4QYVpUAWMDv3v0IiBwObY289A==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
@@ -1574,9 +1574,9 @@ case@1.6.3, case@^1.6.3:
   integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
 
 cdk-nag@^2.0.0:
-  version "2.27.108"
-  resolved "https://registry.yarnpkg.com/cdk-nag/-/cdk-nag-2.27.108.tgz#ffda272e547f5719c731b8c20ff38ca2f7a54399"
-  integrity sha512-+eoj/FpRbGk4S3NsAjDueRBhydwYZugz4qpZoFLxBx5ujt+BoieSAyke9tYx8DuBppBQatr+q659HsJ55ET9Fg==
+  version "2.27.111"
+  resolved "https://registry.yarnpkg.com/cdk-nag/-/cdk-nag-2.27.111.tgz#180653a9d3a699b39902cf52e1f7a12ebf4651be"
+  integrity sha512-SokRfQvPiHU1vjvHkYOhvMwA6kg7jbP4DZjlJupKIwMlM43tXdXzWKh5wz09gtLkqpEHyyo0UhdZf4ZQEj7T2Q==
 
 chalk@^2.0.0:
   version "2.4.2"
