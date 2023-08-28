@@ -54,4 +54,4 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_TO_ASSUME }}
           aws-region: eu-west-1
       - name: Run e2e tests
-        run: yarn run test:e2e
+        run: npx projen test:e2e
