@@ -106,7 +106,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     include: ['src/**/*.json'],
   },
 
-  jest:true,
+  jest: true,
   jestOptions: {
     jestConfig: {
       runner: 'groups',
@@ -114,11 +114,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 });
 
-fwkProject.testTask.reset('jest --group=-e2e');
+fwkProject.setScript('test', 'npx projen test --group=-e2e');
 
-fwkProject.addTask('test:e2e', {
-  description: 'Run framework end-to-end tests',
-  exec: 'jest --group=e2e'
+
+fwkProject.addTask('test:e2e', { 
+  exec: 'npx projen test --group=e2e'
 });
 
 rootProject.addTask('test:e2e', {

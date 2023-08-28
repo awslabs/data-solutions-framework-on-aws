@@ -46,13 +46,12 @@ jobs:
         with:
           node-version: 18
           cache: 'yarn'
-      - name: Install project dependencies
-        run: yarn
       - name: Setup AWS credentials
         uses: aws-actions/configure-aws-credentials@e1e17a757e536f70e52b5a12b2e8d1d1c60e04ef # v2.0.0
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_TO_ASSUME }}
           aws-region: eu-west-1
-      - name: Run e2e tests
-        run: |
-          npm run test:e2e
+      - name: Run Non-E2E tests - just to check
+        run: yarn run test
+      - name: Run e2e tests ONLY
+        run: yarn run test:e2e
