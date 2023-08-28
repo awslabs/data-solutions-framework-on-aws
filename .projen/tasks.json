@@ -157,46 +157,7 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "jest --group=-e2e"
-        },
-        {
           "exec": "lerna run test --stream"
-        }
-      ]
-    },
-    "test:e2e": {
-      "name": "test:e2e",
-      "description": "Run end-to-end tests",
-      "steps": [
-        {
-          "exec": "jest --group=e2e"
-        },
-        {
-          "exec": "lerna run test:e2e --stream"
-        }
-      ]
-    },
-    "test:nag": {
-      "name": "test:nag",
-      "description": "Run unit tests",
-      "steps": [
-        {
-          "exec": "jest --group=unit/best-practice"
-        },
-        {
-          "exec": "lerna run test:nag --stream"
-        }
-      ]
-    },
-    "test:unit": {
-      "name": "test:unit",
-      "description": "Run unit tests",
-      "steps": [
-        {
-          "exec": "jest --group=unit"
-        },
-        {
-          "exec": "lerna run test:unit --stream"
         }
       ]
     }
