@@ -75,6 +75,15 @@
   "version": "0.0.0",
   "jest": {
     "runner": "groups",
+    "transform": {
+      "^.+\\.ts?$": [
+        "ts-jest",
+        {
+          "isolatedModules": true,
+          "tsconfig": "tsconfig.dev.json"
+        }
+      ]
+    },
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"

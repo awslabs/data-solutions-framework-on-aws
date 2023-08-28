@@ -1,6 +1,7 @@
 import { LernaProject } from 'lerna-projen';
 import { awscdk } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
+import { Transform } from "projen/lib/javascript";
 
 const CDK_VERSION = '2.84.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
@@ -93,8 +94,9 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'cdk-nag@^2.0.0',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    '@jest/globals',
+    'jest',
     'ts-jest',
+    '@jest/globals',
     'jest-runner-groups',
   ],
 
@@ -106,11 +108,17 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     include: ['src/**/*.json'],
   },
 
-  jest:true,
+  jest: true,
   jestOptions: {
     jestConfig: {
       runner: 'groups',
-    },
+      transform: {
+        '^.+\\.ts?$': new Transform('ts-jest', {
+          isolatedModules: true,
+          tsconfig: 'tsconfig.dev.json',
+        }),
+      },
+    }
   },
 });
 
