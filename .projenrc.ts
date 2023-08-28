@@ -122,11 +122,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 });
 
-fwkProject.testTask.reset('./node_modules/.bin/jest --group=-e2e');
+fwkProject.testTask.reset('jest --group=-e2e');
 
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
-  exec: './node_modules/.bin/jest --group=e2e'
+  exec: 'jest --group=e2e'
 });
 
 rootProject.addTask('test:e2e', {
