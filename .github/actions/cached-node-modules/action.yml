@@ -26,10 +26,10 @@ runs:
     - name: Install dependencies
       # We can skip the installation if there was a cache hit
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm ci
+      run: yarn install --frozen-lockfile
       shell: bash
     - name: Build packages
       # Regardless of whether the cache was hit or not, we need to build the packages.
       run: |
-        npm run build
+        yarn build
       shell: bash
