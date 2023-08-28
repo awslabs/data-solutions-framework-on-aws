@@ -45,10 +45,9 @@ jobs:
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version: 18
-      - name: Setup dependencies
-        uses: ./.github/actions/cached-node-modules
-        with:
-          nodeVersion: 18
+          cache: 'yarn'
+      - name: Install project dependencies
+        run: yarn
       - name: Setup AWS credentials
         uses: aws-actions/configure-aws-credentials@e1e17a757e536f70e52b5a12b2e8d1d1c60e04ef # v2.0.0
         with:
