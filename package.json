@@ -14,6 +14,7 @@
     "post-compile": "npx projen post-compile",
     "pre-compile": "npx projen pre-compile",
     "test": "npx projen test",
+    "test:e2e": "npx projen test:e2e",
     "projen": "npx projen"
   },
   "author": {

@@ -21,7 +21,7 @@ const rootProject = new LernaProject({
   devDeps: [
     'lerna-projen',
     'ts-node',
-    'typescript'
+    'typescript',
   ],
   peerDeps: [
     '@types/node@^16',
@@ -115,5 +115,14 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
 });
 
 fwkProject.testTask.reset('jest --group=-e2e');
+
+fwkProject.addTask('test:e2e', {
+  description: 'Run framework end-to-end tests',
+  exec: 'jest --group=e2e'
+});
+
+rootProject.addTask('test:e2e', {
+  description: 'Run end-to-end tests'
+});
 
 rootProject.synth();
