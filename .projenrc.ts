@@ -58,7 +58,7 @@ const rootProject = new LernaProject({
   jest: false
 });
 
-new awscdk.AwsCdkConstructLibrary({
+const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
 
@@ -151,6 +151,16 @@ new awscdk.AwsCdkPythonApp({
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   version: '0.0.0'
+});
+
+fwkProject.setScript('test', 'npx projen test --group=-e2e');
+
+fwkProject.addTask('test:e2e', {
+  exec: 'npx projen test --group=e2e'
+});
+
+rootProject.addTask('test:e2e', {
+  description: 'Run end-to-end tests'
 });
 
 
