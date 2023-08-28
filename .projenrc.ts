@@ -93,9 +93,20 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'cdk-nag@^2.0.0',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
+    '@jest/globals',
+    'ts-jest',
     'jest-runner-groups',
   ],
 
+  tsconfig: {
+    compilerOptions: {
+      resolveJsonModule: true,
+      esModuleInterop: true,
+    },
+    include: ['src/**/*.json'],
+  },
+
+  jest:true,
   jestOptions: {
     jestConfig: {
       runner: 'groups',
@@ -104,37 +115,5 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
 });
 
 fwkProject.testTask.reset('jest --group=-e2e');
-
-fwkProject.addTask('test:unit', {
-  description: 'Run unit tests',
-  exec: 'jest --group=unit'
-});
-
-fwkProject.addTask('test:nag', {
-  description: 'Run unit tests',
-  exec: 'jest --group=unit/best-practice'
-});
-
-fwkProject.addTask('test:e2e', {
-  description: 'Run end-to-end tests',
-  exec: 'jest --group=e2e'
-});
-
-rootProject.testTask.reset('jest --group=-e2e');
-
-rootProject.addTask('test:unit', {
-  description: 'Run unit tests',
-  exec: 'jest --group=unit'
-});
-
-rootProject.addTask('test:nag', {
-  description: 'Run unit tests',
-  exec: 'jest --group=unit/best-practice'
-});
-
-rootProject.addTask('test:e2e', {
-  description: 'Run end-to-end tests',
-  exec: 'jest --group=e2e'
-});
 
 rootProject.synth();

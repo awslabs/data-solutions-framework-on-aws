@@ -6,6 +6,10 @@
       "type": "build"
     },
     {
+      "name": "@jest/globals",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },
