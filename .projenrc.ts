@@ -94,7 +94,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'cdk-nag@^2.0.0',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    'jest-cli',
     'ts-jest',
     '@jest/globals',
     'jest-runner-groups',
@@ -108,7 +107,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     include: ['src/**/*.json'],
   },
 
-  jest: true,
   jestOptions: {
     jestConfig: {
       runner: 'groups',
@@ -118,15 +116,18 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
           tsconfig: 'tsconfig.dev.json',
         }),
       },
+      globals: {
+        'ts-jest': null // remove deprecation warning
+      }
     }
   },
 });
 
-fwkProject.testTask.reset('jest --group=-e2e');
+fwkProject.setScript('test', 'npx projen test --group=-e2e');
 
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
-  exec: 'jest --group=e2e'
+  exec: 'npx projen test --group=e2e'
 });
 
 rootProject.addTask('test:e2e', {

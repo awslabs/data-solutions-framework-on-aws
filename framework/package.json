@@ -19,7 +19,7 @@
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
-    "test": "npx projen test",
+    "test": "npx projen test --group=-e2e",
     "test:e2e": "npx projen test:e2e",
     "test:watch": "npx projen test:watch",
     "upgrade": "npx projen upgrade",
@@ -46,7 +46,6 @@
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.28.0",
     "jest": "^29.6.2",
-    "jest-cli": "^29.6.4",
     "jest-junit": "^15",
     "jest-runner-groups": "^2.2.0",
     "jsii": "~5.0.0",
@@ -85,6 +84,9 @@
         }
       ]
     },
+    "globals": {
+      "ts-jest": null
+    },
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
@@ -117,12 +119,7 @@
         }
       ]
     ],
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.dev.json"
-      }
-    }
+    "preset": "ts-jest"
   },
   "types": "lib/index.d.ts",
   "stability": "stable",
