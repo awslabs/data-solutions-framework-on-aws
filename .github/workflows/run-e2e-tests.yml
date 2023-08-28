@@ -1,6 +1,11 @@
 name: Run e2e tests
 
 on:
+  # TODO remove before merging to main
+  push:
+    branches:
+      - test/e2e-tests
+
   workflow_dispatch:
     inputs:
       prNumber:
