@@ -1,0 +1,15 @@
+name: Build docs website
+
+on:
+  pull_request:
+    types: 
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    paths:
+      - "website/**"
+
+jobs:
+  build-docs:
+    uses: ./.github/workflows/_build_website.yml
