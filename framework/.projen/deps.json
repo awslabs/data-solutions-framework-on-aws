@@ -65,6 +65,10 @@
       "type": "build"
     },
     {
+      "name": "jest-cli",
+      "type": "build"
+    },
+    {
       "name": "jest-junit",
       "version": "^15",
       "type": "build"
