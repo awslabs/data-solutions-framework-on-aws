@@ -21,7 +21,7 @@ jobs:
       PR_NUMBER: ${{ inputs.prNumber }}
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint.
-      contents: read
+      contents: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
@@ -41,17 +41,22 @@ jobs:
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
         with:
           ref: ${{ steps.extract_PR_details.outputs.headSHA }}
-      - name: Setup NodeJS
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+      - name: Setup NodeJS and dependency cache
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: 18
           cache: 'yarn'
+          cache-dependency-path: |
+            yarn.lock
+            solutions/yarn.lock
       - name: Install dependencies
         run: yarn install --check-files
+      - name: Build
+        run: npx projen build
       - name: Setup AWS credentials
         uses: aws-actions/configure-aws-credentials@04b98b3f9e85f563fb061be8751a0352327246b0 # v3.0.1
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_TO_ASSUME }}
           aws-region: eu-west-1
       - name: Run e2e tests
-        run: npx projen test --group=e2e
+        run: npx projen test:e2e
