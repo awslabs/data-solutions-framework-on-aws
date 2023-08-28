@@ -93,10 +93,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
 
   devDeps: [
     'cdk-nag@^2.0.0',
-    `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    'ts-jest',
+    '@types/jest',
     '@jest/globals',
+    'ts-jest',
     'jest-runner-groups',
+    `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
   ],
 
   tsconfig: {
@@ -128,6 +129,40 @@ fwkProject.setScript('test', 'npx projen test --group=-e2e');
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
   exec: 'npx projen test --group=e2e'
+});
+
+new awscdk.AwsCdkConstructLibrary({
+  name: 'solutions',
+  description: 'Pre-packaged data solutions built with the AWS Data Solutions Framework',
+  author,
+  authorAddress,
+  authorOrganization,
+  license,
+
+  parent: rootProject,
+  outdir: 'solutions',
+
+  keywords: [
+    'aws',
+    'AWS Service Catalog',
+    'cdk',
+    'analytics',
+    'database',
+    'data'
+  ],
+
+  repositoryUrl,
+  repositoryDirectory: 'solutions',
+  defaultReleaseBranch,
+
+  cdkVersion: CDK_VERSION,
+  constructsVersion: CDK_CONSTRUCTS_VERSION,
+  jsiiVersion: JSII_VERSION,
+
+  devDeps: [
+    '@types/jest',
+  ],
+  packageName: 'aws-data-solutions',
 });
 
 rootProject.addTask('test:e2e', {
