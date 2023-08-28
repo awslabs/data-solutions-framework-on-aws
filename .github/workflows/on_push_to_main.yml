@@ -1,0 +1,17 @@
+name: Update build dependencies cache
+# This workflow updates the dependency cache on 'main' so that all other (child) branches can reuse it.
+# The 'website' directory is ignored, because there is a separate workflow for that directory.
+# See cache branch permissions: 
+# https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#restrictions-for-accessing-a-cache
+
+on:
+  push:
+    branches: 
+      - $default-branch
+    paths-ignore:
+      - "website/**"
+  workflow_dispatch:
+
+jobs:
+  update-cache:
+    uses: ./.github/workflows/_store_deps_cache.yml
