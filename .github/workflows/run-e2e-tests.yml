@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - test/e2e-tests
+      - test/e2e-workflow
 
   workflow_dispatch:
     inputs:
