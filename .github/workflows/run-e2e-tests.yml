@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       prNumber:
-        description: "(Optional) PR Number. If you specify a value the value of the branch field will be ignored."
+        description: "(Optional) PR Number. If you specify a value here, the value of the branch field will be ignored."
         required: false
         default: ""
 
@@ -52,6 +52,7 @@ jobs:
           cache-dependency-path: |
             yarn.lock
             framework/yarn.lock
+            solutions/yarn.lock
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: Build

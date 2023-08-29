@@ -100,25 +100,16 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
   ],
 
-  tsconfig: {
-    compilerOptions: {
-      resolveJsonModule: true,
-      esModuleInterop: true,
-    },
-    include: ['src/**/*.json'],
-  },
-
   jestOptions: {
     jestConfig: {
       runner: 'groups',
       transform: {
         '^.+\\.ts?$': new Transform('ts-jest', {
-          isolatedModules: true,
           tsconfig: 'tsconfig.dev.json',
         }),
       },
       globals: {
-        'ts-jest': null // remove deprecation warning
+        'ts-jest': null // remove jest deprecation warning caused by projen-generated default config
       }
     }
   },
