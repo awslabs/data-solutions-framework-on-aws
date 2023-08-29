@@ -131,9 +131,6 @@
         },
         {
           "exec": "lerna-projen copy-dist solutions/dist dist"
-        },
-        {
-          "exec": "lerna-projen copy-dist catalog/undefined dist"
         }
       ]
     },
