@@ -141,6 +141,7 @@
     },
     "test:e2e": {
       "name": "test:e2e",
+      "description": "Run framework end-to-end tests",
       "steps": [
         {
           "exec": "npx projen test --group=e2e"
