@@ -3,6 +3,9 @@ name: Store dependencies cache
 on:
   workflow_call:
 
+env:
+  NODE_VERSION: 18    
+
 jobs:
   build-cache:
     runs-on: ubuntu-latest
@@ -12,7 +15,7 @@ jobs:
       - name: Setup build dependency cache
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'yarn'
           cache-dependency-path: |
             yarn.lock
