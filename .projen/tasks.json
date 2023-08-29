@@ -163,6 +163,15 @@
           "exec": "lerna run test --stream"
         }
       ]
+    },
+    "test:e2e": {
+      "name": "test:e2e",
+      "description": "Run end-to-end tests",
+      "steps": [
+        {
+          "exec": "lerna run test:e2e --stream"
+        }
+      ]
     }
   },
   "env": {

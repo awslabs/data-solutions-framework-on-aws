@@ -1,6 +1,7 @@
 import { LernaProject } from 'lerna-projen';
 import { awscdk } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
+import { Transform } from "projen/lib/javascript";
 
 const CDK_VERSION = '2.84.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
@@ -58,7 +59,7 @@ const rootProject = new LernaProject({
   jest: false
 });
 
-new awscdk.AwsCdkConstructLibrary({
+const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
 
@@ -93,14 +94,32 @@ new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     'cdk-nag@^2.0.0',
     '@types/jest',
+    '@jest/globals',
+    'ts-jest',
     'jest-runner-groups',
+    `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
   ],
 
   jestOptions: {
     jestConfig: {
       runner: 'groups',
-    },
+      transform: {
+        '^.+\\.ts?$': new Transform('ts-jest', {
+          tsconfig: 'tsconfig.dev.json',
+        }),
+      },
+      globals: {
+        'ts-jest': null // remove jest deprecation warning caused by projen-generated default config
+      }
+    }
   },
+});
+
+fwkProject.setScript('test', 'npx projen test --group=-e2e');
+
+fwkProject.addTask('test:e2e', {
+  description: 'Run framework end-to-end tests',
+  exec: 'npx projen test --group=e2e'
 });
 
 new awscdk.AwsCdkConstructLibrary({
@@ -135,6 +154,10 @@ new awscdk.AwsCdkConstructLibrary({
     '@types/jest',
   ],
   packageName: 'aws-data-solutions',
+});
+
+rootProject.addTask('test:e2e', {
+  description: 'Run end-to-end tests'
 });
 
 rootProject.synth();

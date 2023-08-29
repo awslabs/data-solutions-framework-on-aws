@@ -1,6 +1,15 @@
 {
   "dependencies": [
     {
+      "name": "@aws-cdk/cli-lib-alpha",
+      "version": "2.84.0-alpha.0",
+      "type": "build"
+    },
+    {
+      "name": "@jest/globals",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },
