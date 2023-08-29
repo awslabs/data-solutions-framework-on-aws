@@ -19,7 +19,8 @@
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
-    "test": "npx projen test",
+    "test": "npx projen test --group=-e2e",
+    "test:e2e": "npx projen test:e2e",
     "test:watch": "npx projen test:watch",
     "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
@@ -31,6 +32,8 @@
     "organization": true
   },
   "devDependencies": {
+    "@aws-cdk/cli-lib-alpha": "2.84.0-alpha.0",
+    "@jest/globals": "^29.6.4",
     "@types/jest": "^29.5.3",
     "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5",
@@ -72,6 +75,17 @@
   "version": "0.0.0",
   "jest": {
     "runner": "groups",
+    "transform": {
+      "^.+\\.ts?$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.dev.json"
+        }
+      ]
+    },
+    "globals": {
+      "ts-jest": null
+    },
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
       "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
@@ -104,12 +118,7 @@
         }
       ]
     ],
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.dev.json"
-      }
-    }
+    "preset": "ts-jest"
   },
   "types": "lib/index.d.ts",
   "stability": "stable",
