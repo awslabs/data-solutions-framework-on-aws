@@ -137,21 +137,4 @@ new awscdk.AwsCdkConstructLibrary({
   packageName: 'aws-data-solutions',
 });
 
-new awscdk.AwsCdkPythonApp({
-  name: 'catalog',
-  description: 'AWS Service Catalog publishing the AWS Data Solutions',
-  authorName: author,
-  authorEmail: authorAddress,
-  license,
-
-  parent: rootProject,
-  outdir: 'catalog',
-  moduleName: 'aws_data_solutions_framework',
-  
-  cdkVersion: CDK_VERSION,
-  constructsVersion: CDK_CONSTRUCTS_VERSION,
-  version: '0.0.0'
-});
-
-
 rootProject.synth();
