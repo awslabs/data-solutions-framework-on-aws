@@ -5,32 +5,72 @@ import { Duration } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
+import { Choice, Condition, Fail, FailProps, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
+import { EmrOnEksConfig, EmrOnEksTask } from './spark-job-emroneks';
+import { EmrServerlessConfig, EmrServerlessTask } from './spark-job-emrserverless';
 
 /**
- * A base construct to run Spark Jobs
- * Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
+ * A construct to run Spark Jobs using EMR Serverless or EMR On EKS.
+ * creates a State Machine that orchestrates the Spark Job.
  * @see SparkJobProps parameters to be specified for the construct
- * @see EmrServerlessSparkJob for Emr Serverless implementation
- * @see EmrOnEksSparkJob for EMR On EKS implementation
+ * @example
+ * ```typescript
+ *
+ * const myFileSystemPolicy = new PolicyDocument({
+ *   statements: [new PolicyStatement({
+ *     actions: [
+ *       's3:GetObject',
+ *     ],
+ *     resources: ['*'],
+ *   })],
+ * });
+ *
+ *
+ * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+ * const applicationId = "APPLICATION_ID";
+ * const job = new SparkJob(stack, 'SparkJob', {
+ * EmrServerlessJobConfig:{applicationId:applicationId,executionRoleArn:myExecutionRole.roleArn,jobConfig:{
+ *   "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+ *               "ApplicationId": applicationId,
+ *               "ClientToken": JsonPath.uuid(),
+ *               "ExecutionRoleArn": myExecutionRole.roleArn,
+ *               "ExecutionTimeoutMinutes": 30,
+ *               "JobDriver": {
+ *                   "SparkSubmit": {
+ *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
+ *                       "EntryPointArguments": [],
+ *                       "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+ *                   },
+ *               }
+ *
+ * }}
+ * } as SparkJobProps);
+ *
+ * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
+ *   value: job.stateMachine.stateMachineArn,
+ * });
+ * ```
  */
-export abstract class SparkJob extends Construct {
+
+export class SparkJob extends Construct {
 
   /**
-   * Tag resources with this key and value to identify the owner of the resources.
+   * Properties for the SparkJob construct.
    */
-  static OWNER_TAG: {key: string; value: string} = {
-    key: 'adsf-owned',
-    value: 'true',
-  };
+  private sparkJobProps: SparkJobProps;
 
   /**
-   * Step Functions StateMachine created to orchestrate the Spark Job
+   * Interface for EMR Cluster implementation. Can be either EmrOnEksTask or EmrServerlessTask
    */
-  public stateMachine: undefined | StateMachine;
+
+  private emrTaskImplementation: EmrClusterTaskImplementation;
+
+  /**
+   * Step Function StateMachine created to orchestrate the Spark Job
+   */
+  public readonly stateMachine: StateMachine;
 
   /**
    * Constructs a new instance of the SparkJob class.
@@ -38,97 +78,57 @@ export abstract class SparkJob extends Construct {
    * @param id the ID of the CDK Construct.
    * @param props the SparkJobProps properties.
    */
-  constructor(scope: Construct, id: string) {
+
+  constructor(scope: Construct, id: string, props: SparkJobProps) {
     super(scope, id);
-  }
+    this.sparkJobProps = props;
 
-  /**
-   * Parameters for Step Functions task that runs the Spark job
-   * @returns CallAwsServiceProps
-   */
-  protected abstract getJobStartTaskProps(): CallAwsServiceProps;
+    if (!this.sparkJobProps.EmrOnEksJobConfig && !this.sparkJobProps.EmrServerlessJobConfig) {
+      throw new Error('Either EmrOnEksJobConfig or EmrServerlessJobConfig must be provided');
+    }
 
-  /**
-   * Parameters for Step Functions task that monitors the Spark job
-   * @returns CallAwsServiceProps
-   */
-  protected abstract getJobMonitorTaskProps(): CallAwsServiceProps;
+    this.emrTaskImplementation = this.sparkJobProps.EmrOnEksJobConfig?.virtualClusterId ?
+      new EmrOnEksTask(this.sparkJobProps.EmrOnEksJobConfig!, scope) :
+      new EmrServerlessTask(this.sparkJobProps.EmrServerlessJobConfig!);
 
-  /**
-   * Parameters for Step Functions task that fails the Spark job
-   * @returns FailProps
-   */
-  protected abstract getJobFailTaskProps(): FailProps;
 
-  /**
-   * Returns the status of the Spark job that succeeded based on the GetJobRun API response
-   * @returns string
-   */
-  protected abstract getJobStatusSucceed(): string;
+    const emrStartJobTask = new CallAwsService(this, 'EmrStartJobTask', this.emrTaskImplementation.getJobStartTaskProps());
 
-  /**
-   * Returns the status of the Spark job that failed based on the GetJobRun API response
-   * @returns string
-   */
-  protected abstract getJobStatusFailed(): string;
-
-  /**
-   * Grants the execution role to the Step Functions state machine
-   * @param role
-   */
-  protected abstract grantExecutionRole(role:IRole):void;
-
-  /**
-   * Creates a State Machine that orchestrates the Spark Job. This is a default implementation that can be overridden by the extending class.
-   * @param schedule Schedule to run the state machine.
-   * @returns StateMachine
-   */
-  protected createStateMachine(schedule? : Schedule): StateMachine {
-
-    const emrStartJobTask = new CallAwsService(this, 'EmrStartJobTask', this.getJobStartTaskProps());
-
-    const emrMonitorJobTask = new CallAwsService(this, 'EmrMonitorJobTask', this.getJobMonitorTaskProps());
+    const emrMonitorJobTask = new CallAwsService(this, 'EmrMonitorJobTask', this.emrTaskImplementation.getJobMonitorTaskProps());
 
     const wait = new Wait(this, 'Wait', {
       time: WaitTime.duration(Duration.seconds(60)),
     });
 
-    const jobFailed = new Fail(this, 'JobFailed', this.getJobFailTaskProps());
+    const jobFailed = new Fail(this, 'JobFailed', this.emrTaskImplementation.getJobFailTaskProps());
 
     const jobSucceeded = new Succeed(this, 'JobSucceeded');
 
     const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
       new Choice(this, 'JobSucceededOrFailed')
-        .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusSucceed()), jobSucceeded)
-        .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusFailed()), jobFailed)
+        .when(Condition.stringEquals('$.JobRunState.State', this.emrTaskImplementation.getJobStatusSucceed()), jobSucceeded)
+        .when(Condition.stringEquals('$.JobRunState.State', this.emrTaskImplementation.getJobStatusFailed()), jobFailed)
         .otherwise(wait),
     );
 
-    // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(this, 'LogGroup', {
-      retention: RetentionDays.ONE_MONTH,
-    });
-
     // StepFunctions state machine
-    const stateMachine: StateMachine = new StateMachine(this, 'EmrPipeline', {
+    this.stateMachine = new StateMachine(this, 'EmrPipeline', {
       definition: emrPipelineChain,
-      tracingEnabled: true,
       timeout: Duration.seconds(1800),
-      logs: {
-        destination: logGroup,
-        level: LogLevel.ALL,
-      },
-    });
+    },
+    );
 
-    this.grantExecutionRole(stateMachine.role);
-    if (schedule) {
-      new Rule(this, 'SparkJobPipelineTrigger', {
-        schedule: schedule,
-        targets: [new SfnStateMachine(stateMachine)],
+    this.emrTaskImplementation.grantExecutionRole(this.stateMachine.role);
+
+    if (this.sparkJobProps.schedule) {
+      new Rule(this, 'EmrPipelineTrigger', {
+        schedule: this.sparkJobProps.schedule,
+        targets: [new SfnStateMachine(this.stateMachine)],
       });
     }
-    return stateMachine;
   }
+
+
 }
 
 
@@ -138,9 +138,69 @@ export abstract class SparkJob extends Construct {
 export interface SparkJobProps {
 
   /**
-   * Schedule to run the Step Functions state machine.
+   * Spark Job Config for EmkOnEks cluster
+   */
+  readonly EmrOnEksJobConfig?: EmrOnEksConfig;
+
+  /**
+   * Spark Job Config for EMR Serverless cluster
+   */
+  readonly EmrServerlessJobConfig?: EmrServerlessConfig;
+
+  /**
+   * Schedule to run the step function.
    * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
    */
   readonly schedule?: Schedule;
+
 }
 
+
+/**
+ * Defines interface for EMR Cluster Task implementation.
+ * @see EmrOnEksTask class for the actual implementation of the interface based on EmrOnEks cluster
+ * @see EmrServerlessTask class for the actual implementation of the interface based on EMR Serlverless cluster
+ */
+export interface EmrClusterTaskImplementation {
+  /**
+   * Sets the config for the Spark job to be run using EMR Serverless or EmrOnEks
+   * @param config
+   */
+  setConfig( config: EmrOnEksConfig | EmrServerlessConfig): void;
+
+  /**
+   * Parameters for step functions task that runs the Spark job
+   * @returns CallAwsServiceProps
+   */
+  getJobStartTaskProps(): CallAwsServiceProps;
+
+  /**
+   * Parameters for step functions task that monitors the Spark job
+   * @returns CallAwsServiceProps
+   */
+  getJobMonitorTaskProps(): CallAwsServiceProps;
+
+  /**
+   * Parameters for step functions task that fails the Spark job
+   * @returns FailProps
+   */
+  getJobFailTaskProps(): FailProps;
+
+  /**
+   * Returns the status of the Spark job that succeeded  based on the GetJobRun API response
+   * @returns string
+   */
+  getJobStatusSucceed(): string;
+
+  /**
+   * Returns the status of the Spark job that failed  based on the GetJobRun API response
+   * @returns string
+   */
+  getJobStatusFailed(): string;
+
+  /**
+   * Grants the execution role to the step function state machine
+   * @param role
+   */
+  grantExecutionRole(role:IRole):void;
+}
