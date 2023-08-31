@@ -13,11 +13,9 @@ import { Stack, App, Duration } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { Schedule } from 'aws-cdk-lib/aws-events';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { EmrOnEksSparkJob, EmrOnEksSparkJobProps } from '../../../src/data-processing/spark-job-emr-eks';
-import { EmrServerlessSparkJob, EmrServerlessSparkJobProps } from '../../../src/data-processing/spark-job-emr-serverless';
-
+import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
+import { SparkJob, SparkJobProps } from '../../../src/data-processing';
 import { SparkRuntimeServerless } from '../../../src/processing-runtime';
-import { EmrVersion } from '../../../src/utils';
 
 
 describe('Create an SparkJob using EMR Serverless Application for Spark with schedule', () => {
@@ -56,7 +54,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
 
   const template = Template.fromStack(stack, {});
 
-  test('State machine is created EMR Serverless', () => {
+  test('State function is created EMR Serverless', () => {
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
   });
 
@@ -75,7 +73,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
           [
             '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.JobRunId"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrserverless:startJobRun","Parameters":{"ApplicationId":"appId","ExecutionRoleArn":"',
+            ":states:::aws-sdk:emrserverless:startJobRun\",\"Parameters\":{\"Name.$\":\"States.Format('sparkServerless', States.UUID())\",\"ApplicationId\":\"appId\",\"ClientToken.$\":\"States.UUID()\",\"ExecutionRoleArn\":\"",
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
             '","JobDriver":{"SparkSubmit":{"EntryPoint":"s3://S3-BUCKET/pi.py","EntryPointArguments":[],"SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":30,"Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.JobRun.State","StateDetails.$":"$.JobRun.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
@@ -89,7 +87,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
 });
 
 
-describe('Create a SparkJob using EMRonEKS for Spark and grant access', () => {
+describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -106,28 +104,35 @@ describe('Create a SparkJob using EMRonEKS for Spark and grant access', () => {
 
   const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-  new EmrOnEksSparkJob(stack, 'SparkJobEmrOnEks', {
-    jobConfig: {
-      VirtualClusterId: 'clusterId',
-      ReleaseLabel: EmrVersion.V6_2,
-      ExecutionRoleArn: myExecutionRole.roleArn,
-      JobDriver: {
-        SparkSubmit: {
-          EntryPoint: 's3://S3-BUCKET/pi.py',
-          EntryPointArguments: [],
-          SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
+  new SparkJob(stack, 'SparkJobEmrOnEks', {
+    EmrOnEksJobConfig: {
+      virtualClusterId: 'clusterId',
+      executionRoleArn: myExecutionRole.roleArn,
+      jobConfig: {
+        Name: JsonPath.format('sparkEmrOnEks', JsonPath.uuid()),
+        ApplicationId: 'clusterId',
+        ClientToken: JsonPath.uuid(),
+        ReleaseLabel: 'emr-6.2.0-latest',
+        ExecutionRoleArn: myExecutionRole.roleArn,
+        ExecutionTimeoutMinutes: 30,
+        JobDriver: {
+          SparkSubmit: {
+            EntryPoint: 's3://S3-BUCKET/pi.py',
+            EntryPointArguments: [],
+            SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
+          },
         },
       },
     },
-  } as EmrOnEksSparkJobProps);
+  } as SparkJobProps);
 
   const template = Template.fromStack(stack, {});
 
-  test('State machine is created with EmrOnEks', () => {
+  test('State function is created with EmrOnEks', () => {
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
   });
 
-  test('State machine template definition matches expected format EmrOnEks', () => {
+  test('State template definition matches expected format EmrOnEks', () => {
     template.hasResourceProperties('AWS::StepFunctions::StateMachine', {
       DefinitionString: {
         'Fn::Join': [
@@ -135,9 +140,9 @@ describe('Create a SparkJob using EMRonEKS for Spark and grant access', () => {
           [
             '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.Id"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrcontainers:StartJobRun","Parameters":{"VirtualClusterId":"clusterId","ReleaseLabel":"emr-6.2.0","ExecutionRoleArn":"',
+            ":states:::aws-sdk:emrcontainers:StartJobRun\",\"Parameters\":{\"Name.$\":\"States.Format('sparkEmrOnEks', States.UUID())\",\"ApplicationId\":\"clusterId\",\"ClientToken.$\":\"States.UUID()\",\"ReleaseLabel\":\"emr-6.2.0-latest\",\"ExecutionRoleArn\":\"",
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
-            '","JobDriver":{"SparkSubmit":{"EntryPoint":"s3://S3-BUCKET/pi.py","EntryPointArguments":[],"SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":30}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.State","StateDetails.$":"$.StateDetails"},"Resource":"arn:',
+            '","ExecutionTimeoutMinutes":30,"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://S3-BUCKET/pi.py","EntryPointArguments":[],"SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"Tags":{"adsf-owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.State","StateDetails.$":"$.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
             ':states:::aws-sdk:emrcontainers:describeJobRun","Parameters":{"VirtualClusterId":"clusterId","Id.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"COMPLETED","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRonEKSJobFailed"}},"TimeoutSeconds":1800}',
           ],

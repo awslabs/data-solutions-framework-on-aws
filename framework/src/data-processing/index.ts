@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-export { SparkJob, SparkJobProps } from './spark-job';
-export { EmrOnEksSparkJob, EmrOnEksSparkJobProps } from './spark-job-emr-eks';
-export { EmrServerlessSparkJob, EmrServerlessSparkJobProps } from './spark-job-emr-serverless';
+export { SparkJob, SparkJobProps, EmrClusterTaskImplementation } from './spark-job';
+export { EmrOnEksConfig, EmrOnEksTask } from './spark-job-emroneks';
+export { EmrServerlessConfig, EmrServerlessTask } from './spark-job-emrserverless';
