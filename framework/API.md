@@ -1,9 +1,9 @@
-# replace this
+# AWS Data Solutions Framework
 # API Reference <a name="API Reference" id="api-reference"></a>
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
-### AccessLogsBucket <a name="AccessLogsBucket" id="aws-data-solutions-framework.AccessLogsBucket"></a>
+### AccessLogsBucket <a name="AccessLogsBucket" id="framework.AccessLogsBucket"></a>
 
 Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
@@ -18,35 +18,35 @@ const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
 })
 ```
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.AccessLogsBucket.Initializer"></a>
+#### Initializers <a name="Initializers" id="framework.AccessLogsBucket.Initializer"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 new AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
+| <code><a href="#framework.AccessLogsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#framework.AccessLogsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#framework.AccessLogsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AccessLogsBucket.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="framework.AccessLogsBucket.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-data-solutions-framework.AccessLogsBucket.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="framework.AccessLogsBucket.Initializer.parameter.props"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketProps
 
@@ -56,36 +56,36 @@ new AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
+| <code><a href="#framework.AccessLogsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#framework.AccessLogsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
+| <code><a href="#framework.AccessLogsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
+| <code><a href="#framework.AccessLogsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
+| <code><a href="#framework.AccessLogsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
+| <code><a href="#framework.AccessLogsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
+| <code><a href="#framework.AccessLogsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
+| <code><a href="#framework.AccessLogsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
+| <code><a href="#framework.AccessLogsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
+| <code><a href="#framework.AccessLogsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
+| <code><a href="#framework.AccessLogsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
+| <code><a href="#framework.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
+| <code><a href="#framework.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#framework.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#framework.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
+| <code><a href="#framework.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
+| <code><a href="#framework.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
+| <code><a href="#framework.AccessLogsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
+| <code><a href="#framework.AccessLogsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
+| <code><a href="#framework.AccessLogsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
+| <code><a href="#framework.AccessLogsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
+| <code><a href="#framework.AccessLogsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
+| <code><a href="#framework.AccessLogsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
+| <code><a href="#framework.AccessLogsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
+| <code><a href="#framework.AccessLogsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
+| <code><a href="#framework.AccessLogsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.AccessLogsBucket.toString"></a>
+##### `toString` <a name="toString" id="framework.AccessLogsBucket.toString"></a>
 
 ```typescript
 public toString(): string
@@ -93,7 +93,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-data-solutions-framework.AccessLogsBucket.applyRemovalPolicy"></a>
+##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="framework.AccessLogsBucket.applyRemovalPolicy"></a>
 
 ```typescript
 public applyRemovalPolicy(policy: RemovalPolicy): void
@@ -109,13 +109,13 @@ to be replaced.
 The resource can be deleted (`RemovalPolicy.DESTROY`), or left in your AWS
 account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-data-solutions-framework.AccessLogsBucket.applyRemovalPolicy.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="framework.AccessLogsBucket.applyRemovalPolicy.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
-##### `addEventNotification` <a name="addEventNotification" id="aws-data-solutions-framework.AccessLogsBucket.addEventNotification"></a>
+##### `addEventNotification` <a name="addEventNotification" id="framework.AccessLogsBucket.addEventNotification"></a>
 
 ```typescript
 public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -134,7 +134,7 @@ Adds a bucket notification event destination.
 ```
 
 
-###### `event`<sup>Required</sup> <a name="event" id="aws-data-solutions-framework.AccessLogsBucket.addEventNotification.parameter.event"></a>
+###### `event`<sup>Required</sup> <a name="event" id="framework.AccessLogsBucket.addEventNotification.parameter.event"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.EventType
 
@@ -142,7 +142,7 @@ The event to trigger the notification.
 
 ---
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.AccessLogsBucket.addEventNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="framework.AccessLogsBucket.addEventNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -150,7 +150,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.AccessLogsBucket.addEventNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="framework.AccessLogsBucket.addEventNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -162,7 +162,7 @@ for details about allowed filter rules.
 
 ---
 
-##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-data-solutions-framework.AccessLogsBucket.addObjectCreatedNotification"></a>
+##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="framework.AccessLogsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
 public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -173,7 +173,7 @@ Subscribes a destination to receive notifications when an object is created in t
 This is identical to calling
 `onEvent(EventType.OBJECT_CREATED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.AccessLogsBucket.addObjectCreatedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="framework.AccessLogsBucket.addObjectCreatedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -181,7 +181,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="framework.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -189,7 +189,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-data-solutions-framework.AccessLogsBucket.addObjectRemovedNotification"></a>
+##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="framework.AccessLogsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
 public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -200,7 +200,7 @@ Subscribes a destination to receive notifications when an object is removed from
 This is identical to calling
 `onEvent(EventType.OBJECT_REMOVED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.AccessLogsBucket.addObjectRemovedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="framework.AccessLogsBucket.addObjectRemovedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -208,7 +208,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="framework.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -216,7 +216,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-data-solutions-framework.AccessLogsBucket.addToResourcePolicy"></a>
+##### `addToResourcePolicy` <a name="addToResourcePolicy" id="framework.AccessLogsBucket.addToResourcePolicy"></a>
 
 ```typescript
 public addToResourcePolicy(permission: PolicyStatement): AddToResourcePolicyResult
@@ -230,7 +230,7 @@ it's not possible to tell whether the bucket already has a policy
 attached, let alone to re-use that policy to add more statements to it.
 So it's safest to do nothing in these cases.
 
-###### `permission`<sup>Required</sup> <a name="permission" id="aws-data-solutions-framework.AccessLogsBucket.addToResourcePolicy.parameter.permission"></a>
+###### `permission`<sup>Required</sup> <a name="permission" id="framework.AccessLogsBucket.addToResourcePolicy.parameter.permission"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
@@ -238,7 +238,7 @@ the policy statement to be added to the bucket's policy.
 
 ---
 
-##### `arnForObjects` <a name="arnForObjects" id="aws-data-solutions-framework.AccessLogsBucket.arnForObjects"></a>
+##### `arnForObjects` <a name="arnForObjects" id="framework.AccessLogsBucket.arnForObjects"></a>
 
 ```typescript
 public arnForObjects(keyPattern: string): string
@@ -252,13 +252,13 @@ If you need to specify a keyPattern with multiple components, concatenate them i
 
   arnForObjects(`home/${team}/${user}/*`)
 
-###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-data-solutions-framework.AccessLogsBucket.arnForObjects.parameter.keyPattern"></a>
+###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="framework.AccessLogsBucket.arnForObjects.parameter.keyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-data-solutions-framework.AccessLogsBucket.enableEventBridgeNotification"></a>
+##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="framework.AccessLogsBucket.enableEventBridgeNotification"></a>
 
 ```typescript
 public enableEventBridgeNotification(): void
@@ -277,7 +277,7 @@ Object Deleted (DeleteObject)
 - Object Tags Added
 - Object Tags Deleted
 
-##### `grantDelete` <a name="grantDelete" id="aws-data-solutions-framework.AccessLogsBucket.grantDelete"></a>
+##### `grantDelete` <a name="grantDelete" id="framework.AccessLogsBucket.grantDelete"></a>
 
 ```typescript
 public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -285,7 +285,7 @@ public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
 
 Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AccessLogsBucket.grantDelete.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AccessLogsBucket.grantDelete.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -293,7 +293,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AccessLogsBucket.grantDelete.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AccessLogsBucket.grantDelete.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -301,7 +301,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-data-solutions-framework.AccessLogsBucket.grantPublicAccess"></a>
+##### `grantPublicAccess` <a name="grantPublicAccess" id="framework.AccessLogsBucket.grantPublicAccess"></a>
 
 ```typescript
 public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
@@ -328,7 +328,7 @@ Note that if this `IBucket` refers to an existing bucket, possibly not
 managed by CloudFormation, this method will have no effect, since it's
 impossible to modify the policy of an existing bucket.
 
-###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-data-solutions-framework.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
+###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="framework.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
 - *Type:* string
 
@@ -338,7 +338,7 @@ Default is "s3:GetObject".
 
 ---
 
-###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-data-solutions-framework.AccessLogsBucket.grantPublicAccess.parameter.keyPrefix"></a>
+###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="framework.AccessLogsBucket.grantPublicAccess.parameter.keyPrefix"></a>
 
 - *Type:* string
 
@@ -346,7 +346,7 @@ the prefix of S3 object keys (e.g. `home/*`). Default is "*".
 
 ---
 
-##### `grantPut` <a name="grantPut" id="aws-data-solutions-framework.AccessLogsBucket.grantPut"></a>
+##### `grantPut` <a name="grantPut" id="framework.AccessLogsBucket.grantPut"></a>
 
 ```typescript
 public grantPut(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -357,7 +357,7 @@ Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM princip
 If encryption is used, permission to use the key to encrypt the contents
 of written files will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AccessLogsBucket.grantPut.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AccessLogsBucket.grantPut.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -365,7 +365,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AccessLogsBucket.grantPut.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AccessLogsBucket.grantPut.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -373,7 +373,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPutAcl` <a name="grantPutAcl" id="aws-data-solutions-framework.AccessLogsBucket.grantPutAcl"></a>
+##### `grantPutAcl` <a name="grantPutAcl" id="framework.AccessLogsBucket.grantPutAcl"></a>
 
 ```typescript
 public grantPutAcl(identity: IGrantable, objectsKeyPattern?: string): Grant
@@ -385,19 +385,19 @@ If your application has the '@aws-cdk/aws-s3:grantWriteWithoutAcl' feature flag 
 calling `grantWrite` or `grantReadWrite` no longer grants permissions to modify the ACLs of the objects;
 in this case, if you need to modify object ACLs, call this method explicitly.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AccessLogsBucket.grantPutAcl.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AccessLogsBucket.grantPutAcl.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AccessLogsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AccessLogsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `grantRead` <a name="grantRead" id="aws-data-solutions-framework.AccessLogsBucket.grantRead"></a>
+##### `grantRead` <a name="grantRead" id="framework.AccessLogsBucket.grantRead"></a>
 
 ```typescript
 public grantRead(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -408,7 +408,7 @@ Grant read permissions for this bucket and it's contents to an IAM principal (Ro
 If encryption is used, permission to use the key to decrypt the contents
 of the bucket will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AccessLogsBucket.grantRead.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AccessLogsBucket.grantRead.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -416,7 +416,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AccessLogsBucket.grantRead.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AccessLogsBucket.grantRead.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -424,7 +424,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantReadWrite` <a name="grantReadWrite" id="aws-data-solutions-framework.AccessLogsBucket.grantReadWrite"></a>
+##### `grantReadWrite` <a name="grantReadWrite" id="framework.AccessLogsBucket.grantReadWrite"></a>
 
 ```typescript
 public grantReadWrite(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -443,19 +443,19 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AccessLogsBucket.grantReadWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AccessLogsBucket.grantReadWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-##### `grantWrite` <a name="grantWrite" id="aws-data-solutions-framework.AccessLogsBucket.grantWrite"></a>
+##### `grantWrite` <a name="grantWrite" id="framework.AccessLogsBucket.grantWrite"></a>
 
 ```typescript
 public grantWrite(identity: IGrantable, objectsKeyPattern?: any, allowedActionPatterns?: string[]): Grant
@@ -474,25 +474,25 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AccessLogsBucket.grantWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AccessLogsBucket.grantWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AccessLogsBucket.grantWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AccessLogsBucket.grantWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-data-solutions-framework.AccessLogsBucket.grantWrite.parameter.allowedActionPatterns"></a>
+###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="framework.AccessLogsBucket.grantWrite.parameter.allowedActionPatterns"></a>
 
 - *Type:* string[]
 
 ---
 
-##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailEvent"></a>
+##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="framework.AccessLogsBucket.onCloudTrailEvent"></a>
 
 ```typescript
 public onCloudTrailEvent(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -503,7 +503,7 @@ Define a CloudWatch event that triggers when something happens to this repositor
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailEvent.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.onCloudTrailEvent.parameter.id"></a>
 
 - *Type:* string
 
@@ -511,7 +511,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailEvent.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AccessLogsBucket.onCloudTrailEvent.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -519,7 +519,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailPutObject"></a>
+##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="framework.AccessLogsBucket.onCloudTrailPutObject"></a>
 
 ```typescript
 public onCloudTrailPutObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -534,7 +534,7 @@ so using `onCloudTrailWriteObject` may be preferable.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailPutObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.onCloudTrailPutObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -542,7 +542,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailPutObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AccessLogsBucket.onCloudTrailPutObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -550,7 +550,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailWriteObject"></a>
+##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="framework.AccessLogsBucket.onCloudTrailWriteObject"></a>
 
 ```typescript
 public onCloudTrailWriteObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -568,7 +568,7 @@ so using this method may be preferable to `onCloudTrailPutObject`.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailWriteObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.onCloudTrailWriteObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -576,7 +576,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AccessLogsBucket.onCloudTrailWriteObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AccessLogsBucket.onCloudTrailWriteObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -584,7 +584,7 @@ Options for adding the rule.
 
 ---
 
-##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-data-solutions-framework.AccessLogsBucket.s3UrlForObject"></a>
+##### `s3UrlForObject` <a name="s3UrlForObject" id="framework.AccessLogsBucket.s3UrlForObject"></a>
 
 ```typescript
 public s3UrlForObject(key?: string): string
@@ -595,7 +595,7 @@ The S3 URL of an S3 object. For example:.
 `s3://onlybucket`
 - `s3://bucket/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AccessLogsBucket.s3UrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AccessLogsBucket.s3UrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -606,7 +606,7 @@ bucket is returned.
 
 ---
 
-##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-data-solutions-framework.AccessLogsBucket.transferAccelerationUrlForObject"></a>
+##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="framework.AccessLogsBucket.transferAccelerationUrlForObject"></a>
 
 ```typescript
 public transferAccelerationUrlForObject(key?: string, options?: TransferAccelerationUrlOptions): string
@@ -620,7 +620,7 @@ for dual-stack endpoint (connect to the bucket over IPv6). For example:
 - `https://bucket.s3-accelerate.amazonaws.com`
 - `https://bucket.s3-accelerate.amazonaws.com/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AccessLogsBucket.transferAccelerationUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AccessLogsBucket.transferAccelerationUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -631,7 +631,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AccessLogsBucket.transferAccelerationUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AccessLogsBucket.transferAccelerationUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.TransferAccelerationUrlOptions
 
@@ -639,7 +639,7 @@ Options for generating URL.
 
 ---
 
-##### `urlForObject` <a name="urlForObject" id="aws-data-solutions-framework.AccessLogsBucket.urlForObject"></a>
+##### `urlForObject` <a name="urlForObject" id="framework.AccessLogsBucket.urlForObject"></a>
 
 ```typescript
 public urlForObject(key?: string): string
@@ -651,7 +651,7 @@ The https URL of an S3 object. Specify `regional: false` at the options for non-
 - `https://s3.us-west-1.amazonaws.com/bucket/key`
 - `https://s3.cn-north-1.amazonaws.com.cn/china-bucket/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AccessLogsBucket.urlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AccessLogsBucket.urlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -662,7 +662,7 @@ bucket is returned.
 
 ---
 
-##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-data-solutions-framework.AccessLogsBucket.virtualHostedUrlForObject"></a>
+##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="framework.AccessLogsBucket.virtualHostedUrlForObject"></a>
 
 ```typescript
 public virtualHostedUrlForObject(key?: string, options?: VirtualHostedStyleUrlOptions): string
@@ -675,7 +675,7 @@ The virtual hosted-style URL of an S3 object. Specify `regional: false` at the o
 - `https://bucket.s3.amazonaws.com/key`
 - `https://china-bucket.s3.cn-north-1.amazonaws.com.cn/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AccessLogsBucket.virtualHostedUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AccessLogsBucket.virtualHostedUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -686,7 +686,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AccessLogsBucket.virtualHostedUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AccessLogsBucket.virtualHostedUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.VirtualHostedStyleUrlOptions
 
@@ -694,7 +694,7 @@ Options for generating URL.
 
 ---
 
-##### `addCorsRule` <a name="addCorsRule" id="aws-data-solutions-framework.AccessLogsBucket.addCorsRule"></a>
+##### `addCorsRule` <a name="addCorsRule" id="framework.AccessLogsBucket.addCorsRule"></a>
 
 ```typescript
 public addCorsRule(rule: CorsRule): void
@@ -702,7 +702,7 @@ public addCorsRule(rule: CorsRule): void
 
 Adds a cross-origin access configuration for objects in an Amazon S3 bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.AccessLogsBucket.addCorsRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="framework.AccessLogsBucket.addCorsRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CorsRule
 
@@ -710,7 +710,7 @@ The CORS configuration rule to add.
 
 ---
 
-##### `addInventory` <a name="addInventory" id="aws-data-solutions-framework.AccessLogsBucket.addInventory"></a>
+##### `addInventory` <a name="addInventory" id="framework.AccessLogsBucket.addInventory"></a>
 
 ```typescript
 public addInventory(inventory: Inventory): void
@@ -718,7 +718,7 @@ public addInventory(inventory: Inventory): void
 
 Add an inventory configuration.
 
-###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-data-solutions-framework.AccessLogsBucket.addInventory.parameter.inventory"></a>
+###### `inventory`<sup>Required</sup> <a name="inventory" id="framework.AccessLogsBucket.addInventory.parameter.inventory"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.Inventory
 
@@ -726,7 +726,7 @@ configuration to add.
 
 ---
 
-##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-data-solutions-framework.AccessLogsBucket.addLifecycleRule"></a>
+##### `addLifecycleRule` <a name="addLifecycleRule" id="framework.AccessLogsBucket.addLifecycleRule"></a>
 
 ```typescript
 public addLifecycleRule(rule: LifecycleRule): void
@@ -734,7 +734,7 @@ public addLifecycleRule(rule: LifecycleRule): void
 
 Add a lifecycle rule to the bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.AccessLogsBucket.addLifecycleRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="framework.AccessLogsBucket.addLifecycleRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.LifecycleRule
 
@@ -742,7 +742,7 @@ The rule to add.
 
 ---
 
-##### `addMetric` <a name="addMetric" id="aws-data-solutions-framework.AccessLogsBucket.addMetric"></a>
+##### `addMetric` <a name="addMetric" id="framework.AccessLogsBucket.addMetric"></a>
 
 ```typescript
 public addMetric(metric: BucketMetrics): void
@@ -750,7 +750,7 @@ public addMetric(metric: BucketMetrics): void
 
 Adds a metrics configuration for the CloudWatch request metrics from the bucket.
 
-###### `metric`<sup>Required</sup> <a name="metric" id="aws-data-solutions-framework.AccessLogsBucket.addMetric.parameter.metric"></a>
+###### `metric`<sup>Required</sup> <a name="metric" id="framework.AccessLogsBucket.addMetric.parameter.metric"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketMetrics
 
@@ -762,21 +762,21 @@ The metric configuration to add.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
+| <code><a href="#framework.AccessLogsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#framework.AccessLogsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
+| <code><a href="#framework.AccessLogsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
+| <code><a href="#framework.AccessLogsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
+| <code><a href="#framework.AccessLogsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
+| <code><a href="#framework.AccessLogsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
+| <code><a href="#framework.AccessLogsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
+| <code><a href="#framework.AccessLogsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.AccessLogsBucket.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="framework.AccessLogsBucket.isConstruct"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.isConstruct(x: any)
 ```
@@ -797,7 +797,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.AccessLogsBucket.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="framework.AccessLogsBucket.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -805,75 +805,75 @@ Any object.
 
 ---
 
-##### `isOwnedResource` <a name="isOwnedResource" id="aws-data-solutions-framework.AccessLogsBucket.isOwnedResource"></a>
+##### `isOwnedResource` <a name="isOwnedResource" id="framework.AccessLogsBucket.isOwnedResource"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.isOwnedResource(construct: IConstruct)
 ```
 
 Returns true if the construct was created by CDK, and false otherwise.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.AccessLogsBucket.isOwnedResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="framework.AccessLogsBucket.isOwnedResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `isResource` <a name="isResource" id="aws-data-solutions-framework.AccessLogsBucket.isResource"></a>
+##### `isResource` <a name="isResource" id="framework.AccessLogsBucket.isResource"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.isResource(construct: IConstruct)
 ```
 
 Check whether the given construct is a Resource.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.AccessLogsBucket.isResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="framework.AccessLogsBucket.isResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `fromBucketArn` <a name="fromBucketArn" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketArn"></a>
+##### `fromBucketArn` <a name="fromBucketArn" id="framework.AccessLogsBucket.fromBucketArn"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.AccessLogsBucket.fromBucketArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.fromBucketArn.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketArn.parameter.bucketArn"></a>
+###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="framework.AccessLogsBucket.fromBucketArn.parameter.bucketArn"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketAttributes"></a>
+##### `fromBucketAttributes` <a name="fromBucketAttributes" id="framework.AccessLogsBucket.fromBucketAttributes"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
 ```
 
 Creates a Bucket construct that represents an external bucket.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketAttributes.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.AccessLogsBucket.fromBucketAttributes.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -881,7 +881,7 @@ The parent creating construct (usually `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketAttributes.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.fromBucketAttributes.parameter.id"></a>
 
 - *Type:* string
 
@@ -889,7 +889,7 @@ The construct's name.
 
 ---
 
-###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketAttributes.parameter.attrs"></a>
+###### `attrs`<sup>Required</sup> <a name="attrs" id="framework.AccessLogsBucket.fromBucketAttributes.parameter.attrs"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketAttributes
 
@@ -900,59 +900,59 @@ Can be obtained from a call to
 
 ---
 
-##### `fromBucketName` <a name="fromBucketName" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketName"></a>
+##### `fromBucketName` <a name="fromBucketName" id="framework.AccessLogsBucket.fromBucketName"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.AccessLogsBucket.fromBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AccessLogsBucket.fromBucketName.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.AccessLogsBucket.fromBucketName.parameter.bucketName"></a>
+###### `bucketName`<sup>Required</sup> <a name="bucketName" id="framework.AccessLogsBucket.fromBucketName.parameter.bucketName"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-data-solutions-framework.AccessLogsBucket.fromCfnBucket"></a>
+##### `fromCfnBucket` <a name="fromCfnBucket" id="framework.AccessLogsBucket.fromCfnBucket"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.fromCfnBucket(cfnBucket: CfnBucket)
 ```
 
 Create a mutable `IBucket` based on a low-level `CfnBucket`.
 
-###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-data-solutions-framework.AccessLogsBucket.fromCfnBucket.parameter.cfnBucket"></a>
+###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="framework.AccessLogsBucket.fromCfnBucket.parameter.cfnBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CfnBucket
 
 ---
 
-##### `validateBucketName` <a name="validateBucketName" id="aws-data-solutions-framework.AccessLogsBucket.validateBucketName"></a>
+##### `validateBucketName` <a name="validateBucketName" id="framework.AccessLogsBucket.validateBucketName"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-data-solutions-framework'
+import { AccessLogsBucket } from 'framework'
 
 AccessLogsBucket.validateBucketName(physicalName: string)
 ```
 
 Thrown an exception if the given bucket name is not valid.
 
-###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-data-solutions-framework.AccessLogsBucket.validateBucketName.parameter.physicalName"></a>
+###### `physicalName`<sup>Required</sup> <a name="physicalName" id="framework.AccessLogsBucket.validateBucketName.parameter.physicalName"></a>
 
 - *Type:* string
 
@@ -964,23 +964,23 @@ name of the bucket.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
-| <code><a href="#aws-data-solutions-framework.AccessLogsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#framework.AccessLogsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#framework.AccessLogsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
+| <code><a href="#framework.AccessLogsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
+| <code><a href="#framework.AccessLogsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
+| <code><a href="#framework.AccessLogsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
+| <code><a href="#framework.AccessLogsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.AccessLogsBucket.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="framework.AccessLogsBucket.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -992,7 +992,7 @@ The tree node.
 
 ---
 
-##### `env`<sup>Required</sup> <a name="env" id="aws-data-solutions-framework.AccessLogsBucket.property.env"></a>
+##### `env`<sup>Required</sup> <a name="env" id="framework.AccessLogsBucket.property.env"></a>
 
 ```typescript
 public readonly env: ResourceEnvironment;
@@ -1011,7 +1011,7 @@ that might be different than the stack they were imported into.
 
 ---
 
-##### `stack`<sup>Required</sup> <a name="stack" id="aws-data-solutions-framework.AccessLogsBucket.property.stack"></a>
+##### `stack`<sup>Required</sup> <a name="stack" id="framework.AccessLogsBucket.property.stack"></a>
 
 ```typescript
 public readonly stack: Stack;
@@ -1023,7 +1023,7 @@ The stack in which this resource is defined.
 
 ---
 
-##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketArn"></a>
+##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="framework.AccessLogsBucket.property.bucketArn"></a>
 
 ```typescript
 public readonly bucketArn: string;
@@ -1035,7 +1035,7 @@ The ARN of the bucket.
 
 ---
 
-##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketDomainName"></a>
+##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="framework.AccessLogsBucket.property.bucketDomainName"></a>
 
 ```typescript
 public readonly bucketDomainName: string;
@@ -1047,7 +1047,7 @@ The IPv4 DNS name of the specified bucket.
 
 ---
 
-##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketDualStackDomainName"></a>
+##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="framework.AccessLogsBucket.property.bucketDualStackDomainName"></a>
 
 ```typescript
 public readonly bucketDualStackDomainName: string;
@@ -1059,7 +1059,7 @@ The IPv6 DNS name of the specified bucket.
 
 ---
 
-##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketName"></a>
+##### `bucketName`<sup>Required</sup> <a name="bucketName" id="framework.AccessLogsBucket.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -1071,7 +1071,7 @@ The name of the bucket.
 
 ---
 
-##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketRegionalDomainName"></a>
+##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="framework.AccessLogsBucket.property.bucketRegionalDomainName"></a>
 
 ```typescript
 public readonly bucketRegionalDomainName: string;
@@ -1083,7 +1083,7 @@ The regional domain name of the specified bucket.
 
 ---
 
-##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketWebsiteDomainName"></a>
+##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="framework.AccessLogsBucket.property.bucketWebsiteDomainName"></a>
 
 ```typescript
 public readonly bucketWebsiteDomainName: string;
@@ -1095,7 +1095,7 @@ The Domain name of the static website.
 
 ---
 
-##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-data-solutions-framework.AccessLogsBucket.property.bucketWebsiteUrl"></a>
+##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="framework.AccessLogsBucket.property.bucketWebsiteUrl"></a>
 
 ```typescript
 public readonly bucketWebsiteUrl: string;
@@ -1107,7 +1107,7 @@ The URL of the static website.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-data-solutions-framework.AccessLogsBucket.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="framework.AccessLogsBucket.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -1119,7 +1119,7 @@ Optional KMS encryption key associated with this bucket.
 
 ---
 
-##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-data-solutions-framework.AccessLogsBucket.property.isWebsite"></a>
+##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="framework.AccessLogsBucket.property.isWebsite"></a>
 
 ```typescript
 public readonly isWebsite: boolean;
@@ -1131,7 +1131,7 @@ If this bucket has been configured for static website hosting.
 
 ---
 
-##### `policy`<sup>Optional</sup> <a name="policy" id="aws-data-solutions-framework.AccessLogsBucket.property.policy"></a>
+##### `policy`<sup>Optional</sup> <a name="policy" id="framework.AccessLogsBucket.property.policy"></a>
 
 ```typescript
 public readonly policy: BucketPolicy;
@@ -1147,9 +1147,16 @@ first call to addToResourcePolicy(s).
 ---
 
 
-### AnalyticsBucket <a name="AnalyticsBucket" id="aws-data-solutions-framework.AnalyticsBucket"></a>
+### AnalyticsBucket <a name="AnalyticsBucket" id="framework.AnalyticsBucket"></a>
 
-An Amazon S3 Bucket configured with best practices and smart defaults for Analytics: * Server side buckets encryption managed by KMS customer key * SSL communication enforcement * Access logged to an S3 bucket within a prefix matching the bucket name * All public access blocked  For custom requirements not covered, consider using {Bucket} directly.
+An Amazon S3 Bucket configured with best practices and defaults for Analytics: * Server side buckets encryption managed by KMS customer key.
+
+* SSL communication enforcement.
+* Access logged to an S3 bucket within a prefix matching the bucket name.
+* All public access blocked.
+* Two-step protection for bucket and objects deletion.
+
+For custom requirements that are not covered, use {Bucket} directly.
 
 **Usage example**
 
@@ -1160,43 +1167,51 @@ import { AnalyticsBucket} from 'aws-data-solutions-framework';
 const exampleApp = new cdk.App();
 const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
 
+// Set context value for global data removal policy (or set in cdk.json).
+stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+
+const encryptionKey = new Key(stack, 'DataKey', {
+removalPolicy: RemovalPolicy.DESTROY,
+enableKeyRotation: true,
+});
+
 new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
+encryptionKey,
 removalPolicy: cdk.RemovalPolicy.DESTROY,
-autoDeleteObjects: true,
 });
 ```
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.AnalyticsBucket.Initializer"></a>
+#### Initializers <a name="Initializers" id="framework.AnalyticsBucket.Initializer"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
-new AnalyticsBucket(scope: Construct, id: string, props?: BucketProps)
+new AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucketProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
+| <code><a href="#framework.AnalyticsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#framework.AnalyticsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#framework.AnalyticsBucket.Initializer.parameter.props">props</a></code> | <code><a href="#framework.AnalyticsBucketProps">AnalyticsBucketProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AnalyticsBucket.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="framework.AnalyticsBucket.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-data-solutions-framework.AnalyticsBucket.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="framework.AnalyticsBucket.Initializer.parameter.props"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.BucketProps
+- *Type:* <a href="#framework.AnalyticsBucketProps">AnalyticsBucketProps</a>
 
 ---
 
@@ -1204,36 +1219,36 @@ new AnalyticsBucket(scope: Construct, id: string, props?: BucketProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
+| <code><a href="#framework.AnalyticsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#framework.AnalyticsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
+| <code><a href="#framework.AnalyticsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
+| <code><a href="#framework.AnalyticsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
+| <code><a href="#framework.AnalyticsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
+| <code><a href="#framework.AnalyticsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
+| <code><a href="#framework.AnalyticsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
+| <code><a href="#framework.AnalyticsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
+| <code><a href="#framework.AnalyticsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
+| <code><a href="#framework.AnalyticsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
+| <code><a href="#framework.AnalyticsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
+| <code><a href="#framework.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
+| <code><a href="#framework.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#framework.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#framework.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
+| <code><a href="#framework.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
+| <code><a href="#framework.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
+| <code><a href="#framework.AnalyticsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
+| <code><a href="#framework.AnalyticsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
+| <code><a href="#framework.AnalyticsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
+| <code><a href="#framework.AnalyticsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
+| <code><a href="#framework.AnalyticsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
+| <code><a href="#framework.AnalyticsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
+| <code><a href="#framework.AnalyticsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
+| <code><a href="#framework.AnalyticsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
+| <code><a href="#framework.AnalyticsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.AnalyticsBucket.toString"></a>
+##### `toString` <a name="toString" id="framework.AnalyticsBucket.toString"></a>
 
 ```typescript
 public toString(): string
@@ -1241,7 +1256,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-data-solutions-framework.AnalyticsBucket.applyRemovalPolicy"></a>
+##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="framework.AnalyticsBucket.applyRemovalPolicy"></a>
 
 ```typescript
 public applyRemovalPolicy(policy: RemovalPolicy): void
@@ -1257,13 +1272,13 @@ to be replaced.
 The resource can be deleted (`RemovalPolicy.DESTROY`), or left in your AWS
 account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-data-solutions-framework.AnalyticsBucket.applyRemovalPolicy.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="framework.AnalyticsBucket.applyRemovalPolicy.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
-##### `addEventNotification` <a name="addEventNotification" id="aws-data-solutions-framework.AnalyticsBucket.addEventNotification"></a>
+##### `addEventNotification` <a name="addEventNotification" id="framework.AnalyticsBucket.addEventNotification"></a>
 
 ```typescript
 public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1282,7 +1297,7 @@ Adds a bucket notification event destination.
 ```
 
 
-###### `event`<sup>Required</sup> <a name="event" id="aws-data-solutions-framework.AnalyticsBucket.addEventNotification.parameter.event"></a>
+###### `event`<sup>Required</sup> <a name="event" id="framework.AnalyticsBucket.addEventNotification.parameter.event"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.EventType
 
@@ -1290,7 +1305,7 @@ The event to trigger the notification.
 
 ---
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.AnalyticsBucket.addEventNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="framework.AnalyticsBucket.addEventNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1298,7 +1313,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.AnalyticsBucket.addEventNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="framework.AnalyticsBucket.addEventNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1310,7 +1325,7 @@ for details about allowed filter rules.
 
 ---
 
-##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-data-solutions-framework.AnalyticsBucket.addObjectCreatedNotification"></a>
+##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="framework.AnalyticsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
 public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1321,7 +1336,7 @@ Subscribes a destination to receive notifications when an object is created in t
 This is identical to calling
 `onEvent(EventType.OBJECT_CREATED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.AnalyticsBucket.addObjectCreatedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="framework.AnalyticsBucket.addObjectCreatedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1329,7 +1344,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="framework.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1337,7 +1352,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-data-solutions-framework.AnalyticsBucket.addObjectRemovedNotification"></a>
+##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="framework.AnalyticsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
 public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1348,7 +1363,7 @@ Subscribes a destination to receive notifications when an object is removed from
 This is identical to calling
 `onEvent(EventType.OBJECT_REMOVED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.AnalyticsBucket.addObjectRemovedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="framework.AnalyticsBucket.addObjectRemovedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1356,7 +1371,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="framework.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1364,7 +1379,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-data-solutions-framework.AnalyticsBucket.addToResourcePolicy"></a>
+##### `addToResourcePolicy` <a name="addToResourcePolicy" id="framework.AnalyticsBucket.addToResourcePolicy"></a>
 
 ```typescript
 public addToResourcePolicy(permission: PolicyStatement): AddToResourcePolicyResult
@@ -1378,7 +1393,7 @@ it's not possible to tell whether the bucket already has a policy
 attached, let alone to re-use that policy to add more statements to it.
 So it's safest to do nothing in these cases.
 
-###### `permission`<sup>Required</sup> <a name="permission" id="aws-data-solutions-framework.AnalyticsBucket.addToResourcePolicy.parameter.permission"></a>
+###### `permission`<sup>Required</sup> <a name="permission" id="framework.AnalyticsBucket.addToResourcePolicy.parameter.permission"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
@@ -1386,7 +1401,7 @@ the policy statement to be added to the bucket's policy.
 
 ---
 
-##### `arnForObjects` <a name="arnForObjects" id="aws-data-solutions-framework.AnalyticsBucket.arnForObjects"></a>
+##### `arnForObjects` <a name="arnForObjects" id="framework.AnalyticsBucket.arnForObjects"></a>
 
 ```typescript
 public arnForObjects(keyPattern: string): string
@@ -1400,13 +1415,13 @@ If you need to specify a keyPattern with multiple components, concatenate them i
 
   arnForObjects(`home/${team}/${user}/*`)
 
-###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-data-solutions-framework.AnalyticsBucket.arnForObjects.parameter.keyPattern"></a>
+###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="framework.AnalyticsBucket.arnForObjects.parameter.keyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-data-solutions-framework.AnalyticsBucket.enableEventBridgeNotification"></a>
+##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="framework.AnalyticsBucket.enableEventBridgeNotification"></a>
 
 ```typescript
 public enableEventBridgeNotification(): void
@@ -1425,7 +1440,7 @@ Object Deleted (DeleteObject)
 - Object Tags Added
 - Object Tags Deleted
 
-##### `grantDelete` <a name="grantDelete" id="aws-data-solutions-framework.AnalyticsBucket.grantDelete"></a>
+##### `grantDelete` <a name="grantDelete" id="framework.AnalyticsBucket.grantDelete"></a>
 
 ```typescript
 public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1433,7 +1448,7 @@ public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
 
 Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AnalyticsBucket.grantDelete.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AnalyticsBucket.grantDelete.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1441,7 +1456,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AnalyticsBucket.grantDelete.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AnalyticsBucket.grantDelete.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1449,7 +1464,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-data-solutions-framework.AnalyticsBucket.grantPublicAccess"></a>
+##### `grantPublicAccess` <a name="grantPublicAccess" id="framework.AnalyticsBucket.grantPublicAccess"></a>
 
 ```typescript
 public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
@@ -1476,7 +1491,7 @@ Note that if this `IBucket` refers to an existing bucket, possibly not
 managed by CloudFormation, this method will have no effect, since it's
 impossible to modify the policy of an existing bucket.
 
-###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-data-solutions-framework.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
+###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="framework.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
 - *Type:* string
 
@@ -1486,7 +1501,7 @@ Default is "s3:GetObject".
 
 ---
 
-###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-data-solutions-framework.AnalyticsBucket.grantPublicAccess.parameter.keyPrefix"></a>
+###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="framework.AnalyticsBucket.grantPublicAccess.parameter.keyPrefix"></a>
 
 - *Type:* string
 
@@ -1494,7 +1509,7 @@ the prefix of S3 object keys (e.g. `home/*`). Default is "*".
 
 ---
 
-##### `grantPut` <a name="grantPut" id="aws-data-solutions-framework.AnalyticsBucket.grantPut"></a>
+##### `grantPut` <a name="grantPut" id="framework.AnalyticsBucket.grantPut"></a>
 
 ```typescript
 public grantPut(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1505,7 +1520,7 @@ Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM princip
 If encryption is used, permission to use the key to encrypt the contents
 of written files will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AnalyticsBucket.grantPut.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AnalyticsBucket.grantPut.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1513,7 +1528,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AnalyticsBucket.grantPut.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AnalyticsBucket.grantPut.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1521,7 +1536,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPutAcl` <a name="grantPutAcl" id="aws-data-solutions-framework.AnalyticsBucket.grantPutAcl"></a>
+##### `grantPutAcl` <a name="grantPutAcl" id="framework.AnalyticsBucket.grantPutAcl"></a>
 
 ```typescript
 public grantPutAcl(identity: IGrantable, objectsKeyPattern?: string): Grant
@@ -1533,19 +1548,19 @@ If your application has the '@aws-cdk/aws-s3:grantWriteWithoutAcl' feature flag 
 calling `grantWrite` or `grantReadWrite` no longer grants permissions to modify the ACLs of the objects;
 in this case, if you need to modify object ACLs, call this method explicitly.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AnalyticsBucket.grantPutAcl.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AnalyticsBucket.grantPutAcl.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AnalyticsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AnalyticsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `grantRead` <a name="grantRead" id="aws-data-solutions-framework.AnalyticsBucket.grantRead"></a>
+##### `grantRead` <a name="grantRead" id="framework.AnalyticsBucket.grantRead"></a>
 
 ```typescript
 public grantRead(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1556,7 +1571,7 @@ Grant read permissions for this bucket and it's contents to an IAM principal (Ro
 If encryption is used, permission to use the key to decrypt the contents
 of the bucket will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AnalyticsBucket.grantRead.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AnalyticsBucket.grantRead.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1564,7 +1579,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AnalyticsBucket.grantRead.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AnalyticsBucket.grantRead.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1572,7 +1587,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantReadWrite` <a name="grantReadWrite" id="aws-data-solutions-framework.AnalyticsBucket.grantReadWrite"></a>
+##### `grantReadWrite` <a name="grantReadWrite" id="framework.AnalyticsBucket.grantReadWrite"></a>
 
 ```typescript
 public grantReadWrite(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1591,19 +1606,19 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AnalyticsBucket.grantReadWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AnalyticsBucket.grantReadWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-##### `grantWrite` <a name="grantWrite" id="aws-data-solutions-framework.AnalyticsBucket.grantWrite"></a>
+##### `grantWrite` <a name="grantWrite" id="framework.AnalyticsBucket.grantWrite"></a>
 
 ```typescript
 public grantWrite(identity: IGrantable, objectsKeyPattern?: any, allowedActionPatterns?: string[]): Grant
@@ -1622,25 +1637,25 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.AnalyticsBucket.grantWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="framework.AnalyticsBucket.grantWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.AnalyticsBucket.grantWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="framework.AnalyticsBucket.grantWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-data-solutions-framework.AnalyticsBucket.grantWrite.parameter.allowedActionPatterns"></a>
+###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="framework.AnalyticsBucket.grantWrite.parameter.allowedActionPatterns"></a>
 
 - *Type:* string[]
 
 ---
 
-##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailEvent"></a>
+##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="framework.AnalyticsBucket.onCloudTrailEvent"></a>
 
 ```typescript
 public onCloudTrailEvent(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1651,7 +1666,7 @@ Define a CloudWatch event that triggers when something happens to this repositor
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailEvent.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.onCloudTrailEvent.parameter.id"></a>
 
 - *Type:* string
 
@@ -1659,7 +1674,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailEvent.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AnalyticsBucket.onCloudTrailEvent.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1667,7 +1682,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailPutObject"></a>
+##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="framework.AnalyticsBucket.onCloudTrailPutObject"></a>
 
 ```typescript
 public onCloudTrailPutObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1682,7 +1697,7 @@ so using `onCloudTrailWriteObject` may be preferable.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailPutObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.onCloudTrailPutObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -1690,7 +1705,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailPutObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AnalyticsBucket.onCloudTrailPutObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1698,7 +1713,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailWriteObject"></a>
+##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="framework.AnalyticsBucket.onCloudTrailWriteObject"></a>
 
 ```typescript
 public onCloudTrailWriteObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1716,7 +1731,7 @@ so using this method may be preferable to `onCloudTrailPutObject`.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailWriteObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.onCloudTrailWriteObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -1724,7 +1739,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AnalyticsBucket.onCloudTrailWriteObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AnalyticsBucket.onCloudTrailWriteObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1732,7 +1747,7 @@ Options for adding the rule.
 
 ---
 
-##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-data-solutions-framework.AnalyticsBucket.s3UrlForObject"></a>
+##### `s3UrlForObject` <a name="s3UrlForObject" id="framework.AnalyticsBucket.s3UrlForObject"></a>
 
 ```typescript
 public s3UrlForObject(key?: string): string
@@ -1743,7 +1758,7 @@ The S3 URL of an S3 object. For example:.
 `s3://onlybucket`
 - `s3://bucket/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AnalyticsBucket.s3UrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AnalyticsBucket.s3UrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1754,7 +1769,7 @@ bucket is returned.
 
 ---
 
-##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-data-solutions-framework.AnalyticsBucket.transferAccelerationUrlForObject"></a>
+##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="framework.AnalyticsBucket.transferAccelerationUrlForObject"></a>
 
 ```typescript
 public transferAccelerationUrlForObject(key?: string, options?: TransferAccelerationUrlOptions): string
@@ -1768,7 +1783,7 @@ for dual-stack endpoint (connect to the bucket over IPv6). For example:
 - `https://bucket.s3-accelerate.amazonaws.com`
 - `https://bucket.s3-accelerate.amazonaws.com/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AnalyticsBucket.transferAccelerationUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AnalyticsBucket.transferAccelerationUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1779,7 +1794,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AnalyticsBucket.transferAccelerationUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AnalyticsBucket.transferAccelerationUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.TransferAccelerationUrlOptions
 
@@ -1787,7 +1802,7 @@ Options for generating URL.
 
 ---
 
-##### `urlForObject` <a name="urlForObject" id="aws-data-solutions-framework.AnalyticsBucket.urlForObject"></a>
+##### `urlForObject` <a name="urlForObject" id="framework.AnalyticsBucket.urlForObject"></a>
 
 ```typescript
 public urlForObject(key?: string): string
@@ -1799,7 +1814,7 @@ The https URL of an S3 object. Specify `regional: false` at the options for non-
 - `https://s3.us-west-1.amazonaws.com/bucket/key`
 - `https://s3.cn-north-1.amazonaws.com.cn/china-bucket/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AnalyticsBucket.urlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AnalyticsBucket.urlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1810,7 +1825,7 @@ bucket is returned.
 
 ---
 
-##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-data-solutions-framework.AnalyticsBucket.virtualHostedUrlForObject"></a>
+##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="framework.AnalyticsBucket.virtualHostedUrlForObject"></a>
 
 ```typescript
 public virtualHostedUrlForObject(key?: string, options?: VirtualHostedStyleUrlOptions): string
@@ -1823,7 +1838,7 @@ The virtual hosted-style URL of an S3 object. Specify `regional: false` at the o
 - `https://bucket.s3.amazonaws.com/key`
 - `https://china-bucket.s3.cn-north-1.amazonaws.com.cn/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.AnalyticsBucket.virtualHostedUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="framework.AnalyticsBucket.virtualHostedUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1834,7 +1849,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.AnalyticsBucket.virtualHostedUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="framework.AnalyticsBucket.virtualHostedUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.VirtualHostedStyleUrlOptions
 
@@ -1842,7 +1857,7 @@ Options for generating URL.
 
 ---
 
-##### `addCorsRule` <a name="addCorsRule" id="aws-data-solutions-framework.AnalyticsBucket.addCorsRule"></a>
+##### `addCorsRule` <a name="addCorsRule" id="framework.AnalyticsBucket.addCorsRule"></a>
 
 ```typescript
 public addCorsRule(rule: CorsRule): void
@@ -1850,7 +1865,7 @@ public addCorsRule(rule: CorsRule): void
 
 Adds a cross-origin access configuration for objects in an Amazon S3 bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.AnalyticsBucket.addCorsRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="framework.AnalyticsBucket.addCorsRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CorsRule
 
@@ -1858,7 +1873,7 @@ The CORS configuration rule to add.
 
 ---
 
-##### `addInventory` <a name="addInventory" id="aws-data-solutions-framework.AnalyticsBucket.addInventory"></a>
+##### `addInventory` <a name="addInventory" id="framework.AnalyticsBucket.addInventory"></a>
 
 ```typescript
 public addInventory(inventory: Inventory): void
@@ -1866,7 +1881,7 @@ public addInventory(inventory: Inventory): void
 
 Add an inventory configuration.
 
-###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-data-solutions-framework.AnalyticsBucket.addInventory.parameter.inventory"></a>
+###### `inventory`<sup>Required</sup> <a name="inventory" id="framework.AnalyticsBucket.addInventory.parameter.inventory"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.Inventory
 
@@ -1874,7 +1889,7 @@ configuration to add.
 
 ---
 
-##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-data-solutions-framework.AnalyticsBucket.addLifecycleRule"></a>
+##### `addLifecycleRule` <a name="addLifecycleRule" id="framework.AnalyticsBucket.addLifecycleRule"></a>
 
 ```typescript
 public addLifecycleRule(rule: LifecycleRule): void
@@ -1882,7 +1897,7 @@ public addLifecycleRule(rule: LifecycleRule): void
 
 Add a lifecycle rule to the bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.AnalyticsBucket.addLifecycleRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="framework.AnalyticsBucket.addLifecycleRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.LifecycleRule
 
@@ -1890,7 +1905,7 @@ The rule to add.
 
 ---
 
-##### `addMetric` <a name="addMetric" id="aws-data-solutions-framework.AnalyticsBucket.addMetric"></a>
+##### `addMetric` <a name="addMetric" id="framework.AnalyticsBucket.addMetric"></a>
 
 ```typescript
 public addMetric(metric: BucketMetrics): void
@@ -1898,7 +1913,7 @@ public addMetric(metric: BucketMetrics): void
 
 Adds a metrics configuration for the CloudWatch request metrics from the bucket.
 
-###### `metric`<sup>Required</sup> <a name="metric" id="aws-data-solutions-framework.AnalyticsBucket.addMetric.parameter.metric"></a>
+###### `metric`<sup>Required</sup> <a name="metric" id="framework.AnalyticsBucket.addMetric.parameter.metric"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketMetrics
 
@@ -1910,21 +1925,21 @@ The metric configuration to add.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
+| <code><a href="#framework.AnalyticsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#framework.AnalyticsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
+| <code><a href="#framework.AnalyticsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
+| <code><a href="#framework.AnalyticsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
+| <code><a href="#framework.AnalyticsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
+| <code><a href="#framework.AnalyticsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
+| <code><a href="#framework.AnalyticsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
+| <code><a href="#framework.AnalyticsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.AnalyticsBucket.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="framework.AnalyticsBucket.isConstruct"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.isConstruct(x: any)
 ```
@@ -1945,7 +1960,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.AnalyticsBucket.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="framework.AnalyticsBucket.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -1953,75 +1968,75 @@ Any object.
 
 ---
 
-##### `isOwnedResource` <a name="isOwnedResource" id="aws-data-solutions-framework.AnalyticsBucket.isOwnedResource"></a>
+##### `isOwnedResource` <a name="isOwnedResource" id="framework.AnalyticsBucket.isOwnedResource"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.isOwnedResource(construct: IConstruct)
 ```
 
 Returns true if the construct was created by CDK, and false otherwise.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.AnalyticsBucket.isOwnedResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="framework.AnalyticsBucket.isOwnedResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `isResource` <a name="isResource" id="aws-data-solutions-framework.AnalyticsBucket.isResource"></a>
+##### `isResource` <a name="isResource" id="framework.AnalyticsBucket.isResource"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.isResource(construct: IConstruct)
 ```
 
 Check whether the given construct is a Resource.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.AnalyticsBucket.isResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="framework.AnalyticsBucket.isResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `fromBucketArn` <a name="fromBucketArn" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketArn"></a>
+##### `fromBucketArn` <a name="fromBucketArn" id="framework.AnalyticsBucket.fromBucketArn"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.AnalyticsBucket.fromBucketArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.fromBucketArn.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketArn.parameter.bucketArn"></a>
+###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="framework.AnalyticsBucket.fromBucketArn.parameter.bucketArn"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketAttributes"></a>
+##### `fromBucketAttributes` <a name="fromBucketAttributes" id="framework.AnalyticsBucket.fromBucketAttributes"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
 ```
 
 Creates a Bucket construct that represents an external bucket.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketAttributes.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.AnalyticsBucket.fromBucketAttributes.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2029,7 +2044,7 @@ The parent creating construct (usually `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketAttributes.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.fromBucketAttributes.parameter.id"></a>
 
 - *Type:* string
 
@@ -2037,7 +2052,7 @@ The construct's name.
 
 ---
 
-###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketAttributes.parameter.attrs"></a>
+###### `attrs`<sup>Required</sup> <a name="attrs" id="framework.AnalyticsBucket.fromBucketAttributes.parameter.attrs"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketAttributes
 
@@ -2048,59 +2063,59 @@ Can be obtained from a call to
 
 ---
 
-##### `fromBucketName` <a name="fromBucketName" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketName"></a>
+##### `fromBucketName` <a name="fromBucketName" id="framework.AnalyticsBucket.fromBucketName"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.AnalyticsBucket.fromBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="framework.AnalyticsBucket.fromBucketName.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.AnalyticsBucket.fromBucketName.parameter.bucketName"></a>
+###### `bucketName`<sup>Required</sup> <a name="bucketName" id="framework.AnalyticsBucket.fromBucketName.parameter.bucketName"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-data-solutions-framework.AnalyticsBucket.fromCfnBucket"></a>
+##### `fromCfnBucket` <a name="fromCfnBucket" id="framework.AnalyticsBucket.fromCfnBucket"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.fromCfnBucket(cfnBucket: CfnBucket)
 ```
 
 Create a mutable `IBucket` based on a low-level `CfnBucket`.
 
-###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-data-solutions-framework.AnalyticsBucket.fromCfnBucket.parameter.cfnBucket"></a>
+###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="framework.AnalyticsBucket.fromCfnBucket.parameter.cfnBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CfnBucket
 
 ---
 
-##### `validateBucketName` <a name="validateBucketName" id="aws-data-solutions-framework.AnalyticsBucket.validateBucketName"></a>
+##### `validateBucketName` <a name="validateBucketName" id="framework.AnalyticsBucket.validateBucketName"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-data-solutions-framework'
+import { AnalyticsBucket } from 'framework'
 
 AnalyticsBucket.validateBucketName(physicalName: string)
 ```
 
 Thrown an exception if the given bucket name is not valid.
 
-###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-data-solutions-framework.AnalyticsBucket.validateBucketName.parameter.physicalName"></a>
+###### `physicalName`<sup>Required</sup> <a name="physicalName" id="framework.AnalyticsBucket.validateBucketName.parameter.physicalName"></a>
 
 - *Type:* string
 
@@ -2112,23 +2127,23 @@ name of the bucket.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
-| <code><a href="#aws-data-solutions-framework.AnalyticsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#framework.AnalyticsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#framework.AnalyticsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
+| <code><a href="#framework.AnalyticsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
+| <code><a href="#framework.AnalyticsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
+| <code><a href="#framework.AnalyticsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
+| <code><a href="#framework.AnalyticsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.AnalyticsBucket.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="framework.AnalyticsBucket.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2140,7 +2155,7 @@ The tree node.
 
 ---
 
-##### `env`<sup>Required</sup> <a name="env" id="aws-data-solutions-framework.AnalyticsBucket.property.env"></a>
+##### `env`<sup>Required</sup> <a name="env" id="framework.AnalyticsBucket.property.env"></a>
 
 ```typescript
 public readonly env: ResourceEnvironment;
@@ -2159,7 +2174,7 @@ that might be different than the stack they were imported into.
 
 ---
 
-##### `stack`<sup>Required</sup> <a name="stack" id="aws-data-solutions-framework.AnalyticsBucket.property.stack"></a>
+##### `stack`<sup>Required</sup> <a name="stack" id="framework.AnalyticsBucket.property.stack"></a>
 
 ```typescript
 public readonly stack: Stack;
@@ -2171,7 +2186,7 @@ The stack in which this resource is defined.
 
 ---
 
-##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketArn"></a>
+##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="framework.AnalyticsBucket.property.bucketArn"></a>
 
 ```typescript
 public readonly bucketArn: string;
@@ -2183,7 +2198,7 @@ The ARN of the bucket.
 
 ---
 
-##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketDomainName"></a>
+##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="framework.AnalyticsBucket.property.bucketDomainName"></a>
 
 ```typescript
 public readonly bucketDomainName: string;
@@ -2195,7 +2210,7 @@ The IPv4 DNS name of the specified bucket.
 
 ---
 
-##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketDualStackDomainName"></a>
+##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="framework.AnalyticsBucket.property.bucketDualStackDomainName"></a>
 
 ```typescript
 public readonly bucketDualStackDomainName: string;
@@ -2207,7 +2222,7 @@ The IPv6 DNS name of the specified bucket.
 
 ---
 
-##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketName"></a>
+##### `bucketName`<sup>Required</sup> <a name="bucketName" id="framework.AnalyticsBucket.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -2219,7 +2234,7 @@ The name of the bucket.
 
 ---
 
-##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketRegionalDomainName"></a>
+##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="framework.AnalyticsBucket.property.bucketRegionalDomainName"></a>
 
 ```typescript
 public readonly bucketRegionalDomainName: string;
@@ -2231,7 +2246,7 @@ The regional domain name of the specified bucket.
 
 ---
 
-##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketWebsiteDomainName"></a>
+##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="framework.AnalyticsBucket.property.bucketWebsiteDomainName"></a>
 
 ```typescript
 public readonly bucketWebsiteDomainName: string;
@@ -2243,7 +2258,7 @@ The Domain name of the static website.
 
 ---
 
-##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-data-solutions-framework.AnalyticsBucket.property.bucketWebsiteUrl"></a>
+##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="framework.AnalyticsBucket.property.bucketWebsiteUrl"></a>
 
 ```typescript
 public readonly bucketWebsiteUrl: string;
@@ -2255,7 +2270,7 @@ The URL of the static website.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-data-solutions-framework.AnalyticsBucket.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="framework.AnalyticsBucket.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -2267,7 +2282,7 @@ Optional KMS encryption key associated with this bucket.
 
 ---
 
-##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-data-solutions-framework.AnalyticsBucket.property.isWebsite"></a>
+##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="framework.AnalyticsBucket.property.isWebsite"></a>
 
 ```typescript
 public readonly isWebsite: boolean;
@@ -2279,7 +2294,7 @@ If this bucket has been configured for static website hosting.
 
 ---
 
-##### `policy`<sup>Optional</sup> <a name="policy" id="aws-data-solutions-framework.AnalyticsBucket.property.policy"></a>
+##### `policy`<sup>Optional</sup> <a name="policy" id="framework.AnalyticsBucket.property.policy"></a>
 
 ```typescript
 public readonly policy: BucketPolicy;
@@ -2848,6 +2863,9 @@ import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
 const exampleApp = new cdk.App();
 const stack = new cdk.Stack(exampleApp, 'DataLakeStorageStack');
 
+// Set context value for global data removal policy (or set in cdk.json).
+stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+
 new DataLakeStorage(stack, 'MyDataLakeStorage', {
  bronzeName: 'my-bronze',
  bronzeInfrequentAccessDelay: 90,
@@ -2863,23 +2881,23 @@ new DataLakeStorage(stack, 'MyDataLakeStorage', {
 });
 ```
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.DataLakeStorage.Initializer"></a>
+#### Initializers <a name="Initializers" id="framework.DataLakeStorage.Initializer"></a>
 
 ```typescript
-import { DataLakeStorage } from 'aws-data-solutions-framework'
+import { DataLakeStorage } from 'framework'
 
 new DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-data-solutions-framework.DataLakeStorageProps">DataLakeStorageProps</a></code> | the DataLakeStorageProps properties. |
+| <code><a href="#framework.DataLakeStorage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#framework.DataLakeStorage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#framework.DataLakeStorage.Initializer.parameter.props">props</a></code> | <code><a href="#framework.DataLakeStorageProps">DataLakeStorageProps</a></code> | the DataLakeStorageProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.DataLakeStorage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="framework.DataLakeStorage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2887,7 +2905,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.DataLakeStorage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="framework.DataLakeStorage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -2895,9 +2913,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-data-solutions-framework.DataLakeStorage.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="framework.DataLakeStorage.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-data-solutions-framework.DataLakeStorageProps">DataLakeStorageProps</a>
+- *Type:* <a href="#framework.DataLakeStorageProps">DataLakeStorageProps</a>
 
 the DataLakeCatalog properties.
 
@@ -2907,11 +2925,11 @@ the DataLakeCatalog properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#framework.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.DataLakeStorage.toString"></a>
+##### `toString` <a name="toString" id="framework.DataLakeStorage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2923,14 +2941,14 @@ Returns a string representation of this construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#framework.DataLakeStorage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.DataLakeStorage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="framework.DataLakeStorage.isConstruct"></a>
 
 ```typescript
-import { DataLakeStorage } from 'aws-data-solutions-framework'
+import { DataLakeStorage } from 'framework'
 
 DataLakeStorage.isConstruct(x: any)
 ```
@@ -2951,7 +2969,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.DataLakeStorage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="framework.DataLakeStorage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2963,16 +2981,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code><a href="#aws-data-solutions-framework.AccessLogsBucket">AccessLogsBucket</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code><a href="#aws-data-solutions-framework.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code><a href="#aws-data-solutions-framework.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code><a href="#aws-data-solutions-framework.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
+| <code><a href="#framework.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#framework.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code><a href="#framework.AccessLogsBucket">AccessLogsBucket</a></code> | *No description.* |
+| <code><a href="#framework.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code><a href="#framework.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
+| <code><a href="#framework.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | *No description.* |
+| <code><a href="#framework.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code><a href="#framework.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
+| <code><a href="#framework.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code><a href="#framework.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.DataLakeStorage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="framework.DataLakeStorage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2984,27 +3002,27 @@ The tree node.
 
 ---
 
-##### `accessLogsBucket`<sup>Required</sup> <a name="accessLogsBucket" id="aws-data-solutions-framework.DataLakeStorage.property.accessLogsBucket"></a>
+##### `accessLogsBucket`<sup>Required</sup> <a name="accessLogsBucket" id="framework.DataLakeStorage.property.accessLogsBucket"></a>
 
 ```typescript
 public readonly accessLogsBucket: AccessLogsBucket;
 ```
 
-- *Type:* <a href="#aws-data-solutions-framework.AccessLogsBucket">AccessLogsBucket</a>
+- *Type:* <a href="#framework.AccessLogsBucket">AccessLogsBucket</a>
 
 ---
 
-##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="aws-data-solutions-framework.DataLakeStorage.property.bronzeBucket"></a>
+##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="framework.DataLakeStorage.property.bronzeBucket"></a>
 
 ```typescript
 public readonly bronzeBucket: AnalyticsBucket;
 ```
 
-- *Type:* <a href="#aws-data-solutions-framework.AnalyticsBucket">AnalyticsBucket</a>
+- *Type:* <a href="#framework.AnalyticsBucket">AnalyticsBucket</a>
 
 ---
 
-##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="aws-data-solutions-framework.DataLakeStorage.property.dataLakeKey"></a>
+##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="framework.DataLakeStorage.property.dataLakeKey"></a>
 
 ```typescript
 public readonly dataLakeKey: Key;
@@ -3014,17 +3032,17 @@ public readonly dataLakeKey: Key;
 
 ---
 
-##### `goldBucket`<sup>Required</sup> <a name="goldBucket" id="aws-data-solutions-framework.DataLakeStorage.property.goldBucket"></a>
+##### `goldBucket`<sup>Required</sup> <a name="goldBucket" id="framework.DataLakeStorage.property.goldBucket"></a>
 
 ```typescript
 public readonly goldBucket: AnalyticsBucket;
 ```
 
-- *Type:* <a href="#aws-data-solutions-framework.AnalyticsBucket">AnalyticsBucket</a>
+- *Type:* <a href="#framework.AnalyticsBucket">AnalyticsBucket</a>
 
 ---
 
-##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="aws-data-solutions-framework.DataLakeStorage.property.silverBucket"></a>
+##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="framework.DataLakeStorage.property.silverBucket"></a>
 
 ```typescript
 public readonly silverBucket: AnalyticsBucket;
@@ -3558,14 +3576,488 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### DataLakeStorageProps <a name="DataLakeStorageProps" id="aws-data-solutions-framework.DataLakeStorageProps"></a>
+### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="framework.AnalyticsBucketProps"></a>
+
+Properties of the {@link AnalyticsBucket } construct.
+
+#### Initializer <a name="Initializer" id="framework.AnalyticsBucketProps.Initializer"></a>
+
+```typescript
+import { AnalyticsBucketProps } from 'framework'
+
+const analyticsBucketProps: AnalyticsBucketProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS key to use for bucket encryption. |
+| <code><a href="#framework.AnalyticsBucketProps.property.accessControl">accessControl</a></code> | <code>aws-cdk-lib.aws_s3.BucketAccessControl</code> | Specifies a canned ACL that grants predefined permissions to the bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted. |
+| <code><a href="#framework.AnalyticsBucketProps.property.blockPublicAccess">blockPublicAccess</a></code> | <code>aws-cdk-lib.aws_s3.BlockPublicAccess</code> | The block public access configuration of this bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.bucketKeyEnabled">bucketKeyEnabled</a></code> | <code>boolean</code> | Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption. |
+| <code><a href="#framework.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | Physical name of this bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.cors">cors</a></code> | <code>aws-cdk-lib.aws_s3.CorsRule[]</code> | The CORS configuration of this bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.enforceSSL">enforceSSL</a></code> | <code>boolean</code> | Enforces SSL for requests. |
+| <code><a href="#framework.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this bucket should send notifications to Amazon EventBridge or not. |
+| <code><a href="#framework.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Inteligent Tiering Configurations. |
+| <code><a href="#framework.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.lifecycleRules">lifecycleRules</a></code> | <code>aws-cdk-lib.aws_s3.LifecycleRule[]</code> | Rules that define how Amazon S3 manages objects during their lifetime. |
+| <code><a href="#framework.AnalyticsBucketProps.property.metrics">metrics</a></code> | <code>aws-cdk-lib.aws_s3.BucketMetrics[]</code> | The metrics configuration of this bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role to be used by the notifications handler. |
+| <code><a href="#framework.AnalyticsBucketProps.property.objectLockDefaultRetention">objectLockDefaultRetention</a></code> | <code>aws-cdk-lib.aws_s3.ObjectLockRetention</code> | The default retention mode and rules for S3 Object Lock. |
+| <code><a href="#framework.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the bucket. |
+| <code><a href="#framework.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#framework.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Destination bucket for the server access logs. |
+| <code><a href="#framework.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the bucket's access logs. |
+| <code><a href="#framework.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this bucket should have transfer acceleration turned on or not. |
+| <code><a href="#framework.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this bucket should have versioning turned on or not. |
+
+---
+
+##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="framework.AnalyticsBucketProps.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* If `encryption` is set to `KMS` and this property is undefined, a new KMS key will be created and associated with this bucket.
+
+External KMS key to use for bucket encryption.
+
+The `encryption` property must be either not specified or set to `KMS` or `DSSE`.
+An error will be emitted if `encryption` is set to `UNENCRYPTED` or `S3_MANAGED`.
+
+---
+
+##### `accessControl`<sup>Optional</sup> <a name="accessControl" id="framework.AnalyticsBucketProps.property.accessControl"></a>
+
+```typescript
+public readonly accessControl: BucketAccessControl;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.BucketAccessControl
+- *Default:* BucketAccessControl.PRIVATE
+
+Specifies a canned ACL that grants predefined permissions to the bucket.
+
+---
+
+##### `autoDeleteObjects`<sup>Optional</sup> <a name="autoDeleteObjects" id="framework.AnalyticsBucketProps.property.autoDeleteObjects"></a>
+
+```typescript
+public readonly autoDeleteObjects: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted.
+
+Requires the `removalPolicy` to be set to `RemovalPolicy.DESTROY`.
+
+**Warning** if you have deployed a bucket with `autoDeleteObjects: true`,
+switching this to `false` in a CDK version *before* `1.126.0` will lead to
+all objects in the bucket being deleted. Be sure to update your bucket resources
+by deploying with CDK version `1.126.0` or later **before** switching this value to `false`.
+
+---
+
+##### `blockPublicAccess`<sup>Optional</sup> <a name="blockPublicAccess" id="framework.AnalyticsBucketProps.property.blockPublicAccess"></a>
+
+```typescript
+public readonly blockPublicAccess: BlockPublicAccess;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.BlockPublicAccess
+- *Default:* CloudFormation defaults will apply. New buckets and objects don't allow public access, but users can modify bucket policies or object permissions to allow public access
+
+The block public access configuration of this bucket.
+
+---
+
+##### `bucketKeyEnabled`<sup>Optional</sup> <a name="bucketKeyEnabled" id="framework.AnalyticsBucketProps.property.bucketKeyEnabled"></a>
+
+```typescript
+public readonly bucketKeyEnabled: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption.
+
+If not enabled, every object GET and PUT will cause an API call to KMS (with the
+  attendant cost implications of that).
+- If enabled, S3 will use its own time-limited key instead.
+
+Only relevant, when Encryption is set to `BucketEncryption.KMS` or `BucketEncryption.KMS_MANAGED`.
+
+---
+
+##### `bucketName`<sup>Optional</sup> <a name="bucketName" id="framework.AnalyticsBucketProps.property.bucketName"></a>
+
+```typescript
+public readonly bucketName: string;
+```
+
+- *Type:* string
+- *Default:* Assigned by CloudFormation (recommended).
+
+Physical name of this bucket.
+
+---
+
+##### `cors`<sup>Optional</sup> <a name="cors" id="framework.AnalyticsBucketProps.property.cors"></a>
+
+```typescript
+public readonly cors: CorsRule[];
+```
+
+- *Type:* aws-cdk-lib.aws_s3.CorsRule[]
+- *Default:* No CORS configuration.
+
+The CORS configuration of this bucket.
+
+---
+
+##### `enforceSSL`<sup>Optional</sup> <a name="enforceSSL" id="framework.AnalyticsBucketProps.property.enforceSSL"></a>
+
+```typescript
+public readonly enforceSSL: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Enforces SSL for requests.
+
+S3.5 of the AWS Foundational Security Best Practices Regarding S3.
+
+---
+
+##### `eventBridgeEnabled`<sup>Optional</sup> <a name="eventBridgeEnabled" id="framework.AnalyticsBucketProps.property.eventBridgeEnabled"></a>
+
+```typescript
+public readonly eventBridgeEnabled: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether this bucket should send notifications to Amazon EventBridge or not.
+
+---
+
+##### `intelligentTieringConfigurations`<sup>Optional</sup> <a name="intelligentTieringConfigurations" id="framework.AnalyticsBucketProps.property.intelligentTieringConfigurations"></a>
+
+```typescript
+public readonly intelligentTieringConfigurations: IntelligentTieringConfiguration[];
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]
+- *Default:* No Intelligent Tiiering Configurations.
+
+Inteligent Tiering Configurations.
+
+---
+
+##### `inventories`<sup>Optional</sup> <a name="inventories" id="framework.AnalyticsBucketProps.property.inventories"></a>
+
+```typescript
+public readonly inventories: Inventory[];
+```
+
+- *Type:* aws-cdk-lib.aws_s3.Inventory[]
+- *Default:* No inventory configuration
+
+The inventory configuration of the bucket.
+
+---
+
+##### `lifecycleRules`<sup>Optional</sup> <a name="lifecycleRules" id="framework.AnalyticsBucketProps.property.lifecycleRules"></a>
+
+```typescript
+public readonly lifecycleRules: LifecycleRule[];
+```
+
+- *Type:* aws-cdk-lib.aws_s3.LifecycleRule[]
+- *Default:* No lifecycle rules.
+
+Rules that define how Amazon S3 manages objects during their lifetime.
+
+---
+
+##### `metrics`<sup>Optional</sup> <a name="metrics" id="framework.AnalyticsBucketProps.property.metrics"></a>
+
+```typescript
+public readonly metrics: BucketMetrics[];
+```
+
+- *Type:* aws-cdk-lib.aws_s3.BucketMetrics[]
+- *Default:* No metrics configuration.
+
+The metrics configuration of this bucket.
+
+---
+
+##### `notificationsHandlerRole`<sup>Optional</sup> <a name="notificationsHandlerRole" id="framework.AnalyticsBucketProps.property.notificationsHandlerRole"></a>
+
+```typescript
+public readonly notificationsHandlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* a new role will be created.
+
+The role to be used by the notifications handler.
+
+---
+
+##### `objectLockDefaultRetention`<sup>Optional</sup> <a name="objectLockDefaultRetention" id="framework.AnalyticsBucketProps.property.objectLockDefaultRetention"></a>
+
+```typescript
+public readonly objectLockDefaultRetention: ObjectLockRetention;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.ObjectLockRetention
+- *Default:* no default retention period
+
+The default retention mode and rules for S3 Object Lock.
+
+Default retention can be configured after a bucket is created if the bucket already
+has object lock enabled. Enabling object lock for existing buckets is not supported.
+
+---
+
+##### `objectLockEnabled`<sup>Optional</sup> <a name="objectLockEnabled" id="framework.AnalyticsBucketProps.property.objectLockEnabled"></a>
+
+```typescript
+public readonly objectLockEnabled: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false, unless objectLockDefaultRetention is set (then, true)
+
+Enable object lock on the bucket.
+
+Enabling object lock for existing buckets is not supported. Object lock must be
+enabled when the bucket is created.
+
+---
+
+##### `objectOwnership`<sup>Optional</sup> <a name="objectOwnership" id="framework.AnalyticsBucketProps.property.objectOwnership"></a>
+
+```typescript
+public readonly objectOwnership: ObjectOwnership;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.ObjectOwnership
+- *Default:* No ObjectOwnership configuration, uploading account will own the object.
+
+The objectOwnership of the bucket.
+
+---
+
+##### `publicReadAccess`<sup>Optional</sup> <a name="publicReadAccess" id="framework.AnalyticsBucketProps.property.publicReadAccess"></a>
+
+```typescript
+public readonly publicReadAccess: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Grants public read access to all objects in the bucket.
+
+Similar to calling `bucket.grantPublicAccess()`
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="framework.AnalyticsBucketProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Policy to apply when the bucket is removed from this stack.
+
+* @default - RETAIN (The bucket will be orphaned).
+
+---
+
+##### `serverAccessLogsBucket`<sup>Optional</sup> <a name="serverAccessLogsBucket" id="framework.AnalyticsBucketProps.property.serverAccessLogsBucket"></a>
+
+```typescript
+public readonly serverAccessLogsBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+- *Default:* If "serverAccessLogsPrefix" undefined - access logs disabled, otherwise - log to current bucket.
+
+Destination bucket for the server access logs.
+
+---
+
+##### `serverAccessLogsPrefix`<sup>Optional</sup> <a name="serverAccessLogsPrefix" id="framework.AnalyticsBucketProps.property.serverAccessLogsPrefix"></a>
+
+```typescript
+public readonly serverAccessLogsPrefix: string;
+```
+
+- *Type:* string
+- *Default:* No log file prefix
+
+Optional log file prefix to use for the bucket's access logs.
+
+If defined without "serverAccessLogsBucket", enables access logs to current bucket with this prefix.
+
+---
+
+##### `transferAcceleration`<sup>Optional</sup> <a name="transferAcceleration" id="framework.AnalyticsBucketProps.property.transferAcceleration"></a>
+
+```typescript
+public readonly transferAcceleration: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether this bucket should have transfer acceleration turned on or not.
+
+---
+
+##### `versioned`<sup>Optional</sup> <a name="versioned" id="framework.AnalyticsBucketProps.property.versioned"></a>
+
+```typescript
+public readonly versioned: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false (unless object lock is enabled, then true)
+
+Whether this bucket should have versioning turned on or not.
+
+---
+
+### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="framework.DataCatalogDatabaseProps"></a>
+
+The Database catalog properties.
+
+#### Initializer <a name="Initializer" id="framework.DataCatalogDatabaseProps.Initializer"></a>
+
+```typescript
+import { DataCatalogDatabaseProps } from 'framework'
+
+const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
+| <code><a href="#framework.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
+| <code><a href="#framework.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
+| <code><a href="#framework.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#framework.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
+| <code><a href="#framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+
+---
+
+##### `locationBucket`<sup>Required</sup> <a name="locationBucket" id="framework.DataCatalogDatabaseProps.property.locationBucket"></a>
+
+```typescript
+public readonly locationBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+S3 bucket where data is stored.
+
+---
+
+##### `locationPrefix`<sup>Required</sup> <a name="locationPrefix" id="framework.DataCatalogDatabaseProps.property.locationPrefix"></a>
+
+```typescript
+public readonly locationPrefix: string;
+```
+
+- *Type:* string
+
+Top level location wwhere table data is stored.
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="framework.DataCatalogDatabaseProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+Database name.
+
+Construct would add a randomize suffix as part of the name to prevent name collisions.
+
+---
+
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="framework.DataCatalogDatabaseProps.property.autoCrawl"></a>
+
+```typescript
+public readonly autoCrawl: boolean;
+```
+
+- *Type:* boolean
+- *Default:* True
+
+When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
+
+---
+
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="framework.DataCatalogDatabaseProps.property.autoCrawlSchedule"></a>
+
+```typescript
+public readonly autoCrawlSchedule: ScheduleProperty;
+```
+
+- *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
+- *Default:* `cron(1 0 * * * *)`
+
+The schedule when the Crawler would run.
+
+Default is once a day at 00:01h.
+
+---
+
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* Create a new key if none is provided
+
+Encryption key used for Crawler logs.
+
+---
+
+### DataLakeStorageProps <a name="DataLakeStorageProps" id="framework.DataLakeStorageProps"></a>
 
 Properties for the DataLakeStorage Construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.DataLakeStorageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="framework.DataLakeStorageProps.Initializer"></a>
 
 ```typescript
-import { DataLakeStorageProps } from 'aws-data-solutions-framework'
+import { DataLakeStorageProps } from 'framework'
 
 const dataLakeStorageProps: DataLakeStorageProps = { ... }
 ```
@@ -3574,123 +4066,123 @@ const dataLakeStorageProps: DataLakeStorageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.bronzeArchiveDelay">bronzeArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.bronzeInfrequentAccessDelay">bronzeInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.bronzeName">bronzeName</a></code> | <code>string</code> | Name of the Bronze bucket. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt all the buckets of the DataLakeStorage. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.goldArchiveDelay">goldArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.goldInfrequentAccessDelay">goldInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.goldName">goldName</a></code> | <code>string</code> | Name of the Gold bucket. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.silverArchiveDelay">silverArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.silverInfrequentAccessDelay">silverInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-data-solutions-framework.DataLakeStorageProps.property.silverName">silverName</a></code> | <code>string</code> | Name of the Silver bucket. |
+| <code><a href="#framework.DataLakeStorageProps.property.bronzeBucketArchiveDelay">bronzeBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
+| <code><a href="#framework.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay">bronzeBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
+| <code><a href="#framework.DataLakeStorageProps.property.bronzeBucketName">bronzeBucketName</a></code> | <code>string</code> | Name of the Bronze bucket. |
+| <code><a href="#framework.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#framework.DataLakeStorageProps.property.goldBucketArchiveDelay">goldBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
+| <code><a href="#framework.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay">goldBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
+| <code><a href="#framework.DataLakeStorageProps.property.goldBucketName">goldBucketName</a></code> | <code>string</code> | Name of the Gold bucket. |
+| <code><a href="#framework.DataLakeStorageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#framework.DataLakeStorageProps.property.silverBucketArchiveDelay">silverBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class). |
+| <code><a href="#framework.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay">silverBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class). |
+| <code><a href="#framework.DataLakeStorageProps.property.silverBucketName">silverBucketName</a></code> | <code>string</code> | Name of the Silver bucket. |
 
 ---
 
-##### `bronzeArchiveDelay`<sup>Optional</sup> <a name="bronzeArchiveDelay" id="aws-data-solutions-framework.DataLakeStorageProps.property.bronzeArchiveDelay"></a>
+##### `bronzeBucketArchiveDelay`<sup>Optional</sup> <a name="bronzeBucketArchiveDelay" id="framework.DataLakeStorageProps.property.bronzeBucketArchiveDelay"></a>
 
 ```typescript
-public readonly bronzeArchiveDelay: number;
+public readonly bronzeBucketArchiveDelay: number;
 ```
 
 - *Type:* number
-- *Default:* Move objects to Glacier after 90 days
+- *Default:* Move objects to Glacier after 90 days.
 
 Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class).
 
 ---
 
-##### `bronzeInfrequentAccessDelay`<sup>Optional</sup> <a name="bronzeInfrequentAccessDelay" id="aws-data-solutions-framework.DataLakeStorageProps.property.bronzeInfrequentAccessDelay"></a>
+##### `bronzeBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="bronzeBucketInfrequentAccessDelay" id="framework.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay"></a>
 
 ```typescript
-public readonly bronzeInfrequentAccessDelay: number;
+public readonly bronzeBucketInfrequentAccessDelay: number;
 ```
 
 - *Type:* number
-- *Default:* Move objects to Infrequent Access after 30 days
+- *Default:* Move objects to Infrequent Access after 30 days.
 
 Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class).
 
 ---
 
-##### `bronzeName`<sup>Optional</sup> <a name="bronzeName" id="aws-data-solutions-framework.DataLakeStorageProps.property.bronzeName"></a>
+##### `bronzeBucketName`<sup>Optional</sup> <a name="bronzeBucketName" id="framework.DataLakeStorageProps.property.bronzeBucketName"></a>
 
 ```typescript
-public readonly bronzeName: string;
+public readonly bronzeBucketName: string;
 ```
 
 - *Type:* string
-- *Default:* `bronze` will be used
+- *Default:* `bronze` will be used.
 
 Name of the Bronze bucket.
 
-Will be appended by a unique ID.
+Will be appended by the unique ID.
 
 ---
 
-##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="aws-data-solutions-framework.DataLakeStorageProps.property.dataLakeKey"></a>
+##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="framework.DataLakeStorageProps.property.dataLakeKey"></a>
 
 ```typescript
 public readonly dataLakeKey: Key;
 ```
 
 - *Type:* aws-cdk-lib.aws_kms.Key
-- *Default:* A single KMS customer key is created
+- *Default:* A single KMS customer key is created.
 
-The KMS Key used to encrypt all the buckets of the DataLakeStorage.
+The KMS Key used to encrypt all DataLakeStorage S3 buckets.
 
 ---
 
-##### `goldArchiveDelay`<sup>Optional</sup> <a name="goldArchiveDelay" id="aws-data-solutions-framework.DataLakeStorageProps.property.goldArchiveDelay"></a>
+##### `goldBucketArchiveDelay`<sup>Optional</sup> <a name="goldBucketArchiveDelay" id="framework.DataLakeStorageProps.property.goldBucketArchiveDelay"></a>
 
 ```typescript
-public readonly goldArchiveDelay: number;
+public readonly goldBucketArchiveDelay: number;
 ```
 
 - *Type:* number
-- *Default:* Objects are not archived to Glacier
+- *Default:* Objects are not archived to Glacier.
 
 Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class).
 
 ---
 
-##### `goldInfrequentAccessDelay`<sup>Optional</sup> <a name="goldInfrequentAccessDelay" id="aws-data-solutions-framework.DataLakeStorageProps.property.goldInfrequentAccessDelay"></a>
+##### `goldBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="goldBucketInfrequentAccessDelay" id="framework.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay"></a>
 
 ```typescript
-public readonly goldInfrequentAccessDelay: number;
+public readonly goldBucketInfrequentAccessDelay: number;
 ```
 
 - *Type:* number
-- *Default:* Move objects to Infrequent Access after 90 days
+- *Default:* Move objects to Infrequent Access after 90 days.
 
 Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class).
 
 ---
 
-##### `goldName`<sup>Optional</sup> <a name="goldName" id="aws-data-solutions-framework.DataLakeStorageProps.property.goldName"></a>
+##### `goldBucketName`<sup>Optional</sup> <a name="goldBucketName" id="framework.DataLakeStorageProps.property.goldBucketName"></a>
 
 ```typescript
-public readonly goldName: string;
+public readonly goldBucketName: string;
 ```
 
 - *Type:* string
-- *Default:* `gold` will be used
+- *Default:* `gold` will be used.
 
 Name of the Gold bucket.
 
-Will be appended by a unique ID.
+Will be appended by the unique ID.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.DataLakeStorageProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="framework.DataLakeStorageProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`)
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
 The removal policy when deleting the CDK resource.
 
@@ -3699,44 +4191,377 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `silverArchiveDelay`<sup>Optional</sup> <a name="silverArchiveDelay" id="aws-data-solutions-framework.DataLakeStorageProps.property.silverArchiveDelay"></a>
+##### `silverBucketArchiveDelay`<sup>Optional</sup> <a name="silverBucketArchiveDelay" id="framework.DataLakeStorageProps.property.silverBucketArchiveDelay"></a>
 
 ```typescript
-public readonly silverArchiveDelay: number;
+public readonly silverBucketArchiveDelay: number;
 ```
 
 - *Type:* number
-- *Default:* Objects are not archived to Glacier
+- *Default:* Objects are not archived to Glacier.
 
 Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class).
 
 ---
 
-##### `silverInfrequentAccessDelay`<sup>Optional</sup> <a name="silverInfrequentAccessDelay" id="aws-data-solutions-framework.DataLakeStorageProps.property.silverInfrequentAccessDelay"></a>
+##### `silverBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="silverBucketInfrequentAccessDelay" id="framework.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay"></a>
 
 ```typescript
-public readonly silverInfrequentAccessDelay: number;
+public readonly silverBucketInfrequentAccessDelay: number;
 ```
 
 - *Type:* number
-- *Default:* Move objects to Infrequent Access after 90 days
+- *Default:* Move objects to Infrequent Access after 90 days.
 
 Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class).
 
 ---
 
-##### `silverName`<sup>Optional</sup> <a name="silverName" id="aws-data-solutions-framework.DataLakeStorageProps.property.silverName"></a>
+##### `silverBucketName`<sup>Optional</sup> <a name="silverBucketName" id="framework.DataLakeStorageProps.property.silverBucketName"></a>
 
 ```typescript
-public readonly silverName: string;
+public readonly silverBucketName: string;
 ```
 
 - *Type:* string
-- *Default:* `silver` will be used
+- *Default:* `silver` will be used.
 
 Name of the Silver bucket.
 
-Will be appended by a unique ID.
+Will be appended by the unique ID.
+
+---
+
+### SparkCICDPipelineProps <a name="SparkCICDPipelineProps" id="framework.SparkCICDPipelineProps"></a>
+
+Properties for SparkCICDPipeline class.
+
+#### Initializer <a name="Initializer" id="framework.SparkCICDPipelineProps.Initializer"></a>
+
+```typescript
+import { SparkCICDPipelineProps } from 'framework'
+
+const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.cdkPath">cdkPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.dockerImage">dockerImage</a></code> | <code>string</code> | The Docker image to use in the unit tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The Spark image to use to run the unit tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkPath">sparkPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
+
+---
+
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="framework.SparkCICDPipelineProps.property.applicationName"></a>
+
+```typescript
+public readonly applicationName: string;
+```
+
+- *Type:* string
+
+The name of the Spark application to be deployed.
+
+---
+
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="framework.SparkCICDPipelineProps.property.applicationStackFactory"></a>
+
+```typescript
+public readonly applicationStackFactory: ApplicationStackFactory;
+```
+
+- *Type:* <a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a>
+
+The application Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `cdkPath`<sup>Optional</sup> <a name="cdkPath" id="framework.SparkCICDPipelineProps.property.cdkPath"></a>
+
+```typescript
+public readonly cdkPath: string;
+```
+
+- *Type:* string
+- *Default:* The root of the repository
+
+The path to the folder that contains the CDK Application.
+
+---
+
+##### `dockerImage`<sup>Optional</sup> <a name="dockerImage" id="framework.SparkCICDPipelineProps.property.dockerImage"></a>
+
+```typescript
+public readonly dockerImage: string;
+```
+
+- *Type:* string
+- *Default:* The latest EMR docker image
+
+The Docker image to use in the unit tests.
+
+---
+
+##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="framework.SparkCICDPipelineProps.property.integTestEnv"></a>
+
+```typescript
+public readonly integTestEnv: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+- *Default:* No environment variables
+
+The environment variables to create from the Application Stack and to pass to the integration tests.
+
+This is used to interact with resources created by the Application Stack from within the integration tests script.
+Key is the name of the environment variable to create. Value is generally a resource ID/name/ARN from the Application Stack.
+
+---
+
+##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="framework.SparkCICDPipelineProps.property.integTestScript"></a>
+
+```typescript
+public readonly integTestScript: string;
+```
+
+- *Type:* string
+- *Default:* No integration tests are run
+
+The path to the Shell script that contains integration tests.
+
+---
+
+##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="framework.SparkCICDPipelineProps.property.sparkImage"></a>
+
+```typescript
+public readonly sparkImage: SparkImage;
+```
+
+- *Type:* <a href="#framework.SparkImage">SparkImage</a>
+- *Default:* EMR Serverless v6.12 is used
+
+The Spark image to use to run the unit tests.
+
+---
+
+##### `sparkPath`<sup>Optional</sup> <a name="sparkPath" id="framework.SparkCICDPipelineProps.property.sparkPath"></a>
+
+```typescript
+public readonly sparkPath: string;
+```
+
+- *Type:* string
+- *Default:* The root of the repository
+
+The path to the folder that contains the Spark Application.
+
+---
+
+### SparkRuntimeServerlessProps <a name="SparkRuntimeServerlessProps" id="framework.SparkRuntimeServerlessProps"></a>
+
+Properties for the {SparkRuntimeServerless} construct.
+
+#### Initializer <a name="Initializer" id="framework.SparkRuntimeServerlessProps.Initializer"></a>
+
+```typescript
+import { SparkRuntimeServerlessProps } from 'framework'
+
+const sparkRuntimeServerlessProps: SparkRuntimeServerlessProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#framework.EmrVersion">EmrVersion</a></code> | The EMR release version associated with the application. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.architecture">architecture</a></code> | <code><a href="#framework.Architecture">Architecture</a></code> | The CPU architecture type of the application. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The image configuration. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
+| <code><a href="#framework.SparkRuntimeServerlessProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="framework.SparkRuntimeServerlessProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the application. The name must be less than 64 characters.
+
+*Pattern* : `^[A-Za-z0-9._\\/#-]+$`
+
+---
+
+##### `releaseLabel`<sup>Required</sup> <a name="releaseLabel" id="framework.SparkRuntimeServerlessProps.property.releaseLabel"></a>
+
+```typescript
+public readonly releaseLabel: EmrVersion;
+```
+
+- *Type:* <a href="#framework.EmrVersion">EmrVersion</a>
+
+The EMR release version associated with the application.
+
+The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
+
+---
+
+##### `architecture`<sup>Optional</sup> <a name="architecture" id="framework.SparkRuntimeServerlessProps.property.architecture"></a>
+
+```typescript
+public readonly architecture: Architecture;
+```
+
+- *Type:* <a href="#framework.Architecture">Architecture</a>
+
+The CPU architecture type of the application.
+
+---
+
+##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="framework.SparkRuntimeServerlessProps.property.autoStartConfiguration"></a>
+
+```typescript
+public readonly autoStartConfiguration: IResolvable | AutoStartConfigurationProperty;
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty
+
+The configuration for an application to automatically start on job submission.
+
+---
+
+##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="framework.SparkRuntimeServerlessProps.property.autoStopConfiguration"></a>
+
+```typescript
+public readonly autoStopConfiguration: IResolvable | AutoStopConfigurationProperty;
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty
+
+The configuration for an application to automatically stop after a certain amount of time being idle.
+
+---
+
+##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="framework.SparkRuntimeServerlessProps.property.imageConfiguration"></a>
+
+```typescript
+public readonly imageConfiguration: IResolvable | ImageConfigurationInputProperty;
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty
+
+The image configuration.
+
+---
+
+##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="framework.SparkRuntimeServerlessProps.property.initialCapacity"></a>
+
+```typescript
+public readonly initialCapacity: IResolvable | IResolvable | InitialCapacityConfigKeyValuePairProperty[];
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]
+
+The initial capacity of the application.
+
+---
+
+##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="framework.SparkRuntimeServerlessProps.property.maximumCapacity"></a>
+
+```typescript
+public readonly maximumCapacity: IResolvable | MaximumAllowedResourcesProperty;
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty
+
+The maximum capacity of the application.
+
+This is cumulative across all workers at any given point in time during the lifespan of the application is created. No new resources will be created once any one of the defined limits is hit.
+
+---
+
+##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="framework.SparkRuntimeServerlessProps.property.networkConfiguration"></a>
+
+```typescript
+public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty;
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty
+
+The network configuration for customer VPC connectivity for the application.
+
+---
+
+##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="framework.SparkRuntimeServerlessProps.property.workerTypeSpecifications"></a>
+
+```typescript
+public readonly workerTypeSpecifications: IResolvable | {[ key: string ]: IResolvable | WorkerTypeSpecificationInputProperty};
+```
+
+- *Type:* aws-cdk-lib.IResolvable | {[ key: string ]: aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}
+
+The container image to use in the application.
+
+If none is provided the application will use the base Amazon EMR Serverless image for the specified EMR release.
+This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html) of usage
+
+---
+
+## Classes <a name="Classes" id="Classes"></a>
+
+### ApplicationStackFactory <a name="ApplicationStackFactory" id="framework.ApplicationStackFactory"></a>
+
+Abstract class that needs to be implemented to pass the application Stack to the CICD pipeline.
+
+#### Initializers <a name="Initializers" id="framework.ApplicationStackFactory.Initializer"></a>
+
+```typescript
+import { ApplicationStackFactory } from 'framework'
+
+new ApplicationStackFactory()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.ApplicationStackFactory.createStack">createStack</a></code> | Abstract method that needs to be implemented to return the application Stack. |
+
+---
+
+##### `createStack` <a name="createStack" id="framework.ApplicationStackFactory.createStack"></a>
+
+```typescript
+public createStack(scope: Construct): Stack
+```
+
+Abstract method that needs to be implemented to return the application Stack.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.ApplicationStackFactory.createStack.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+The scope to create the stack in.
 
 ---
 
@@ -3821,4 +4646,190 @@ The stage of the pipeline.
 
 
 
+
+
+
+## Enums <a name="Enums" id="Enums"></a>
+
+### Architecture <a name="Architecture" id="framework.Architecture"></a>
+
+Enum defining the CPU architecture type of the application, either  X86_64 or ARM64.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.Architecture.X86_64">X86_64</a></code> | *No description.* |
+| <code><a href="#framework.Architecture.ARM64">ARM64</a></code> | *No description.* |
+
+---
+
+##### `X86_64` <a name="X86_64" id="framework.Architecture.X86_64"></a>
+
+---
+
+
+##### `ARM64` <a name="ARM64" id="framework.Architecture.ARM64"></a>
+
+---
+
+
+### EmrVersion <a name="EmrVersion" id="framework.EmrVersion"></a>
+
+Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html).
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.EmrVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#framework.EmrVersion.V5_32">V5_32</a></code> | *No description.* |
+
+---
+
+##### `V6_12` <a name="V6_12" id="framework.EmrVersion.V6_12"></a>
+
+---
+
+
+##### `V6_11_1` <a name="V6_11_1" id="framework.EmrVersion.V6_11_1"></a>
+
+---
+
+
+##### `V6_11` <a name="V6_11" id="framework.EmrVersion.V6_11"></a>
+
+---
+
+
+##### `V6_10_1` <a name="V6_10_1" id="framework.EmrVersion.V6_10_1"></a>
+
+---
+
+
+##### `V6_10` <a name="V6_10" id="framework.EmrVersion.V6_10"></a>
+
+---
+
+
+##### `V6_9` <a name="V6_9" id="framework.EmrVersion.V6_9"></a>
+
+---
+
+
+##### `V6_8` <a name="V6_8" id="framework.EmrVersion.V6_8"></a>
+
+---
+
+
+##### `V6_7` <a name="V6_7" id="framework.EmrVersion.V6_7"></a>
+
+---
+
+
+##### `V6_6` <a name="V6_6" id="framework.EmrVersion.V6_6"></a>
+
+---
+
+
+##### `V6_5` <a name="V6_5" id="framework.EmrVersion.V6_5"></a>
+
+---
+
+
+##### `V6_4` <a name="V6_4" id="framework.EmrVersion.V6_4"></a>
+
+---
+
+
+##### `V6_3` <a name="V6_3" id="framework.EmrVersion.V6_3"></a>
+
+---
+
+
+##### `V6_2` <a name="V6_2" id="framework.EmrVersion.V6_2"></a>
+
+---
+
+
+##### `V5_33` <a name="V5_33" id="framework.EmrVersion.V5_33"></a>
+
+---
+
+
+##### `V5_32` <a name="V5_32" id="framework.EmrVersion.V5_32"></a>
+
+---
+
+
+### SparkImage <a name="SparkImage" id="framework.SparkImage"></a>
+
+The list of supported Spark images to use in the SparkCICDPipeline.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_12">EMR_SERVERLESS_6_12</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_11">EMR_SERVERLESS_6_11</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_10">EMR_SERVERLESS_6_10</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_9">EMR_SERVERLESS_6_9</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_EKS_6_12">EMR_EKS_6_12</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_EKS_6_11">EMR_EKS_6_11</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_EKS_6_10">EMR_EKS_6_10</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_EKS_6_9">EMR_EKS_6_9</a></code> | *No description.* |
+
+---
+
+##### `EMR_SERVERLESS_6_12` <a name="EMR_SERVERLESS_6_12" id="framework.SparkImage.EMR_SERVERLESS_6_12"></a>
+
+---
+
+
+##### `EMR_SERVERLESS_6_11` <a name="EMR_SERVERLESS_6_11" id="framework.SparkImage.EMR_SERVERLESS_6_11"></a>
+
+---
+
+
+##### `EMR_SERVERLESS_6_10` <a name="EMR_SERVERLESS_6_10" id="framework.SparkImage.EMR_SERVERLESS_6_10"></a>
+
+---
+
+
+##### `EMR_SERVERLESS_6_9` <a name="EMR_SERVERLESS_6_9" id="framework.SparkImage.EMR_SERVERLESS_6_9"></a>
+
+---
+
+
+##### `EMR_EKS_6_12` <a name="EMR_EKS_6_12" id="framework.SparkImage.EMR_EKS_6_12"></a>
+
+---
+
+
+##### `EMR_EKS_6_11` <a name="EMR_EKS_6_11" id="framework.SparkImage.EMR_EKS_6_11"></a>
+
+---
+
+
+##### `EMR_EKS_6_10` <a name="EMR_EKS_6_10" id="framework.SparkImage.EMR_EKS_6_10"></a>
+
+---
+
+
+##### `EMR_EKS_6_9` <a name="EMR_EKS_6_9" id="framework.SparkImage.EMR_EKS_6_9"></a>
+
+---
 
