@@ -2754,25 +2754,25 @@ The construct provisions a CDK Pipeline with the following resources:
  * A Staging stage to deploy the application stack in the staging account and run optional integration tests
  * A Production stage to deploy the application stack in the production account
 
-If using different accounts for dev (where this construct is deployed), integration and production (where the application stack is deployed), 
+If using different accounts for dev (where this construct is deployed), integration and production (where the application stack is deployed),
 bootstrap integration and production account with CDK and add a trust relationship from the dev account:
 ```bash
 cdk bootstrap \
   --profile integration \
   --trust <DEV_ACCOUNT> \
   aws://<INTEGRATION_ACCOUNT>/us-west-2
-``` 
+```
 
 Units tests are expected to be run with `pytest` command from the Spark root folder configured via `sparkPath`.
 
-Integration tests are expected to be an AWS CLI script that return 0 exit code if success and 1 if failure configure via `integTestScript`. 
-Integration tests can use resources that are deployed by the Application Stack. 
-To do this, pass environment variables to the Construct in the form of key/value pairs via `integTestEnv`.  
-Keys are the names of the environment variables used in the script, values are provided by the application stack 
+Integration tests are expected to be an AWS CLI script that return 0 exit code if success and 1 if failure configure via `integTestScript`.
+Integration tests can use resources that are deployed by the Application Stack.
+To do this, pass environment variables to the Construct in the form of key/value pairs via `integTestEnv`.
+Keys are the names of the environment variables used in the script, values are provided by the application stack
 and are generally resources ID/names/ARNs.
 
-The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method. 
-The `createStack()` method needs to return the application stack instance within the scope passed to the factory method. 
+The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
+The `createStack()` method needs to return the application stack instance within the scope passed to the factory method.
 This is used to create the application stack within the scope of the CDK Pipeline stage.
 
 **Usage example**
@@ -2782,7 +2782,7 @@ const stack = new Stack();
 class MyApplicationStack extends Stack {
   constructor(scope: Stack) {
     super(scope, 'MyApplicationStack');
-    
+
     new Bucket(this, 'TestBucket', {
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
