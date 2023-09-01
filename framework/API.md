@@ -3869,7 +3869,6 @@ const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.cdkPath">cdkPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.dockerImage">dockerImage</a></code> | <code>string</code> | The Docker image to use in the unit tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The Spark image to use to run the unit tests. |
@@ -3911,19 +3910,6 @@ public readonly cdkPath: string;
 - *Default:* The root of the repository
 
 The path to the folder that contains the CDK Application.
-
----
-
-##### `dockerImage`<sup>Optional</sup> <a name="dockerImage" id="framework.SparkCICDPipelineProps.property.dockerImage"></a>
-
-```typescript
-public readonly dockerImage: string;
-```
-
-- *Type:* string
-- *Default:* The latest EMR docker image
-
-The Docker image to use in the unit tests.
 
 ---
 

@@ -11,10 +11,10 @@
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { SparkCICDPipeline, ApplicationStackFactory } from '../../src';
+import { SparkCICDPipeline, ApplicationStackFactory, SparkImage } from '../../../src';
 
 
-describe('With minimal configuration the construct', () => {
+describe('With minimal configuration, the construct', () => {
 
   const stack = new Stack();
 
@@ -41,7 +41,7 @@ describe('With minimal configuration the construct', () => {
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a code repository', () => {
     template.resourceCountIs('AWS::CodeCommit::Repository', 1);
@@ -82,7 +82,7 @@ describe('With minimal configuration the construct', () => {
   test('should run the unit tests with EMR 6.12 as the default', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*docker run -i --name pytest public.ecr.aws/emr-serverless/spark/emr-6.12.0:latest.*'),
+        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-serverless/spark/emr-6.12.0:latest.*'),
       },
     });
   });
@@ -172,18 +172,22 @@ describe('With minimal configuration the construct', () => {
   });
 });
 
-describe('With custom configuration the construct', () => {
+describe('With custom configuration, the construct', () => {
 
   const stack = new Stack();
 
   class MyApplicationStack extends Stack {
+    public readonly bucketName: string;
+
     constructor(scope: Stack) {
       super(scope, 'MyApplicationStack');
 
-      new Bucket(this, 'TestBucket', {
+      const bucket = new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
         removalPolicy: RemovalPolicy.DESTROY,
       });
+
+      this.bucketName = bucket.bucketName;
     }
   }
 
@@ -196,13 +200,37 @@ describe('With custom configuration the construct', () => {
   new SparkCICDPipeline(stack, 'TestConstruct', {
     applicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
+    cdkPath: 'cdk/',
+    sparkPath: 'spark/',
+    sparkImage: SparkImage.EMR_SERVERLESS_6_10,
+    integTestScript: 'cdk/integ-test.sh',
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('should create a code repository', () => {
-    template.resourceCountIs('AWS::CodeCommit::Repository', 1);
+  test('should create a CodeBuild project with the proper cdk project path for synth', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*cd cdk/.*'),
+      },
+    });
+  });
+
+  test('should create a CodeBuild project with the proper Spark project path for unit tests', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*docker run -i -v \\$PWD/spark/:/home/hadoop/.*'),
+      },
+    });
+  });
+
+  test('should create a CodeBuild project with the proper Spark image for unit tests', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-serverless/spark/emr-6.10.0:latest.*'),
+      },
+    });
   });
 });
 

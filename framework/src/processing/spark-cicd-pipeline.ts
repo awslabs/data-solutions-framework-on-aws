@@ -40,12 +40,6 @@ export interface SparkCICDPipelineProps {
   readonly applicationStackFactory: ApplicationStackFactory;
 
   /**
-   * The Docker image to use in the unit tests
-   * @default - The latest EMR docker image
-   */
-  readonly dockerImage?: string;
-
-  /**
    * The path to the folder that contains the CDK Application
    * @default - The root of the repository
    */
@@ -137,23 +131,58 @@ export interface SparkCICDPipelineProps {
 */
 export class SparkCICDPipeline extends Construct {
 
-  // private getEnvironments(){
-  //   return {
-  //     staging: {
-  //       account: process.env.STAGING_ACCOUNT,
-  //       region: process.env.STAGING_REGION
-  //     },
-  //     production: {
-  //       account: process.env.PRODUCTION_ACCOUNT,
-  //       region: process.env.PRODUCTION_REGION
-  //     }
-  //   }
-  // }
-
   /**
    * The default Spark image to run the unit tests
    */
   private static readonly DEFAULT_SPARK_IMAGE: SparkImage = SparkImage.EMR_SERVERLESS_6_12;
+
+  /**
+   * Extract the path and the script name from a script path
+   * @param path the script path
+   * @return [path, scriptName]
+   */
+  private static extractPath(path: string): [string, string] {
+    // Extract the folder from the integration tests script path
+    const pathParts = path.split('/');
+    var integPath = '.';
+    if (pathParts.length > 1) {
+      integPath = pathParts.slice(0, -1).join('/');
+    }
+    const integScript = pathParts[pathParts.length - 1];
+    return [integPath, integScript];
+  }
+
+  /**
+   * Build the install commands for the CodeBuild step based on the runtime
+   * @param cdkPath the path of the CDK application
+   * @return installCommands
+   */
+  private static cdkInstallCommands(): string[] {
+    // Get the runtime of the CDK Construct
+    const runtime = process.env.JSII_AGENT || 'node.js';
+    var commands: string[];
+
+    // Build the list of commands depending on the runtime
+    switch (runtime.split('/')[0].toLowerCase()) {
+      case 'node.js':
+        commands=[
+          'npm ci',
+          'npm run build',
+        ];
+        break;
+      case 'python':
+        commands= [
+          'pip install -r requirements.txt',
+        ];
+        break;
+      default:
+        throw new Error('Runtime not supported');
+    }
+    // Full set of commands
+    return [
+      'npm install -g aws-cdk',
+    ].concat(commands);
+  }
 
   /**
    * Construct a new instance of the SparkCICDPipeline class.
@@ -164,27 +193,31 @@ export class SparkCICDPipeline extends Construct {
   constructor(scope: Construct, id: string, props: SparkCICDPipelineProps) {
     super(scope, id);
 
+    // Set the defaults
+    const cdkPath = props.cdkPath ? props.cdkPath : '.';
+    const sparkPath = props.sparkPath ? props.sparkPath : '.';
+    const sparkImage = props.sparkImage ? props.sparkImage : SparkCICDPipeline.DEFAULT_SPARK_IMAGE;
+
     // Create a CodeCommit repository to host the code
     const codeRepository = new Repository(this, 'CodeCommitRepository', {
       repositoryName: props.applicationName,
     });
 
-    // The path containing the CDK application
-    const cdkPath = props.cdkPath ? props.cdkPath : '.';
-
     const buildStage = new CodeBuildStep('CodeBuildSynthStep', {
       input: CodePipelineSource.codeCommit(codeRepository, 'main'),
-      installCommands: this.cdkInstallCommands(cdkPath),
       commands: [
         'curl -qLk -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq',
         'curl -qL -o aws_credentials.json http://169.254.170.2/$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI',
         "AWS_ACCESS_KEY_ID=$(cat aws_credentials.json | jq -r '.AccessKeyId')",
         "AWS_SECRET_ACCESS_KEY=$(cat aws_credentials.json | jq -r '.SecretAccessKey')",
         "AWS_SESSION_TOKEN=$(cat aws_credentials.json | jq -r '.Token')",
-        `docker run -i --name pytest ${props.dockerImage || SparkCICDPipeline.DEFAULT_SPARK_IMAGE} sh -c \"pip install . && pytest\"`,
+        `docker run -i -v $PWD/${sparkPath}:/home/hadoop/ -e AWS_REGION=$AWS_REGION -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e DISABLE_SSL=true --rm --name pytest ${sparkImage} sh -c \"pip install . && pytest\"`,
         'rm -f aws_credentials.json',
-        'npx cdk synth --all',
-      ],
+        `cd ${cdkPath}`,
+      ].concat(SparkCICDPipeline.cdkInstallCommands())
+        .concat([
+          'npx cdk synth --all',
+        ]),
       primaryOutputDirectory: `${cdkPath}/cdk.out`,
     });
 
@@ -210,7 +243,7 @@ export class SparkCICDPipeline extends Construct {
 
     if (props.integTestScript) {
       // Extract the path and script name from the integration tests script path
-      const [integPath, integScript] = this.extractPath(props.integTestScript);
+      const [integPath, integScript] = SparkCICDPipeline.extractPath(props.integTestScript);
 
       // Add a post step to run the integration tests
       stagingDeployment.addPost(new ShellStep('IntegrationTests', {
@@ -234,70 +267,5 @@ export class SparkCICDPipeline extends Construct {
     new CfnOutput(this, 'CodeCommitRepositoryUrl', {
       value: codeRepository.repositoryCloneUrlHttp,
     });
-  }
-
-  /**
-   * Extract the path and the script name from a script path
-   * @param path the script path
-   * @return [path, scriptName]
-   */
-  private extractPath(path: string): [string, string] {
-    // Extract the folder from the integration tests script path
-    const pathParts = path.split('/');
-    var integPath = '.';
-    if (pathParts.length > 1) {
-      integPath = pathParts.slice(0, -1).join('/');
-    }
-    const integScript = pathParts[pathParts.length - 1];
-    return [integPath, integScript];
-  }
-
-  /**
-   * Build the install commands for the CodeBuild step based on the runtime and the CDK application path
-   * @param cdkPath the path of the CDK application
-   * @return installCommands
-   */
-  private cdkInstallCommands(cdkPath: string): string[] {
-    // Get the runtime of the CDK Construct
-    const runtime = process.env.JSII_AGENT || 'node.js';
-    var commands: string[];
-
-    // Build the list of commands depending on the runtime
-    switch (runtime.split('/')[0].toLowerCase()) {
-      case 'node.js':
-        commands=[
-          'npm ci',
-          'npm run build',
-        ];
-        break;
-      case 'python':
-        commands= [
-          'pip install -r requirements.txt',
-        ];
-        break;
-      case 'java':
-        commands= [
-          'mvn compile -q',
-        ];
-        break;
-      case 'dotnet':
-        commands= [
-          'dotnet build src',
-        ];
-        break;
-      case 'go':
-        commands= [
-          'go get',
-          'go build',
-        ];
-        break;
-      default:
-        throw new Error('Runtime not supported');
-    }
-    // Full set of commands
-    return [
-      `cd ${cdkPath}`,
-      'npm install -g aws-cdk',
-    ].concat(commands);
   }
 }
