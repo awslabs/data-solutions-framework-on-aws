@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: MIT-0
 
 
-export { DataLakeStorageProps, DataLakeStorage, AnalyticsBucket, AnalyticsBucketProps, AccessLogsBucket } from './storage';
-export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps } from './processing';
-export { DataCatalogDatabase, DataCatalogDatabaseProps, DataLakeCatalog, DataLakeCatalogProps } from './governance';
-export { SparkEmrServerlessRuntimeProps, Architecture, SparkEmrServerlessRuntime } from './processing/spark-runtime/emr-serverless';
-export { EmrRuntimeVersion, SparkImage, EMR_DEFAULT_VERSION } from './utils/emr-releases';
-export { CICDStage, ApplicationStageProps, ApplicationStage } from './utils/application-stage';
-export { ApplicationStackFactory } from './utils/application-stack-factory';
+export { DataLakeStorageProps, DataLakeStorage, AnalyticsBucket, AnalyticsBucketProps, AccessLogsBucket } from './data-lake';
+export { SparkCICDPipeline, SparkCICDPipelineProps, ApplicationStackFactory, SparkImage } from './processing';
+export { DataCatalogDatabase, DataCatalogDatabaseProps } from './data-catalog';
+export { SparkRuntimeServerlessProps, Architecture, SparkRuntimeServerless } from './processing-runtime';
+export { EmrVersion } from './utils/emr-releases';
