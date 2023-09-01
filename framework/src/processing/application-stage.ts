@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT-0
 
 
-import { CfnOutput, Stage, StageProps } from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { ApplicationStackFactory } from "./application-stack-factory";
+import { CfnOutput, Stage, StageProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { ApplicationStackFactory } from './application-stack-factory';
 
 
 /**
@@ -60,12 +60,12 @@ export class ApplicationStage extends Stage {
     props.applicationStackFactory.createStack(this);
 
     // create CfnOutputs from the variables to expose in env variables for integration tests
-    if (props?.outputs){
+    if (props?.outputs) {
       this.outputs = {};
-      for ( let key in props?.outputs){
+      for ( let key in props?.outputs) {
         this.outputs[key] = new CfnOutput(this, key, {
           value: props?.outputs[key],
-        })
+        });
       }
     }
   }
