@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Aws } from 'aws-cdk-lib';
-import { IRole } from 'aws-cdk-lib/aws-iam';
+import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { EmrClusterTaskImplementation } from './spark-job';
@@ -114,7 +114,16 @@ export class EmrServerlessTask implements EmrClusterTaskImplementation {
      */
 
   grantExecutionRole(role: IRole): void {
-    SparkRuntimeServerless.grantJobExecution(role, [this.emrServerlessJobConfig.executionRoleArn], [`arn:aws:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.emrServerlessJobConfig.applicationId}`, `arn:aws:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.emrServerlessJobConfig.applicationId}/jobruns/*`]);
+
+    const arn = `arn:aws:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.emrServerlessJobConfig.applicationId}`;
+    role.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-serverless:TagResource'
+      ],
+      resources: [arn],
+    }));
+    SparkRuntimeServerless.grantJobExecution(role, [this.emrServerlessJobConfig.executionRoleArn], [arn, `${arn}/jobruns/*`]);
   }
 }
 

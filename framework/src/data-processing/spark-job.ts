@@ -88,7 +88,7 @@ export class SparkJob extends Construct {
     }
 
     this.emrTaskImplementation = this.sparkJobProps.EmrOnEksJobConfig?.virtualClusterId ?
-      new EmrOnEksTask(this.sparkJobProps.EmrOnEksJobConfig!, scope) :
+      new EmrOnEksTask(this.sparkJobProps.EmrOnEksJobConfig!) :
       new EmrServerlessTask(this.sparkJobProps.EmrServerlessJobConfig!);
 
 

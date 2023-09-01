@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Stack } from 'aws-cdk-lib';
+import { Aws } from 'aws-cdk-lib';
 import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
-import { Construct } from 'constructs';
 import { EmrClusterTaskImplementation } from './spark-job';
 
 
@@ -16,11 +15,10 @@ import { EmrClusterTaskImplementation } from './spark-job';
 
 export class EmrOnEksTask implements EmrClusterTaskImplementation {
   private emrOnEksJobConfig!: EmrOnEksConfig;
-  private scope : Construct;
 
-  constructor(emrOnEksJobConfig: EmrOnEksConfig, scope : Construct) {
+
+  constructor(emrOnEksJobConfig: EmrOnEksConfig) {
     this.setConfig(emrOnEksJobConfig);
-    this.scope = scope;
   }
 
   /**
@@ -120,7 +118,7 @@ export class EmrOnEksTask implements EmrClusterTaskImplementation {
         'emr-containers:StartJobRun',
         'emr-containers:DescribeJobRun',
       ],
-      resources: [`arn:aws:emr-containers:${Stack.of(this.scope).region}:${Stack.of(this.scope).account}:/virtualclusters/${this.emrOnEksJobConfig.virtualClusterId}`],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.emrOnEksJobConfig.virtualClusterId}`],
       conditions: {
         StringEquals: {
           'emr-containers:ExecutionRoleArn': this.emrOnEksJobConfig.executionRoleArn,
