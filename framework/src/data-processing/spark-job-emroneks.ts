@@ -6,8 +6,7 @@ import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { SparkJobProps } from './_spark-job';
-import { SparkJob } from './spark-job';
+import { SparkJob, SparkJobProps } from './spark-job';
 
 
 /**
@@ -60,7 +59,7 @@ export class EmrOnEksSparkJob extends SparkJob {
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
     super(scope, id);
     this.config = props;
-    this.stateMachine = this.createStateMachine(props.schedule);
+    this.stateMachine = this.createStateMachine(this.config.schedule);
   }
 
 
