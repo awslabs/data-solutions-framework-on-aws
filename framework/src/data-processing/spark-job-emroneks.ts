@@ -5,47 +5,77 @@ import { Aws } from 'aws-cdk-lib';
 import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
-import { EmrClusterTaskImplementation } from './spark-job';
+import { Construct } from 'constructs';
+import { SparkJobProps } from './_spark-job';
+import { SparkJob } from './spark-job';
 
 
 /**
- * Class that provides specific implementation for EMRonEks cluster
- * @implements EmrClusterTaskImplementation
+ * A construct to run Spark Jobs using EMRonEKS.
+ * creates a State Machine that orchestrates the Spark Job.
+ * @see EmrOnEksSparkJobProps parameters to be specified for the construct
+ *
+ * **Usage example**
+ * @example
+ * ```typescript
+ *
+ * const myFileSystemPolicy = new PolicyDocument({
+ *   statements: [new PolicyStatement({
+ *     actions: [
+ *       's3:GetObject',
+ *     ],
+ *     resources: ['*'],
+ *   })],
+ * });
+ *
+ *
+ * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+ * const applicationId = "APPLICATION_ID";
+ * const job = new SparkJob(stack, 'SparkJob', {
+ *    applicationId:applicationId,executionRoleArn:myExecutionRole.roleArn,jobConfig:{
+ *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+ *               "ApplicationId": applicationId,
+ *               "ClientToken": JsonPath.uuid(),
+ *               "ExecutionRoleArn": myExecutionRole.roleArn,
+ *               "ExecutionTimeoutMinutes": 30,
+ *               "JobDriver": {
+ *                   "SparkSubmit": {
+ *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
+ *                       "EntryPointArguments": [],
+ *                       "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+ *                   },
+ *               }
+ *          }
+ * } as EmrServerlessSparkJobProps);
+ *
+ * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
+ *   value: job.stateMachine.stateMachineArn,
+ * });
+ * ```
  */
 
-export class EmrOnEksTask implements EmrClusterTaskImplementation {
-  private emrOnEksJobConfig!: EmrOnEksConfig;
+export class EmrOnEksSparkJob extends SparkJob {
+  readonly config: EmrOnEksSparkJobProps;
 
-
-  constructor(emrOnEksJobConfig: EmrOnEksConfig) {
-    this.setConfig(emrOnEksJobConfig);
+  constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
+    super(scope, id);
+    this.config = props;
+    this.stateMachine = this.createStateMachine(props.schedule);
   }
 
-  /**
-     * Sets the config for the Spark job to be run using EMR on EKS.
-     * Job run will be tagged with adsf-owned=true.
-     * @param config EmrOnEks Job  config
-     */
-  setConfig(config: EmrOnEksConfig) {
-    if (!config.jobConfig.Tags) {
-      config.jobConfig.Tags = {};
-    }
-    config.jobConfig.Tags['adsf-owned'] = 'true';
-    this.emrOnEksJobConfig = config;
-  }
 
   /**
-     * Returns the props for the step function CallAwsService Construct that starts the Spark job
-     * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
-     * @returns CallAwsServiceProps
-     */
+   * Returns the props for the step function CallAwsService Construct that starts the Spark job
+   * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
+   * @returns CallAwsServiceProps
+   */
 
   getJobStartTaskProps(): CallAwsServiceProps {
     return {
       service: 'emrcontainers',
       action: 'StartJobRun',
       iamAction: 'emr-containers:StartJobRun',
-      parameters: this.emrOnEksJobConfig.jobConfig,
+      parameters: this.config.jobConfig,
       iamResources: ['*'],
       resultSelector: {
         'JobRunId.$': '$.Id',
@@ -54,10 +84,10 @@ export class EmrOnEksTask implements EmrClusterTaskImplementation {
   }
 
   /**
-     * Returns the props for the step function CallAwsService Construct that checks the execution status of the Spark job
-     * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
-     * @returns CallAwsServiceProps
-     */
+   * Returns the props for the step function CallAwsService Construct that checks the execution status of the Spark job
+   * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
+   * @returns CallAwsServiceProps
+   */
 
   getJobMonitorTaskProps(): CallAwsServiceProps {
     return {
@@ -65,7 +95,7 @@ export class EmrOnEksTask implements EmrClusterTaskImplementation {
       action: 'describeJobRun',
       iamAction: 'emr-container:DescribeJobRun',
       parameters: {
-        VirtualClusterId: this.emrOnEksJobConfig.virtualClusterId,
+        VirtualClusterId: this.config.virtualClusterId,
         Id: JsonPath.stringAt('$.JobRunId'),
       },
       iamResources: ['*'],
@@ -80,9 +110,10 @@ export class EmrOnEksTask implements EmrClusterTaskImplementation {
   }
 
   /**
-     * Returns the props for the step function task that handles the failure  if the EMR Serverless job fails.
-     * @returns FailProps The error details of the failed Spark Job
-     */
+   * Returns the props for the step function task that handles the failure  if the EMR Serverless job fails.
+   * @returns FailProps The error details of the failed Spark Job
+   */
+
   getJobFailTaskProps(): FailProps {
     return {
       cause: 'EMRonEKSJobFailed',
@@ -91,25 +122,27 @@ export class EmrOnEksTask implements EmrClusterTaskImplementation {
   }
 
   /**
-     * Returns the status of the EMR Serverless job that succeeded  based on the GetJobRun API response
-     * @returns string
-     */
+   * Returns the status of the EMR Serverless job that succeeded  based on the GetJobRun API response
+   * @returns string
+   */
+
   getJobStatusSucceed(): string {
     return 'COMPLETED';
   }
 
   /**
-     * Returns the status of the EMR Serverless job that failed based on the GetJobRun API response
-     * @returns string
-     */
+   * Returns the status of the EMR Serverless job that failed based on the GetJobRun API response
+   * @returns string
+   */
+
   getJobStatusFailed(): string {
     return 'FAILED';
   }
 
   /**
-     * Grants the necessary permissions to the Step function StateMachine to be able to start EMR Serverless job
-     * @param role Step functions StateMachine IAM role
-     */
+   * Grants the necessary permissions to the Step function StateMachine to be able to start EMR Serverless job
+   * @param role Step functions StateMachine IAM role
+   */
 
   grantExecutionRole(role: IRole): void {
     role.addToPrincipalPolicy(new PolicyStatement({
@@ -118,19 +151,39 @@ export class EmrOnEksTask implements EmrClusterTaskImplementation {
         'emr-containers:StartJobRun',
         'emr-containers:DescribeJobRun',
       ],
-      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.emrOnEksJobConfig.virtualClusterId}`],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.virtualClusterId}`],
       conditions: {
         StringEquals: {
-          'emr-containers:ExecutionRoleArn': this.emrOnEksJobConfig.executionRoleArn,
+          'emr-containers:ExecutionRoleArn': this.config.executionRoleArn,
         },
       },
     }));
   }
 }
 
-export interface EmrOnEksConfig {
+
+/**
+ * Configuration for the EMRonEKS job.
+ * @param virtualClusterId The ID of the EMRonEKS cluster.
+ * @param executionRoleArn The ARN of the EMRonEKS job execution role.
+ * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
+ */
+export interface EmrOnEksSparkJobProps extends SparkJobProps {
+
+  /**
+   * EmrOnEks Virtual Cluster ID.
+   */
   readonly virtualClusterId: string;
+
+  /**
+   * ARN of the IAM role to use for the EMRonEks job.
+   */
   readonly executionRoleArn: string;
+
+  /**
+   * EMRonEKS Job Configuration.
+   * @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
+   */
   readonly jobConfig: {
     'ClientToken': string;
     'Name'?:string;
