@@ -3,6 +3,6 @@ sidebar_position: 1
 sidebar_label: Introduction
 ---
 
-# AWS Data Solutions
+# Analytics solutions
 
 List of available solutions. 

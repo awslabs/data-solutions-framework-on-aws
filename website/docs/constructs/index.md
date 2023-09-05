@@ -5,6 +5,6 @@ sidebar_label: Introduction
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Build your own data solutions
+# Accelerate building your data analytics solutions on AWS
 
-Compose the existing AWS CDK Constructs from the AWS Data Solutions Framework to build your own solutions. Refer to the Cookbook on how to leverage AWS CDK Constructs and follow best practices for Constructs and Solutions development. 
+AWS DSF is an open-source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions that address the most common data analytics requirements. AWS DSF is an abstraction atop AWS services based on AWS CDK L3 constructs.

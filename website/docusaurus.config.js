@@ -10,7 +10,7 @@ const organization = 'awslabs'
 
 const config = {
   title: niceProjectName,
-  tagline: 'Accelerate your Data Journey with pre-packaged data solutions on AWS 🚀',
+  tagline: 'Accelerate building your data analytics solutions on AWS 🚀',
   url: 'https://' + organization + '.github.io',
   baseUrl: '/',
   trailingSlash: false,
@@ -76,13 +76,13 @@ const config = {
           type: 'doc',
           docId: 'solutions/index',
           position: 'left',
-          label: 'AWS Data Solutions'
+          label: 'Analytics solutions'
         },
         {
           type: 'doc',
           docId: 'constructs/index',
           position: 'left',
-          label: 'Solutions Framework',
+          label: 'Framework',
         },
         {
           href: 'https://github.com/' + organization + '/' + projectName,
@@ -93,7 +93,7 @@ const config = {
     },
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: false,
+      disableSwitch: true,
       respectPrefersColorScheme: true,
     },
     docs: {
