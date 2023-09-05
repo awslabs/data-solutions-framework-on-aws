@@ -101,18 +101,29 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 
   devDeps: [
+    '@types/js-yaml',
     'cdk-nag@^2.0.0',
     '@types/jest',
     '@jest/globals',
     'ts-jest',
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    'rosetta',
+    '@aws-cdk/lambda-layer-kubectl-v22',
+    '@aws-cdk/lambda-layer-kubectl-v25'
   ],
 
-  python: {
-    distName: 'adsf',
-    module: 'adsf',
+  bundledDeps: [
+    '@exodus/schemasafe',
+    'js-yaml',
+    'simple-base'
+  ],
+
+  tsconfig: {
+    compilerOptions: {
+      resolveJsonModule: true,
+      esModuleInterop: true,
+    },
+    include: ['src/**/*.json'],
   },
 
   jestOptions: {

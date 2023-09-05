@@ -1,19 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Cluster, HelmChart, KubernetesManifest, KubernetesVersion, CfnAddon } from 'aws-cdk-lib/aws-eks';
-import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Aws, CfnOutput, Duration, Stack, Tags } from 'aws-cdk-lib';
-import { Queue } from 'aws-cdk-lib/aws-sqs';
+import { ISubnet, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { Cluster, HelmChart, KubernetesManifest, KubernetesVersion, CfnAddon } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
+import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
-import { ISubnet, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Utils } from '../utils';
-import { EmrEksNodegroup, EmrEksNodegroupOptions } from './emr-eks-nodegroup';
 import { EmrEksCluster } from './emr-eks-cluster';
+import { EmrEksNodegroup, EmrEksNodegroupOptions } from './emr-eks-nodegroup';
 import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
-import * as IamPolicyEbsCsiDriver from'./resources/k8s/iam-policy-ebs-csi-driver.json';
+import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
+import { Utils } from '../../utils';
 
 
 /**
@@ -27,7 +27,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin
-  if (eksAdminRoleArn != undefined){
+  if (eksAdminRoleArn != undefined) {
     cluster.eksCluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
   }
 
@@ -51,7 +51,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
     clusterName: cluster.eksCluster.clusterName,
     serviceAccountRoleArn: ebsCsiDriverIrsa.role.roleArn,
     addonVersion: 'v1.18.0-eksbuild.1',
-    resolveConflicts: "OVERWRITE"
+    resolveConflicts: 'OVERWRITE',
   });
 
   ebsCSIDriver.node.addDependency(ebsCsiDriverIrsa);
@@ -66,10 +66,10 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
     timeout: Duration.minutes(14),
     values: {
       startupapicheck: {
-        timeout: '5m'
+        timeout: '5m',
       },
-      installCRDs: true
-    }
+      installCRDs: true,
+    },
   });
 
   //Create service account for ALB and install ALB
@@ -115,7 +115,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
       fullnameOverride: 'kubernetes-dashboard',
       resources: {
         limits: {
-        memory: '600Mi',
+          memory: '600Mi',
         },
       },
     },
@@ -183,15 +183,15 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
             'eks.amazonaws.com/role-arn': awsNodeRole.roleArn,
           },
         },
-      }
+      },
     ],
     overwrite: true,
   });
 
   // Provide the Kubernetes Dashboard URL in AWS CloudFormation output
   new CfnOutput(scope, 'kubernetesDashboardURL', {
-      description: 'Access Kubernetes Dashboard via kubectl proxy and this URL',
-      value: 'http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:https/proxy/#/login',
+    description: 'Access Kubernetes Dashboard via kubectl proxy and this URL',
+    value: 'http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:https/proxy/#/login',
   });
 }
 
@@ -205,19 +205,19 @@ export function setDefaultManagedNodeGroups(cluster: EmrEksCluster) {
   EmrEksNodeGroupCritical.nodeRole = cluster.ec2InstanceNodeGroupRole;
   cluster.addEmrEksNodegroup('criticalAll', EmrEksNodeGroupCritical as EmrEksNodegroupOptions);
 
-  let EmrEksNodeGroupsharedDriver: any = {...EmrEksNodegroup.SHARED_DRIVER};
+  let EmrEksNodeGroupsharedDriver: any = { ...EmrEksNodegroup.SHARED_DRIVER };
   EmrEksNodeGroupsharedDriver.nodeRole = cluster.ec2InstanceNodeGroupRole;
   cluster.addEmrEksNodegroup('sharedDriver', EmrEksNodeGroupsharedDriver as EmrEksNodegroupOptions);
 
-  let EmrEksNodeGroupsharedExecutor: any = {...EmrEksNodegroup.SHARED_EXECUTOR};
+  let EmrEksNodeGroupsharedExecutor: any = { ...EmrEksNodegroup.SHARED_EXECUTOR };
   EmrEksNodeGroupsharedExecutor.nodeRole = cluster.ec2InstanceNodeGroupRole;
   cluster.addEmrEksNodegroup('sharedExecutor', EmrEksNodeGroupsharedExecutor as EmrEksNodegroupOptions);
 
-  let EmrEksNodeGroupnotebookDriver: any = {...EmrEksNodegroup.NOTEBOOK_DRIVER};
+  let EmrEksNodeGroupnotebookDriver: any = { ...EmrEksNodegroup.NOTEBOOK_DRIVER };
   EmrEksNodeGroupnotebookDriver.nodeRole = cluster.ec2InstanceNodeGroupRole;
   cluster.addEmrEksNodegroup('notebookDriver', EmrEksNodeGroupnotebookDriver as EmrEksNodegroupOptions);
 
-  let EmrEksNodeGroupnotebookExecutor: any = {...EmrEksNodegroup.NOTEBOOK_EXECUTOR};
+  let EmrEksNodeGroupnotebookExecutor: any = { ...EmrEksNodegroup.NOTEBOOK_EXECUTOR };
   EmrEksNodeGroupnotebookExecutor.nodeRole = cluster.ec2InstanceNodeGroupRole;
   cluster.addEmrEksNodegroup('notebookExecutor', EmrEksNodeGroupnotebookExecutor as EmrEksNodegroupOptions);
 
@@ -234,21 +234,21 @@ export function setDefaultKarpenterProvisioners(cluster: EmrEksCluster) {
   }).subnets;
 
   subnets.forEach( (subnet, index) => {
-    let criticalManfifestYAML = karpenterManifestSetup(cluster.clusterName,`${__dirname}/resources/k8s/karpenter-provisioner-config/critical-provisioner.yml`, subnet);
+    let criticalManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/critical-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterCriticalManifest-${index}`, criticalManfifestYAML);
 
-    let sharedDriverManfifestYAML = karpenterManifestSetup(cluster.clusterName,`${__dirname}/resources/k8s/karpenter-provisioner-config/shared-driver-provisioner.yml`, subnet);
+    let sharedDriverManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-driver-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterSharedDriverManifest-${index}`, sharedDriverManfifestYAML);
 
-    let sharedExecutorManfifestYAML = karpenterManifestSetup(cluster.clusterName,`${__dirname}/resources/k8s/karpenter-provisioner-config/shared-executor-provisioner.yml`, subnet);
+    let sharedExecutorManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-executor-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManfifestYAML);
 
-    let notebookDriverManfifestYAML = karpenterManifestSetup(cluster.clusterName,`${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-driver-provisioner.yml`, subnet);
+    let notebookDriverManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-driver-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterNotebookDriverManifest-${index}`, notebookDriverManfifestYAML);
 
-    let notebookExecutorManfifestYAML = karpenterManifestSetup(cluster.clusterName,`${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-executor-provisioner.yml`, subnet);
+    let notebookExecutorManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-executor-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManfifestYAML);
-  })
+  });
 }
 
 /**
@@ -263,7 +263,7 @@ export function karpenterManifestSetup(clusterName: string, path: string, subnet
   manifest = manifest.replace( /(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', clusterName);
 
-  let manfifestYAML: any = manifest.split("---").map((e: any) => Utils.loadYaml(e));
+  let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 
   return manfifestYAML;
 }
@@ -276,197 +276,197 @@ export function karpenterManifestSetup(clusterName: string, path: string, subnet
  * create a tooling provisioner that will deploy in each of the AZs, one per AZ
  */
 export function karpenterSetup(cluster: Cluster,
-    eksClusterName: string,
-    scope: Construct,
-    karpenterVersion?: string): HelmChart {
+  eksClusterName: string,
+  scope: Construct,
+  karpenterVersion?: string): HelmChart {
 
-    const karpenterInterruptionQueue: Queue = new Queue(scope, 'karpenterInterruptionQueue', {
-        queueName: eksClusterName,
-        retentionPeriod: Duration.seconds(300)
-    });
+  const karpenterInterruptionQueue: Queue = new Queue(scope, 'karpenterInterruptionQueue', {
+    queueName: eksClusterName,
+    retentionPeriod: Duration.seconds(300),
+  });
 
-    karpenterInterruptionQueue.addToResourcePolicy(
-        new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: ['sqs:SendMessage'],
-            principals: [new ServicePrincipal('sqs.amazonaws.com'), new ServicePrincipal('events.amazonaws.com')]
-        })
-    );
+  karpenterInterruptionQueue.addToResourcePolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['sqs:SendMessage'],
+      principals: [new ServicePrincipal('sqs.amazonaws.com'), new ServicePrincipal('events.amazonaws.com')],
+    }),
+  );
 
-    new Rule(scope, 'scheduledChangeRule', {
-        eventPattern: {
-            source: ['aws.heatlh'],
-            detail: ['AWS Health Event']
-        },
-        targets: [new SqsQueue(karpenterInterruptionQueue)]
-    });
+  new Rule(scope, 'scheduledChangeRule', {
+    eventPattern: {
+      source: ['aws.heatlh'],
+      detail: ['AWS Health Event'],
+    },
+    targets: [new SqsQueue(karpenterInterruptionQueue)],
+  });
 
-    new Rule(scope, 'instanceStateChangeRule', {
-        eventPattern: {
-            source: ['aws.ec2'],
-            detail: ['EC2 Instance State-change Notification']
-        },
-        targets: [new SqsQueue(karpenterInterruptionQueue)]
-    });
+  new Rule(scope, 'instanceStateChangeRule', {
+    eventPattern: {
+      source: ['aws.ec2'],
+      detail: ['EC2 Instance State-change Notification'],
+    },
+    targets: [new SqsQueue(karpenterInterruptionQueue)],
+  });
 
-    const karpenterNodeRole = new Role(cluster, 'karpenter-node-role', {
-        assumedBy: new ServicePrincipal(`ec2.${cluster.stack.urlSuffix}`),
-        managedPolicies: [
-            ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'),
-            ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'),
-            ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'),
-            ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
-        ],
-        roleName: `KarpenterNodeRole-${eksClusterName}`,
-    });
+  const karpenterNodeRole = new Role(cluster, 'karpenter-node-role', {
+    assumedBy: new ServicePrincipal(`ec2.${cluster.stack.urlSuffix}`),
+    managedPolicies: [
+      ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'),
+      ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'),
+      ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'),
+      ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
+    ],
+    roleName: `KarpenterNodeRole-${eksClusterName}`,
+  });
 
-    const karpenterControllerPolicyStatementSSM: PolicyStatement = new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['ssm:GetParameter', 'pricing:GetProducts'],
-        resources: ['*'],
-    });
+  const karpenterControllerPolicyStatementSSM: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: ['ssm:GetParameter', 'pricing:GetProducts'],
+    resources: ['*'],
+  });
 
-    const karpenterControllerPolicyStatementEC2: PolicyStatement = new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [
-            'ec2:CreateLaunchTemplate',
-            'ec2:DeleteLaunchTemplate',
-            'ec2:CreateFleet',
-            'ec2:RunInstances',
-            'ec2:CreateTags',
-            'ec2:TerminateInstances',
-            'ec2:DescribeLaunchTemplates',
-            'ec2:DescribeInstances',
-            'ec2:DescribeSecurityGroups',
-            'ec2:DescribeSubnets',
-            'ec2:DescribeInstanceTypes',
-            'ec2:DescribeInstanceTypeOfferings',
-            'ec2:DescribeAvailabilityZones',
-        ],
-        resources: ['*'],
-    });
+  const karpenterControllerPolicyStatementEC2: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: [
+      'ec2:CreateLaunchTemplate',
+      'ec2:DeleteLaunchTemplate',
+      'ec2:CreateFleet',
+      'ec2:RunInstances',
+      'ec2:CreateTags',
+      'ec2:TerminateInstances',
+      'ec2:DescribeLaunchTemplates',
+      'ec2:DescribeInstances',
+      'ec2:DescribeSecurityGroups',
+      'ec2:DescribeSubnets',
+      'ec2:DescribeInstanceTypes',
+      'ec2:DescribeInstanceTypeOfferings',
+      'ec2:DescribeAvailabilityZones',
+    ],
+    resources: ['*'],
+  });
 
-    const karpenterControllerPolicyStatementIAM: PolicyStatement = new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['iam:PassRole'],
-        resources: [`arn:aws:iam::${Aws.ACCOUNT_ID}:role/KarpenterNodeRole-${eksClusterName}`],
-    });
+  const karpenterControllerPolicyStatementIAM: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: ['iam:PassRole'],
+    resources: [`arn:aws:iam::${Aws.ACCOUNT_ID}:role/KarpenterNodeRole-${eksClusterName}`],
+  });
 
-    const karpenterInstanceProfile = new CfnInstanceProfile(cluster, 'karpenter-instance-profile', {
-        roles: [karpenterNodeRole.roleName],
-        instanceProfileName: `karpenterNodeInstanceProfile-${eksClusterName}`,
-        path: '/'
-    });
+  const karpenterInstanceProfile = new CfnInstanceProfile(cluster, 'karpenter-instance-profile', {
+    roles: [karpenterNodeRole.roleName],
+    instanceProfileName: `karpenterNodeInstanceProfile-${eksClusterName}`,
+    path: '/',
+  });
 
-    cluster.awsAuth.addRoleMapping(karpenterNodeRole, {
-        username: 'system:node:{{EC2PrivateDNSName}}',
-        groups: ['system:bootstrappers', 'system:nodes'],
-    });
+  cluster.awsAuth.addRoleMapping(karpenterNodeRole, {
+    username: 'system:node:{{EC2PrivateDNSName}}',
+    groups: ['system:bootstrappers', 'system:nodes'],
+  });
 
-    const karpenterNS = cluster.addManifest('karpenterNS', {
-        apiVersion: 'v1',
-        kind: 'Namespace',
-        metadata: { name: 'karpenter' },
-    });
+  const karpenterNS = cluster.addManifest('karpenterNS', {
+    apiVersion: 'v1',
+    kind: 'Namespace',
+    metadata: { name: 'karpenter' },
+  });
 
-    const karpenterAccount = cluster.addServiceAccount('Karpenter', {
+  const karpenterAccount = cluster.addServiceAccount('Karpenter', {
+    name: 'karpenter',
+    namespace: 'karpenter',
+  });
+
+  karpenterAccount.node.addDependency(karpenterNS);
+
+  karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementSSM);
+  karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementEC2);
+  karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementIAM);
+
+  //Deploy Karpenter Chart
+  const karpenterChart = cluster.addHelmChart('Karpenter', {
+    chart: 'karpenter',
+    release: 'karpenter',
+    repository: 'oci://public.ecr.aws/karpenter/karpenter',
+    namespace: 'karpenter',
+    version: karpenterVersion || EmrEksCluster.DEFAULT_KARPENTER_VERSION,
+    timeout: Duration.minutes(14),
+    wait: true,
+    values: {
+      serviceAccount: {
         name: 'karpenter',
-        namespace: 'karpenter',
-    });
-
-    karpenterAccount.node.addDependency(karpenterNS);
-
-    karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementSSM);
-    karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementEC2);
-    karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementIAM);
-
-    //Deploy Karpenter Chart
-    const karpenterChart = cluster.addHelmChart('Karpenter', {
-        chart: 'karpenter',
-        release: 'karpenter',
-        repository: 'oci://public.ecr.aws/karpenter/karpenter',
-        namespace: 'karpenter',
-        version: karpenterVersion || EmrEksCluster.DEFAULT_KARPENTER_VERSION,
-        timeout: Duration.minutes(14),
-        wait: true,
-        values: {
-            serviceAccount: {
-                name: 'karpenter',
-                create: false,
-                annotations: {
-                    'eks.amazonaws.com/role-arn': karpenterAccount.role.roleArn,
-                },
-            },
-            settings: {
-                aws: {
-                    defaultInstanceProfile: karpenterInstanceProfile.instanceProfileName,
-                    clusterName: eksClusterName,
-                    clusterEndpoint: cluster.clusterEndpoint,
-                    interruptionQueueName: karpenterInterruptionQueue.queueName
-                },
-            }
-
+        create: false,
+        annotations: {
+          'eks.amazonaws.com/role-arn': karpenterAccount.role.roleArn,
         },
-    });
+      },
+      settings: {
+        aws: {
+          defaultInstanceProfile: karpenterInstanceProfile.instanceProfileName,
+          clusterName: eksClusterName,
+          clusterEndpoint: cluster.clusterEndpoint,
+          interruptionQueueName: karpenterInterruptionQueue.queueName,
+        },
+      },
 
-    karpenterChart.node.addDependency(karpenterAccount);
+    },
+  });
 
-    const karpenterInstancesSg = new SecurityGroup(scope, 'karpenterSg', {
-        vpc: cluster.vpc,
-        allowAllOutbound: true,
-        description: 'security group for a karpenter instances',
-        securityGroupName: 'karpenterSg',
-        disableInlineRules: true,
-    });
+  karpenterChart.node.addDependency(karpenterAccount);
 
-    Tags.of(karpenterInstancesSg).add('karpenter.sh/discovery', `${eksClusterName}`);
-    
-    cluster.clusterSecurityGroup.addIngressRule(
-        karpenterInstancesSg,
-        Port.allTraffic(),
-    );
+  const karpenterInstancesSg = new SecurityGroup(scope, 'karpenterSg', {
+    vpc: cluster.vpc,
+    allowAllOutbound: true,
+    description: 'security group for a karpenter instances',
+    securityGroupName: 'karpenterSg',
+    disableInlineRules: true,
+  });
 
-    karpenterInstancesSg.addIngressRule(
-        karpenterInstancesSg,
-        Port.allTraffic(),
-    );
+  Tags.of(karpenterInstancesSg).add('karpenter.sh/discovery', `${eksClusterName}`);
 
-    karpenterInstancesSg.addIngressRule(
-        cluster.clusterSecurityGroup,
-        Port.allTraffic(),
-    );
+  cluster.clusterSecurityGroup.addIngressRule(
+    karpenterInstancesSg,
+    Port.allTraffic(),
+  );
 
-    Tags.of(cluster.vpc).add(
-        'karpenter.sh/discovery', eksClusterName,
-    );
+  karpenterInstancesSg.addIngressRule(
+    karpenterInstancesSg,
+    Port.allTraffic(),
+  );
 
-    cluster.vpc.privateSubnets.forEach((subnet) => {
-        Tags.of(subnet).add('karpenter.sh/discovery', eksClusterName);
-    });
+  karpenterInstancesSg.addIngressRule(
+    cluster.clusterSecurityGroup,
+    Port.allTraffic(),
+  );
 
-    cluster.vpc.publicSubnets.forEach((subnet) =>
-        Tags.of(subnet).add('karpenter.sh/discovery', eksClusterName),
-    );
+  Tags.of(cluster.vpc).add(
+    'karpenter.sh/discovery', eksClusterName,
+  );
 
-    const privateSubnets = cluster.vpc.selectSubnets({
-        onePerAz: true,
-        subnetType: SubnetType.PRIVATE_WITH_EGRESS,
-    }).subnets;
+  cluster.vpc.privateSubnets.forEach((subnet) => {
+    Tags.of(subnet).add('karpenter.sh/discovery', eksClusterName);
+  });
 
-    let listPrivateSubnets: string[] = privateSubnets.map(subnet => subnet.subnetId)
+  cluster.vpc.publicSubnets.forEach((subnet) =>
+    Tags.of(subnet).add('karpenter.sh/discovery', eksClusterName),
+  );
 
-    let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/tooling-provisioner.yml`);
+  const privateSubnets = cluster.vpc.selectSubnets({
+    onePerAz: true,
+    subnetType: SubnetType.PRIVATE_WITH_EGRESS,
+  }).subnets;
 
-    manifest = manifest.replace(/(\{{cluster-name}})/g, eksClusterName);
-    manifest = manifest.replace(/(\{{subnet-list}})/g, listPrivateSubnets.join(','));
+  let listPrivateSubnets: string[] = privateSubnets.map(subnet => subnet.subnetId);
 
-    let manfifestYAML: any = manifest.split("---").map((e: any) => Utils.loadYaml(e));
+  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/tooling-provisioner.yml`);
 
-    const manifestApply = cluster.addManifest('provisioner-tooling', ...manfifestYAML);
+  manifest = manifest.replace(/(\{{cluster-name}})/g, eksClusterName);
+  manifest = manifest.replace(/(\{{subnet-list}})/g, listPrivateSubnets.join(','));
 
-    manifestApply.node.addDependency(karpenterChart);
+  let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 
-    return karpenterChart;
+  const manifestApply = cluster.addManifest('provisioner-tooling', ...manfifestYAML);
+
+  manifestApply.node.addDependency(karpenterChart);
+
+  return karpenterChart;
 }
 
 /**
@@ -475,87 +475,87 @@ export function karpenterSetup(cluster: Cluster,
  */
 
 export function clusterAutoscalerSetup(
-    cluster: Cluster,
-    eksClusterName: string,
-    scope: Construct,
-    k8sVersion: KubernetesVersion) {
+  cluster: Cluster,
+  eksClusterName: string,
+  scope: Construct,
+  k8sVersion: KubernetesVersion) {
 
-    //Version of the autoscaler, controls the image tag
-    const versionMap = new Map([
-        [KubernetesVersion.V1_25, "9.25.0"],
-        [KubernetesVersion.V1_24, "9.25.0"],
-        [KubernetesVersion.V1_23, "9.21.0"],
-        [KubernetesVersion.V1_22, "9.13.1"]
-    ]);
-    
-    // Create a Kubernetes Service Account for the Cluster Autoscaler with Amazon IAM Role
-    const AutoscalerServiceAccount = cluster.addServiceAccount('Autoscaler', {
-        name: 'cluster-autoscaler',
-        namespace: 'kube-system',
-    });
+  //Version of the autoscaler, controls the image tag
+  const versionMap = new Map([
+    [KubernetesVersion.V1_25, '9.25.0'],
+    [KubernetesVersion.V1_24, '9.25.0'],
+    [KubernetesVersion.V1_23, '9.21.0'],
+    [KubernetesVersion.V1_22, '9.13.1'],
+  ]);
 
-    //Iam policy attached to the Role used by k8s autoscaller
-    let autoscalingPolicyDescribe =
+  // Create a Kubernetes Service Account for the Cluster Autoscaler with Amazon IAM Role
+  const AutoscalerServiceAccount = cluster.addServiceAccount('Autoscaler', {
+    name: 'cluster-autoscaler',
+    namespace: 'kube-system',
+  });
+
+  //Iam policy attached to the Role used by k8s autoscaller
+  let autoscalingPolicyDescribe =
         new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: [
-                'autoscaling:DescribeAutoScalingGroups',
-                'autoscaling:DescribeAutoScalingInstances',
-                'autoscaling:DescribeLaunchConfigurations',
-                'autoscaling:DescribeTags',
-                'ec2:DescribeLaunchTemplateVersions',
-                'eks:DescribeNodegroup',
-            ],
-            resources: ['*'],
+          effect: Effect.ALLOW,
+          actions: [
+            'autoscaling:DescribeAutoScalingGroups',
+            'autoscaling:DescribeAutoScalingInstances',
+            'autoscaling:DescribeLaunchConfigurations',
+            'autoscaling:DescribeTags',
+            'ec2:DescribeLaunchTemplateVersions',
+            'eks:DescribeNodegroup',
+          ],
+          resources: ['*'],
         });
 
-    let autoscalingPolicyMutateGroup =
+  let autoscalingPolicyMutateGroup =
         new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: [
-                'autoscaling:SetDesiredCapacity',
-                'autoscaling:TerminateInstanceInAutoScalingGroup',
-            ],
-            resources: ['*'],
-            conditions: {
-                StringEquals: {
-                    'aws:ResourceTag/eks:cluster-name': eksClusterName,
-                },
+          effect: Effect.ALLOW,
+          actions: [
+            'autoscaling:SetDesiredCapacity',
+            'autoscaling:TerminateInstanceInAutoScalingGroup',
+          ],
+          resources: ['*'],
+          conditions: {
+            StringEquals: {
+              'aws:ResourceTag/eks:cluster-name': eksClusterName,
             },
+          },
         });
 
-    // Add the right Amazon IAM Policy to the Amazon IAM Role for the Cluster Autoscaler
-    AutoscalerServiceAccount.addToPrincipalPolicy(
-        autoscalingPolicyDescribe,
-    );
-    AutoscalerServiceAccount.addToPrincipalPolicy(
-        autoscalingPolicyMutateGroup,
-    );
+  // Add the right Amazon IAM Policy to the Amazon IAM Role for the Cluster Autoscaler
+  AutoscalerServiceAccount.addToPrincipalPolicy(
+    autoscalingPolicyDescribe,
+  );
+  AutoscalerServiceAccount.addToPrincipalPolicy(
+    autoscalingPolicyMutateGroup,
+  );
 
-    cluster.addHelmChart('AutoScaler', {
-        chart: 'cluster-autoscaler',
-        repository: 'https://kubernetes.github.io/autoscaler',
-        version: versionMap.get(k8sVersion),
-        namespace: 'kube-system',
-        timeout: Duration.minutes(14),
-        values: {
-            cloudProvider: 'aws',
-            awsRegion: Stack.of(scope).region,
-            autoDiscovery: { clusterName: eksClusterName },
-            rbac: {
-                serviceAccount: {
-                    name: 'cluster-autoscaler',
-                    create: false,
-                },
-            },
-            extraArgs: {
-                'skip-nodes-with-local-storage': false,
-                'scan-interval': '5s',
-                'expander': 'least-waste',
-                'balance-similar-node-groups': true,
-                'skip-nodes-with-system-pods': false,
-            },
+  cluster.addHelmChart('AutoScaler', {
+    chart: 'cluster-autoscaler',
+    repository: 'https://kubernetes.github.io/autoscaler',
+    version: versionMap.get(k8sVersion),
+    namespace: 'kube-system',
+    timeout: Duration.minutes(14),
+    values: {
+      cloudProvider: 'aws',
+      awsRegion: Stack.of(scope).region,
+      autoDiscovery: { clusterName: eksClusterName },
+      rbac: {
+        serviceAccount: {
+          name: 'cluster-autoscaler',
+          create: false,
         },
-    });
+      },
+      extraArgs: {
+        'skip-nodes-with-local-storage': false,
+        'scan-interval': '5s',
+        'expander': 'least-waste',
+        'balance-similar-node-groups': true,
+        'skip-nodes-with-system-pods': false,
+      },
+    },
+  });
 
 }
