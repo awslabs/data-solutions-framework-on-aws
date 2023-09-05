@@ -13,7 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { EmrServerlessSparkJob, EmrServerlessSparkJobProps } from '../../../../src/data-processing/spark-job-emr-serverless';
+import { EmrServerlessSparkJob, EmrServerlessSparkJobProps } from '../../../../src/data-processing/spark-job-emrserverless';
 import { SparkRuntimeServerless } from '../../../../src/processing-runtime/spark-runtime-serverless';
 
 
@@ -59,6 +59,14 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/SparkJob/EmrPipeline/Role/DefaultPolicy/Resource', [
   { id: 'AwsSolutions-IAM5', reason: 'Job runs generated automatically hence we have to use *' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/SparkJob/EmrPipeline/Resource', [
+  { id: 'AwsSolutions-SF1', reason: 'Cloudwatch Logging is not required and can be enabled in implementation classes' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/SparkJob/EmrPipeline/Resource', [
+  { id: 'AwsSolutions-SF2', reason: 'X-Ray is not required and can be enabled in implementation classes' },
 ]);
 
 
