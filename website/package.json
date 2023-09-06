@@ -43,6 +43,9 @@
     "prettier": "^2.7.1",
     "stylelint": "^14.9.1"
   },
+  "resolutions": {
+    "trim": "0.0.3"
+  },
   "browserslist": {
     "production": [
       ">0.5%",
