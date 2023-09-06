@@ -60,11 +60,11 @@ describe('Create an SparkJob using EMR Serverless Application for Spark and gran
 
   const template = Template.fromStack(stack, {});
 
-  test('State function is created EMR Serverless', () => {
+  test('State machine is created EMR Serverless', () => {
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
   });
 
-  test('State template definition matches expected format EMR Serverless', () => {
+  test('State machine template definition matches expected format EMR Serverless', () => {
     template.hasResourceProperties('AWS::StepFunctions::StateMachine', {
       DefinitionString: {
         'Fn::Join': [
@@ -86,7 +86,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark and gran
 });
 
 
-describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
+describe('Create a SparkJob using EMRonEKS for Spark and grant access', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -125,11 +125,11 @@ describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
 
   const template = Template.fromStack(stack, {});
 
-  test('State function is created with EmrOnEks', () => {
+  test('State machine is created with EmrOnEks', () => {
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
   });
 
-  test('State template definition matches expected format EmrOnEks', () => {
+  test('State machine template definition matches expected format EmrOnEks', () => {
     template.hasResourceProperties('AWS::StepFunctions::StateMachine', {
       DefinitionString: {
         'Fn::Join': [
