@@ -22,7 +22,7 @@ export abstract class SparkJob extends Construct {
    * Tag resources with this key and value to identify the owner of the resources.
    */
   static OWNER_TAG: {key: string; value: string} = {
-    key: 'adsf-owned',
+    key: 'aws-data-solution-fwk:owned',
     value: 'true',
   };
 
