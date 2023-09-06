@@ -5,7 +5,8 @@ import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
-import { Choice, Condition, Fail, FailProps, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { TrackedConstruct, TrackedConstructProps } from '../utils';
@@ -117,9 +118,15 @@ export abstract class SparkJob extends TrackedConstruct {
         .otherwise(wait),
     );
 
+    // Enable CloudWatch Logs for the state machine
+    const logGroup = new LogGroup(this, 'LogGroup', {
+      retention: RetentionDays.ONE_MONTH,
+    });
+
     // StepFunctions state machine
     const stateMachine: StateMachine = new StateMachine(this, 'EmrPipeline', {
       definition: emrPipelineChain,
+      tracingEnabled: true,
       timeout: Duration.seconds(1800),
     },
     );

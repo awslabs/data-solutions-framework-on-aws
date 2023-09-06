@@ -54,8 +54,12 @@ import { TrackedConstruct } from '../utils';
  * ```
  */
 export class EmrServerlessSparkJob extends SparkJob {
-  private config!: EmrServerlessSparkJobApiProps;
-  private sparkJobExecutionRole?: IRole;
+
+  private config: EmrServerlessSparkJobProps;
+
+  constructor( scope: Construct, id: string, props: EmrServerlessSparkJobProps) {
+    super(scope, id);
+
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
     super(scope, id, EmrServerlessSparkJob.name);
@@ -65,10 +69,16 @@ export class EmrServerlessSparkJob extends SparkJob {
       this.setJobPropsDefaults(props as EmrServerlessSparkJobProps);
     } 
     //Tag the AWs Step Functions State Machine
+
     if (!this.config.jobConfig.tags) {
       this.config.jobConfig.tags = {};
     }
     this.config.jobConfig.tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
+
+    if (!this.config.jobConfig.Tags) {
+      this.config.jobConfig.Tags = {};
+    }
+    this.config.jobConfig.Tags[SparkJob.OWNER_TAG.key] = SparkJob.OWNER_TAG.value;
 
     this.stateMachine = this.createStateMachine(this.config.schedule);
 
@@ -187,7 +197,9 @@ export class EmrServerlessSparkJob extends SparkJob {
       ],
       resources: [arn],
     }));
+
     SparkRuntimeServerless.grantJobExecution(role, [this.config.jobConfig.executionRoleArn], [arn, `${arn}/jobruns/*`]);
+
   }
 
   private setJobApiPropsDefaults(props: EmrServerlessSparkJobApiProps): void {
@@ -315,6 +327,7 @@ export interface EmrServerlessSparkJobApiProps extends SparkJobProps {
    * @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {
+<<<<<<< HEAD
     "applicationId": string;
     "clientToken"?: string;
     "name"?:string;
@@ -352,6 +365,15 @@ export interface EmrServerlessSparkJobApiProps extends SparkJobProps {
     "jobDriver":{ [key:string] : any};
     "executionTimeoutMinutes"?:number;
     "tags"?:{ [key:string] : any};
+
+    'ClientToken'?: string;
+
+    'Name'?:string;
+    'ConfigurationOverrides'?:{ [key:string] : any};
+    'ExecutionRoleArn':string;
+    'JobDriver':{ [key:string] : any};
+    'ExecutionTimeoutMinutes'?:number;
+    'Tags'?:{ [key:string] : any};
   };
 
 }
