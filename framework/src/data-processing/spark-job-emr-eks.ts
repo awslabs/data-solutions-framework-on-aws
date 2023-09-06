@@ -7,7 +7,6 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { EmrVersion } from '../utils';
 
 
 /**
@@ -32,10 +31,12 @@ import { EmrVersion } from '../utils';
  * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
  * const applicationId = "APPLICATION_ID";
  * const job = new SparkJob(stack, 'SparkJob', {
- *          jobConfig:{
+ *    executionRoleArn:myExecutionRole.roleArn,jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *               "VirtualClusterId": "virtualClusterId",
+ *               "ClientToken": JsonPath.uuid(),
  *               "ExecutionRoleArn": myExecutionRole.roleArn,
+ *               "ExecutionTimeoutMinutes": 30,
  *               "JobDriver": {
  *                   "SparkSubmit": {
  *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
@@ -56,13 +57,6 @@ export class EmrOnEksSparkJob extends SparkJob {
 
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
     super(scope, id);
-
-    //Set defaults
-    props.jobConfig.ClientToken ??= JsonPath.uuid();
-    props.jobConfig.ExecutionTimeoutMinutes ??= 30;
-    props.jobConfig.ReleaseLabel ??= EmrVersion.V6_2;
-
-
     this.config = props;
     this.stateMachine = this.createStateMachine(this.config.schedule);
   }
@@ -102,7 +96,7 @@ export class EmrOnEksSparkJob extends SparkJob {
         VirtualClusterId: this.config.jobConfig.VirtualClusterId,
         Id: JsonPath.stringAt('$.JobRunId'),
       },
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       resultSelector: {
         'State.$': '$.State',
         'StateDetails.$': '$.StateDetails',
@@ -155,10 +149,10 @@ export class EmrOnEksSparkJob extends SparkJob {
         'emr-containers:StartJobRun',
         'emr-containers:DescribeJobRun',
       ],
-      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`, `arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       conditions: {
         StringEquals: {
-          'emr-containers:ExecutionRoleArn': this.config.jobConfig.ExecutionRoleArn,
+          'emr-containers:ExecutionRoleArn': this.config.executionRoleArn,
         },
       },
     }));
@@ -180,7 +174,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
    */
   readonly jobConfig: {
     'VirtualClusterId': string;
-    'ClientToken'?: string;
+    'ClientToken': string;
     'Name'?:string;
     'ConfigurationOverrides'?:{ [key:string] : any};
     'ExecutionRoleArn':string;
@@ -188,7 +182,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
     'ExecutionTimeoutMinutes'?:number;
     'JobTemplateId'?:string;
     'JobTemplateParameters'?:{ [key:string] : string};
-    'ReleaseLabel'?:EmrVersion;
+    'ReleaseLabel':string;
     'Tags'?:{ [key:string] : any};
   };
 }

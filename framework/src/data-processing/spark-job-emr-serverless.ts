@@ -31,10 +31,12 @@ import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serv
  * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
  * const applicationId = "APPLICATION_ID";
  * const job = new SparkJob(stack, 'SparkJob', {
- *          jobConfig:{
+ *    executionRoleArn:myExecutionRole.roleArn,jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *               "ApplicationId": applicationId,
+ *               "ClientToken": JsonPath.uuid(),
  *               "ExecutionRoleArn": myExecutionRole.roleArn,
+ *               "ExecutionTimeoutMinutes": 30,
  *               "JobDriver": {
  *                   "SparkSubmit": {
  *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
@@ -55,19 +57,11 @@ export class EmrServerlessSparkJob extends SparkJob {
 
   constructor( scope: Construct, id: string, props: EmrServerlessSparkJobProps) {
     super(scope, id);
-
-    //Set defaults
-    props.jobConfig.ClientToken ??= JsonPath.uuid();
-    props.jobConfig.ExecutionTimeoutMinutes ??= 0;
-
     this.config = props;
-
-    //Tag the AWs Step Functions State Machine
     if (!this.config.jobConfig.Tags) {
       this.config.jobConfig.Tags = {};
     }
     this.config.jobConfig.Tags[SparkJob.OWNER_TAG.key] = SparkJob.OWNER_TAG.value;
-
     this.stateMachine = this.createStateMachine(this.config.schedule);
   }
 
@@ -157,7 +151,7 @@ export class EmrServerlessSparkJob extends SparkJob {
       ],
       resources: [arn],
     }));
-    SparkRuntimeServerless.grantJobExecution(role, [this.config.jobConfig.ExecutionRoleArn], [arn, `${arn}/jobruns/*`]);
+    SparkRuntimeServerless.grantJobExecution(role, [this.config.executionRoleArn], [arn, `${arn}/jobruns/*`]);
   }
 }
 
@@ -176,7 +170,7 @@ export interface EmrServerlessSparkJobProps extends SparkJobProps {
    */
   readonly jobConfig: {
     'ApplicationId': string;
-    'ClientToken'?: string;
+    'ClientToken': string;
     'Name'?:string;
     'ConfigurationOverrides'?:{ [key:string] : any};
     'ExecutionRoleArn':string;
