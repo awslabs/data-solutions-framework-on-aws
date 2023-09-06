@@ -54,7 +54,7 @@ export abstract class SparkJob extends Construct {
   protected abstract getJobMonitorTaskProps(): CallAwsServiceProps;
 
   /**
-   * Parameters for step functions task that fails the Spark job
+   * Parameters for Step Functions task that fails the Spark job
    * @returns FailProps
    */
   protected abstract getJobFailTaskProps(): FailProps;
