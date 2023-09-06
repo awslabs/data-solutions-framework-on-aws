@@ -85,7 +85,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   }
 
   /**
-   * Returns the props for the step function CallAwsService Construct that checks the execution status of the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that checks the execution status of the Spark job
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
