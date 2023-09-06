@@ -11,12 +11,11 @@ import { Construct } from 'constructs';
 
 /**
  * A base construct to run Spark Jobs
- * Creates an AWS Step Function State Machine that orchestrates the Spark Job.
+ * Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
  * @see SparkJobProps parameters to be specified for the construct
  * @see EmrServerlessSparkJob for Emr Serverless implementation
  * @see EmrOnEksSparkJob for EMR On EKS implementation
  */
-
 export abstract class SparkJob extends Construct {
 
   /**
@@ -28,7 +27,7 @@ export abstract class SparkJob extends Construct {
   };
 
   /**
-   * Step Function StateMachine created to orchestrate the Spark Job
+   * Step Functions StateMachine created to orchestrate the Spark Job
    */
   public stateMachine: undefined | StateMachine;
 
@@ -38,19 +37,18 @@ export abstract class SparkJob extends Construct {
    * @param id the ID of the CDK Construct.
    * @param props the SparkJobProps properties.
    */
-
   constructor(scope: Construct, id: string) {
     super(scope, id);
   }
 
   /**
-   * Parameters for step functions task that runs the Spark job
+   * Parameters for Step Functions task that runs the Spark job
    * @returns CallAwsServiceProps
    */
   protected abstract getJobStartTaskProps(): CallAwsServiceProps;
 
   /**
-   * Parameters for step functions task that monitors the Spark job
+   * Parameters for Step Functions task that monitors the Spark job
    * @returns CallAwsServiceProps
    */
   protected abstract getJobMonitorTaskProps(): CallAwsServiceProps;
@@ -62,29 +60,29 @@ export abstract class SparkJob extends Construct {
   protected abstract getJobFailTaskProps(): FailProps;
 
   /**
-   * Returns the status of the Spark job that succeeded  based on the GetJobRun API response
+   * Returns the status of the Spark job that succeeded based on the GetJobRun API response
    * @returns string
    */
   protected abstract getJobStatusSucceed(): string;
 
   /**
-   * Returns the status of the Spark job that failed  based on the GetJobRun API response
+   * Returns the status of the Spark job that failed based on the GetJobRun API response
    * @returns string
    */
   protected abstract getJobStatusFailed(): string;
 
   /**
-   * Grants the execution role to the step function state machine
+   * Grants the execution role to the Step Functions state machine
    * @param role
    */
   protected abstract grantExecutionRole(role:IRole):void;
 
   /**
    * Creates a State Machine that orchestrates the Spark Job. This is a default implementation that can be overridden by the extending class.
-   * @param schedule Schedule to run the step function.
+   * @param schedule Schedule to run the state machine.
    * @returns StateMachine
    */
-  protected createStateMachine( schedule? : Schedule): StateMachine {
+  protected createStateMachine(schedule? : Schedule): StateMachine {
 
     const emrStartJobTask = new CallAwsService(this, 'EmrStartJobTask', this.getJobStartTaskProps());
 
@@ -109,8 +107,7 @@ export abstract class SparkJob extends Construct {
     const stateMachine: StateMachine = new StateMachine(this, 'EmrPipeline', {
       definition: emrPipelineChain,
       timeout: Duration.seconds(1800),
-    },
-    );
+    });
 
     this.grantExecutionRole(stateMachine.role);
     if (schedule) {
@@ -130,7 +127,7 @@ export abstract class SparkJob extends Construct {
 export interface SparkJobProps {
 
   /**
-   * Schedule to run the step function.
+   * Schedule to run the Step Functions state machine.
    * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
    */
   readonly schedule?: Schedule;
