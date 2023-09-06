@@ -78,7 +78,7 @@ export class EmrServerlessSparkJob extends SparkJob {
       action: 'startJobRun',
       iamAction: 'emrserverless:StartJobRun',
       parameters: this.config.jobConfig,
-      iamResources: ['*'],
+      iamResources: [`arn:${Aws.PARTITION}:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.config.applicationId}/jobruns/*`],
       resultSelector: {
         'JobRunId.$': '$.JobRunId',
       },
@@ -100,7 +100,7 @@ export class EmrServerlessSparkJob extends SparkJob {
         ApplicationId: this.config.applicationId,
         JobRunId: JsonPath.stringAt('$.JobRunId'),
       },
-      iamResources: ['*'],
+      iamResources: [`arn:${Aws.PARTITION}:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.config.applicationId}/jobruns/*`],
       resultSelector: {
         'State.$': '$.JobRun.State',
         'StateDetails.$': '$.JobRun.StateDetails',
