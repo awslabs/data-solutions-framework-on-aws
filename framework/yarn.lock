@@ -755,14 +755,14 @@
     chalk "^4.1.2"
     semver "^7.5.4"
 
-"@jsii/spec@1.86.1", "@jsii/spec@^1.85.0", "@jsii/spec@^1.86.1":
+"@jsii/spec@1.86.1":
   version "1.86.1"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.86.1.tgz#0f8911f5d5cfb2606628f143ac7d195b7870c890"
   integrity sha512-wD0Y0pVg/1jjbZImk2FIuj+YdpwLFEsKCpoC3XKLJyNyUZPSoJzrt3phLV8HRLmH0m52kw6rh044OIowedcc9A==
   dependencies:
     ajv "^8.12.0"
 
-"@jsii/spec@^1.87.0":
+"@jsii/spec@^1.85.0", "@jsii/spec@^1.86.1", "@jsii/spec@^1.87.0":
   version "1.87.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.87.0.tgz#99b9dd12ed92120e79e645538620db0526a7ad7b"
   integrity sha512-fhTT3IYmjyRKvUUWffBIuGDVVfyKC+QfE1cMyExSHl7l6wk6unrxS8qsU23kaJ5bNQAnlc2+CE1HteY2SLbepg==
