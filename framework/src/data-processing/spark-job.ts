@@ -5,7 +5,8 @@ import { Duration } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
-import { Choice, Condition, Fail, FailProps, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
@@ -22,7 +23,7 @@ export abstract class SparkJob extends Construct {
    * Tag resources with this key and value to identify the owner of the resources.
    */
   static OWNER_TAG: {key: string; value: string} = {
-    key: 'aws-data-solution-fwk:owned',
+    key: 'adsf-owned',
     value: 'true',
   };
 
@@ -103,10 +104,20 @@ export abstract class SparkJob extends Construct {
         .otherwise(wait),
     );
 
+    // Enable CloudWatch Logs for the state machine
+    const logGroup = new LogGroup(this, 'LogGroup', {
+      retention: RetentionDays.ONE_MONTH,
+    });
+
     // StepFunctions state machine
     const stateMachine: StateMachine = new StateMachine(this, 'EmrPipeline', {
       definition: emrPipelineChain,
+      tracingEnabled: true,
       timeout: Duration.seconds(1800),
+      logs: {
+        destination: logGroup,
+        level: LogLevel.ALL,
+      },
     });
 
     this.grantExecutionRole(stateMachine.role);
@@ -125,6 +136,11 @@ export abstract class SparkJob extends Construct {
  * Properties for the SparkJob construct.
  */
 export interface SparkJobProps {
+
+  /**
+   * ARN of the IAM role to use for the Spark job.
+   */
+  readonly executionRoleArn: string;
 
   /**
    * Schedule to run the Step Functions state machine.

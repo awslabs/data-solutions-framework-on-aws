@@ -7,12 +7,12 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serverless';
+
 
 /**
- * A construct to run Spark Jobs using EMR Serverless.
+ * A construct to run Spark Jobs using EMR on EKS.
  * creates a State Machine that orchestrates the Spark Job.
- * @see EmrServerlessSparkJobProps parameters to be specified for the construct
+ * @see EmrOnEksSparkJobProps parameters to be specified for the construct
  *
  * **Usage example**
  * @example
@@ -31,9 +31,9 @@ import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serv
  * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
  * const applicationId = "APPLICATION_ID";
  * const job = new SparkJob(stack, 'SparkJob', {
- *    applicationId:applicationId,executionRoleArn:myExecutionRole.roleArn,jobConfig:{
+ *    executionRoleArn:myExecutionRole.roleArn,jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
- *               "ApplicationId": applicationId,
+ *               "VirtualClusterId": "virtualClusterId",
  *               "ClientToken": JsonPath.uuid(),
  *               "ExecutionRoleArn": myExecutionRole.roleArn,
  *               "ExecutionTimeoutMinutes": 30,
@@ -52,16 +52,12 @@ import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serv
  * });
  * ```
  */
-export class EmrServerlessSparkJob extends SparkJob {
-  private config: EmrServerlessSparkJobProps;
+export class EmrOnEksSparkJob extends SparkJob {
+  readonly config: EmrOnEksSparkJobProps;
 
-  constructor( scope: Construct, id: string, props: EmrServerlessSparkJobProps) {
+  constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
     super(scope, id);
     this.config = props;
-    if (!this.config.jobConfig.Tags) {
-      this.config.jobConfig.Tags = {};
-    }
-    this.config.jobConfig.Tags[SparkJob.OWNER_TAG.key] = SparkJob.OWNER_TAG.value;
     this.stateMachine = this.createStateMachine(this.config.schedule);
   }
 
@@ -71,15 +67,16 @@ export class EmrServerlessSparkJob extends SparkJob {
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
+
   getJobStartTaskProps(): CallAwsServiceProps {
     return {
-      service: 'emrserverless',
-      action: 'startJobRun',
-      iamAction: 'emrserverless:StartJobRun',
+      service: 'emrcontainers',
+      action: 'StartJobRun',
+      iamAction: 'emr-containers:StartJobRun',
       parameters: this.config.jobConfig,
-      iamResources: [`arn:${Aws.PARTITION}:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.config.applicationId}/jobruns/*`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       resultSelector: {
-        'JobRunId.$': '$.JobRunId',
+        'JobRunId.$': '$.Id',
       },
     } as CallAwsServiceProps;
   }
@@ -89,100 +86,103 @@ export class EmrServerlessSparkJob extends SparkJob {
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
+
   getJobMonitorTaskProps(): CallAwsServiceProps {
     return {
-      service: 'emrserverless',
-      action: 'getJobRun',
-      iamAction: 'emrserverless:GetJobRun',
+      service: 'emrcontainers',
+      action: 'describeJobRun',
+      iamAction: 'emr-container:DescribeJobRun',
       parameters: {
-        ApplicationId: this.config.applicationId,
-        JobRunId: JsonPath.stringAt('$.JobRunId'),
+        VirtualClusterId: this.config.jobConfig.VirtualClusterId,
+        Id: JsonPath.stringAt('$.JobRunId'),
       },
-      iamResources: [`arn:${Aws.PARTITION}:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.config.applicationId}/jobruns/*`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       resultSelector: {
-        'State.$': '$.JobRun.State',
-        'StateDetails.$': '$.JobRun.StateDetails',
+        'State.$': '$.State',
+        'StateDetails.$': '$.StateDetails',
       },
       resultPath: '$.JobRunState',
+
+
     } as CallAwsServiceProps;
   }
 
   /**
-   * Returns the props for the step function task that handles the failure if the EMR Serverless job fails.
+   * Returns the props for the Step Functions task that handles the failure  if the EMR Serverless job fails.
    * @returns FailProps The error details of the failed Spark Job
    */
+
   getJobFailTaskProps(): FailProps {
     return {
-      cause: 'EMRServerlessJobFailed',
+      cause: 'EMRonEKSJobFailed',
       error: JsonPath.stringAt('$.JobRunState.StateDetails'),
-    } as FailProps;
+    };
   }
 
-
   /**
-   * Returns the status of the EMR Serverless job that succeeded based on the GetJobRun API response
+   * Returns the status of the EMR on EKS job that succeeded  based on the GetJobRun API response
    * @returns string
    */
+
   getJobStatusSucceed(): string {
-    return 'SUCCESS';
+    return 'COMPLETED';
   }
 
   /**
-   * Returns the status of the EMR Serverless job that failed based on the GetJobRun API response
+   * Returns the status of the EMR on EKS job that failed based on the GetJobRun API response
    * @returns string
    */
+
   getJobStatusFailed(): string {
     return 'FAILED';
   }
 
   /**
-   * Grants the necessary permissions to the Step Functions StateMachine to be able to start EMR Serverless job
+   * Grants the necessary permissions to the Step Functions StateMachine to be able to start EMR on EKS job
    * @param role Step Functions StateMachine IAM role
-   * @see SparkRuntimeServerless.grantJobExecution
    */
 
   grantExecutionRole(role: IRole): void {
-
-    const arn = `arn:aws:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.config.applicationId}`;
     role.addToPrincipalPolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
-        'emr-serverless:TagResource',
+        'emr-containers:StartJobRun',
+        'emr-containers:DescribeJobRun',
       ],
-      resources: [arn],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
+      conditions: {
+        StringEquals: {
+          'emr-containers:ExecutionRoleArn': this.config.executionRoleArn,
+        },
+      },
     }));
-    SparkRuntimeServerless.grantJobExecution(role, [this.config.executionRoleArn], [arn, `${arn}/jobruns/*`]);
   }
 }
 
-/**
- * Configuration for the EMR Serverless job.
- * @param applicationId The ID of the EMR Serverless application.
- * @param executionRoleArn The ARN of the EMR Serverless execution role.
- * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
- */
 
-export interface EmrServerlessSparkJobProps extends SparkJobProps {
+/**
+ * Configuration for the EMR on EKS job.
+ * @param virtualClusterId The ID of the EMR on EKS cluster.
+ * @param executionRoleArn The ARN of the EMR on EKS job execution role.
+ * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
+ */
+export interface EmrOnEksSparkJobProps extends SparkJobProps {
+
   /**
-   * application ID of the EMR Serverless application.
-   */
-  readonly applicationId: string;
-  /**
-   * ARN of the IAM role to use for the EMR Serverless job.
-   */
-  readonly executionRoleArn: string;
-  /**
-   * EMR Serverless Job Configuration.
-   * @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
+   * EMR on EKS Job Configuration.
+   * @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {
+    'VirtualClusterId': string;
     'ClientToken': string;
     'Name'?:string;
     'ConfigurationOverrides'?:{ [key:string] : any};
     'ExecutionRoleArn':string;
     'JobDriver':{ [key:string] : any};
     'ExecutionTimeoutMinutes'?:number;
+    'JobTemplateId'?:string;
+    'JobTemplateParameters'?:{ [key:string] : string};
+    'ReleaseLabel':string;
     'Tags'?:{ [key:string] : any};
   };
-
 }
