@@ -10,7 +10,7 @@ import { SparkJob, SparkJobProps } from './spark-job';
 
 
 /**
- * A construct to run Spark Jobs using EMRonEKS.
+ * A construct to run Spark Jobs using EMR on EKS.
  * creates a State Machine that orchestrates the Spark Job.
  * @see EmrOnEksSparkJobProps parameters to be specified for the construct
  *
@@ -52,7 +52,6 @@ import { SparkJob, SparkJobProps } from './spark-job';
  * });
  * ```
  */
-
 export class EmrOnEksSparkJob extends SparkJob {
   readonly config: EmrOnEksSparkJobProps;
 
@@ -64,7 +63,7 @@ export class EmrOnEksSparkJob extends SparkJob {
 
 
   /**
-   * Returns the props for the step function CallAwsService Construct that starts the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
@@ -83,7 +82,7 @@ export class EmrOnEksSparkJob extends SparkJob {
   }
 
   /**
-   * Returns the props for the step function CallAwsService Construct that checks the execution status of the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that checks the execution status of the Spark job
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
@@ -109,7 +108,7 @@ export class EmrOnEksSparkJob extends SparkJob {
   }
 
   /**
-   * Returns the props for the step function task that handles the failure  if the EMR Serverless job fails.
+   * Returns the props for the Step Functions task that handles the failure  if the EMR Serverless job fails.
    * @returns FailProps The error details of the failed Spark Job
    */
 
@@ -139,8 +138,8 @@ export class EmrOnEksSparkJob extends SparkJob {
   }
 
   /**
-   * Grants the necessary permissions to the Step function StateMachine to be able to start EMR Serverless job
-   * @param role Step functions StateMachine IAM role
+   * Grants the necessary permissions to the Step Functions StateMachine to be able to start EMR Serverless job
+   * @param role Step Functions StateMachine IAM role
    */
 
   grantExecutionRole(role: IRole): void {
