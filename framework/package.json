@@ -55,6 +55,7 @@
     "jsii-rosetta": "~5.0.0",
     "npm-check-updates": "^16",
     "projen": "^0.72.1",
+    "rosetta": "^1.1.0",
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6"
   },

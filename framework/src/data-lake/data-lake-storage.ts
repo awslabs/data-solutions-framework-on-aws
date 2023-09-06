@@ -103,16 +103,12 @@ export interface DataLakeStorageProps {
  * **Usage example**
  *
  * ```typescript
- * import * as cdk from 'aws-cdk-lib';
  * import { DataLakeStorage } from 'aws-data-solutions-framework';
  *
- * const exampleApp = new cdk.App();
- * const stack = new cdk.Stack(exampleApp, 'DataLakeStorageStack');
- *
  * // Set context value for global data removal policy (or set in cdk.json).
- * stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+ * this.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
  *
- * new DataLakeStorage(stack, 'MyDataLakeStorage', {
+ * new DataLakeStorage(this, 'MyDataLakeStorage', {
  *  bronzeName: 'my-bronze',
  *  bronzeInfrequentAccessDelay: 90,
  *  bronzeArchiveDelay: 180,

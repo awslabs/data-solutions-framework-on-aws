@@ -66,7 +66,7 @@ export interface SparkCICDPipelineProps {
   /**
    * The environment variables to create from the Application Stack and to pass to the integration tests.
    * This is used to interact with resources created by the Application Stack from within the integration tests script.
-   * Key is the name of the environment variable to create. Value is generally a resource ID/name/ARN from the Application Stack.
+   * Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application Stack.
    * @default - No environment variables
    */
   readonly integTestEnv?: Record<string, string>;
@@ -82,7 +82,7 @@ export interface SparkCICDPipelineProps {
 *  * A Production stage to deploy the application stack in the production account
 *
 * If using different accounts for dev (where this construct is deployed), integration and production (where the application stack is deployed),
-* bootstrap integration and production account with CDK and add a trust relationship from the dev account:
+* bootstrap integration and production accounts with CDK and add a trust relationship from the dev account:
 * ```bash
 * cdk bootstrap \
 *   --profile integration \
@@ -99,21 +99,27 @@ export interface SparkCICDPipelineProps {
 * and are generally resources ID/names/ARNs.
 *
 * The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
-* The `createStack()` method needs to return the application stack instance within the scope passed to the factory method.
+* The `createStack()` method needs to return a `ApplicationStack` instance within the scope passed to the factory method.
 * This is used to create the application stack within the scope of the CDK Pipeline stage.
+* The `ApplicationStack` is a standard `Stack` with an additional parameter of type `CICDStage`. 
+* This parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage. 
+* For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job. 
 *
 * **Usage example**
 * ```typescript
 * const stack = new Stack();
 *
 * class MyApplicationStack extends Stack {
+*
 *   constructor(scope: Stack) {
 *     super(scope, 'MyApplicationStack');
 *
-*     new Bucket(this, 'TestBucket', {
+*     const bucket = new Bucket(this, 'TestBucket', {
 *       autoDeleteObjects: true,
 *       removalPolicy: RemovalPolicy.DESTROY,
-*     })
+*     });
+*
+*     new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
 *   }
 * }
 *
@@ -126,6 +132,13 @@ export interface SparkCICDPipelineProps {
 * new SparkCICDPipeline(stack, 'TestConstruct', {
 *   applicationName: 'test',
 *   applicationStackFactory: new MyStackFactory(),
+*   cdkPath: 'cdk/',
+*   sparkPath: 'spark/',
+*   sparkImage: SparkImage.EMR_SERVERLESS_6_10,
+*   integTestScript: 'cdk/integ-test.sh',
+*   integTestEnv: {
+*     TEST_BUCKET: 'BucketName',
+*   },
 * });
 * ```
 */
@@ -236,7 +249,7 @@ export class SparkCICDPipeline extends Construct {
         region: process.env.STAGING_REGION,
       },
       applicationStackFactory: props.applicationStackFactory,
-      outputs: props.integTestEnv,
+      outputsEnv: props.integTestEnv,
       stage: CICDStage.STAGING,
     });
     const stagingDeployment = pipeline.addStage(staging);
@@ -249,7 +262,7 @@ export class SparkCICDPipeline extends Construct {
       stagingDeployment.addPost(new ShellStep('IntegrationTests', {
         input: buildStage.addOutputDirectory(integPath),
         commands: [`cd ${integPath} && ./${integScript}`],
-        envFromCfnOutputs: staging.outputs,
+        envFromCfnOutputs: staging.stackOutputsEnv,
       }));
     }
 

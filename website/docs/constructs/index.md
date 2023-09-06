@@ -2,6 +2,8 @@
 sidebar_position: 1
 sidebar_label: Introduction
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Build your own data solutions
 

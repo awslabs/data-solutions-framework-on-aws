@@ -4,3 +4,5 @@
 
 export { SparkCICDPipeline, SparkCICDPipelineProps, SparkImage } from './spark-cicd-pipeline';
 export { ApplicationStackFactory } from './application-stack-factory';
+export { ApplicationStack, ApplicationStackProps } from './application-stack';
+export { CICDStage } from './application-stage';

@@ -8,19 +8,20 @@
 * @group unit/spark-processing
 */
 
-import { RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { SparkCICDPipeline, ApplicationStackFactory, SparkImage } from '../../../src';
+import { ApplicationStack, ApplicationStackProps } from '../../../src/processing/application-stack';
 
 
 describe('With minimal configuration, the construct', () => {
 
   const stack = new Stack();
 
-  class MyApplicationStack extends Stack {
-    constructor(scope: Stack) {
-      super(scope, 'MyApplicationStack');
+  class MyApplicationStack extends ApplicationStack {
+    constructor(scope: Stack, id: string, props: ApplicationStackProps) {
+      super(scope, id, props);
 
       new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
@@ -30,8 +31,8 @@ describe('With minimal configuration, the construct', () => {
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack): Stack {
-      return new MyApplicationStack(scope);
+    createStack(scope: Stack, id: string, props: ApplicationStackProps): Stack {
+      return new MyApplicationStack(scope, id, props);
     }
   }
 
@@ -68,6 +69,7 @@ describe('With minimal configuration, the construct', () => {
       Source: {
         BuildSpec: Match.stringLikeRegexp('.*npm run build.*'),
       },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
   });
 
@@ -76,6 +78,7 @@ describe('With minimal configuration, the construct', () => {
       Source: {
         BuildSpec: Match.stringLikeRegexp('.*cd \..*'),
       },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
   });
 
@@ -84,36 +87,9 @@ describe('With minimal configuration, the construct', () => {
       Source: {
         BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-serverless/spark/emr-6.12.0:latest.*'),
       },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
   });
-
-  // test('should create a CDK Pipeline that deploys stacks cross accounts', () => {
-  //   template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
-  //     Stages: Match.arrayWith([
-  //       Match.objectLike({
-  //         "Actions": Match.arrayWith([
-  //           Match.objectLike({
-  //             "ActionTypeId": Match.objectLike({
-  //               "Category": "Deploy",
-  //               "Owner": "AWS",
-  //               "Provider": "CloudFormation",
-  //             }),
-  //             "Configuration": Match.objectLike({
-  //               "StackName": "Staging-MyApplicationStack",
-  //             }),
-  //             "InputArtifacts": [
-  //               {
-  //                 "Name": "CodeBuildSynthStep_Output"
-  //               }
-  //             ],
-  //             "Name": "Deploy",
-  //           }),
-  //         ]),
-  //         "Name": "Staging"
-  //       }),
-  //     ]),
-  //   });
-  // });
 
   test('should create integration stage for Staging', () => {
     template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
@@ -127,7 +103,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Staging-MyApplicationStack',
+                StackName: 'Staging-Stack',
               }),
               InputArtifacts: [
                 {
@@ -155,7 +131,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Production-MyApplicationStack',
+                StackName: 'Production-Stack',
               }),
               InputArtifacts: [
                 {
@@ -177,7 +153,6 @@ describe('With custom configuration, the construct', () => {
   const stack = new Stack();
 
   class MyApplicationStack extends Stack {
-    public readonly bucketName: string;
 
     constructor(scope: Stack) {
       super(scope, 'MyApplicationStack');
@@ -187,7 +162,7 @@ describe('With custom configuration, the construct', () => {
         removalPolicy: RemovalPolicy.DESTROY,
       });
 
-      this.bucketName = bucket.bucketName;
+      new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
     }
   }
 
@@ -204,6 +179,9 @@ describe('With custom configuration, the construct', () => {
     sparkPath: 'spark/',
     sparkImage: SparkImage.EMR_SERVERLESS_6_10,
     integTestScript: 'cdk/integ-test.sh',
+    integTestEnv: {
+      TEST_BUCKET: 'BucketName',
+    },
   });
 
   const template = Template.fromStack(stack);
@@ -214,6 +192,7 @@ describe('With custom configuration, the construct', () => {
       Source: {
         BuildSpec: Match.stringLikeRegexp('.*cd cdk/.*'),
       },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
   });
 
@@ -222,6 +201,7 @@ describe('With custom configuration, the construct', () => {
       Source: {
         BuildSpec: Match.stringLikeRegexp('.*docker run -i -v \\$PWD/spark/:/home/hadoop/.*'),
       },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
   });
 
@@ -230,6 +210,34 @@ describe('With custom configuration, the construct', () => {
       Source: {
         BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-serverless/spark/emr-6.10.0:latest.*'),
       },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
+    });
+  });
+
+  test('should get the CfnOutput from the application stack and use it in the integration tests stage', () => {
+    template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
+      Stages: Match.arrayWith([
+        Match.objectLike({
+          Actions: Match.arrayWith([
+            Match.objectLike({
+              Configuration: Match.objectLike({
+                EnvironmentVariables: Match.stringLikeRegexp('.*TEST_BUCKET.*BucketName.*'),
+              }),
+              Name: 'IntegrationTests',
+            }),
+          ]),
+          Name: 'Staging',
+        }),
+      ]),
+    });
+  });
+
+  test('should create a CodeBuild project for integration tests with the proper script paths for running the test', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*d cdk && \./integ-test.sh.*'),
+      },
+      Description: Match.stringLikeRegexp('.*IntegrationTests.*'),
     });
   });
 });
