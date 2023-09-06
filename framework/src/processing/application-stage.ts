@@ -16,8 +16,8 @@ export enum CICDStage {
 }
 
 /**
-* Properties for SparkCICDStage class.
-*/
+ * Properties for SparkCICDStage class.
+ */
 export interface ApplicationStageProps extends StageProps {
   /**
    * The application Stack to deploy in the different CDK Pipelines Stages
@@ -28,7 +28,7 @@ export interface ApplicationStageProps extends StageProps {
    * The list of values to create CfnOutputs
    * @default - No CfnOutputs are created
    */
-  readonly outputs?: Record<string, string>;
+  readonly outputsEnv?: Record<string, string>;
 
   /**
    * The Stage to deploy the SparkCICDStack in
@@ -45,7 +45,7 @@ export class ApplicationStage extends Stage {
   /**
    * The list of CfnOutputs created by the CDK Stack
    */
-  public readonly outputs?: Record<string, CfnOutput>;
+  public readonly stackOutputsEnv?: Record<string, CfnOutput>;
 
   /**
    * Construct a new instance of the SparkCICDStage class.
@@ -57,15 +57,14 @@ export class ApplicationStage extends Stage {
     super(scope, id, props);
 
     // create the CDK Stack from the ApplicationStackFactory using the proper scope
-    props.applicationStackFactory.createStack(this);
+    const applicationStack = props.applicationStackFactory.createStack(this, 'Stack', { stage: props.stage });
 
     // create CfnOutputs from the variables to expose in env variables for integration tests
-    if (props?.outputs){
-      this.outputs = {};
-      for ( let key in props?.outputs){
-        this.outputs[key] = new CfnOutput(this, key, {
-          value: props?.outputs[key],
-        })
+    if (props.outputsEnv) {
+      this.stackOutputsEnv = {};
+      for ( let key in props.outputsEnv) {
+        const outputName = props.outputsEnv[key];
+        this.stackOutputsEnv[key] = applicationStack.node.children.find(v => (v as CfnOutput)?.logicalId?.includes(outputName)) as CfnOutput;;
       }
     }
   }

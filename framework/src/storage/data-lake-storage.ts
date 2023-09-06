@@ -91,23 +91,26 @@ export interface DataLakeStorageProps {
  * Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
  * See documentation TODO insert link.
  *
- * @example
- * import * as cdk from 'aws-cdk-lib';
+ * For custom requirements not covered by {DataLakeStorageProps}, consider using {AnalyticsBucket} directly.
+ *
+ * **Usage example**
+ *
+ * ```typescript
  * import { DataLakeStorage } from 'aws-data-solutions-framework';
  *
- * // Set the context value for global data removal policy
- * stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+ * // Set context value for global data removal policy (or set in cdk.json).
+ * this.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
  *
  * new DataLakeStorage(this, 'MyDataLakeStorage', {
- *  bronzeBucketName: 'my-bronze',
- *  bronzeBucketInfrequentAccessDelay: 90,
- *  bronzeBucketArchiveDelay: 180,
- *  silverBucketName: 'my-silver',
- *  silverBucketInfrequentAccessDelay: 180,
- *  silverBucketArchiveDelay: 360,
- *  goldBucketName: 'my-gold',
- *  goldBucketInfrequentAccessDelay: 180,
- *  goldBucketArchiveDelay: 360,
+ *  bronzeName: 'my-bronze',
+ *  bronzeInfrequentAccessDelay: 90,
+ *  bronzeArchiveDelay: 180,
+ *  silverName: 'my-silver',
+ *  silverInfrequentAccessDelay: 180,
+ *  silverArchiveDelay: 360,
+ *  goldName: 'my-gold',
+ *  goldInfrequentAccessDelay: 180,
+ *  goldArchiveDelay: 360,
  *  removalPolicy: cdk.RemovalPolicy.DESTROY,
  * });
  */

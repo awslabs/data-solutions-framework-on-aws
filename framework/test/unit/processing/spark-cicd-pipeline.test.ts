@@ -8,11 +8,12 @@
 * @group unit/spark-processing
 */
 
-import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { SparkEmrCICDPipeline, ApplicationStackFactory, SparkImage, CICDStage } from '../../../src';
+import { SparkCICDPipeline, ApplicationStackFactory, SparkImage } from '../../../src';
+import { ApplicationStack, ApplicationStackProps } from '../../../src/processing/application-stack';
 
 
 describe('With minimal configuration, the construct', () => {
@@ -26,10 +27,9 @@ describe('With minimal configuration, the construct', () => {
   stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
   stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
 
-  class MyApplicationStack extends Stack {
-
-    constructor(scope: Stack, id: string) {
-      super(scope, id);
+  class MyApplicationStack extends ApplicationStack {
+    constructor(scope: Stack, id: string, props: ApplicationStackProps) {
+      super(scope, id, props);
 
       new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
@@ -39,9 +39,8 @@ describe('With minimal configuration, the construct', () => {
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack, stage: CICDStage): Stack {
-      console.log(stage);
-      return new MyApplicationStack(scope, 'MyApplication');
+    createStack(scope: Stack, id: string, props: ApplicationStackProps): Stack {
+      return new MyApplicationStack(scope, id, props);
     }
   }
 
@@ -112,7 +111,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Staging-MyApplication',
+                StackName: 'Staging-Stack',
               }),
               InputArtifacts: [
                 {
@@ -140,7 +139,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Production-MyApplication',
+                StackName: 'Production-Stack',
               }),
               InputArtifacts: [
                 {
@@ -199,14 +198,6 @@ describe('With custom configuration, the construct', () => {
     integTestEnv: {
       TEST_BUCKET: 'BucketName',
     },
-    integTestPermissions: [
-      new PolicyStatement({
-        actions: [
-          's3:GetObject',
-        ],
-        resources: ['*'],
-      }),
-    ],
   });
 
   const template = Template.fromStack(stack);
@@ -260,23 +251,9 @@ describe('With custom configuration, the construct', () => {
   test('should create a CodeBuild project for integration tests with the proper script paths for running the test', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*chmod \\+x integ-test\.sh && \./integ-test.sh.*'),
+        BuildSpec: Match.stringLikeRegexp('.*d cdk && \./integ-test.sh.*'),
       },
       Description: Match.stringLikeRegexp('.*IntegrationTests.*'),
-    });
-  });
-
-  test('should create an IAM Policy with the configured permissions for the Staging stage role', () => {
-    template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyDocument: {
-        Statement: Match.arrayWith([
-          Match.objectLike({
-            Action: 's3:GetObject',
-            Resource: '*',
-          }),
-        ]),
-      },
-      PolicyName: Match.stringLikeRegexp('.*CodePipelineStagingIntegrationTestsRoleDefaultPolicy.*'),
     });
   });
 });
