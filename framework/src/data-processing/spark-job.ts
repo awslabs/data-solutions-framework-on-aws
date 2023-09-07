@@ -138,11 +138,6 @@ export abstract class SparkJob extends Construct {
 export interface SparkJobProps {
 
   /**
-   * ARN of the IAM role to use for the Spark job.
-   */
-  readonly executionRoleArn: string;
-
-  /**
    * Schedule to run the Step Functions state machine.
    * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
    */

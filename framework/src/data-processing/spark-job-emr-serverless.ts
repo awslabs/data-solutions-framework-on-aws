@@ -31,7 +31,7 @@ import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serv
  * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
  * const applicationId = "APPLICATION_ID";
  * const job = new SparkJob(stack, 'SparkJob', {
- *    executionRoleArn:myExecutionRole.roleArn,jobConfig:{
+ *          jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *               "ApplicationId": applicationId,
  *               "ClientToken": JsonPath.uuid(),
@@ -151,7 +151,7 @@ export class EmrServerlessSparkJob extends SparkJob {
       ],
       resources: [arn],
     }));
-    SparkRuntimeServerless.grantJobExecution(role, [this.config.executionRoleArn], [arn, `${arn}/jobruns/*`]);
+    SparkRuntimeServerless.grantJobExecution(role, [this.config.jobConfig.ExecutionRoleArn], [arn, `${arn}/jobruns/*`]);
   }
 }
 
