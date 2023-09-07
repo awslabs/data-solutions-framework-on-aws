@@ -142,6 +142,5 @@ export interface SparkJobProps {
    * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
    */
   readonly schedule?: Schedule;
-
 }
 

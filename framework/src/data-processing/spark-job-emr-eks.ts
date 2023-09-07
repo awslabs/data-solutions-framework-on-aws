@@ -7,6 +7,7 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
+import { EmrVersion } from '../utils';
 
 
 /**
@@ -34,9 +35,7 @@ import { SparkJob, SparkJobProps } from './spark-job';
  *          jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *               "VirtualClusterId": "virtualClusterId",
- *               "ClientToken": JsonPath.uuid(),
  *               "ExecutionRoleArn": myExecutionRole.roleArn,
- *               "ExecutionTimeoutMinutes": 30,
  *               "JobDriver": {
  *                   "SparkSubmit": {
  *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
@@ -57,6 +56,13 @@ export class EmrOnEksSparkJob extends SparkJob {
 
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
     super(scope, id);
+
+    //Set defaults
+    props.jobConfig.ClientToken ??= JsonPath.uuid();
+    props.jobConfig.ExecutionTimeoutMinutes ??= 30;
+    props.jobConfig.ReleaseLabel ??= EmrVersion.V6_2;
+
+
     this.config = props;
     this.stateMachine = this.createStateMachine(this.config.schedule);
   }
@@ -174,7 +180,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
    */
   readonly jobConfig: {
     'VirtualClusterId': string;
-    'ClientToken': string;
+    'ClientToken'?: string;
     'Name'?:string;
     'ConfigurationOverrides'?:{ [key:string] : any};
     'ExecutionRoleArn':string;
@@ -182,7 +188,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
     'ExecutionTimeoutMinutes'?:number;
     'JobTemplateId'?:string;
     'JobTemplateParameters'?:{ [key:string] : string};
-    'ReleaseLabel':string;
+    'ReleaseLabel'?:EmrVersion;
     'Tags'?:{ [key:string] : any};
   };
 }
