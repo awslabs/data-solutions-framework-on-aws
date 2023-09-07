@@ -34,7 +34,7 @@ import { SparkJob, SparkJobProps } from './spark-job';
  * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
  * const applicationId = "APPLICATION_ID";
  * const job = new SparkJob(stack, 'SparkJob', {
- *    executionRoleArn:myExecutionRole.roleArn,jobConfig:{
+ *          jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *               "VirtualClusterId": "virtualClusterId",
  *               "ClientToken": JsonPath.uuid(),
@@ -162,7 +162,7 @@ export class EmrOnEksSparkJob extends SparkJob {
       resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       conditions: {
         StringEquals: {
-          'emr-containers:ExecutionRoleArn': this.config.executionRoleArn,
+          'emr-containers:ExecutionRoleArn': this.config.jobConfig.ExecutionRoleArn,
         },
       },
     }));

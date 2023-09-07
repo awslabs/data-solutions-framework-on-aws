@@ -327,7 +327,6 @@ export interface EmrServerlessSparkJobApiProps extends SparkJobProps {
    * @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {
-<<<<<<< HEAD
     "applicationId": string;
     "clientToken"?: string;
     "name"?:string;
