@@ -54,7 +54,6 @@ import { TrackedConstruct } from '../utils';
  * ```
  */
 export class EmrServerlessSparkJob extends SparkJob {
-
   private config: EmrServerlessSparkJobProps;
 
   constructor( scope: Construct, id: string, props: EmrServerlessSparkJobProps) {
