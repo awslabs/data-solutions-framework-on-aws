@@ -96,7 +96,7 @@ export class EmrOnEksSparkJob extends SparkJob {
         VirtualClusterId: this.config.jobConfig.VirtualClusterId,
         Id: JsonPath.stringAt('$.JobRunId'),
       },
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
       resultSelector: {
         'State.$': '$.State',
         'StateDetails.$': '$.StateDetails',
@@ -149,7 +149,7 @@ export class EmrOnEksSparkJob extends SparkJob {
         'emr-containers:StartJobRun',
         'emr-containers:DescribeJobRun',
       ],
-      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`, `arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
       conditions: {
         StringEquals: {
           'emr-containers:ExecutionRoleArn': this.config.executionRoleArn,
