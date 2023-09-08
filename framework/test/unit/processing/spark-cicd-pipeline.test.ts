@@ -8,21 +8,27 @@
 * @group unit/spark-processing
 */
 
-import { CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { SparkCICDPipeline, ApplicationStackFactory, SparkImage } from '../../../src';
-import { ApplicationStack, ApplicationStackProps } from '../../../src/processing/application-stack';
+import { SparkCICDPipeline, ApplicationStackFactory, SparkImage, CICDStage } from '../../../src';
 
 
 describe('With minimal configuration, the construct', () => {
 
-  const stack = new Stack();
+  const app = new App();
+  const stack = new Stack(app, 'TestStack',{
+    env: {
+      account: '123456789012',
+      region: 'us-east-1',
+    }
+  });
 
-  class MyApplicationStack extends ApplicationStack {
-    constructor(scope: Stack, id: string, props: ApplicationStackProps) {
-      super(scope, id, props);
+  class MyApplicationStack extends Stack {
 
+    constructor(scope: Stack, id: string) {
+      super(scope, id);
+  
       new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
         removalPolicy: RemovalPolicy.DESTROY,
@@ -31,12 +37,13 @@ describe('With minimal configuration, the construct', () => {
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack, id: string, props: ApplicationStackProps): Stack {
-      return new MyApplicationStack(scope, id, props);
+    createStack(scope: Stack,stage: CICDStage): Stack {
+      console.log(stage);
+      return new MyApplicationStack(scope, 'MyApplication');
     }
   }
 
-  new SparkCICDPipeline(stack, 'TestConstruct', {
+  const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
     applicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
   });
@@ -154,21 +161,22 @@ describe('With custom configuration, the construct', () => {
 
   class MyApplicationStack extends Stack {
 
-    constructor(scope: Stack) {
-      super(scope, 'MyApplicationStack');
-
+    constructor(scope: Stack, id: string) {
+      super(scope, id);
+  
       const bucket = new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
         removalPolicy: RemovalPolicy.DESTROY,
       });
-
+    
       new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
     }
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack): Stack {
-      return new MyApplicationStack(scope);
+    createStack(scope: Stack,stage: CICDStage): Stack {
+      console.log(stage);
+      return new MyApplicationStack(scope, 'MyApplication');
     }
   }
 

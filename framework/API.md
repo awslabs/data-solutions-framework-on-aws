@@ -2327,7 +2327,7 @@ The ApplicationStack class that extends a CDK stack with the stage of a CICD pip
 ```typescript
 import { ApplicationStack } from 'framework'
 
-new ApplicationStack(scope: Construct, id: string, props: ApplicationStackProps)
+new ApplicationStack(scope: Construct, id: string, props?: ApplicationStackProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -2354,7 +2354,7 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="framework.ApplicationStack.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="framework.ApplicationStack.Initializer.parameter.props"></a>
 
 - *Type:* <a href="#framework.ApplicationStackProps">ApplicationStackProps</a>
 
@@ -3667,9 +3667,9 @@ and are generally resources ID/names/ARNs.
 The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
 The `createStack()` method needs to return a `ApplicationStack` instance within the scope passed to the factory method.
 This is used to create the application stack within the scope of the CDK Pipeline stage.
-The `ApplicationStack` is a standard `Stack` with an additional parameter of type `CICDStage`. 
-This parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage. 
-For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job. 
+The `ApplicationStack` is a standard `Stack` with an additional parameter of type `CICDStage`.
+This parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage.
+For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job.
 
 **Usage example**
 ```typescript
@@ -3809,6 +3809,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#framework.SparkCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#framework.SparkCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline create as part of the Spark CICD Pipeline. |
 
 ---
 
@@ -3821,6 +3822,18 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="framework.SparkCICDPipeline.property.pipeline"></a>
+
+```typescript
+public readonly pipeline: CodePipeline;
+```
+
+- *Type:* aws-cdk-lib.pipelines.CodePipeline
+
+The CodePipeline create as part of the Spark CICD Pipeline.
 
 ---
 
@@ -5297,7 +5310,7 @@ new ApplicationStackFactory()
 ##### `createStack` <a name="createStack" id="framework.ApplicationStackFactory.createStack"></a>
 
 ```typescript
-public createStack(scope: Construct, id: string, props: ApplicationStackProps): ApplicationStack
+public createStack(scope: Construct, id: string, stage?: CICDStage): ApplicationStack
 ```
 
 Abstract method that needs to be implemented to return the application Stack.
@@ -5316,9 +5329,11 @@ The scope to create the stack in.
 
 ---
 
-###### `props`<sup>Required</sup> <a name="props" id="framework.ApplicationStackFactory.createStack.parameter.props"></a>
+###### `stage`<sup>Optional</sup> <a name="stage" id="framework.ApplicationStackFactory.createStack.parameter.stage"></a>
 
-- *Type:* <a href="#framework.ApplicationStackProps">ApplicationStackProps</a>
+- *Type:* <a href="#framework.CICDStage">CICDStage</a>
+
+The stage of the pipeline.
 
 ---
 

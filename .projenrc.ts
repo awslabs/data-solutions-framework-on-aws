@@ -101,6 +101,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'rosetta',
   ],
 
+  python: {
+    distName: 'adsf',
+    module: 'adsf',
+  },
+
   jestOptions: {
     jestConfig: {
       runner: 'groups',
