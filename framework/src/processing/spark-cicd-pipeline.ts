@@ -107,9 +107,9 @@ export interface SparkCICDPipelineProps {
 * The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
 * The `createStack()` method needs to return a `ApplicationStack` instance within the scope passed to the factory method.
 * This is used to create the application stack within the scope of the CDK Pipeline stage.
-* The `ApplicationStack` is a standard `Stack` with an additional parameter of type `CICDStage`. 
-* This parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage. 
-* For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job. 
+* The `ApplicationStack` is a standard `Stack` with an additional parameter of type `CICDStage`.
+* This parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage.
+* For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job.
 *
 * **Usage example**
 * ```typescript
@@ -169,6 +169,59 @@ export class SparkCICDPipeline extends Construct {
   private static readonly DEFAULT_SPARK_IMAGE: SparkImage = SparkImage.EMR_SERVERLESS_6_12;
 
   /**
+   * Extract the path and the script name from a script path
+   * @param path the script path
+   * @return [path, scriptName]
+   */
+  private static extractPath(path: string): [string, string] {
+    // Extract the folder from the integration tests script path
+    const pathParts = path.split('/');
+    var integPath = '.';
+    if (pathParts.length > 1) {
+      integPath = pathParts.slice(0, -1).join('/');
+    }
+    const integScript = pathParts[pathParts.length - 1];
+    return [integPath, integScript];
+  }
+
+  /**
+   * Build the install commands for the CodeBuild step based on the runtime
+   * @param cdkPath the path of the CDK application
+   * @return installCommands
+   */
+  private static cdkInstallCommands(): string[] {
+    // Get the runtime of the CDK Construct
+    const runtime = process.env.JSII_AGENT || 'node.js';
+    var commands: string[];
+
+    // Build the list of commands depending on the runtime
+    switch (runtime.split('/')[0].toLowerCase()) {
+      case 'node.js':
+        commands=[
+          'npm ci',
+          'npm run build',
+        ];
+        break;
+      case 'python':
+        commands= [
+          'pip install -r requirements.txt',
+        ];
+        break;
+      default:
+        throw new Error('Runtime not supported');
+    }
+    // Full set of commands
+    return [
+      'npm install -g aws-cdk',
+    ].concat(commands);
+  }
+
+  /**
+   * The CodePipeline create as part of the Spark CICD Pipeline
+   */
+  public readonly pipeline: CodePipeline;
+
+  /**
    * Construct a new instance of the SparkCICDPipeline class.
    * @param {Construct} scope the Scope of the CDK Construct
    * @param {string} id the ID of the CDK Construct
@@ -202,7 +255,7 @@ export class SparkCICDPipeline extends Construct {
     })
     
     // Create the CodePipeline to run the CICD
-    const pipeline = new CodePipeline(this, 'CodePipeline',{
+    this.pipeline = new CodePipeline(this, 'CodePipeline', {
       crossAccountKeys: true,
       enableKeyRotation: true,
       useChangeSets: false,
@@ -219,7 +272,7 @@ export class SparkCICDPipeline extends Construct {
       outputsEnv: props.integTestEnv,
       stage: CICDStage.STAGING,
     });
-    const stagingDeployment = pipeline.addStage(staging)
+    const stagingDeployment = this.pipeline.addStage(staging);
 
     if (props.integTestScript){
       // Extract the path and script name from the integration tests script path
@@ -234,7 +287,7 @@ export class SparkCICDPipeline extends Construct {
     }
 
     // Create the Production stage of the CICD
-    pipeline.addStage(new ApplicationStage(this, 'Production', {
+    this.pipeline.addStage(new ApplicationStage(this, 'Production', {
       env: {
         account: process.env.PROD_ACCOUNT,
         region: process.env.PROD_REGION,

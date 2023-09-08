@@ -2319,7 +2319,7 @@ The ApplicationStack class that extends a CDK stack with the stage of a CICD pip
 ```typescript
 import { ApplicationStack } from 'framework'
 
-new ApplicationStack(scope: Construct, id: string, props: ApplicationStackProps)
+new ApplicationStack(scope: Construct, id: string, props?: ApplicationStackProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -2346,7 +2346,7 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="framework.ApplicationStack.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="framework.ApplicationStack.Initializer.parameter.props"></a>
 
 - *Type:* <a href="#framework.ApplicationStackProps">ApplicationStackProps</a>
 
@@ -5679,7 +5679,7 @@ new ApplicationStackFactory()
 ##### `createStack` <a name="createStack" id="framework.ApplicationStackFactory.createStack"></a>
 
 ```typescript
-public createStack(scope: Construct, id: string, props: ApplicationStackProps): ApplicationStack
+public createStack(scope: Construct, id: string, stage?: CICDStage): ApplicationStack
 ```
 
 Abstract method that needs to be implemented to return the application Stack.
@@ -5698,9 +5698,11 @@ The scope to create the stack in.
 
 ---
 
-###### `props`<sup>Required</sup> <a name="props" id="framework.ApplicationStackFactory.createStack.parameter.props"></a>
+###### `stage`<sup>Optional</sup> <a name="stage" id="framework.ApplicationStackFactory.createStack.parameter.stage"></a>
 
-- *Type:* <a href="#framework.ApplicationStackProps">ApplicationStackProps</a>
+- *Type:* <a href="#framework.CICDStage">CICDStage</a>
+
+The stage of the pipeline.
 
 ---
 

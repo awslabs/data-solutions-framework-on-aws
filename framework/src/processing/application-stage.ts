@@ -32,6 +32,7 @@ export interface ApplicationStageProps extends StageProps {
 
   /**
    * The Stage to deploy the SparkCICDStack in
+   * @default - No stage is passed to the application stack
    */
   readonly stage: CICDStage;
 }
@@ -57,7 +58,7 @@ export class ApplicationStage extends Stage {
     super(scope, id, props);
 
     // create the CDK Stack from the ApplicationStackFactory using the proper scope
-    const applicationStack = props.applicationStackFactory.createStack(this, 'Stack', { stage: props.stage });
+    const applicationStack = props.applicationStackFactory.createStack(this, props.stage);
 
     // create CfnOutputs from the variables to expose in env variables for integration tests
     if (props.outputsEnv) {

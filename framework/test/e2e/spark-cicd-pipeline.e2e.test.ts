@@ -10,22 +10,19 @@
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { TestStack } from './test-stack';
-import { ApplicationStackFactory, SparkEmrCICDPipeline, SparkImage, CICDStage } from '../../src';
+import { ApplicationStackFactory, SparkCICDPipeline, SparkImage, CICDStage } from '../../src';
 
 jest.setTimeout(6000000);
 
 // GIVEN
 const app = new App();
-const cicdStack = new Stack(app, 'CICDStack', {
+const testSstack = new Stack(app, 'TestStack',{
   env: {
-    region: 'eu-west-1',
-  },
+    region: 'us-east-1',
+  }
 });
-const testStack = new TestStack('SparkCICDPipelineTestStack', app, cicdStack);
+const testStack = new TestStack('SparkCICDPipelineTestStack', app, testSstack);
 const { stack } = testStack;
-
-stack.node.setContext('staging', { accountId: '123456789012', region: 'eu-west-1' });
-stack.node.setContext('prod', { accountId: '123456789012', region: 'eu-west-1' });
 
 interface MyApplicationStackProps extends StackProps {
   readonly prodBoolean: Boolean;
@@ -33,10 +30,11 @@ interface MyApplicationStackProps extends StackProps {
 
 class MyApplicationStack extends Stack {
 
-  constructor(scope: Stack, id: string, props?: MyApplicationStackProps) {
+  constructor(scope: Stack, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const bucket = new Bucket(this, 'TestBucket', {
+      autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
@@ -45,19 +43,19 @@ class MyApplicationStack extends Stack {
 }
 
 class MyStackFactory implements ApplicationStackFactory {
-  createStack(scope: Stack, stage: CICDStage): Stack {
+  createStack(scope: Stack,stage: CICDStage): Stack {
     return new MyApplicationStack(scope, 'MyApplication', {
       prodBoolean: stage === CICDStage.PROD,
     } as MyApplicationStackProps);
   }
 }
 
-const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
+const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
   applicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
-  cdkApplicationPath: 'cdk/',
-  sparkApplicationPath: 'spark/',
-  sparkImage: SparkImage.EMR_6_10,
+  cdkPath: 'cdk/',
+  sparkPath: 'spark/',
+  sparkImage: SparkImage.EMR_SERVERLESS_6_10,
   integTestScript: 'cdk/integ-test.sh',
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
