@@ -9,5 +9,5 @@ export enum ContextOptions {
   DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING = '@aws-data-solutions-framework/disableConstructsDeploymentTracking',
   ADSF_TRACKING_CODE = 'uksb-1tupboc21',
 
-  ADSF_AWS_TAG = 'aws-data-solution-fwk',
+  ADSF_AWS_TAG = 'aws-data-solutions-fwk',
 }
