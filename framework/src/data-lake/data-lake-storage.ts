@@ -9,8 +9,7 @@ import { Construct } from 'constructs';
 
 import { AccessLogsBucket } from './access-logs-bucket';
 import { AnalyticsBucket } from './analytics-bucket';
-import { ContextOptions } from '../utils';
-import { TrackedConstruct, TrackedConstructProps } from '../utils/tracked-construct';
+import { TrackedConstruct, TrackedConstructProps } from '../utils';
 
 
 /**
@@ -144,7 +143,7 @@ export class DataLakeStorage extends TrackedConstruct {
   constructor(scope: Construct, id: string, props?: DataLakeStorageProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingCode: ContextOptions.DATA_LAKE_ID,
+      trackingTag: DataLakeStorage.name,
     };
 
     super(scope, id, trackedConstructProps);

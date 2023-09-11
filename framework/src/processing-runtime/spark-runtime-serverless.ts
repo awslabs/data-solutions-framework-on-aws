@@ -5,8 +5,7 @@ import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { SparkRuntimeServerlessProps } from './spark-runtime-serverless-props';
-import { ContextOptions } from '../utils/context-options';
-import { TrackedConstruct, TrackedConstructProps } from '../utils/tracked-construct';
+import { TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
 * A construct to create a Spark EMR Serverless Application
@@ -149,7 +148,7 @@ export class SparkRuntimeServerless extends TrackedConstruct {
   constructor(scope: Construct, id: string, props: SparkRuntimeServerlessProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingCode: ContextOptions.DATA_ENG_PLATFORM_ID,
+      trackingTag: SparkRuntimeServerless.name,
     };
 
     super(scope, id, trackedConstructProps);

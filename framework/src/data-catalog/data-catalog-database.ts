@@ -7,6 +7,7 @@ import { AddToPrincipalPolicyResult, Effect, IPrincipal, PolicyDocument, PolicyS
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
+import { TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
 * An AWS Glue Data Catalog Database configured with the following:
@@ -31,7 +32,7 @@ import { Construct } from 'constructs';
 * });
 * ```
 */
-export class DataCatalogDatabase extends Construct {
+export class DataCatalogDatabase extends TrackedConstruct {
   /**
    * The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). This property can be undefined if `autoCrawl` is set to `false`.
    */
@@ -58,7 +59,11 @@ export class DataCatalogDatabase extends Construct {
   private dataCatalogDatabaseProps: DataCatalogDatabaseProps;
 
   constructor(scope: Construct, id: string, props: DataCatalogDatabaseProps) {
-    super(scope, id);
+    const trackedConstructProps: TrackedConstructProps = {
+      trackingTag: DataCatalogDatabase.name,
+    };
+
+    super(scope, id, trackedConstructProps);
     this.dataCatalogDatabaseProps = props;
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();

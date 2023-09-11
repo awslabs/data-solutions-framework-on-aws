@@ -1,25 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-
-import { Stack } from 'aws-cdk-lib';
+import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { ContextOptions } from './context-options';
+import { ADSF_AWS_TAG } from '../constants';
+
 /**
  * The properties for the TrackedConstructProps construct.
  */
 export interface TrackedConstructProps {
   /**
-   * Unique code used to measure the number of CloudFormation deployments
+   * Unique code used to measure the number of CloudFormation deployments of this construct.
+   *
+   * *Pattern* : `^[A-Za-z0-9-_]+$`
    */
-  readonly trackingCode: string;
+  readonly trackingTag: string;
 }
 
 /**
  * @internal
- * A type of CDK Construct that is tracked via a unique code in Stack labels.
- * It is  used to measure the number of deployments.
+ * A type of CDK Construct that is tracked via a unique code in CloudFormation Stack description.
+ * It is used to measure the number of deployments.
  */
 export class TrackedConstruct extends Construct {
+
+  static readonly ADSF_TRACKING_CODE = 'uksb-1tupboc21';
+
+  /**
+   * Format is "Description (uksb_12345abcde) (tag:construct1,construct2)"
+   */
+  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
+  private static readonly TRACKING_TAG_SEPARATOR = ',';
+  private static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
 
   /**
    * Constructs a new instance of the TrackedConstruct
@@ -30,10 +43,25 @@ export class TrackedConstruct extends Construct {
   constructor(scope: Construct, id: string, props: TrackedConstructProps) {
     super(scope, id);
 
-    if (!scope.node.tryGetContext('@aws-analytics-reference-architecture/disableConstructsDeploymentTracking')) {
+    if (!scope.node.tryGetContext(ContextOptions.DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING)) {
       const stack = Stack.of(this);
-      const description = `${stack.templateOptions.description} (${props.trackingCode})`;
-      stack.templateOptions.description = description;
+      const currentDescription = stack.templateOptions.description || '';
+
+      stack.templateOptions.description = this.updateDescription(currentDescription, props);
+    }
+
+    Tags.of(scope).add(TrackedConstruct.ADSF_OWNED_TAG, 'true');
+  }
+
+  private updateDescription(currentDescription: string, props: TrackedConstructProps) {
+    const fullDescription = TrackedConstruct.trackingRegExp.exec(currentDescription);
+
+    const tag = props.trackingTag.split(TrackedConstruct.TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
+    if (fullDescription == null) {
+      return `${currentDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${tag})`;
+    } else {
+      let tags = fullDescription[2] + TrackedConstruct.TRACKING_TAG_SEPARATOR + tag;
+      return `${fullDescription[1]} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${tags})`;
     }
   }
 }
