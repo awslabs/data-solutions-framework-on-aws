@@ -18,7 +18,7 @@ export interface TrackedConstructProps {
 }
 
 /**
- * Format is "Description (uksb_12345abcde) (tag:construct1-construct2)"
+ * Format is "Description (uksb_12345abcde) (tag:construct1,construct2)"
  */
 const trackingRegExp = new RegExp('(.+) \\(' + ContextOptions.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
 const TRACKING_TAG_SEPARATOR = ',';
