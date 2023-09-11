@@ -16,10 +16,10 @@ import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { ApplicationStackFactory, CICDStage, SparkCICDPipeline, SparkImage } from '../../../../src';
 
 const app = new App();
-const stack = new Stack(app, 'Stack',{
+const stack = new Stack(app, 'Stack', {
   env: {
     region: 'us-east-1',
-  }
+  },
 });
 
 interface MyApplicationStackProps extends StackProps {
@@ -41,7 +41,7 @@ class MyApplicationStack extends Stack {
 }
 
 class MyStackFactory implements ApplicationStackFactory {
-  createStack(scope: Stack,stage: CICDStage): Stack {
+  createStack(scope: Stack, stage: CICDStage): Stack {
     return new MyApplicationStack(scope, 'MyApplication', {
       prodBoolean: stage === CICDStage.PROD,
     } as MyApplicationStackProps);
@@ -114,6 +114,12 @@ NagSuppressions.addResourceSuppressionsByPath(
   true,
 );
 
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/TestConstruct/CodePipeline/Pipeline/Build/CodeBuildSynthStep/CdkBuildProject/Resource',
+  [{ id: 'AwsSolutions-CB3', reason: 'The priviledge mode is used by CDK Pipeline construct when enabling Docker' }],
+  true,
+);
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));

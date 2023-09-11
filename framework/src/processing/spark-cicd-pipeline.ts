@@ -229,7 +229,7 @@ export class SparkCICDPipeline extends Construct {
         "AWS_ACCESS_KEY_ID=$(cat aws_credentials.json | jq -r '.AccessKeyId')",
         "AWS_SECRET_ACCESS_KEY=$(cat aws_credentials.json | jq -r '.SecretAccessKey')",
         "AWS_SESSION_TOKEN=$(cat aws_credentials.json | jq -r '.Token')",
-        `docker run -i -v $PWD/${sparkPath}:/home/hadoop/ -e AWS_REGION=$AWS_REGION -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e DISABLE_SSL=true --rm --name pytest ${sparkImage} sh -c \"pip install . && pytest\"`,
+        `docker run -i -v $PWD/${sparkPath}:/home/hadoop/ -e AWS_REGION=$AWS_REGION -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e DISABLE_SSL=true --rm --name pytest ${sparkImage} sh -c \"curl -O https://bootstrap.pypa.io/get-pip.py && chmod +x get-pip.py && python3 get-pip.py && pip install . && pytest\"`,
         'rm -f aws_credentials.json',
         `cd ${cdkPath}`,
       ].concat(SparkCICDPipeline.cdkInstallCommands())
@@ -245,6 +245,7 @@ export class SparkCICDPipeline extends Construct {
       enableKeyRotation: true,
       useChangeSets: false,
       synth: buildStage,
+      dockerEnabledForSynth: true,
     });
 
     // Create the Staging stage of the CICD
