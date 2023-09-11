@@ -12,7 +12,7 @@ env:
   AWS_REGION: eu-west-1
 
 jobs:  
-  set-label-testing:
+  run-e2e-tests-on-request:
     # Note: env is not available for the job level 'if', so hard coded value here
     if: ${{ github.event.label.name == 'e2e-ready' }}
     name: Run E2E tests on request
