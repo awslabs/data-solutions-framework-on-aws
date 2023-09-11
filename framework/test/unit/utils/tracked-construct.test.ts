@@ -11,9 +11,8 @@ import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { TrackedConstructProps } from '../../../lib/utils/tracked-construct';
-import { ContextOptions } from '../../../src/utils/context-options';
-import { TrackedConstruct } from '../../../src/utils/tracked-construct';
+import { ADSF_AWS_TAG } from '../../../src/constants';
+import { ContextOptions, TrackedConstruct, TrackedConstructProps } from '../../../src/utils';
 
 test('tracked construct add tracking code and tag to description if not explicitly disabled', () => {
   // GIVEN
@@ -29,7 +28,7 @@ test('tracked construct add tracking code and tag to description if not explicit
   new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
   // THEN
-  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${trackingTag})`);
+  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${trackingTag})`);
 });
 
 test('tracked construct add as many tags in the description as tracked constructs in the stack', () => {
@@ -48,7 +47,7 @@ test('tracked construct add as many tags in the description as tracked construct
   new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct2', { trackingTag: construct2Tag });
 
   // THEN
-  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${construct1Tag},${construct2Tag})`);
+  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${construct1Tag},${construct2Tag})`);
 });
 
 test('tracked construct don\'t add tracking code to description if explicitly disabled', () => {
@@ -84,7 +83,7 @@ test('tracked construct add tracking code and tag without separator to descripti
   new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
   // THEN
-  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:my-construct_1)`);
+  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:my-construct_1)`);
 });
 
 class TestTrackedConstruct extends TrackedConstruct {
@@ -119,7 +118,7 @@ test('tracked construct add adsf:owned tag to the inner resources', () => {
       Properties: {
         Tags: [
           {
-            Key: `${ContextOptions.ADSF_AWS_TAG}:owned`,
+            Key: `${ADSF_AWS_TAG}:owned`,
             Value: 'true',
           },
         ],

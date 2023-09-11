@@ -4,6 +4,7 @@
 import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ContextOptions } from './context-options';
+import { ADSF_AWS_TAG } from '../constants';
 
 /**
  * The properties for the TrackedConstructProps construct.
@@ -18,18 +19,20 @@ export interface TrackedConstructProps {
 }
 
 /**
- * Format is "Description (uksb_12345abcde) (tag:construct1,construct2)"
- */
-const trackingRegExp = new RegExp('(.+) \\(' + ContextOptions.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
-const TRACKING_TAG_SEPARATOR = ',';
-const ADSF_OWNED_TAG = `${ContextOptions.ADSF_AWS_TAG}:owned`;
-
-/**
  * @internal
  * A type of CDK Construct that is tracked via a unique code in CloudFormation Stack description.
  * It is used to measure the number of deployments.
  */
 export class TrackedConstruct extends Construct {
+
+  static readonly ADSF_TRACKING_CODE = 'uksb-1tupboc21';
+
+  /**
+   * Format is "Description (uksb_12345abcde) (tag:construct1,construct2)"
+   */
+  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
+  private static readonly TRACKING_TAG_SEPARATOR = ',';
+  private static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
 
   /**
    * Constructs a new instance of the TrackedConstruct
@@ -47,18 +50,18 @@ export class TrackedConstruct extends Construct {
       stack.templateOptions.description = this.updateDescription(currentDescription, props);
     }
 
-    Tags.of(scope).add(ADSF_OWNED_TAG, 'true');
+    Tags.of(scope).add(TrackedConstruct.ADSF_OWNED_TAG, 'true');
   }
 
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
-    const fullDescription = trackingRegExp.exec(currentDescription);
+    const fullDescription = TrackedConstruct.trackingRegExp.exec(currentDescription);
 
-    const tag = props.trackingTag.split(TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
+    const tag = props.trackingTag.split(TrackedConstruct.TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
-      return `${currentDescription} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tag})`;
+      return `${currentDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${tag})`;
     } else {
-      let tags = fullDescription[2] + TRACKING_TAG_SEPARATOR + tag;
-      return `${fullDescription[1]} (${ContextOptions.ADSF_TRACKING_CODE}) (tag:${tags})`;
+      let tags = fullDescription[2] + TrackedConstruct.TRACKING_TAG_SEPARATOR + tag;
+      return `${fullDescription[1]} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${tags})`;
     }
   }
 }
