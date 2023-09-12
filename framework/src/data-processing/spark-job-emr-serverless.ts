@@ -57,7 +57,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   private config: EmrServerlessSparkJobProps;
 
   constructor( scope: Construct, id: string, props: EmrServerlessSparkJobProps) {
-    super(scope, id);
+    super(scope, id, EmrServerlessSparkJob.name);
 
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
@@ -77,7 +77,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     if (!this.config.jobConfig.Tags) {
       this.config.jobConfig.Tags = {};
     }
-    this.config.jobConfig.Tags[SparkJob.OWNER_TAG.key] = SparkJob.OWNER_TAG.value;
+    this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
     this.stateMachine = this.createStateMachine(this.config.schedule);
 
