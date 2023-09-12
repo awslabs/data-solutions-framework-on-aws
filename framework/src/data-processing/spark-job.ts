@@ -9,6 +9,7 @@ import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
+import { TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
  * A base construct to run Spark Jobs
@@ -17,15 +18,7 @@ import { Construct } from 'constructs';
  * @see EmrServerlessSparkJob for Emr Serverless implementation
  * @see EmrOnEksSparkJob for EMR On EKS implementation
  */
-export abstract class SparkJob extends Construct {
-
-  /**
-   * Tag resources with this key and value to identify the owner of the resources.
-   */
-  static OWNER_TAG: {key: string; value: string} = {
-    key: 'adsf-owned',
-    value: 'true',
-  };
+export abstract class SparkJob extends TrackedConstruct {
 
   /**
    * Step Functions StateMachine created to orchestrate the Spark Job
@@ -38,8 +31,12 @@ export abstract class SparkJob extends Construct {
    * @param id the ID of the CDK Construct.
    * @param props the SparkJobProps properties.
    */
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
+  constructor(scope: Construct, id: string, trackingTag: string) {
+    const trackedConstructProps: TrackedConstructProps = {
+      trackingTag: trackingTag,
+    };
+
+    super(scope, id, trackedConstructProps);
   }
 
   /**

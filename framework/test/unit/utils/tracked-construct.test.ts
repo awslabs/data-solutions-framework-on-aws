@@ -97,7 +97,7 @@ class TestTrackedConstruct extends TrackedConstruct {
   }
 }
 
-test('tracked construct add adsf:owned tag to the inner resources', () => {
+test('tracked construct add aws-data-solutions-fwk:owned tag to the inner resources', () => {
   // GIVEN
   const initialStackDescription = 'My Analytics stack';
 

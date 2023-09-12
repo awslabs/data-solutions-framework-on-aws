@@ -8,6 +8,7 @@ import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
 import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serverless';
+import { TrackedConstruct } from '../utils';
 
 /**
  * A construct to run Spark Jobs using EMR Serverless.
@@ -54,7 +55,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   private config: EmrServerlessSparkJobProps;
 
   constructor( scope: Construct, id: string, props: EmrServerlessSparkJobProps) {
-    super(scope, id);
+    super(scope, id, EmrServerlessSparkJob.name);
 
     //Set defaults
     props.jobConfig.ClientToken ??= JsonPath.uuid();
@@ -66,7 +67,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     if (!this.config.jobConfig.Tags) {
       this.config.jobConfig.Tags = {};
     }
-    this.config.jobConfig.Tags[SparkJob.OWNER_TAG.key] = SparkJob.OWNER_TAG.value;
+    this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
     this.stateMachine = this.createStateMachine(this.config.schedule);
   }

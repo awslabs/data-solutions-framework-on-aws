@@ -55,7 +55,7 @@ export class EmrOnEksSparkJob extends SparkJob {
   readonly config: EmrOnEksSparkJobProps;
 
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
-    super(scope, id);
+    super(scope, id, EmrOnEksSparkJob.name);
 
     //Set defaults
     props.jobConfig.ClientToken ??= JsonPath.uuid();

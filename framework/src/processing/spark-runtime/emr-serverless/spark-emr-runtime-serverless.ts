@@ -124,7 +124,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
       resources: applicationArns,
       conditions: {
         StringEquals: {
-          'aws:ResourceTag/adsf-owned': 'true',
+          'aws:ResourceTag/aws-data-solutions-fwk:owned': 'true',
         },
       },
     }));
