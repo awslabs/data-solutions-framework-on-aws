@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
+import { CfnCrawler, CfnDataCatalogEncryptionSettings, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
 import { AddToPrincipalPolicyResult, Effect, IPrincipal, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
@@ -53,6 +53,11 @@ export class DataCatalogDatabase extends Construct {
   readonly crawlerLogEncryptionKey?: Key;
 
   /**
+   * Encryption key used for the Data Catalog.
+   */
+  readonly dataCatalogEncryptionKey?: Key;
+
+  /**
    * Caching constructor properties for internal reuse by constructor methods
    */
   private dataCatalogDatabaseProps: DataCatalogDatabaseProps;
@@ -63,8 +68,11 @@ export class DataCatalogDatabase extends Construct {
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
 
+    const currentStack = Stack.of(this);
+    const accountId = currentStack.account;
+
     this.database = new CfnDatabase(this, 'GlueDatabase', {
-      catalogId: Stack.of(this).account,
+      catalogId: accountId,
       databaseInput: {
         name: this.databaseName,
         locationUri: props.locationBucket.s3UrlForObject(props.locationPrefix),
@@ -81,7 +89,6 @@ export class DataCatalogDatabase extends Construct {
       scheduleExpression: 'cron(1 0 * * * *)',
     };
 
-    const currentStack = Stack.of(this);
 
     if (autoCrawl) {
       const crawlerRole = new Role(this, 'CrawlerRole', {
@@ -131,6 +138,23 @@ export class DataCatalogDatabase extends Construct {
       });
 
       this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
+
+      this.dataCatalogEncryptionKey = props.dataCatalogEncryptionKey || new Key(this, 'DataCatalogKey', {
+        enableKeyRotation: true,
+        removalPolicy: RemovalPolicy.RETAIN,
+      });
+
+      this.dataCatalogEncryptionKey.grantEncryptDecrypt(crawlerRole);
+
+      new CfnDataCatalogEncryptionSettings(this, 'DataCatalogEncryptionSettings', {
+        catalogId: accountId,
+        dataCatalogEncryptionSettings: {
+          encryptionAtRest: {
+            catalogEncryptionMode: 'SSE-KMS',
+            sseAwsKmsKeyId: this.dataCatalogEncryptionKey.keyId,
+          },
+        },
+      });
 
       const secConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
         name: `${this.databaseName}-crawler-secconfig`,
@@ -222,4 +246,10 @@ export interface DataCatalogDatabaseProps {
    * @default Create a new key if none is provided
    */
   readonly crawlerLogEncryptionKey?: Key;
+
+  /**
+   * Encryption key used for the Data Catalog
+   * @default Create a new key if none is provided
+   */
+  readonly dataCatalogEncryptionKey?: Key;
 }
