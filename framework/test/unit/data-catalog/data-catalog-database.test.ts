@@ -52,6 +52,22 @@ describe('DataCatalogDatabase default construct', () => {
     });
   });
 
+  test('Data catalog should have encryption configuration', () => {
+    template.hasResourceProperties('AWS::Glue::DataCatalogEncryptionSettings', {
+      CatalogId: {
+        Ref: Match.exact('AWS::AccountId'),
+      },
+      DataCatalogEncryptionSettings: {
+        EncryptionAtRest: {
+          CatalogEncryptionMode: Match.exact('SSE-KMS'),
+          SseAwsKmsKeyId: {
+            Ref: Match.stringLikeRegexp('^databaseDataCatalogKey.+'),
+          },
+        },
+      },
+    });
+  });
+
   test('DataCatalogDatabase should attach read only IAM policy to the test principal', () => {
     assert.equal(grantReadonlyAccessResult.statementAdded, true);
   });
