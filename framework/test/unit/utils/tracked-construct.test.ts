@@ -28,7 +28,7 @@ test('tracked construct add tracking code and tag to description if not explicit
   new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
   // THEN
-  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${trackingTag})`);
+  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:0.0.0) (tag:${trackingTag})`);
 });
 
 test('tracked construct add as many tags in the description as tracked constructs in the stack', () => {
@@ -47,7 +47,7 @@ test('tracked construct add as many tags in the description as tracked construct
   new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct2', { trackingTag: construct2Tag });
 
   // THEN
-  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${construct1Tag},${construct2Tag})`);
+  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:0.0.0) (tag:${construct1Tag},${construct2Tag})`);
 });
 
 test('tracked construct don\'t add tracking code to description if explicitly disabled', () => {
@@ -83,7 +83,7 @@ test('tracked construct add tracking code and tag without separator to descripti
   new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
   // THEN
-  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:my-construct_1)`);
+  expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:0.0.0) (tag:my-construct_1)`);
 });
 
 class TestTrackedConstruct extends TrackedConstruct {
