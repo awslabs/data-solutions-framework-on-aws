@@ -119,6 +119,15 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       }
     }
   },
+
+  tsconfig: {
+    compilerOptions: {
+      lib: [
+        "ES2021"
+      ],
+      target: "ES2021"
+    }
+  },
 });
 
 fwkProject.setScript('test', 'npx projen test --group=-e2e');
