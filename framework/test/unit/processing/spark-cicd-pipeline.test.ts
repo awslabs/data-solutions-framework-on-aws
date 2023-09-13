@@ -10,19 +10,18 @@
 
 import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { SparkCICDPipeline, ApplicationStackFactory, SparkImage, CICDStage } from '../../../src';
-import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 
 describe('With minimal configuration, the construct', () => {
 
   const app = new App();
-  const stack = new Stack(app, 'TestStack',{
+  const stack = new Stack(app, 'TestStack', {
     env: {
-      account: '123456789012',
       region: 'us-east-1',
-    }
+    },
   });
   stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
   stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
@@ -31,7 +30,7 @@ describe('With minimal configuration, the construct', () => {
 
     constructor(scope: Stack, id: string) {
       super(scope, id);
-  
+
       new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
         removalPolicy: RemovalPolicy.DESTROY,
@@ -40,7 +39,7 @@ describe('With minimal configuration, the construct', () => {
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack,stage: CICDStage): Stack {
+    createStack(scope: Stack, stage: CICDStage): Stack {
       console.log(stage);
       return new MyApplicationStack(scope, 'MyApplication');
     }
@@ -95,7 +94,7 @@ describe('With minimal configuration, the construct', () => {
   test('should run the unit tests with EMR 6.12 as the default', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-serverless/spark/emr-6.12.0:latest.*'),
+        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-on-eks/spark/emr-6.12.0:latest.*'),
       },
       Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
@@ -113,7 +112,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Staging-Stack',
+                StackName: 'Staging-MyApplication',
               }),
               InputArtifacts: [
                 {
@@ -141,7 +140,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Production-Stack',
+                StackName: 'Production-MyApplication',
               }),
               InputArtifacts: [
                 {
@@ -160,26 +159,31 @@ describe('With minimal configuration, the construct', () => {
 
 describe('With custom configuration, the construct', () => {
 
-  const stack = new Stack();
+  const app = new App();
+  const stack = new Stack(app, 'TestStack', {
+    env: {
+      region: 'us-east-1',
+    },
+  });
   stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
   stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
-  
+
   class MyApplicationStack extends Stack {
 
     constructor(scope: Stack, id: string) {
       super(scope, id);
-  
+
       const bucket = new Bucket(this, 'TestBucket', {
         autoDeleteObjects: true,
         removalPolicy: RemovalPolicy.DESTROY,
       });
-    
+
       new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
     }
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack,stage: CICDStage): Stack {
+    createStack(scope: Stack, stage: CICDStage): Stack {
       console.log(stage);
       return new MyApplicationStack(scope, 'MyApplication');
     }
@@ -200,9 +204,9 @@ describe('With custom configuration, the construct', () => {
         actions: [
           's3:GetObject',
         ],
-        resources: ['*']
-      })
-    ]
+        resources: ['*'],
+      }),
+    ],
   });
 
   const template = Template.fromStack(stack);
@@ -220,7 +224,7 @@ describe('With custom configuration, the construct', () => {
   test('should create a CodeBuild project with the proper Spark project path for unit tests', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*docker run -i -v \\$PWD/spark/:/home/hadoop/.*'),
+        BuildSpec: Match.stringLikeRegexp('.*docker run -i -v \\$\\(pwd\\)/spark/:/home/hadoop/.*'),
       },
       Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
@@ -229,7 +233,7 @@ describe('With custom configuration, the construct', () => {
   test('should create a CodeBuild project with the proper Spark image for unit tests', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-serverless/spark/emr-6.10.0:latest.*'),
+        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-on-eks/spark/emr-6.11.0:latest.*'),
       },
       Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });
@@ -256,9 +260,23 @@ describe('With custom configuration, the construct', () => {
   test('should create a CodeBuild project for integration tests with the proper script paths for running the test', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*d cdk && \./integ-test.sh.*'),
+        BuildSpec: Match.stringLikeRegexp('.*chmod \\+x integ-test\.sh && \./integ-test.sh.*'),
       },
       Description: Match.stringLikeRegexp('.*IntegrationTests.*'),
+    });
+  });
+
+  test('should create an IAM Policy with the configured permissions for the Staging stage role', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: 's3:GetObject',
+            Resource: '*',
+          }),
+        ]),
+      },
+      PolicyName: Match.stringLikeRegexp('.*CodePipelineStagingIntegrationTestsRoleDefaultPolicy.*'),
     });
   });
 });
