@@ -10,7 +10,7 @@ To measure the number of deployments of the ADSF constructs and get insights abo
 The description must contain a tracking code (AWS internal) and a tag for each construct deployed in the stack. It must respect the following format:
 
 ```text
-Description (uksb_12345abcde) (tag:construct1,construct2)
+Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)
 ```
 
 To simplify the creation of this description, we provide a class [`TrackedConstruct`](../../../framework/src/utils/tracked-construct.ts) that you must extend:
