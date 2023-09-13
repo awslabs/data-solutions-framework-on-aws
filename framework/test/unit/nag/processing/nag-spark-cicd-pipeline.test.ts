@@ -10,6 +10,7 @@
 
 import { App, Aspects, CfnOutput, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
@@ -21,6 +22,8 @@ const stack = new Stack(app, 'Stack', {
     region: 'us-east-1',
   },
 });
+stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
+stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
 
 interface MyApplicationStackProps extends StackProps {
   readonly prodBoolean: Boolean;
@@ -53,11 +56,17 @@ const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
   applicationStackFactory: new MyStackFactory(),
   cdkPath: 'cdk/',
   sparkPath: 'spark/',
-  sparkImage: SparkImage.EMR_SERVERLESS_6_10,
+  sparkImage: SparkImage.EMR_6_11,
   integTestScript: 'cdk/integ-test.sh',
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
   },
+  integTestPermissions: [
+    new PolicyStatement({
+      actions: ['s3:GetObject'],
+      resources: ['*'],
+    }),
+  ],
 });
 
 Aspects.of(stack).add(new AwsSolutionsChecks());

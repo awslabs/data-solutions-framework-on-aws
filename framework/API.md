@@ -2750,7 +2750,7 @@ The construct provisions a CDK Pipeline with the following resources:
  * A Staging stage to deploy the application stack in the staging account and run optional integration tests
  * A Production stage to deploy the application stack in the production account
 
-If using different accounts for dev (where this construct is deployed), integration and production (where the application stack is deployed),
+If using different accounts for dev (where this construct is deployed), staging and production (where the application stack is deployed),
 bootstrap integration and production accounts with CDK and add a trust relationship from the dev account:
 ```bash
 cdk bootstrap \
@@ -2758,8 +2758,22 @@ cdk bootstrap \
   --trust <DEV_ACCOUNT> \
   aws://<INTEGRATION_ACCOUNT>/us-west-2
 ```
+Also provide the accounts information in the cdk.json in the form of:
+
+```json
+{
+  "staging": {
+    "accountId": "<STAGING_ACCOUNT_ID>",
+    "region": "us-west-2"
+  },
+  "prod": {
+    "accountId": "<PROD_ACCOUNT_ID>",
+    "region": "us-west-2"
+  }
+```
 
 Units tests are expected to be run with `pytest` command from the Spark root folder configured via `sparkPath`.
+Units tests are expected to create a Spark session with a local master and client mode.
 
 Integration tests are expected to be an AWS CLI script that return 0 exit code if success and 1 if failure configure via `integTestScript`.
 Integration tests can use resources that are deployed by the Application Stack.
@@ -2768,19 +2782,21 @@ Keys are the names of the environment variables used in the script, values are p
 and are generally resources ID/names/ARNs.
 
 The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
-The `createStack()` method needs to return a `ApplicationStack` instance within the scope passed to the factory method.
+The `createStack()` method needs to return a `Stack` instance within the scope passed to the factory method.
 This is used to create the application stack within the scope of the CDK Pipeline stage.
-The `ApplicationStack` is a standard `Stack` with an additional parameter of type `CICDStage`.
-This parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage.
+The `CICDStage` parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage.
 For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job.
 
 **Usage example**
 ```typescript
 const stack = new Stack();
 
+interface MyApplicationStackProps extends StackProps {
+  readonly stage: CICDStage;
+}
 class MyApplicationStack extends Stack {
 
-  constructor(scope: Stack) {
+  constructor(scope: Stack, props?: MyApplicationStackProps) {
     super(scope, 'MyApplicationStack');
 
     const bucket = new Bucket(this, 'TestBucket', {
@@ -2793,8 +2809,8 @@ class MyApplicationStack extends Stack {
 }
 
 class MyStackFactory implements ApplicationStackFactory {
-  createStack(scope: Stack): Stack {
-    return new MyApplicationStack(scope);
+  createStack(scope: Stack, stage: CICDStage): Stack {
+    return new MyApplicationStack(scope, { stage });
   }
 }
 
@@ -3892,8 +3908,9 @@ const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.cdkPath">cdkPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The Spark image to use to run the unit tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.sparkPath">sparkPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 
 ---
@@ -3951,6 +3968,19 @@ Key is the name of the environment variable to create. Value is generally a CfnO
 
 ---
 
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="framework.SparkCICDPipelineProps.property.integTestPermissions"></a>
+
+```typescript
+public readonly integTestPermissions: PolicyStatement[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyStatement[]
+- *Default:* No permissions
+
+The IAM policy statements to add permissions for running the integration tests.
+
+---
+
 ##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="framework.SparkCICDPipelineProps.property.integTestScript"></a>
 
 ```typescript
@@ -3971,9 +4001,9 @@ public readonly sparkImage: SparkImage;
 ```
 
 - *Type:* <a href="#framework.SparkImage">SparkImage</a>
-- *Default:* EMR Serverless v6.12 is used
+- *Default:* EMR v6.12 is used
 
-The Spark image to use to run the unit tests.
+The EMR Spark image to use to run the unit tests.
 
 ---
 
@@ -4360,53 +4390,29 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_12">EMR_SERVERLESS_6_12</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_11">EMR_SERVERLESS_6_11</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_10">EMR_SERVERLESS_6_10</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_9">EMR_SERVERLESS_6_9</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_12">EMR_EKS_6_12</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_11">EMR_EKS_6_11</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_10">EMR_EKS_6_10</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_9">EMR_EKS_6_9</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
 
-##### `EMR_SERVERLESS_6_12` <a name="EMR_SERVERLESS_6_12" id="framework.SparkImage.EMR_SERVERLESS_6_12"></a>
+##### `EMR_6_12` <a name="EMR_6_12" id="framework.SparkImage.EMR_6_12"></a>
 
 ---
 
 
-##### `EMR_SERVERLESS_6_11` <a name="EMR_SERVERLESS_6_11" id="framework.SparkImage.EMR_SERVERLESS_6_11"></a>
+##### `EMR_6_11` <a name="EMR_6_11" id="framework.SparkImage.EMR_6_11"></a>
 
 ---
 
 
-##### `EMR_SERVERLESS_6_10` <a name="EMR_SERVERLESS_6_10" id="framework.SparkImage.EMR_SERVERLESS_6_10"></a>
+##### `EMR_6_10` <a name="EMR_6_10" id="framework.SparkImage.EMR_6_10"></a>
 
 ---
 
 
-##### `EMR_SERVERLESS_6_9` <a name="EMR_SERVERLESS_6_9" id="framework.SparkImage.EMR_SERVERLESS_6_9"></a>
-
----
-
-
-##### `EMR_EKS_6_12` <a name="EMR_EKS_6_12" id="framework.SparkImage.EMR_EKS_6_12"></a>
-
----
-
-
-##### `EMR_EKS_6_11` <a name="EMR_EKS_6_11" id="framework.SparkImage.EMR_EKS_6_11"></a>
-
----
-
-
-##### `EMR_EKS_6_10` <a name="EMR_EKS_6_10" id="framework.SparkImage.EMR_EKS_6_10"></a>
-
----
-
-
-##### `EMR_EKS_6_9` <a name="EMR_EKS_6_9" id="framework.SparkImage.EMR_EKS_6_9"></a>
+##### `EMR_6_9` <a name="EMR_6_9" id="framework.SparkImage.EMR_6_9"></a>
 
 ---
 
