@@ -5161,7 +5161,7 @@ public readonly autoCrawlSchedule: ScheduleProperty;
 The schedule when the Crawler would run.
 
 Default is once a day at 00:01h.
-
+ 
 ---
 
 ##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
@@ -5380,8 +5380,9 @@ const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
 | <code><a href="#framework.SparkCICDPipelineProps.property.cdkPath">cdkPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.dockerImage">dockerImage</a></code> | <code>string</code> | The Docker image to use in the unit tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The Spark image to use to run the unit tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.sparkPath">sparkPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 
 ---
@@ -5452,6 +5453,19 @@ Key is the name of the environment variable to create. Value is generally a CfnO
 
 ---
 
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="framework.SparkCICDPipelineProps.property.integTestPermissions"></a>
+
+```typescript
+public readonly integTestPermissions: PolicyStatement[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyStatement[]
+- *Default:* No permissions
+
+The IAM policy statements to add permissions for running the integration tests.
+
+---
+
 ##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="framework.SparkCICDPipelineProps.property.integTestScript"></a>
 
 ```typescript
@@ -5472,9 +5486,9 @@ public readonly sparkImage: SparkImage;
 ```
 
 - *Type:* <a href="#framework.SparkImage">SparkImage</a>
-- *Default:* EMR Serverless v6.12 is used
+- *Default:* EMR v6.12 is used
 
-The Spark image to use to run the unit tests.
+The EMR Spark image to use to run the unit tests.
 
 ---
 
@@ -5867,53 +5881,29 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_12">EMR_SERVERLESS_6_12</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_11">EMR_SERVERLESS_6_11</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_10">EMR_SERVERLESS_6_10</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_SERVERLESS_6_9">EMR_SERVERLESS_6_9</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_12">EMR_EKS_6_12</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_11">EMR_EKS_6_11</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_10">EMR_EKS_6_10</a></code> | *No description.* |
-| <code><a href="#framework.SparkImage.EMR_EKS_6_9">EMR_EKS_6_9</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
 
-##### `EMR_SERVERLESS_6_12` <a name="EMR_SERVERLESS_6_12" id="framework.SparkImage.EMR_SERVERLESS_6_12"></a>
+##### `EMR_6_12` <a name="EMR_6_12" id="framework.SparkImage.EMR_6_12"></a>
 
 ---
 
 
-##### `EMR_SERVERLESS_6_11` <a name="EMR_SERVERLESS_6_11" id="framework.SparkImage.EMR_SERVERLESS_6_11"></a>
+##### `EMR_6_11` <a name="EMR_6_11" id="framework.SparkImage.EMR_6_11"></a>
 
 ---
 
 
-##### `EMR_SERVERLESS_6_10` <a name="EMR_SERVERLESS_6_10" id="framework.SparkImage.EMR_SERVERLESS_6_10"></a>
+##### `EMR_6_10` <a name="EMR_6_10" id="framework.SparkImage.EMR_6_10"></a>
 
 ---
 
 
-##### `EMR_SERVERLESS_6_9` <a name="EMR_SERVERLESS_6_9" id="framework.SparkImage.EMR_SERVERLESS_6_9"></a>
-
----
-
-
-##### `EMR_EKS_6_12` <a name="EMR_EKS_6_12" id="framework.SparkImage.EMR_EKS_6_12"></a>
-
----
-
-
-##### `EMR_EKS_6_11` <a name="EMR_EKS_6_11" id="framework.SparkImage.EMR_EKS_6_11"></a>
-
----
-
-
-##### `EMR_EKS_6_10` <a name="EMR_EKS_6_10" id="framework.SparkImage.EMR_EKS_6_10"></a>
-
----
-
-
-##### `EMR_EKS_6_9` <a name="EMR_EKS_6_9" id="framework.SparkImage.EMR_EKS_6_9"></a>
+##### `EMR_6_9` <a name="EMR_6_9" id="framework.SparkImage.EMR_6_9"></a>
 
 ---
 

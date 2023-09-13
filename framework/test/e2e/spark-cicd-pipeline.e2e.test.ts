@@ -55,7 +55,7 @@ const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
   applicationStackFactory: new MyStackFactory(),
   cdkPath: 'cdk/',
   sparkPath: 'spark/',
-  sparkImage: SparkImage.EMR_SERVERLESS_6_10,
+  sparkImage: SparkImage.EMR_6_10,
   integTestScript: 'cdk/integ-test.sh',
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
