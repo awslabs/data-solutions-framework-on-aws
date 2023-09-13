@@ -166,3 +166,34 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   });
 
 });
+
+describe('Use AnalyticsBucket without setting a global data removal policy', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+ 
+  const encryptionKey = new Key(stack, 'DataKey', {
+    removalPolicy: RemovalPolicy.DESTROY,
+    enableKeyRotation: true,
+  });
+
+  // Instantiate AnalyticsBucket Construct with the default configuration
+  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket', {
+    encryptionKey: encryptionKey,
+  });
+
+  // Instantiate AnalyticsBucket Construct with custom configuration
+  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
+    bucketName: 'custom-analytics-bucket',
+    encryptionKey: encryptionKey,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('AnalyticsBucket should not destroy objects if DESTROY flag is true but global data removal policy is not set', () => {
+    // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
+    template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
+  });
+
+});
