@@ -192,6 +192,12 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
 
 exampleApp.removeTask('deploy');
 exampleApp.removeTask('destroy');
+exampleApp.testTask.reset();
+exampleApp.testTask.exec('pytest -k "not e2e"');
+exampleApp.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'pytest -k e2e'
+});
 
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'

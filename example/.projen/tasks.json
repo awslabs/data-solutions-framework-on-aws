@@ -93,7 +93,16 @@
       "description": "Run tests",
       "steps": [
         {
-          "exec": "pytest"
+          "exec": "pytest -k \"not e2e\""
+        }
+      ]
+    },
+    "test:e2e": {
+      "name": "test:e2e",
+      "description": "Run end-to-end tests",
+      "steps": [
+        {
+          "exec": "pytest -k e2e"
         }
       ]
     },
