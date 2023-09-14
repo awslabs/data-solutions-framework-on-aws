@@ -3971,9 +3971,109 @@ public readonly ADSF_TRACKING_CODE: string;
 
 - *Type:* string
 
+the ID of the CDK Construct.
+
 ---
 
-### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="@adsf/framework.SparkEmrCICDPipeline"></a>
+##### `props`<sup>Required</sup> <a name="props" id="framework.SparkCICDPipeline.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#framework.SparkCICDPipelineProps">SparkCICDPipelineProps</a>
+
+the SparkCICDPipelineProps properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="framework.SparkCICDPipeline.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="framework.SparkCICDPipeline.isConstruct"></a>
+
+```typescript
+import { SparkCICDPipeline } from 'framework'
+
+SparkCICDPipeline.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="framework.SparkCICDPipeline.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#framework.SparkCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="framework.SparkCICDPipeline.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="framework.SparkCICDPipeline.property.pipeline"></a>
+
+```typescript
+public readonly pipeline: CodePipeline;
+```
+
+- *Type:* aws-cdk-lib.pipelines.CodePipeline
+
+The CodePipeline created as part of the Spark CICD Pipeline.
+
+---
+
+
+### SparkRuntimeServerless <a name="SparkRuntimeServerless" id="framework.SparkRuntimeServerless"></a>
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
@@ -5377,8 +5477,7 @@ const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
 | --- | --- | --- |
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.cdkPath">cdkPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.dockerImage">dockerImage</a></code> | <code>string</code> | The Docker image to use in the unit tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
@@ -5411,10 +5510,10 @@ The application Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
-##### `cdkPath`<sup>Optional</sup> <a name="cdkPath" id="framework.SparkCICDPipelineProps.property.cdkPath"></a>
+##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="framework.SparkCICDPipelineProps.property.cdkApplicationPath"></a>
 
 ```typescript
-public readonly cdkPath: string;
+public readonly cdkApplicationPath: string;
 ```
 
 - *Type:* string

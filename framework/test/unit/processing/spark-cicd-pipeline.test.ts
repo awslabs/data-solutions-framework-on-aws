@@ -189,7 +189,7 @@ describe('With custom configuration, the construct', () => {
   new SparkCICDPipeline(stack, 'TestConstruct', {
     applicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
-    cdkPath: 'cdk/',
+    cdkApplicationPath: 'cdk/',
     sparkApplicationPath: 'spark/',
     sparkImage: SparkImage.EMR_6_11,
     integTestScript: 'cdk/integ-test.sh',

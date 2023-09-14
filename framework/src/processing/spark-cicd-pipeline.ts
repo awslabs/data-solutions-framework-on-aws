@@ -8,18 +8,18 @@ import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pip
 import { Construct } from 'constructs';
 import { ApplicationStackFactory } from './application-stack-factory';
 import { CICDStage, ApplicationStage } from './application-stage';
-import { ContextOptions, EmrVersion, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { EmrVersion, TrackedConstruct, TrackedConstructProps } from '../utils';
 
-const EMR_EKS_BASE_URL = 'public.ecr.aws/emr-on-eks/spark/';
+const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
 
 /**
  * The list of supported Spark images to use in the SparkCICDPipeline. 
  */
 export enum SparkImage {
-  EMR_6_12 = EMR_EKS_BASE_URL + EmrVersion.V6_12 + ':latest',
-  EMR_6_11 = EMR_EKS_BASE_URL + EmrVersion.V6_11 + ':latest',
-  EMR_6_10 = EMR_EKS_BASE_URL + EmrVersion.V6_10 + ':latest',
-  EMR_6_9 = EMR_EKS_BASE_URL + EmrVersion.V6_9 + ':latest',
+  EMR_6_12 = EMR_EKS_IMAGE_URL + EmrVersion.V6_12 + ':latest',
+  EMR_6_11 = EMR_EKS_IMAGE_URL + EmrVersion.V6_11 + ':latest',
+  EMR_6_10 = EMR_EKS_IMAGE_URL + EmrVersion.V6_10 + ':latest',
+  EMR_6_9 = EMR_EKS_IMAGE_URL + EmrVersion.V6_9 + ':latest',
 }
 
 /**
@@ -61,7 +61,7 @@ export interface SparkCICDPipelineProps {
    * The path to the folder that contains the CDK Application
    * @default - The root of the repository
    */
-  readonly cdkPath?: string;
+  readonly cdkApplicationPath?: string;
 
   /**
    * The path to the folder that contains the Spark Application
@@ -170,7 +170,7 @@ export interface SparkCICDPipelineProps {
 * new SparkCICDPipeline(stack, 'TestConstruct', {
 *   applicationName: 'test',
 *   applicationStackFactory: new MyStackFactory(),
-*   cdkPath: 'cdk/',
+*   cdkApplicationPath: 'cdk/',
 *   sparkApplicationPath: 'spark/',
 *   sparkImage: SparkImage.EMR_SERVERLESS_6_10,
 *   integTestScript: 'cdk/integ-test.sh',
@@ -266,13 +266,13 @@ export class SparkCICDPipeline extends TrackedConstruct {
   constructor(scope: Construct, id: string, props: SparkCICDPipelineProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingCode: ContextOptions.DATA_ENG_PLATFORM_ID,
+      trackingTag: SparkCICDPipeline.name,
     };
 
     super(scope, id, trackedConstructProps);
 
     // Set the defaults
-    const cdkPath = props.cdkPath ? props.cdkPath : '.';
+    const cdkPath = props.cdkApplicationPath ? props.cdkApplicationPath : '.';
     const sparkPath = props.sparkApplicationPath ? props.sparkApplicationPath : '.';
     const sparkImage = props.sparkImage ? props.sparkImage : SparkCICDPipeline.DEFAULT_SPARK_IMAGE;
 
