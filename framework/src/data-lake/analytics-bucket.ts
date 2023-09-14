@@ -50,10 +50,9 @@ export class AnalyticsBucket extends Bucket {
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
     const bucketName = (props?.bucketName || 'analytics-bucket') + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
-
-
-    const removeBucketObjects: boolean | undefined = scope.node.tryGetContext(AnalyticsBucket.FRAMEWORK_CONTEXT_VALUES)?.remove_data_on_destroy.toLowerCase() == 'true' || undefined;
-    let autoDeleteObjects: boolean = (props?.removalPolicy == RemovalPolicy.DESTROY) && !!removeBucketObjects;
+    
+    const removeBucketObjects: boolean = scope.node.tryGetContext(AnalyticsBucket.FRAMEWORK_CONTEXT_VALUES)?.remove_data_on_destroy.toLowerCase() == 'true' || false;
+    let autoDeleteObjects: boolean = (props?.removalPolicy == RemovalPolicy.DESTROY) && removeBucketObjects;
 
     super(scope, id, {
       ...props,
