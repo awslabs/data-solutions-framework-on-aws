@@ -9,8 +9,9 @@
 */
 
 
-import { Stack, App } from 'aws-cdk-lib';
+import { Stack, App, Duration } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
+import { Schedule } from 'aws-cdk-lib/aws-events';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { EmrOnEksSparkJob, EmrOnEksSparkJobProps } from '../../../src/data-processing/spark-job-emr-eks';
 import { EmrServerlessSparkJob, EmrServerlessSparkJobProps } from '../../../src/data-processing/spark-job-emr-serverless';
@@ -19,7 +20,7 @@ import { SparkRuntimeServerless } from '../../../src/processing-runtime';
 import { EmrVersion } from '../../../src/utils';
 
 
-describe('Create an SparkJob using EMR Serverless Application for Spark and grant access', () => {
+describe('Create an SparkJob using EMR Serverless Application for Spark with schedule', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -38,7 +39,6 @@ describe('Create an SparkJob using EMR Serverless Application for Spark and gran
 
 
   new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
-    executionRoleArn: myExecutionRole.roleArn,
     jobConfig: {
       ApplicationId: 'appId',
       ExecutionRoleArn: myExecutionRole.roleArn,
@@ -49,8 +49,8 @@ describe('Create an SparkJob using EMR Serverless Application for Spark and gran
           SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
         },
       },
-
     },
+    schedule: Schedule.rate(Duration.hours(1)),
   } as EmrServerlessSparkJobProps);
 
 
@@ -59,6 +59,13 @@ describe('Create an SparkJob using EMR Serverless Application for Spark and gran
   test('State machine is created EMR Serverless', () => {
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
   });
+
+  test('Schedule is created', () => {
+    template.hasResourceProperties('AWS::Events::Rule', {
+      ScheduleExpression: 'rate(1 hour)',
+    });
+  });
+
 
   test('State machine template definition matches expected format EMR Serverless', () => {
     template.hasResourceProperties('AWS::StepFunctions::StateMachine', {
