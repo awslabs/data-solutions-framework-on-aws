@@ -14,6 +14,8 @@
   --ifm-code-name-highlight: #84488D;
   --ifm-font-size-base:  95%;
   --ifm-toc-border-color: #dadde1b8;
+  --ifm-link-color: #0000EE;
+  --ifm-link-hover-color: #0000EE;
 }
 
 html[data-theme="dark"] {

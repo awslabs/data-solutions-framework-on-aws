@@ -7,16 +7,10 @@ import { Bucket, BucketProps, BucketEncryption, BlockPublicAccess } from 'aws-cd
 import { Construct } from 'constructs';
 
 /**
- * An Amazon S3 Bucket configured with best practices and smart defaults for storing S3 access logs.
+ * Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
+ * See documentation TODO insert link.
  *
- * Smart defaults:
- *  * The default bucket name is `access-logs-<UNIQUE_ID>``
- *  * S3 Managed encryption
- *  * Public access is blocked
- *  * Ojects are retained after deletion of the CDK resource
- *  * SSL communication is enforced
- *
- * **Usage example**
+ * **Usage example:**
  *
  * ```typescript
  * import * as cdk from 'aws-cdk-lib';
