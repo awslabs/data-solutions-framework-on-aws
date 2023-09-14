@@ -168,6 +168,31 @@ new awscdk.AwsCdkConstructLibrary({
   ],
 });
 
+const exampleApp = new awscdk.AwsCdkPythonApp({
+  name: 'example',
+  moduleName: 'adsf_example',
+  packageName: 'adsf_example',
+  version: '0.0.1',
+  description: 'An example CDK app demonstrating the most common use cases for AWS Data Solutions Framework',
+  authorName: author,
+  authorEmail: authorAddress,
+  license,
+
+  parent: rootProject,
+  outdir: 'example',
+ 
+  cdkVersion: CDK_VERSION,
+  constructsVersion: CDK_CONSTRUCTS_VERSION,
+  
+  pytest: true,
+  devDeps: [
+    "pytest"
+  ]
+});
+
+exampleApp.removeTask('deploy');
+exampleApp.removeTask('destroy');
+
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
 });
