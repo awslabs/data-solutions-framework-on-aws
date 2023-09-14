@@ -5382,8 +5382,8 @@ const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.sparkPath">sparkPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 
 ---
 
@@ -5479,6 +5479,19 @@ The path to the Shell script that contains integration tests.
 
 ---
 
+##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="framework.SparkCICDPipelineProps.property.sparkApplicationPath"></a>
+
+```typescript
+public readonly sparkApplicationPath: string;
+```
+
+- *Type:* string
+- *Default:* The root of the repository
+
+The path to the folder that contains the Spark Application.
+
+---
+
 ##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="framework.SparkCICDPipelineProps.property.sparkImage"></a>
 
 ```typescript
@@ -5489,19 +5502,6 @@ public readonly sparkImage: SparkImage;
 - *Default:* EMR v6.12 is used
 
 The EMR Spark image to use to run the unit tests.
-
----
-
-##### `sparkPath`<sup>Optional</sup> <a name="sparkPath" id="framework.SparkCICDPipelineProps.property.sparkPath"></a>
-
-```typescript
-public readonly sparkPath: string;
-```
-
-- *Type:* string
-- *Default:* The root of the repository
-
-The path to the folder that contains the Spark Application.
 
 ---
 
@@ -5668,6 +5668,33 @@ This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserG
 ### ApplicationStackFactory <a name="ApplicationStackFactory" id="framework.ApplicationStackFactory"></a>
 
 Abstract class that needs to be implemented to pass the application Stack to the CICD pipeline.
+
+*Example*
+
+```typescript
+import { ApplicationStackFactory }
+import { CICDStage } from './application-stage';
+
+interface MyApplicationStackProps extends StackProps {
+  readonly stage: CICDStage;
+}
+
+class MyApplicationStack extends Stack {
+  constructor(scope: Stack, id: string, props?: MyApplicationStackProps) {
+    super(scope, id, props);
+    // stack logic goes here... and can be customized using props.stage
+  }
+}
+
+class MyApplicationStackFactory extends ApplicationStackFactory {
+  createStack(scope: Construct, stage: CICDStage): Stack {
+    return new MyApplicationStack(scope, 'MyApplication', {
+      stage: stage
+    } as MyApplicationStackProps);
+  }
+}
+```
+
 
 #### Initializers <a name="Initializers" id="framework.ApplicationStackFactory.Initializer"></a>
 

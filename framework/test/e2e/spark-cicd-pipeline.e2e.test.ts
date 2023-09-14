@@ -30,7 +30,7 @@ interface MyApplicationStackProps extends StackProps {
 
 class MyApplicationStack extends Stack {
 
-  constructor(scope: Stack, id: string, props?: StackProps) {
+  constructor(scope: Stack, id: string, props?: MyApplicationStackProps) {
     super(scope, id, props);
 
     const bucket = new Bucket(this, 'TestBucket', {
@@ -54,7 +54,7 @@ const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
   applicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
   cdkPath: 'cdk/',
-  sparkPath: 'spark/',
+  sparkApplicationPath: 'spark/',
   sparkImage: SparkImage.EMR_6_10,
   integTestScript: 'cdk/integ-test.sh',
   integTestEnv: {
