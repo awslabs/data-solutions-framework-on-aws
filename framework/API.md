@@ -5,16 +5,9 @@
 
 ### AccessLogsBucket <a name="AccessLogsBucket" id="@adsf/framework.AccessLogsBucket"></a>
 
-An Amazon S3 Bucket configured with best practices and smart defaults for storing S3 access logs.
+Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs. See documentation TODO insert link.
 
-Smart defaults:
- * The default bucket name is `access-logs-<UNIQUE_ID>``
- * S3 Managed encryption
- * Public access is blocked
- * Ojects are retained after deletion of the CDK resource
- * SSL communication is enforced
-
-**Usage example**
+**Usage example:**
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -1157,16 +1150,9 @@ first call to addToResourcePolicy(s).
 
 ### AnalyticsBucket <a name="AnalyticsBucket" id="@adsf/framework.AnalyticsBucket"></a>
 
-An Amazon S3 Bucket configured with best practices and defaults for Analytics: * Server side buckets encryption managed by KMS customer key.
+Amazon S3 Bucket configured with best-practices and defaults for analytics. See documentation TODO insert link.
 
-* SSL communication enforcement.
-* Access logged to an S3 bucket within a prefix matching the bucket name.
-* All public access blocked.
-* Two-step protection for bucket and objects deletion.
-
-For custom requirements that are not covered, use {Bucket} directly.
-
-**Usage example**
+**Usage example:**
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -1179,13 +1165,13 @@ const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
 stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
 
 const encryptionKey = new Key(stack, 'DataKey', {
-removalPolicy: RemovalPolicy.DESTROY,
-enableKeyRotation: true,
+ removalPolicy: RemovalPolicy.DESTROY,
+ enableKeyRotation: true,
 });
 
 new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
-encryptionKey,
-removalPolicy: cdk.RemovalPolicy.DESTROY,
+ encryptionKey,
+ removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 ```
 
@@ -2546,22 +2532,11 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### DataLakeStorage <a name="DataLakeStorage" id="@adsf/framework.DataLakeStorage"></a>
 
-CDK Construct that creates a the storage layer of a data lake, composed of 3 {AnalyticsBucket} for Bronze, Silver, and Gold data.
+CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
-The respective {AnalyticsBucket}s are configured with the best practices and smart defaults for data lake:
- * Medalion design with S3 buckets for Bronze, Silver, and Gold data.
- * Server-side encryption using a single KMS customer key for all S3 buckets.
- * Enforced SSL in-transit encryption.
- * Logs data lake access in a dedicated bucket within a prefix matching the bucket name.
- * Bronze data is moved to Infrequent Access after 30 days and archived to Glacier after 90 days.
- * Silver and Gold data is moved to Infrequent Access after 90 days and is not archived.
- * Buckets and objects can be retained when the CDK resource is destroyed (default).
- * Buckets and objects can be destroyed when the CDK resource is destroyed, if both removal policy and ADSF global setting (CDK app context) are set.
- * All public access blocked.
+See documentation TODO insert link.
 
-For custom requirements not covered by {DataLakeStorageProps}, consider using {AnalyticsBucket} directly.
-
-**Usage example**
+**Usage example:**
 
 ```typescript
 import { DataLakeStorage } from 'aws-data-solutions-framework';

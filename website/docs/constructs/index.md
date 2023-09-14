@@ -122,7 +122,7 @@ We will now use [***DataLakeStorage***](constructs/library/data-lake-storage) to
     import aws_cdk as cdk
     import aws_data_solutions_framework as adsf
 
-    class HelloCdkStack(cdk.Stack):
+    class AdsfExampleStack(cdk.Stack):
 
       def __init__(self, scope: cdk.App, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
