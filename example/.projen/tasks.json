@@ -29,15 +29,6 @@
       "name": "default",
       "description": "Synthesize project files"
     },
-    "diff": {
-      "name": "diff",
-      "description": "Diffs the currently deployed app against your code",
-      "steps": [
-        {
-          "exec": "cdk diff"
-        }
-      ]
-    },
     "install": {
       "name": "install",
       "description": "Install and upgrade dependencies",
@@ -75,7 +66,7 @@
       "description": "Synthesizes your cdk app into cdk.out",
       "steps": [
         {
-          "exec": "cdk synth"
+          "exec": "npx -y cdk@2.84.0 synth"
         }
       ]
     },
@@ -84,7 +75,7 @@
       "description": "Synthesizes your cdk app into cdk.out and suppresses the template in stdout (part of \"yarn build\")",
       "steps": [
         {
-          "exec": "cdk synth -q"
+          "exec": "npx -y cdk@2.84.0 synth -q"
         }
       ]
     },
@@ -103,18 +94,6 @@
       "steps": [
         {
           "exec": "pytest -k e2e"
-        }
-      ]
-    },
-    "watch": {
-      "name": "watch",
-      "description": "Watches changes in your source code and rebuilds and deploys to the current account",
-      "steps": [
-        {
-          "exec": "cdk deploy --hotswap"
-        },
-        {
-          "exec": "cdk watch"
         }
       ]
     }

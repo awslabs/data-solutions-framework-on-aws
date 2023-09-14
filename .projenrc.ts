@@ -183,21 +183,30 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
  
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
+  cdkVersionPinning: true,
   
   pytest: true,
   devDeps: [
-    "pytest"
+    "pytest",
   ]
 });
 
 exampleApp.removeTask('deploy');
 exampleApp.removeTask('destroy');
+exampleApp.removeTask('diff');
+exampleApp.removeTask('watch');
 exampleApp.testTask.reset();
 exampleApp.testTask.exec('pytest -k "not e2e"');
 exampleApp.addTask('test:e2e', {
   description: 'Run end-to-end tests',
   exec: 'pytest -k e2e'
 });
+let synthTask = exampleApp.tasks.tryFind('synth');
+synthTask?.reset();
+synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth`);
+synthTask = exampleApp.tasks.tryFind('synth:silent');
+synthTask?.reset();
+synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
 
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
