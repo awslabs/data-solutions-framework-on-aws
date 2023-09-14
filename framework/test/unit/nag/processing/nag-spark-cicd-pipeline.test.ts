@@ -54,7 +54,7 @@ class MyStackFactory implements ApplicationStackFactory {
 const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
   applicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
-  cdkPath: 'cdk/',
+  cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
   sparkImage: SparkImage.EMR_6_11,
   integTestScript: 'cdk/integ-test.sh',

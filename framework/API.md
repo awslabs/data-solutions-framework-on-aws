@@ -2851,7 +2851,7 @@ class MyStackFactory implements ApplicationStackFactory {
 new SparkCICDPipeline(stack, 'TestConstruct', {
   applicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
-  cdkPath: 'cdk/',
+  cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
   sparkImage: SparkImage.EMR_SERVERLESS_6_10,
   integTestScript: 'cdk/integ-test.sh',
@@ -2991,6 +2991,23 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 ---
 
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="framework.SparkCICDPipeline.property.ADSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly ADSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
 
 ### SparkRuntimeServerless <a name="SparkRuntimeServerless" id="framework.SparkRuntimeServerless"></a>
 
@@ -3958,7 +3975,7 @@ const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
 | --- | --- | --- |
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#framework.SparkCICDPipelineProps.property.cdkPath">cdkPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
@@ -3991,10 +4008,10 @@ The application Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
-##### `cdkPath`<sup>Optional</sup> <a name="cdkPath" id="framework.SparkCICDPipelineProps.property.cdkPath"></a>
+##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="framework.SparkCICDPipelineProps.property.cdkApplicationPath"></a>
 
 ```typescript
-public readonly cdkPath: string;
+public readonly cdkApplicationPath: string;
 ```
 
 - *Type:* string
