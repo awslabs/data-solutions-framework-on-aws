@@ -78,7 +78,6 @@ export class EmrServerlessSparkJob extends SparkJob {
       this.config.jobConfig.Tags = {};
     }
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
-
     this.stateMachine = this.createStateMachine(this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());

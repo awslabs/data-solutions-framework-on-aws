@@ -49,7 +49,6 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
           SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
         },
       },
-
     },
     schedule: Schedule.rate(Duration.hours(1)),
   } as EmrServerlessSparkJobProps);
