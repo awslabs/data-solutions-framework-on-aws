@@ -193,7 +193,7 @@ describe('With custom configuration, the construct', () => {
     applicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
     cdkPath: 'cdk/',
-    sparkPath: 'spark/',
+    sparkApplicationPath: 'spark/',
     sparkImage: SparkImage.EMR_6_11,
     integTestScript: 'cdk/integ-test.sh',
     integTestEnv: {

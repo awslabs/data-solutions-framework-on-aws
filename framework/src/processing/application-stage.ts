@@ -38,7 +38,7 @@ export interface ApplicationStageProps extends StageProps {
 }
 
 /**
- * The SparkCICDStage class that create a CDK Pipelines Stage from a CDK Stack.
+ * ApplicationStage class that creates a CDK Pipelines Stage from an ApplicationStackFactory.
  *
  */
 export class ApplicationStage extends Stage {
@@ -63,7 +63,7 @@ export class ApplicationStage extends Stage {
     // create CfnOutputs from the variables to expose in env variables for integration tests
     if (props.outputsEnv) {
       this.stackOutputsEnv = {};
-      for ( let key in props.outputsEnv) {
+      for (let key in props.outputsEnv) {
         const outputName = props.outputsEnv[key];
         this.stackOutputsEnv[key] = applicationStack.node.children.find(v => (v as CfnOutput)?.logicalId?.includes(outputName)) as CfnOutput;;
       }
