@@ -51,9 +51,9 @@ export class AnalyticsBucket extends Bucket {
 
     const bucketName = (props?.bucketName || 'analytics-bucket') + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
     
-    const globalRemovalPolicy: boolean = scope.node.tryGetContext(AnalyticsBucket.FRAMEWORK_CONTEXT_VALUES)?.remove_data_on_destroy.toLowerCase() == 'true' || false;
-    const removalPolicy: RemovalPolicy = props?.removalPolicy == RemovalPolicy.DESTROY && globalRemovalPolicy ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN;
-    const autoDeleteObjects: boolean = (removalPolicy == RemovalPolicy.DESTROY) && globalRemovalPolicy;
+    const globalRemovalPolicy = scope.node.tryGetContext(AnalyticsBucket.FRAMEWORK_CONTEXT_VALUES)?.remove_data_on_destroy.toLowerCase() == 'true' || false;
+    const removalPolicy = props?.removalPolicy == RemovalPolicy.DESTROY && globalRemovalPolicy ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN;
+    const autoDeleteObjects = (removalPolicy == RemovalPolicy.DESTROY) && globalRemovalPolicy;
 
     if (props?.removalPolicy == RemovalPolicy.DESTROY && !globalRemovalPolicy)
       Annotations.of(scope).addWarning(
