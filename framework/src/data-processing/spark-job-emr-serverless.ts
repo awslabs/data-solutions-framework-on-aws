@@ -15,7 +15,7 @@ import { TrackedConstruct } from '../utils';
  * creates a State Machine that orchestrates the Spark Job.
  * @see EmrServerlessSparkJobProps parameters to be specified for the construct
  * @default ExecutionTimeoutMinutes: 30
- * @default  ClientToken: universally unique identifier (v4 UUID) generated using random numbers
+ * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
  *
  * **Usage example**
  * @example
