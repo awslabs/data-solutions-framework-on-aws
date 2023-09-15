@@ -50,18 +50,19 @@ export class AnalyticsBucket extends Bucket {
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
     const bucketName = (props?.bucketName || 'analytics-bucket') + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
-    
+
     const globalRemovalPolicy = scope.node.tryGetContext(AnalyticsBucket.FRAMEWORK_CONTEXT_VALUES)?.remove_data_on_destroy.toLowerCase() == 'true' || false;
     const removalPolicy = props?.removalPolicy == RemovalPolicy.DESTROY && globalRemovalPolicy ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN;
     const autoDeleteObjects = (removalPolicy == RemovalPolicy.DESTROY) && globalRemovalPolicy;
 
-    if (props?.removalPolicy == RemovalPolicy.DESTROY && !globalRemovalPolicy)
+    if (props?.removalPolicy == RemovalPolicy.DESTROY && !globalRemovalPolicy) {
       Annotations.of(scope).addWarning(
         `WARNING: removalPolicy was reverted back to 'RemovalPolicy.RETAIN'.
         If you wish to set 'removalPolicy' to 'DESTROY' you must also
         set the global removal policy flag context variable in the 'cdk.json'
-        or 'cdk.context.json': "adsf": { "remove_data_on_destroy": "true" }.`
+        or 'cdk.context.json': "adsf": { "remove_data_on_destroy": "true" }.`,
       );
+    }
 
     super(scope, id, {
       ...props,

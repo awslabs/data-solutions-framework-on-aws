@@ -132,7 +132,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 1);
   });
 
-  test('CustomAnalyticsBucket with DESTROY removalPolicy should be destroyed if global removal policy is true', () => {    
+  test('CustomAnalyticsBucket with DESTROY removalPolicy should be destroyed if global removal policy is true', () => {
     // Stack has no a warning about the mismatch between removal policies
     Annotations.fromStack(stack).hasNoWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
 
@@ -199,7 +199,7 @@ describe('Use AnalyticsBucket without setting a global data removal policy', () 
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
- 
+
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
     enableKeyRotation: true,
