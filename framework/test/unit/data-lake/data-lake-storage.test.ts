@@ -19,7 +19,8 @@ describe('DataLakeStorage Construct', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
 
-  stack.node.setContext('adsf', { remove_data_on_destroy: 'false' });
+  // Set context value for global data removal policy
+  stack.node.setContext('adsf', { remove_data_on_destroy: 'true' });
 
   // Instantiate AccessLogsBucket Construct with default
   new DataLakeStorage(stack, 'DefaultDataLakeStorage');

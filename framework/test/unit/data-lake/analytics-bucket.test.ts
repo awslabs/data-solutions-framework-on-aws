@@ -9,7 +9,7 @@
  */
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Annotations, Match, Template } from 'aws-cdk-lib/assertions';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { AnalyticsBucket } from '../../../src';
 
@@ -132,6 +132,20 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 1);
   });
 
+  test('CustomAnalyticsBucket with DESTROY removalPolicy should be destroyed if global removal policy is true', () => {    
+    // Stack has no a warning about the mismatch between removal policies
+    Annotations.fromStack(stack).hasNoWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
+
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: {
+          BucketName: Match.stringLikeRegexp('custom-analytics-bucket.*'),
+        },
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
 });
 
 describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
@@ -163,6 +177,20 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   test('AnalyticsBucket should not destroy objects if DESTROY flag is false', () => {
     // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
+  });
+
+  test('CustomAnalyticsBucket with DESTROY removalPolicy should not be destroyed if global removal policy is false', () => {
+    // Stack has a warning about the mismatch between removal policies
+    Annotations.fromStack(stack).hasWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
+
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: {
+          BucketName: Match.stringLikeRegexp('custom-analytics-bucket.*'),
+        },
+        DeletionPolicy: 'Retain',
+      }),
+    );
   });
 
 });
