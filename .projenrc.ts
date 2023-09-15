@@ -16,9 +16,20 @@ const copyrightOwner = 'Amazon.com, Inc. or its affiliates. All Rights Reserved.
 const copyrightPeriod = `2021-${new Date().getFullYear()}`;
 const defaultReleaseBranch = 'main';
 const release = false; /* to update and configure when ready to release */
+const name = 'aws-data-solutions-framework';
+const shortName = 'adsf';
+const keywords= [
+  'awscdk',
+  'aws',
+  'cdk',
+  'constructs',
+  'analytics',
+  'datalake',
+  'data'
+];
 
 const rootProject = new LernaProject({
-  name: 'aws-data-solutions-framework',
+  name,
   devDeps: [
     'lerna-projen',
     'ts-node',
@@ -47,7 +58,7 @@ const rootProject = new LernaProject({
     labels: ["npm", "dependencies"],
     scheduleInterval: DependabotScheduleInterval.DAILY,
   },
-  packageName: 'aws-data-solutions-framework',
+  packageName: `@${shortName}/${name}`,
 
   gitignore: [
     '.idea',
@@ -62,7 +73,7 @@ const rootProject = new LernaProject({
 const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
-
+  packageName: `@${shortName}/framework`,
   parent: rootProject,
   outdir: 'framework',
   repositoryDirectory: 'framework',
@@ -78,14 +89,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   copyrightPeriod,
   release,
 
-  keywords: [
-    'aws',
-    'constructs',
-    'cdk',
-    'analytics',
-    'database',
-    'data'
-  ],
+  keywords,
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
@@ -139,7 +143,8 @@ fwkProject.addTask('test:e2e', {
 
 new awscdk.AwsCdkConstructLibrary({
   name: 'solutions',
-  description: 'Pre-packaged data solutions built with the AWS Data Solutions Framework',
+  packageName: `@${shortName}/solutions`,
+  description: 'Pre-packaged data solutions built with the AWS Data Solutions Framework (@adsf/framework)',
   author,
   authorAddress,
   authorOrganization,
@@ -148,14 +153,7 @@ new awscdk.AwsCdkConstructLibrary({
   parent: rootProject,
   outdir: 'solutions',
 
-  keywords: [
-    'aws',
-    'AWS Service Catalog',
-    'cdk',
-    'analytics',
-    'database',
-    'data'
-  ],
+  keywords,
 
   repositoryUrl,
   repositoryDirectory: 'solutions',
@@ -168,7 +166,6 @@ new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     '@types/jest',
   ],
-  packageName: 'aws-data-solutions',
 });
 
 rootProject.addTask('test:e2e', {

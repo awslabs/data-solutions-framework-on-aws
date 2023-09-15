@@ -1,5 +1,5 @@
 {
-  "name": "aws-data-solutions-framework",
+  "name": "@adsf/aws-data-solutions-framework",
   "repository": {
     "type": "git",
     "url": "git@github.com:awslabs/aws-data-solutions-framework.git"

@@ -1,5 +1,5 @@
 {
-  "name": "framework",
+  "name": "@adsf/framework",
   "description": "L3 CDK Constructs used to build data solutions with AWS",
   "repository": {
     "type": "git",
@@ -67,10 +67,11 @@
   "keywords": [
     "analytics",
     "aws",
+    "awscdk",
     "cdk",
     "constructs",
     "data",
-    "database"
+    "datalake"
   ],
   "main": "lib/index.js",
   "license": "MIT-0",

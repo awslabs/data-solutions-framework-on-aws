@@ -28,9 +28,9 @@ export class TrackedConstruct extends Construct {
   static readonly ADSF_TRACKING_CODE = 'uksb-1tupboc21';
 
   /**
-   * Format is "Description (uksb_12345abcde) (tag:construct1,construct2)"
+   * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
    */
-  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\) \\(tag:(.+)\\)');
+  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\)( \\(version:(.+)\\))? \\(tag:(.+)\\)');
   private static readonly TRACKING_TAG_SEPARATOR = ',';
   private static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
 
@@ -55,13 +55,22 @@ export class TrackedConstruct extends Construct {
 
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
     const fullDescription = TrackedConstruct.trackingRegExp.exec(currentDescription);
+    const version = this.getVersion();
 
     const tag = props.trackingTag.split(TrackedConstruct.TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
-      return `${currentDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${tag})`;
+      return `${currentDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${version}) (tag:${tag})`;
     } else {
-      let tags = fullDescription[2] + TrackedConstruct.TRACKING_TAG_SEPARATOR + tag;
-      return `${fullDescription[1]} (${TrackedConstruct.ADSF_TRACKING_CODE}) (tag:${tags})`;
+      let tags = fullDescription[4] + TrackedConstruct.TRACKING_TAG_SEPARATOR + tag;
+      return `${fullDescription[1]} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${fullDescription[3]}) (tag:${tags})`;
     }
+  }
+
+  private getVersion() {
+    // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require
+    const file = '../../package.json';
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const json = require(file);
+    return json.version;
   }
 }

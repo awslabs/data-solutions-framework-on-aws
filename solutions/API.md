@@ -5,12 +5,12 @@
 
 ## Classes <a name="Classes" id="Classes"></a>
 
-### Hello <a name="Hello" id="aws-data-solutions.Hello"></a>
+### Hello <a name="Hello" id="@adsf/solutions.Hello"></a>
 
-#### Initializers <a name="Initializers" id="aws-data-solutions.Hello.Initializer"></a>
+#### Initializers <a name="Initializers" id="@adsf/solutions.Hello.Initializer"></a>
 
 ```typescript
-import { Hello } from 'aws-data-solutions'
+import { Hello } from '@adsf/solutions'
 
 new Hello()
 ```
@@ -24,11 +24,11 @@ new Hello()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions.Hello.sayHello">sayHello</a></code> | *No description.* |
+| <code><a href="#@adsf/solutions.Hello.sayHello">sayHello</a></code> | *No description.* |
 
 ---
 
-##### `sayHello` <a name="sayHello" id="aws-data-solutions.Hello.sayHello"></a>
+##### `sayHello` <a name="sayHello" id="@adsf/solutions.Hello.sayHello"></a>
 
 ```typescript
 public sayHello(): string
