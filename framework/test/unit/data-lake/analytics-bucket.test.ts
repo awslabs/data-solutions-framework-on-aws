@@ -9,7 +9,7 @@
  */
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Annotations, Match, Template } from 'aws-cdk-lib/assertions';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { AnalyticsBucket } from '../../../src';
 
@@ -132,6 +132,20 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 1);
   });
 
+  test('CustomAnalyticsBucket with DESTROY removalPolicy should be destroyed if global removal policy is true', () => {
+    // Stack has no a warning about the mismatch between removal policies
+    Annotations.fromStack(stack).hasNoWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
+
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: {
+          BucketName: Match.stringLikeRegexp('custom-analytics-bucket.*'),
+        },
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
 });
 
 describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
@@ -161,6 +175,51 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   const template = Template.fromStack(stack);
 
   test('AnalyticsBucket should not destroy objects if DESTROY flag is false', () => {
+    // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
+    template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
+  });
+
+  test('CustomAnalyticsBucket with DESTROY removalPolicy should not be destroyed if global removal policy is false', () => {
+    // Stack has a warning about the mismatch between removal policies
+    Annotations.fromStack(stack).hasWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
+
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: {
+          BucketName: Match.stringLikeRegexp('custom-analytics-bucket.*'),
+        },
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+});
+
+describe('Use AnalyticsBucket without setting a global data removal policy', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const encryptionKey = new Key(stack, 'DataKey', {
+    removalPolicy: RemovalPolicy.DESTROY,
+    enableKeyRotation: true,
+  });
+
+  // Instantiate AnalyticsBucket Construct with the default configuration
+  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket', {
+    encryptionKey: encryptionKey,
+  });
+
+  // Instantiate AnalyticsBucket Construct with custom configuration
+  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
+    bucketName: 'custom-analytics-bucket',
+    encryptionKey: encryptionKey,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('AnalyticsBucket should not destroy objects if DESTROY flag is true but global data removal policy is not set', () => {
     // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
   });
