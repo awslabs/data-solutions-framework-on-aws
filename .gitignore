@@ -36,4 +36,3 @@ dist
 !/.github/dependabot.yml
 !/.npmrc
 !/lerna.json
-.DS_Store

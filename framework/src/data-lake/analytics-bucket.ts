@@ -12,9 +12,7 @@ import { AnalyticsBucketProps } from './analytics-bucket-props';
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
 * See documentation TODO insert link
 *
-* **Usage example:**
-*
-* ```typescript
+* @example
 * import * as cdk from 'aws-cdk-lib';
 * import { AnalyticsBucket} from 'aws-data-solutions-framework';
 *
@@ -33,7 +31,6 @@ import { AnalyticsBucketProps } from './analytics-bucket-props';
 *  encryptionKey,
 *  removalPolicy: cdk.RemovalPolicy.DESTROY,
 * });
-* ```
 */
 export class AnalyticsBucket extends Bucket {
 

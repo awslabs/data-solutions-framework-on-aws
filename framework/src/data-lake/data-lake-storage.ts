@@ -87,10 +87,9 @@ export interface DataLakeStorageProps {
 /**
  * CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
  * See documentation TODO insert link.
- * 
- * **Usage example:**
  *
- * ```typescript
+ * @example
+ * import * as cdk from 'aws-cdk-lib';
  * import { DataLakeStorage } from 'aws-data-solutions-framework';
  *
  * // Set context value for global data removal policy (or set in cdk.json).
@@ -109,7 +108,6 @@ export interface DataLakeStorageProps {
  *  removalPolicy: cdk.RemovalPolicy.DESTROY,
  *  dataLakeKey: new Key(stack, 'MyDataLakeKey')
  * });
- * ```
  */
 export class DataLakeStorage extends TrackedConstruct {
 

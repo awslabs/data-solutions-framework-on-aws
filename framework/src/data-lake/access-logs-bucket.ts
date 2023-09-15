@@ -10,9 +10,7 @@ import { Construct } from 'constructs';
  * Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
  * See documentation TODO insert link.
  *
- * **Usage example:**
- *
- * ```typescript
+ * @example
  * import * as cdk from 'aws-cdk-lib';
  * import { AccessLogsBucket } from 'aws-data-solutions-framework';
  *
@@ -22,7 +20,6 @@ import { Construct } from 'constructs';
  *  autoDeleteObjects: true,
  * }
  */
-
 export class AccessLogsBucket extends Bucket {
   constructor(scope: Construct, id: string, props?: BucketProps) {
 

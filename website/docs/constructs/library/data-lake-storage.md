@@ -5,7 +5,7 @@ sidebar_label: Data lake storage
 
 # DataLakeStorage
 
-We provide this construct to create a storage layer for your data lake with AWS best-practices. At the high level, ***DataLakeStorage*** creates three [Amazon S3](https://aws.amazon.com/s3) buckets configured specifically a for data lake on AWS. By default these buckets are named *Bronze*, *Silver*, and *Gold* to represent [different data layers](https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/data-layer-definitions.html). You can customize bucket names according to your needs.
+We provide this construct to create a storage layer for your data lake with AWS best-practices. At the high level, ***DataLakeStorage*** creates three [Amazon S3](https://aws.amazon.com/s3) buckets configured specifically for data lake on AWS. By default these buckets are named *Bronze*, *Silver*, and *Gold* to represent [different data layers](https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/data-layer-definitions.html). You can customize bucket names according to your needs.
 
 ## Overview
 
@@ -33,9 +33,7 @@ Buckets and objects can be destroyed when the CDK resource is destroyed, if **bo
 ### How to set data removal policies
 You can set `remove_data_on_destroy` (`true` or `false`) global data removal policy in `cdk.json` or in your CDK app:
 
-```json
-// cdk.json
-
+```json title="cdk.json"
 {
   "context": {
     "adsf": {
@@ -45,9 +43,9 @@ You can set `remove_data_on_destroy` (`true` or `false`) global data removal pol
 }
 ```
 
-```typescript
-// CDK app
+Or you can set it in your CDK app:
 
+```typescript title="CDK app"
 const app = new App();
 const stack = new Stack(app, 'Stack');
 // Set context value for global data removal policy

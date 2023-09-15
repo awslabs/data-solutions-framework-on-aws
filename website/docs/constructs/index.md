@@ -7,9 +7,9 @@ import TabItem from '@theme/TabItem';
 
 # Accelerate building your data analytics solutions on AWS
 
-AWS Data Solutions Framework (AWS DSF), is an open-source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions that address the most common data analytics requirements. AWS DSF framework is an abstraction atop AWS services based on AWS CDK L3 constructs.
+AWS Data Solutions Framework (AWS DSF), is an open-source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions that address the most common data analytics requirements. AWS DSF is an abstraction atop AWS services based on AWS CDK L3 constructs.
 
-We designed AWS CDK L3 constructs to provide common building blocks for analytics solutions with AWS best-practices. For example, we provide a construct that creates a complete data lake storage with three different Amazon S3 buckets, encryption, data lifecycle policies, and etc. This means that you can create a data lake with in your CDK application with just a few lines of code. 
+We designed AWS CDK L3 constructs to provide common building blocks for analytics solutions with AWS best-practices. For example, we provide a construct that creates a complete data lake storage with three different Amazon S3 buckets, encryption, data lifecycle policies, and etc. This means that you can create a data lake within your CDK application with just a few lines of code. 
 
 You can compose different AWS DSF constructs to build end-to-end data platform, and also combine with your custom CDK application. 
 

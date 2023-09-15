@@ -10,15 +10,9 @@ import { Construct } from 'constructs';
 import { TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
-* An AWS Glue Data Catalog Database configured with the following:
-*   * Default location using the following defaults: `s3://<locationBucket>/<locationPrefix>/`
-*   * Inside the location would be the various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`
-*   * The default would create a database level crawler that's scheduled to run once a day (00:01h). This can be overriden to either disable the crawler or control the schedule/frequency of the crawler execution.
+* An AWS Glue Data Catalog Database configured with the location and a crawler.
 *
-*
-* **Usage example**
-*
-* ```typescript
+* @example
 * import * as cdk from 'aws-cdk-lib';
 * import { DataCatalogDatabase } from 'aws-data-solutions-framework';
 *
@@ -30,7 +24,6 @@ import { TrackedConstruct, TrackedConstructProps } from '../utils';
 *    locationPrefix: '/databasePath',
 *    name: 'example-db'
 * });
-* ```
 */
 export class DataCatalogDatabase extends TrackedConstruct {
   /**

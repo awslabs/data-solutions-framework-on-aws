@@ -5,9 +5,11 @@
 
 ### AccessLogsBucket <a name="AccessLogsBucket" id="@adsf/framework.AccessLogsBucket"></a>
 
-Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs. See documentation TODO insert link.
+Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
-**Usage example:**
+See documentation TODO insert link.
+
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -18,6 +20,8 @@ const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
  removalPolicy: RemovalPolicy.DESTROY,
  autoDeleteObjects: true,
 }
+```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.AccessLogsBucket.Initializer"></a>
 
@@ -1150,9 +1154,11 @@ first call to addToResourcePolicy(s).
 
 ### AnalyticsBucket <a name="AnalyticsBucket" id="@adsf/framework.AnalyticsBucket"></a>
 
-Amazon S3 Bucket configured with best-practices and defaults for analytics. See documentation TODO insert link.
+Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
-**Usage example:**
+See documentation TODO insert link
+
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -1175,7 +1181,12 @@ new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
 });
 ```
 
+<<<<<<< HEAD
 #### Initializers <a name="Initializers" id="@adsf/framework.AnalyticsBucket.Initializer"></a>
+=======
+
+#### Initializers <a name="Initializers" id="framework.AnalyticsBucket.Initializer"></a>
+>>>>>>> fa15b90 (Update diagrams, remove template img, update text)
 
 ```typescript
 import { AnalyticsBucket } from '@adsf/framework'
@@ -2306,12 +2317,9 @@ first call to addToResourcePolicy(s).
 
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="@adsf/framework.DataCatalogDatabase"></a>
 
-An AWS Glue Data Catalog Database configured with the following:   * Default location using the following defaults: `s3://<locationBucket>/<locationPrefix>/`   * Inside the location would be the various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`   * The default would create a database level crawler that's scheduled to run once a day (00:01h).
+An AWS Glue Data Catalog Database configured with the location and a crawler.
 
-This can be overriden to either disable the crawler or control the schedule/frequency of the crawler execution.
-
-
-**Usage example**
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -2327,7 +2335,12 @@ new DataCatalogDatabase(stack, 'ExampleDatabase', {
 });
 ```
 
+<<<<<<< HEAD
 #### Initializers <a name="Initializers" id="@adsf/framework.DataCatalogDatabase.Initializer"></a>
+=======
+
+#### Initializers <a name="Initializers" id="framework.DataCatalogDatabase.Initializer"></a>
+>>>>>>> fa15b90 (Update diagrams, remove template img, update text)
 
 ```typescript
 import { DataCatalogDatabase } from '@adsf/framework'
@@ -2536,7 +2549,7 @@ CDK Construct that creates the storage layer for data lake, composed of 3 {@link
 
 See documentation TODO insert link.
 
-**Usage example:**
+*Example*
 
 ```typescript
 import { DataLakeStorage } from 'aws-data-solutions-framework';
@@ -2988,10 +3001,9 @@ public readonly ADSF_TRACKING_CODE: string;
 
 A construct to create a Spark EMR Serverless Application   The construct takes as props {@link SparkRuntimeServerlessProps}   The construct offers method to create execution role for EMR Serverless   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job.
 
-**Usage example**
+*Example*
 
 ```typescript
-
 const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
    releaseLabel: 'emr-6.12.0',
    name: 'spark-serverless-demo'
@@ -3020,7 +3032,12 @@ new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
 });
 ```
 
+<<<<<<< HEAD
 #### Initializers <a name="Initializers" id="@adsf/framework.SparkRuntimeServerless.Initializer"></a>
+=======
+
+#### Initializers <a name="Initializers" id="framework.SparkRuntimeServerless.Initializer"></a>
+>>>>>>> fa15b90 (Update diagrams, remove template img, update text)
 
 ```typescript
 import { SparkRuntimeServerless } from '@adsf/framework'
