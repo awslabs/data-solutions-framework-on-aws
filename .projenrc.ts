@@ -220,7 +220,7 @@ synthTask?.reset();
 synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
 const buildExampleTask = exampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ./dist/python adsf` },
+    { exec: `pip install --no-index --find-links ../framework/dist/python adsf` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
