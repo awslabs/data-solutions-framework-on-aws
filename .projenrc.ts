@@ -95,6 +95,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   jsiiVersion: JSII_VERSION,
 
+  publishToPypi: {
+    distName: 'adsf',
+    module: 'adsf'
+  },
+
   devDeps: [
     'cdk-nag@^2.0.0',
     '@types/jest',
@@ -188,25 +193,39 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
-  ]
+  ],
+
+  venvOptions: {
+    envdir: '.venv'
+  },
 });
 
 exampleApp.removeTask('deploy');
 exampleApp.removeTask('destroy');
 exampleApp.removeTask('diff');
 exampleApp.removeTask('watch');
+exampleApp.removeTask('synth');
 exampleApp.testTask.reset();
-exampleApp.testTask.exec('pytest -k "not e2e"');
+exampleApp.postCompileTask.reset();
+exampleApp.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'pytest -k "not e2e"'
+});
 exampleApp.addTask('test:e2e', {
   description: 'Run end-to-end tests',
   exec: 'pytest -k e2e'
 });
-let synthTask = exampleApp.tasks.tryFind('synth');
-synthTask?.reset();
-synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth`);
-synthTask = exampleApp.tasks.tryFind('synth:silent');
+const synthTask = exampleApp.tasks.tryFind('synth:silent');
 synthTask?.reset();
 synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
+const buildExampleTask = exampleApp.addTask('build-example', {
+  steps: [
+    { exec: `pip install --no-index --find-links ./dist/python adsf` },
+    { spawn: 'synth:silent' },
+    { spawn: 'test:unit' },
+  ]
+});
+exampleApp.packageTask.spawn(buildExampleTask);
 
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'

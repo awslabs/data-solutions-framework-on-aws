@@ -4,7 +4,7 @@ node_modules/
 !/.projen/tasks.json
 !/.projen/deps.json
 !/.projen/files.json
-/.env
+/.venv
 !/requirements.txt
 !/requirements-dev.txt
 __pycache__/
