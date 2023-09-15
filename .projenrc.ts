@@ -95,6 +95,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   jsiiVersion: JSII_VERSION,
 
+  publishToPypi: {
+    distName: 'adsf',
+    module: 'adsf'
+  },
+
   devDeps: [
     'cdk-nag@^2.0.0',
     '@types/jest',
@@ -167,6 +172,60 @@ new awscdk.AwsCdkConstructLibrary({
     '@types/jest',
   ],
 });
+
+const exampleApp = new awscdk.AwsCdkPythonApp({
+  name: 'example',
+  moduleName: 'adsf_example',
+  packageName: 'adsf_example',
+  version: '0.0.1',
+  description: 'An example CDK app demonstrating the most common use cases for AWS Data Solutions Framework',
+  authorName: author,
+  authorEmail: authorAddress,
+  license,
+
+  parent: rootProject,
+  outdir: 'example',
+ 
+  cdkVersion: CDK_VERSION,
+  constructsVersion: CDK_CONSTRUCTS_VERSION,
+  cdkVersionPinning: true,
+  
+  pytest: true,
+  devDeps: [
+    "pytest",
+  ],
+
+  venvOptions: {
+    envdir: '.venv'
+  },
+});
+
+exampleApp.removeTask('deploy');
+exampleApp.removeTask('destroy');
+exampleApp.removeTask('diff');
+exampleApp.removeTask('watch');
+exampleApp.removeTask('synth');
+exampleApp.testTask.reset();
+exampleApp.postCompileTask.reset();
+exampleApp.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'pytest -k "not e2e"'
+});
+exampleApp.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'pytest -k e2e'
+});
+const synthTask = exampleApp.tasks.tryFind('synth:silent');
+synthTask?.reset();
+synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
+const buildExampleTask = exampleApp.addTask('build-example', {
+  steps: [
+    { exec: `pip install --no-index --find-links ../framework/dist/python adsf` },
+    { spawn: 'synth:silent' },
+    { spawn: 'test:unit' },
+  ]
+});
+exampleApp.packageTask.spawn(buildExampleTask);
 
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
