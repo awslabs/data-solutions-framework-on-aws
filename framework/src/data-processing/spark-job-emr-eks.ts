@@ -14,6 +14,9 @@ import { EmrVersion } from '../utils';
  * A construct to run Spark Jobs using EMR on EKS.
  * creates a State Machine that orchestrates the Spark Job.
  * @see EmrOnEksSparkJobProps parameters to be specified for the construct
+ * @default ExecutionTimeoutMinutes: 30
+ * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
+ * @default ReleaseLabel: EMR version 6.2
  *
  * **Usage example**
  * @example

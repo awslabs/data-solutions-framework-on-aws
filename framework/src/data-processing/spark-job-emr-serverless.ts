@@ -14,6 +14,8 @@ import { TrackedConstruct } from '../utils';
  * A construct to run Spark Jobs using EMR Serverless.
  * creates a State Machine that orchestrates the Spark Job.
  * @see EmrServerlessSparkJobProps parameters to be specified for the construct
+ * @default ExecutionTimeoutMinutes: 30
+ * @default  ClientToken: universally unique identifier (v4 UUID) generated using random numbers
  *
  * **Usage example**
  * @example
@@ -59,7 +61,7 @@ export class EmrServerlessSparkJob extends SparkJob {
 
     //Set defaults
     props.jobConfig.ClientToken ??= JsonPath.uuid();
-    props.jobConfig.ExecutionTimeoutMinutes ??= 0;
+    props.jobConfig.ExecutionTimeoutMinutes ??= 30;
 
     this.config = props;
 
