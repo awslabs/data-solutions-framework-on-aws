@@ -13,10 +13,7 @@ import { TrackedConstruct, TrackedConstructProps } from '../utils';
 *   The construct offers method to create execution role for EMR Serverless
 *   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job
 *
-* **Usage example**
-*
-* ```typescript
-*
+* @example
 * const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
 *    releaseLabel: 'emr-6.12.0',
 *    name: 'spark-serverless-demo'
@@ -43,9 +40,7 @@ import { TrackedConstruct, TrackedConstructProps } from '../utils';
 * new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
 *    value: runtimeServerless.applicationArn,
 * });
-* ```
 */
-
 export class SparkRuntimeServerless extends TrackedConstruct {
 
   /**

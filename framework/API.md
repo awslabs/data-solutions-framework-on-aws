@@ -5,16 +5,11 @@
 
 ### AccessLogsBucket <a name="AccessLogsBucket" id="@adsf/framework.AccessLogsBucket"></a>
 
-An Amazon S3 Bucket configured with best practices and smart defaults for storing S3 access logs.
+Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
-Smart defaults:
- * The default bucket name is `access-logs-<UNIQUE_ID>``
- * S3 Managed encryption
- * Public access is blocked
- * Ojects are retained after deletion of the CDK resource
- * SSL communication is enforced
+See documentation TODO insert link.
 
-**Usage example**
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -25,6 +20,8 @@ const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
  removalPolicy: RemovalPolicy.DESTROY,
  autoDeleteObjects: true,
 }
+```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.AccessLogsBucket.Initializer"></a>
 
@@ -1157,16 +1154,11 @@ first call to addToResourcePolicy(s).
 
 ### AnalyticsBucket <a name="AnalyticsBucket" id="@adsf/framework.AnalyticsBucket"></a>
 
-An Amazon S3 Bucket configured with best practices and defaults for Analytics: * Server side buckets encryption managed by KMS customer key.
+Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
-* SSL communication enforcement.
-* Access logged to an S3 bucket within a prefix matching the bucket name.
-* All public access blocked.
-* Two-step protection for bucket and objects deletion.
+See documentation TODO insert link
 
-For custom requirements that are not covered, use {Bucket} directly.
-
-**Usage example**
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -1179,15 +1171,16 @@ const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
 stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
 
 const encryptionKey = new Key(stack, 'DataKey', {
-removalPolicy: RemovalPolicy.DESTROY,
-enableKeyRotation: true,
+ removalPolicy: RemovalPolicy.DESTROY,
+ enableKeyRotation: true,
 });
 
 new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
-encryptionKey,
-removalPolicy: cdk.RemovalPolicy.DESTROY,
+ encryptionKey,
+ removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.AnalyticsBucket.Initializer"></a>
 
@@ -2320,12 +2313,9 @@ first call to addToResourcePolicy(s).
 
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="@adsf/framework.DataCatalogDatabase"></a>
 
-An AWS Glue Data Catalog Database configured with the following:   * Default location using the following defaults: `s3://<locationBucket>/<locationPrefix>/`   * Inside the location would be the various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`   * The default would create a database level crawler that's scheduled to run once a day (00:01h).
+An AWS Glue Data Catalog Database configured with the location and a crawler.
 
-This can be overriden to either disable the crawler or control the schedule/frequency of the crawler execution.
-
-
-**Usage example**
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -2340,6 +2330,7 @@ new DataCatalogDatabase(stack, 'ExampleDatabase', {
    name: 'example-db'
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.DataCatalogDatabase.Initializer"></a>
 
@@ -2546,24 +2537,14 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### DataLakeStorage <a name="DataLakeStorage" id="@adsf/framework.DataLakeStorage"></a>
 
-CDK Construct that creates a the storage layer of a data lake, composed of 3 {AnalyticsBucket} for Bronze, Silver, and Gold data.
+CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
-The respective {AnalyticsBucket}s are configured with the best practices and smart defaults for data lake:
- * Medalion design with S3 buckets for Bronze, Silver, and Gold data.
- * Server-side encryption using a single KMS customer key for all S3 buckets.
- * Enforced SSL in-transit encryption.
- * Logs data lake access in a dedicated bucket within a prefix matching the bucket name.
- * Bronze data is moved to Infrequent Access after 30 days and archived to Glacier after 90 days.
- * Silver and Gold data is moved to Infrequent Access after 90 days and is not archived.
- * Buckets and objects can be retained when the CDK resource is destroyed (default).
- * Buckets and objects can be destroyed when the CDK resource is destroyed, if both removal policy and ADSF global setting (CDK app context) are set.
- * All public access blocked.
+See documentation TODO insert link.
 
-For custom requirements not covered by {DataLakeStorageProps}, consider using {AnalyticsBucket} directly.
-
-**Usage example**
+*Example*
 
 ```typescript
+import * as cdk from 'aws-cdk-lib';
 import { DataLakeStorage } from 'aws-data-solutions-framework';
 
 // Set context value for global data removal policy (or set in cdk.json).
@@ -2583,6 +2564,7 @@ new DataLakeStorage(this, 'MyDataLakeStorage', {
  dataLakeKey: new Key(stack, 'MyDataLakeKey')
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.DataLakeStorage.Initializer"></a>
 
@@ -3013,10 +2995,9 @@ public readonly ADSF_TRACKING_CODE: string;
 
 A construct to create a Spark EMR Serverless Application   The construct takes as props {@link SparkRuntimeServerlessProps}   The construct offers method to create execution role for EMR Serverless   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job.
 
-**Usage example**
+*Example*
 
 ```typescript
-
 const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
    releaseLabel: 'emr-6.12.0',
    name: 'spark-serverless-demo'
@@ -3044,6 +3025,7 @@ new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
    value: runtimeServerless.applicationArn,
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.SparkRuntimeServerless.Initializer"></a>
 

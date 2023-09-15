@@ -5,7 +5,7 @@
  */
 
 :root {
-  --ifm-color-primary: #25c2a0; /* #146ee6; */
+  --ifm-color-primary: #090909; /* #146ee6; */
   --ifm-menu-color: #525151;
   --ifm-font-color-base: rgba(30, 32, 34, 1);
   --ifm-navbar-background-color: white;
@@ -14,6 +14,8 @@
   --ifm-code-name-highlight: #84488D;
   --ifm-font-size-base:  95%;
   --ifm-toc-border-color: #dadde1b8;
+  --ifm-link-color: #0000EE;
+  --ifm-link-hover-color: #0000EE;
 }
 
 html[data-theme="dark"] {

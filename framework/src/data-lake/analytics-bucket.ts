@@ -8,20 +8,11 @@ import { Construct } from 'constructs';
 
 import { AnalyticsBucketProps } from './analytics-bucket-props';
 
-
 /**
-*  An Amazon S3 Bucket configured with best practices and defaults for Analytics:
-*  * Server side buckets encryption managed by KMS customer key.
-*  * SSL communication enforcement.
-*  * Access logged to an S3 bucket within a prefix matching the bucket name.
-*  * All public access blocked.
-*  * Two-step protection for bucket and objects deletion.
+* Amazon S3 Bucket configured with best-practices and defaults for analytics.
+* See documentation TODO insert link
 *
-* For custom requirements that are not covered, use {Bucket} directly.
-*
-* **Usage example**
-*
-* ```typescript
+* @example
 * import * as cdk from 'aws-cdk-lib';
 * import { AnalyticsBucket} from 'aws-data-solutions-framework';
 *
@@ -40,7 +31,6 @@ import { AnalyticsBucketProps } from './analytics-bucket-props';
 *  encryptionKey,
 *  removalPolicy: cdk.RemovalPolicy.DESTROY,
 * });
-* ```
 */
 export class AnalyticsBucket extends Bucket {
 

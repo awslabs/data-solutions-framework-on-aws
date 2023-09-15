@@ -85,23 +85,11 @@ export interface DataLakeStorageProps {
 }
 
 /**
- * CDK Construct that creates a the storage layer of a data lake, composed of 3 {AnalyticsBucket} for Bronze, Silver, and Gold data.
- * The respective {AnalyticsBucket}s are configured with the best practices and smart defaults for data lake:
- *  * Medalion design with S3 buckets for Bronze, Silver, and Gold data.
- *  * Server-side encryption using a single KMS customer key for all S3 buckets.
- *  * Enforced SSL in-transit encryption.
- *  * Logs data lake access in a dedicated bucket within a prefix matching the bucket name.
- *  * Bronze data is moved to Infrequent Access after 30 days and archived to Glacier after 90 days.
- *  * Silver and Gold data is moved to Infrequent Access after 90 days and is not archived.
- *  * Buckets and objects can be retained when the CDK resource is destroyed (default).
- *  * Buckets and objects can be destroyed when the CDK resource is destroyed, if both removal policy and ADSF global setting (CDK app context) are set.
- *  * All public access blocked.
+ * CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
+ * See documentation TODO insert link.
  *
- * For custom requirements not covered by {DataLakeStorageProps}, consider using {AnalyticsBucket} directly.
- *
- * **Usage example**
- *
- * ```typescript
+ * @example
+ * import * as cdk from 'aws-cdk-lib';
  * import { DataLakeStorage } from 'aws-data-solutions-framework';
  *
  * // Set context value for global data removal policy (or set in cdk.json).
@@ -120,7 +108,6 @@ export interface DataLakeStorageProps {
  *  removalPolicy: cdk.RemovalPolicy.DESTROY,
  *  dataLakeKey: new Key(stack, 'MyDataLakeKey')
  * });
- * ```
  */
 export class DataLakeStorage extends TrackedConstruct {
 
