@@ -17,8 +17,6 @@ You can compose different AWS DSF constructs to build end-to-end data platform, 
 
 > :heavy_exclamation_mark: If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 ### Create a CDK app
 ```bash

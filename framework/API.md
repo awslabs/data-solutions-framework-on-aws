@@ -1181,12 +1181,8 @@ new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
 });
 ```
 
-<<<<<<< HEAD
-#### Initializers <a name="Initializers" id="@adsf/framework.AnalyticsBucket.Initializer"></a>
-=======
 
-#### Initializers <a name="Initializers" id="framework.AnalyticsBucket.Initializer"></a>
->>>>>>> fa15b90 (Update diagrams, remove template img, update text)
+#### Initializers <a name="Initializers" id="@adsf/framework.AnalyticsBucket.Initializer"></a>
 
 ```typescript
 import { AnalyticsBucket } from '@adsf/framework'
@@ -2335,12 +2331,8 @@ new DataCatalogDatabase(stack, 'ExampleDatabase', {
 });
 ```
 
-<<<<<<< HEAD
-#### Initializers <a name="Initializers" id="@adsf/framework.DataCatalogDatabase.Initializer"></a>
-=======
 
-#### Initializers <a name="Initializers" id="framework.DataCatalogDatabase.Initializer"></a>
->>>>>>> fa15b90 (Update diagrams, remove template img, update text)
+#### Initializers <a name="Initializers" id="@adsf/framework.DataCatalogDatabase.Initializer"></a>
 
 ```typescript
 import { DataCatalogDatabase } from '@adsf/framework'
@@ -2552,6 +2544,7 @@ See documentation TODO insert link.
 *Example*
 
 ```typescript
+import * as cdk from 'aws-cdk-lib';
 import { DataLakeStorage } from 'aws-data-solutions-framework';
 
 // Set context value for global data removal policy (or set in cdk.json).
@@ -2571,6 +2564,7 @@ new DataLakeStorage(this, 'MyDataLakeStorage', {
  dataLakeKey: new Key(stack, 'MyDataLakeKey')
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.DataLakeStorage.Initializer"></a>
 
@@ -3032,12 +3026,8 @@ new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
 });
 ```
 
-<<<<<<< HEAD
-#### Initializers <a name="Initializers" id="@adsf/framework.SparkRuntimeServerless.Initializer"></a>
-=======
 
-#### Initializers <a name="Initializers" id="framework.SparkRuntimeServerless.Initializer"></a>
->>>>>>> fa15b90 (Update diagrams, remove template img, update text)
+#### Initializers <a name="Initializers" id="@adsf/framework.SparkRuntimeServerless.Initializer"></a>
 
 ```typescript
 import { SparkRuntimeServerless } from '@adsf/framework'
