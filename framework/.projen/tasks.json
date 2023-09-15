@@ -97,6 +97,9 @@
       "steps": [
         {
           "spawn": "package:js"
+        },
+        {
+          "spawn": "package:python"
         }
       ]
     },
@@ -106,6 +109,15 @@
       "steps": [
         {
           "exec": "jsii-pacmak -v --target js"
+        }
+      ]
+    },
+    "package:python": {
+      "name": "package:python",
+      "description": "Create python language bindings",
+      "steps": [
+        {
+          "exec": "jsii-pacmak -v --target python"
         }
       ]
     },
@@ -168,13 +180,13 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --upgrade --target=minor --filter=@jest/globals,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,ts-jest,typescript,aws-cdk-lib,constructs"
+          "exec": "npm-check-updates --upgrade --target=minor --filter=@jest/globals,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,ts-jest,typescript,aws-cdk-lib,constructs"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @jest/globals @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen ts-jest typescript aws-cdk-lib constructs"
+          "exec": "yarn upgrade @jest/globals @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta ts-jest typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

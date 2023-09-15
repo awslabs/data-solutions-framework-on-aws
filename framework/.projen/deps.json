@@ -105,6 +105,10 @@
       "type": "build"
     },
     {
+      "name": "rosetta",
+      "type": "build"
+    },
+    {
       "name": "ts-jest",
       "type": "build"
     },

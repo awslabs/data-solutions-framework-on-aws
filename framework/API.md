@@ -2564,16 +2564,12 @@ For custom requirements not covered by {DataLakeStorageProps}, consider using {A
 **Usage example**
 
 ```typescript
-import * as cdk from 'aws-cdk-lib';
 import { DataLakeStorage } from 'aws-data-solutions-framework';
 
-const exampleApp = new cdk.App();
-const stack = new cdk.Stack(exampleApp, 'DataLakeStorageStack');
-
 // Set context value for global data removal policy (or set in cdk.json).
-stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+this.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
 
-new DataLakeStorage(stack, 'MyDataLakeStorage', {
+new DataLakeStorage(this, 'MyDataLakeStorage', {
  bronzeName: 'my-bronze',
  bronzeInfrequentAccessDelay: 90,
  bronzeArchiveDelay: 180,
@@ -2768,6 +2764,242 @@ public readonly silverBucket: AnalyticsBucket;
 ---
 
 ##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="framework.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly ADSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### SparkCICDPipeline <a name="SparkCICDPipeline" id="framework.SparkCICDPipeline"></a>
+
+A CICD Pipeline that tests and deploys a Spark application in cross-account environments.
+
+The construct provisions a [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) with the following resources:
+ * A CodeCommit repository to host the code
+ * A CodePipeline triggered from the main branch of the CodeCommit repository
+ * A CodeBuild stage to build the CDK assets and run the Spark unit tests
+ * A Staging stage to deploy the application stack in the staging account and run optional integration tests
+ * A Production stage to deploy the application stack in the production account
+
+If using different accounts for dev (where this construct is deployed), staging and production (where the application stack is deployed),
+bootstrap integration and production accounts with CDK and add a trust relationship from the dev account:
+```bash
+cdk bootstrap \
+  --profile integration \
+  --trust <DEV_ACCOUNT> \
+  aws://<INTEGRATION_ACCOUNT>/<REGION>
+```
+More information [here](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html#cdk_pipeline_bootstrap)
+
+Also provide the accounts information in the cdk.json in the form of:
+
+```json
+{
+  "staging": {
+    "accountId": "<STAGING_ACCOUNT_ID>",
+    "region": "<REGION>"
+  },
+  "prod": {
+    "accountId": "<PROD_ACCOUNT_ID>",
+    "region": "<REGION>"
+  }
+```
+
+Units tests are expected to be run with `pytest` command from the Spark root folder configured via `sparkPath`.
+Units tests are expected to create a Spark session with a local master and client mode.
+
+Integration tests are expected to be an AWS CLI script that return 0 exit code if success and 1 if failure configure via `integTestScript`.
+To use resources that are deployed by the Application Stack, pass environment variables to the Construct in the form of key/value pairs via `integTestEnv`:
+  * Keys are the names of the environment variables used in the script.
+  * Values are CloudFormation output names provided by the application stack (generally resource names or ARN).
+
+The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
+The `createStack()` method needs to return a `Stack` instance within the scope passed to the factory method.
+This is used to create the application stack within the scope of the CDK Pipeline stage.
+The `CICDStage` parameter is passed by the CDK Pipeline via the factory method and allows to customize the behavior of the Stack based on the stage.
+For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job.
+
+*Example*
+
+```typescript
+const stack = new Stack();
+
+interface MyApplicationStackProps extends StackProps {
+  readonly stage: CICDStage;
+}
+
+class MyApplicationStack extends Stack {
+  constructor(scope: Stack, props?: MyApplicationStackProps) {
+    super(scope, 'MyApplicationStack');
+*     const bucket = new Bucket(this, 'TestBucket', {
+      autoDeleteObjects: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+    new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
+  }
+}
+
+class MyStackFactory implements ApplicationStackFactory {
+  createStack(scope: Stack, stage: CICDStage): Stack {
+    return new MyApplicationStack(scope, { stage });
+  }
+}
+
+new SparkCICDPipeline(stack, 'TestConstruct', {
+  applicationName: 'test',
+  applicationStackFactory: new MyStackFactory(),
+  cdkApplicationPath: 'cdk/',
+  sparkApplicationPath: 'spark/',
+  sparkImage: SparkImage.EMR_SERVERLESS_6_10,
+  integTestScript: 'cdk/integ-test.sh',
+  integTestEnv: {
+    TEST_BUCKET: 'BucketName',
+  },
+});
+```
+
+
+#### Initializers <a name="Initializers" id="framework.SparkCICDPipeline.Initializer"></a>
+
+```typescript
+import { SparkCICDPipeline } from 'framework'
+
+new SparkCICDPipeline(scope: Construct, id: string, props: SparkCICDPipelineProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#framework.SparkCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#framework.SparkCICDPipeline.Initializer.parameter.props">props</a></code> | <code><a href="#framework.SparkCICDPipelineProps">SparkCICDPipelineProps</a></code> | the SparkCICDPipelineProps properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="framework.SparkCICDPipeline.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="framework.SparkCICDPipeline.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="framework.SparkCICDPipeline.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#framework.SparkCICDPipelineProps">SparkCICDPipelineProps</a>
+
+the SparkCICDPipelineProps properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="framework.SparkCICDPipeline.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="framework.SparkCICDPipeline.isConstruct"></a>
+
+```typescript
+import { SparkCICDPipeline } from 'framework'
+
+SparkCICDPipeline.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="framework.SparkCICDPipeline.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#framework.SparkCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="framework.SparkCICDPipeline.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="framework.SparkCICDPipeline.property.pipeline"></a>
+
+```typescript
+public readonly pipeline: CodePipeline;
+```
+
+- *Type:* aws-cdk-lib.pipelines.CodePipeline
+
+The CodePipeline created as part of the Spark CICD Pipeline.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="framework.SparkCICDPipeline.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3725,6 +3957,138 @@ Will be appended by the unique ID.
 
 ---
 
+### SparkCICDPipelineProps <a name="SparkCICDPipelineProps" id="framework.SparkCICDPipelineProps"></a>
+
+Properties for SparkCICDPipeline class.
+
+#### Initializer <a name="Initializer" id="framework.SparkCICDPipelineProps.Initializer"></a>
+
+```typescript
+import { SparkCICDPipelineProps } from 'framework'
+
+const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#framework.SparkCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
+| <code><a href="#framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#framework.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
+
+---
+
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="framework.SparkCICDPipelineProps.property.applicationName"></a>
+
+```typescript
+public readonly applicationName: string;
+```
+
+- *Type:* string
+
+The name of the Spark application to be deployed.
+
+---
+
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="framework.SparkCICDPipelineProps.property.applicationStackFactory"></a>
+
+```typescript
+public readonly applicationStackFactory: ApplicationStackFactory;
+```
+
+- *Type:* <a href="#framework.ApplicationStackFactory">ApplicationStackFactory</a>
+
+The application Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="framework.SparkCICDPipelineProps.property.cdkApplicationPath"></a>
+
+```typescript
+public readonly cdkApplicationPath: string;
+```
+
+- *Type:* string
+- *Default:* The root of the repository
+
+The path to the folder that contains the CDK Application.
+
+---
+
+##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="framework.SparkCICDPipelineProps.property.integTestEnv"></a>
+
+```typescript
+public readonly integTestEnv: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+- *Default:* No environment variables
+
+The environment variables to create from the Application Stack and to pass to the integration tests.
+
+This is used to interact with resources created by the Application Stack from within the integration tests script.
+Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application Stack.
+
+---
+
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="framework.SparkCICDPipelineProps.property.integTestPermissions"></a>
+
+```typescript
+public readonly integTestPermissions: PolicyStatement[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyStatement[]
+- *Default:* No permissions
+
+The IAM policy statements to add permissions for running the integration tests.
+
+---
+
+##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="framework.SparkCICDPipelineProps.property.integTestScript"></a>
+
+```typescript
+public readonly integTestScript: string;
+```
+
+- *Type:* string
+- *Default:* No integration tests are run
+
+The path to the Shell script that contains integration tests.
+
+---
+
+##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="framework.SparkCICDPipelineProps.property.sparkApplicationPath"></a>
+
+```typescript
+public readonly sparkApplicationPath: string;
+```
+
+- *Type:* string
+- *Default:* The root of the repository
+
+The path to the folder that contains the Spark Application.
+
+---
+
+##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="framework.SparkCICDPipelineProps.property.sparkImage"></a>
+
+```typescript
+public readonly sparkImage: SparkImage;
+```
+
+- *Type:* <a href="#framework.SparkImage">SparkImage</a>
+- *Default:* EMR v6.12 is used
+
+The EMR Spark image to use to run the unit tests.
+
+---
+
 ### SparkRuntimeServerlessProps <a name="SparkRuntimeServerlessProps" id="framework.SparkRuntimeServerlessProps"></a>
 
 Properties for the {SparkRuntimeServerless} construct.
@@ -3883,6 +4247,86 @@ This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserG
 
 ---
 
+## Classes <a name="Classes" id="Classes"></a>
+
+### ApplicationStackFactory <a name="ApplicationStackFactory" id="framework.ApplicationStackFactory"></a>
+
+Abstract class that needs to be implemented to pass the application Stack to the CICD pipeline.
+
+*Example*
+
+```typescript
+import { ApplicationStackFactory }
+import { CICDStage } from './application-stage';
+
+interface MyApplicationStackProps extends StackProps {
+  readonly stage: CICDStage;
+}
+
+class MyApplicationStack extends Stack {
+  constructor(scope: Stack, id: string, props?: MyApplicationStackProps) {
+    super(scope, id, props);
+    // stack logic goes here... and can be customized using props.stage
+  }
+}
+
+class MyApplicationStackFactory extends ApplicationStackFactory {
+  createStack(scope: Construct, stage: CICDStage): Stack {
+    return new MyApplicationStack(scope, 'MyApplication', {
+      stage: stage
+    } as MyApplicationStackProps);
+  }
+}
+```
+
+
+#### Initializers <a name="Initializers" id="framework.ApplicationStackFactory.Initializer"></a>
+
+```typescript
+import { ApplicationStackFactory } from 'framework'
+
+new ApplicationStackFactory()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.ApplicationStackFactory.createStack">createStack</a></code> | Abstract method that needs to be implemented to return the application Stack. |
+
+---
+
+##### `createStack` <a name="createStack" id="framework.ApplicationStackFactory.createStack"></a>
+
+```typescript
+public createStack(scope: Construct, stage: CICDStage): Stack
+```
+
+Abstract method that needs to be implemented to return the application Stack.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="framework.ApplicationStackFactory.createStack.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+The scope to create the stack in.
+
+---
+
+###### `stage`<sup>Required</sup> <a name="stage" id="framework.ApplicationStackFactory.createStack.parameter.stage"></a>
+
+- *Type:* <a href="#framework.CICDStage">CICDStage</a>
+
+The stage of the pipeline.
+
+---
+
+
+
 
 
 ## Enums <a name="Enums" id="Enums"></a>
@@ -3906,6 +4350,29 @@ Enum defining the CPU architecture type of the application, either  X86_64 or AR
 
 
 ##### `ARM64` <a name="ARM64" id="framework.Architecture.ARM64"></a>
+
+---
+
+
+### CICDStage <a name="CICDStage" id="framework.CICDStage"></a>
+
+The list of CICD Stages to deploy the SparkCICDStack.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.CICDStage.STAGING">STAGING</a></code> | *No description.* |
+| <code><a href="#framework.CICDStage.PROD">PROD</a></code> | *No description.* |
+
+---
+
+##### `STAGING` <a name="STAGING" id="framework.CICDStage.STAGING"></a>
+
+---
+
+
+##### `PROD` <a name="PROD" id="framework.CICDStage.PROD"></a>
 
 ---
 
@@ -4007,6 +4474,41 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 
 ##### `V5_32` <a name="V5_32" id="framework.EmrVersion.V5_32"></a>
+
+---
+
+
+### SparkImage <a name="SparkImage" id="framework.SparkImage"></a>
+
+The list of supported Spark images to use in the SparkCICDPipeline.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#framework.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
+| <code><a href="#framework.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
+
+---
+
+##### `EMR_6_12` <a name="EMR_6_12" id="framework.SparkImage.EMR_6_12"></a>
+
+---
+
+
+##### `EMR_6_11` <a name="EMR_6_11" id="framework.SparkImage.EMR_6_11"></a>
+
+---
+
+
+##### `EMR_6_10` <a name="EMR_6_10" id="framework.SparkImage.EMR_6_10"></a>
+
+---
+
+
+##### `EMR_6_9` <a name="EMR_6_9" id="framework.SparkImage.EMR_6_9"></a>
 
 ---
 

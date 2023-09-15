@@ -22,7 +22,7 @@ const rootProject = new LernaProject({
   devDeps: [
     'lerna-projen',
     'ts-node',
-    'typescript'
+    'typescript',
   ],
   peerDeps: [
     '@types/node@^16',
@@ -98,7 +98,13 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'ts-jest',
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
+    'rosetta',
   ],
+
+  python: {
+    distName: 'adsf',
+    module: 'adsf',
+  },
 
   jestOptions: {
     jestConfig: {
