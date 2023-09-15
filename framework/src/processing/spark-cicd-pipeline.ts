@@ -111,7 +111,7 @@ export interface SparkCICDPipelineProps {
 * cdk bootstrap \
 *   --profile integration \
 *   --trust <DEV_ACCOUNT> \
-*   aws://<INTEGRATION_ACCOUNT>/us-west-2
+*   aws://<INTEGRATION_ACCOUNT>/<REGION>
 * ```
 * More information [here](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html#cdk_pipeline_bootstrap)
 *
@@ -133,14 +133,14 @@ export interface SparkCICDPipelineProps {
 * Units tests are expected to create a Spark session with a local master and client mode.
 *
 * Integration tests are expected to be an AWS CLI script that return 0 exit code if success and 1 if failure configure via `integTestScript`.
-* To use resources that are deployed by the Application Stack, pass environment variables to the Construct in the form of key/value pairs via `integTestEnv`.
-* Keys are the names of the environment variables used in the script, values are CloudFormation output names provided by the
-* application stack (generally resource names or ARN).
+* To use resources that are deployed by the Application Stack, pass environment variables to the Construct in the form of key/value pairs via `integTestEnv`:
+*   * Keys are the names of the environment variables used in the script.
+*   * Values are CloudFormation output names provided by the application stack (generally resource names or ARN).
 *
 * The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
 * The `createStack()` method needs to return a `Stack` instance within the scope passed to the factory method.
 * This is used to create the application stack within the scope of the CDK Pipeline stage.
-* The `CICDStage` parameter is passed by the CDK Pipeline and allows to customize the behavior of the Stack based on the stage.
+* The `CICDStage` parameter is passed by the CDK Pipeline via the factory method and allows to customize the behavior of the Stack based on the stage.
 * For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job.
 *
 * @example
