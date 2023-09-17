@@ -8,6 +8,7 @@ import {
   CapacityType,
   Cluster,
   ClusterLoggingTypes,
+  EndpointAccess,
   HelmChart,
   KubernetesVersion,
   Nodegroup,
@@ -49,8 +50,7 @@ import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-con
  * The different autoscaler available with EmrEksCluster
  */
 export enum Autoscaler {
-  KARPENTER = 'KARPENTER',
-  CLUSTER_AUTOSCALER = 'CLUSTER_AUTOSCALER',
+  KARPENTER = 'KARPENTER'
 }
 
 /**
@@ -151,6 +151,11 @@ export interface EmrEksClusterProps {
    * Cannot be combined with vpcCidr, if combined vpcCidr takes precendency
    */
   readonly eksVpc?: IVpc;
+
+  /*
+  * The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
+  */
+  readonly publicAccessCIDRs: string[]; 
 }
 
 /**
@@ -298,10 +303,11 @@ export class EmrEksCluster extends TrackedConstruct {
       this.eksCluster = new Cluster(scope, `${this.clusterName}Cluster`, {
         defaultCapacity: 0,
         clusterName: this.clusterName,
-        version: props.kubernetesVersion || EmrEksCluster.DEFAULT_EKS_VERSION,
+        version: props.kubernetesVersion ?? EmrEksCluster.DEFAULT_EKS_VERSION,
         clusterLogging: eksClusterLogging,
         kubectlLayer: props.kubectlLambdaLayer as ILayerVersion ?? undefined,
         vpc: eksVpc,
+        endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE
       });
 
       //Create VPC flow log for the EKS VPC
@@ -345,25 +351,14 @@ export class EmrEksCluster extends TrackedConstruct {
       //Setting up the cluster with the required controller
       eksClusterSetup(this, this, props.eksAdminRoleArn);
 
-      //Deploy the right autoscaler using the flag set earlier
-      if (this.isKarpenter) {
-        this.karpenterChart = karpenterSetup(
-          this.eksCluster, this.clusterName, this, props.karpenterVersion || EmrEksCluster.DEFAULT_KARPENTER_VERSION,
-        );
-      } else {
-        const kubernetesVersion = props.kubernetesVersion ?? EmrEksCluster.DEFAULT_EKS_VERSION;
-        clusterAutoscalerSetup(this.eksCluster, this.clusterName, this, kubernetesVersion);
-      }
+      //Deploy karpenter
+      this.karpenterChart = karpenterSetup(
+        this.eksCluster, this.clusterName, this, props.karpenterVersion || EmrEksCluster.DEFAULT_KARPENTER_VERSION,
+      );
 
     } else {
       //Initialize with the provided EKS Cluster
       this.eksCluster = props.eksCluster;
-    }
-
-    //Check if the user want to use the default nodegroup and
-    //Add the default nodegroup configured and optimized to run Spark workloads
-    if (this.defaultNodes && props.autoscaling == Autoscaler.CLUSTER_AUTOSCALER) {
-      setDefaultManagedNodeGroups(this);
     }
 
     //Check if there user want to use the default Karpenter provisioners and
@@ -413,8 +408,6 @@ export class EmrEksCluster extends TrackedConstruct {
       bucketName: this.assetBucket.bucketName,
       objectKey: `${this.clusterName}/pod-template`,
     };
-
-    Tags.of(this.assetBucket).add('for-use-with', 'cdk-analytics-reference-architecture');
 
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
 
@@ -730,46 +723,6 @@ ${userData.join('\r\n')}
         applyToLaunchedInstances: true,
       },
     );
-    // // Iterate over labels and add appropriate tags
-    // if (options.labels) {
-    //   for (const [key, value] of Object.entries(options.labels)) {
-    //     Tags.of(nodegroup).add(
-    //       `k8s.io/cluster-autoscaler/node-template/label/${key}`,
-    //       value,
-    //       {
-    //         applyToLaunchedInstances: true,
-    //       },
-    //     );
-    //     new CustomResource(this, `${nodegroupId}Label${key}`, {
-    //       serviceToken: this.nodegroupAsgTagsProviderServiceToken,
-    //       properties: {
-    //         nodegroupName: options.nodegroupName,
-    //         tagKey: `k8s.io/cluster-autoscaler/node-template/label/${key}`,
-    //         tagValue: value,
-    //       },
-    //     }).node.addDependency(nodegroup);
-    //   }
-    // }
-    // // Iterate over taints and add appropriate tags
-    // if (options.taints) {
-    //   options.taints.forEach((taint) => {
-    //     Tags.of(nodegroup).add(
-    //       `k8s.io/cluster-autoscaler/node-template/taint/${taint.key}`,
-    //       `${taint.value}:${taint.effect}`,
-    //       {
-    //         applyToLaunchedInstances: true,
-    //       },
-    //     );
-    //     new CustomResource(this, `${nodegroupId}Taint${taint.key}`, {
-    //       serviceToken: this.nodegroupAsgTagsProviderServiceToken!,
-    //       properties: {
-    //         nodegroupName: options.nodegroupName,
-    //         tagKey: `k8s.io/cluster-autoscaler/node-template/taint/${taint.key}`,
-    //         tagValue: `${taint.value}:${taint.effect}`,
-    //       },
-    //     }).node.addDependency(nodegroup);
-    //   });
-    // }
 
     return nodegroup;
   }

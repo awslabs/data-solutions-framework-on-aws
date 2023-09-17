@@ -62,7 +62,9 @@ const rootProject = new LernaProject({
 
   gitignore: [
     '.idea',
-    'dist'
+    'dist',
+    'cdk.out',
+    '.DS_Store'
   ],
 
   projenrcTs: true,
@@ -123,7 +125,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       resolveJsonModule: true,
       esModuleInterop: true,
     },
-    include: ['src/**/*.json'],
+    include: ['framework/src/**/*.json'],
   },
 
   jestOptions: {
