@@ -14,6 +14,12 @@ import { Construct } from 'constructs';
 export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: string) : Vpc {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
+  const smallestVpcCidr: number = 28;
+
+
+  if (vpcMask < smallestVpcCidr) {
+    throw new Error(`The VPC netmask should be at least 28, netmask provided is ${vpcMask}`);
+  }
 
   // Calculate subnet masks based on VPC's mask
   const publicSubnetMask = vpcMask + 4;
@@ -52,4 +58,3 @@ export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: 
 
   return vpc;
 }
-

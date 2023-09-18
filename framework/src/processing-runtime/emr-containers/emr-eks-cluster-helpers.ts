@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws, CfnOutput, Duration, Stack, Tags } from 'aws-cdk-lib';
-import { ISubnet, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Cluster, HelmChart, KubernetesManifest, KubernetesVersion, CfnAddon } from 'aws-cdk-lib/aws-eks';
+import { Aws, Duration, Tags, Fn } from 'aws-cdk-lib';
+import { ISubnet, Port, SecurityGroup, SubnetType, InstanceType } from 'aws-cdk-lib/aws-ec2';
+import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { EmrEksCluster } from './emr-eks-cluster';
-import { EmrEksNodegroup, EmrEksNodegroupOptions } from './emr-eks-nodegroup';
 import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
+import { CfnLaunchTemplate } from 'aws-cdk-lib/aws-ec2';
 import { Utils } from '../../utils';
 
 
@@ -103,60 +103,9 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
   albService.node.addDependency(albServiceAccount);
   albService.node.addDependency(certManager);
 
-  // Add the kubernetes dashboard from helm chart
-  cluster.eksCluster.addHelmChart('KubernetesDashboard', {
-    createNamespace: true,
-    namespace: 'kubernetes-dashboard',
-    chart: 'kubernetes-dashboard',
-    repository: 'https://kubernetes.github.io/dashboard/',
-    version: 'v6.0.0',
-    timeout: Duration.minutes(2),
-    values: {
-      fullnameOverride: 'kubernetes-dashboard',
-      resources: {
-        limits: {
-          memory: '600Mi',
-        },
-      },
-    },
-  });
-
-  // Add the kubernetes dashboard service account
-  cluster.eksCluster.addManifest('kubedashboard', {
-    apiVersion: 'v1',
-    kind: 'ServiceAccount',
-    metadata: {
-      name: 'eks-admin',
-      namespace: 'kube-system',
-    },
-  });
-  // Add the kubernetes dashboard cluster role binding
-  cluster.eksCluster.addManifest('kubedashboardrolebinding', {
-    apiVersion: 'rbac.authorization.k8s.io/v1',
-    kind: 'ClusterRoleBinding',
-    metadata: {
-      name: 'eks-admin',
-    },
-    roleRef: {
-      apiGroup: 'rbac.authorization.k8s.io',
-      kind: 'ClusterRole',
-      name: 'cluster-admin',
-    },
-    subjects: [
-      {
-        kind: 'ServiceAccount',
-        name: 'eks-admin',
-        namespace: 'kube-system',
-      },
-    ],
-  });
-
   // Nodegroup capacity needed for all the tooling components including Karpenter
-  let EmrEksNodeGroupTooling: any = { ...EmrEksNodegroup.TOOLING_ALL };
-  EmrEksNodeGroupTooling.nodeRole = cluster.ec2InstanceNodeGroupRole;
+  toolingManagedNodegroupSetup(scope, cluster);
 
-  // Create the Amazon EKS Nodegroup for tooling
-  cluster.addNodegroupCapacity('Tooling', EmrEksNodeGroupTooling as EmrEksNodegroupOptions);
 
   //IAM role created for the aws-node pod following AWS best practice not to use the EC2 instance role
   const awsNodeRole: Role = new Role(scope, 'awsNodeRole', {
@@ -188,39 +137,60 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
     overwrite: true,
   });
 
-  // Provide the Kubernetes Dashboard URL in AWS CloudFormation output
-  new CfnOutput(scope, 'kubernetesDashboardURL', {
-    description: 'Access Kubernetes Dashboard via kubectl proxy and this URL',
-    value: 'http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:https/proxy/#/login',
-  });
 }
 
-/**
- * @internal
- * Method to add the default EKS Managed Nodegroups configured for Spark workloads
- */
-export function setDefaultManagedNodeGroups(cluster: EmrEksCluster) {
+function  toolingManagedNodegroupSetup (stack: Construct, cluster: EmrEksCluster) {
 
-  let EmrEksNodeGroupCritical: any = { ...EmrEksNodegroup.CRITICAL_ALL };
-  EmrEksNodeGroupCritical.nodeRole = cluster.ec2InstanceNodeGroupRole;
-  cluster.addEmrEksNodegroup('criticalAll', EmrEksNodeGroupCritical as EmrEksNodegroupOptions);
+  var userData = [
+    'yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm',
+    'systemctl enable amazon-ssm-agent',
+    'systemctl start amazon-ssm-agent',
+  ];
 
-  let EmrEksNodeGroupsharedDriver: any = { ...EmrEksNodegroup.SHARED_DRIVER };
-  EmrEksNodeGroupsharedDriver.nodeRole = cluster.ec2InstanceNodeGroupRole;
-  cluster.addEmrEksNodegroup('sharedDriver', EmrEksNodeGroupsharedDriver as EmrEksNodegroupOptions);
+  // Add headers and footers to user data
+  const userDataMime = Fn.base64(`MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+      
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+      
+#!/bin/bash
+${userData.join('\r\n')}
+      
+--==MYBOUNDARY==--\\
+`);
 
-  let EmrEksNodeGroupsharedExecutor: any = { ...EmrEksNodegroup.SHARED_EXECUTOR };
-  EmrEksNodeGroupsharedExecutor.nodeRole = cluster.ec2InstanceNodeGroupRole;
-  cluster.addEmrEksNodegroup('sharedExecutor', EmrEksNodeGroupsharedExecutor as EmrEksNodegroupOptions);
+  const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(stack, 'toolinglaunchtemplate', {
+    launchTemplateName: 'ToolingNodegroup',
 
-  let EmrEksNodeGroupnotebookDriver: any = { ...EmrEksNodegroup.NOTEBOOK_DRIVER };
-  EmrEksNodeGroupnotebookDriver.nodeRole = cluster.ec2InstanceNodeGroupRole;
-  cluster.addEmrEksNodegroup('notebookDriver', EmrEksNodeGroupnotebookDriver as EmrEksNodegroupOptions);
+    launchTemplateData: {
+      userData: userDataMime,
+      metadataOptions: {
+        httpEndpoint: 'enabled',
+        httpProtocolIpv6: 'disabled',
+        httpPutResponseHopLimit: 2,
+        httpTokens: 'required',
+      },
+    },
+  });
 
-  let EmrEksNodeGroupnotebookExecutor: any = { ...EmrEksNodegroup.NOTEBOOK_EXECUTOR };
-  EmrEksNodeGroupnotebookExecutor.nodeRole = cluster.ec2InstanceNodeGroupRole;
-  cluster.addEmrEksNodegroup('notebookExecutor', EmrEksNodeGroupnotebookExecutor as EmrEksNodegroupOptions);
+  let toolingManagedNodegroupOptions: NodegroupOptions = {
+    nodegroupName: 'tooling',
+    instanceTypes: [new InstanceType('t3.medium')],
+    amiType: NodegroupAmiType.AL2_X86_64,
+    minSize: 2,
+    maxSize: 2,
+    labels: { role: 'tooling' },
+    launchTemplateSpec: {
+      id: toolingLaunchTemplate.ref,
+      version: toolingLaunchTemplate.attrLatestVersionNumber,
+    },
+    nodeRole: cluster.ec2InstanceNodeGroupRole
 
+  };
+
+
+  cluster.eksCluster.addNodegroupCapacity('toolingMNG', toolingManagedNodegroupOptions);
 }
 
 /**
