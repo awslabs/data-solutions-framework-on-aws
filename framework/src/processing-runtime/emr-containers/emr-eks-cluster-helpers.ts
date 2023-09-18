@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws, Duration, Tags, Fn } from 'aws-cdk-lib';
-import { ISubnet, Port, SecurityGroup, SubnetType, InstanceType } from 'aws-cdk-lib/aws-ec2';
-import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType } from 'aws-cdk-lib/aws-eks';
+import { Aws, Duration, Fn, Tags } from 'aws-cdk-lib';
+import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType} from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -12,7 +12,6 @@ import { Construct } from 'constructs';
 import { EmrEksCluster } from './emr-eks-cluster';
 import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
-import { CfnLaunchTemplate } from 'aws-cdk-lib/aws-ec2';
 import { Utils } from '../../utils';
 
 
@@ -139,32 +138,30 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
 }
 
-function  toolingManagedNodegroupSetup (stack: Construct, cluster: EmrEksCluster) {
-
-  var userData = [
-    'yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm',
-    'systemctl enable amazon-ssm-agent',
-    'systemctl start amazon-ssm-agent',
-  ];
+function toolingManagedNodegroupSetup (scope: Construct, cluster: EmrEksCluster) {
 
   // Add headers and footers to user data
-  const userDataMime = Fn.base64(`MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-      
---==MYBOUNDARY==
-Content-Type: text/x-shellscript; charset="us-ascii"
-      
-#!/bin/bash
-${userData.join('\r\n')}
-      
---==MYBOUNDARY==--\\
-`);
+  const userDataMime = `MIME-Version: 1.0
+    Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+          
+    --==MYBOUNDARY==
+    Content-Type: text/x-shellscript; charset="us-ascii"
+          
+    #!/bin/bash
+    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
 
-  const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(stack, 'toolinglaunchtemplate', {
+    systemctl enable amazon-ssm-agent
+
+    systemctl start amazon-ssm-agent
+
+    --==MYBOUNDARY==--\\
+    `;
+
+  const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(scope, 'toolinglaunchtemplate', {
     launchTemplateName: 'ToolingNodegroup',
 
     launchTemplateData: {
-      userData: userDataMime,
+      userData: Fn.base64(userDataMime),
       metadataOptions: {
         httpEndpoint: 'enabled',
         httpProtocolIpv6: 'disabled',
@@ -437,4 +434,38 @@ export function karpenterSetup(cluster: Cluster,
   manifestApply.node.addDependency(karpenterChart);
 
   return karpenterChart;
+}
+
+/**
+ * @internal
+ * Create a namespace with a predefined baseline
+ *  * Create namespace
+ *  * Define a Network Policy
+ */
+export function createNamespace (cluster: Cluster, namespace: string): KubernetesManifest {
+
+  const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;;
+
+  if (!namespace.match(regex) || namespace.length > 63) {
+      throw new Error(`Namespace provided violates the constraints of Namespace naming ${namespace}`);
+  }
+
+  
+  let ns = cluster.addManifest(`${namespace}-Namespace`, {
+    apiVersion: 'v1',
+    kind: 'Namespace',
+    metadata: { name:  namespace },
+  });
+
+  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/network-policy-pod2pod-internet.yml`);
+
+  manifest = manifest.replace(/(\{{NAMESPACE}})/g, namespace);
+
+  let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
+
+  const manifestApply = cluster.addManifest(`${namespace}-network-policy`, ...manfifestYAML);
+
+  manifestApply.node.addDependency(ns)
+
+  return ns;
 }

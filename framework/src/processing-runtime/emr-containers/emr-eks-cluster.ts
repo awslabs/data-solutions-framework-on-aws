@@ -30,7 +30,7 @@ import { Bucket, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
-import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners } from './emr-eks-cluster-helpers';
+import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners, createNamespace } from './emr-eks-cluster-helpers';
 import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
@@ -41,13 +41,6 @@ import { vpcBootstrap } from './vpc-helper';
 import { AnalyticsBucket } from '../../data-lake';
 import { ContextOptions } from '../../utils/context-options';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
-
-/**
- * The different autoscaler available with EmrEksCluster
- */
-export enum Autoscaler {
-  KARPENTER = 'KARPENTER'
-}
 
 /**
  * The different EMR versions available on EKS
@@ -79,15 +72,11 @@ export interface EmrEksClusterProps {
    */
   readonly eksClusterName?: string;
   /**
-   * The autoscaling mechanism to use
-   */
-  readonly autoscaling: Autoscaler;
-  /**
    * Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
    * An admin role must be passed if `eksCluster` property is not set.
    * @default - No admin role is used and EKS cluster creation fails
    */
-  readonly eksAdminRoleArn?: string;
+  readonly eksAdminRoleArn: string;
   /**
    * The EKS cluster to setup EMR on. The cluster needs to be created in the same CDK Stack.
    * If the EKS cluster is provided, the cluster AddOns and all the controllers (Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
@@ -143,7 +132,7 @@ export interface EmrEksClusterProps {
    */
   readonly eksVpc?: IVpc;
 
-  /**
+ /**
   * The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
   */
   readonly publicAccessCIDRs: string[]; 
@@ -174,6 +163,7 @@ export interface EmrEksClusterProps {
  * const emrEks: EmrEksCluster = EmrEksCluster.getOrCreate(stack, {
  *   eksAdminRoleArn: <ROLE_ARN>,
  *   eksClusterName: <CLUSTER_NAME>,
+ *   publicAccessCIDRs: ["x.x.x.x/x"],
  * });
  *
  * const virtualCluster = emrEks.addEmrVirtualCluster(stack, {
@@ -198,8 +188,8 @@ export interface EmrEksClusterProps {
  */
 export class EmrEksCluster extends TrackedConstruct {
 
-  public static readonly DEFAULT_EMR_VERSION = EmrVersion.V6_10;
-  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_25;
+  public static readonly DEFAULT_EMR_VERSION = EmrVersion.V6_12;
+  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_26;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
   public static readonly DEFAULT_KARPENTER_VERSION = 'v0.20.0';
 
@@ -235,6 +225,7 @@ export class EmrEksCluster extends TrackedConstruct {
   private readonly assetUploadBucketRole: Role;
   private readonly karpenterChart?: HelmChart;
   private readonly defaultNodes: boolean;
+  private readonly createEmrOnEksSlr: boolean;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -259,7 +250,10 @@ export class EmrEksCluster extends TrackedConstruct {
       ClusterLoggingTypes.AUDIT,
     ];
 
-    //Set the autoscaler mechanism flag
+    //Set the flag for creating an the EMR on EKS Service Linked Role
+    this.createEmrOnEksSlr = props.createEmrOnEksSlr == undefined ? true : props.createEmrOnEksSlr;
+
+    //Set flag for default karpenter provisioners for Spark jobs
     this.defaultNodes = props.defaultNodes == undefined ? true : props.defaultNodes;
 
     // Create a role to be used as instance profile for nodegroups
@@ -272,14 +266,6 @@ export class EmrEksCluster extends TrackedConstruct {
     this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'));
     this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
-
-    // Create the custom resource provider for tagging the EC2 Auto Scaling groups
-    // this.nodegroupAsgTagsProviderServiceToken = new EmrEksNodegroupAsgTagProvider(this, 'AsgTagProvider', {
-    //   eksClusterName: this.clusterName,
-    // }).provider.serviceToken;
-
-    // // Create the custom resource provider for tagging the EC2 Auto Scaling groups
-    // this.jobTemplateProviderToken = new EmrEksJobTemplateProvider(this, 'jobTemplateProvider').provider.serviceToken;
 
     //KMS key for VPC log encryption
     const logKmsKey: Key = new Key(this, 'logKmsKey', {
@@ -364,23 +350,24 @@ export class EmrEksCluster extends TrackedConstruct {
       'for-use-with-amazon-emr-managed-policies',
       'true',
     );
+
     this.eksCluster.vpc.privateSubnets.forEach((subnet) =>
       Tags.of(subnet).add('for-use-with-amazon-emr-managed-policies', 'true'),
     );
+
     this.eksCluster.vpc.publicSubnets.forEach((subnet) =>
       Tags.of(subnet).add('for-use-with-amazon-emr-managed-policies', 'true'),
     );
 
     // Create Amazon IAM ServiceLinkedRole for Amazon EMR and add to kubernetes configmap
     // required to add a dependency on the Amazon EMR virtual cluster
-    if (props.createEmrOnEksSlr) {
+    if (this.createEmrOnEksSlr) {
 
       this.emrServiceRole = new CfnServiceLinkedRole(this, 'EmrServiceRole', {
         awsServiceName: 'emr-containers.amazonaws.com',
       });
 
     }
-    
 
     this.eksCluster.awsAuth.addRoleMapping(
       Role.fromRoleArn(
@@ -396,7 +383,7 @@ export class EmrEksCluster extends TrackedConstruct {
 
     // Create an Amazon S3 Bucket for default podTemplate assets
     this.assetBucket = new AnalyticsBucket(this, 'assetBucket', {
-      bucketName: `${this.clusterName.toLowerCase()}-emr-eks-assets`,
+      bucketName: `${this.clusterName.toLowerCase()}-emr-eks-assets-${Stack.of(this).account}`,
       encryptionKey: logKmsKey,
     });
 
@@ -447,11 +434,6 @@ export class EmrEksCluster extends TrackedConstruct {
     SharedDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-executor.yaml`);
     this.sharedDefaultConfig = JSON.stringify(SharedDefaultConfig);
 
-    // // Set the custom resource provider service token here to avoid circular dependencies
-    // this.managedEndpointProviderServiceToken = new EmrManagedEndpointProvider(this, 'ManagedEndpointProvider', {
-    //   assetBucket: this.assetBucket,
-    // }).provider.serviceToken;
-
     // Provide the podTemplate location on Amazon S3
     new CfnOutput(this, 'podTemplateLocation', {
       description: 'Use podTemplates in Amazon EMR jobs from this Amazon S3 Location',
@@ -469,19 +451,14 @@ export class EmrEksCluster extends TrackedConstruct {
   public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterOptions): CfnVirtualCluster {
     const eksNamespace = options.eksNamespace ?? 'default';
 
-    const regex = /^[a-z0-9]+$/g;
+    let ns = undefined;
+    
+    
+    if (options.createNamespace) {
 
-    if (!eksNamespace.match(regex)) {
-      throw new Error(`Namespace provided violates the constraints of Namespace naming ${eksNamespace}`);
+      ns = createNamespace(this.eksCluster, options.eksNamespace!)
+
     }
-
-    const ns = options.createNamespace
-      ? this.eksCluster.addManifest(`${options.name}Namespace`, {
-        apiVersion: 'v1',
-        kind: 'Namespace',
-        metadata: { name: eksNamespace },
-      })
-      : null;
 
     // deep clone the Role template object and replace the namespace
     const k8sRole = JSON.parse(JSON.stringify(K8sRole));
