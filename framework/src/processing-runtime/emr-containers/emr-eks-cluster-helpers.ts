@@ -140,28 +140,26 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
 function toolingManagedNodegroupSetup (scope: Construct, cluster: EmrEksCluster) {
 
-  // Add headers and footers to user data
-  const userDataMime = `MIME-Version: 1.0
-    Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-          
-    --==MYBOUNDARY==
-    Content-Type: text/x-shellscript; charset="us-ascii"
-          
-    #!/bin/bash
-    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+  // Add headers and footers to user data and install SSM agent
+  const userData = `MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 
-    systemctl enable amazon-ssm-agent
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
 
-    systemctl start amazon-ssm-agent
+#!/bin/bash
+yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+systemctl enable amazon-ssm-agent
+systemctl start amazon-ssm-agent
 
-    --==MYBOUNDARY==--\\
-    `;
+--==MYBOUNDARY==--\\
+`;
 
   const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(scope, 'toolinglaunchtemplate', {
     launchTemplateName: 'ToolingNodegroup',
 
     launchTemplateData: {
-      userData: Fn.base64(userDataMime),
+      userData: Fn.base64(userData),
       metadataOptions: {
         httpEndpoint: 'enabled',
         httpProtocolIpv6: 'disabled',
