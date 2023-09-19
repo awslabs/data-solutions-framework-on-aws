@@ -63,6 +63,12 @@ NagSuppressions.addResourceSuppressionsByPath(
   [{ id: 'AwsSolutions-IAM5', reason: 'Using AppSec approved managed policy provided by the Bucket interface' }],
 );
 
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/TestCatalogDatabase/DatabaseAutoCrawler',
+  [{ id: 'AwsSolutions-GL1', reason: 'Configuring with security configuration causes internal failure in CloudFormation' }],
+);
+
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);

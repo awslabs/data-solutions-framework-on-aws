@@ -146,14 +146,23 @@ describe('DataCatalogDatabase default construct', () => {
     template.hasResourceProperties('AWS::Glue::Crawler', {
       DatabaseName: Match.stringLikeRegexp(`^${dbName}\-.+`),
       Targets: {
-        CatalogTargets: [
+        S3Targets: [
           {
-            DatabaseName: Match.stringLikeRegexp(`^${dbName}\-.+`),
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  Match.exact('s3://'),
+                  Match.anyValue(),
+                  Match.exact(locationPrefix),
+                ],
+              ],
+            },
           },
         ],
       },
       Schedule: {
-        ScheduleExpression: 'cron(1 0 * * * *)',
+        ScheduleExpression: 'cron(1 0 * * ? *)',
       },
     });
   });
