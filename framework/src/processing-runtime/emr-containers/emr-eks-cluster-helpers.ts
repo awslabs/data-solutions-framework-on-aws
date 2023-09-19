@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Duration, Fn, Tags } from 'aws-cdk-lib';
+import { Duration, Fn, Stack, Tags } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType} from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
@@ -283,28 +283,156 @@ export function karpenterSetup(cluster: Cluster,
   const karpenterControllerPolicyStatementEC2: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     actions: [
-      'ec2:CreateLaunchTemplate',
-      'ec2:DeleteLaunchTemplate',
-      'ec2:CreateFleet',
-      'ec2:RunInstances',
-      'ec2:CreateTags',
-      'ec2:TerminateInstances',
-      'ec2:DescribeLaunchTemplates',
-      'ec2:DescribeInstances',
-      'ec2:DescribeSecurityGroups',
-      'ec2:DescribeSubnets',
-      'ec2:DescribeInstanceTypes',
-      'ec2:DescribeInstanceTypeOfferings',
       'ec2:DescribeAvailabilityZones',
+      'ec2:DescribeImages',
+      'ec2:DescribeInstances',
+      'ec2:DescribeInstanceTypeOfferings',
+      'ec2:DescribeInstanceTypes',
+      'ec2:DescribeLaunchTemplates',
+      'ec2:DescribeSecurityGroups',
+      'ec2:DescribeSpotPriceHistory',
+      'ec2:DescribeSubnets',
     ],
     resources: ['*'],
+    conditions: {
+      StringEquals: {
+        'aws:RequestedRegion': Stack.of(scope).region,
+      },
+    },
+  });
+
+  const AllowScopedEC2InstanceActions: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    resources: [
+      `arn:aws:ec2:${Stack.of(scope).region}::image/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}::snapshot/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:security-group/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:subnet/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
+    ],
+    actions: ['ec2:RunInstances', 'ec2:CreateFleet'],
+  });
+
+  const AllowScopedEC2LaunchTemplateActions: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`],
+    actions: ['ec2:CreateLaunchTemplate'],
+    conditions: {
+      StringEquals: {
+        [`aws:RequestTag/kubernetes.io/cluster/${eksClusterName}`]: 'owned',
+      },
+      StringLike: {
+        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+      },
+    },
+  });
+
+  const AllowScopedEC2InstanceActionsWithTags: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    resources: [
+      `arn:aws:ec2:${Stack.of(scope).region}:*:fleet/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
+    ],
+    actions: ['ec2:RunInstances', 'ec2:CreateFleet'],
+    conditions: {
+      StringEquals: {
+        [`aws:RequestTag/kubernetes.io/cluster/${eksClusterName}`]: 'owned',
+      },
+      StringLike: {
+        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+      },
+    },
+  });
+
+  const AllowScopedResourceCreationTagging: PolicyStatement = new PolicyStatement({
+    sid: 'AllowScopedResourceCreationTagging',
+    effect: Effect.ALLOW,
+    resources: [
+      `arn:aws:ec2:${Stack.of(scope).region}:*:fleet/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
+    ],
+    actions: ['ec2:CreateTags'],
+    conditions: {
+      StringEquals: {
+        [`aws:RequestTag/kubernetes.io/cluster/${eksClusterName}`]: 'owned',
+        'ec2:CreateAction': ['RunInstances', 'CreateFleet', 'CreateLaunchTemplate'],
+      },
+      StringLike: {
+        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+      },
+    },
+  });
+
+  const AllowMachineMigrationTagging: PolicyStatement = new PolicyStatement({
+    sid: 'AllowMachineMigrationTagging',
+    effect: Effect.ALLOW,
+    resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`],
+    actions: ['ec2:CreateTags'],
+    conditions: {
+      StringEquals: {
+        [`aws:ResourceTag/kubernetes.io/cluster/${eksClusterName}`]: 'owned',
+        'aws:RequestTag/karpenter.sh/managed-by': `${eksClusterName}`,
+      },
+      StringLike: {
+        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+      },
+      ForAllValues: {
+        StringEquals: {
+          'aws:TagKeys': ['karpenter.sh/provisioner-name', 'karpenter.sh/managed-by'],
+        },
+      },
+    },
+  });
+
+  const AllowScopedDeletion: PolicyStatement = new PolicyStatement({
+    sid: 'AllowScopedDeletion',
+    effect: Effect.ALLOW,
+    resources: [
+      `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
+    ],
+    actions: ['ec2:TerminateInstances', 'ec2:DeleteLaunchTemplate'],
+    conditions: {
+      StringEquals: {
+        [`aws:ResourceTag/kubernetes.io/cluster/${eksClusterName}`]: 'owned',
+      },
+      StringLike: {
+        'aws:ResourceTag/karpenter.sh/provisioner-name': '*',
+      },
+    },
   });
 
   const karpenterControllerPolicyStatementIAM: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     actions: ['iam:PassRole'],
     resources: [`${nodeRole.roleArn}`],
+    conditions: {
+      StringEquals: {
+        'iam:PassedToService': 'ec2.amazonaws.com',
+      }
+    }
   });
+
+  const AllowInterruptionQueueActions: PolicyStatement = new PolicyStatement({
+    sid: 'AllowInterruptionQueueActions',
+    effect: Effect.ALLOW,
+    resources: [karpenterInterruptionQueue.queueArn],
+    actions: ['sqs:DeleteMessage', 'sqs:GetQueueAttributes', 'sqs:GetQueueUrl', 'sqs:ReceiveMessage'],
+  });
+
+  const AllowAPIServerEndpointDiscovery : PolicyStatement = new PolicyStatement({
+    sid: 'AllowAPIServerEndpointDiscovery',
+    effect: Effect.ALLOW,
+    resources: [`arn:aws:eks:${Stack.of(scope).region}:${Stack.of(scope).account}:cluster/${eksClusterName}`],
+    actions: ['eks:DescribeCluster'],
+  });
+
 
   const karpenterNS = cluster.addManifest('karpenterNS', {
     apiVersion: 'v1',
@@ -322,6 +450,14 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementSSM);
   karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementEC2);
   karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementIAM);
+  karpenterAccount.addToPrincipalPolicy(AllowScopedEC2InstanceActions);
+  karpenterAccount.addToPrincipalPolicy(AllowScopedEC2InstanceActionsWithTags);
+  karpenterAccount.addToPrincipalPolicy(AllowScopedEC2LaunchTemplateActions);
+  karpenterAccount.addToPrincipalPolicy(AllowMachineMigrationTagging);
+  karpenterAccount.addToPrincipalPolicy(AllowScopedResourceCreationTagging);
+  karpenterAccount.addToPrincipalPolicy(AllowScopedDeletion);
+  karpenterAccount.addToPrincipalPolicy(AllowInterruptionQueueActions);
+  karpenterAccount.addToPrincipalPolicy(AllowAPIServerEndpointDiscovery);
 
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('Karpenter', {
@@ -426,7 +562,8 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
       throw new Error(`Namespace provided violates the constraints of Namespace naming ${namespace}`);
   }
 
-  
+  //Create namespace with pod security admission to with pod security standard to baseline
+  //To learn more look at https://kubernetes.io/docs/concepts/security/pod-security-standards/
   let ns = cluster.addManifest(`${namespace}-Namespace`, {
     apiVersion: 'v1',
     kind: 'Namespace',
@@ -440,15 +577,28 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
     
   });
 
-  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/network-policy-pod2pod-internet.yml`);
+  //Create network policy for namespace
+  let manifestNetworkPolicy = Utils.readYamlDocument(`${__dirname}/resources/k8s/network-policy-pod2pod-internet.yml`);
 
-  manifest = manifest.replace(/(\{{NAMESPACE}})/g, namespace);
+  manifestNetworkPolicy = manifestNetworkPolicy.replace(/(\{{NAMESPACE}})/g, namespace);
 
-  let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
+  let manifestNetworkPolicyManifestYAML: any = manifestNetworkPolicy.split('---').map((e: any) => Utils.loadYaml(e));
 
-  const manifestApply = cluster.addManifest(`${namespace}-network-policy`, ...manfifestYAML);
+  const manifestApplyNetworkPolicy = cluster.addManifest(`${namespace}-network-policy`, ...manifestNetworkPolicyManifestYAML);
 
-  manifestApply.node.addDependency(ns)
+  manifestApplyNetworkPolicy.node.addDependency(ns);
+
+
+  //Create resource quota and limit range for namespace
+  let manifestResourceManagement = Utils.readYamlDocument(`${__dirname}/resources/k8s/resource-management.yaml`);
+
+  manifestResourceManagement = manifestResourceManagement.replace(/(\{{NAMESPACE}})/g, namespace);
+
+  let manifestResourceManagementYAML: any = manifestResourceManagement.split('---').map((e: any) => Utils.loadYaml(e));
+
+  const manifestApplResourceManagement = cluster.addManifest(`${namespace}-resource-management`, ...manifestResourceManagementYAML);
+
+  manifestApplResourceManagement.node.addDependency(ns);
 
   return ns;
 }

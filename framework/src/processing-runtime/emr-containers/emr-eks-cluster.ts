@@ -191,7 +191,7 @@ export class EmrEksCluster extends TrackedConstruct {
   public static readonly DEFAULT_EMR_VERSION = EmrVersion.V6_12;
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_26;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
-  public static readonly DEFAULT_KARPENTER_VERSION = 'v0.20.0';
+  public static readonly DEFAULT_KARPENTER_VERSION = 'v0.30.0';
 
   /**
    * Get an existing EmrEksCluster based on the cluster name property or create a new one
@@ -226,6 +226,7 @@ export class EmrEksCluster extends TrackedConstruct {
   private readonly defaultNodes: boolean;
   private readonly createEmrOnEksSlr: boolean;
   private readonly logKmsKey: Key;
+  private readonly eksKey: Key;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -243,6 +244,11 @@ export class EmrEksCluster extends TrackedConstruct {
     this.logKmsKey =  Stack.of(scope).node.tryFindChild('logKey') as Key ?? new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
       alias: 'log-kms-key',
+    });
+
+    this.eksKey =  Stack.of(scope).node.tryFindChild('eks-key') as Key ?? new Key(scope, 'eks-key', {
+      enableKeyRotation: true,
+      alias: 'eks-key',
     });
 
     this.clusterName = props.eksClusterName ?? EmrEksCluster.DEFAULT_CLUSTER_NAME;
@@ -292,7 +298,8 @@ export class EmrEksCluster extends TrackedConstruct {
         clusterLogging: eksClusterLogging,
         kubectlLayer: props.kubectlLambdaLayer as ILayerVersion ?? undefined,
         vpc: eksVpc,
-        endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE
+        endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE,
+        secretsEncryptionKey: this.eksKey
       });
 
       //Setting up the cluster with the required controller
