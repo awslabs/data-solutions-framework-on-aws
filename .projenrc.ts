@@ -110,18 +110,20 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'ts-jest',
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    '@aws-cdk/lambda-layer-kubectl-v22',
     '@aws-cdk/lambda-layer-kubectl-v25'
   ],
 
   bundledDeps: [
-    '@exodus/schemasafe',
     'js-yaml',
     'simple-base'
   ],
 
   tsconfig: {
     compilerOptions: {
+      lib: [
+        "ES2021"
+      ],
+      target: "ES2021",
       resolveJsonModule: true,
       esModuleInterop: true,
     },
@@ -139,15 +141,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       globals: {
         'ts-jest': null // remove jest deprecation warning caused by projen-generated default config
       }
-    }
-  },
-
-  tsconfig: {
-    compilerOptions: {
-      lib: [
-        "ES2021"
-      ],
-      target: "ES2021"
     }
   },
 });

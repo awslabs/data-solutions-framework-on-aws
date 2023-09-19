@@ -38,7 +38,6 @@ import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-bindin
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
 import { vpcBootstrap } from './vpc-helper';
 import { AnalyticsBucket } from '../../data-lake';
-import { ContextOptions } from '../../utils/context-options';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
 import { Key } from 'aws-cdk-lib/aws-kms';
 
@@ -236,7 +235,7 @@ export class EmrEksCluster extends TrackedConstruct {
   private constructor(scope: Construct, id: string, props: EmrEksClusterProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingCode: ContextOptions.EMR_EKS_TRACKING_ID,
+      trackingTag: EmrEksCluster.name,
     };
 
     super(scope, id, trackedConstructProps);
