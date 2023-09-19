@@ -3,7 +3,7 @@
 
 import { Duration, Fn, Stack, Tags } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType} from 'aws-cdk-lib/aws-eks';
+import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -26,7 +26,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin
   cluster.eksCluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
-  
+
   const ebsCsiDriverIrsa = cluster.eksCluster.addServiceAccount ('ebsCSIDriverRoleSA', {
     name: 'ebs-csi-controller-sa',
     namespace: 'kube-system',
@@ -96,7 +96,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
       },
     },
   });
-  
+
   albService.node.addDependency(albServiceAccount);
   albService.node.addDependency(certManager);
 
@@ -163,7 +163,7 @@ systemctl start amazon-ssm-agent
         httpProtocolIpv6: 'disabled',
         httpPutResponseHopLimit: 2,
         httpTokens: 'required',
-      }
+      },
     },
   });
 
@@ -178,7 +178,7 @@ systemctl start amazon-ssm-agent
       id: toolingLaunchTemplate.ref,
       version: toolingLaunchTemplate.attrLatestVersionNumber,
     },
-    nodeRole: nodeRole
+    nodeRole: nodeRole,
   };
 
 
@@ -242,8 +242,8 @@ export function karpenterSetup(cluster: Cluster,
   scope: Construct,
   instanceProfile: CfnInstanceProfile,
   nodeRole: Role,
-  karpenterVersion?: string
-  ): HelmChart {
+  karpenterVersion?: string,
+): HelmChart {
 
   const karpenterInterruptionQueue: Queue = new Queue(scope, 'karpenterInterruptionQueue', {
     queueName: eksClusterName,
@@ -375,18 +375,18 @@ export function karpenterSetup(cluster: Cluster,
     resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`],
     actions: ['ec2:CreateTags'],
     conditions: {
-      StringEquals: {
+      'StringEquals': {
         [`aws:ResourceTag/kubernetes.io/cluster/${eksClusterName}`]: 'owned',
         'aws:RequestTag/karpenter.sh/managed-by': `${eksClusterName}`,
       },
-      StringLike: {
+      'StringLike': {
         'aws:RequestTag/karpenter.sh/provisioner-name': '*',
       },
       'ForAllValues:StringEquals': {
-          'aws:TagKeys': ['karpenter.sh/provisioner-name', 'karpenter.sh/managed-by'],
-        },
+        'aws:TagKeys': ['karpenter.sh/provisioner-name', 'karpenter.sh/managed-by'],
       },
-    });
+    },
+  });
 
   const AllowScopedDeletion: PolicyStatement = new PolicyStatement({
     sid: 'AllowScopedDeletion',
@@ -413,8 +413,8 @@ export function karpenterSetup(cluster: Cluster,
     conditions: {
       StringEquals: {
         'iam:PassedToService': 'ec2.amazonaws.com',
-      }
-    }
+      },
+    },
   });
 
   const AllowInterruptionQueueActions: PolicyStatement = new PolicyStatement({
@@ -557,7 +557,7 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
   const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;;
 
   if (!namespace.match(regex) || namespace.length > 63) {
-      throw new Error(`Namespace provided violates the constraints of Namespace naming ${namespace}`);
+    throw new Error(`Namespace provided violates the constraints of Namespace naming ${namespace}`);
   }
 
   //Create namespace with pod security admission to with pod security standard to baseline
@@ -565,14 +565,14 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
   let ns = cluster.addManifest(`${namespace}-Namespace`, {
     apiVersion: 'v1',
     kind: 'Namespace',
-    metadata: { 
-      name:  namespace,
+    metadata: {
+      name: namespace,
       labels: {
         'pod-security.kubernetes.io/enforce': 'baseline',
-        'pod-security.kubernetes.io/enforce-version': 'v1.28'
-      }
+        'pod-security.kubernetes.io/enforce-version': 'v1.28',
+      },
     },
-    
+
   });
 
   //Create network policy for namespace

@@ -24,6 +24,7 @@ import {
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { ILayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { Bucket, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
@@ -39,7 +40,6 @@ import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
 import { vpcBootstrap } from './vpc-helper';
 import { AnalyticsBucket } from '../../data-lake';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
-import { Key } from 'aws-cdk-lib/aws-kms';
 
 /**
  * The different EMR versions available on EKS
@@ -131,16 +131,16 @@ export interface EmrEksClusterProps {
    */
   readonly eksVpc?: IVpc;
 
- /**
+  /**
   * The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
   */
-  readonly publicAccessCIDRs: string[]; 
+  readonly publicAccessCIDRs: string[];
 
   /**
   * Wether we need to create an EMR on EKS Service Linked Role
   * @default - true
   */
- readonly createEmrOnEksSlr: boolean;
+  readonly createEmrOnEksSlr: boolean;
 }
 
 /**
@@ -240,12 +240,12 @@ export class EmrEksCluster extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    this.logKmsKey =  Stack.of(scope).node.tryFindChild('logKey') as Key ?? new Key(scope, 'logKmsKey', {
+    this.logKmsKey = Stack.of(scope).node.tryFindChild('logKey') as Key ?? new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
       alias: 'log-kms-key',
     });
 
-    this.eksKey =  Stack.of(scope).node.tryFindChild('eks-key') as Key ?? new Key(scope, 'eks-key', {
+    this.eksKey = Stack.of(scope).node.tryFindChild('eks-key') as Key ?? new Key(scope, 'eks-key', {
       enableKeyRotation: true,
       alias: 'eks-key',
     });
@@ -298,7 +298,7 @@ export class EmrEksCluster extends TrackedConstruct {
         kubectlLayer: props.kubectlLambdaLayer as ILayerVersion ?? undefined,
         vpc: eksVpc,
         endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE,
-        secretsEncryptionKey: this.eksKey
+        secretsEncryptionKey: this.eksKey,
       });
 
       //Setting up the cluster with the required controller
@@ -306,12 +306,12 @@ export class EmrEksCluster extends TrackedConstruct {
 
       //Deploy karpenter
       this.karpenterChart = karpenterSetup(
-        this.eksCluster, 
-        this.clusterName, 
-        this, 
+        this.eksCluster,
+        this.clusterName,
+        this,
         clusterInstanceProfile,
         ec2InstanceNodeGroupRole,
-        props.karpenterVersion ?? EmrEksCluster.DEFAULT_KARPENTER_VERSION
+        props.karpenterVersion ?? EmrEksCluster.DEFAULT_KARPENTER_VERSION,
       );
 
     } else {
@@ -432,11 +432,11 @@ export class EmrEksCluster extends TrackedConstruct {
     const eksNamespace = options.eksNamespace ?? 'default';
 
     let ns = undefined;
-    
-    
+
+
     if (options.createNamespace) {
 
-      ns = createNamespace(this.eksCluster, options.eksNamespace!)
+      ns = createNamespace(this.eksCluster, options.eksNamespace!);
 
     }
 
@@ -444,10 +444,9 @@ export class EmrEksCluster extends TrackedConstruct {
     const k8sRole = JSON.parse(JSON.stringify(K8sRole));
     k8sRole.metadata.namespace = eksNamespace;
     const role = this.eksCluster.addManifest(`${options.name}Role`, k8sRole);
-    
 
-    if (ns) 
-      role.node.addDependency(ns);
+
+    if (ns) {role.node.addDependency(ns);}
 
     // deep clone the Role Binding template object and replace the namespace
     const k8sRoleBinding = JSON.parse(JSON.stringify(K8sRoleBinding));
@@ -461,7 +460,7 @@ export class EmrEksCluster extends TrackedConstruct {
         id: this.clusterName,
         type: 'EKS',
         info: { eksInfo: { namespace: options.eksNamespace ?? 'default' } },
-      }
+      },
     });
 
     virtCluster.node.addDependency(roleBinding);

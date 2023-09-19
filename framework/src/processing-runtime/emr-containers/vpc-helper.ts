@@ -47,7 +47,6 @@ export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: 
   });
 
 
-
   //Create VPC flow log for the EKS VPC
   let eksVpcFlowLogLogGroup = new LogGroup(scope, 'eksVpcFlowLogLogGroup', {
     logGroupName: `/aws/emr-eks-vpc-flow/${eksClusterName}`,
