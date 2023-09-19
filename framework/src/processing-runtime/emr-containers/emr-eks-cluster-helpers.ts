@@ -382,13 +382,11 @@ export function karpenterSetup(cluster: Cluster,
       StringLike: {
         'aws:RequestTag/karpenter.sh/provisioner-name': '*',
       },
-      ForAllValues: {
-        StringEquals: {
+      'ForAllValues:StringEquals': {
           'aws:TagKeys': ['karpenter.sh/provisioner-name', 'karpenter.sh/managed-by'],
         },
       },
-    },
-  });
+    });
 
   const AllowScopedDeletion: PolicyStatement = new PolicyStatement({
     sid: 'AllowScopedDeletion',
