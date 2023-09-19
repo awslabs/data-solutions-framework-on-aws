@@ -1,5 +1,8 @@
-import { Tags } from 'aws-cdk-lib';
-import { GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
+import { FlowLogDestination, GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Effect, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
 
@@ -11,7 +14,7 @@ import { Construct } from 'constructs';
  * @param {string} eksClusterName The name used to tag the subnet and vpc
  */
 
-export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: string) : Vpc {
+export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: string): Vpc {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
   const smallestVpcCidr: number = 28;
@@ -41,6 +44,50 @@ export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: 
         subnetType: SubnetType.PRIVATE_WITH_EGRESS,
       },
     ],
+  });
+
+  //KMS key for VPC log encryption
+  const logKmsKey: Key = new Key(scope, 'logKmsKey', {
+    enableKeyRotation: true,
+    alias: 'log-kms-key',
+  });
+
+  //Create VPC flow log for the EKS VPC
+  let eksVpcFlowLogLogGroup = new LogGroup(scope, 'eksVpcFlowLogLogGroup', {
+    logGroupName: `/aws/emr-eks-vpc-flow/${eksClusterName}`,
+    encryptionKey: logKmsKey,
+    retention: RetentionDays.ONE_WEEK,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  //Allow vpc flowlog to access KMS key to encrypt logs
+  logKmsKey.addToResourcePolicy(
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      principals: [new ServicePrincipal(`logs.${Stack.of(scope).region}.amazonaws.com`)],
+      actions: [
+        'kms:Encrypt*',
+        'kms:Decrypt*',
+        'kms:ReEncrypt*',
+        'kms:GenerateDataKey*',
+        'kms:Describe*',
+      ],
+      conditions: {
+        ArnLike: {
+          'kms:EncryptionContext:aws:logs:arn': `arn:aws:logs:${Stack.of(scope).region}:${Stack.of(scope).account}:*`,
+        },
+      },
+      resources: ['*'],
+    }),
+  );
+
+  //Setup the VPC flow logs
+  const iamRoleforFlowLog = new Role(scope, 'iamRoleforFlowLog', {
+    assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
+  });
+
+  vpc.addFlowLog('eksVpcFlowLog', {
+    destination: FlowLogDestination.toCloudWatchLogs(eksVpcFlowLogLogGroup, iamRoleforFlowLog),
   });
 
   // Create a gateway endpoint for S3

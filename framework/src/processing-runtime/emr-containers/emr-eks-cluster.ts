@@ -256,12 +256,6 @@ export class EmrEksCluster extends TrackedConstruct {
     //Set flag for default karpenter provisioners for Spark jobs
     this.defaultNodes = props.defaultNodes == undefined ? true : props.defaultNodes;
 
-    //KMS key for VPC log encryption
-    const logKmsKey: Key = new Key(this, 'logKmsKey', {
-      enableKeyRotation: true,
-      alias: 'log-kms-key',
-    });
-
     // Create a role to be used as instance profile for nodegroups
     let ec2InstanceNodeGroupRole = new Role(scope, 'ec2InstanceNodeGroupRole', {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
@@ -293,44 +287,6 @@ export class EmrEksCluster extends TrackedConstruct {
         kubectlLayer: props.kubectlLambdaLayer as ILayerVersion ?? undefined,
         vpc: eksVpc,
         endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE
-      });
-
-      //Create VPC flow log for the EKS VPC
-      let eksVpcFlowLogLogGroup = new LogGroup(this, 'eksVpcFlowLogLogGroup', {
-        logGroupName: `/aws/emr-eks-vpc-flow/${this.clusterName}`,
-        encryptionKey: logKmsKey,
-        retention: RetentionDays.ONE_WEEK,
-        removalPolicy: RemovalPolicy.DESTROY,
-      });
-
-      //Allow vpc flowlog to access KMS key to encrypt logs
-      logKmsKey.addToResourcePolicy(
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          principals: [new ServicePrincipal(`logs.${Stack.of(this).region}.amazonaws.com`)],
-          actions: [
-            'kms:Encrypt*',
-            'kms:Decrypt*',
-            'kms:ReEncrypt*',
-            'kms:GenerateDataKey*',
-            'kms:Describe*',
-          ],
-          conditions: {
-            ArnLike: {
-              'kms:EncryptionContext:aws:logs:arn': `arn:aws:logs:${Stack.of(this).region}:${Stack.of(this).account}:*`,
-            },
-          },
-          resources: ['*'],
-        }),
-      );
-
-      //Setup the VPC flow logs
-      const iamRoleforFlowLog = new Role(this, 'iamRoleforFlowLog', {
-        assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
-      });
-
-      this.eksCluster.vpc.addFlowLog('eksVpcFlowLog', {
-        destination: FlowLogDestination.toCloudWatchLogs(eksVpcFlowLogLogGroup, iamRoleforFlowLog),
       });
 
       //Setting up the cluster with the required controller

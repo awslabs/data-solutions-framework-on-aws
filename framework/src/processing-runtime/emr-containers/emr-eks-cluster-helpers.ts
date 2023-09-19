@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws, Duration, Fn, Tags } from 'aws-cdk-lib';
+import { Duration, Fn, Tags } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType} from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
@@ -22,14 +22,11 @@ import { Utils } from '../../utils';
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} eksAdminRoleArn The admin role of the EKS cluster
  */
-export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdminRoleArn?: string) {
-
+export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdminRoleArn: string, nodeRole: Role) {
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin
-  if (eksAdminRoleArn != undefined) {
-    cluster.eksCluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
-  }
-
+  cluster.eksCluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
+  
   const ebsCsiDriverIrsa = cluster.eksCluster.addServiceAccount ('ebsCSIDriverRoleSA', {
     name: 'ebs-csi-controller-sa',
     namespace: 'kube-system',
@@ -103,7 +100,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
   albService.node.addDependency(certManager);
 
   // Nodegroup capacity needed for all the tooling components including Karpenter
-  toolingManagedNodegroupSetup(scope, cluster);
+  toolingManagedNodegroupSetup(scope, cluster, nodeRole);
 
 
   //IAM role created for the aws-node pod following AWS best practice not to use the EC2 instance role
@@ -138,7 +135,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
 }
 
-function toolingManagedNodegroupSetup (scope: Construct, cluster: EmrEksCluster) {
+function toolingManagedNodegroupSetup (scope: Construct, cluster: EmrEksCluster, nodeRole: Role) {
 
   // Add headers and footers to user data and install SSM agent
   const userData = `MIME-Version: 1.0
@@ -165,7 +162,7 @@ systemctl start amazon-ssm-agent
         httpProtocolIpv6: 'disabled',
         httpPutResponseHopLimit: 2,
         httpTokens: 'required',
-      },
+      }
     },
   });
 
@@ -180,8 +177,7 @@ systemctl start amazon-ssm-agent
       id: toolingLaunchTemplate.ref,
       version: toolingLaunchTemplate.attrLatestVersionNumber,
     },
-    nodeRole: cluster.ec2InstanceNodeGroupRole
-
+    nodeRole: nodeRole
   };
 
 
@@ -243,7 +239,10 @@ export function karpenterManifestSetup(clusterName: string, path: string, subnet
 export function karpenterSetup(cluster: Cluster,
   eksClusterName: string,
   scope: Construct,
-  karpenterVersion?: string): HelmChart {
+  instanceProfile: CfnInstanceProfile,
+  nodeRole: Role,
+  karpenterVersion?: string
+  ): HelmChart {
 
   const karpenterInterruptionQueue: Queue = new Queue(scope, 'karpenterInterruptionQueue', {
     queueName: eksClusterName,
@@ -272,17 +271,6 @@ export function karpenterSetup(cluster: Cluster,
       detail: ['EC2 Instance State-change Notification'],
     },
     targets: [new SqsQueue(karpenterInterruptionQueue)],
-  });
-
-  const karpenterNodeRole = new Role(cluster, 'karpenter-node-role', {
-    assumedBy: new ServicePrincipal(`ec2.${cluster.stack.urlSuffix}`),
-    managedPolicies: [
-      ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'),
-      ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'),
-      ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'),
-      ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
-    ],
-    roleName: `KarpenterNodeRole-${eksClusterName}`,
   });
 
   const karpenterControllerPolicyStatementSSM: PolicyStatement = new PolicyStatement({
@@ -314,18 +302,7 @@ export function karpenterSetup(cluster: Cluster,
   const karpenterControllerPolicyStatementIAM: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     actions: ['iam:PassRole'],
-    resources: [`arn:aws:iam::${Aws.ACCOUNT_ID}:role/KarpenterNodeRole-${eksClusterName}`],
-  });
-
-  const karpenterInstanceProfile = new CfnInstanceProfile(cluster, 'karpenter-instance-profile', {
-    roles: [karpenterNodeRole.roleName],
-    instanceProfileName: `karpenterNodeInstanceProfile-${eksClusterName}`,
-    path: '/',
-  });
-
-  cluster.awsAuth.addRoleMapping(karpenterNodeRole, {
-    username: 'system:node:{{EC2PrivateDNSName}}',
-    groups: ['system:bootstrappers', 'system:nodes'],
+    resources: [`${nodeRole.roleArn}`],
   });
 
   const karpenterNS = cluster.addManifest('karpenterNS', {
@@ -364,7 +341,7 @@ export function karpenterSetup(cluster: Cluster,
       },
       settings: {
         aws: {
-          defaultInstanceProfile: karpenterInstanceProfile.instanceProfileName,
+          defaultInstanceProfile: instanceProfile.instanceProfileName,
           clusterName: eksClusterName,
           clusterEndpoint: cluster.clusterEndpoint,
           interruptionQueueName: karpenterInterruptionQueue.queueName,
@@ -452,7 +429,14 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
   let ns = cluster.addManifest(`${namespace}-Namespace`, {
     apiVersion: 'v1',
     kind: 'Namespace',
-    metadata: { name:  namespace },
+    metadata: { 
+      name:  namespace,
+      labels: {
+        'pod-security.kubernetes.io/enforce': 'baseline',
+        'pod-security.kubernetes.io/enforce-version': 'v1.28'
+      }
+    },
+    
   });
 
   let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/network-policy-pod2pod-internet.yml`);
