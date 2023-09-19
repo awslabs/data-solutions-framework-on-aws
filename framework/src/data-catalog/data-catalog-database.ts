@@ -55,13 +55,13 @@ export class DataCatalogDatabase extends TrackedConstruct {
     this.dataCatalogDatabaseProps = props;
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
-    const locationUri = props.locationBucket.s3UrlForObject(props.locationPrefix);
+    const s3LocationUri = props.locationBucket.s3UrlForObject(props.locationPrefix);
     // const locationArn = props.locationBucket.arnForObjects(props.locationPrefix)
     this.database = new CfnDatabase(this, 'GlueDatabase', {
       catalogId: Stack.of(this).account,
       databaseInput: {
         name: this.databaseName,
-        locationUri,
+        locationUri: s3LocationUri,
       },
     });
 
@@ -145,7 +145,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         role: crawlerRole.roleArn,
         targets: {
           s3Targets: [{
-            path: locationUri,
+            path: s3LocationUri,
           }],
         },
         schedule: autoCrawlSchedule,
