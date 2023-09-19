@@ -3722,7 +3722,7 @@ public readonly autoCrawlSchedule: ScheduleProperty;
 ```
 
 - *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
-- *Default:* `cron(1 0 * * * *)`
+- *Default:* `cron(1 0 * * ? *)`
 
 The schedule when the Crawler would run.
 
