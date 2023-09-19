@@ -58,7 +58,7 @@ kind: AWSNodeTemplate
 metadata:
   name: tooling-nodes
 spec:
-  amiFamily: AL2
+  amiFamily: Bottlerocket
   subnetSelector:
     aws-ids: {{subnet-list}}
   metadataOptions:

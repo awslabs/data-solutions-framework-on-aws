@@ -68,7 +68,7 @@ kind: AWSNodeTemplate
 metadata:
   name: notebook-driver-nodes-{{az}}
 spec:
-  amiFamily: AL2
+  amiFamily: Bottlerocket
   subnetSelector:
      aws-ids: {{subnet-id}}
   metadataOptions:

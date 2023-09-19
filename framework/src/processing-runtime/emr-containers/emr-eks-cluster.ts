@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT-0
 
 import { join } from 'path';
-import { Aws, CfnOutput, Stack, Tags, RemovalPolicy, CfnJson } from 'aws-cdk-lib';
-import { FlowLogDestination, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { Aws, CfnOutput, Stack, Tags, CfnJson } from 'aws-cdk-lib';
+import { IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
   Cluster,
   ClusterLoggingTypes,
@@ -24,9 +24,7 @@ import {
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
 import { ILayerVersion } from 'aws-cdk-lib/aws-lambda';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Bucket, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
@@ -42,6 +40,7 @@ import { vpcBootstrap } from './vpc-helper';
 import { AnalyticsBucket } from '../../data-lake';
 import { ContextOptions } from '../../utils/context-options';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
+import { Key } from 'aws-cdk-lib/aws-kms';
 
 /**
  * The different EMR versions available on EKS
@@ -226,6 +225,7 @@ export class EmrEksCluster extends TrackedConstruct {
   private readonly karpenterChart?: HelmChart;
   private readonly defaultNodes: boolean;
   private readonly createEmrOnEksSlr: boolean;
+  private readonly logKmsKey: Key;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -240,7 +240,13 @@ export class EmrEksCluster extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
+    this.logKmsKey =  Stack.of(scope).node.tryFindChild('logKey') as Key ?? new Key(scope, 'logKmsKey', {
+      enableKeyRotation: true,
+      alias: 'log-kms-key',
+    });
+
     this.clusterName = props.eksClusterName ?? EmrEksCluster.DEFAULT_CLUSTER_NAME;
+
     //Define EKS cluster logging
     const eksClusterLogging: ClusterLoggingTypes[] = [
       ClusterLoggingTypes.API,
@@ -277,7 +283,7 @@ export class EmrEksCluster extends TrackedConstruct {
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
     if (props.eksCluster == undefined) {
 
-      let eksVpc: IVpc | undefined = props.vpcCidr ? vpcBootstrap (scope, props.vpcCidr, this.clusterName) : props.eksVpc;
+      let eksVpc: IVpc | undefined = props.vpcCidr ? vpcBootstrap (scope, props.vpcCidr, this.clusterName, this.logKmsKey) : props.eksVpc;
 
       this.eksCluster = new Cluster(scope, `${this.clusterName}Cluster`, {
         defaultCapacity: 0,
@@ -352,7 +358,7 @@ export class EmrEksCluster extends TrackedConstruct {
     // Create an Amazon S3 Bucket for default podTemplate assets
     this.assetBucket = new AnalyticsBucket(this, 'assetBucket', {
       bucketName: `${this.clusterName.toLowerCase()}-emr-eks-assets-${Stack.of(this).account}`,
-      encryptionKey: logKmsKey,
+      encryptionKey: this.logKmsKey,
     });
 
     // Configure the podTemplate location

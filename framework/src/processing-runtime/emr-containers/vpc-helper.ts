@@ -14,7 +14,7 @@ import { Construct } from 'constructs';
  * @param {string} eksClusterName The name used to tag the subnet and vpc
  */
 
-export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: string): Vpc {
+export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: string, logKmsKey: Key): Vpc {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
   const smallestVpcCidr: number = 28;
@@ -46,11 +46,7 @@ export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: 
     ],
   });
 
-  //KMS key for VPC log encryption
-  const logKmsKey: Key = new Key(scope, 'logKmsKey', {
-    enableKeyRotation: true,
-    alias: 'log-kms-key',
-  });
+
 
   //Create VPC flow log for the EKS VPC
   let eksVpcFlowLogLogGroup = new LogGroup(scope, 'eksVpcFlowLogLogGroup', {

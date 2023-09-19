@@ -96,6 +96,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
       },
     },
   });
+  
   albService.node.addDependency(albServiceAccount);
   albService.node.addDependency(certManager);
 
