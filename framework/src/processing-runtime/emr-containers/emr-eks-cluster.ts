@@ -13,6 +13,7 @@ import {
 } from 'aws-cdk-lib/aws-eks';
 import { CfnVirtualCluster } from 'aws-cdk-lib/aws-emrcontainers';
 import {
+  CfnInstanceProfile,
   CfnServiceLinkedRole,
   Effect,
   FederatedPrincipal,
@@ -220,7 +221,6 @@ export class EmrEksCluster extends TrackedConstruct {
   public readonly podTemplateLocation: Location;
   public readonly assetBucket: Bucket;
   public readonly clusterName: string;
-  public readonly ec2InstanceNodeGroupRole: Role;
   private readonly emrServiceRole?: CfnServiceLinkedRole;
   private readonly assetUploadBucketRole: Role;
   private readonly karpenterChart?: HelmChart;
@@ -256,21 +256,28 @@ export class EmrEksCluster extends TrackedConstruct {
     //Set flag for default karpenter provisioners for Spark jobs
     this.defaultNodes = props.defaultNodes == undefined ? true : props.defaultNodes;
 
-    // Create a role to be used as instance profile for nodegroups
-    this.ec2InstanceNodeGroupRole = new Role(this, 'ec2InstanceNodeGroupRole', {
-      assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
-    });
-
-    //attach policies to the role to be used by the nodegroups
-    this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'));
-    this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'));
-    this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
-    this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
-
     //KMS key for VPC log encryption
     const logKmsKey: Key = new Key(this, 'logKmsKey', {
       enableKeyRotation: true,
       alias: 'log-kms-key',
+    });
+
+    // Create a role to be used as instance profile for nodegroups
+    let ec2InstanceNodeGroupRole = new Role(scope, 'ec2InstanceNodeGroupRole', {
+      assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
+    });
+
+    //attach policies to the role to be used by the nodegroups
+    ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKSWorkerNodePolicy'));
+    ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'));
+    ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
+    ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
+
+    //Create instance profile to be used by Managed nodegroup and karpenter
+    const clusterInstanceProfile = new CfnInstanceProfile(scope, 'karpenter-instance-profile', {
+      roles: [ec2InstanceNodeGroupRole.roleName],
+      instanceProfileName: `adsfNodeInstanceProfile-${this.clusterName ?? 'default'}`,
+      path: '/',
     });
 
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
@@ -327,11 +334,16 @@ export class EmrEksCluster extends TrackedConstruct {
       });
 
       //Setting up the cluster with the required controller
-      eksClusterSetup(this, this, props.eksAdminRoleArn);
+      eksClusterSetup(this, this, props.eksAdminRoleArn, ec2InstanceNodeGroupRole);
 
       //Deploy karpenter
       this.karpenterChart = karpenterSetup(
-        this.eksCluster, this.clusterName, this, props.karpenterVersion ?? EmrEksCluster.DEFAULT_KARPENTER_VERSION,
+        this.eksCluster, 
+        this.clusterName, 
+        this, 
+        clusterInstanceProfile,
+        ec2InstanceNodeGroupRole,
+        props.karpenterVersion ?? EmrEksCluster.DEFAULT_KARPENTER_VERSION
       );
 
     } else {
