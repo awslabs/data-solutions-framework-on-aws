@@ -56,7 +56,6 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
     const s3LocationUri = props.locationBucket.s3UrlForObject(props.locationPrefix);
-    // const locationArn = props.locationBucket.arnForObjects(props.locationPrefix)
     this.database = new CfnDatabase(this, 'GlueDatabase', {
       catalogId: Stack.of(this).account,
       databaseInput: {
@@ -118,23 +117,6 @@ export class DataCatalogDatabase extends TrackedConstruct {
       });
 
       props.locationBucket.grantRead(crawlerRole, props.locationPrefix+'/*');
-
-      // this.crawlerLogEncryptionKey = props.crawlerLogEncryptionKey || new Key(this, 'CrawlerLogKey', {
-      //   enableKeyRotation: true,
-      //   removalPolicy: RemovalPolicy.RETAIN,
-      // });
-
-      // this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
-
-      // const secConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
-      //   name: `${this.databaseName}-crawler-secconfig`,
-      //   encryptionConfiguration: {
-      //     cloudWatchEncryption: {
-      //       cloudWatchEncryptionMode: 'SSE-KMS',
-      //       kmsKeyArn: this.crawlerLogEncryptionKey.keyArn,
-      //     },
-      //   },
-      // });
 
       if (props.locationBucket.encryptionKey) {
         props.locationBucket.encryptionKey.grantEncryptDecrypt(crawlerRole);
