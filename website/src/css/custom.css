@@ -18,6 +18,10 @@
   --ifm-link-hover-color: #0000EE;
 }
 
+html[data-theme="light"] {
+  --docusaurus-highlighted-code-line-bg: #ccc;
+}
+
 html[data-theme="dark"] {
   --ifm-color-primary: #25c2a0;
   --ifm-menu-color: #e6e6e6;
@@ -28,6 +32,7 @@ html[data-theme="dark"] {
   --ifm-code-name-highlight: #A972B1;
   --ifm-toc-border-color: #333;
   --ifm-background-color: #141520;
+  --docusaurus-highlighted-code-line-bg: #494b62;
 }
 
 .boldTagline {
