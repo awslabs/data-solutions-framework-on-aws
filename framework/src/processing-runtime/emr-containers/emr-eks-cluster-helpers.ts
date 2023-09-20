@@ -139,6 +139,10 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 function toolingManagedNodegroupSetup (scope: Construct, cluster: EmrEksCluster, nodeRole: Role) {
 
   // Add headers and footers to user data and install SSM agent
+  //The below user data need to be formated as is,
+  //if it gets linted, we have spaces/tabs that break the launchtemplate
+  //Which in turn break and fail the deployment
+
   const userData = `MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 
