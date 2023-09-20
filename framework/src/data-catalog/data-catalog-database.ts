@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
+import { Names, Stack } from 'aws-cdk-lib';
+import { CfnCrawler, CfnDatabase } from 'aws-cdk-lib/aws-glue';
 import { AddToPrincipalPolicyResult, Effect, IPrincipal, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
@@ -42,11 +42,6 @@ export class DataCatalogDatabase extends TrackedConstruct {
   readonly databaseName: string;
 
   /**
-   * Encryption key used for Crawler logs. Would only be created when `autoCrawl` is enabled.
-   */
-  readonly crawlerLogEncryptionKey?: Key;
-
-  /**
    * Caching constructor properties for internal reuse by constructor methods
    */
   private dataCatalogDatabaseProps: DataCatalogDatabaseProps;
@@ -60,12 +55,12 @@ export class DataCatalogDatabase extends TrackedConstruct {
     this.dataCatalogDatabaseProps = props;
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
-
+    const s3LocationUri = props.locationBucket.s3UrlForObject(props.locationPrefix);
     this.database = new CfnDatabase(this, 'GlueDatabase', {
       catalogId: Stack.of(this).account,
       databaseInput: {
         name: this.databaseName,
-        locationUri: props.locationBucket.s3UrlForObject(props.locationPrefix),
+        locationUri: s3LocationUri,
       },
     });
 
@@ -76,7 +71,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     }
 
     const autoCrawlSchedule = props.autoCrawlSchedule || {
-      scheduleExpression: 'cron(1 0 * * * *)',
+      scheduleExpression: 'cron(1 0 * * ? *)',
     };
 
     const currentStack = Stack.of(this);
@@ -123,36 +118,36 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
       props.locationBucket.grantRead(crawlerRole, props.locationPrefix+'/*');
 
-      this.crawlerLogEncryptionKey = props.crawlerLogEncryptionKey || new Key(this, 'CrawlerLogKey', {
-        enableKeyRotation: true,
-        removalPolicy: RemovalPolicy.RETAIN,
-      });
+      if (props.locationBucket.encryptionKey) {
+        props.locationBucket.encryptionKey.grantEncryptDecrypt(crawlerRole);
+      }
 
-      this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
-
-      const secConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
-        name: `${this.databaseName}-crawler-secconfig`,
-        encryptionConfiguration: {
-          cloudWatchEncryption: {
-            cloudWatchEncryptionMode: 'SSE-KMS',
-            kmsKeyArn: this.crawlerLogEncryptionKey.keyArn,
-          },
-        },
-      });
-
+      const crawlerName = `${this.databaseName}-crawler-${Names.uniqueResourceName(this, {})}`;
       this.crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
         role: crawlerRole.roleArn,
         targets: {
-          catalogTargets: [
-            {
-              databaseName: this.databaseName,
-            },
-          ],
+          s3Targets: [{
+            path: s3LocationUri,
+          }],
         },
         schedule: autoCrawlSchedule,
         databaseName: this.databaseName,
-        crawlerSecurityConfiguration: secConfiguration.name,
+        name: crawlerName,
       });
+
+      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers`;
+      crawlerRole.addToPolicy(new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents',
+        ],
+        resources: [
+          logGroup,
+          `${logGroup}:*`,
+        ],
+      }));
     }
   }
 
@@ -211,7 +206,7 @@ export interface DataCatalogDatabaseProps {
 
   /**
    * The schedule when the Crawler would run. Default is once a day at 00:01h.
-   * @default `cron(1 0 * * * *)`
+   * @default `cron(1 0 * * ? *)`
    */
   readonly autoCrawlSchedule?: CfnCrawler.ScheduleProperty;
 
