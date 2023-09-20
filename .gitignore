@@ -31,6 +31,8 @@ jspm_packages/
 .cache
 .idea
 dist
+cdk.out
+.DS_Store
 !/.projenrc.js
 !/.mergify.yml
 !/.github/dependabot.yml

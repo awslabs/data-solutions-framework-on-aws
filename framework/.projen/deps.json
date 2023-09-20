@@ -6,11 +6,19 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/lambda-layer-kubectl-v25",
+      "type": "build"
+    },
+    {
       "name": "@jest/globals",
       "type": "build"
     },
     {
       "name": "@types/jest",
+      "type": "build"
+    },
+    {
+      "name": "@types/js-yaml",
       "type": "build"
     },
     {
@@ -115,6 +123,14 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "js-yaml",
+      "type": "bundled"
+    },
+    {
+      "name": "simple-base",
+      "type": "bundled"
     },
     {
       "name": "aws-cdk-lib",
