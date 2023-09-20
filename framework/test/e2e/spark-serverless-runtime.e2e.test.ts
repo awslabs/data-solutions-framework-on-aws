@@ -8,10 +8,10 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
-import { TestStack } from './test-stack';
-import {SparkRuntimeServerless } from '../../src/processing-runtime';
-import { EmrVersion } from '../../src/utils';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { TestStack } from './test-stack';
+import { SparkRuntimeServerless } from '../../src/processing-runtime';
+import { EmrVersion } from '../../src/utils';
 
 jest.setTimeout(6000000);
 
@@ -30,28 +30,28 @@ const { stack } = testStack;
 
 // creation of the construct(s) under test
 const serverlessRuntime = new SparkRuntimeServerless(stack, 'EmrApp', {
-    releaseLabel: EmrVersion.V6_12,
-    name: 'SparkRuntimeServerless',
-  });
+  releaseLabel: EmrVersion.V6_12,
+  name: 'SparkRuntimeServerless',
+});
 
 const s3Read = new PolicyDocument({
-    statements: [new PolicyStatement({
-      actions: [
-        's3:GetObject',
-      ],
-      resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
-    })],
-  });
+  statements: [new PolicyStatement({
+    actions: [
+      's3:GetObject',
+    ],
+    resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+  })],
+});
 
 const execRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole', s3Read);
 
 new cdk.CfnOutput(stack, 'applicationArn', {
-  value: serverlessRuntime.applicationArn
+  value: serverlessRuntime.applicationArn,
 });
 
 new cdk.CfnOutput(stack, 'execRoleArn', {
-    value: execRole.roleArn
-  });
+  value: execRole.roleArn,
+});
 
 let deployResult: Record<string, string>;
 
