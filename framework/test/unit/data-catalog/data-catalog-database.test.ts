@@ -8,7 +8,6 @@
  * @group unit/data-catalog/data-catalog-database
  */
 
-import assert from 'assert';
 import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -35,9 +34,11 @@ describe('DataCatalogDatabase default construct', () => {
     name: dbName,
   });
 
-  const grantReadonlyAccessResult = catalogDb.grantReadOnlyAccess(testPrincipal);
+  catalogDb.grantReadOnlyAccess(testPrincipal);
 
   const template = Template.fromStack(stack);
+  console.log(JSON.stringify(template.toJSON(), null, 2));
+
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
@@ -53,7 +54,109 @@ describe('DataCatalogDatabase default construct', () => {
   });
 
   test('DataCatalogDatabase should attach read only IAM policy to the test principal', () => {
-    assert.equal(grantReadonlyAccessResult.statementAdded, true);
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: [
+          {
+            Action: [
+              's3:GetObject*',
+              's3:GetBucket*',
+              's3:List*',
+            ],
+            Effect: 'Allow',
+            Resource: [
+              Match.objectLike({
+                'Fn::GetAtt': [
+                  'dbBucket53E3A0D8',
+                  'Arn',
+                ],
+              }),
+              Match.objectLike({
+                'Fn::Join': [
+                  '',
+                  [
+                    {
+                      'Fn::GetAtt': [
+                        Match.stringLikeRegexp('.*dbBucket.*'),
+                        'Arn',
+                      ],
+                    },
+                    Match.stringLikeRegexp('.*database\/\*'),
+                  ],
+                ],
+              }),
+            ],
+          },
+          {
+            Action: [
+              'glue:GetTable',
+              'glue:GetTables',
+              'glue:BatchGetPartition',
+              'glue:GetDatabase',
+              'glue:GetDatabases',
+              'glue:GetPartition',
+              'glue:GetPartitions',
+            ],
+            Effect: 'Allow',
+            Resource: [
+              {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:aws:glue:',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':catalog',
+                  ],
+                ],
+              },
+              {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:aws:glue:',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':database/sample-stack',
+                  ],
+                ],
+              },
+              {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:aws:glue:',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':table/sample-stack/*',
+                  ],
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      Roles: [
+        {
+          Ref: Match.stringLikeRegexp('.*testPrincipal.*'),
+        },
+      ],
+    });
   });
 
   test('DataCatalogDatabase should create crawler execution role', () => {

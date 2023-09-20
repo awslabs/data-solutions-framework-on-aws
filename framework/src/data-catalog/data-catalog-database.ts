@@ -118,10 +118,6 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
       props.locationBucket.grantRead(crawlerRole, props.locationPrefix+'/*');
 
-      if (props.locationBucket.encryptionKey) {
-        props.locationBucket.encryptionKey.grantEncryptDecrypt(crawlerRole);
-      }
-
       const crawlerName = `${this.databaseName}-crawler-${Names.uniqueResourceName(this, {})}`;
       this.crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
         role: crawlerRole.roleArn,
