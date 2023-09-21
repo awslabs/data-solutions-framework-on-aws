@@ -16,7 +16,7 @@ import { EmrVersion } from '../../src/utils';
 jest.setTimeout(6000000);
 
 
-const region = 'us-east-1';
+const region = 'eu-west-1';
 // GIVEN
 const app = new cdk.App();
 const testSstack = new cdk.Stack(app, 'TestStack', {
