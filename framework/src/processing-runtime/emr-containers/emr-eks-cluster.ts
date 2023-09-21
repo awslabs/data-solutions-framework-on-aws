@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { join } from 'path';
-import { Aws, CfnOutput, Stack, Tags, CfnJson } from 'aws-cdk-lib';
+import { Aws, CfnOutput, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
   Cluster,
@@ -26,7 +26,7 @@ import {
 } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ILayerVersion } from 'aws-cdk-lib/aws-lambda';
-import { Bucket, Location } from 'aws-cdk-lib/aws-s3';
+import { Bucket, BucketEncryption, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
@@ -38,7 +38,6 @@ import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json
 import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
 import { vpcBootstrap } from './vpc-helper';
-import { AnalyticsBucket } from '../../data-lake';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
 
 /**
@@ -110,7 +109,7 @@ export interface EmrEksClusterProps {
    * contains the libraries that you should add for the right Kubernetes version
    * @default - No layer is used
    */
-  readonly kubectlLambdaLayer?: ILayerVersion;
+  readonly kubectlLambdaLayer: ILayerVersion;
 
   /**
    * The CIDR of the VPC to use with EKS. If provided, a VPC with three public subnets and three private subnets is created
@@ -173,7 +172,7 @@ export interface EmrEksClusterProps {
  *
  * const role = emrEks.createExecutionRole(stack, 'ExecRole',{
  *   policy: <POLICY>,
- * })
+ * });
  *
  * // EMR on EKS virtual cluster ID
  * cdk.CfnOutput(self, 'VirtualClusterId',value = virtualCluster.attr_id)
@@ -296,7 +295,7 @@ export class EmrEksCluster extends TrackedConstruct {
         clusterName: this.clusterName,
         version: props.kubernetesVersion ?? EmrEksCluster.DEFAULT_EKS_VERSION,
         clusterLogging: eksClusterLogging,
-        kubectlLayer: props.kubectlLambdaLayer as ILayerVersion ?? undefined,
+        kubectlLayer: props.kubectlLambdaLayer,
         vpc: eksVpc,
         endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE,
         secretsEncryptionKey: this.eksKey,
@@ -361,9 +360,11 @@ export class EmrEksCluster extends TrackedConstruct {
     );
 
     // Create an Amazon S3 Bucket for default podTemplate assets
-    this.assetBucket = new AnalyticsBucket(this, 'assetBucket', {
-      bucketName: `${this.clusterName.toLowerCase()}-emr-eks-assets-${Stack.of(this).account}`,
-      encryptionKey: this.logKmsKey,
+    this.assetBucket = new Bucket (this, 'assetBucket', {
+      encryption: BucketEncryption.KMS_MANAGED,
+      enforceSSL: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+
     });
 
     // Configure the podTemplate location
