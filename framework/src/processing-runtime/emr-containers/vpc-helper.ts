@@ -12,6 +12,7 @@ import { Construct } from 'constructs';
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} vpcCidr The cidr for vpc
  * @param {string} eksClusterName The name used to tag the subnet and vpc
+ * @param {Key} logKmsKey The KMS key used to encrypt the VPC flow log 
  */
 
 export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: string, logKmsKey: Key): Vpc {

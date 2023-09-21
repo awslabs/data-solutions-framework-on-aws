@@ -27,7 +27,7 @@ const kubectlLayer = new KubectlV25Layer(stack, 'kubectlLayer');
 const emrEksCluster = EmrEksCluster.getOrCreate(stack, {
   eksAdminRoleArn: `arn:aws:iam::${stack.account}:role/role-name-with-path`,
   publicAccessCIDRs: ['10.0.0.0/32'],
-  createEmrOnEksSlr: false,
+  createEmrOnEksServiceLinkedRole: false,
   kubectlLambdaLayer: kubectlLayer,
 });
 
