@@ -19,13 +19,7 @@ jest.setTimeout(6000000);
 const region = 'eu-west-1';
 // GIVEN
 const app = new cdk.App();
-const testSstack = new cdk.Stack(app, 'TestStack', {
-  env: {
-    region: region,
-  },
-});
-
-const testStack = new TestStack('SparkCICDPipelineTestStack', app, testSstack);
+const testStack = new TestStack('SparkServerlessTestStack', app);
 const { stack } = testStack;
 
 // creation of the construct(s) under test
