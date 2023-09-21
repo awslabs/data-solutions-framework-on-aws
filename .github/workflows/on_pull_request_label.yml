@@ -32,6 +32,8 @@ jobs:
               await github.rest.issues.removeLabel({...context.repo, issue_number: context.issue.number, name: '${{ env.LABEL_COMPLETED }}'});
             } catch(e) { /* OK to fail, this label might be missing */ }
             github.rest.issues.addLabels({...context.repo, issue_number: context.issue.number, labels: ['${{ env.LABEL_TESTING }}']});
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
       - name: Setup NodeJS and dependency cache
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
