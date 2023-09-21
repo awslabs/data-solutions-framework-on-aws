@@ -14,7 +14,7 @@ import { DataCatalogDatabase } from '../../src';
  */
 
 jest.setTimeout(6000000);
-const testStack = new TestStack('TestStack');
+const testStack = new TestStack('DataCatalogTestStack');
 const { stack } = testStack;
 
 const encryptionKey = new Key(stack, 'DataKey', {
