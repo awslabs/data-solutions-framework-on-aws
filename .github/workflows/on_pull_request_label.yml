@@ -24,6 +24,7 @@ jobs:
       pull-requests: write
       contents: write
       actions: read
+      id-token: write # needed to interact with GitHub's OIDC Token endpoint
     steps:
       - name: Assign label ${{ env.LABEL_TESTING }}
         uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6.4.1
