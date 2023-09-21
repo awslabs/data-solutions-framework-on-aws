@@ -16,12 +16,7 @@ jest.setTimeout(6000000);
 
 // GIVEN
 const app = new App();
-const testSstack = new Stack(app, 'TestStack', {
-  env: {
-    region: 'us-east-1',
-  },
-});
-const testStack = new TestStack('SparkCICDPipelineTestStack', app, testSstack);
+const testStack = new TestStack('SparkCICDPipelineTestStack', app);
 const { stack } = testStack;
 
 interface MyApplicationStackProps extends StackProps {
