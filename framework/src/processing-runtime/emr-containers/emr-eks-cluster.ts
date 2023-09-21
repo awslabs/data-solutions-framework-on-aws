@@ -113,7 +113,7 @@ export interface EmrEksClusterProps {
   readonly kubectlLambdaLayer?: ILayerVersion;
 
   /**
-   * The CIDR of the VPC to use with EKS, if provided a VPC with three public subnets and three private subnet is create
+   * The CIDR of the VPC to use with EKS. If provided, a VPC with three public subnets and three private subnets is created
    * The size of the private subnets is four time the one of the public subnet
    * @default - A vpc with the following CIDR 10.0.0.0/16 will be used
    */
@@ -127,7 +127,7 @@ export interface EmrEksClusterProps {
    * 'kubernetes.io/role/internal-elb'='1'
    * All public subnets should have the following tag:
    * 'kubernetes.io/role/elb'='1'
-   * Cannot be combined with vpcCidr, if combined vpcCidr takes precendency
+   * Cannot be combined with vpcCidr, if combined vpcCidr takes precedence.
    */
   readonly eksVpc?: IVpc;
 
@@ -219,6 +219,7 @@ export class EmrEksCluster extends TrackedConstruct {
   public readonly podTemplateLocation: Location;
   public readonly assetBucket: Bucket;
   public readonly clusterName: string;
+
   private readonly emrServiceRole?: CfnServiceLinkedRole;
   private readonly assetUploadBucketRole: Role;
   private readonly karpenterChart?: HelmChart;
@@ -261,7 +262,7 @@ export class EmrEksCluster extends TrackedConstruct {
       ClusterLoggingTypes.AUDIT,
     ];
 
-    //Set the flag for creating an the EMR on EKS Service Linked Role
+    //Set the flag for creating the EMR on EKS Service Linked Role
     this.createEmrOnEksSlr = props.createEmrOnEksSlr == undefined ? true : props.createEmrOnEksSlr;
 
     //Set flag for default karpenter provisioners for Spark jobs
@@ -319,7 +320,7 @@ export class EmrEksCluster extends TrackedConstruct {
       this.eksCluster = props.eksCluster;
     }
 
-    //Check if there user want to use the default Karpenter provisioners and
+    //Check if the user want to use the default Karpenter provisioners and
     //Add the defaults pre-configured and optimized to run Spark workloads
     if (this.defaultNodes ) {
       setDefaultKarpenterProvisioners(this);
@@ -342,11 +343,9 @@ export class EmrEksCluster extends TrackedConstruct {
     // Create Amazon IAM ServiceLinkedRole for Amazon EMR and add to kubernetes configmap
     // required to add a dependency on the Amazon EMR virtual cluster
     if (this.createEmrOnEksSlr) {
-
       this.emrServiceRole = new CfnServiceLinkedRole(this, 'EmrServiceRole', {
         awsServiceName: 'emr-containers.amazonaws.com',
       });
-
     }
 
     this.eksCluster.awsAuth.addRoleMapping(
@@ -427,7 +426,6 @@ export class EmrEksCluster extends TrackedConstruct {
    * @param {Construct} scope of the stack where virtual cluster is deployed
    * @param {EmrVirtualClusterOptions} options the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}
    */
-
   public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterOptions): CfnVirtualCluster {
     const eksNamespace = options.eksNamespace ?? 'default';
 
@@ -435,9 +433,7 @@ export class EmrEksCluster extends TrackedConstruct {
 
 
     if (options.createNamespace) {
-
       ns = createNamespace(this.eksCluster, options.eksNamespace!);
-
     }
 
     // deep clone the Role template object and replace the namespace
@@ -454,7 +450,7 @@ export class EmrEksCluster extends TrackedConstruct {
     const roleBinding = this.eksCluster.addManifest(`${options.name}RoleBinding`, k8sRoleBinding);
     roleBinding.node.addDependency(role);
 
-    const virtCluster = new CfnVirtualCluster(scope, `${options.name}VirtualCluster`, {
+    const virtualCluster = new CfnVirtualCluster(scope, `${options.name}VirtualCluster`, {
       name: options.name,
       containerProvider: {
         id: this.clusterName,
@@ -463,16 +459,16 @@ export class EmrEksCluster extends TrackedConstruct {
       },
     });
 
-    virtCluster.node.addDependency(roleBinding);
+    virtualCluster.node.addDependency(roleBinding);
 
     if (this.emrServiceRole) {
       role.node.addDependency(this.emrServiceRole);
-      virtCluster.node.addDependency(this.emrServiceRole);
+      virtualCluster.node.addDependency(this.emrServiceRole);
     }
 
-    if (ns) {virtCluster.node.addDependency(ns);}
+    if (ns) {virtualCluster.node.addDependency(ns);}
 
-    return virtCluster;
+    return virtualCluster;
   }
 
 

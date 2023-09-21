@@ -27,7 +27,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
   // Add the provided Amazon IAM Role as Amazon EKS Admin
   cluster.eksCluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
 
-  const ebsCsiDriverIrsa = cluster.eksCluster.addServiceAccount ('ebsCSIDriverRoleSA', {
+  const ebsCsiDriverIrsa = cluster.eksCluster.addServiceAccount('ebsCSIDriverRoleSA', {
     name: 'ebs-csi-controller-sa',
     namespace: 'kube-system',
   });
@@ -40,7 +40,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
     { document: ebsCsiDriverPolicyDocument },
   );
 
-  ebsCsiDriverPolicy.attachToRole (ebsCsiDriverIrsa.role);
+  ebsCsiDriverPolicy.attachToRole(ebsCsiDriverIrsa.role);
 
   const ebsCSIDriver = new CfnAddon(scope, 'ebsCsiDriver', {
     addonName: 'aws-ebs-csi-driver',
@@ -305,7 +305,7 @@ export function karpenterSetup(cluster: Cluster,
     },
   });
 
-  const AllowScopedEC2InstanceActions: PolicyStatement = new PolicyStatement({
+  const allowScopedEC2InstanceActions: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     resources: [
       `arn:aws:ec2:${Stack.of(scope).region}::image/*`,
@@ -318,7 +318,7 @@ export function karpenterSetup(cluster: Cluster,
     actions: ['ec2:RunInstances', 'ec2:CreateFleet'],
   });
 
-  const AllowScopedEC2LaunchTemplateActions: PolicyStatement = new PolicyStatement({
+  const allowScopedEC2LaunchTemplateActions: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`],
     actions: ['ec2:CreateLaunchTemplate'],
@@ -332,7 +332,7 @@ export function karpenterSetup(cluster: Cluster,
     },
   });
 
-  const AllowScopedEC2InstanceActionsWithTags: PolicyStatement = new PolicyStatement({
+  const allowScopedEC2InstanceActionsWithTags: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     resources: [
       `arn:aws:ec2:${Stack.of(scope).region}:*:fleet/*`,
@@ -351,7 +351,7 @@ export function karpenterSetup(cluster: Cluster,
     },
   });
 
-  const AllowScopedResourceCreationTagging: PolicyStatement = new PolicyStatement({
+  const allowScopedResourceCreationTagging: PolicyStatement = new PolicyStatement({
     sid: 'AllowScopedResourceCreationTagging',
     effect: Effect.ALLOW,
     resources: [
@@ -373,7 +373,7 @@ export function karpenterSetup(cluster: Cluster,
     },
   });
 
-  const AllowMachineMigrationTagging: PolicyStatement = new PolicyStatement({
+  const allowMachineMigrationTagging: PolicyStatement = new PolicyStatement({
     sid: 'AllowMachineMigrationTagging',
     effect: Effect.ALLOW,
     resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`],
@@ -392,7 +392,7 @@ export function karpenterSetup(cluster: Cluster,
     },
   });
 
-  const AllowScopedDeletion: PolicyStatement = new PolicyStatement({
+  const allowScopedDeletion: PolicyStatement = new PolicyStatement({
     sid: 'AllowScopedDeletion',
     effect: Effect.ALLOW,
     resources: [
@@ -421,14 +421,14 @@ export function karpenterSetup(cluster: Cluster,
     },
   });
 
-  const AllowInterruptionQueueActions: PolicyStatement = new PolicyStatement({
+  const allowInterruptionQueueActions: PolicyStatement = new PolicyStatement({
     sid: 'AllowInterruptionQueueActions',
     effect: Effect.ALLOW,
     resources: [karpenterInterruptionQueue.queueArn],
     actions: ['sqs:DeleteMessage', 'sqs:GetQueueAttributes', 'sqs:GetQueueUrl', 'sqs:ReceiveMessage'],
   });
 
-  const AllowAPIServerEndpointDiscovery : PolicyStatement = new PolicyStatement({
+  const allowAPIServerEndpointDiscovery : PolicyStatement = new PolicyStatement({
     sid: 'AllowAPIServerEndpointDiscovery',
     effect: Effect.ALLOW,
     resources: [`arn:aws:eks:${Stack.of(scope).region}:${Stack.of(scope).account}:cluster/${eksClusterName}`],
