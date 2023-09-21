@@ -452,14 +452,14 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementSSM);
   karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementEC2);
   karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementIAM);
-  karpenterAccount.addToPrincipalPolicy(AllowScopedEC2InstanceActions);
-  karpenterAccount.addToPrincipalPolicy(AllowScopedEC2InstanceActionsWithTags);
-  karpenterAccount.addToPrincipalPolicy(AllowScopedEC2LaunchTemplateActions);
-  karpenterAccount.addToPrincipalPolicy(AllowMachineMigrationTagging);
-  karpenterAccount.addToPrincipalPolicy(AllowScopedResourceCreationTagging);
-  karpenterAccount.addToPrincipalPolicy(AllowScopedDeletion);
-  karpenterAccount.addToPrincipalPolicy(AllowInterruptionQueueActions);
-  karpenterAccount.addToPrincipalPolicy(AllowAPIServerEndpointDiscovery);
+  karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActions);
+  karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActionsWithTags);
+  karpenterAccount.addToPrincipalPolicy(allowScopedEC2LaunchTemplateActions);
+  karpenterAccount.addToPrincipalPolicy(allowMachineMigrationTagging);
+  karpenterAccount.addToPrincipalPolicy(allowScopedResourceCreationTagging);
+  karpenterAccount.addToPrincipalPolicy(allowScopedDeletion);
+  karpenterAccount.addToPrincipalPolicy(allowInterruptionQueueActions);
+  karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
 
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('Karpenter', {
