@@ -29,7 +29,7 @@ jobs:
           script: |
             github.rest.issues.removeLabel({...context.repo, issue_number: context.issue.number, name: '${{ env.LABEL_READY }}'});
             try {
-              github.rest.issues.removeLabel({...context.repo, issue_number: context.issue.number, name: '${{ env.LABEL_COMPLETED }}'});
+              await github.rest.issues.removeLabel({...context.repo, issue_number: context.issue.number, name: '${{ env.LABEL_COMPLETED }}'});
             } catch(e) { /* OK to fail, this label might be missing */ }
             github.rest.issues.addLabels({...context.repo, issue_number: context.issue.number, labels: ['${{ env.LABEL_TESTING }}']});
       - name: Setup NodeJS and dependency cache
