@@ -72,7 +72,7 @@ export interface EmrEksClusterProps {
   /**
    * Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
    * An admin role must be passed if `eksCluster` property is not set.
-   * @default - No admin role is used and EKS cluster creation fails
+   * You will use this role to grant other access to and manage EKS cluster
    */
   readonly eksAdminRoleArn: string;
   /**
@@ -202,13 +202,9 @@ export class EmrEksCluster extends TrackedConstruct {
     const stack = Stack.of(scope);
     const id = props.eksClusterName || EmrEksCluster.DEFAULT_CLUSTER_NAME;
 
-    let emrEksCluster: EmrEksCluster;
+    let emrEksCluster: EmrEksCluster = stack.node.tryFindChild(id) as EmrEksCluster ?? new EmrEksCluster(stack, id, props);
 
-    if (stack.node.tryFindChild(id) == undefined) {
-      emrEksCluster = new EmrEksCluster(stack, id, props);
-    }
-
-    return stack.node.tryFindChild(id) as EmrEksCluster || emrEksCluster!;
+    return emrEksCluster;
   }
 
   public readonly eksCluster: Cluster;

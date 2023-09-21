@@ -136,7 +136,11 @@ export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRole
   });
 
 }
-
+/**
+ * @internal
+ * Method to setup a managed group to bootstrap all cluster vital componenets like 
+ * core dns, karpenter, ebs csi driver
+ */
 function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: Role) {
 
   // Add headers and footers to user data and install SSM agent
@@ -201,20 +205,20 @@ export function setDefaultKarpenterProvisioners(cluster: EmrEksCluster) {
   }).subnets;
 
   subnets.forEach( (subnet, index) => {
-    let criticalManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/critical-provisioner.yml`, subnet);
-    cluster.addKarpenterProvisioner(`karpenterCriticalManifest-${index}`, criticalManfifestYAML);
+    let criticalManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/critical-provisioner.yml`, subnet);
+    cluster.addKarpenterProvisioner(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
-    let sharedDriverManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-driver-provisioner.yml`, subnet);
-    cluster.addKarpenterProvisioner(`karpenterSharedDriverManifest-${index}`, sharedDriverManfifestYAML);
+    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-driver-provisioner.yml`, subnet);
+    cluster.addKarpenterProvisioner(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
 
-    let sharedExecutorManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-executor-provisioner.yml`, subnet);
-    cluster.addKarpenterProvisioner(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManfifestYAML);
+    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-executor-provisioner.yml`, subnet);
+    cluster.addKarpenterProvisioner(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
 
-    let notebookDriverManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-driver-provisioner.yml`, subnet);
-    cluster.addKarpenterProvisioner(`karpenterNotebookDriverManifest-${index}`, notebookDriverManfifestYAML);
+    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-driver-provisioner.yml`, subnet);
+    cluster.addKarpenterProvisioner(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
 
-    let notebookExecutorManfifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-executor-provisioner.yml`, subnet);
-    cluster.addKarpenterProvisioner(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManfifestYAML);
+    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-executor-provisioner.yml`, subnet);
+    cluster.addKarpenterProvisioner(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
   });
 }
 
@@ -443,7 +447,7 @@ export function karpenterSetup(cluster: Cluster,
     metadata: { name: 'karpenter' },
   });
 
-  const karpenterAccount = cluster.addServiceAccount('Karpenter', {
+  const karpenterAccount = cluster.addServiceAccount('karpenterServiceAccount', {
     name: 'karpenter',
     namespace: 'karpenter',
   });
@@ -463,7 +467,7 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
 
   //Deploy Karpenter Chart
-  const karpenterChart = cluster.addHelmChart('Karpenter', {
+  const karpenterChart = cluster.addHelmChart('KarpenterHelmChart', {
     chart: 'karpenter',
     release: 'karpenter',
     repository: 'oci://public.ecr.aws/karpenter/karpenter',
