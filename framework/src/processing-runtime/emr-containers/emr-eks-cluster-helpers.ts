@@ -138,7 +138,7 @@ export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRole
 }
 /**
  * @internal
- * Method to setup a managed group to bootstrap all cluster vital componenets like 
+ * Method to setup a managed group to bootstrap all cluster vital componenets like
  * core dns, karpenter, ebs csi driver
  */
 function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: Role) {

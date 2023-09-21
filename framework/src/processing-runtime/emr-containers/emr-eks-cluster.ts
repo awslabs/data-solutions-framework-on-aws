@@ -187,7 +187,7 @@ export interface EmrEksClusterProps {
 export class EmrEksCluster extends TrackedConstruct {
 
   public static readonly DEFAULT_EMR_VERSION = EmrVersion.V6_12;
-  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_26;
+  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
   public static readonly DEFAULT_KARPENTER_VERSION = 'v0.30.0';
 

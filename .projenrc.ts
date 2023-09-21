@@ -110,7 +110,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'ts-jest',
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    '@aws-cdk/lambda-layer-kubectl-v25',
+    '@aws-cdk/lambda-layer-kubectl-v27',
     'rosetta'
   ],
 

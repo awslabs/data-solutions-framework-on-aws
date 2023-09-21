@@ -35,10 +35,10 @@
   resolved "https://registry.yarnpkg.com/@aws-cdk/cli-lib-alpha/-/cli-lib-alpha-2.94.0-alpha.0.tgz#ea4dd5602723405c10d0fa727bea13275c470a07"
   integrity sha512-DOrAfLBMk37YclsH+hPBKPsK1yOkdCZXDZziE0lVZsB/Yjd+F20fCIkvnM8XBla3GUN/U7oOP2zwDIFX/SMlvQ==
 
-"@aws-cdk/lambda-layer-kubectl-v25@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@aws-cdk/lambda-layer-kubectl-v25/-/lambda-layer-kubectl-v25-2.0.4.tgz#b862ab0b79821a0f913c808b4dc4db080aee5bd3"
-  integrity sha512-q7pI3B+djl0L5QPMcQzBWnif9/3yCCVmW8xJhgk5G9ydD59ioZRHw/g5mrcRVYvq8m5KETqnLkSR520w8WJwVg==
+"@aws-cdk/lambda-layer-kubectl-v27@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/lambda-layer-kubectl-v27/-/lambda-layer-kubectl-v27-2.0.0.tgz#f65218a85fc6996f28feb4d8d2fbeb06407523a1"
+  integrity sha512-BBh4ScPHaD82e7Z3PYXqyLjqfk/3/PRDTJW3x2j4l5f6sHXU041TaXKcFAGBHb1m4aq2UK+fwkIq95mgs3c0dg==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.22.13":
   version "7.22.13"

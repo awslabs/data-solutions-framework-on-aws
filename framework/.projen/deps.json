@@ -6,7 +6,7 @@
       "type": "build"
     },
     {
-      "name": "@aws-cdk/lambda-layer-kubectl-v25",
+      "name": "@aws-cdk/lambda-layer-kubectl-v27",
       "type": "build"
     },
     {

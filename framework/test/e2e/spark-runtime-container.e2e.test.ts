@@ -7,7 +7,7 @@
  * @group e2e/spark-runtime-containers
  */
 
-import { KubectlV25Layer } from '@aws-cdk/lambda-layer-kubectl-v25';
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
@@ -21,7 +21,7 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkContainersTestStack', app);
 const { stack } = testStack;
 
-const kubectlLayer = new KubectlV25Layer(stack, 'kubectlLayer');
+const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
 
 // creation of the construct(s) under test
 const emrEksCluster = EmrEksCluster.getOrCreate(stack, {
