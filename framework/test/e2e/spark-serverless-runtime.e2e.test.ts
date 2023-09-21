@@ -15,8 +15,6 @@ import { EmrVersion } from '../../src/utils';
 
 jest.setTimeout(6000000);
 
-
-const region = 'eu-west-1';
 // GIVEN
 const app = new cdk.App();
 const testStack = new TestStack('SparkServerlessTestStack', app);
