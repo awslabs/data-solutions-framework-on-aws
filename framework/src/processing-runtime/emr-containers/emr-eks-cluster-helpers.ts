@@ -21,13 +21,14 @@ import { Utils } from '../../utils';
  * @param {Cluster} cluster the unique ID of the CDK resource
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} eksAdminRoleArn The admin role of the EKS cluster
+ * @param {Role} nodeRole: The IAM role used for instance profile by Karpenter
  */
-export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdminRoleArn: string, nodeRole: Role) {
+export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRoleArn: string, nodeRole: Role) {
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin
-  cluster.eksCluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
+  cluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
 
-  const ebsCsiDriverIrsa = cluster.eksCluster.addServiceAccount('ebsCSIDriverRoleSA', {
+  const ebsCsiDriverIrsa = cluster.addServiceAccount('ebsCSIDriverRoleSA', {
     name: 'ebs-csi-controller-sa',
     namespace: 'kube-system',
   });
@@ -44,7 +45,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
   const ebsCSIDriver = new CfnAddon(scope, 'ebsCsiDriver', {
     addonName: 'aws-ebs-csi-driver',
-    clusterName: cluster.eksCluster.clusterName,
+    clusterName: cluster.clusterName,
     serviceAccountRoleArn: ebsCsiDriverIrsa.role.roleArn,
     addonVersion: 'v1.18.0-eksbuild.1',
     resolveConflicts: 'OVERWRITE',
@@ -53,7 +54,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
   ebsCSIDriver.node.addDependency(ebsCsiDriverIrsa);
 
   // Deploy the Helm Chart for the Certificate Manager. Required for EMR Studio ALB.
-  const certManager = cluster.eksCluster.addHelmChart('CertManager', {
+  const certManager = cluster.addHelmChart('CertManager', {
     createNamespace: true,
     namespace: 'cert-manager',
     chart: 'cert-manager',
@@ -76,13 +77,13 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
     { document: albPolicyDocument },
   );
 
-  const albServiceAccount = cluster.eksCluster.addServiceAccount('ALB', {
+  const albServiceAccount = cluster.addServiceAccount('ALB', {
     name: 'aws-load-balancer-controller',
     namespace: 'kube-system',
   });
   albIAMPolicy.attachToRole(albServiceAccount.role);
 
-  const albService = cluster.eksCluster.addHelmChart('ALB', {
+  const albService = cluster.addHelmChart('ALB', {
     chart: 'aws-load-balancer-controller',
     repository: 'https://aws.github.io/eks-charts',
     namespace: 'kube-system',
@@ -107,7 +108,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
   //IAM role created for the aws-node pod following AWS best practice not to use the EC2 instance role
   const awsNodeRole: Role = new Role(scope, 'awsNodeRole', {
     assumedBy: new FederatedPrincipal(
-      cluster.eksCluster.openIdConnectProvider.openIdConnectProviderArn,
+      cluster.openIdConnectProvider.openIdConnectProviderArn,
       { ...[] },
       'sts:AssumeRoleWithWebIdentity',
     ),
@@ -117,7 +118,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
   // update the aws-node service account with IAM role created for it
   new KubernetesManifest(scope, 'awsNodeServiceAccountUpdateManifest', {
-    cluster: cluster.eksCluster,
+    cluster: cluster,
     manifest: [
       {
         apiVersion: 'v1',
@@ -136,7 +137,7 @@ export function eksClusterSetup(cluster: EmrEksCluster, scope: Construct, eksAdm
 
 }
 
-function toolingManagedNodegroupSetup (scope: Construct, cluster: EmrEksCluster, nodeRole: Role) {
+function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: Role) {
 
   // Add headers and footers to user data and install SSM agent
   //The below user data need to be formated as is,
@@ -186,7 +187,7 @@ systemctl start amazon-ssm-agent
   };
 
 
-  cluster.eksCluster.addNodegroupCapacity('toolingMNG', toolingManagedNodegroupOptions);
+  cluster.addNodegroupCapacity('toolingMNG', toolingManagedNodegroupOptions);
 }
 
 /**

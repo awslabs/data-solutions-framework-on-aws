@@ -139,7 +139,7 @@ export interface EmrEksClusterProps {
   * Wether we need to create an EMR on EKS Service Linked Role
   * @default - true
   */
-  readonly createEmrOnEksSlr: boolean;
+  readonly createEmrOnEksServiceLinkedRole: boolean;
 }
 
 /**
@@ -223,9 +223,9 @@ export class EmrEksCluster extends TrackedConstruct {
   private readonly assetUploadBucketRole: Role;
   private readonly karpenterChart?: HelmChart;
   private readonly defaultNodes: boolean;
-  private readonly createEmrOnEksSlr: boolean;
+  private readonly createEmrOnEksServiceLinkedRole: boolean;
   private readonly logKmsKey: Key;
-  private readonly eksKey: Key;
+  private readonly eksSecretKmsKey: Key;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -240,12 +240,12 @@ export class EmrEksCluster extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    this.logKmsKey = Stack.of(scope).node.tryFindChild('logKey') as Key ?? new Key(scope, 'logKmsKey', {
+    this.logKmsKey = Stack.of(scope).node.tryFindChild('logKmsKey') as Key ?? new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
-      alias: 'log-kms-key',
+      alias: 'log-vpc-key',
     });
 
-    this.eksKey = Stack.of(scope).node.tryFindChild('eks-key') as Key ?? new Key(scope, 'eks-key', {
+    this.eksSecretKmsKey = Stack.of(scope).node.tryFindChild('eksSecretKmsKey') as Key ?? new Key(scope, 'eksSecretKmsKey', {
       enableKeyRotation: true,
       alias: 'eks-key',
     });
@@ -262,7 +262,7 @@ export class EmrEksCluster extends TrackedConstruct {
     ];
 
     //Set the flag for creating the EMR on EKS Service Linked Role
-    this.createEmrOnEksSlr = props.createEmrOnEksSlr == undefined ? true : props.createEmrOnEksSlr;
+    this.createEmrOnEksServiceLinkedRole = props.createEmrOnEksServiceLinkedRole == undefined ? true : props.createEmrOnEksServiceLinkedRole;
 
     //Set flag for default karpenter provisioners for Spark jobs
     this.defaultNodes = props.defaultNodes == undefined ? true : props.defaultNodes;
@@ -298,11 +298,11 @@ export class EmrEksCluster extends TrackedConstruct {
         kubectlLayer: props.kubectlLambdaLayer,
         vpc: eksVpc,
         endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE,
-        secretsEncryptionKey: this.eksKey,
+        secretsEncryptionKey: this.eksSecretKmsKey,
       });
 
       //Setting up the cluster with the required controller
-      eksClusterSetup(this, this, props.eksAdminRoleArn, ec2InstanceNodeGroupRole);
+      eksClusterSetup(this.eksCluster, scope, props.eksAdminRoleArn, ec2InstanceNodeGroupRole);
 
       //Deploy karpenter
       this.karpenterChart = karpenterSetup(
@@ -341,7 +341,7 @@ export class EmrEksCluster extends TrackedConstruct {
 
     // Create Amazon IAM ServiceLinkedRole for Amazon EMR and add to kubernetes configmap
     // required to add a dependency on the Amazon EMR virtual cluster
-    if (this.createEmrOnEksSlr) {
+    if (this.createEmrOnEksServiceLinkedRole) {
       this.emrServiceRole = new CfnServiceLinkedRole(this, 'EmrServiceRole', {
         awsServiceName: 'emr-containers.amazonaws.com',
       });
