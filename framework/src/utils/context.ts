@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Annotations, RemovalPolicy } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { Annotations, RemovalPolicy } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
 /**
  * @internal
@@ -10,15 +10,15 @@ import { Construct } from "constructs";
  */
 export class Context {
   /**
-   * Method to revert a DESTROY removal policy to RETAIN if the global removal policy parameter 
-   * in the CDK context is not set to true. 
+   * Method to revert a DESTROY removal policy to RETAIN if the global removal policy parameter
+   * in the CDK context is not set to true.
    * Also create a warning to warn the user if the retention policy has been reverted to RETAIN.
    * @param retentionPolicy The retention policy provided to the construct
    * @return the new retention policy based on the global retention parameter set in the CDK context
    */
   public static revertRemovalPolicy(scope: Construct, removalPolicy?: RemovalPolicy): RemovalPolicy {
     const globalRemovalPolicy = scope.node.tryGetContext(ContextOptions.REMOVE_DATA_ON_DESTROY) || false;
-    
+
     if (removalPolicy == RemovalPolicy.DESTROY && !globalRemovalPolicy) {
       Annotations.of(scope).addWarning(
         `WARNING: removalPolicy was reverted back to 'RemovalPolicy.RETAIN'.
