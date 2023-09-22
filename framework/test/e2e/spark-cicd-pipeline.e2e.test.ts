@@ -16,8 +16,16 @@ jest.setTimeout(6000000);
 
 // GIVEN
 const app = new App();
-const testStack = new TestStack('SparkCICDPipelineTestStack', app);
+const cicdStack = new Stack(app, 'CICDStack', {
+  env: {
+    region: 'eu-west-1',
+  },
+});
+const testStack = new TestStack('SparkCICDPipelineTestStack', app, cicdStack);
 const { stack } = testStack;
+
+stack.node.setContext('staging', { accountId: '123456789012', region: 'eu-west-1' });
+stack.node.setContext('prod', { accountId: '123456789012', region: 'eu-west-1' });
 
 interface MyApplicationStackProps extends StackProps {
   readonly prodBoolean: Boolean;
@@ -29,7 +37,6 @@ class MyApplicationStack extends Stack {
     super(scope, id, props);
 
     const bucket = new Bucket(this, 'TestBucket', {
-      autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
