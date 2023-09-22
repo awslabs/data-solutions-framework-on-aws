@@ -24,7 +24,7 @@ describe('DataLakeStorage Construct with defaults', () => {
 
   const template = Template.fromStack(stack);
 
-  test(' should create 8 buckets', () => {
+  test(' should create 4 buckets', () => {
     template.resourceCountIs('AWS::S3::Bucket', 4);
   });
 
