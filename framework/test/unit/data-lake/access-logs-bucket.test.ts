@@ -19,6 +19,9 @@ describe('AccessLogsBucket Construct', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
 
+  // Set context value for global data removal policy
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
   // Instantiate AccessLogsBucket Construct with default
   new AccessLogsBucket(stack, 'DefaultAccessLogsBucket');
 

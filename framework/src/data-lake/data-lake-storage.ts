@@ -79,7 +79,8 @@ export interface DataLakeStorageProps {
   readonly goldBucketArchiveDelay?: number;
 
   /**
-   * The removal policy when deleting the CDK resource. If DESTROY is selected, data will be automatically deleted.
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value removeDataOnDestroy needs to be set to delete data.
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
@@ -93,21 +94,20 @@ export interface DataLakeStorageProps {
  * import * as cdk from 'aws-cdk-lib';
  * import { DataLakeStorage } from 'aws-data-solutions-framework';
  *
- * // Set context value for global data removal policy (or set in cdk.json).
- * this.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+ * // Set the context value for global data removal policy
+ * stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
  *
  * new DataLakeStorage(this, 'MyDataLakeStorage', {
- *  bronzeName: 'my-bronze',
- *  bronzeInfrequentAccessDelay: 90,
- *  bronzeArchiveDelay: 180,
- *  silverName: 'my-silver',
- *  silverInfrequentAccessDelay: 180,
- *  silverArchiveDelay: 360,
- *  goldName: 'my-gold',
- *  goldInfrequentAccessDelay: 180,
- *  goldArchiveDelay: 360,
+ *  bronzeBucketName: 'my-bronze',
+ *  bronzeBucketInfrequentAccessDelay: 90,
+ *  bronzeBucketArchiveDelay: 180,
+ *  silverBucketName: 'my-silver',
+ *  silverBucketInfrequentAccessDelay: 180,
+ *  silverBucketArchiveDelay: 360,
+ *  goldBucketName: 'my-gold',
+ *  goldBucketInfrequentAccessDelay: 180,
+ *  goldBucketArchiveDelay: 360,
  *  removalPolicy: cdk.RemovalPolicy.DESTROY,
- *  dataLakeKey: new Key(stack, 'MyDataLakeKey')
  * });
  */
 export class DataLakeStorage extends TrackedConstruct {
@@ -132,10 +132,12 @@ export class DataLakeStorage extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    this.accessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket');
+    this.accessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
+      removalPolicy: props?.removalPolicy,
+    });
     const removalPolicy = Context.revertRemovalPolicy(this, props?.removalPolicy);
 
-    // create the key if it's not provided in the parameters
+    // Create the key if it not provided in the parameters
     this.dataLakeKey = props?.dataLakeKey || new Key(this, 'DataKey', {
       removalPolicy,
       enableKeyRotation: true,
@@ -149,7 +151,7 @@ export class DataLakeStorage extends TrackedConstruct {
       },
       {
         storageClass: StorageClass.GLACIER,
-        transitionAfter: Duration.days(props?.bronzeBucketArchiveDelay || 180),
+        transitionAfter: Duration.days(props?.bronzeBucketArchiveDelay || 180),
       },
     ];
 

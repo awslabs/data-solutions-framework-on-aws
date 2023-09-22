@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 
-import { Duration, Names, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, Names, RemovalPolicy, UniqueResourceNameOptions } from 'aws-cdk-lib';
 import { Bucket, BucketEncryption, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
@@ -21,7 +21,7 @@ import { Context } from '../utils';
 * const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
 *
 * // Set context value for global data removal policy (or set in cdk.json).
-* stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+* stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 *
 * const encryptionKey = new Key(stack, 'DataKey', {
 *  removalPolicy: RemovalPolicy.DESTROY,
@@ -39,15 +39,18 @@ export class AnalyticsBucket extends Bucket {
 
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
-    const bucketName = (props?.bucketName || 'analytics-bucket') + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
-
+    const bucketName = props?.bucketName || 'analytics-bucket';
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
     const autoDeleteObjects = removalPolicy == RemovalPolicy.DESTROY;
+
+    const uniqueResourceNameOptions: UniqueResourceNameOptions = {
+      maxLength: 60 - bucketName.length,
+    };
 
     super(scope, id, {
       ...props,
       autoDeleteObjects,
-      bucketName,
+      bucketName: bucketName + '-' + Names.uniqueResourceName(scope, uniqueResourceNameOptions).toLowerCase(),
       blockPublicAccess: props?.blockPublicAccess || BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
       encryption: BucketEncryption.KMS,
