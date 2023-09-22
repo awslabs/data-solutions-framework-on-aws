@@ -1168,7 +1168,7 @@ const exampleApp = new cdk.App();
 const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
 
 // Set context value for global data removal policy (or set in cdk.json).
-stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
 const encryptionKey = new Key(stack, 'DataKey', {
  removalPolicy: RemovalPolicy.DESTROY,
@@ -2532,21 +2532,20 @@ See documentation TODO insert link.
 import * as cdk from 'aws-cdk-lib';
 import { DataLakeStorage } from 'aws-data-solutions-framework';
 
-// Set context value for global data removal policy (or set in cdk.json).
-this.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+// Set the context value for global data removal policy
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
 new DataLakeStorage(this, 'MyDataLakeStorage', {
- bronzeName: 'my-bronze',
- bronzeInfrequentAccessDelay: 90,
- bronzeArchiveDelay: 180,
- silverName: 'my-silver',
- silverInfrequentAccessDelay: 180,
- silverArchiveDelay: 360,
- goldName: 'my-gold',
- goldInfrequentAccessDelay: 180,
- goldArchiveDelay: 360,
+ bronzeBucketName: 'my-bronze',
+ bronzeBucketInfrequentAccessDelay: 90,
+ bronzeBucketArchiveDelay: 180,
+ silverBucketName: 'my-silver',
+ silverBucketInfrequentAccessDelay: 180,
+ silverBucketArchiveDelay: 360,
+ goldBucketName: 'my-gold',
+ goldBucketInfrequentAccessDelay: 180,
+ goldBucketArchiveDelay: 360,
  removalPolicy: cdk.RemovalPolicy.DESTROY,
- dataLakeKey: new Key(stack, 'MyDataLakeKey')
 });
 ```
 
@@ -3879,7 +3878,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, data will be automatically deleted.
+If DESTROY is selected, context value removeDataOnDestroy needs to be set to delete data.
 
 ---
 

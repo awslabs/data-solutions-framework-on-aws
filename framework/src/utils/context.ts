@@ -33,7 +33,7 @@ export class Context {
 
 /**
  * @internal
- * The options used in the CDK context
+ * Options used in the CDK context
  */
 export enum ContextOptions {
   DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING = '@aws-data-solutions-framework/disableConstructsDeploymentTracking',
