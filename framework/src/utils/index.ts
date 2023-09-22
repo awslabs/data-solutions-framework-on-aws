@@ -3,5 +3,5 @@
 
 
 export { TrackedConstruct, TrackedConstructProps } from './tracked-construct';
-export { ContextOptions } from './context-options';
+export { ContextOptions, Context } from './context';
 export { EmrVersion } from './emr-releases';

@@ -9,56 +9,26 @@
  */
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Annotations, Match, Template } from 'aws-cdk-lib/assertions';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { DataLakeStorage } from '../../../src';
 
 
-describe('DataLakeStorage Construct', () => {
+describe('DataLakeStorage Construct with defaults', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
 
-  // Set context value for global data removal policy
-  stack.node.setContext('adsf', { remove_data_on_destroy: 'true' });
-
   // Instantiate AccessLogsBucket Construct with default
   new DataLakeStorage(stack, 'DefaultDataLakeStorage');
 
-  const customBronzeName = 'my-bronze';
-  const customBronzeInfrequentAccessDelay = 90;
-  const customBronzeArchiveDelay = 180;
-  const customSilverName = 'my-silver';
-  const customSilverInfrequentAccessDelay = 180;
-  const customSilverArchiveDelay = 360;
-  const customGoldName = 'my-gold';
-  const customGoldInfrequentAccessDelay = 180;
-  const customGoldArchiveDelay = 360;
-  const customRemovalPolicy = RemovalPolicy.DESTROY;
-  const dataLakeKey = new Key(stack, 'MyDataLakeKey');
-
-
-  new DataLakeStorage(stack, 'CustomDataLakeStorage', {
-    bronzeBucketName: customBronzeName,
-    bronzeBucketInfrequentAccessDelay: customBronzeInfrequentAccessDelay,
-    bronzeBucketArchiveDelay: customBronzeArchiveDelay,
-    silverBucketName: customSilverName,
-    silverBucketInfrequentAccessDelay: customSilverInfrequentAccessDelay,
-    silverBucketArchiveDelay: customSilverArchiveDelay,
-    goldBucketName: customGoldName,
-    goldBucketInfrequentAccessDelay: customGoldInfrequentAccessDelay,
-    goldBucketArchiveDelay: customGoldArchiveDelay,
-    removalPolicy: customRemovalPolicy,
-    dataLakeKey: dataLakeKey,
-  });
-
   const template = Template.fromStack(stack);
 
-  test('DataLakeStorage Construct', () => {
-    template.resourceCountIs('AWS::S3::Bucket', 8);
+  test(' should create 8 buckets', () => {
+    template.resourceCountIs('AWS::S3::Bucket', 4);
   });
 
-  test('DataLakeStorage should create the proper default KMS Key', () => {
+  test(' should create the proper default KMS Key', () => {
     template.hasResource('AWS::KMS::Key',
       Match.objectLike({
         Properties: {
@@ -95,7 +65,7 @@ describe('DataLakeStorage Construct', () => {
     );
   });
 
-  test('DataLakeStorage should create a bronze bucket with proper default configuration', () => {
+  test(' should create a bronze bucket with proper default configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
@@ -145,7 +115,7 @@ describe('DataLakeStorage Construct', () => {
     );
   });
 
-  test('DataLakeStorage should create a gold bucket with proper default configuration', () => {
+  test(' should create a gold bucket with proper default configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
@@ -191,7 +161,7 @@ describe('DataLakeStorage Construct', () => {
     );
   });
 
-  test('DataLakeStorage should create a silver bucket with proper default configuration', () => {
+  test(' should create a silver bucket with proper default configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
@@ -236,9 +206,179 @@ describe('DataLakeStorage Construct', () => {
       }),
     );
   });
+});
 
-  // Custom configuration testing
-  test('DataLakeStorage should create a bronze bucket with proper custom configuration', () => {
+describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy and global data removal set to TRUE', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Set context value for global data removal policy
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
+  // Instantiate AccessLogsBucket Construct with default
+  new DataLakeStorage(stack, 'DefaultDataLakeStorage', {
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('should create a KMS Key with DELETE removal policy', () => {
+    template.hasResource('AWS::KMS::Key',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
+  test(' should create a bronze bucket with DELETE removal policy', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: Match.objectLike({
+          BucketName: Match.stringLikeRegexp('.*bronze.*'),
+        }),
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
+  test(' should create a silver bucket with DELETE removal policy', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: Match.objectLike({
+          BucketName: Match.stringLikeRegexp('.*silver.*'),
+        }),
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
+  test(' should create a gold bucket with DELETE removal policy', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: Match.objectLike({
+          BucketName: Match.stringLikeRegexp('.*gold.*'),
+        }),
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
+  test(' should not WARN the user that the policy has been reverted', () => {
+    Annotations.fromStack(stack).hasNoWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
+  });
+});
+
+describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy and global data removal unset', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Instantiate AccessLogsBucket Construct with default
+  new DataLakeStorage(stack, 'DefaultDataLakeStorage', {
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('should create a KMS Key with RETAIN removal policy', () => {
+    template.hasResource('AWS::KMS::Key',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+  test(' should create a bronze bucket with RETAIN removal policy', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: Match.objectLike({
+          BucketName: Match.stringLikeRegexp('.*bronze.*'),
+        }),
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+  test(' should create a silver bucket with RETAIN removal policy', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: Match.objectLike({
+          BucketName: Match.stringLikeRegexp('.*silver.*'),
+        }),
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+  test(' should create a gold bucket with RETAIN removal policy', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        Properties: Match.objectLike({
+          BucketName: Match.stringLikeRegexp('.*gold.*'),
+        }),
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+  test(' should WARN the user that the policy has been reverted', () => {
+    Annotations.fromStack(stack).hasWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
+  });
+});
+
+describe('DataLakeStorage Construct with custom KMS and lifecycle rules configuration', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const customBronzeName = 'my-bronze';
+  const customBronzeInfrequentAccessDelay = 90;
+  const customBronzeArchiveDelay = 180;
+  const customSilverName = 'my-silver';
+  const customSilverInfrequentAccessDelay = 180;
+  const customSilverArchiveDelay = 360;
+  const customGoldName = 'my-gold';
+  const customGoldInfrequentAccessDelay = 180;
+  const customGoldArchiveDelay = 360;
+  const dataLakeKey = new Key(stack, 'MyDataLakeKey', {
+    description: 'test key',
+  });
+
+
+  new DataLakeStorage(stack, 'CustomDataLakeStorage', {
+    bronzeBucketName: customBronzeName,
+    bronzeBucketInfrequentAccessDelay: customBronzeInfrequentAccessDelay,
+    bronzeBucketArchiveDelay: customBronzeArchiveDelay,
+    silverBucketName: customSilverName,
+    silverBucketInfrequentAccessDelay: customSilverInfrequentAccessDelay,
+    silverBucketArchiveDelay: customSilverArchiveDelay,
+    goldBucketName: customGoldName,
+    goldBucketInfrequentAccessDelay: customGoldInfrequentAccessDelay,
+    goldBucketArchiveDelay: customGoldArchiveDelay,
+    dataLakeKey: dataLakeKey,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test(' should not create a KMS key', () => {
+    template.resourceCountIs('AWS::KMS::Key', 1);
+    template.hasResourceProperties('AWS::KMS::Key',
+      Match.objectLike({
+        Description: 'test key',
+      }),
+    );
+  });
+
+  test(' should create a bronze bucket with proper custom configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
@@ -282,13 +422,11 @@ describe('DataLakeStorage Construct', () => {
             LogFilePrefix: Match.stringLikeRegexp(`${customBronzeName}-.*`),
           },
         },
-        UpdateReplacePolicy: 'Delete',
-        DeletionPolicy: 'Delete',
       }),
     );
   });
 
-  test('DataLakeStorage should create a gold bucket with proper default configuration', () => {
+  test(' should create a gold bucket with proper custom configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
@@ -332,13 +470,11 @@ describe('DataLakeStorage Construct', () => {
             LogFilePrefix: Match.stringLikeRegexp(`${customGoldName}-.*`),
           },
         },
-        UpdateReplacePolicy: 'Delete',
-        DeletionPolicy: 'Delete',
       }),
     );
   });
 
-  test('DataLakeStorage should create a silver bucket with proper default configuration', () => {
+  test(' should create a silver bucket with proper custom configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
@@ -382,8 +518,6 @@ describe('DataLakeStorage Construct', () => {
             LogFilePrefix: Match.stringLikeRegexp(`${customSilverName}-.*`),
           },
         },
-        UpdateReplacePolicy: 'Delete',
-        DeletionPolicy: 'Delete',
       }),
     );
   });

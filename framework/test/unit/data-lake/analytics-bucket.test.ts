@@ -19,7 +19,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   // Set context value for global data removal policy
-  stack.node.setContext('adsf', { remove_data_on_destroy: 'true' });
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -153,7 +153,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   // Set context value for global data removal policy
-  stack.node.setContext('adsf', { remove_data_on_destroy: 'false' });
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', false);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -174,7 +174,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
 
   const template = Template.fromStack(stack);
 
-  test('AnalyticsBucket should not destroy objects if DESTROY flag is false', () => {
+  test('DefaultAnalyticsBucket should not destroy objects if DESTROY flag is false', () => {
     // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
   });
