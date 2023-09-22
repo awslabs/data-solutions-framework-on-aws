@@ -3,7 +3,7 @@
 
 import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { ContextOptions } from './context-options';
+import { ContextOptions } from './context';
 import { ADSF_AWS_TAG } from '../constants';
 
 /**

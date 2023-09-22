@@ -10,6 +10,7 @@ import { Construct } from 'constructs';
 import { AccessLogsBucket } from './access-logs-bucket';
 import { AnalyticsBucket } from './analytics-bucket';
 import { TrackedConstruct, TrackedConstructProps } from '../utils';
+import { Context } from '../utils/context';
 
 
 /**
@@ -132,7 +133,7 @@ export class DataLakeStorage extends TrackedConstruct {
     super(scope, id, trackedConstructProps);
 
     this.accessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket');
-    const removalPolicy = props?.removalPolicy || RemovalPolicy.RETAIN;
+    const removalPolicy = Context.revertRemovalPolicy(this, props?.removalPolicy);
 
     // create the key if it's not provided in the parameters
     this.dataLakeKey = props?.dataLakeKey || new Key(this, 'DataKey', {

@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: MIT-0
 
 
-import { Annotations, Duration, Names, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, Names, RemovalPolicy } from 'aws-cdk-lib';
 import { Bucket, BucketEncryption, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
 import { AnalyticsBucketProps } from './analytics-bucket-props';
+import { Context } from '../utils';
 
 /**
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
@@ -35,24 +36,13 @@ import { AnalyticsBucketProps } from './analytics-bucket-props';
 export class AnalyticsBucket extends Bucket {
 
   private static LIFECYCLE_RULE = [{ abortIncompleteMultipartUploadAfter: Duration.days(1) }];
-  private static FRAMEWORK_CONTEXT_VALUES = 'adsf';
 
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
     const bucketName = (props?.bucketName || 'analytics-bucket') + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
 
-    const globalRemovalPolicy = scope.node.tryGetContext(AnalyticsBucket.FRAMEWORK_CONTEXT_VALUES)?.remove_data_on_destroy.toLowerCase() == 'true' || false;
-    const removalPolicy = props?.removalPolicy == RemovalPolicy.DESTROY && globalRemovalPolicy ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN;
-    const autoDeleteObjects = (removalPolicy == RemovalPolicy.DESTROY) && globalRemovalPolicy;
-
-    if (props?.removalPolicy == RemovalPolicy.DESTROY && !globalRemovalPolicy) {
-      Annotations.of(scope).addWarning(
-        `WARNING: removalPolicy was reverted back to 'RemovalPolicy.RETAIN'.
-        If you wish to set 'removalPolicy' to 'DESTROY' you must also
-        set the global removal policy flag context variable in the 'cdk.json'
-        or 'cdk.context.json': "adsf": { "remove_data_on_destroy": "true" }.`,
-      );
-    }
+    const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
+    const autoDeleteObjects = removalPolicy == RemovalPolicy.DESTROY;
 
     super(scope, id, {
       ...props,
