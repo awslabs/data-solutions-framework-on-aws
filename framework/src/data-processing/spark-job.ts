@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Duration } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
@@ -10,6 +10,8 @@ import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wa
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { TrackedConstruct, TrackedConstructProps } from '../utils';
+import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
+import { Key } from 'aws-cdk-lib/aws-kms';
 
 /**
  * A base construct to run Spark Jobs
@@ -23,7 +25,10 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * Step Functions StateMachine created to orchestrate the Spark Job
    */
-  public stateMachine: undefined | StateMachine;
+  public stateMachine?: StateMachine;
+
+  public s3LogBucket?: Bucket;
+  public s3CloudwatchGroup?: LogGroup;
 
   /**
    * Constructs a new instance of the SparkJob class.
@@ -126,6 +131,33 @@ export abstract class SparkJob extends TrackedConstruct {
     }
     return stateMachine;
   }
+
+  protected createS3LogBucket(encryptionKeyArn?:string): Bucket {
+    if (! this.s3LogBucket) {
+      this.s3LogBucket = new Bucket(this, 'S3LogBucket', {
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+        enforceSSL: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
+        encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
+      });
+    } 
+
+    return this.s3LogBucket;
+  }
+
+  protected createCloudWatchLogsLogGroup(name:string, encryptionKeyArn?:string): LogGroup {
+    if (! this.s3CloudwatchGroup) {
+      this.s3CloudwatchGroup = new LogGroup(this, 'CloudWatchLogsLogGroup', {
+        logGroupName : name,
+        retention: RetentionDays.ONE_MONTH,
+        encryptionKey : encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
+      });
+    } 
+    
+    return this.s3CloudwatchGroup;
+  }
+
 }
 
 
@@ -140,4 +172,3 @@ export interface SparkJobProps {
    */
   readonly schedule?: Schedule;
 }
-
