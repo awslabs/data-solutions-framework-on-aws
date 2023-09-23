@@ -153,7 +153,7 @@ export class SparkRuntimeServerless extends TrackedConstruct {
     const sparkApplication: CfnApplication = new CfnApplication(this, `spark-serverless-application-${props.name}`, {
       ...props,
       releaseLabel: emrReleaseLabel,
-      type: 'Spark'
+      type: 'Spark',
     });
 
     this.applicationArn = sparkApplication.attrArn;
