@@ -9,7 +9,7 @@ This construct creates a self-mutable CICD pipeline for a Spark application base
 
 ## Overview
 
-The CICD pipeline uses [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) and provisions all the resources needed to implement a Spark pipeline, including:
+The CICD pipeline uses [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) and provisions all the resources needed to implement a CICD pipeline for a Spark application on Amazon EMR, including:
  * A CodeCommit repository to host the code
  * A CodePipeline triggered from the main branch of the CodeCommit repository to process the CICD tasks
  * A CodeBuild stage to build the CDK assets and run the Spark unit tests
@@ -22,12 +22,12 @@ The CICD pipeline uses [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/c
 ## Cross-account deployment
 
 You can use different accounts for dev (where this construct is deployed), staging and production (where the application stack is deployed). 
-If using different accounts, bootstrap integration and production accounts with CDK and add a trust relationship from the dev account:
+If using different accounts, bootstrap staging and production accounts with CDK and add a trust relationship from the dev account:
 ```bash
 cdk bootstrap \
-  --profile integration \
-  --trust <DEV_ACCOUNT> \
-  aws://<INTEGRATION_ACCOUNT>/<REGION>
+  --profile staging \
+  --trust <DEV_ACCOUNT_ID> \
+  aws://<STAGING_ACCOUNT_ID>/<REGION>
 ```
 More information is available [here](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html#cdk_pipeline_bootstrap)
 
@@ -69,9 +69,10 @@ class EmrApplicationStack(Stack):
     super().__init__(scope, construct_id, **kwargs)
       
     # DEFINE YOUR APPLICATION STACK HERE
+    # USE STAGE PARAMETER TO CUSTOMIZE THE STACK BEHAVIOR
 ```
 
-Use the factory to pass your application stack to the `SparkCICDPipeline` stack:
+Use the factory to pass your application stack to the `SparkCICDPipeline` construct:
 ```python
 from cdk.application_stack import EmrApplicationStackFactory
 from adsf import SparkCICDPipeline, SparkImage
@@ -89,23 +90,22 @@ class CICDPipelineStack(Stack):
 ## Unit tests
 The construct triggers the unit tests as part of the CICD process using the EMR docker image and a fail fast approach. 
 The unit tests are run during the first build step and the entire pipeline stops if the unit tests fail.
-Units tests are expected to be run with `pytest` command from the Spark root folder configured via `sparkPath` after a `pip install .` is run.
-Use a Spark session with a local master and client mode as the unit tests run in a local EMR docker container:
+
+Units tests are expected to be run with `pytest` command after a `pip install .` is run from the Spark root folder configured via `sparkPath`.
+
+In your Pytest script, use a Spark session with a local master and client mode as the unit tests run in a local EMR docker container:
 ```python
 spark = (
         SparkSession.builder.master("local[1]")
         .appName("local-tests")
         .config("spark.submit.deployMode", "client")
-        .config("spark.executor.cores", "1")
-        .config("spark.executor.instances", "1")
-        .config("spark.sql.shuffle.partitions", "1")
         .config("spark.driver.bindAddress", "127.0.0.1")
         .getOrCreate()
     )
 ```
 
 ## Integration tests
-You can optionally run integration tests as part of the CICD process using an AWS CLI bash script that return 0 exit code if success and 1 if failure. 
+You can optionally run integration tests as part of the CICD process using the AWS CLI in a bash script that return 0 exit code if success and 1 if failure. 
 The integration tests are triggered after the deployment of the application stack in the staging environment. You can configure it via `integTestScript` path that should point to AWS CLI bash script. For example:
 
 ```bash
@@ -115,7 +115,7 @@ root
 |--cdk
 ```
 
-Integ.sh is a standard bash script using the AWS CLI to validate the application stack:
+Integ.sh is a standard bash script using the AWS CLI to validate the application stack. In this example, the Step Function from the application stack is triggered and the result of its execution should be successful:
 ```bash
 #!/bin/bash
 EXECUTION_ARN=$(aws stepfunctions start-execution --state-machine-arn $STEP_FUNCTION_ARN | jq -r '.executionArn')
@@ -141,7 +141,7 @@ To use resources that are deployed by the Application Stack like the Step Functi
         CfnOutput(self, "StepFunctionArn", value=emr_pipeline.state_machine_arn)
 ```
 
-2. Pass an environment variables to the Construct in the form of a key/value pair via `integTestEnv`:
+2. Pass an environment variables to the `SparkCICDPipeline` construct in the form of a key/value pair via `integTestEnv`:
   * Key is the name of the environment variable used in the script. In the example, `STEP_FUNCTION_ARN`.
   * Value is the CloudFormation output name from the application stack. In the example, `StepFunctionArn`.
   * Add permissions required to run the integration tests script. In the example, `states:StartExecution` and `states:DescribeExecution`.
