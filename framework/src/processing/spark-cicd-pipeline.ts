@@ -92,7 +92,7 @@ export interface SparkCICDPipelineProps {
 
 /**
 * A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
-* 
+*
 * @example
 * const stack = new Stack();
 *
