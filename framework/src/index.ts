@@ -6,4 +6,4 @@ export { DataLakeStorageProps, DataLakeStorage, AnalyticsBucket, AnalyticsBucket
 export { SparkCICDPipeline, SparkCICDPipelineProps, ApplicationStackFactory, SparkImage, CICDStage } from './processing';
 export { DataCatalogDatabase, DataCatalogDatabaseProps } from './data-catalog';
 export { SparkRuntimeServerlessProps, Architecture, SparkRuntimeServerless } from './processing-runtime';
-export { EmrVersion } from './utils/emr-releases';
+export { EmrVersion, EMR_DEFAULT_VERSION } from './utils/emr-releases';

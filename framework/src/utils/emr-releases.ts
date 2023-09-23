@@ -21,4 +21,6 @@ export enum EmrVersion {
   V6_2 = 'emr-6.2.0',
   V5_33 = 'emr-5.33.0',
   V5_32 = 'emr-5.32.0',
-}
+};
+
+export const EMR_DEFAULT_VERSION: EmrVersion = EmrVersion.V6_12;

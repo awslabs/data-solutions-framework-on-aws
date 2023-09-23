@@ -11,7 +11,7 @@ import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { SparkRuntimeServerless } from '../../src/processing-runtime';
-import { EmrVersion } from '../../src/utils';
+import { EMR_DEFAULT_VERSION } from '../../src/utils';
 
 jest.setTimeout(6000000);
 
@@ -22,7 +22,7 @@ const { stack } = testStack;
 
 // creation of the construct(s) under test
 const serverlessRuntime = new SparkRuntimeServerless(stack, 'EmrApp', {
-  releaseLabel: EmrVersion.V6_12,
+  releaseLabel: EMR_DEFAULT_VERSION,
   name: 'SparkRuntimeServerless',
 });
 
