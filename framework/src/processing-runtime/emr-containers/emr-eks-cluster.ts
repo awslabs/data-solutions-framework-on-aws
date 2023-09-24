@@ -38,26 +38,8 @@ import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json
 import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
 import { vpcBootstrap } from './vpc-helper';
+import { EMR_DEFAULT_VERSION } from '../../utils';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
-
-/**
- * The different EMR versions available on EKS
- */
-export enum EmrVersion {
-  V6_12= 'emr-6.12.0-latest',
-  V6_11= 'emr-6.11.0-latest',
-  V6_10= 'emr-6.10.0-latest',
-  V6_9 = 'emr-6.9.0-latest',
-  V6_8 = 'emr-6.8.0-latest',
-  V6_7 = 'emr-6.7.0-latest',
-  V6_6 = 'emr-6.6.0-latest',
-  V6_5 = 'emr-6.5.0-latest',
-  V6_4 = 'emr-6.4.0-latest',
-  V6_3 = 'emr-6.3.0-latest',
-  V6_2 = 'emr-6.2.0-latest',
-  V5_33 = 'emr-5.33.0-latest',
-  V5_32 = 'emr-5.32.0-latest',
-}
 
 
 /**
@@ -186,7 +168,7 @@ export interface EmrEksClusterProps {
  */
 export class EmrEksCluster extends TrackedConstruct {
 
-  public static readonly DEFAULT_EMR_VERSION = EmrVersion.V6_12;
+  public static readonly DEFAULT_EMR_VERSION = EMR_DEFAULT_VERSION;
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
   public static readonly DEFAULT_KARPENTER_VERSION = 'v0.30.0';
