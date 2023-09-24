@@ -36,6 +36,9 @@
       "steps": [
         {
           "exec": "jsii --silence-warnings=reserved-word"
+        },
+        {
+          "exec": "npx projen copy-resources"
         }
       ]
     },
@@ -44,7 +47,7 @@
       "description": "Copy all resources directories from src to lib",
       "steps": [
         {
-          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' framework/src/processing-runtime/emr-containers/resources framework/lib/processing-runtime/emr-containers"
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/processing-runtime/emr-containers/resources lib/processing-runtime/emr-containers"
         }
       ]
     },
@@ -189,13 +192,13 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --upgrade --target=minor --filter=@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/jest,@types/js-yaml,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,glob,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,ts-jest,typescript,js-yaml,simple-base,aws-cdk-lib,constructs"
+          "exec": "npm-check-updates --upgrade --target=minor --filter=@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/jest,@types/js-yaml,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,ts-jest,typescript,js-yaml,simple-base,aws-cdk-lib,constructs"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-cdk/lambda-layer-kubectl-v27 @jest/globals @types/jest @types/js-yaml @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint glob jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta ts-jest typescript js-yaml simple-base aws-cdk-lib constructs"
+          "exec": "yarn upgrade @aws-cdk/lambda-layer-kubectl-v27 @jest/globals @types/jest @types/js-yaml @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta ts-jest typescript js-yaml simple-base aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
