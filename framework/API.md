@@ -4072,7 +4072,6 @@ const sparkRuntimeServerlessProps: SparkRuntimeServerlessProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrVersion">EmrVersion</a></code> | The EMR release version associated with the application. |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.architecture">architecture</a></code> | <code><a href="#@adsf/framework.Architecture">Architecture</a></code> | The CPU architecture type of the application. |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
@@ -4080,6 +4079,7 @@ const sparkRuntimeServerlessProps: SparkRuntimeServerlessProps = { ... }
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
+| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrVersion">EmrVersion</a></code> | The EMR release version associated with the application. |
 | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
@@ -4095,20 +4095,6 @@ public readonly name: string;
 The name of the application. The name must be less than 64 characters.
 
 *Pattern* : `^[A-Za-z0-9._\\/#-]+$`
-
----
-
-##### `releaseLabel`<sup>Required</sup> <a name="releaseLabel" id="@adsf/framework.SparkRuntimeServerlessProps.property.releaseLabel"></a>
-
-```typescript
-public readonly releaseLabel: EmrVersion;
-```
-
-- *Type:* <a href="#@adsf/framework.EmrVersion">EmrVersion</a>
-
-The EMR release version associated with the application.
-
-The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
 
 ---
 
@@ -4195,6 +4181,22 @@ public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty
 
 The network configuration for customer VPC connectivity for the application.
+
+---
+
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@adsf/framework.SparkRuntimeServerlessProps.property.releaseLabel"></a>
+
+```typescript
+public readonly releaseLabel: EmrVersion;
+```
+
+- *Type:* <a href="#@adsf/framework.EmrVersion">EmrVersion</a>
+
+The EMR release version associated with the application.
+
+The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
+
+> [EMR_DEFAULT_VERSION](EMR_DEFAULT_VERSION)
 
 ---
 

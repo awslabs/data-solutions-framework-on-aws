@@ -55,8 +55,9 @@ export interface SparkRuntimeServerlessProps {
   /**
    * The EMR release version associated with the application.
    * The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
+   * @default @see EMR_DEFAULT_VERSION
    */
-  readonly releaseLabel: EmrVersion;
+  readonly releaseLabel?: EmrVersion;
 }
 
 /**

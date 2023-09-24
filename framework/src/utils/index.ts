@@ -4,4 +4,5 @@
 
 export { TrackedConstruct, TrackedConstructProps } from './tracked-construct';
 export { ContextOptions, Context } from './context';
-export { EmrVersion } from './emr-releases';
+export { EmrVersion, EMR_DEFAULT_VERSION } from './emr-releases';
+
