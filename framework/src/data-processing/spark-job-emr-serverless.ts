@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Aws } from 'aws-cdk-lib';
-import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Effect, IRole, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -55,6 +55,7 @@ import { TrackedConstruct } from '../utils';
  */
 export class EmrServerlessSparkJob extends SparkJob {
   private config!: EmrServerlessSparkJobApiProps;
+  private sparkJobExecutionRole?: IRole;
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
     super(scope, id, EmrServerlessSparkJob.name);
@@ -71,8 +72,8 @@ export class EmrServerlessSparkJob extends SparkJob {
 
     this.stateMachine = this.createStateMachine(this.config.schedule);
 
-    this.s3LogBucket?.grantReadWrite(this.stateMachine.role);
-    this.cloudwatchGroup?.grantWrite(this.stateMachine.role);
+    this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
+    this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());
   
   }
 
@@ -145,6 +146,30 @@ export class EmrServerlessSparkJob extends SparkJob {
   getJobStatusFailed(): string {
     return 'FAILED';
   }
+
+  /**
+   * Returns the spark job execution role. Creates a new role if it is not passed as props. 
+   * @returns IRole
+   */
+  getSparkJobExecutionRole(): IRole {
+    if (!this.sparkJobExecutionRole){
+      this.sparkJobExecutionRole = this.config.jobConfig.executionRoleArn ? 
+      Role.fromRoleArn(this, 'SparkJobEmrServerlessExecutionRole', this.config.jobConfig.executionRoleArn) : 
+      SparkRuntimeServerless.createExecutionRole(this,'SparkJobEmrServerlessExecutionRole', new PolicyDocument({
+        statements: [ new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            's3:GetObject',
+          ],
+          resources: [this.config.jobConfig.jobDriver.sparkSubmit.entryPoint.replace('s3://', 'arn:aws:s3:::')],
+        })]
+      }));
+    }
+    return this.sparkJobExecutionRole;
+  }
+
+
+
 
   /**
    * Grants the necessary permissions to the Step Functions StateMachine to be able to start EMR Serverless job

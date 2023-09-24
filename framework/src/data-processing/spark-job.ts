@@ -82,6 +82,13 @@ export abstract class SparkJob extends TrackedConstruct {
   protected abstract getJobStatusFailed(): string;
 
   /**
+   * Returns the Spark Job Execution Role
+   * @param role
+   */
+  protected abstract getSparkJobExecutionRole(): IRole;
+
+
+  /**
    * Grants the execution role to the Step Functions state machine
    * @param role
    */
