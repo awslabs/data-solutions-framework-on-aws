@@ -72,7 +72,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     this.stateMachine = this.createStateMachine(this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.stateMachine.role);
-    this.s3CloudwatchGroup?.grantWrite(this.stateMachine.role);
+    this.cloudwatchGroup?.grantWrite(this.stateMachine.role);
   
   }
 
@@ -183,6 +183,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   private setJobPropsDefaults(props: EmrServerlessSparkJobProps): void {
 
     const config = {'jobConfig':{}} as EmrServerlessSparkJobApiProps;
+    config.jobConfig.name = props.name; 
     config.jobConfig.clientToken = JsonPath.uuid();
     config.jobConfig.executionTimeoutMinutes = props.executionTimeoutMinutes ?? 30;
     config.jobConfig.applicationId = props.applicationId;
@@ -191,8 +192,13 @@ export class EmrServerlessSparkJob extends SparkJob {
     config.jobConfig.jobDriver.sparkSubmit.entryPointParameters ??= props.sparkSubmitParameters;
 
     config.jobConfig.configurationOverrides.applicationConfiguration ??= props.applicationConfiguration;
-    config.jobConfig.configurationOverrides.monitoringConfiguration.s3MonitoringConfiguration!.logUri = 
-      props.s3LogUri || `s3://${this.createS3LogBucket(props.s3LogUriKeyArn).bucketName}/`;
+
+    if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/)) {
+        throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
+    }
+    
+
+    config.jobConfig.configurationOverrides.monitoringConfiguration.s3MonitoringConfiguration!.logUri = this.createS3LogBucket(props.s3LogUri, props.s3LogUriKeyArn);
     config.jobConfig.configurationOverrides.monitoringConfiguration.s3MonitoringConfiguration!.encryptionKeyArn ??= props.s3LogUriKeyArn;
 
     if (props.cloudWatchLogGroupName) {
@@ -231,7 +237,7 @@ export class EmrServerlessSparkJob extends SparkJob {
  * @param executionTimeoutMinutes Job execution timeout in minutes. @default 30
  * @param persistentAppUi Enable Persistent UI. @default true @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_ManagedPersistenceMonitoringConfiguration.html)
  * @param persistentAppUIKeyArn Persistent application UI encryption key ARN @default AWS Managed default KMS key used @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_ManagedPersistenceMonitoringConfiguration.html)
- * @param s3LogUri The Amazon S3 destination URI for log publishing. @default Create new bucket. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_S3MonitoringConfiguration.html)
+ * @param s3LogUri The Amazon S3 destination URI for log publishing. @example s3://BUCKET_NAME/ @default Create new bucket. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_S3MonitoringConfiguration.html)
  * @param s3LogUriKeyArn KMS Encryption key for S3 log monitoring bucket. @default AWS Managed default KMS key used. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_S3MonitoringConfiguration.html)
  * @param cloudWatchLogGroupName CloudWatch log group name for job monitoring.  @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_CloudWatchLoggingConfiguration.html)
  * @param cloudWatchEncryptionKeyArn CloudWatch log encryption key ARN. @default AWS Managed default KMS key used. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_CloudWatchLoggingConfiguration.html)
@@ -257,14 +263,14 @@ export interface EmrServerlessSparkJobProps {
     }
   ],
   "executionTimeoutMinutes"?: number, 
-  "persistentAppUi"?: boolean, // default = true
-  "persistentAppUIKeyArn"?: string, // default = encrypted?
-  "s3LogUri"?: string, // default = a bucket (encrypted) is created and exposed by the class
-  "s3LogUriKeyArn"?: string,  // default = bucket key
-  "cloudWatchLogGroupName"?: string, // default = no cloudwatch
-  "cloudWatchEncryptionKeyArn"?: string, // default = if cloudwatch log group is provided, encrypted?
-  "cloudWatchLogGroupStreamPrefix"?: string, // default = if a CloudWatch log group is provided, the name of the application
-  "cloudWatchLogtypes"?: string, // default = "ERROR"
+  "persistentAppUi"?: boolean, 
+  "persistentAppUIKeyArn"?: string, 
+  "s3LogUri"?: string, 
+  "s3LogUriKeyArn"?: string,  
+  "cloudWatchLogGroupName"?: string, 
+  "cloudWatchEncryptionKeyArn"?: string, 
+  "cloudWatchLogGroupStreamPrefix"?: string, 
+  "cloudWatchLogtypes"?: string, 
   "tags"?: { 
     string : string 
   }
