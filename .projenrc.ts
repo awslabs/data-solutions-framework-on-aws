@@ -3,7 +3,7 @@ import { awscdk } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
 import { Transform } from "projen/lib/javascript";
 import { dirname } from 'path';
-import { sync } from 'glob';
+import { globSync } from 'glob';
 
 const CDK_VERSION = '2.94.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
@@ -36,6 +36,7 @@ const rootProject = new LernaProject({
     'lerna-projen',
     'ts-node',
     'typescript',
+    'glob@^10.3.6',
   ],
   peerDeps: [
     '@types/node@^16',
@@ -160,18 +161,17 @@ fwkProject.addTask('test:e2e', {
  * This is to package YAML files part of the dist
  */
 
-fwkProject.addDevDeps('glob');
-
 const copyResourcesToLibTask = fwkProject.addTask('copy-resources', {
   description: 'Copy all resources directories from src to lib',
 });
 
-for (const from of sync('framework/src/**/resources')) {
+for (const from of globSync('src/**/resources', { cwd: './framework/', root: '.' })) {
   const to = dirname(from.replace('src', 'lib'));
   const cpCommand = `rsync -avr --exclude '*.ts' --exclude '*.js' ${from} ${to}`;
   copyResourcesToLibTask.exec(cpCommand);
 };
 
+fwkProject.compileTask.exec('npx projen copy-resources');
 
 new awscdk.AwsCdkConstructLibrary({
   name: 'solutions',
