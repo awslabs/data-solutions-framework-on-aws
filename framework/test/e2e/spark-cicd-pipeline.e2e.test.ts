@@ -10,7 +10,7 @@
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { TestStack } from './test-stack';
-import { ApplicationStackFactory, SparkCICDPipeline, SparkImage, CICDStage } from '../../src';
+import { ApplicationStackFactory, SparkEmrCICDPipeline, SparkImage, CICDStage } from '../../src';
 
 jest.setTimeout(6000000);
 
@@ -50,7 +50,7 @@ class MyStackFactory implements ApplicationStackFactory {
   }
 }
 
-const cicd = new SparkCICDPipeline(stack, 'TestConstruct', {
+const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
   applicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
   cdkApplicationPath: 'cdk/',
