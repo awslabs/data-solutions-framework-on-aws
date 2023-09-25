@@ -4,7 +4,7 @@
 import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { SparkEmrServerlessRuntimeProps } from './spark-runtime-serverless-props';
+import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
 import { EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
