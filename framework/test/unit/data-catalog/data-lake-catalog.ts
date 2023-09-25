@@ -12,7 +12,7 @@ import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { DataCatalogDatabase } from '../../../src/data-catalog/data-catalog-database';
+import { DataLakeCatalog } from '../../../src';
 
 describe('DataCatalogDatabase default construct', () => {
   const app = new App();
@@ -28,7 +28,7 @@ describe('DataCatalogDatabase default construct', () => {
   });
   const locationPrefix = '/database';
   const dbName = 'sample';
-  const catalogDb = new DataCatalogDatabase(stack, 'database', {
+  const catalogDb = new DataLakeCatalog(stack, 'database', {
     locationBucket: dbBucket,
     locationPrefix: locationPrefix,
     name: dbName,
@@ -280,7 +280,7 @@ describe('DataCatalogDatabase with disabled crawler', () => {
   });
   const locationPrefix = '/database';
   const dbName = 'sample';
-  new DataCatalogDatabase(stack, 'database', {
+  new DataLakeCatalog(stack, 'database', {
     locationBucket: dbBucket,
     locationPrefix: locationPrefix,
     name: dbName,
@@ -316,7 +316,7 @@ describe('DataCatalogDatabase with missing leading slash in the prefix', () => {
   });
   const locationPrefix = 'database';
   const dbName = 'sample';
-  new DataCatalogDatabase(stack, 'database', {
+  new DataLakeCatalog(stack, 'database', {
     locationBucket: dbBucket,
     locationPrefix: locationPrefix,
     name: dbName,

@@ -2311,7 +2311,7 @@ first call to addToResourcePolicy(s).
 ---
 
 
-### DataCatalogDatabase <a name="DataCatalogDatabase" id="@adsf/framework.DataCatalogDatabase"></a>
+### DataLakeCatalog <a name="DataLakeCatalog" id="@adsf/framework.DataLakeCatalog"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
@@ -2332,37 +2332,37 @@ new DataCatalogDatabase(stack, 'ExampleDatabase', {
 ```
 
 
-#### Initializers <a name="Initializers" id="@adsf/framework.DataCatalogDatabase.Initializer"></a>
+#### Initializers <a name="Initializers" id="@adsf/framework.DataLakeCatalog.Initializer"></a>
 
 ```typescript
-import { DataCatalogDatabase } from '@adsf/framework'
+import { DataLakeCatalog } from '@adsf/framework'
 
-new DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabaseProps)
+new DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.DataLakeCatalogProps">DataLakeCatalogProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.DataCatalogDatabase.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.DataCatalogDatabase.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.DataCatalogDatabase.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+- *Type:* <a href="#@adsf/framework.DataLakeCatalogProps">DataLakeCatalogProps</a>
 
 ---
 
@@ -2370,12 +2370,12 @@ new DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabase
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
 
 ---
 
-##### `toString` <a name="toString" id="@adsf/framework.DataCatalogDatabase.toString"></a>
+##### `toString` <a name="toString" id="@adsf/framework.DataLakeCatalog.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2383,7 +2383,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantReadOnlyAccess` <a name="grantReadOnlyAccess" id="@adsf/framework.DataCatalogDatabase.grantReadOnlyAccess"></a>
+##### `grantReadOnlyAccess` <a name="grantReadOnlyAccess" id="@adsf/framework.DataLakeCatalog.grantReadOnlyAccess"></a>
 
 ```typescript
 public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult
@@ -2393,7 +2393,7 @@ Grants read access via identity based policy to the principal.
 
 This would attach an IAM policy to the principal allowing read access to the database and all its tables.
 
-###### `principal`<sup>Required</sup> <a name="principal" id="@adsf/framework.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
+###### `principal`<sup>Required</sup> <a name="principal" id="@adsf/framework.DataLakeCatalog.grantReadOnlyAccess.parameter.principal"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
@@ -2405,16 +2405,16 @@ Principal to attach the database read access to.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.DataCatalogDatabase.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@adsf/framework.DataLakeCatalog.isConstruct"></a>
 
 ```typescript
-import { DataCatalogDatabase } from '@adsf/framework'
+import { DataLakeCatalog } from '@adsf/framework'
 
-DataCatalogDatabase.isConstruct(x: any)
+DataLakeCatalog.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -2433,7 +2433,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.DataCatalogDatabase.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.DataLakeCatalog.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2445,14 +2445,14 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.DataCatalogDatabase.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.DataLakeCatalog.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2464,7 +2464,7 @@ The tree node.
 
 ---
 
-##### `database`<sup>Required</sup> <a name="database" id="@adsf/framework.DataCatalogDatabase.property.database"></a>
+##### `database`<sup>Required</sup> <a name="database" id="@adsf/framework.DataLakeCatalog.property.database"></a>
 
 ```typescript
 public readonly database: CfnDatabase;
@@ -2476,7 +2476,7 @@ The Glue database that's created.
 
 ---
 
-##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@adsf/framework.DataCatalogDatabase.property.databaseName"></a>
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@adsf/framework.DataLakeCatalog.property.databaseName"></a>
 
 ```typescript
 public readonly databaseName: string;
@@ -2488,7 +2488,7 @@ The Glue database name with the randomized suffix to prevent name collisions in 
 
 ---
 
-##### `crawler`<sup>Optional</sup> <a name="crawler" id="@adsf/framework.DataCatalogDatabase.property.crawler"></a>
+##### `crawler`<sup>Optional</sup> <a name="crawler" id="@adsf/framework.DataLakeCatalog.property.crawler"></a>
 
 ```typescript
 public readonly crawler: CfnCrawler;
@@ -2506,11 +2506,11 @@ This property can be undefined if `autoCrawl` is set to `false`.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3638,32 +3638,32 @@ Whether this bucket should have versioning turned on or not.
 
 ---
 
-### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="@adsf/framework.DataCatalogDatabaseProps"></a>
+### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="@adsf/framework.DataLakeCatalogProps"></a>
 
 The Database catalog properties.
 
-#### Initializer <a name="Initializer" id="@adsf/framework.DataCatalogDatabaseProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@adsf/framework.DataLakeCatalogProps.Initializer"></a>
 
 ```typescript
-import { DataCatalogDatabaseProps } from '@adsf/framework'
+import { DataLakeCatalogProps } from '@adsf/framework'
 
-const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
+const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
-| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
-| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
-| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.name">name</a></code> | <code>string</code> | Database name. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
 
 ---
 
-##### `locationBucket`<sup>Required</sup> <a name="locationBucket" id="@adsf/framework.DataCatalogDatabaseProps.property.locationBucket"></a>
+##### `locationBucket`<sup>Required</sup> <a name="locationBucket" id="@adsf/framework.DataLakeCatalogProps.property.locationBucket"></a>
 
 ```typescript
 public readonly locationBucket: IBucket;
@@ -3675,7 +3675,7 @@ S3 bucket where data is stored.
 
 ---
 
-##### `locationPrefix`<sup>Required</sup> <a name="locationPrefix" id="@adsf/framework.DataCatalogDatabaseProps.property.locationPrefix"></a>
+##### `locationPrefix`<sup>Required</sup> <a name="locationPrefix" id="@adsf/framework.DataLakeCatalogProps.property.locationPrefix"></a>
 
 ```typescript
 public readonly locationPrefix: string;
@@ -3687,7 +3687,7 @@ Top level location wwhere table data is stored.
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="@adsf/framework.DataCatalogDatabaseProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@adsf/framework.DataLakeCatalogProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -3701,7 +3701,7 @@ Construct would add a randomize suffix as part of the name to prevent name colli
 
 ---
 
-##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="@adsf/framework.DataCatalogDatabaseProps.property.autoCrawl"></a>
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="@adsf/framework.DataLakeCatalogProps.property.autoCrawl"></a>
 
 ```typescript
 public readonly autoCrawl: boolean;
@@ -3714,7 +3714,7 @@ When enabled, this automatically creates a top level Glue Crawler that would run
 
 ---
 
-##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="@adsf/framework.DataCatalogDatabaseProps.property.autoCrawlSchedule"></a>
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="@adsf/framework.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
 
 ```typescript
 public readonly autoCrawlSchedule: ScheduleProperty;
@@ -3729,7 +3729,7 @@ Default is once a day at 00:01h.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: Key;

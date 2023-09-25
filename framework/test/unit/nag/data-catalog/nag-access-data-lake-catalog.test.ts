@@ -14,7 +14,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { AnalyticsBucket, DataCatalogDatabase } from '../../../../src';
+import { AnalyticsBucket, DataLakeCatalog } from '../../../../src';
 
 const app = new App();
 const stack = new Stack(app, 'Stack');
@@ -35,7 +35,7 @@ const role = new Role(stack, 'TestPrincipal', {
   assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
 });
 
-const db = new DataCatalogDatabase(stack, 'TestCatalogDatabase', {
+const db = new DataLakeCatalog(stack, 'TestCatalogDatabase', {
   locationBucket: bucket,
   locationPrefix: 'sample',
   name: 'sample-db',

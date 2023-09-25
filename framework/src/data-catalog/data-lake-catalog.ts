@@ -25,7 +25,7 @@ import { TrackedConstruct, TrackedConstructProps } from '../utils';
 *    name: 'example-db'
 * });
 */
-export class DataCatalogDatabase extends TrackedConstruct {
+export class DataLakeCatalog extends TrackedConstruct {
   /**
    * The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). This property can be undefined if `autoCrawl` is set to `false`.
    */
@@ -44,15 +44,15 @@ export class DataCatalogDatabase extends TrackedConstruct {
   /**
    * Caching constructor properties for internal reuse by constructor methods
    */
-  private dataCatalogDatabaseProps: DataCatalogDatabaseProps;
+  private dataLakeCatalogProps: DataLakeCatalogProps;
 
-  constructor(scope: Construct, id: string, props: DataCatalogDatabaseProps) {
+  constructor(scope: Construct, id: string, props: DataLakeCatalogProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: DataCatalogDatabase.name,
+      trackingTag: DataLakeCatalog.name,
     };
 
     super(scope, id, trackedConstructProps);
-    this.dataCatalogDatabaseProps = props;
+    this.dataLakeCatalogProps = props;
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
     const s3LocationUri = props.locationBucket.s3UrlForObject(props.locationPrefix);
@@ -154,7 +154,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
    */
   public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult {
     const currentStack = Stack.of(this);
-    this.dataCatalogDatabaseProps.locationBucket.grantRead(principal, this.dataCatalogDatabaseProps.locationPrefix+'/*');
+    this.dataLakeCatalogProps.locationBucket.grantRead(principal, this.dataLakeCatalogProps.locationPrefix+'/*');
     return principal.addToPrincipalPolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
@@ -178,7 +178,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
 /**
  * The Database catalog properties
  */
-export interface DataCatalogDatabaseProps {
+export interface DataLakeCatalogProps {
   /**
    * Database name. Construct would add a randomize suffix as part of the name to prevent name collisions.
    */
