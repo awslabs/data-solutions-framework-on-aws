@@ -5,7 +5,7 @@
  * Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
  */
 
-export enum EmrVersion {
+export enum EmrRuntimeVersion {
   V6_12 = 'emr-6.12.0',
   V6_11_1 = 'emr-6.11.1',
   V6_11 = 'emr-6.11.0',
@@ -23,4 +23,4 @@ export enum EmrVersion {
   V5_32 = 'emr-5.32.0',
 };
 
-export const EMR_DEFAULT_VERSION: EmrVersion = EmrVersion.V6_12;
+export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V6_12;

@@ -12,7 +12,7 @@ import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { DataCatalogDatabase } from '../../../src/data-catalog/data-catalog-database';
+import { DataCatalogDatabase } from '../../../src';
 
 describe('DataCatalogDatabase default construct', () => {
   const app = new App();

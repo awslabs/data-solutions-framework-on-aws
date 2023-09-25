@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT-0
 
 import { aws_emrserverless, IResolvable } from 'aws-cdk-lib';
-import { EmrVersion } from '../utils';
+import { EmrRuntimeVersion } from '../../../utils';
 
 /**
  * Properties for the {SparkRuntimeServerless} construct
  */
-export interface SparkRuntimeServerlessProps {
+export interface SparkEmrServerlessRuntimeProps {
   /**
    * The container image to use in the application. If none is provided the application will use the base Amazon EMR Serverless image for the specified EMR release.
    * This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html) of usage
@@ -57,7 +57,7 @@ export interface SparkRuntimeServerlessProps {
    * The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
    * @default @see EMR_DEFAULT_VERSION
    */
-  readonly releaseLabel?: EmrVersion;
+  readonly releaseLabel?: EmrRuntimeVersion;
 }
 
 /**
