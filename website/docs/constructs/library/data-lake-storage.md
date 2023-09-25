@@ -5,7 +5,7 @@ sidebar_label: Data lake storage
 
 # DataLakeStorage
 
-Data Lake based on medallion architecture and AWS best-practices.
+This construct creates a storage layer for your data lake with AWS best-practices. At the high level, ***DataLakeStorage*** creates three [Amazon S3](https://aws.amazon.com/s3) buckets configured specifically for data lake on AWS. By default these buckets are named *Bronze*, *Silver*, and *Gold* to represent [different data layers](https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/data-layer-definitions.html). You can customize bucket names according to your needs.
 
 ## Overview
 
