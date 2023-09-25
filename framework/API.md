@@ -2741,52 +2741,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### SparkCICDPipeline <a name="SparkCICDPipeline" id="@adsf/framework.SparkCICDPipeline"></a>
 
-A CICD Pipeline that tests and deploys a Spark application in cross-account environments.
-
-The construct provisions a [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) with the following resources:
- * A CodeCommit repository to host the code
- * A CodePipeline triggered from the main branch of the CodeCommit repository
- * A CodeBuild stage to build the CDK assets and run the Spark unit tests
- * A Staging stage to deploy the application stack in the staging account and run optional integration tests
- * A Production stage to deploy the application stack in the production account
-
-If using different accounts for dev (where this construct is deployed), staging and production (where the application stack is deployed),
-bootstrap integration and production accounts with CDK and add a trust relationship from the dev account:
-```bash
-cdk bootstrap \
-  --profile integration \
-  --trust <DEV_ACCOUNT> \
-  aws://<INTEGRATION_ACCOUNT>/<REGION>
-```
-More information [here](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html#cdk_pipeline_bootstrap)
-
-Also provide the accounts information in the cdk.json in the form of:
-
-```json
-{
-  "staging": {
-    "accountId": "<STAGING_ACCOUNT_ID>",
-    "region": "<REGION>"
-  },
-  "prod": {
-    "accountId": "<PROD_ACCOUNT_ID>",
-    "region": "<REGION>"
-  }
-```
-
-Units tests are expected to be run with `pytest` command from the Spark root folder configured via `sparkPath`.
-Units tests are expected to create a Spark session with a local master and client mode.
-
-Integration tests are expected to be an AWS CLI script that return 0 exit code if success and 1 if failure configure via `integTestScript`.
-To use resources that are deployed by the Application Stack, pass environment variables to the Construct in the form of key/value pairs via `integTestEnv`:
-  * Keys are the names of the environment variables used in the script.
-  * Values are CloudFormation output names provided by the application stack (generally resource names or ARN).
-
-The application stack is expected to be passed via a factory class. To do this, implement the `ApplicationStackFactory` and its `createStack()` method.
-The `createStack()` method needs to return a `Stack` instance within the scope passed to the factory method.
-This is used to create the application stack within the scope of the CDK Pipeline stage.
-The `CICDStage` parameter is passed by the CDK Pipeline via the factory method and allows to customize the behavior of the Stack based on the stage.
-For example, staging stage is used for integration tests so there is no reason to create a cron based trigger but the tests would manually trigger the job.
+A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
 *Example*
 
