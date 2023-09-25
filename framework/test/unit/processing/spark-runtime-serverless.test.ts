@@ -12,8 +12,8 @@
 import { Stack, App } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { AccountRootPrincipal, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
-import { SparkRuntimeServerless } from '../../../src/processing-runtime';
-import { EmrVersion } from '../../../src/utils';
+import { SparkEmrServerlessRuntime } from '../../../src/processing';
+import { EmrRuntimeVersion } from '../../../src/utils';
 
 
 describe('Create an EMR Serverless Application for Spark and grant access', () => {
@@ -21,8 +21,8 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
   const app = new App();
   const stack = new Stack(app, 'Stack');
 
-  const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
-    releaseLabel: EmrVersion.V6_12,
+  const runtimeServerless = new SparkEmrServerlessRuntime(stack, 'SparkRuntimeServerlessStack', {
+    releaseLabel: EmrRuntimeVersion.V6_12,
     name: 'spark-serverless-demo',
   });
 
@@ -39,7 +39,7 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
     assumedBy: new AccountRootPrincipal(),
   });
 
-  const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+  const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
   runtimeServerless.grantExecution(myTestRole, myExecutionRole.roleArn);
 
@@ -83,7 +83,7 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
                   'emr-serverless:GetJobRun',
                 ],
                 Resource: {
-                  'Fn::GetAtt': ['SparkRuntimeServerlessStacksparkserverlessapplicationsparkserverlessdemo0CABFE2A', 'Arn'],
+                  'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
                 },
               },
             ],
@@ -114,9 +114,9 @@ describe('Test static methods', () => {
     })],
   });
 
-  const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+  const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-  SparkRuntimeServerless.grantJobExecution(myTestRole, [myExecutionRole.roleArn], ['emr-serverless-app-id']);
+  SparkEmrServerlessRuntime.grantJobExecution(myTestRole, [myExecutionRole.roleArn], ['emr-serverless-app-id']);
 
   const template = Template.fromStack(stack);
 

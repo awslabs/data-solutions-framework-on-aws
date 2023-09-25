@@ -4,12 +4,12 @@
 import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { SparkRuntimeServerlessProps } from './spark-runtime-serverless-props';
-import { EMR_DEFAULT_VERSION, EmrVersion, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
+import { EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
 * A construct to create a Spark EMR Serverless Application
-*   The construct takes as props {@link SparkRuntimeServerlessProps}
+*   The construct takes as props {@link SparkEmrServerlessRuntimeProps}
 *   The construct offers method to create execution role for EMR Serverless
 *   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job
 *
@@ -41,7 +41,7 @@ import { EMR_DEFAULT_VERSION, EmrVersion, TrackedConstruct, TrackedConstructProp
 *    value: runtimeServerless.applicationArn,
 * });
 */
-export class SparkRuntimeServerless extends TrackedConstruct {
+export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
   /**
      * A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it
@@ -137,20 +137,20 @@ export class SparkRuntimeServerless extends TrackedConstruct {
   /**
      * @param {Construct} scope the Scope of the CDK Construct
      * @param {string} id the ID of the CDK Construct
-     * @param props {@link SparkRuntimeServerlessProps}
+     * @param props {@link SparkEmrServerlessRuntimeProps}
      */
 
-  constructor(scope: Construct, id: string, props: SparkRuntimeServerlessProps) {
+  constructor(scope: Construct, id: string, props: SparkEmrServerlessRuntimeProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: SparkRuntimeServerless.name,
+      trackingTag: SparkEmrServerlessRuntime.name,
     };
 
     super(scope, id, trackedConstructProps);
 
-    const emrReleaseLabel: EmrVersion = props.releaseLabel ? props.releaseLabel : EMR_DEFAULT_VERSION;
+    const emrReleaseLabel: EmrRuntimeVersion = props.releaseLabel ? props.releaseLabel : EMR_DEFAULT_VERSION;
 
-    const sparkApplication: CfnApplication = new CfnApplication(this, `spark-serverless-application-${props.name}`, {
+    const sparkApplication: CfnApplication = new CfnApplication(scope, `spark-serverless-application-${props.name}`, {
       ...props,
       releaseLabel: emrReleaseLabel,
       type: 'Spark',
@@ -169,7 +169,7 @@ export class SparkRuntimeServerless extends TrackedConstruct {
     */
   public grantExecution(startJobRole: IRole, executionRoleArn: string) {
 
-    SparkRuntimeServerless.grantJobExecution(startJobRole, [executionRoleArn], [this.applicationArn]);
+    SparkEmrServerlessRuntime.grantJobExecution(startJobRole, [executionRoleArn], [this.applicationArn]);
   }
 
 }

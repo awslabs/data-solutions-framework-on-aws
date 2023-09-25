@@ -13,15 +13,15 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AccountRootPrincipal, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { AwsSolutionsChecks } from 'cdk-nag';
-import { SparkRuntimeServerless } from '../../../src/processing-runtime';
-import { EmrVersion } from '../../../src/utils';
+import { SparkEmrServerlessRuntime } from '../../../../src/processing';
+import { EmrRuntimeVersion } from '../../../../src/utils';
 
 
 const app = new App();
 const stack = new Stack(app, 'Stack');
 
-const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
-  releaseLabel: EmrVersion.V6_12,
+const runtimeServerless = new SparkEmrServerlessRuntime(stack, 'SparkRuntimeServerlessStack', {
+  releaseLabel: EmrRuntimeVersion.V6_12,
   name: 'spark-serverless-demo',
 });
 
@@ -38,7 +38,7 @@ let myTestRole = new Role (stack, 'TestRole', {
   assumedBy: new AccountRootPrincipal(),
 });
 
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 runtimeServerless.grantExecution(myTestRole, myExecutionRole.roleArn);
 

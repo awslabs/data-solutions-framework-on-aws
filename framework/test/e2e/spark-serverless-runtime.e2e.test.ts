@@ -10,7 +10,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { SparkRuntimeServerless } from '../../src/processing-runtime';
+import { SparkEmrServerlessRuntime } from '../../src/';
 
 jest.setTimeout(6000000);
 
@@ -20,7 +20,7 @@ const testStack = new TestStack('SparkServerlessTestStack', app);
 const { stack } = testStack;
 
 // creation of the construct(s) under test
-const serverlessRuntime = new SparkRuntimeServerless(stack, 'EmrApp', {
+const serverlessRuntime = new SparkEmrServerlessRuntime(stack, 'EmrApp', {
   name: 'SparkRuntimeServerless',
 });
 
@@ -33,7 +33,7 @@ const s3Read = new PolicyDocument({
   })],
 });
 
-const execRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole', s3Read);
+const execRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole', s3Read);
 
 new cdk.CfnOutput(stack, 'applicationArn', {
   value: serverlessRuntime.applicationArn,

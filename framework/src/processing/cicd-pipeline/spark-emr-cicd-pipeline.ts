@@ -6,9 +6,8 @@ import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { ApplicationStackFactory } from './application-stack-factory';
-import { CICDStage, ApplicationStage } from './application-stage';
-import { EmrVersion, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps, CICDStage, ApplicationStage } from '../../utils';
+import { ApplicationStackFactory } from '../../utils/application-stack-factory';
 
 const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
 
@@ -16,10 +15,10 @@ const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
  * The list of supported Spark images to use in the SparkCICDPipeline.
  */
 export enum SparkImage {
-  EMR_6_12 = EMR_EKS_IMAGE_URL + EmrVersion.V6_12 + ':latest',
-  EMR_6_11 = EMR_EKS_IMAGE_URL + EmrVersion.V6_11 + ':latest',
-  EMR_6_10 = EMR_EKS_IMAGE_URL + EmrVersion.V6_10 + ':latest',
-  EMR_6_9 = EMR_EKS_IMAGE_URL + EmrVersion.V6_9 + ':latest',
+  EMR_6_12 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_12 + ':latest',
+  EMR_6_11 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_11 + ':latest',
+  EMR_6_10 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_10 + ':latest',
+  EMR_6_9 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_9 + ':latest',
 }
 
 /**
@@ -38,9 +37,9 @@ export interface AccountInfo {
 }
 
 /**
-* Properties for SparkCICDPipeline class.
+* Properties for SparkEmrCICDPipeline class.
 */
-export interface SparkCICDPipelineProps {
+export interface SparkEmrCICDPipelineProps {
   /**
   * The name of the Spark application to be deployed.
   */
@@ -129,7 +128,7 @@ export interface SparkCICDPipelineProps {
 *   },
 * });
 */
-export class SparkCICDPipeline extends TrackedConstruct {
+export class SparkEmrCICDPipeline extends TrackedConstruct {
 
   /**
    * The default Spark image to run the unit tests
@@ -198,12 +197,12 @@ export class SparkCICDPipeline extends TrackedConstruct {
    * Construct a new instance of the SparkCICDPipeline class.
    * @param {Construct} scope the Scope of the CDK Construct
    * @param {string} id the ID of the CDK Construct
-   * @param {SparkCICDPipelineProps} props the SparkCICDPipelineProps properties
+   * @param {SparkEmrCICDPipelineProps} props the SparkCICDPipelineProps properties
    */
-  constructor(scope: Construct, id: string, props: SparkCICDPipelineProps) {
+  constructor(scope: Construct, id: string, props: SparkEmrCICDPipelineProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: SparkCICDPipeline.name,
+      trackingTag: SparkEmrCICDPipeline.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -211,7 +210,7 @@ export class SparkCICDPipeline extends TrackedConstruct {
     // Set the defaults
     const cdkPath = props.cdkApplicationPath ? props.cdkApplicationPath : '.';
     const sparkPath = props.sparkApplicationPath ? props.sparkApplicationPath : '.';
-    const sparkImage = props.sparkImage ? props.sparkImage : SparkCICDPipeline.DEFAULT_SPARK_IMAGE;
+    const sparkImage = props.sparkImage ? props.sparkImage : SparkEmrCICDPipeline.DEFAULT_SPARK_IMAGE;
 
     // Create a CodeCommit repository to host the code
     const codeRepository = new Repository(this, 'CodeCommitRepository', {
@@ -220,7 +219,7 @@ export class SparkCICDPipeline extends TrackedConstruct {
 
     const buildStage = new CodeBuildStep('CodeBuildSynthStep', {
       input: CodePipelineSource.codeCommit(codeRepository, 'main'),
-      commands: SparkCICDPipeline.synthCommands(cdkPath, sparkPath, sparkImage),
+      commands: SparkEmrCICDPipeline.synthCommands(cdkPath, sparkPath, sparkImage),
       primaryOutputDirectory: `${cdkPath}/cdk.out`,
     });
 
@@ -244,7 +243,7 @@ export class SparkCICDPipeline extends TrackedConstruct {
 
     if (props.integTestScript) {
       // Extract the path and script name from the integration tests script path
-      const [integPath, integScript] = SparkCICDPipeline.extractPath(props.integTestScript);
+      const [integPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
 
       // Add a post step to run the integration tests
       stagingDeployment.addPost(new CodeBuildStep('IntegrationTests', {

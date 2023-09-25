@@ -2311,6 +2311,310 @@ first call to addToResourcePolicy(s).
 ---
 
 
+### ApplicationStage <a name="ApplicationStage" id="@adsf/framework.ApplicationStage"></a>
+
+ApplicationStage class that creates a CDK Pipelines Stage from an ApplicationStackFactory.
+
+#### Initializers <a name="Initializers" id="@adsf/framework.ApplicationStage.Initializer"></a>
+
+```typescript
+import { ApplicationStage } from '@adsf/framework'
+
+new ApplicationStage(scope: Construct, id: string, props: ApplicationStageProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.ApplicationStage.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.ApplicationStageProps">ApplicationStageProps</a></code> | the SparkCICDStageProps properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.ApplicationStage.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.ApplicationStage.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.ApplicationStage.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#@adsf/framework.ApplicationStageProps">ApplicationStageProps</a>
+
+the SparkCICDStageProps properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@adsf/framework.ApplicationStage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@adsf/framework.ApplicationStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
+
+---
+
+##### `toString` <a name="toString" id="@adsf/framework.ApplicationStage.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `synth` <a name="synth" id="@adsf/framework.ApplicationStage.synth"></a>
+
+```typescript
+public synth(options?: StageSynthesisOptions): CloudAssembly
+```
+
+Synthesize this stage into a cloud assembly.
+
+Once an assembly has been synthesized, it cannot be modified. Subsequent
+calls will return the same assembly.
+
+###### `options`<sup>Optional</sup> <a name="options" id="@adsf/framework.ApplicationStage.synth.parameter.options"></a>
+
+- *Type:* aws-cdk-lib.StageSynthesisOptions
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@adsf/framework.ApplicationStage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@adsf/framework.ApplicationStage.isStage">isStage</a></code> | Test whether the given construct is a stage. |
+| <code><a href="#@adsf/framework.ApplicationStage.of">of</a></code> | Return the stage this construct is contained with, if available. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@adsf/framework.ApplicationStage.isConstruct"></a>
+
+```typescript
+import { ApplicationStage } from '@adsf/framework'
+
+ApplicationStage.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.ApplicationStage.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+##### `isStage` <a name="isStage" id="@adsf/framework.ApplicationStage.isStage"></a>
+
+```typescript
+import { ApplicationStage } from '@adsf/framework'
+
+ApplicationStage.isStage(x: any)
+```
+
+Test whether the given construct is a stage.
+
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.ApplicationStage.isStage.parameter.x"></a>
+
+- *Type:* any
+
+---
+
+##### `of` <a name="of" id="@adsf/framework.ApplicationStage.of"></a>
+
+```typescript
+import { ApplicationStage } from '@adsf/framework'
+
+ApplicationStage.of(construct: IConstruct)
+```
+
+Return the stage this construct is contained with, if available.
+
+If called
+on a nested stage, returns its parent.
+
+###### `construct`<sup>Required</sup> <a name="construct" id="@adsf/framework.ApplicationStage.of.parameter.construct"></a>
+
+- *Type:* constructs.IConstruct
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.ApplicationStage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.artifactId">artifactId</a></code> | <code>string</code> | Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.assetOutdir">assetOutdir</a></code> | <code>string</code> | The cloud assembly asset output directory. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.outdir">outdir</a></code> | <code>string</code> | The cloud assembly output directory. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.stageName">stageName</a></code> | <code>string</code> | The name of the stage. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
+| <code><a href="#@adsf/framework.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.ApplicationStage.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `artifactId`<sup>Required</sup> <a name="artifactId" id="@adsf/framework.ApplicationStage.property.artifactId"></a>
+
+```typescript
+public readonly artifactId: string;
+```
+
+- *Type:* string
+
+Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string.
+
+Derived from the construct path.
+
+---
+
+##### `assetOutdir`<sup>Required</sup> <a name="assetOutdir" id="@adsf/framework.ApplicationStage.property.assetOutdir"></a>
+
+```typescript
+public readonly assetOutdir: string;
+```
+
+- *Type:* string
+
+The cloud assembly asset output directory.
+
+---
+
+##### `outdir`<sup>Required</sup> <a name="outdir" id="@adsf/framework.ApplicationStage.property.outdir"></a>
+
+```typescript
+public readonly outdir: string;
+```
+
+- *Type:* string
+
+The cloud assembly output directory.
+
+---
+
+##### `policyValidationBeta1`<sup>Required</sup> <a name="policyValidationBeta1" id="@adsf/framework.ApplicationStage.property.policyValidationBeta1"></a>
+
+```typescript
+public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
+```
+
+- *Type:* aws-cdk-lib.IPolicyValidationPluginBeta1[]
+- *Default:* no validation plugins are used
+
+Validation plugins to run during synthesis.
+
+If any plugin reports any violation,
+synthesis will be interrupted and the report displayed to the user.
+
+---
+
+##### `stageName`<sup>Required</sup> <a name="stageName" id="@adsf/framework.ApplicationStage.property.stageName"></a>
+
+```typescript
+public readonly stageName: string;
+```
+
+- *Type:* string
+
+The name of the stage.
+
+Based on names of the parent stages separated by
+hypens.
+
+---
+
+##### `account`<sup>Optional</sup> <a name="account" id="@adsf/framework.ApplicationStage.property.account"></a>
+
+```typescript
+public readonly account: string;
+```
+
+- *Type:* string
+
+The default account for all resources defined within this stage.
+
+---
+
+##### `parentStage`<sup>Optional</sup> <a name="parentStage" id="@adsf/framework.ApplicationStage.property.parentStage"></a>
+
+```typescript
+public readonly parentStage: Stage;
+```
+
+- *Type:* aws-cdk-lib.Stage
+
+The parent stage or `undefined` if this is the app.
+
+*
+
+---
+
+##### `region`<sup>Optional</sup> <a name="region" id="@adsf/framework.ApplicationStage.property.region"></a>
+
+```typescript
+public readonly region: string;
+```
+
+- *Type:* string
+
+The default region for all resources defined within this stage.
+
+---
+
+##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="@adsf/framework.ApplicationStage.property.stackOutputsEnv"></a>
+
+```typescript
+public readonly stackOutputsEnv: {[ key: string ]: CfnOutput};
+```
+
+- *Type:* {[ key: string ]: aws-cdk-lib.CfnOutput}
+
+The list of CfnOutputs created by the CDK Stack.
+
+---
+
+
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="@adsf/framework.DataCatalogDatabase"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -2739,7 +3043,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkCICDPipeline <a name="SparkCICDPipeline" id="@adsf/framework.SparkCICDPipeline"></a>
+### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="@adsf/framework.SparkEmrCICDPipeline"></a>
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
@@ -2783,23 +3087,23 @@ new SparkCICDPipeline(stack, 'TestConstruct', {
 ```
 
 
-#### Initializers <a name="Initializers" id="@adsf/framework.SparkCICDPipeline.Initializer"></a>
+#### Initializers <a name="Initializers" id="@adsf/framework.SparkEmrCICDPipeline.Initializer"></a>
 
 ```typescript
-import { SparkCICDPipeline } from '@adsf/framework'
+import { SparkEmrCICDPipeline } from '@adsf/framework'
 
-new SparkCICDPipeline(scope: Construct, id: string, props: SparkCICDPipelineProps)
+new SparkEmrCICDPipeline(scope: Construct, id: string, props: SparkEmrCICDPipelineProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.SparkCICDPipelineProps">SparkCICDPipelineProps</a></code> | the SparkCICDPipelineProps properties. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps">SparkEmrCICDPipelineProps</a></code> | the SparkCICDPipelineProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkCICDPipeline.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2807,7 +3111,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkCICDPipeline.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -2815,9 +3119,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.SparkCICDPipeline.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@adsf/framework.SparkCICDPipelineProps">SparkCICDPipelineProps</a>
+- *Type:* <a href="#@adsf/framework.SparkEmrCICDPipelineProps">SparkEmrCICDPipelineProps</a>
 
 the SparkCICDPipelineProps properties.
 
@@ -2827,11 +3131,11 @@ the SparkCICDPipelineProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
 
 ---
 
-##### `toString` <a name="toString" id="@adsf/framework.SparkCICDPipeline.toString"></a>
+##### `toString` <a name="toString" id="@adsf/framework.SparkEmrCICDPipeline.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2843,16 +3147,16 @@ Returns a string representation of this construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.SparkCICDPipeline.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@adsf/framework.SparkEmrCICDPipeline.isConstruct"></a>
 
 ```typescript
-import { SparkCICDPipeline } from '@adsf/framework'
+import { SparkEmrCICDPipeline } from '@adsf/framework'
 
-SparkCICDPipeline.isConstruct(x: any)
+SparkEmrCICDPipeline.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -2871,7 +3175,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.SparkCICDPipeline.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.SparkEmrCICDPipeline.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2883,12 +3187,12 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.SparkCICDPipeline.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.SparkEmrCICDPipeline.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2900,7 +3204,7 @@ The tree node.
 
 ---
 
-##### `pipeline`<sup>Required</sup> <a name="pipeline" id="@adsf/framework.SparkCICDPipeline.property.pipeline"></a>
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="@adsf/framework.SparkEmrCICDPipeline.property.pipeline"></a>
 
 ```typescript
 public readonly pipeline: CodePipeline;
@@ -2916,11 +3220,11 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkCICDPipeline.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -2930,9 +3234,9 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkRuntimeServerless <a name="SparkRuntimeServerless" id="@adsf/framework.SparkRuntimeServerless"></a>
+### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="@adsf/framework.SparkEmrServerlessRuntime"></a>
 
-A construct to create a Spark EMR Serverless Application   The construct takes as props {@link SparkRuntimeServerlessProps}   The construct offers method to create execution role for EMR Serverless   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job.
+A construct to create a Spark EMR Serverless Application   The construct takes as props {@link SparkEmrServerlessRuntimeProps}   The construct offers method to create execution role for EMR Serverless   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job.
 
 *Example*
 
@@ -2966,23 +3270,23 @@ new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
 ```
 
 
-#### Initializers <a name="Initializers" id="@adsf/framework.SparkRuntimeServerless.Initializer"></a>
+#### Initializers <a name="Initializers" id="@adsf/framework.SparkEmrServerlessRuntime.Initializer"></a>
 
 ```typescript
-import { SparkRuntimeServerless } from '@adsf/framework'
+import { SparkEmrServerlessRuntime } from '@adsf/framework'
 
-new SparkRuntimeServerless(scope: Construct, id: string, props: SparkRuntimeServerlessProps)
+new SparkEmrServerlessRuntime(scope: Construct, id: string, props: SparkEmrServerlessRuntimeProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.SparkRuntimeServerlessProps">SparkRuntimeServerlessProps</a></code> | {@link SparkRuntimeServerlessProps}. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps">SparkEmrServerlessRuntimeProps</a></code> | {@link SparkEmrServerlessRuntimeProps}. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkRuntimeServerless.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkEmrServerlessRuntime.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2990,7 +3294,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkRuntimeServerless.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkEmrServerlessRuntime.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -2998,11 +3302,11 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.SparkRuntimeServerless.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.SparkEmrServerlessRuntime.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@adsf/framework.SparkRuntimeServerlessProps">SparkRuntimeServerlessProps</a>
+- *Type:* <a href="#@adsf/framework.SparkEmrServerlessRuntimeProps">SparkEmrServerlessRuntimeProps</a>
 
-{@link SparkRuntimeServerlessProps}.
+{@link SparkEmrServerlessRuntimeProps}.
 
 ---
 
@@ -3010,12 +3314,12 @@ the ID of the CDK Construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.grantExecution">grantExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.grantExecution">grantExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
 
-##### `toString` <a name="toString" id="@adsf/framework.SparkRuntimeServerless.toString"></a>
+##### `toString` <a name="toString" id="@adsf/framework.SparkEmrServerlessRuntime.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3023,7 +3327,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantExecution` <a name="grantExecution" id="@adsf/framework.SparkRuntimeServerless.grantExecution"></a>
+##### `grantExecution` <a name="grantExecution" id="@adsf/framework.SparkEmrServerlessRuntime.grantExecution"></a>
 
 ```typescript
 public grantExecution(startJobRole: IRole, executionRoleArn: string): void
@@ -3034,7 +3338,7 @@ A method which will grant an IAM Role the right to start and monitor a job.
 The method will also attach an iam:PassRole permission to limited to the IAM Job Execution roles passed.
 The excution role will be able to submit job to the EMR Serverless application created by the construct.
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@adsf/framework.SparkRuntimeServerless.grantExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@adsf/framework.SparkEmrServerlessRuntime.grantExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -3042,7 +3346,7 @@ the role that will call the start job api and which need to have the iam:PassRol
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@adsf/framework.SparkRuntimeServerless.grantExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@adsf/framework.SparkEmrServerlessRuntime.grantExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string
 
@@ -3054,18 +3358,18 @@ the role use by EMR Serverless to access resources during the job execution.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.grantJobExecution">grantJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.grantJobExecution">grantJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.SparkRuntimeServerless.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@adsf/framework.SparkEmrServerlessRuntime.isConstruct"></a>
 
 ```typescript
-import { SparkRuntimeServerless } from '@adsf/framework'
+import { SparkEmrServerlessRuntime } from '@adsf/framework'
 
-SparkRuntimeServerless.isConstruct(x: any)
+SparkEmrServerlessRuntime.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -3084,7 +3388,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.SparkRuntimeServerless.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.SparkEmrServerlessRuntime.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3092,17 +3396,17 @@ Any object.
 
 ---
 
-##### `createExecutionRole` <a name="createExecutionRole" id="@adsf/framework.SparkRuntimeServerless.createExecutionRole"></a>
+##### `createExecutionRole` <a name="createExecutionRole" id="@adsf/framework.SparkEmrServerlessRuntime.createExecutionRole"></a>
 
 ```typescript
-import { SparkRuntimeServerless } from '@adsf/framework'
+import { SparkEmrServerlessRuntime } from '@adsf/framework'
 
-SparkRuntimeServerless.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
+SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
 ```
 
 A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkRuntimeServerless.createExecutionRole.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3110,7 +3414,7 @@ the scope in which to create the role.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkRuntimeServerless.createExecutionRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkEmrServerlessRuntime.createExecutionRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -3118,7 +3422,7 @@ passed to the IAM Role construct object.
 
 ---
 
-###### `executionRolePolicyDocument`<sup>Optional</sup> <a name="executionRolePolicyDocument" id="@adsf/framework.SparkRuntimeServerless.createExecutionRole.parameter.executionRolePolicyDocument"></a>
+###### `executionRolePolicyDocument`<sup>Optional</sup> <a name="executionRolePolicyDocument" id="@adsf/framework.SparkEmrServerlessRuntime.createExecutionRole.parameter.executionRolePolicyDocument"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyDocument
 
@@ -3128,7 +3432,7 @@ This parameter is mutually execlusive with iamPolicyName.
 
 ---
 
-###### `iamPolicyName`<sup>Optional</sup> <a name="iamPolicyName" id="@adsf/framework.SparkRuntimeServerless.createExecutionRole.parameter.iamPolicyName"></a>
+###### `iamPolicyName`<sup>Optional</sup> <a name="iamPolicyName" id="@adsf/framework.SparkEmrServerlessRuntime.createExecutionRole.parameter.iamPolicyName"></a>
 
 - *Type:* string
 
@@ -3136,19 +3440,19 @@ the IAM policy name to attach to the role, this is mutually execlusive with exec
 
 ---
 
-##### `grantJobExecution` <a name="grantJobExecution" id="@adsf/framework.SparkRuntimeServerless.grantJobExecution"></a>
+##### `grantJobExecution` <a name="grantJobExecution" id="@adsf/framework.SparkEmrServerlessRuntime.grantJobExecution"></a>
 
 ```typescript
-import { SparkRuntimeServerless } from '@adsf/framework'
+import { SparkEmrServerlessRuntime } from '@adsf/framework'
 
-SparkRuntimeServerless.grantJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
+SparkEmrServerlessRuntime.grantJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
 ```
 
 A static method which will grant an IAM Role the right to start and monitor a job.
 
 The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@adsf/framework.SparkRuntimeServerless.grantJobExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@adsf/framework.SparkEmrServerlessRuntime.grantJobExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -3156,7 +3460,7 @@ the role that will call the start job api and which needs to have the iam:PassRo
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@adsf/framework.SparkRuntimeServerless.grantJobExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@adsf/framework.SparkEmrServerlessRuntime.grantJobExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string[]
 
@@ -3164,7 +3468,7 @@ the role used by EMR Serverless to access resources during the job execution.
 
 ---
 
-###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="@adsf/framework.SparkRuntimeServerless.grantJobExecution.parameter.applicationArns"></a>
+###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="@adsf/framework.SparkEmrServerlessRuntime.grantJobExecution.parameter.applicationArns"></a>
 
 - *Type:* string[]
 
@@ -3176,12 +3480,12 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.SparkRuntimeServerless.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.SparkEmrServerlessRuntime.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3193,7 +3497,7 @@ The tree node.
 
 ---
 
-##### `applicationArn`<sup>Required</sup> <a name="applicationArn" id="@adsf/framework.SparkRuntimeServerless.property.applicationArn"></a>
+##### `applicationArn`<sup>Required</sup> <a name="applicationArn" id="@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn"></a>
 
 ```typescript
 public readonly applicationArn: string;
@@ -3207,11 +3511,11 @@ public readonly applicationArn: string;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkRuntimeServerless.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkRuntimeServerless.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3593,6 +3897,171 @@ Whether this bucket should have versioning turned on or not.
 
 ---
 
+### ApplicationStageProps <a name="ApplicationStageProps" id="@adsf/framework.ApplicationStageProps"></a>
+
+Properties for SparkCICDStage class.
+
+#### Initializer <a name="Initializer" id="@adsf/framework.ApplicationStageProps.Initializer"></a>
+
+```typescript
+import { ApplicationStageProps } from '@adsf/framework'
+
+const applicationStageProps: ApplicationStageProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | Default AWS environment (account/region) for `Stack`s in this `Stage`. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.outdir">outdir</a></code> | <code>string</code> | The output directory into which to emit synthesized artifacts. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#@adsf/framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.stage">stage</a></code> | <code><a href="#@adsf/framework.CICDStage">CICDStage</a></code> | The Stage to deploy the SparkCICDStack in. |
+| <code><a href="#@adsf/framework.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
+
+---
+
+##### `env`<sup>Optional</sup> <a name="env" id="@adsf/framework.ApplicationStageProps.property.env"></a>
+
+```typescript
+public readonly env: Environment;
+```
+
+- *Type:* aws-cdk-lib.Environment
+- *Default:* The environments should be configured on the `Stack`s.
+
+Default AWS environment (account/region) for `Stack`s in this `Stage`.
+
+Stacks defined inside this `Stage` with either `region` or `account` missing
+from its env will use the corresponding field given here.
+
+If either `region` or `account`is is not configured for `Stack` (either on
+the `Stack` itself or on the containing `Stage`), the Stack will be
+*environment-agnostic*.
+
+Environment-agnostic stacks can be deployed to any environment, may not be
+able to take advantage of all features of the CDK. For example, they will
+not be able to use environmental context lookups, will not automatically
+translate Service Principals to the right format based on the environment's
+AWS partition, and other such enhancements.
+
+---
+
+*Example*
+
+```typescript
+// Use a concrete account and region to deploy this Stage to
+new Stage(app, 'Stage1', {
+  env: { account: '123456789012', region: 'us-east-1' },
+});
+
+// Use the CLI's current credentials to determine the target environment
+new Stage(app, 'Stage2', {
+  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+});
+```
+
+
+##### `outdir`<sup>Optional</sup> <a name="outdir" id="@adsf/framework.ApplicationStageProps.property.outdir"></a>
+
+```typescript
+public readonly outdir: string;
+```
+
+- *Type:* string
+- *Default:* for nested stages, outdir will be determined as a relative directory to the outdir of the app. For apps, if outdir is not specified, a temporary directory will be created.
+
+The output directory into which to emit synthesized artifacts.
+
+Can only be specified if this stage is the root stage (the app). If this is
+specified and this stage is nested within another stage, an error will be
+thrown.
+
+---
+
+##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="@adsf/framework.ApplicationStageProps.property.permissionsBoundary"></a>
+
+```typescript
+public readonly permissionsBoundary: PermissionsBoundary;
+```
+
+- *Type:* aws-cdk-lib.PermissionsBoundary
+- *Default:* no permissions boundary is applied
+
+Options for applying a permissions boundary to all IAM Roles and Users created within this Stage.
+
+---
+
+##### `policyValidationBeta1`<sup>Optional</sup> <a name="policyValidationBeta1" id="@adsf/framework.ApplicationStageProps.property.policyValidationBeta1"></a>
+
+```typescript
+public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
+```
+
+- *Type:* aws-cdk-lib.IPolicyValidationPluginBeta1[]
+- *Default:* no validation plugins are used
+
+Validation plugins to run during synthesis.
+
+If any plugin reports any violation,
+synthesis will be interrupted and the report displayed to the user.
+
+---
+
+##### `stageName`<sup>Optional</sup> <a name="stageName" id="@adsf/framework.ApplicationStageProps.property.stageName"></a>
+
+```typescript
+public readonly stageName: string;
+```
+
+- *Type:* string
+- *Default:* Derived from the id.
+
+Name of this stage.
+
+---
+
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="@adsf/framework.ApplicationStageProps.property.applicationStackFactory"></a>
+
+```typescript
+public readonly applicationStackFactory: ApplicationStackFactory;
+```
+
+- *Type:* <a href="#@adsf/framework.ApplicationStackFactory">ApplicationStackFactory</a>
+
+The application Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `stage`<sup>Required</sup> <a name="stage" id="@adsf/framework.ApplicationStageProps.property.stage"></a>
+
+```typescript
+public readonly stage: CICDStage;
+```
+
+- *Type:* <a href="#@adsf/framework.CICDStage">CICDStage</a>
+- *Default:* No stage is passed to the application stack
+
+The Stage to deploy the SparkCICDStack in.
+
+---
+
+##### `outputsEnv`<sup>Optional</sup> <a name="outputsEnv" id="@adsf/framework.ApplicationStageProps.property.outputsEnv"></a>
+
+```typescript
+public readonly outputsEnv: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+- *Default:* No CfnOutputs are created
+
+The list of values to create CfnOutputs.
+
+---
+
 ### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="@adsf/framework.DataCatalogDatabaseProps"></a>
 
 The Database catalog properties.
@@ -3878,34 +4347,34 @@ Will be appended by the unique ID.
 
 ---
 
-### SparkCICDPipelineProps <a name="SparkCICDPipelineProps" id="@adsf/framework.SparkCICDPipelineProps"></a>
+### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="@adsf/framework.SparkEmrCICDPipelineProps"></a>
 
-Properties for SparkCICDPipeline class.
+Properties for SparkEmrCICDPipeline class.
 
-#### Initializer <a name="Initializer" id="@adsf/framework.SparkCICDPipelineProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@adsf/framework.SparkEmrCICDPipelineProps.Initializer"></a>
 
 ```typescript
-import { SparkCICDPipelineProps } from '@adsf/framework'
+import { SparkEmrCICDPipelineProps } from '@adsf/framework'
 
-const sparkCICDPipelineProps: SparkCICDPipelineProps = { ... }
+const sparkEmrCICDPipelineProps: SparkEmrCICDPipelineProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#@adsf/framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
-| <code><a href="#@adsf/framework.SparkCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#@adsf/framework.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#@adsf/framework.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#@adsf/framework.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
 
 ---
 
-##### `applicationName`<sup>Required</sup> <a name="applicationName" id="@adsf/framework.SparkCICDPipelineProps.property.applicationName"></a>
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="@adsf/framework.SparkEmrCICDPipelineProps.property.applicationName"></a>
 
 ```typescript
 public readonly applicationName: string;
@@ -3917,7 +4386,7 @@ The name of the Spark application to be deployed.
 
 ---
 
-##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="@adsf/framework.SparkCICDPipelineProps.property.applicationStackFactory"></a>
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="@adsf/framework.SparkEmrCICDPipelineProps.property.applicationStackFactory"></a>
 
 ```typescript
 public readonly applicationStackFactory: ApplicationStackFactory;
@@ -3929,7 +4398,7 @@ The application Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
-##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="@adsf/framework.SparkCICDPipelineProps.property.cdkApplicationPath"></a>
+##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="@adsf/framework.SparkEmrCICDPipelineProps.property.cdkApplicationPath"></a>
 
 ```typescript
 public readonly cdkApplicationPath: string;
@@ -3942,7 +4411,7 @@ The path to the folder that contains the CDK Application.
 
 ---
 
-##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="@adsf/framework.SparkCICDPipelineProps.property.integTestEnv"></a>
+##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="@adsf/framework.SparkEmrCICDPipelineProps.property.integTestEnv"></a>
 
 ```typescript
 public readonly integTestEnv: {[ key: string ]: string};
@@ -3958,7 +4427,7 @@ Key is the name of the environment variable to create. Value is generally a CfnO
 
 ---
 
-##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="@adsf/framework.SparkCICDPipelineProps.property.integTestPermissions"></a>
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="@adsf/framework.SparkEmrCICDPipelineProps.property.integTestPermissions"></a>
 
 ```typescript
 public readonly integTestPermissions: PolicyStatement[];
@@ -3971,7 +4440,7 @@ The IAM policy statements to add permissions for running the integration tests.
 
 ---
 
-##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="@adsf/framework.SparkCICDPipelineProps.property.integTestScript"></a>
+##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="@adsf/framework.SparkEmrCICDPipelineProps.property.integTestScript"></a>
 
 ```typescript
 public readonly integTestScript: string;
@@ -3984,7 +4453,7 @@ The path to the Shell script that contains integration tests.
 
 ---
 
-##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="@adsf/framework.SparkCICDPipelineProps.property.sparkApplicationPath"></a>
+##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="@adsf/framework.SparkEmrCICDPipelineProps.property.sparkApplicationPath"></a>
 
 ```typescript
 public readonly sparkApplicationPath: string;
@@ -3997,7 +4466,7 @@ The path to the folder that contains the Spark Application.
 
 ---
 
-##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="@adsf/framework.SparkCICDPipelineProps.property.sparkImage"></a>
+##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="@adsf/framework.SparkEmrCICDPipelineProps.property.sparkImage"></a>
 
 ```typescript
 public readonly sparkImage: SparkImage;
@@ -4010,36 +4479,36 @@ The EMR Spark image to use to run the unit tests.
 
 ---
 
-### SparkRuntimeServerlessProps <a name="SparkRuntimeServerlessProps" id="@adsf/framework.SparkRuntimeServerlessProps"></a>
+### SparkEmrServerlessRuntimeProps <a name="SparkEmrServerlessRuntimeProps" id="@adsf/framework.SparkEmrServerlessRuntimeProps"></a>
 
 Properties for the {SparkRuntimeServerless} construct.
 
-#### Initializer <a name="Initializer" id="@adsf/framework.SparkRuntimeServerlessProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@adsf/framework.SparkEmrServerlessRuntimeProps.Initializer"></a>
 
 ```typescript
-import { SparkRuntimeServerlessProps } from '@adsf/framework'
+import { SparkEmrServerlessRuntimeProps } from '@adsf/framework'
 
-const sparkRuntimeServerlessProps: SparkRuntimeServerlessProps = { ... }
+const sparkEmrServerlessRuntimeProps: SparkEmrServerlessRuntimeProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.architecture">architecture</a></code> | <code><a href="#@adsf/framework.Architecture">Architecture</a></code> | The CPU architecture type of the application. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The image configuration. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrVersion">EmrVersion</a></code> | The EMR release version associated with the application. |
-| <code><a href="#@adsf/framework.SparkRuntimeServerlessProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code><a href="#@adsf/framework.Architecture">Architecture</a></code> | The CPU architecture type of the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The image configuration. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrRuntimeVersion">EmrRuntimeVersion</a></code> | The EMR release version associated with the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="@adsf/framework.SparkRuntimeServerlessProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -4053,7 +4522,7 @@ The name of the application. The name must be less than 64 characters.
 
 ---
 
-##### `architecture`<sup>Optional</sup> <a name="architecture" id="@adsf/framework.SparkRuntimeServerlessProps.property.architecture"></a>
+##### `architecture`<sup>Optional</sup> <a name="architecture" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.architecture"></a>
 
 ```typescript
 public readonly architecture: Architecture;
@@ -4065,7 +4534,7 @@ The CPU architecture type of the application.
 
 ---
 
-##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="@adsf/framework.SparkRuntimeServerlessProps.property.autoStartConfiguration"></a>
+##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration"></a>
 
 ```typescript
 public readonly autoStartConfiguration: IResolvable | AutoStartConfigurationProperty;
@@ -4077,7 +4546,7 @@ The configuration for an application to automatically start on job submission.
 
 ---
 
-##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="@adsf/framework.SparkRuntimeServerlessProps.property.autoStopConfiguration"></a>
+##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration"></a>
 
 ```typescript
 public readonly autoStopConfiguration: IResolvable | AutoStopConfigurationProperty;
@@ -4089,7 +4558,7 @@ The configuration for an application to automatically stop after a certain amoun
 
 ---
 
-##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="@adsf/framework.SparkRuntimeServerlessProps.property.imageConfiguration"></a>
+##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.imageConfiguration"></a>
 
 ```typescript
 public readonly imageConfiguration: IResolvable | ImageConfigurationInputProperty;
@@ -4101,7 +4570,7 @@ The image configuration.
 
 ---
 
-##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="@adsf/framework.SparkRuntimeServerlessProps.property.initialCapacity"></a>
+##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.initialCapacity"></a>
 
 ```typescript
 public readonly initialCapacity: IResolvable | IResolvable | InitialCapacityConfigKeyValuePairProperty[];
@@ -4113,7 +4582,7 @@ The initial capacity of the application.
 
 ---
 
-##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="@adsf/framework.SparkRuntimeServerlessProps.property.maximumCapacity"></a>
+##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.maximumCapacity"></a>
 
 ```typescript
 public readonly maximumCapacity: IResolvable | MaximumAllowedResourcesProperty;
@@ -4127,7 +4596,7 @@ This is cumulative across all workers at any given point in time during the life
 
 ---
 
-##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="@adsf/framework.SparkRuntimeServerlessProps.property.networkConfiguration"></a>
+##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.networkConfiguration"></a>
 
 ```typescript
 public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty;
@@ -4139,13 +4608,13 @@ The network configuration for customer VPC connectivity for the application.
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@adsf/framework.SparkRuntimeServerlessProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.releaseLabel"></a>
 
 ```typescript
-public readonly releaseLabel: EmrVersion;
+public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
-- *Type:* <a href="#@adsf/framework.EmrVersion">EmrVersion</a>
+- *Type:* <a href="#@adsf/framework.EmrRuntimeVersion">EmrRuntimeVersion</a>
 
 The EMR release version associated with the application.
 
@@ -4155,7 +4624,7 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="@adsf/framework.SparkRuntimeServerlessProps.property.workerTypeSpecifications"></a>
+##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications"></a>
 
 ```typescript
 public readonly workerTypeSpecifications: IResolvable | {[ key: string ]: IResolvable | WorkerTypeSpecificationInputProperty};
@@ -4300,7 +4769,7 @@ The list of CICD Stages to deploy the SparkCICDStack.
 ---
 
 
-### EmrVersion <a name="EmrVersion" id="@adsf/framework.EmrVersion"></a>
+### EmrRuntimeVersion <a name="EmrRuntimeVersion" id="@adsf/framework.EmrRuntimeVersion"></a>
 
 Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html).
 
@@ -4308,95 +4777,95 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.EmrVersion.V6_12">V6_12</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_11">V6_11</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_10">V6_10</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_9">V6_9</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_8">V6_8</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_7">V6_7</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_6">V6_6</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_5">V6_5</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_4">V6_4</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_3">V6_3</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V6_2">V6_2</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V5_33">V5_33</a></code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrVersion.V5_32">V5_32</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
 
-##### `V6_12` <a name="V6_12" id="@adsf/framework.EmrVersion.V6_12"></a>
-
----
-
-
-##### `V6_11_1` <a name="V6_11_1" id="@adsf/framework.EmrVersion.V6_11_1"></a>
+##### `V6_12` <a name="V6_12" id="@adsf/framework.EmrRuntimeVersion.V6_12"></a>
 
 ---
 
 
-##### `V6_11` <a name="V6_11" id="@adsf/framework.EmrVersion.V6_11"></a>
+##### `V6_11_1` <a name="V6_11_1" id="@adsf/framework.EmrRuntimeVersion.V6_11_1"></a>
 
 ---
 
 
-##### `V6_10_1` <a name="V6_10_1" id="@adsf/framework.EmrVersion.V6_10_1"></a>
+##### `V6_11` <a name="V6_11" id="@adsf/framework.EmrRuntimeVersion.V6_11"></a>
 
 ---
 
 
-##### `V6_10` <a name="V6_10" id="@adsf/framework.EmrVersion.V6_10"></a>
+##### `V6_10_1` <a name="V6_10_1" id="@adsf/framework.EmrRuntimeVersion.V6_10_1"></a>
 
 ---
 
 
-##### `V6_9` <a name="V6_9" id="@adsf/framework.EmrVersion.V6_9"></a>
+##### `V6_10` <a name="V6_10" id="@adsf/framework.EmrRuntimeVersion.V6_10"></a>
 
 ---
 
 
-##### `V6_8` <a name="V6_8" id="@adsf/framework.EmrVersion.V6_8"></a>
+##### `V6_9` <a name="V6_9" id="@adsf/framework.EmrRuntimeVersion.V6_9"></a>
 
 ---
 
 
-##### `V6_7` <a name="V6_7" id="@adsf/framework.EmrVersion.V6_7"></a>
+##### `V6_8` <a name="V6_8" id="@adsf/framework.EmrRuntimeVersion.V6_8"></a>
 
 ---
 
 
-##### `V6_6` <a name="V6_6" id="@adsf/framework.EmrVersion.V6_6"></a>
+##### `V6_7` <a name="V6_7" id="@adsf/framework.EmrRuntimeVersion.V6_7"></a>
 
 ---
 
 
-##### `V6_5` <a name="V6_5" id="@adsf/framework.EmrVersion.V6_5"></a>
+##### `V6_6` <a name="V6_6" id="@adsf/framework.EmrRuntimeVersion.V6_6"></a>
 
 ---
 
 
-##### `V6_4` <a name="V6_4" id="@adsf/framework.EmrVersion.V6_4"></a>
+##### `V6_5` <a name="V6_5" id="@adsf/framework.EmrRuntimeVersion.V6_5"></a>
 
 ---
 
 
-##### `V6_3` <a name="V6_3" id="@adsf/framework.EmrVersion.V6_3"></a>
+##### `V6_4` <a name="V6_4" id="@adsf/framework.EmrRuntimeVersion.V6_4"></a>
 
 ---
 
 
-##### `V6_2` <a name="V6_2" id="@adsf/framework.EmrVersion.V6_2"></a>
+##### `V6_3` <a name="V6_3" id="@adsf/framework.EmrRuntimeVersion.V6_3"></a>
 
 ---
 
 
-##### `V5_33` <a name="V5_33" id="@adsf/framework.EmrVersion.V5_33"></a>
+##### `V6_2` <a name="V6_2" id="@adsf/framework.EmrRuntimeVersion.V6_2"></a>
 
 ---
 
 
-##### `V5_32` <a name="V5_32" id="@adsf/framework.EmrVersion.V5_32"></a>
+##### `V5_33` <a name="V5_33" id="@adsf/framework.EmrRuntimeVersion.V5_33"></a>
+
+---
+
+
+##### `V5_32` <a name="V5_32" id="@adsf/framework.EmrRuntimeVersion.V5_32"></a>
 
 ---
 

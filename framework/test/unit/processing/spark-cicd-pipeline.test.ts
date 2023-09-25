@@ -12,7 +12,7 @@ import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { SparkCICDPipeline, ApplicationStackFactory, SparkImage, CICDStage } from '../../../src';
+import { SparkEmrCICDPipeline, ApplicationStackFactory, SparkImage, CICDStage } from '../../../src';
 
 
 describe('With minimal configuration, the construct', () => {
@@ -45,7 +45,7 @@ describe('With minimal configuration, the construct', () => {
     }
   }
 
-  new SparkCICDPipeline(stack, 'TestConstruct', {
+  new SparkEmrCICDPipeline(stack, 'TestConstruct', {
     applicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
   });
@@ -189,7 +189,7 @@ describe('With custom configuration, the construct', () => {
     }
   }
 
-  new SparkCICDPipeline(stack, 'TestConstruct', {
+  new SparkEmrCICDPipeline(stack, 'TestConstruct', {
     applicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
     cdkApplicationPath: 'cdk/',
