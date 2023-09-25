@@ -179,7 +179,7 @@ systemctl start amazon-ssm-agent
   let toolingManagedNodegroupOptions: NodegroupOptions = {
     nodegroupName: 'tooling',
     instanceTypes: [new InstanceType('t3.medium')],
-    amiType: NodegroupAmiType.AL2_X86_64,
+    amiType: NodegroupAmiType.BOTTLEROCKET_X86_64,
     minSize: 2,
     maxSize: 2,
     labels: { role: 'tooling' },
@@ -563,12 +563,14 @@ export function karpenterSetup(cluster: Cluster,
  */
 export function createNamespace (cluster: Cluster, namespace: string): KubernetesManifest {
 
-  const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;;
+  const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
 
-  if (!namespace.match(regex) || namespace.length > 63) {
+  const reg = RegExp(regex);
+
+  if (!reg.exec(namespace) || namespace.length > 63) {
     throw new Error(`Namespace provided violates the constraints of Namespace naming ${namespace}`);
   }
-
+  
   //Create namespace with pod security admission to with pod security standard to baseline
   //To learn more look at https://kubernetes.io/docs/concepts/security/pod-security-standards/
   let ns = cluster.addManifest(`${namespace}-Namespace`, {

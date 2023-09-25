@@ -21,7 +21,7 @@ export function vpcBootstrap(scope: Construct, vpcCidr: string, eksClusterName: 
   const smallestVpcCidr: number = 28;
 
 
-  if (vpcMask < smallestVpcCidr) {
+  if (vpcMask > smallestVpcCidr) {
     throw new Error(`The VPC netmask should be at least 28, netmask provided is ${vpcMask}`);
   }
 
