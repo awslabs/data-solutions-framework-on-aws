@@ -1,0 +1,32 @@
+{ 
+    "applicationConfiguration": 
+    [
+        {
+            "classification": "spark-defaults",
+            "properties": {
+                "spark.hadoop.hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory",
+                "spark.sql.catalogImplementation": "hive",
+                "spark.dynamicAllocation.enabled":"true",
+                "spark.dynamicAllocation.minExecutors": "0",
+                "spark.dynamicAllocation.maxExecutors": "20",
+                "spark.kubernetes.allocation.batch.size": "2",
+                "spark.kubernetes.executor.request.cores": "3.7",
+                "spark.executor.memory": "10200m",
+                "spark.kubernetes.driver.request.cores": "1.6",
+                "spark.driver.memory": "4700m",
+                "spark.dynamicAllocation.executorAllocationRatio": "1",
+                "spark.dynamicAllocation.shuffleTracking.enabled": "true",
+                "spark.dynamicAllocation.shuffleTracking.timeout": "300s",
+                "spark.kubernetes.driver.podTemplateFile": "{{POD_TEMPLATE_LOCATION}}/notebook-driver.yaml",
+                "spark.kubernetes.executor.podTemplateFile": "{{POD_TEMPLATE_LOCATION}}/notebook-executor.yaml"
+            }
+        }
+    ],
+    "monitoringConfiguration": {
+        "persistentAppUI": "ENABLED",
+        "cloudWatchMonitoringConfiguration": {
+            "logGroupName": "/aws/emr-containers/notebook",
+            "logStreamNamePrefix": "default"
+        }
+    }
+}
