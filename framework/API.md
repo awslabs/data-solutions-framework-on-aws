@@ -3719,16 +3719,6 @@ public readonly applicationArn: string;
 
 ---
 
-##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@adsf/framework.SparkRuntimeServerless.property.applicationId"></a>
-
-```typescript
-public readonly applicationId: string;
-```
-
-- *Type:* string
-
----
-
 #### Constants <a name="Constants" id="Constants"></a>
 
 | **Name** | **Type** | **Description** |

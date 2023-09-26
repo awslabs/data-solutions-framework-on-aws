@@ -12,7 +12,7 @@ import { Construct } from 'constructs';
 import { EmrEksCluster } from './emr-eks-cluster';
 import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
-import { Utils } from '../../utils';
+import { Utils } from '../../../utils';
 
 
 /**
@@ -570,7 +570,7 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
   if (!reg.exec(namespace) || namespace.length > 63) {
     throw new Error(`Namespace provided violates the constraints of Namespace naming ${namespace}`);
   }
-  
+
   //Create namespace with pod security admission to with pod security standard to baseline
   //To learn more look at https://kubernetes.io/docs/concepts/security/pod-security-standards/
   let ns = cluster.addManifest(`${namespace}-Namespace`, {

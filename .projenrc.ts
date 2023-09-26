@@ -105,6 +105,10 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     module: 'adsf'
   },
 
+  deps: [
+    '@aws-cdk/lambda-layer-kubectl-v27'
+  ],
+
   devDeps: [
     '@types/js-yaml',
     'cdk-nag@^2.0.0',

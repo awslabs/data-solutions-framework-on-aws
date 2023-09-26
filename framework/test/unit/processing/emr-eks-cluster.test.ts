@@ -7,11 +7,11 @@
  * @group unit/emr-eks-platform/emr-eks-cluster
  */
 
-import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { Stack } from 'aws-cdk-lib';
-import { EmrEksCluster } from '../../../src/processing-runtime';
-import { Template, Match } from 'aws-cdk-lib/assertions';
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import { Stack } from 'aws-cdk-lib';
+import { Template, Match } from 'aws-cdk-lib/assertions';
+import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { EmrEksCluster } from '../../../src/processing/spark-runtime';
 
 const emrEksClusterStack = new Stack();
 const emrEksClusterStackWithEmrServiceLinkedRole = new Stack();
@@ -20,15 +20,15 @@ const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
 const kubectlLayerServiceLinkedRole = new KubectlV27Layer(emrEksClusterStackWithEmrServiceLinkedRole, 'kubectlLayer');
 
 const emrEksCluster = EmrEksCluster.getOrCreate(emrEksClusterStack, {
-  eksAdminRoleArn: `arn:aws:iam::123445678901:role/eks-admin`,
+  eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: false,
   kubectlLambdaLayer: kubectlLayer,
-  vpcCidr: '10.0.0.0/16'
+  vpcCidr: '10.0.0.0/16',
 });
 
 EmrEksCluster.getOrCreate(emrEksClusterStackWithEmrServiceLinkedRole, {
-  eksAdminRoleArn: `arn:aws:iam::123445678901:role/eks-admin`,
+  eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: true,
   kubectlLambdaLayer: kubectlLayerServiceLinkedRole,
@@ -41,7 +41,7 @@ emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
 emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
   name: 'nons',
   createNamespace: true,
-  eksNamespace: 'nons'
+  eksNamespace: 'nons',
 });
 
 const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
@@ -64,7 +64,7 @@ const emrEksClusterServiceLinkedRole = Template.fromStack(emrEksClusterStackWith
 test('EKS cluster created with correct version and name', () => {
   // THEN
   templateEmrEksClusterStack.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 1);
-  
+
   templateEmrEksClusterStack.hasResourceProperties('Custom::AWSCDK-EKS-Cluster', {
     Config: Match.objectLike({
       version: '1.27',
@@ -128,7 +128,7 @@ test('EKS should have a helm chart for deploying the AWS load balancer controlle
   templateEmrEksClusterStack.hasResourceProperties('Custom::AWSCDK-EKS-HelmChart', {
     Chart: 'aws-load-balancer-controller',
     Repository: 'https://aws.github.io/eks-charts',
-    Namespace: 'kube-system'
+    Namespace: 'kube-system',
   });
 });
 
@@ -147,7 +147,7 @@ test('EKS cluster should have the default Nodegroups', () => {
       MinSize: 2,
     },
     Tags: Match.objectLike({
-      'aws-data-solutions-fwk:owned': 'true'
+      'aws-data-solutions-fwk:owned': 'true',
     }),
   });
 

@@ -1,2 +1,0 @@
-# Spark EMR Serverless application
-

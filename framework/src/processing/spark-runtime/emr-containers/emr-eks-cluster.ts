@@ -38,8 +38,8 @@ import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json
 import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
 import { vpcBootstrap } from './vpc-helper';
-import { EMR_DEFAULT_VERSION } from '../../utils';
-import { TrackedConstruct, TrackedConstructProps } from '../../utils/tracked-construct';
+import { EMR_DEFAULT_VERSION } from '../../../utils';
+import { TrackedConstruct, TrackedConstructProps } from '../../../utils/tracked-construct';
 
 
 /**
@@ -464,9 +464,9 @@ export class EmrEksCluster extends TrackedConstruct {
    */
   public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, namespace: string, name: string): Role {
 
-    const stack = Stack.of(this);
+    const stack = Stack.of(scope);
 
-    let irsaConditionkey: CfnJson = new CfnJson(this, `${id}irsaConditionkey'`, {
+    let irsaConditionkey: CfnJson = new CfnJson(scope, `${id}irsaConditionkey'`, {
       value: {
         [`${this.eksCluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]: 'system:serviceaccount:' + namespace + ':emr-containers-sa-*-*-' + Aws.ACCOUNT_ID.toString() + '-' + SimpleBase.base36.encode(name),
       },

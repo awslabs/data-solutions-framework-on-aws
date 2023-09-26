@@ -11,7 +11,7 @@ import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { EmrEksCluster } from '../../src/processing-runtime/emr-containers';
+import { EmrEksCluster } from '../../src/processing/spark-runtime';
 
 
 jest.setTimeout(6000000);

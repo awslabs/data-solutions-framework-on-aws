@@ -68,6 +68,7 @@
     "constructs": "^10.2.55"
   },
   "dependencies": {
+    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
     "js-yaml": "^4.1.0",
     "simple-base": "^1.0.0"
   },
