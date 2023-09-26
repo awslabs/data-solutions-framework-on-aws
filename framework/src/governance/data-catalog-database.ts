@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Names, Stack } from 'aws-cdk-lib';
-import { CfnCrawler, CfnDatabase } from 'aws-cdk-lib/aws-glue';
+import { Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
 import { AddToPrincipalPolicyResult, Effect, IPrincipal, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
@@ -40,6 +40,11 @@ export class DataCatalogDatabase extends TrackedConstruct {
    * The Glue database name with the randomized suffix to prevent name collisions in the catalog
    */
   readonly databaseName: string;
+
+  /**
+   * KMS encryption key used by the Crawler
+   */
+  readonly crawlerLogEncryptionKey?: Key;
 
   /**
    * Caching constructor properties for internal reuse by constructor methods
@@ -118,6 +123,28 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
       props.locationBucket.grantRead(crawlerRole, props.locationPrefix+'/*');
 
+      this.crawlerLogEncryptionKey = props.crawlerLogEncryptionKey || new Key(this, 'CrawlerLogKey', {
+        enableKeyRotation: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+      });
+
+      this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
+
+      const secConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
+        name: `${this.databaseName}-crawler-secconfig`,
+        encryptionConfiguration: {
+          cloudWatchEncryption: {
+            cloudWatchEncryptionMode: 'SSE-KMS',
+            kmsKeyArn: this.crawlerLogEncryptionKey.keyArn,
+          },
+          s3Encryptions: [
+            {
+              s3EncryptionMode: 'DISABLED',
+            },
+          ],
+        },
+      });
+
       const crawlerName = `${this.databaseName}-crawler-${Names.uniqueResourceName(this, {})}`;
       this.crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
         role: crawlerRole.roleArn,
@@ -129,6 +156,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         schedule: autoCrawlSchedule,
         databaseName: this.databaseName,
         name: crawlerName,
+        crawlerSecurityConfiguration: secConfiguration.name,
       });
 
       const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers`;

@@ -2753,6 +2753,7 @@ Any object.
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
+| <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS encryption key used by the Crawler. |
 
 ---
 
@@ -2803,6 +2804,18 @@ public readonly crawler: CfnCrawler;
 The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value).
 
 This property can be undefined if `autoCrawl` is set to `false`.
+
+---
+
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+KMS encryption key used by the Crawler.
 
 ---
 
