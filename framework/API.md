@@ -2976,6 +2976,7 @@ Any object.
 | <code><a href="#@adsf/framework.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
 | <code><a href="#@adsf/framework.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
 | <code><a href="#@adsf/framework.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | *No description.* |
 
 ---
 
@@ -3018,6 +3019,16 @@ public readonly silverCatalogDatabase: DataCatalogDatabase;
 ```
 
 - *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
 
 ---
 
@@ -4299,6 +4310,7 @@ const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
 
@@ -4381,6 +4393,20 @@ Encryption key used for Crawler logs.
 
 ---
 
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.DataCatalogDatabaseProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Policy to apply when the bucket is removed from this stack.
+
+* @default - RETAIN (The bucket will be orphaned).
+
+---
+
 ### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="@adsf/framework.DataLakeCatalogProps"></a>
 
 Properties for the DataLakeCatalog Construct.
@@ -4397,45 +4423,94 @@ const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.bronze">bronze</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | Properties for the bronze data. |
-| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.gold">gold</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | Properties for the gold data. |
-| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.silver">silver</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | Properties for the silver data. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code><a href="#@adsf/framework.DataLakeStorage">DataLakeStorage</a></code> | Location of data lake files. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database in the Glue Data Catalog. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
 
-##### `bronze`<sup>Required</sup> <a name="bronze" id="@adsf/framework.DataLakeCatalogProps.property.bronze"></a>
+##### `dataLakeStorage`<sup>Required</sup> <a name="dataLakeStorage" id="@adsf/framework.DataLakeCatalogProps.property.dataLakeStorage"></a>
 
 ```typescript
-public readonly bronze: DataCatalogDatabaseProps;
+public readonly dataLakeStorage: DataLakeStorage;
 ```
 
-- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+- *Type:* <a href="#@adsf/framework.DataLakeStorage">DataLakeStorage</a>
 
-Properties for the bronze data.
+Location of data lake files.
 
 ---
 
-##### `gold`<sup>Required</sup> <a name="gold" id="@adsf/framework.DataLakeCatalogProps.property.gold"></a>
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="@adsf/framework.DataLakeCatalogProps.property.autoCrawl"></a>
 
 ```typescript
-public readonly gold: DataCatalogDatabaseProps;
+public readonly autoCrawl: boolean;
 ```
 
-- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+- *Type:* boolean
+- *Default:* True
 
-Properties for the gold data.
+When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
 
 ---
 
-##### `silver`<sup>Required</sup> <a name="silver" id="@adsf/framework.DataLakeCatalogProps.property.silver"></a>
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="@adsf/framework.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
 
 ```typescript
-public readonly silver: DataCatalogDatabaseProps;
+public readonly autoCrawlSchedule: ScheduleProperty;
 ```
 
-- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+- *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
+- *Default:* `cron(1 0 * * ? *)`
 
-Properties for the silver data.
+The schedule when the Crawler would run.
+
+Default is once a day at 00:01h.
+
+---
+
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* Create a new key if none is provided
+
+Encryption key used for Crawler logs.
+
+---
+
+##### `databaseName`<sup>Optional</sup> <a name="databaseName" id="@adsf/framework.DataLakeCatalogProps.property.databaseName"></a>
+
+```typescript
+public readonly databaseName: string;
+```
+
+- *Type:* string
+- *Default:* Use the bucket name as the database name and / as the prefix
+
+The name of the database in the Glue Data Catalog.
+
+This is also used as the prefix inside the data lake bucket.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.DataLakeCatalogProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Policy to apply when the bucket is removed from this stack.
+
+* @default - RETAIN (The bucket will be orphaned).
 
 ---
 

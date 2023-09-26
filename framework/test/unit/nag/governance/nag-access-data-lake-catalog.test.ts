@@ -22,21 +22,7 @@ stack.node.setContext('adsf', { remove_data_on_destroy: 'false' });
 
 const storage = new DataLakeStorage(stack, 'ExampleDLStorage');
 new DataLakeCatalog(stack, 'ExampleDLCatalog', {
-  bronze: {
-    locationPrefix: 'example-bronze-db',
-    name: 'example-bronze-db',
-    locationBucket: storage.bronzeBucket,
-  },
-  silver: {
-    locationPrefix: 'example-silver-db',
-    name: 'example-silver-db',
-    locationBucket: storage.silverBucket,
-  },
-  gold: {
-    locationPrefix: 'example-gold-db',
-    name: 'example-gold-db',
-    locationBucket: storage.goldBucket,
-  },
+  dataLakeStorage: storage,
 });
 
 Aspects.of(stack).add(new AwsSolutionsChecks());

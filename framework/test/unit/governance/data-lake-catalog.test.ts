@@ -17,31 +17,18 @@ describe('Create catalog for bronze, silver, gold', () => {
   const stack = new Stack(app, 'Stack');
   const storage = new DataLakeStorage(stack, 'ExampleDLStorage');
   new DataLakeCatalog(stack, 'ExampleDLCatalog', {
-    bronze: {
-      locationBucket: storage.bronzeBucket,
-      locationPrefix: 'example-bronze-db/',
-      name: 'example-bronze',
-    },
-    silver: {
-      locationBucket: storage.silverBucket,
-      locationPrefix: 'example-silver-db/',
-      name: 'example-silver',
-    },
-    gold: {
-      locationBucket: storage.goldBucket,
-      locationPrefix: 'example-gold-db/',
-      name: 'example-gold',
-    },
+    dataLakeStorage: storage,
+    databaseName: 'example-db',
   });
   const template = Template.fromStack(stack);
 
   test('DataLakeCatalog should create 3 Glue database, one for each: Bronze, Silver, Gold', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp('^example-bronze\-.+'),
+        Name: Match.stringLikeRegexp('^bronze-example-db\-.+'),
         LocationUri: {
           'Fn::Join': [
-            '', ['s3://', Match.anyValue(), '/example-bronze-db/'],
+            '', ['s3://', Match.anyValue(), '/example-db/'],
 
           ],
         },
@@ -50,10 +37,10 @@ describe('Create catalog for bronze, silver, gold', () => {
 
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp('^example-silver\-.+'),
+        Name: Match.stringLikeRegexp('^silver-example-db\-.+'),
         LocationUri: {
           'Fn::Join': [
-            '', ['s3://', Match.anyValue(), '/example-silver-db/'],
+            '', ['s3://', Match.anyValue(), '/example-db/'],
 
           ],
         },
@@ -62,10 +49,10 @@ describe('Create catalog for bronze, silver, gold', () => {
 
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp('^example-gold\-.+'),
+        Name: Match.stringLikeRegexp('^gold-example-db\-.+'),
         LocationUri: {
           'Fn::Join': [
-            '', ['s3://', Match.anyValue(), '/example-gold-db/'],
+            '', ['s3://', Match.anyValue(), '/example-db/'],
 
           ],
         },

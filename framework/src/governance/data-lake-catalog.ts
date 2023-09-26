@@ -1,9 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
-import { DataCatalogDatabase, DataCatalogDatabaseProps } from './data-catalog-database';
-import { TrackedConstruct, TrackedConstructProps } from '../utils';
+import { DataCatalogDatabase } from './data-catalog-database';
+import { DataLakeStorage } from '../storage';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
 * Creates AWS Glue Catalog Database for each storage layer. Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
@@ -37,6 +41,7 @@ export class DataLakeCatalog extends TrackedConstruct {
   readonly bronzeCatalogDatabase: DataCatalogDatabase;
   readonly silverCatalogDatabase: DataCatalogDatabase;
   readonly goldCatalogDatabase: DataCatalogDatabase;
+  readonly crawlerLogEncryptionKey?: Key;
 
   /**
      * Constructs a new instance of DataLakeCatalog
@@ -50,12 +55,44 @@ export class DataLakeCatalog extends TrackedConstruct {
     };
 
     super(scope, id, trackedConstructProps);
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', props.bronze);
+    if (props.autoCrawl) {
+      this.crawlerLogEncryptionKey = props.crawlerLogEncryptionKey || new Key(this, 'CrawlerLogKey', {
+        enableKeyRotation: true,
+        removalPolicy: removalPolicy,
+      });
+    }
 
-    this.silverCatalogDatabase = new DataCatalogDatabase(this, 'SilverCatalogDatabase', props.silver);
+    this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
+      locationBucket: props.dataLakeStorage.bronzeBucket,
+      locationPrefix: props.databaseName || '/',
+      name: props.databaseName ? `bronze-${props.databaseName}` : props.dataLakeStorage.bronzeBucket.bucketName,
+      autoCrawl: props.autoCrawl,
+      autoCrawlSchedule: props.autoCrawlSchedule,
+      crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
+      removalPolicy,
+    });
 
-    this.goldCatalogDatabase = new DataCatalogDatabase(this, 'GoldCatalogDatabase', props.gold);
+    this.silverCatalogDatabase = new DataCatalogDatabase(this, 'SilverCatalogDatabase', {
+      locationBucket: props.dataLakeStorage.silverBucket,
+      locationPrefix: props.databaseName || '/',
+      name: props.databaseName ? `silver-${props.databaseName}` : props.dataLakeStorage.silverBucket.bucketName,
+      autoCrawl: props.autoCrawl,
+      autoCrawlSchedule: props.autoCrawlSchedule,
+      crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
+      removalPolicy,
+    });
+
+    this.goldCatalogDatabase = new DataCatalogDatabase(this, 'GoldCatalogDatabase', {
+      locationBucket: props.dataLakeStorage.goldBucket,
+      locationPrefix: props.databaseName || '/',
+      name: props.databaseName ? `gold-${props.databaseName}` : props.dataLakeStorage.goldBucket.bucketName,
+      autoCrawl: props.autoCrawl,
+      autoCrawlSchedule: props.autoCrawlSchedule,
+      crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
+      removalPolicy,
+    });
   }
 }
 
@@ -63,18 +100,39 @@ export class DataLakeCatalog extends TrackedConstruct {
  * Properties for the DataLakeCatalog Construct
  */
 export interface DataLakeCatalogProps {
-  /**
-     * Properties for the bronze data
-     */
-  readonly bronze: DataCatalogDatabaseProps;
 
   /**
-     * Properties for the silver data
-     */
-  readonly silver: DataCatalogDatabaseProps;
+   * Location of data lake files
+   */
+  readonly dataLakeStorage: DataLakeStorage;
 
   /**
-     * Properties for the gold data
-     */
-  readonly gold: DataCatalogDatabaseProps;
+   * The name of the database in the Glue Data Catalog. This is also used as the prefix inside the data lake bucket.
+   * @default Use the bucket name as the database name and / as the prefix
+   */
+  readonly databaseName?: string;
+
+  /**
+   * When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
+   * @default True
+   */
+  readonly autoCrawl?: boolean;
+
+  /**
+   * The schedule when the Crawler would run. Default is once a day at 00:01h.
+   * @default `cron(1 0 * * ? *)`
+   */
+  readonly autoCrawlSchedule?: CfnCrawler.ScheduleProperty;
+
+  /**
+   * Encryption key used for Crawler logs
+   * @default Create a new key if none is provided
+   */
+  readonly crawlerLogEncryptionKey?: Key;
+
+  /**
+   * Policy to apply when the bucket is removed from this stack.
+   * * @default - RETAIN (The bucket will be orphaned).
+   */
+  readonly removalPolicy?: RemovalPolicy;
 }

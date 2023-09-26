@@ -7,7 +7,7 @@ import { AddToPrincipalPolicyResult, Effect, IPrincipal, PolicyDocument, PolicyS
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { TrackedConstruct, TrackedConstructProps } from '../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
 * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -58,9 +58,17 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
     this.dataCatalogDatabaseProps = props;
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
-    const s3LocationUri = props.locationBucket.s3UrlForObject(props.locationPrefix);
+
+    let locationPrefix = props.locationPrefix;
+
+    if (!locationPrefix.endsWith('/')) {
+      locationPrefix += '/';
+    }
+
+    const s3LocationUri = props.locationBucket.s3UrlForObject(locationPrefix);
     this.database = new CfnDatabase(this, 'GlueDatabase', {
       catalogId: Stack.of(this).account,
       databaseInput: {
@@ -116,16 +124,24 @@ export class DataCatalogDatabase extends TrackedConstruct {
                   `arn:aws:glue:${currentStack.region}:${currentStack.account}:table/${this.databaseName}/*`,
                 ],
               }),
+              new PolicyStatement({
+                effect: Effect.ALLOW,
+                actions: [
+                  'glue:GetSecurityConfigurations',
+                  'glue:GetSecurityConfiguration',
+                ],
+                resources: ['*'],
+              }),
             ],
           }),
         },
       });
 
-      props.locationBucket.grantRead(crawlerRole, props.locationPrefix+'/*');
+      props.locationBucket.grantRead(crawlerRole, locationPrefix+'*');
 
       this.crawlerLogEncryptionKey = props.crawlerLogEncryptionKey || new Key(this, 'CrawlerLogKey', {
         enableKeyRotation: true,
-        removalPolicy: RemovalPolicy.DESTROY,
+        removalPolicy: removalPolicy,
       });
 
       this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
@@ -182,7 +198,14 @@ export class DataCatalogDatabase extends TrackedConstruct {
    */
   public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult {
     const currentStack = Stack.of(this);
-    this.dataCatalogDatabaseProps.locationBucket.grantRead(principal, this.dataCatalogDatabaseProps.locationPrefix+'/*');
+
+    let locationPrefix = this.dataCatalogDatabaseProps.locationPrefix;
+
+    if (!locationPrefix.endsWith('/')) {
+      locationPrefix += '/';
+    }
+
+    this.dataCatalogDatabaseProps.locationBucket.grantRead(principal, locationPrefix+'*');
     return principal.addToPrincipalPolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
@@ -239,4 +262,10 @@ export interface DataCatalogDatabaseProps {
    * @default Create a new key if none is provided
    */
   readonly crawlerLogEncryptionKey?: Key;
+
+  /**
+   * Policy to apply when the bucket is removed from this stack.
+   * * @default - RETAIN (The bucket will be orphaned).
+   */
+  readonly removalPolicy?: RemovalPolicy;
 }

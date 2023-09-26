@@ -30,6 +30,7 @@ const database = new DataCatalogDatabase(stack, 'TestDatabase', {
   locationBucket: bucket,
   locationPrefix: 'test-database',
   name: 'test-database',
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 const role = new Role(stack, 'TestPrincipal', {
