@@ -10,7 +10,7 @@ const organization = 'awslabs'
 
 const config = {
   title: niceProjectName,
-  tagline: 'Accelerate building your data analytics solutions on AWS 🚀',
+  tagline: '🚀 Accelerate building your data analytics solutions on AWS 🚀',
   url: 'https://' + organization + '.github.io',
   baseUrl: '/',
   trailingSlash: false,
@@ -74,15 +74,15 @@ const config = {
         },
         {
           type: 'doc',
-          docId: 'solutions/index',
-          position: 'left',
-          label: 'Analytics solutions'
-        },
-        {
-          type: 'doc',
           docId: 'constructs/index',
           position: 'left',
           label: 'Framework',
+        },
+        {
+          type: 'doc',
+          docId: 'solutions/index',
+          position: 'left',
+          label: 'Data solutions'
         },
         {
           href: 'https://github.com/' + organization + '/' + projectName,

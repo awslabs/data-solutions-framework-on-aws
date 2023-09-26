@@ -24,19 +24,19 @@ export interface DataLakeStorageProps {
   readonly dataLakeKey?: Key;
 
   /**
-   * Name of the Bronze bucket. Will be appended by the unique ID.
+   * Name of the Bronze bucket. Will be appended by a unique ID.
    * @default - `bronze` will be used.
    */
   readonly bronzeBucketName?: string;
 
   /**
-   * Name of the Silver bucket. Will be appended by the unique ID.
+   * Name of the Silver bucket. Will be appended by a unique ID.
    * @default - `silver` will be used.
    */
   readonly silverBucketName?: string;
 
   /**
-   * Name of the Gold bucket. Will be appended by the unique ID.
+   * Name of the Gold bucket. Will be appended by a unique ID.
    * @default - `gold` will be used.
    */
   readonly goldBucketName?: string;
@@ -80,14 +80,15 @@ export interface DataLakeStorageProps {
 
   /**
    * The removal policy when deleting the CDK resource.
-   * If DESTROY is selected, context value removeDataOnDestroy needs to be set to delete data.
+   * If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
 }
 
 /**
- * CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
+ * Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
  * See documentation TODO insert link.
  *
  * @example

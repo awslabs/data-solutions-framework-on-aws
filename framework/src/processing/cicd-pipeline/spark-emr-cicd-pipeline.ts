@@ -6,20 +6,8 @@ import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps, CICDStage, ApplicationStage } from '../../utils';
+import { TrackedConstruct, TrackedConstructProps, CICDStage, ApplicationStage, DEFAULT_SPARK_IMAGE, SparkImage } from '../../utils';
 import { ApplicationStackFactory } from '../../utils/application-stack-factory';
-
-const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
-
-/**
- * The list of supported Spark images to use in the SparkCICDPipeline.
- */
-export enum SparkImage {
-  EMR_6_12 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_12 + ':latest',
-  EMR_6_11 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_11 + ':latest',
-  EMR_6_10 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_10 + ':latest',
-  EMR_6_9 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_9 + ':latest',
-}
 
 /**
  * The account information for deploying the Spark Application stack.
@@ -131,11 +119,6 @@ export interface SparkEmrCICDPipelineProps {
 export class SparkEmrCICDPipeline extends TrackedConstruct {
 
   /**
-   * The default Spark image to run the unit tests
-   */
-  private static readonly DEFAULT_SPARK_IMAGE: SparkImage = SparkImage.EMR_6_12;
-
-  /**
    * Extract the path and the script name from a script path
    * @param path the script path
    * @return [path, scriptName]
@@ -210,7 +193,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     // Set the defaults
     const cdkPath = props.cdkApplicationPath ? props.cdkApplicationPath : '.';
     const sparkPath = props.sparkApplicationPath ? props.sparkApplicationPath : '.';
-    const sparkImage = props.sparkImage ? props.sparkImage : SparkEmrCICDPipeline.DEFAULT_SPARK_IMAGE;
+    const sparkImage = props.sparkImage ? props.sparkImage : DEFAULT_SPARK_IMAGE;
 
     // Create a CodeCommit repository to host the code
     const codeRepository = new Repository(this, 'CodeCommitRepository', {

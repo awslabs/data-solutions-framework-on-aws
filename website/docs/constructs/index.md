@@ -1,22 +1,15 @@
 ---
-sidebar_position: 1
-sidebar_label: Introduction
+sidebar_position: 2
+sidebar_label: Getting started
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Accelerate building your data analytics solutions on AWS
-
-AWS Data Solutions Framework (AWS DSF), is an open-source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions that address the most common data analytics requirements. AWS DSF is an abstraction atop AWS services based on AWS CDK L3 constructs.
-
-We designed AWS CDK L3 constructs to provide common building blocks for analytics solutions with AWS best-practices. For example, we provide a construct that creates a complete data lake storage with three different Amazon S3 buckets, encryption, data lifecycle policies, and etc. This means that you can create a data lake within your CDK application with just a few lines of code. 
-
-You can compose different AWS DSF constructs to build end-to-end data platform, and also combine with your custom CDK application. 
-
-## Getting started
+# Getting started
 
 > :heavy_exclamation_mark: If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
 
+The AWS DSF library is available in Tyepscript or Python, select the right tab for code examples in your prefered language.
 
 ### Create a CDK app
 ```bash
@@ -148,4 +141,4 @@ Now you can deploy your stack!
 cdk deploy
 ```
 
-Congrats, you created your first CDK app using AWS DSF! Go ahead and explore all available [constructs](category/constructs) and [solutions](category/analytics-solutions).
+Congrats, you created your first CDK app using AWS DSF! Go ahead and explore all available [constructs](category/constructs) and [solutions](category/data-solutions).

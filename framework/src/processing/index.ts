@@ -2,4 +2,4 @@
 // SPDX-License-Identifier: MIT-0
 
 export { SparkEmrServerlessRuntimeProps, Architecture, SparkEmrServerlessRuntime } from './spark-runtime/emr-serverless';
-export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps, SparkImage, ApplicationStackFactory, CICDStage } from './cicd-pipeline';
+export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps, ApplicationStackFactory, CICDStage } from './cicd-pipeline';

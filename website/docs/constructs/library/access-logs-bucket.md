@@ -5,23 +5,29 @@ sidebar_label: Access logs bucket
 
 # AccessLogsBucket
 
-We provide ***AccessLogsBucket*** construct for storing S3 access logs. **AccessLogsBucket** is an Amazon S3 Bucket configured with best-practices and smart defaults for S3 access logs:
+Amazon S3 Bucket configured for S3 access logs storage.
+
+## Overview
+
+`AccessLogsBucket` construct is an Amazon S3 Bucket configured with best practices and smart defaults for storing S3 access logs:
 - The default bucket name is `access-logs-<UNIQUE_ID>`.
-- S3 Managed encryption.
+- The bucket encryption is S3 Managed.
 - Public access is blocked.
-- Objects are retained after deletion of the CDK resource.
+- Two-step protection for bucket and objects deletion.
 - SSL communication is enforced.
 
+`AccessLogsBucket` extends the Amazon [S3 `Bucket`](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_s3/Bucket.html#bucket) CDK Construct. For custom requirements that are not covered, use the `Bucket` construct directly.
 
 #### Usage
 
-```typescript
-import * as cdk from 'aws-cdk-lib';
-import { AccessLogsBucket } from 'aws-data-solutions-framework';
+```python
+from aws_cdk import RemovalPolicy
+from aws_data_solutions_framework import AccessLogsBucket
 
-const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
-  encryption: BucketEncryption.KMS_MANAGED,
-  removalPolicy: RemovalPolicy.DESTROY,
-  autoDeleteObjects: true,
-}
+class MyStack(core.Stack):
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+
+        AccessLogsBucket(self, 'AccessLogsBucket',
+                         removal_policy=RemovalPolicy.DESTROY)
 ```

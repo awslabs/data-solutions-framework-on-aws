@@ -7,8 +7,6 @@
 
 Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
-See documentation TODO insert link.
-
 *Example*
 
 ```typescript
@@ -16,10 +14,8 @@ import * as cdk from 'aws-cdk-lib';
 import { AccessLogsBucket } from 'aws-data-solutions-framework';
 
 const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
- encryption: BucketEncryption.KMS_MANAGED,
  removalPolicy: RemovalPolicy.DESTROY,
- autoDeleteObjects: true,
-}
+})
 ```
 
 
@@ -3042,7 +3038,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### DataLakeStorage <a name="DataLakeStorage" id="@adsf/framework.DataLakeStorage"></a>
 
-CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
+Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
 See documentation TODO insert link.
 
@@ -4571,7 +4567,7 @@ public readonly bronzeBucketName: string;
 
 Name of the Bronze bucket.
 
-Will be appended by the unique ID.
+Will be appended by a unique ID.
 
 ---
 
@@ -4625,7 +4621,7 @@ public readonly goldBucketName: string;
 
 Name of the Gold bucket.
 
-Will be appended by the unique ID.
+Will be appended by a unique ID.
 
 ---
 
@@ -4640,7 +4636,8 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value removeDataOnDestroy needs to be set to delete data.
+If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -4681,7 +4678,7 @@ public readonly silverBucketName: string;
 
 Name of the Silver bucket.
 
-Will be appended by the unique ID.
+Will be appended by a unique ID.
 
 ---
 
