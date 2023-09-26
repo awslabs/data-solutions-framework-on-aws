@@ -2824,6 +2824,208 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
+### DataLakeCatalog <a name="DataLakeCatalog" id="@adsf/framework.DataLakeCatalog"></a>
+
+Creates AWS Glue Catalog Database for each storage layer.
+
+Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
+
+*Example*
+
+```typescript
+import * as cdk from 'aws-cdk-lib';
+import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
+
+const exampleApp = new cdk.App();
+const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
+const storage = new DataLakeStorage(stack, "ExampleStorage");
+const dataLakeCatalog = new DataLakeCatalog(stack, "ExampleDataLakeCatalog", {
+  bronze: {
+      name: "bronze-database",
+      locationPrefix: "exampleBronzeDatabase/",
+      locationBucket: storage.bronzeBucket
+  },
+  silver: {
+      name: "silver-database",
+      locationPrefix: "exampleSilverDatabase/",
+      locationBucket: storage.silverBucket
+  },
+  gold: {
+      name: "gold-database",
+      locationPrefix: "exampleGoldDatabase/",
+      locationBucket: storage.goldBucket
+  }
+})
+```
+
+
+#### Initializers <a name="Initializers" id="@adsf/framework.DataLakeCatalog.Initializer"></a>
+
+```typescript
+import { DataLakeCatalog } from '@adsf/framework'
+
+new DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.DataLakeCatalogProps">DataLakeCatalogProps</a></code> | the DataLakeCatalog properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#@adsf/framework.DataLakeCatalogProps">DataLakeCatalogProps</a>
+
+the DataLakeCatalog properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="@adsf/framework.DataLakeCatalog.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@adsf/framework.DataLakeCatalog.isConstruct"></a>
+
+```typescript
+import { DataLakeCatalog } from '@adsf/framework'
+
+DataLakeCatalog.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.DataLakeCatalog.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.DataLakeCatalog.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `bronzeCatalogDatabase`<sup>Required</sup> <a name="bronzeCatalogDatabase" id="@adsf/framework.DataLakeCatalog.property.bronzeCatalogDatabase"></a>
+
+```typescript
+public readonly bronzeCatalogDatabase: DataCatalogDatabase;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="@adsf/framework.DataLakeCatalog.property.goldCatalogDatabase"></a>
+
+```typescript
+public readonly goldCatalogDatabase: DataCatalogDatabase;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+##### `silverCatalogDatabase`<sup>Required</sup> <a name="silverCatalogDatabase" id="@adsf/framework.DataLakeCatalog.property.silverCatalogDatabase"></a>
+
+```typescript
+public readonly silverCatalogDatabase: DataCatalogDatabase;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly ADSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### DataLakeStorage <a name="DataLakeStorage" id="@adsf/framework.DataLakeStorage"></a>
 
 CDK Construct that creates the storage layer for data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
@@ -4163,6 +4365,64 @@ public readonly crawlerLogEncryptionKey: Key;
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
+
+---
+
+### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="@adsf/framework.DataLakeCatalogProps"></a>
+
+Properties for the DataLakeCatalog Construct.
+
+#### Initializer <a name="Initializer" id="@adsf/framework.DataLakeCatalogProps.Initializer"></a>
+
+```typescript
+import { DataLakeCatalogProps } from '@adsf/framework'
+
+const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.bronze">bronze</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | Properties for the bronze data. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.gold">gold</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | Properties for the gold data. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.silver">silver</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | Properties for the silver data. |
+
+---
+
+##### `bronze`<sup>Required</sup> <a name="bronze" id="@adsf/framework.DataLakeCatalogProps.property.bronze"></a>
+
+```typescript
+public readonly bronze: DataCatalogDatabaseProps;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+
+Properties for the bronze data.
+
+---
+
+##### `gold`<sup>Required</sup> <a name="gold" id="@adsf/framework.DataLakeCatalogProps.property.gold"></a>
+
+```typescript
+public readonly gold: DataCatalogDatabaseProps;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+
+Properties for the gold data.
+
+---
+
+##### `silver`<sup>Required</sup> <a name="silver" id="@adsf/framework.DataLakeCatalogProps.property.silver"></a>
+
+```typescript
+public readonly silver: DataCatalogDatabaseProps;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+
+Properties for the silver data.
 
 ---
 
