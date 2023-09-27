@@ -10,7 +10,7 @@ Amazon S3 Bucket configured for analytics.
 ## Overview
 
 `AnalyticsBucket` is an Amazon S3 Bucket configured with the following best-practices and defaults for analytics:
-- The bucket name is prepended with a unique ID like `<MY_BUCKET_NAME>-<UNIQUE_ID>`
+- The bucket name is suffixed with a unique ID like `<MY_BUCKET_NAME>-<UNIQUE_ID>`
 - Server side buckets encryption managed by KMS customer key. You need to provide a [KMS Key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
 - SSL communication enforcement.
 - Access logged to an S3 bucket within a prefix matching the bucket name.
