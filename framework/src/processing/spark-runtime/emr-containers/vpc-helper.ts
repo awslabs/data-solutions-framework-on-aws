@@ -8,7 +8,7 @@ import { Construct } from 'constructs';
 
 /**
  * @internal
- * Upload podTemplates to the Amazon S3 location used by the cluster.
+ * Create a VPC with the provided CIDR
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} vpcCidr The cidr for vpc
  * @param {string} eksClusterName The name used to tag the subnet and vpc
