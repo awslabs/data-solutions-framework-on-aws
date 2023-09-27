@@ -74,7 +74,7 @@ test('EKS cluster created with correct version and name', () => {
 });
 
 
-test('Test for emr-containers service linked role', () => {
+test('Test for emr-containers service linked role when its prop is set to true', () => {
   // THEN
   emrEksClusterServiceLinkedRole.hasResourceProperties('AWS::IAM::ServiceLinkedRole', {
     AWSServiceName: 'emr-containers.amazonaws.com',

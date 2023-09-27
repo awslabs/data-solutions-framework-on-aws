@@ -64,7 +64,8 @@ export interface EmrEksClusterProps {
   readonly eksCluster?: Cluster;
   /**
    * Kubernetes version for Amazon EKS cluster that will be created
-   * @default -  Kubernetes v1.21 version is used
+   * The default is changed as new version version of k8s on EKS becomes available 
+   * @default -  Kubernetes version {@link DEFAULT_EKS_VERSION}
    */
   readonly kubernetesVersion?: KubernetesVersion;
   /**
@@ -87,7 +88,7 @@ export interface EmrEksClusterProps {
    *
    * The cdk [documentation] (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
    * contains the libraries that you should add for the right Kubernetes version
-   * @default - No layer is used
+   * @default - No layer is used and the default CDK layer is used
    */
   readonly kubectlLambdaLayer: ILayerVersion;
 
@@ -119,7 +120,7 @@ export interface EmrEksClusterProps {
   * Wether we need to create an EMR on EKS Service Linked Role
   * @default - true
   */
-  readonly createEmrOnEksServiceLinkedRole: boolean;
+  readonly createEmrOnEksServiceLinkedRole?: boolean;
 }
 
 /**
@@ -140,7 +141,6 @@ export interface EmrEksClusterProps {
  * ```typescript
  * const emrEks: EmrEksCluster = EmrEksCluster.getOrCreate(stack, {
  *   eksAdminRoleArn: <ROLE_ARN>,
- *   eksClusterName: <CLUSTER_NAME>,
  *   publicAccessCIDRs: ["x.x.x.x/x"],
  * });
  *
@@ -170,6 +170,7 @@ export class EmrEksCluster extends TrackedConstruct {
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
   public static readonly DEFAULT_KARPENTER_VERSION = 'v0.30.0';
+  public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
 
   /**
    * Get an existing EmrEksCluster based on the cluster name property or create a new one
@@ -238,10 +239,10 @@ export class EmrEksCluster extends TrackedConstruct {
     ];
 
     //Set the flag for creating the EMR on EKS Service Linked Role
-    this.createEmrOnEksServiceLinkedRole = props.createEmrOnEksServiceLinkedRole == undefined ? true : props.createEmrOnEksServiceLinkedRole;
+    this.createEmrOnEksServiceLinkedRole = props.createEmrOnEksServiceLinkedRole ?? true;
 
     //Set flag for default karpenter provisioners for Spark jobs
-    this.defaultNodes = props.defaultNodes == undefined ? true : props.defaultNodes;
+    this.defaultNodes = props.defaultNodes ?? true;
 
     // Create a role to be used as instance profile for nodegroups
     let ec2InstanceNodeGroupRole = new Role(scope, 'ec2InstanceNodeGroupRole', {
@@ -264,7 +265,7 @@ export class EmrEksCluster extends TrackedConstruct {
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
     if (props.eksCluster == undefined) {
 
-      const vpcCidr = props.vpcCidr ? props.vpcCidr : '10.0.0.0/16';
+      const vpcCidr = props.vpcCidr ? props.vpcCidr :EmrEksCluster.DEFAULT_VPC_CIDR;
 
       let eksVpc: IVpc | undefined = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.clusterName, this.logKmsKey);
 
@@ -409,7 +410,6 @@ export class EmrEksCluster extends TrackedConstruct {
     const eksNamespace = options.eksNamespace ?? 'default';
 
     let ns = undefined;
-
 
     if (options.createNamespace) {
       ns = createNamespace(this.eksCluster, options.eksNamespace!);
