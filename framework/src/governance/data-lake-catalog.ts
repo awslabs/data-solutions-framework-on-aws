@@ -54,10 +54,14 @@ export class DataLakeCatalog extends TrackedConstruct {
       });
     }
 
+    const extractedBronzeBucketName = this.extractBucketName(props.dataLakeStorage.bronzeBucket)
+    const extractedSilverBucketName = this.extractBucketName(props.dataLakeStorage.silverBucket)
+    const extractedGoldBucketName = this.extractBucketName(props.dataLakeStorage.goldBucket)
+
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
       locationPrefix: props.databaseName || '/',
-      name: props.databaseName ? `${this.extractBucketName(props.dataLakeStorage.bronzeBucket)}_${props.databaseName}` : this.extractBucketName(props.dataLakeStorage.bronzeBucket),
+      name: props.databaseName ? `${extractedBronzeBucketName}_${props.databaseName}` : extractedBronzeBucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
@@ -67,7 +71,7 @@ export class DataLakeCatalog extends TrackedConstruct {
     this.silverCatalogDatabase = new DataCatalogDatabase(this, 'SilverCatalogDatabase', {
       locationBucket: props.dataLakeStorage.silverBucket,
       locationPrefix: props.databaseName || '/',
-      name: props.databaseName ? `${this.extractBucketName(props.dataLakeStorage.silverBucket)}_${props.databaseName}` : this.extractBucketName(props.dataLakeStorage.silverBucket),
+      name: props.databaseName ? `${extractedSilverBucketName}_${props.databaseName}` : extractedSilverBucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
@@ -77,7 +81,7 @@ export class DataLakeCatalog extends TrackedConstruct {
     this.goldCatalogDatabase = new DataCatalogDatabase(this, 'GoldCatalogDatabase', {
       locationBucket: props.dataLakeStorage.goldBucket,
       locationPrefix: props.databaseName || '/',
-      name: props.databaseName ? `${this.extractBucketName(props.dataLakeStorage.goldBucket)}_${props.databaseName}` : this.extractBucketName(props.dataLakeStorage.goldBucket),
+      name: props.databaseName ? `${extractedGoldBucketName}_${props.databaseName}` : extractedGoldBucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
