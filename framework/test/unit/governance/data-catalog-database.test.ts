@@ -8,7 +8,7 @@
  * @group unit/data-catalog/data-catalog-database
  */
 
-import { App, Stack } from 'aws-cdk-lib';
+import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
@@ -26,23 +26,32 @@ describe('DataCatalogDatabase default construct', () => {
     assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
     roleName: testPrincipalRoleName,
   });
-  const locationPrefix = '/database';
+  const locationPrefix = '/database/';
   const dbName = 'sample';
   const catalogDb = new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
     locationPrefix: locationPrefix,
     name: dbName,
+    removalPolicy: RemovalPolicy.DESTROY,
   });
 
   catalogDb.grantReadOnlyAccess(testPrincipal);
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+  test('should create a KMS Key with RETAIN removal policy', () => {
+    template.hasResource('AWS::KMS::Key',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
 
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp(`^${dbName}\-.+`),
+        Name: Match.stringLikeRegexp(`^${dbName}\_.+`),
         LocationUri: {
           'Fn::Join': [
             '', ['s3://', Match.anyValue(), locationPrefix],
@@ -127,7 +136,7 @@ describe('DataCatalogDatabase default construct', () => {
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':database/sample-stack',
+                    ':database/sample_stack',
                   ],
                 ],
               },
@@ -143,7 +152,7 @@ describe('DataCatalogDatabase default construct', () => {
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':table/sample-stack/*',
+                    ':table/sample_stack/*',
                   ],
                 ],
               },
@@ -221,7 +230,7 @@ describe('DataCatalogDatabase default construct', () => {
                         Match.anyValue(),
                         ':',
                         Match.anyValue(),
-                        Match.stringLikeRegexp(`^\:database\/${dbName}\-.+`),
+                        Match.stringLikeRegexp(`^\:database\/${dbName}\_.+`),
                       ],
                     ],
                   },
@@ -232,11 +241,19 @@ describe('DataCatalogDatabase default construct', () => {
                         Match.anyValue(),
                         ':',
                         Match.anyValue(),
-                        Match.stringLikeRegexp(`^\:table\/${dbName}\-.+`),
+                        Match.stringLikeRegexp(`^\:table\/${dbName}\_.+`),
                       ],
                     ],
                   },
                 ],
+              },
+              {
+                Effect: 'Allow',
+                Action: [
+                  'glue:GetSecurityConfigurations',
+                  'glue:GetSecurityConfiguration',
+                ],
+                Resource: '*',
               },
             ],
           },
@@ -247,7 +264,7 @@ describe('DataCatalogDatabase default construct', () => {
 
   test('DataCatalogDatabase should create crawler', () => {
     template.hasResourceProperties('AWS::Glue::Crawler', {
-      DatabaseName: Match.stringLikeRegexp(`^${dbName}\-.+`),
+      DatabaseName: Match.stringLikeRegexp(`^${dbName}\_.+`),
       Targets: {
         S3Targets: [
           {
@@ -278,7 +295,7 @@ describe('DataCatalogDatabase with disabled crawler', () => {
   const dbBucket = new Bucket(stack, 'dbBucket', {
     bucketName: dbBucketName,
   });
-  const locationPrefix = '/database';
+  const locationPrefix = '/database/';
   const dbName = 'sample';
   new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
@@ -291,7 +308,7 @@ describe('DataCatalogDatabase with disabled crawler', () => {
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp(`^${dbName}\-.+`),
+        Name: Match.stringLikeRegexp(`^${dbName}\_.+`),
         LocationUri: {
           'Fn::Join': [
             '', ['s3://', Match.anyValue(), locationPrefix],
@@ -307,26 +324,37 @@ describe('DataCatalogDatabase with disabled crawler', () => {
   });
 });
 
-describe('DataCatalogDatabase with missing leading slash in the prefix', () => {
+describe('DataCatalogDatabase with missing leading slash in the prefix and global destroy config', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
   const dbBucketName = 'sample-db';
   const dbBucket = new Bucket(stack, 'dbBucket', {
     bucketName: dbBucketName,
   });
-  const locationPrefix = 'database';
+  const locationPrefix = 'database/';
   const dbName = 'sample';
   new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
     locationPrefix: locationPrefix,
     name: dbName,
+    removalPolicy: RemovalPolicy.DESTROY,
   });
 
   const template = Template.fromStack(stack);
+  test('should create a KMS Key with DELETE removal policy', () => {
+    template.hasResource('AWS::KMS::Key',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp(`^${dbName}\-.+`),
+        Name: Match.stringLikeRegexp(`^${dbName}\_.+`),
         LocationUri: {
           'Fn::Join': [
             '', ['s3://', Match.anyValue(), '/'+locationPrefix],

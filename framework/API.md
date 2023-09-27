@@ -2753,6 +2753,7 @@ Any object.
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
+| <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS encryption key used by the Crawler. |
 
 ---
 
@@ -2806,6 +2807,18 @@ This property can be undefined if `autoCrawl` is set to `false`.
 
 ---
 
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+KMS encryption key used by the Crawler.
+
+---
+
 #### Constants <a name="Constants" id="Constants"></a>
 
 | **Name** | **Type** | **Description** |
@@ -2815,6 +2828,209 @@ This property can be undefined if `autoCrawl` is set to `false`.
 ---
 
 ##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly ADSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### DataLakeCatalog <a name="DataLakeCatalog" id="@adsf/framework.DataLakeCatalog"></a>
+
+Creates AWS Glue Catalog Database for each storage layer.
+
+Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
+
+*Example*
+
+```typescript
+import * as cdk from 'aws-cdk-lib';
+import { Key } from 'aws-cdk-lib/aws-kms';
+import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
+
+const exampleApp = new cdk.App();
+const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
+const storage = new DataLakeStorage(stack, "ExampleStorage");
+const logEncryptionKey = new Key(stack, 'LogEncryptionKey');
+const dataLakeCatalog = new DataLakeCatalog(stack, "ExampleDataLakeCatalog", {
+  dataLakeStorage: storage,
+  databaseName: "exampledb",
+  crawlerLogEncryptionKey: logEncryptionKey
+})
+```
+
+
+#### Initializers <a name="Initializers" id="@adsf/framework.DataLakeCatalog.Initializer"></a>
+
+```typescript
+import { DataLakeCatalog } from '@adsf/framework'
+
+new DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.DataLakeCatalogProps">DataLakeCatalogProps</a></code> | the DataLakeCatalog properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.DataLakeCatalog.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#@adsf/framework.DataLakeCatalogProps">DataLakeCatalogProps</a>
+
+the DataLakeCatalog properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="@adsf/framework.DataLakeCatalog.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@adsf/framework.DataLakeCatalog.isConstruct"></a>
+
+```typescript
+import { DataLakeCatalog } from '@adsf/framework'
+
+DataLakeCatalog.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.DataLakeCatalog.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code><a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.DataLakeCatalog.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `bronzeCatalogDatabase`<sup>Required</sup> <a name="bronzeCatalogDatabase" id="@adsf/framework.DataLakeCatalog.property.bronzeCatalogDatabase"></a>
+
+```typescript
+public readonly bronzeCatalogDatabase: DataCatalogDatabase;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="@adsf/framework.DataLakeCatalog.property.goldCatalogDatabase"></a>
+
+```typescript
+public readonly goldCatalogDatabase: DataCatalogDatabase;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+##### `silverCatalogDatabase`<sup>Required</sup> <a name="silverCatalogDatabase" id="@adsf/framework.DataLakeCatalog.property.silverCatalogDatabase"></a>
+
+```typescript
+public readonly silverCatalogDatabase: DataCatalogDatabase;
+```
+
+- *Type:* <a href="#@adsf/framework.DataCatalogDatabase">DataCatalogDatabase</a>
+
+---
+
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4084,6 +4300,7 @@ const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
 
@@ -4163,6 +4380,127 @@ public readonly crawlerLogEncryptionKey: Key;
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.DataCatalogDatabaseProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Policy to apply when the bucket is removed from this stack.
+
+* @default - RETAIN (The bucket will be orphaned).
+
+---
+
+### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="@adsf/framework.DataLakeCatalogProps"></a>
+
+Properties for the DataLakeCatalog Construct.
+
+#### Initializer <a name="Initializer" id="@adsf/framework.DataLakeCatalogProps.Initializer"></a>
+
+```typescript
+import { DataLakeCatalogProps } from '@adsf/framework'
+
+const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code><a href="#@adsf/framework.DataLakeStorage">DataLakeStorage</a></code> | Location of data lake files. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database in the Glue Data Catalog. |
+| <code><a href="#@adsf/framework.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+
+---
+
+##### `dataLakeStorage`<sup>Required</sup> <a name="dataLakeStorage" id="@adsf/framework.DataLakeCatalogProps.property.dataLakeStorage"></a>
+
+```typescript
+public readonly dataLakeStorage: DataLakeStorage;
+```
+
+- *Type:* <a href="#@adsf/framework.DataLakeStorage">DataLakeStorage</a>
+
+Location of data lake files.
+
+---
+
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="@adsf/framework.DataLakeCatalogProps.property.autoCrawl"></a>
+
+```typescript
+public readonly autoCrawl: boolean;
+```
+
+- *Type:* boolean
+- *Default:* True
+
+When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
+
+---
+
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="@adsf/framework.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
+
+```typescript
+public readonly autoCrawlSchedule: ScheduleProperty;
+```
+
+- *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
+- *Default:* `cron(1 0 * * ? *)`
+
+The schedule when the Crawler would run.
+
+Default is once a day at 00:01h.
+
+---
+
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
+
+```typescript
+public readonly crawlerLogEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* Create a new key if none is provided
+
+Encryption key used for Crawler logs.
+
+---
+
+##### `databaseName`<sup>Optional</sup> <a name="databaseName" id="@adsf/framework.DataLakeCatalogProps.property.databaseName"></a>
+
+```typescript
+public readonly databaseName: string;
+```
+
+- *Type:* string
+- *Default:* Use the bucket name as the database name and / as the prefix
+
+The name of the database in the Glue Data Catalog.
+
+This is also used as the prefix inside the data lake bucket.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.DataLakeCatalogProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Policy to apply when the bucket is removed from this stack.
+
+* @default - RETAIN (The bucket will be orphaned).
 
 ---
 

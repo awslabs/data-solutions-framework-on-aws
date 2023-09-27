@@ -16,6 +16,8 @@ import { DataCatalogDatabase } from '../../src';
 jest.setTimeout(6000000);
 const testStack = new TestStack('DataCatalogTestStack');
 const { stack } = testStack;
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
 
 const encryptionKey = new Key(stack, 'DataKey', {
   removalPolicy: RemovalPolicy.DESTROY,
@@ -30,6 +32,7 @@ const database = new DataCatalogDatabase(stack, 'TestDatabase', {
   locationBucket: bucket,
   locationPrefix: 'test-database',
   name: 'test-database',
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 const role = new Role(stack, 'TestPrincipal', {
