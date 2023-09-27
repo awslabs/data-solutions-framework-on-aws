@@ -38,9 +38,7 @@ import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json
 import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
 import { vpcBootstrap } from './vpc-helper';
-import { EMR_DEFAULT_VERSION } from '../../../utils';
-import { TrackedConstruct, TrackedConstructProps } from '../../../utils/tracked-construct';
-
+import { EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * The properties for the EmrEksCluster Construct class.

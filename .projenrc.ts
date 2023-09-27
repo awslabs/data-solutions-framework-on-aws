@@ -75,6 +75,10 @@ const rootProject = new LernaProject({
   jest: false
 });
 
+rootProject.package.addField('resolutions', {
+  'wide-align': '1.1.5',
+});
+
 const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
@@ -106,7 +110,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 
   deps: [
-    '@aws-cdk/lambda-layer-kubectl-v27'
   ],
 
   devDeps: [
@@ -117,7 +120,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'ts-jest',
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    '@aws-cdk/lambda-layer-kubectl-v27',
     'rosetta'
   ],
 
@@ -216,11 +218,11 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
 
   parent: rootProject,
   outdir: 'example',
- 
+
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   cdkVersionPinning: true,
-  
+
   pytest: true,
   devDeps: [
     "pytest",

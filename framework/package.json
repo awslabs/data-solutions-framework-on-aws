@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "@aws-cdk/cli-lib-alpha": "2.94.0-alpha.0",
-    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
     "@jest/globals": "^29.6.4",
     "@types/jest": "^29.5.3",
     "@types/js-yaml": "^4.0.6",
@@ -68,7 +67,6 @@
     "constructs": "^10.2.55"
   },
   "dependencies": {
-    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
     "js-yaml": "^4.1.0",
     "simple-base": "^1.0.0"
   },

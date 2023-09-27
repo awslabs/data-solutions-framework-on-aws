@@ -7,11 +7,11 @@
  * @group e2e/spark-runtime-containers
  */
 
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { KubectlLayer } from 'aws-cdk-lib/lambda-layer-kubectl';
 import { TestStack } from './test-stack';
-import { EmrEksCluster } from '../../src/processing/spark-runtime';
+import { EmrEksCluster } from '../../src/processing';
 
 
 jest.setTimeout(6000000);
@@ -21,7 +21,7 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkContainersTestStack', app);
 const { stack } = testStack;
 
-const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
+const kubectlLayer = new KubectlLayer(stack, 'kubectlLayer');
 
 // creation of the construct(s) under test
 const emrEksCluster = EmrEksCluster.getOrCreate(stack, {

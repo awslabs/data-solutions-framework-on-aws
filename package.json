@@ -34,6 +34,9 @@
   "peerDependencies": {
     "@types/node": "^16"
   },
+  "resolutions": {
+    "wide-align": "1.1.5"
+  },
   "main": "lib/index.js",
   "license": "MIT-0",
   "version": "0.0.0",
