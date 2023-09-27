@@ -9,7 +9,7 @@ AWS Glue Catalog database for an Amazon S3 dataset.
 
 ## Overview
 
-`DataCatalogDatabase` is an AWS Glue Data Catalog Database configured for an Amazon S3 based data:
+`DataCatalogDatabase` is an [AWS Glue Data Catalog Database](https://docs.aws.amazon.com/glue/latest/dg/define-database.html) configured for an Amazon S3 based data:
 - The database default location (configured via the construct parameters) in the form of: `s3://<locationBucket>/<locationPrefix>/`
 - Inside the location would be the various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`
 - By default, creates a database level crawler that's scheduled to run once a day (00:01h). This can be overriden to either disable the crawler or control the schedule/frequency of the crawler execution.
