@@ -15,7 +15,7 @@ This means that you can create a data lake with in your CDK application with jus
 
 Constructs are written in Typescript but available in both Typescript (on NPM) and Python (on Pypi).
 
-The AWS CDK L3 constructs in ADFS are built following these tenets:
+The AWS CDK L3 constructs in ADSF are built following these tenets:
 * They simplify the use of AWS products in common situations via configuration helpers and smart defaults.
 * Even if they provide smart defaults, you can customize them using the construct parameters to better fit your requirements.
 * If customizing the parameters is not enough, CDK composability allows you to build your own abstractions by composing lower-level constructs.

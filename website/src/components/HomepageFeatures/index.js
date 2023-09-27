@@ -10,7 +10,7 @@ const FeatureList = [
           <div >
               <h4>Open-source framework that simplifies implementation of the most common data requirements. </h4>
               <li>Compose integrated building blocks via infrastructure as code.</li> 
-              <li>Benefit from smart defaults and best practices</li>
+              <li>Benefit from smart defaults and best practices.</li>
               <li>Customize them if it doesn't fit your requirements. </li>
               <li>Implement your own data platform extending ADSF building blocks.</li>
           </div>
