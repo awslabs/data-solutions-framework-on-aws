@@ -54,9 +54,9 @@ export class DataLakeCatalog extends TrackedConstruct {
       });
     }
 
-    const extractedBronzeBucketName = this.extractBucketName(props.dataLakeStorage.bronzeBucket)
-    const extractedSilverBucketName = this.extractBucketName(props.dataLakeStorage.silverBucket)
-    const extractedGoldBucketName = this.extractBucketName(props.dataLakeStorage.goldBucket)
+    const extractedBronzeBucketName = this.extractBucketName(props.dataLakeStorage.bronzeBucket);
+    const extractedSilverBucketName = this.extractBucketName(props.dataLakeStorage.silverBucket);
+    const extractedGoldBucketName = this.extractBucketName(props.dataLakeStorage.goldBucket);
 
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
