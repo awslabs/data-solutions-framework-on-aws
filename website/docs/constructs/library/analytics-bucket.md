@@ -13,11 +13,34 @@ Amazon S3 Bucket configured for analytics.
 - The bucket name is suffixed with a unique ID like `<MY_BUCKET_NAME>-<UNIQUE_ID>`
 - Server side bucket encryption managed by KMS customer key. You need to provide a [KMS Key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
 - SSL communication enforcement.
-- Access logged to an S3 bucket within a prefix matching the bucket name.
+- Access logged to an S3 bucket within a prefix matching the bucket name (via the [`AccessLogsBucket`](access-logs-bucket)).
 - All public access blocked.
 - Two-step protection for bucket and objects deletion.
 
 `AnalyticsBucket` extends the Amazon [S3 `Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html) CDK Construct. For custom requirements that are not covered, use the [`Bucket`](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_s3/Bucket.html#bucket) construct directly.
+
+## Usage
+
+```python
+from aws_cdk import (
+  App, 
+  Stack, 
+  RemovalPolicy, 
+)
+from aws_data_solutions_framework import AnalyticsBucket
+from aws_cdk.aws_kms import Key
+
+app = App()
+stack = Stack(app, 'AnalyticsBucketStack')
+
+encryption_key = Key(stack, 'DataKey',
+                     removal_policy=RemovalPolicy.DESTROY,
+                     enable_key_rotation=True)
+
+AnalyticsBucket(stack, 'MyAnalyticsBucket',
+                encryption_key=encryption_key
+                )
+```
 
 ## Objects removal
 
@@ -51,26 +74,4 @@ AnalyticsBucket(stack, 'AnalyticsBucket',
   removal_policy=RemovalPolicy.DESTROY,
   # ...
 )
-```
-
-#### Usage
-
-```python
-from aws_cdk import core
-from aws_data_solutions_framework import AnalyticsBucket
-from aws_cdk.aws_kms import Key, RemovalPolicy
-
-example_app = core.App()
-stack = core.Stack(example_app, 'AnalyticsBucketStack')
-
-# Set context value for global data removal policy (or set in cdk.json).
-stack.node.set_context('@aws-data-solutions-framework/removeDataOnDestroy', True)
-
-encryption_key = Key(stack, 'DataKey',
-                     removal_policy=RemovalPolicy.DESTROY,
-                     enable_key_rotation=True)
-
-AnalyticsBucket(stack, 'MyAnalyticsBucket',
-                encryption_key=encryption_key,
-                removal_policy=core.RemovalPolicy.DESTROY)
 ```

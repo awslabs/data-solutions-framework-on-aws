@@ -10,7 +10,7 @@ Data Lake based on medallion architecture and AWS best-practices.
 ## Overview
 
 At the high level, `DataLakeStorage` creates three [Amazon S3](https://aws.amazon.com/s3) buckets configured specifically for data lake on AWS. By default these buckets are named *Bronze*, *Silver*, and *Gold* to represent [different data layers](https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/data-layer-definitions.html). You can customize bucket names according to your needs.
-`DataLakeStorage` uses [`AnalyticsBucket`](analytics-bucket) and [`AccessLogsBucket`](access-logs-bucket) constructs from AWS DSF, to create storage and access logs buckets respectively. Your data lake storage is encrypted using [AWS KMS](https://aws.amazon.com/kms/) customer managed bukcet key. You can also provide your own KMS Key. We provide data lifecycle management that you can customize to your needs. 
+`DataLakeStorage` uses [`AnalyticsBucket`](analytics-bucket) and [`AccessLogsBucket`](access-logs-bucket) constructs from AWS DSF, to create storage and access logs buckets respectively. Your data lake storage is encrypted using [AWS KMS](https://aws.amazon.com/kms/) a default customer managed key. You can also provide your own KMS Key. We provide data lifecycle management that you can customize to your needs. 
 
 Here is the overview of `DataLakeStorage` features:
 - Medalion design with S3 buckets for Bronze, Silver, and Gold data.
@@ -22,6 +22,20 @@ Here is the overview of `DataLakeStorage` features:
 
 ![Data lake storage](../../../static/img/adsf-data-lake-storage.png)
 
+## Usage Example
+
+```python
+from aws_cdk import (
+  App, 
+  Stack, 
+)
+from aws_data_solutions_framework import DataLakeStorage
+
+app = App()
+stack = Stack(app, 'DataLakeStorageStack')
+
+DataLakeStorage(stack, 'MyDataLakeStorage')
+```
 
 ## Objects removal
 
@@ -73,26 +87,4 @@ DataLakeStorage(stack, 'MyDataLakeStorage',
                 silver_archive_delay=360,
                 gold_infrequent_access_delay=180,
                 gold_archive_delay=360)
-```
-## Usage Example
-
-```python
-from aws_cdk import core
-from aws_data_solutions_framework import DataLakeStorage
-from aws_cdk.aws_s3 import RemovalPolicy
-
-# Set context value for global data removal policy (or set in cdk.json).
-stack.node.set_context('@aws-data-solutions-framework/removeDataOnDestroy', True)
-
-DataLakeStorage(stack, 'MyDataLakeStorage',
-                bronze_name='my-bronze',
-                bronze_infrequent_access_delay=90,
-                bronze_archive_delay=180,
-                silver_name='my-silver',
-                silver_infrequent_access_delay=180,
-                silver_archive_delay=360,
-                gold_name='my-gold',
-                gold_infrequent_access_delay=180,
-                gold_archive_delay=360,
-                removal_policy=RemovalPolicy.RETAIN)
 ```

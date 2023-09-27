@@ -21,13 +21,17 @@ Amazon S3 Bucket configured for S3 access logs storage.
 #### Usage
 
 ```python
-from aws_cdk import RemovalPolicy
+from aws_cdk import (
+  App, 
+  Stack, 
+  RemovalPolicy, 
+)
 from aws_data_solutions_framework import AccessLogsBucket
+from aws_cdk.aws_kms import Key
 
-class MyStack(core.Stack):
-    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
-        super().__init__(scope, id, **kwargs)
+app = App()
+stack = Stack(app, 'AccessLogsBucketStack')
 
-        AccessLogsBucket(self, 'AccessLogsBucket',
+AccessLogsBucket(self, 'AccessLogsBucket',
                          removal_policy=RemovalPolicy.DESTROY)
 ```
