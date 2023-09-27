@@ -7,8 +7,12 @@ const FeatureList = [
       title: 'AWS Data Solutions Framework (AWS DSF)',
       Svg: require('@site/static/img/adsf-fwk.svg').default,
       description: (
-          <div>
-              AWS DSF is an open-source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions that address the most common data analytics requirements.
+          <div >
+              <h4>Open-source framework that simplifies implementation of the most common data needs. </h4>
+              <li>Compose integrated building blocks via infrastructure as code.</li> 
+              <li>Benefit from smart defaults and best practices.</li>
+              <li>Customize them if it doesn't fit your requirements. </li>
+              <li>Implement your own data platform extending ADSF building blocks.</li>
           </div>
       ),
   },
@@ -17,7 +21,8 @@ const FeatureList = [
     Svg: require('@site/static/img/adsf-solutions.svg').default,
     description: (
       <div>
-          With AWS DSF, you can deploy solutions with built-in AWS best practices to implement your data platform requirements in hours rather than in months when building using AWS services. Solutions are built with AWS DSF framework to allow for the high level of re-usability, composability, and customization.
+          <h4>Pre-packaged data solutions built on top of AWS DSF</h4>
+          With AWS DSF, you can deploy data solutions with built-in AWS best practices and implement your data platform requirements in hours rather than in months. Solutions are built with the AWS DSF framework which offers high re-usability, composability, and customization.
       </div>
     ),
   },

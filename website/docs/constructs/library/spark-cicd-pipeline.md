@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 sidebar_label: Spark CICD Pipeline
 ---
 
@@ -61,6 +61,10 @@ In opposition to production stage where the processing job could be automated on
 Create your application stack using the factory pattern:
 
 ```python
+from aws_cdk import (
+  Construct,
+  Stack, 
+)
 from adsf import ApplicationStackFactory, CICDStage
 
 
@@ -81,7 +85,11 @@ class EmrApplicationStack(Stack):
 
 Use the factory to pass your application stack to the `SparkCICDPipeline` construct:
 ```python
-from cdk.application_stack import EmrApplicationStackFactory
+from aws_cdk import (
+  Construct,
+  Stack, 
+)
+from application_stack import EmrApplicationStackFactory
 from adsf import SparkCICDPipeline, SparkImage
 
 

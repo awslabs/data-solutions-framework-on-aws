@@ -10,17 +10,14 @@ import { Context } from '../utils';
 
 /**
  * Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
- * See documentation TODO insert link.
  *
  * @example
  * import * as cdk from 'aws-cdk-lib';
  * import { AccessLogsBucket } from 'aws-data-solutions-framework';
  *
  * const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
- *  encryption: BucketEncryption.KMS_MANAGED,
  *  removalPolicy: RemovalPolicy.DESTROY,
- *  autoDeleteObjects: true,
- * }
+ * })
  */
 export class AccessLogsBucket extends Bucket {
   constructor(scope: Construct, id: string, props?: BucketProps) {
