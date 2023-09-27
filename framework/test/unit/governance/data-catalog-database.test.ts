@@ -37,12 +37,12 @@ describe('DataCatalogDatabase default construct', () => {
   catalogDb.grantReadOnlyAccess(testPrincipal);
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp(`^${dbName}\-.+`),
+        Name: Match.stringLikeRegexp(`^${dbName}\_.+`),
         LocationUri: {
           'Fn::Join': [
             '', ['s3://', Match.anyValue(), locationPrefix],
@@ -127,7 +127,7 @@ describe('DataCatalogDatabase default construct', () => {
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':database/sample-stack',
+                    ':database/sample_stack',
                   ],
                 ],
               },
@@ -143,7 +143,7 @@ describe('DataCatalogDatabase default construct', () => {
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':table/sample-stack/*',
+                    ':table/sample_stack/*',
                   ],
                 ],
               },
@@ -221,7 +221,7 @@ describe('DataCatalogDatabase default construct', () => {
                         Match.anyValue(),
                         ':',
                         Match.anyValue(),
-                        Match.stringLikeRegexp(`^\:database\/${dbName}\-.+`),
+                        Match.stringLikeRegexp(`^\:database\/${dbName}\_.+`),
                       ],
                     ],
                   },
@@ -232,7 +232,7 @@ describe('DataCatalogDatabase default construct', () => {
                         Match.anyValue(),
                         ':',
                         Match.anyValue(),
-                        Match.stringLikeRegexp(`^\:table\/${dbName}\-.+`),
+                        Match.stringLikeRegexp(`^\:table\/${dbName}\_.+`),
                       ],
                     ],
                   },
@@ -255,7 +255,7 @@ describe('DataCatalogDatabase default construct', () => {
 
   test('DataCatalogDatabase should create crawler', () => {
     template.hasResourceProperties('AWS::Glue::Crawler', {
-      DatabaseName: Match.stringLikeRegexp(`^${dbName}\-.+`),
+      DatabaseName: Match.stringLikeRegexp(`^${dbName}\_.+`),
       Targets: {
         S3Targets: [
           {
@@ -299,7 +299,7 @@ describe('DataCatalogDatabase with disabled crawler', () => {
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp(`^${dbName}\-.+`),
+        Name: Match.stringLikeRegexp(`^${dbName}\_.+`),
         LocationUri: {
           'Fn::Join': [
             '', ['s3://', Match.anyValue(), locationPrefix],
@@ -334,7 +334,7 @@ describe('DataCatalogDatabase with missing leading slash in the prefix', () => {
   test('DataCatalogDatabase should create catalog database', () => {
     template.hasResourceProperties('AWS::Glue::Database', {
       DatabaseInput: {
-        Name: Match.stringLikeRegexp(`^${dbName}\-.+`),
+        Name: Match.stringLikeRegexp(`^${dbName}\_.+`),
         LocationUri: {
           'Fn::Join': [
             '', ['s3://', Match.anyValue(), '/'+locationPrefix],

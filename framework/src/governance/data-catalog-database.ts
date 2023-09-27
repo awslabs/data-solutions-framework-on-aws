@@ -60,7 +60,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     this.dataCatalogDatabaseProps = props;
     const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    this.databaseName = props.name + '-' + Names.uniqueResourceName(scope, {}).toLowerCase();
+    this.databaseName = props.name + '_' + Names.uniqueResourceName(scope, {}).toLowerCase();
 
     let locationPrefix = props.locationPrefix;
 
@@ -147,7 +147,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
       this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
 
       const secConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
-        name: `${this.databaseName}-crawler-secconfig`,
+        name: `${props.name}-secconfig-${Names.uniqueResourceName(this, {}).toLowerCase()}`,
         encryptionConfiguration: {
           cloudWatchEncryption: {
             cloudWatchEncryptionMode: 'SSE-KMS',

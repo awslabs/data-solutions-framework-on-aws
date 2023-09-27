@@ -13,6 +13,8 @@ import { DataLakeCatalog, DataLakeStorage } from '../../src';
 jest.setTimeout(6000000);
 const testStack = new TestStack('DataLakeCatalogTestStack');
 const { stack } = testStack;
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
 
 const storage = new DataLakeStorage(stack, 'ExampleDLStorage', {
   removalPolicy: RemovalPolicy.DESTROY,
@@ -45,9 +47,9 @@ beforeAll(async() => {
 }, 900000);
 
 test('Database in data catalog is created', async() => {
-  expect(deployResult.BronzeCatalogDB).toContain('bronze-example-db');
-  expect(deployResult.SilverCatalogDB).toContain('silver-example-db');
-  expect(deployResult.GoldCatalogDB).toContain('gold-example-db');
+  expect(deployResult.BronzeCatalogDB).toContain('bronze_example-db');
+  expect(deployResult.SilverCatalogDB).toContain('silver_example-db');
+  expect(deployResult.GoldCatalogDB).toContain('gold_example-db');
 
 
 });

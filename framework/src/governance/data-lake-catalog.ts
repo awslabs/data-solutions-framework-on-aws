@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { RemovalPolicy } from 'aws-cdk-lib';
+import { Fn, RemovalPolicy } from 'aws-cdk-lib';
 import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { DataCatalogDatabase } from './data-catalog-database';
-import { DataLakeStorage } from '../storage';
+import { AnalyticsBucket, DataLakeStorage } from '../storage';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
@@ -14,27 +14,17 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 *
 * @example
 * import * as cdk from 'aws-cdk-lib';
+* import { Key } from 'aws-cdk-lib/aws-kms';
 * import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
 *
 * const exampleApp = new cdk.App();
 * const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
 * const storage = new DataLakeStorage(stack, "ExampleStorage");
+* const logEncryptionKey = new Key(stack, 'LogEncryptionKey');
 * const dataLakeCatalog = new DataLakeCatalog(stack, "ExampleDataLakeCatalog", {
-*   bronze: {
-*       name: "bronze-database",
-*       locationPrefix: "exampleBronzeDatabase/",
-*       locationBucket: storage.bronzeBucket
-*   },
-*   silver: {
-*       name: "silver-database",
-*       locationPrefix: "exampleSilverDatabase/",
-*       locationBucket: storage.silverBucket
-*   },
-*   gold: {
-*       name: "gold-database",
-*       locationPrefix: "exampleGoldDatabase/",
-*       locationBucket: storage.goldBucket
-*   }
+*   dataLakeStorage: storage,
+*   databaseName: "exampledb",
+*   crawlerLogEncryptionKey: logEncryptionKey
 * })
 */
 export class DataLakeCatalog extends TrackedConstruct {
@@ -44,11 +34,11 @@ export class DataLakeCatalog extends TrackedConstruct {
   readonly crawlerLogEncryptionKey?: Key;
 
   /**
-     * Constructs a new instance of DataLakeCatalog
-     * @param {Construct} scope the Scope of the CDK Construct
-     * @param {string} id the ID of the CDK Construct
-     * @param {DataLakeCatalogProps} props the DataLakeCatalog properties
-     */
+   * Constructs a new instance of DataLakeCatalog
+   * @param {Construct} scope the Scope of the CDK Construct
+   * @param {string} id the ID of the CDK Construct
+   * @param {DataLakeCatalogProps} props the DataLakeCatalog properties
+   */
   constructor(scope: Construct, id: string, props: DataLakeCatalogProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: DataLakeCatalog.name,
@@ -67,7 +57,7 @@ export class DataLakeCatalog extends TrackedConstruct {
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
       locationPrefix: props.databaseName || '/',
-      name: props.databaseName ? `bronze-${props.databaseName}` : props.dataLakeStorage.bronzeBucket.bucketName,
+      name: props.databaseName ? `${this.extractBucketName(props.dataLakeStorage.bronzeBucket)}_${props.databaseName}` : props.dataLakeStorage.bronzeBucket.bucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
@@ -77,7 +67,7 @@ export class DataLakeCatalog extends TrackedConstruct {
     this.silverCatalogDatabase = new DataCatalogDatabase(this, 'SilverCatalogDatabase', {
       locationBucket: props.dataLakeStorage.silverBucket,
       locationPrefix: props.databaseName || '/',
-      name: props.databaseName ? `silver-${props.databaseName}` : props.dataLakeStorage.silverBucket.bucketName,
+      name: props.databaseName ? `${this.extractBucketName(props.dataLakeStorage.silverBucket)}_${props.databaseName}` : props.dataLakeStorage.bronzeBucket.bucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
@@ -87,12 +77,22 @@ export class DataLakeCatalog extends TrackedConstruct {
     this.goldCatalogDatabase = new DataCatalogDatabase(this, 'GoldCatalogDatabase', {
       locationBucket: props.dataLakeStorage.goldBucket,
       locationPrefix: props.databaseName || '/',
-      name: props.databaseName ? `gold-${props.databaseName}` : props.dataLakeStorage.goldBucket.bucketName,
+      name: props.databaseName ? `${this.extractBucketName(props.dataLakeStorage.goldBucket)}_${props.databaseName}` : props.dataLakeStorage.bronzeBucket.bucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
       removalPolicy,
     });
+  }
+
+  /**
+   * Extract the bucket prefix from the {@link AnalyticsBucket} bucket name.
+   * @param {AnalyticsBucket} bucket
+   * @returns
+   */
+  private extractBucketName(bucket: AnalyticsBucket): string {
+    const tokens = Fn.split('-', bucket.bucketName);
+    return Fn.select(0, tokens);
   }
 }
 

@@ -2847,27 +2847,17 @@ Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
 
 const exampleApp = new cdk.App();
 const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
 const storage = new DataLakeStorage(stack, "ExampleStorage");
+const logEncryptionKey = new Key(stack, 'LogEncryptionKey');
 const dataLakeCatalog = new DataLakeCatalog(stack, "ExampleDataLakeCatalog", {
-  bronze: {
-      name: "bronze-database",
-      locationPrefix: "exampleBronzeDatabase/",
-      locationBucket: storage.bronzeBucket
-  },
-  silver: {
-      name: "silver-database",
-      locationPrefix: "exampleSilverDatabase/",
-      locationBucket: storage.silverBucket
-  },
-  gold: {
-      name: "gold-database",
-      locationPrefix: "exampleGoldDatabase/",
-      locationBucket: storage.goldBucket
-  }
+  dataLakeStorage: storage,
+  databaseName: "exampledb",
+  crawlerLogEncryptionKey: logEncryptionKey
 })
 ```
 
