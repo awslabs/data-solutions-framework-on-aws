@@ -52,7 +52,6 @@ new EmrServerlessSparkJob(stack, 'SparkJob', {
     JobDriver: {
       SparkSubmit: {
         EntryPoint: 's3://s3-bucket/pi.py',
-        EntryPointArguments: [],
         SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
       },
     },

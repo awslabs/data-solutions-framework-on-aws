@@ -214,19 +214,19 @@ export class EmrServerlessSparkJob extends SparkJob {
    */
   private setJobPropsDefaults(props: EmrServerlessSparkJobProps): void {
 
-    const config = { 
-      jobConfig: { 
+    const config = {
+      jobConfig: {
         ConfigurationOverrides: {
           MonitoringConfiguration: {
-            S3MonitoringConfiguration: {}
-          }
+            S3MonitoringConfiguration: {},
+          },
         },
         JobDriver: {
-          SparkSubmit:{}
-        }
-      } 
+          SparkSubmit: {},
+        },
+      },
     } as EmrServerlessSparkJobApiProps;
-    
+
     config.jobConfig.Name = props.Name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.ExecutionTimeoutMinutes = props.ExecutionTimeoutMinutes ?? 30;
@@ -238,7 +238,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     if (props.SparkSubmitParameters) {
       config.jobConfig.JobDriver.SparkSubmit.SparkSubmitParameters = props.SparkSubmitParameters;
     }
-    
+
     config.jobConfig.ConfigurationOverrides!.ApplicationConfiguration ??= props.ApplicationConfiguration;
 
     if (props.S3LogUri && !props.S3LogUri.match(/^s3:\/\/([^\/]+)/)) {
@@ -372,12 +372,12 @@ export interface EmrServerlessSparkJobApiProps extends SparkJobProps {
       };
     };
     ExecutionRoleArn:string;
-    JobDriver:{ 
+    JobDriver:{
       SparkSubmit:{
         EntryPoint: string;
         EntryPointArguments?: [ string ];
         SparkSubmitParameters?: string;
-      }
+      };
     };
     ExecutionTimeoutMinutes?:number;
     Tags?:{ [key:string] : any};
