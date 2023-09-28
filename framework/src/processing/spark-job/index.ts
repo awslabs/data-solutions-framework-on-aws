@@ -3,4 +3,4 @@
 
 export { SparkJob, SparkJobProps } from './spark-job';
 export { EmrOnEksSparkJob, EmrOnEksSparkJobProps, EmrOnEksSparkJobApiProps } from './spark-job-emr-eks';
-export { EmrServerlessSparkJob, EmrServerlessSparkJobProps, EmrServerlessSparkJobApiProps } from './spark-job-emr-serverless'; 
+export { EmrServerlessSparkJob, EmrServerlessSparkJobProps, EmrServerlessSparkJobApiProps } from './spark-job-emr-serverless';

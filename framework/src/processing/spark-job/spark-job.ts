@@ -5,13 +5,13 @@ import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { TrackedConstruct, TrackedConstructProps } from '../../utils';
-import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { Key } from 'aws-cdk-lib/aws-kms';
 
 /**
  * A base construct to run Spark Jobs
@@ -149,7 +149,7 @@ export abstract class SparkJob extends TrackedConstruct {
   }
 
   /**
-   * 
+   *
    * @param scope Construct
    * @param s3LogUri S3 path to store the logs. @example s3://<bucket-name>/
    * @param encryptionKeyArn KMS Key ARN for encryption. @default MAster KMS key for the account.
@@ -164,27 +164,27 @@ export abstract class SparkJob extends TrackedConstruct {
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
         encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
       });
-    } 
+    }
 
     return `s3://${this.s3LogBucket.bucketName}/`;
   }
 
   /**
-   * 
+   *
    * @param scope Construct
-   * @param name CloudWatch Logs group name. 
+   * @param name CloudWatch Logs group name.
    * @param encryptionKeyArn KMS Key ARN for encryption. @default no key.
-   * @returns LogGroup CloudWatch Logs group. 
+   * @returns LogGroup CloudWatch Logs group.
    */
   protected createCloudWatchLogsLogGroup(scope:Construct, name:string, encryptionKeyArn?:string): LogGroup {
     if (! this.cloudwatchGroup) {
       this.cloudwatchGroup = new LogGroup(scope, 'CloudWatchLogsLogGroup', {
-        logGroupName : name,
+        logGroupName: name,
         retention: RetentionDays.ONE_MONTH,
-        encryptionKey : encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
+        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
       });
-    } 
-    
+    }
+
     return this.cloudwatchGroup;
   }
 

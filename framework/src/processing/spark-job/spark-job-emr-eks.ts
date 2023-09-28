@@ -57,7 +57,7 @@ import { EmrRuntimeVersion, TrackedConstruct } from '../../utils';
 export class EmrOnEksSparkJob extends SparkJob {
   private scope: Construct;
   private config!: EmrOnEksSparkJobApiProps;
-  
+
   /**
    * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
    */
@@ -71,13 +71,13 @@ export class EmrOnEksSparkJob extends SparkJob {
       this.setJobApiPropsDefaults(props as EmrOnEksSparkJobApiProps);
     } else {
       this.setJobPropsDefaults(props as EmrOnEksSparkJobProps);
-    } 
+    }
 
     //Tag the AWs Step Functions State Machine
-    if (!this.config.jobConfig.tags) {
-      this.config.jobConfig.tags = {};
+    if (!this.config.jobConfig.Tags) {
+      this.config.jobConfig.Tags = {};
     }
-    this.config.jobConfig.tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
+    this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
     this.stateMachine = this.createStateMachine(scope, Duration.minutes(30), this.config.schedule);
 
@@ -98,7 +98,7 @@ export class EmrOnEksSparkJob extends SparkJob {
       action: 'StartJobRun',
       iamAction: 'emr-containers:StartJobRun',
       parameters: this.config.jobConfig,
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.virtualClusterId}`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       resultSelector: {
         'JobRunId.$': '$.Id',
       },
@@ -117,10 +117,10 @@ export class EmrOnEksSparkJob extends SparkJob {
       action: 'describeJobRun',
       iamAction: 'emr-container:DescribeJobRun',
       parameters: {
-        VirtualClusterId: this.config.jobConfig.virtualClusterId,
+        VirtualClusterId: this.config.jobConfig.VirtualClusterId,
         Id: JsonPath.stringAt('$.JobRunId'),
       },
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.virtualClusterId}/jobruns/*`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
       resultSelector: {
         'State.$': '$.State',
         'StateDetails.$': '$.StateDetails',
@@ -173,114 +173,115 @@ export class EmrOnEksSparkJob extends SparkJob {
         'emr-containers:StartJobRun',
         'emr-containers:DescribeJobRun',
       ],
-      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.virtualClusterId}`, `arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.virtualClusterId}/jobruns/*`],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`, `arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
       conditions: {
         StringEquals: {
-          'emr-containers:ExecutionRoleArn': this.config.jobConfig.executionRoleArn,
+          'emr-containers:ExecutionRoleArn': this.config.jobConfig.ExecutionRoleArn,
         },
       },
     }));
   }
 
-    /**
-   * Returns the spark job execution role. Creates a new role if it is not passed as props. 
+  /**
+   * Returns the spark job execution role. Creates a new role if it is not passed as props.
    * @returns IRole
    */
-    getSparkJobExecutionRole(): IRole {
-      if (!this.sparkJobExecutionRole){
-        this.sparkJobExecutionRole = Role.fromRoleArn(this, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.executionRoleArn);
-      }
-      return this.sparkJobExecutionRole;
+  getSparkJobExecutionRole(): IRole {
+    if (!this.sparkJobExecutionRole) {
+      this.sparkJobExecutionRole = Role.fromRoleArn(this, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.ExecutionRoleArn);
     }
+    return this.sparkJobExecutionRole;
+  }
 
 
-    /**
+  /**
      * Set defaults for the EmrOnEksSparkJobApiProps.
      * @param props EmrOnEksSparkJobApiProps
      */
-    private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
+  private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
 
-      //Set defaults
-      props.jobConfig.clientToken ??= JsonPath.uuid();
-      props.jobConfig.releaseLabel ??= EmrRuntimeVersion.V6_9;
-      this.config = props;
-  
+    //Set defaults
+    props.jobConfig.ClientToken ??= JsonPath.uuid();
+    props.jobConfig.ReleaseLabel ??= EmrRuntimeVersion.V6_9;
+    this.config = props;
 
-    }
 
-    /**
+  }
+
+  /**
      * Set defaults for the EmrOnEksSparkJobProps.
      * @param props EmrOnEksSparkJobProps
      */
-  
-    private setJobPropsDefaults(props: EmrOnEksSparkJobProps): void {
-  
-      const config = {'jobConfig':{}} as EmrOnEksSparkJobApiProps;
-      config.jobConfig.name = props.name; 
-      config.jobConfig.clientToken = JsonPath.uuid();
-      config.jobConfig.virtualClusterId = props.virtualClusterId;
-      config.jobConfig.jobDriver.sparkSubmitJobDriver!.entryPoint = props.sparkSubmitEntryPoint;
-      if (props.sparkSubmitEntryPointArguments) 
-        config.jobConfig.jobDriver.sparkSubmitJobDriver!.entryPointArguments=props.sparkSubmitEntryPointArguments ;
-      if (props.sparkSubmitParameters) 
-        config.jobConfig.jobDriver.sparkSubmitJobDriver!.sparkSubmitParameters = props.sparkSubmitParameters;
-  
-      config.jobConfig.configurationOverrides.applicationConfiguration ??= props.applicationConfiguration;
 
-      config.jobConfig.retryPolicyConfiguration!.maxAttempts = props.maxRetries ?? 0;
-  
-      if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/)) {
-          throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
-      }
-      
-      config.jobConfig.configurationOverrides.monitoringConfiguration!.s3MonitoringConfiguration!.logUri = this.createS3LogBucket(this.scope, props.s3LogUri);
+  private setJobPropsDefaults(props: EmrOnEksSparkJobProps): void {
 
-  
-      if (props.cloudWatchLogGroupName) {
-        this.createCloudWatchLogsLogGroup(this.scope, props.cloudWatchLogGroupName);
-        config.jobConfig.configurationOverrides.monitoringConfiguration!.cloudWatchMonitoringConfiguration! = {
-          logGroupName: props.cloudWatchLogGroupName ,
-          logStreamNamePrefix: props.cloudWatchLogGroupStreamPrefix ?? props.name,
-        }
-      }
-      
-  
-      config.jobConfig.tags = props.tags;
-  
-      this.config = config;
-  
-  
+    const config = { jobConfig: {} } as EmrOnEksSparkJobApiProps;
+    config.jobConfig.Name = props.Name;
+    config.jobConfig.ClientToken = JsonPath.uuid();
+    config.jobConfig.VirtualClusterId = props.VirtualClusterId;
+    config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPoint = props.SparkSubmitEntryPoint;
+    if (props.SparkSubmitEntryPointArguments) {
+      config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPointArguments=props.SparkSubmitEntryPointArguments ;
     }
+    if (props.SparkSubmitParameters) {config.jobConfig.JobDriver.SparkSubmitJobDriver!.SparkSubmitParameters = props.SparkSubmitParameters;}
+
+    config.jobConfig.ConfigurationOverrides.ApplicationConfiguration ??= props.ApplicationConfiguration;
+
+    config.jobConfig.RetryPolicyConfiguration!.MaxAttempts = props.MaxRetries ?? 0;
+
+    if (props.S3LogUri && !props.S3LogUri.match(/^s3:\/\/([^\/]+)/)) {
+      throw new Error(`Invalid S3 URI: ${props.S3LogUri}`);
+    }
+
+    config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.S3MonitoringConfiguration!.LogUri =
+    this.createS3LogBucket(this.scope, props.S3LogUri);
+
+
+    if (props.CloudWatchLogGroupName) {
+      this.createCloudWatchLogsLogGroup(this.scope, props.CloudWatchLogGroupName);
+      config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.CloudWatchMonitoringConfiguration! = {
+        LogGroupName: props.CloudWatchLogGroupName,
+        LogStreamNamePrefix: props.CloudWatchLogGroupStreamPrefix ?? props.Name,
+      };
+    }
+
+
+    config.jobConfig.Tags = props.Tags;
+
+    this.config = config;
+
+
+  }
 }
 
 /**
- * Simplified configuration for the EMR on EKS job. 
- * @see EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties. 
+ * Simplified configuration for the EMR on EKS job.
+ * @see EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties.
  */
 
 export interface EmrOnEksSparkJobProps extends SparkJobProps {
-  name: string,
-  virtualClusterId: string,
-  releaseLabel?: string, 
-  executionRoleArn?: string, 
-  sparkSubmitEntryPoint: string,
-  sparkSubmitEntryPointArguments?: [ string ], 
-  sparkSubmitParameters?: string, 
-  applicationConfiguration?: [  
+  Name: string;
+  VirtualClusterId: string;
+  ReleaseLabel?: string;
+  ExecutionRoleArn?: string;
+  SparkSubmitEntryPoint: string;
+  SparkSubmitEntryPointArguments?: [ string ];
+  SparkSubmitParameters?: string;
+  ApplicationConfiguration?: [
     {
-      classification: string,
-      properties: { 
-        string : string 
-      }
+      Classification: string;
+      Properties: {
+        string : string;
+      };
     }
-  ],
-  maxRetries?: number, 
-  s3LogUri?: string,  // default = a bucket (encrypted) is created and exposed by the class
-  cloudWatchLogGroupName?: string,  // default = no cloudwatch
-  cloudWatchLogGroupStreamPrefix?: string, // default = if a CloudWatch log group is provided, the name of the application
-  tags?: { 
-    string : string 
-  }
+  ];
+  MaxRetries?: number;
+  S3LogUri?: string; // default = a bucket (encrypted) is created and exposed by the class
+  CloudWatchLogGroupName?: string; // default = no cloudwatch
+  CloudWatchLogGroupStreamPrefix?: string; // default = if a CloudWatch log group is provided, the name of the application
+  Tags?: {
+    string : string;
+  };
 }
 
 /**
@@ -295,58 +296,58 @@ export interface EmrOnEksSparkJobApiProps extends SparkJobProps {
    * @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {
-    virtualClusterId: string,
-    clientToken?: string,
-    configurationOverrides: { 
-       applicationConfiguration?: [ 
-          { 
-             classification: string,
-             configurations?: [ 
-              { string : string }
-             ],
-             properties: { 
-                string : string 
-             }
-          }
-       ],
-       monitoringConfiguration?: { 
-          cloudWatchMonitoringConfiguration: { 
-             logGroupName: string,
-             logStreamNamePrefix: string
-          },
-          containerLogRotationConfiguration?: { 
-             maxFilesToKeep: number,
-             rotationSize: string
-          },
-          persistentAppUI?: string,
-          s3MonitoringConfiguration?: { 
-             logUri: string
-          }
-       }
-    },
-    executionRoleArn: string,
-    jobDriver: { 
-       sparkSqlJobDriver?: { 
-          entryPoint: string,
-          sparkSqlParameters: string
-       },
-       sparkSubmitJobDriver?: { 
-          entryPoint: string,
-          entryPointArguments: [ string ],
-          sparkSubmitParameters: string
-       }
-    },
-    jobTemplateId?: string,
-    jobTemplateParameters?: { 
-       string : string 
-    },
-    name: string,
-    releaseLabel?: string,
-    retryPolicyConfiguration?: { 
-       maxAttempts: number
-    },
-    tags?: { 
-      [key:string] : any
-    }
+    VirtualClusterId: string;
+    ClientToken?: string;
+    ConfigurationOverrides: {
+      ApplicationConfiguration?: [
+        {
+          Classification: string;
+          Configurations?: [
+            { string : string }
+          ];
+          Properties: {
+            string : string;
+          };
+        }
+      ];
+      MonitoringConfiguration?: {
+        CloudWatchMonitoringConfiguration?: {
+          LogGroupName: string;
+          LogStreamNamePrefix: string;
+        };
+        ContainerLogRotationConfiguration?: {
+          MaxFilesToKeep: number;
+          RotationSize: string;
+        };
+        PersistentAppUI?: string;
+        S3MonitoringConfiguration?: {
+          LogUri: string;
+        };
+      };
+    };
+    ExecutionRoleArn: string;
+    JobDriver: {
+      SparkSqlJobDriver?: {
+        EntryPoint: string;
+        SparkSqlParameters: string;
+      };
+      SparkSubmitJobDriver?: {
+        EntryPoint: string;
+        EntryPointArguments: [ string ];
+        SparkSubmitParameters: string;
+      };
+    };
+    JobTemplateId?: string;
+    JobTemplateParameters?: {
+      string : string;
+    };
+    Name: string;
+    ReleaseLabel?: string;
+    RetryPolicyConfiguration?: {
+      MaxAttempts: number;
+    };
+    Tags?: {
+      [key:string] : any;
+    };
   };
 }

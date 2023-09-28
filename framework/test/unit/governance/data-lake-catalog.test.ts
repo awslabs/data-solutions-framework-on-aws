@@ -10,7 +10,8 @@
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { DataLakeCatalog, DataLakeStorage } from '../../../src';
+import { DataLakeCatalog } from '../../../src/governance';
+import { DataLakeStorage } from '../../../src/storage'; {}
 
 describe('Create catalog for bronze, silver, gold with no global data removal', () => {
   const app = new App();

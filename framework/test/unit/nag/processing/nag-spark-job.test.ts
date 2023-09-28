@@ -13,8 +13,8 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { EmrServerlessSparkJob, EmrServerlessSparkJobProps } from '../../../../src/data-processing/spark-job-emr-serverless';
-import { SparkRuntimeServerless } from '../../../../src/processing-runtime/spark-runtime-serverless';
+import { EmrServerlessSparkJob, EmrServerlessSparkJobApiProps } from '../../../../src/processing/spark-job/spark-job-emr-serverless';
+import { SparkEmrServerlessRuntime } from '../../../../src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless';
 
 
 const app = new App();
@@ -32,18 +32,23 @@ const myFileSystemPolicy = new PolicyDocument({
 });
 
 
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
 new EmrServerlessSparkJob(stack, 'SparkJob', {
-  applicationId: '00fcn9hll0rv1j09',
-  executionRoleArn: myExecutionRole.roleArn,
   jobConfig: {
     Name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
     ApplicationId: '00fcn9hll0rv1j09',
     ClientToken: JsonPath.uuid(),
     ExecutionRoleArn: myExecutionRole.roleArn,
     ExecutionTimeoutMinutes: 30,
+    ConfigurationOverrides: {
+      MonitoringConfiguration: {
+        S3MonitoringConfiguration: {
+          LogUri: 's3://monitoring-bucket/monitoring-logs',
+        },
+      },
+    },
     JobDriver: {
       SparkSubmit: {
         EntryPoint: 's3://s3-bucket/pi.py',
@@ -52,12 +57,12 @@ new EmrServerlessSparkJob(stack, 'SparkJob', {
       },
     },
   },
-} as EmrServerlessSparkJobProps);
+} as EmrServerlessSparkJobApiProps);
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 
-NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/SparkJob/EmrPipeline/Role/DefaultPolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/EmrPipeline/Role/DefaultPolicy/Resource', [
   { id: 'AwsSolutions-IAM5', reason: 'Job runs generated automatically hence we have to use *' },
 ]);
 

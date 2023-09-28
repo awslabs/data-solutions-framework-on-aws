@@ -16,10 +16,10 @@ jest.setTimeout(6000000);
 
 // GIVEN
 const app = new App();
-const testSstack = new Stack(app, 'TestStack',{
+const testSstack = new Stack(app, 'TestStack', {
   env: {
     region: 'us-east-1',
-  }
+  },
 });
 const testStack = new TestStack('SparkCICDPipelineTestStack', app, testSstack);
 const { stack } = testStack;
@@ -43,7 +43,7 @@ class MyApplicationStack extends Stack {
 }
 
 class MyStackFactory implements ApplicationStackFactory {
-  createStack(scope: Stack,stage: CICDStage): Stack {
+  createStack(scope: Stack, stage: CICDStage): Stack {
     return new MyApplicationStack(scope, 'MyApplication', {
       prodBoolean: stage === CICDStage.PROD,
     } as MyApplicationStackProps);
