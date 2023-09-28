@@ -110,7 +110,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 
   deps: [
-    '@aws-cdk/lambda-layer-kubectl-v27'
+    '@aws-cdk/lambda-layer-kubectl-v27',
   ],
 
   devDeps: [
@@ -228,6 +228,7 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
+    "aws-cdk.lambda-layer-kubectl-v27"
   ],
 
   venvOptions: {
