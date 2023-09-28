@@ -9,11 +9,11 @@ import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
+import { ALB_CONTROLLER_HELM_CHART_VERSION, CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
 import { EmrEksCluster } from './emr-eks-cluster';
 import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
 import { Utils } from '../../../utils';
-import { ALB_CONTROLLER_HELM_CHART_VERSION, CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
 
 
 /**
@@ -26,10 +26,10 @@ import { ALB_CONTROLLER_HELM_CHART_VERSION, CERTMANAGER_HELM_CHART_VERSION, EBS_
  * @param {KubernetesVersion} eksClusterK8sVersion the k8s version for the EKS cluster
  */
 export function eksClusterSetup(
-  cluster: Cluster, 
-  scope: Construct, 
-  eksAdminRoleArn: string, 
-  nodeRole: Role, 
+  cluster: Cluster,
+  scope: Construct,
+  eksAdminRoleArn: string,
+  nodeRole: Role,
   eksClusterK8sVersion: KubernetesVersion) {
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin

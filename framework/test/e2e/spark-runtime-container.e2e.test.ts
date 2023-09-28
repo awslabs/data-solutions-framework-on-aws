@@ -7,9 +7,9 @@
  * @group e2e/spark-runtime-containers
  */
 
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { TestStack } from './test-stack';
 import { EmrEksCluster } from '../../src/processing';
 

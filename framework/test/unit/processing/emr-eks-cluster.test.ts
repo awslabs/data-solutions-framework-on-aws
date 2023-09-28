@@ -7,10 +7,10 @@
  * @group unit/emr-eks-platform/emr-eks-cluster
  */
 
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { EmrEksCluster } from '../../../src/processing';
 
 const emrEksClusterStack = new Stack();
