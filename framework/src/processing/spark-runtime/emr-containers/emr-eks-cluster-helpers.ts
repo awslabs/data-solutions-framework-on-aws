@@ -22,9 +22,15 @@ import { ALB_CONTROLLER_HELM_CHART_VERSION, CERTMANAGER_HELM_CHART_VERSION, EBS_
  * @param {Cluster} cluster the unique ID of the CDK resource
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} eksAdminRoleArn The admin role of the EKS cluster
- * @param {Role} nodeRole: The IAM role used for instance profile by Karpenter
+ * @param {Role} nodeRole The IAM role used for instance profile by Karpenter
+ * @param {KubernetesVersion} eksClusterK8sVersion the k8s version for the EKS cluster
  */
-export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRoleArn: string, nodeRole: Role, eksClusterK8sVersion: KubernetesVersion) {
+export function eksClusterSetup(
+  cluster: Cluster, 
+  scope: Construct, 
+  eksAdminRoleArn: string, 
+  nodeRole: Role, 
+  eksClusterK8sVersion: KubernetesVersion) {
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin
   cluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
