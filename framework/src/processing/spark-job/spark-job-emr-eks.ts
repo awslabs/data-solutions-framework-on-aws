@@ -57,6 +57,10 @@ import { EmrRuntimeVersion, TrackedConstruct } from '../../utils';
 export class EmrOnEksSparkJob extends SparkJob {
   private scope: Construct;
   private config!: EmrOnEksSparkJobApiProps;
+  
+  /**
+   * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
+   */
   sparkJobExecutionRole?: IRole;
 
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps | EmrOnEksSparkJobApiProps) {
@@ -189,6 +193,11 @@ export class EmrOnEksSparkJob extends SparkJob {
       return this.sparkJobExecutionRole;
     }
 
+
+    /**
+     * Set defaults for the EmrOnEksSparkJobApiProps.
+     * @param props EmrOnEksSparkJobApiProps
+     */
     private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
 
       //Set defaults
@@ -198,6 +207,11 @@ export class EmrOnEksSparkJob extends SparkJob {
   
 
     }
+
+    /**
+     * Set defaults for the EmrOnEksSparkJobProps.
+     * @param props EmrOnEksSparkJobProps
+     */
   
     private setJobPropsDefaults(props: EmrOnEksSparkJobProps): void {
   
@@ -239,7 +253,10 @@ export class EmrOnEksSparkJob extends SparkJob {
     }
 }
 
-
+/**
+ * Simplified configuration for the EMR on EKS job. 
+ * @see EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties. 
+ */
 
 export interface EmrOnEksSparkJobProps extends SparkJobProps {
   name: string,
@@ -268,6 +285,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
 
 /**
  * Configuration for the EMR on EKS job.
+ * Use this interface when EmrOnEksSparkJobProps doesn't give you access to the configuration parameters you need.
  * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
  */
 export interface EmrOnEksSparkJobApiProps extends SparkJobProps {

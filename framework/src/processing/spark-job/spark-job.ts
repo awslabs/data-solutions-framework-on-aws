@@ -148,6 +148,13 @@ export abstract class SparkJob extends TrackedConstruct {
     return stateMachine;
   }
 
+  /**
+   * 
+   * @param scope Construct
+   * @param s3LogUri S3 path to store the logs. @example s3://<bucket-name>/
+   * @param encryptionKeyArn KMS Key ARN for encryption. @default MAster KMS key for the account.
+   * @returns string S3 path to store the logs.
+   */
   protected createS3LogBucket(scope:Construct, s3LogUri?:string, encryptionKeyArn?:string): string {
     if (! this.s3LogBucket) {
       this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(scope, 'S3LogBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(scope, 'S3LogBucket', {
@@ -162,6 +169,13 @@ export abstract class SparkJob extends TrackedConstruct {
     return `s3://${this.s3LogBucket.bucketName}/`;
   }
 
+  /**
+   * 
+   * @param scope Construct
+   * @param name CloudWatch Logs group name. 
+   * @param encryptionKeyArn KMS Key ARN for encryption. @default no key.
+   * @returns LogGroup CloudWatch Logs group. 
+   */
   protected createCloudWatchLogsLogGroup(scope:Construct, name:string, encryptionKeyArn?:string): LogGroup {
     if (! this.cloudwatchGroup) {
       this.cloudwatchGroup = new LogGroup(scope, 'CloudWatchLogsLogGroup', {

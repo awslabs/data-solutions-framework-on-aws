@@ -56,6 +56,10 @@ import { TrackedConstruct } from '../../utils';
 export class EmrServerlessSparkJob extends SparkJob {
   private scope: Construct;
   private config!: EmrServerlessSparkJobApiProps;
+  
+  /**
+   * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
+   */
   sparkJobExecutionRole?: IRole;
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
@@ -191,7 +195,11 @@ export class EmrServerlessSparkJob extends SparkJob {
     }));
     SparkEmrServerlessRuntime.grantJobExecution(role, [this.config.jobConfig.executionRoleArn], [arn, `${arn}/jobruns/*`]);
   }
-
+  
+  /**
+   * Set defaults for the EmrServerlessSparkJobApiProps.
+   * @param props EmrServerlessSparkJobApiProps
+   */
   private setJobApiPropsDefaults(props: EmrServerlessSparkJobApiProps): void {
 
     //Set defaults
@@ -202,6 +210,10 @@ export class EmrServerlessSparkJob extends SparkJob {
 
   }
 
+  /**
+   * Set defaults for the EmrOnEksSparkJobProps.
+   * @param props EmrOnEksSparkJobProps
+   */
   private setJobPropsDefaults(props: EmrServerlessSparkJobProps): void {
 
     const config = {'jobConfig':{}} as EmrServerlessSparkJobApiProps;
