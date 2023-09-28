@@ -35,6 +35,11 @@
   resolved "https://registry.yarnpkg.com/@aws-cdk/cli-lib-alpha/-/cli-lib-alpha-2.94.0-alpha.0.tgz#ea4dd5602723405c10d0fa727bea13275c470a07"
   integrity sha512-DOrAfLBMk37YclsH+hPBKPsK1yOkdCZXDZziE0lVZsB/Yjd+F20fCIkvnM8XBla3GUN/U7oOP2zwDIFX/SMlvQ==
 
+"@aws-cdk/lambda-layer-kubectl-v27@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/lambda-layer-kubectl-v27/-/lambda-layer-kubectl-v27-2.0.0.tgz#f65218a85fc6996f28feb4d8d2fbeb06407523a1"
+  integrity sha512-BBh4ScPHaD82e7Z3PYXqyLjqfk/3/PRDTJW3x2j4l5f6sHXU041TaXKcFAGBHb1m4aq2UK+fwkIq95mgs3c0dg==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.22.13":
   version "7.22.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.22.13.tgz#e3c1c099402598483b7a8c46a721d1038803755e"

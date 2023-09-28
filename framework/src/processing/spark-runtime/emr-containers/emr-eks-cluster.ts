@@ -64,7 +64,7 @@ export interface EmrEksClusterProps {
   readonly eksCluster?: Cluster;
   /**
    * Kubernetes version for Amazon EKS cluster that will be created
-   * The default is changed as new version version of k8s on EKS becomes available 
+   * The default is changed as new version version of k8s on EKS becomes available
    * @default -  Kubernetes version {@link DEFAULT_EKS_VERSION}
    */
   readonly kubernetesVersion?: KubernetesVersion;

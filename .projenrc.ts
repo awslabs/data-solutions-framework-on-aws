@@ -110,6 +110,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 
   deps: [
+    '@aws-cdk/lambda-layer-kubectl-v27'
   ],
 
   devDeps: [
@@ -120,7 +121,8 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'ts-jest',
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
-    'rosetta'
+    'rosetta',
+    '@aws-cdk/lambda-layer-kubectl-v27',
   ],
 
   bundledDeps: [
