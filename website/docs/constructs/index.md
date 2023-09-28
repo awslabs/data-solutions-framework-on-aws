@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 > :heavy_exclamation_mark: If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
 
-The AWS DSF library is available in Tyepscript or Python, select the right tab for code examples in your prefered language.
+The AWS DSF library is available in Typescript or Python, select the right tab for code examples in your prefered language.
 
 ### Create a CDK app
 ```bash
