@@ -167,7 +167,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     * @param startJobRole the role that will call the start job api and which need to have the iam:PassRole permission
     * @param executionRoleArn the role use by EMR Serverless to access resources during the job execution
     */
-  public grantJobExecution(startJobRole: IRole, executionRoleArn: string) {
+  public grantExecution(startJobRole: IRole, executionRoleArn: string) {
 
     SparkEmrServerlessRuntime.grantJobExecution(startJobRole, [executionRoleArn], [this.applicationArn]);
   }
