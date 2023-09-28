@@ -9,7 +9,7 @@ import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { TrackedConstruct, TrackedConstructProps } from '../utils';
+import { TrackedConstruct, TrackedConstructProps } from '../../utils';
 import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Key } from 'aws-cdk-lib/aws-kms';
 
@@ -94,37 +94,39 @@ export abstract class SparkJob extends TrackedConstruct {
 
   /**
    * Creates a State Machine that orchestrates the Spark Job. This is a default implementation that can be overridden by the extending class.
-   * @param schedule Schedule to run the state machine.
+   * @param scope the Scope of the CDK Construct.
+   * @param jobTimeout Timeout for the state machine. @defautl 30 minutes
+   * @param schedule Schedule to run the state machine. @default no schedule
    * @returns StateMachine
    */
-  protected createStateMachine(schedule? : Schedule): StateMachine {
+  protected createStateMachine(scope:Construct, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
 
-    const emrStartJobTask = new CallAwsService(this, 'EmrStartJobTask', this.getJobStartTaskProps());
+    const emrStartJobTask = new CallAwsService(scope, 'EmrStartJobTask', this.getJobStartTaskProps());
 
-    const emrMonitorJobTask = new CallAwsService(this, 'EmrMonitorJobTask', this.getJobMonitorTaskProps());
+    const emrMonitorJobTask = new CallAwsService(scope, 'EmrMonitorJobTask', this.getJobMonitorTaskProps());
 
-    const wait = new Wait(this, 'Wait', {
+    const wait = new Wait(scope, 'Wait', {
       time: WaitTime.duration(Duration.seconds(60)),
     });
 
-    const jobFailed = new Fail(this, 'JobFailed', this.getJobFailTaskProps());
+    const jobFailed = new Fail(scope, 'JobFailed', this.getJobFailTaskProps());
 
-    const jobSucceeded = new Succeed(this, 'JobSucceeded');
+    const jobSucceeded = new Succeed(scope, 'JobSucceeded');
 
     const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
-      new Choice(this, 'JobSucceededOrFailed')
+      new Choice(scope, 'JobSucceededOrFailed')
         .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusSucceed()), jobSucceeded)
         .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusFailed()), jobFailed)
         .otherwise(wait),
     );
 
     // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(this, 'LogGroup', {
+    const logGroup = new LogGroup(scope, 'LogGroup', {
       retention: RetentionDays.ONE_MONTH,
     });
 
     // StepFunctions state machine
-    const stateMachine: StateMachine = new StateMachine(this, 'EmrPipeline', {
+    const stateMachine: StateMachine = new StateMachine(scope, 'EmrPipeline', {
       definition: emrPipelineChain,
       tracingEnabled: true,
       timeout: Duration.seconds(1800),
@@ -133,7 +135,7 @@ export abstract class SparkJob extends TrackedConstruct {
 
     this.grantExecutionRole(stateMachine.role);
     if (schedule) {
-      new Rule(this, 'SparkJobPipelineTrigger', {
+      new Rule(scope, 'SparkJobPipelineTrigger', {
         schedule: schedule,
         targets: [new SfnStateMachine(stateMachine)],
       });
@@ -141,9 +143,9 @@ export abstract class SparkJob extends TrackedConstruct {
     return stateMachine;
   }
 
-  protected createS3LogBucket(s3LogUri?:string, encryptionKeyArn?:string): string {
+  protected createS3LogBucket(scope:Construct, s3LogUri?:string, encryptionKeyArn?:string): string {
     if (! this.s3LogBucket) {
-      this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(this, 'S3LogBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(this, 'S3LogBucket', {
+      this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(scope, 'S3LogBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(scope, 'S3LogBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,
         removalPolicy: RemovalPolicy.DESTROY,
@@ -155,9 +157,9 @@ export abstract class SparkJob extends TrackedConstruct {
     return `s3://${this.s3LogBucket.bucketName}/`;
   }
 
-  protected createCloudWatchLogsLogGroup(name:string, encryptionKeyArn?:string): LogGroup {
+  protected createCloudWatchLogsLogGroup(scope:Construct, name:string, encryptionKeyArn?:string): LogGroup {
     if (! this.cloudwatchGroup) {
-      this.cloudwatchGroup = new LogGroup(this, 'CloudWatchLogsLogGroup', {
+      this.cloudwatchGroup = new LogGroup(scope, 'CloudWatchLogsLogGroup', {
         logGroupName : name,
         retention: RetentionDays.ONE_MONTH,
         encryptionKey : encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,

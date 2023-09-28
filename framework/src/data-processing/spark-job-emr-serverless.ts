@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws } from 'aws-cdk-lib';
+import { Aws, Duration } from 'aws-cdk-lib';
 import { Effect, IRole, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { SparkRuntimeServerless } from '../processing-runtime/spark-runtime-serverless';
-import { TrackedConstruct } from '../utils';
+import { SparkRuntimeServerless } from '../../processing-runtime/spark-runtime-serverless';
+import { TrackedConstruct } from '../../utils';
 
 /**
  * A construct to run Spark Jobs using EMR Serverless.
@@ -46,7 +46,7 @@ import { TrackedConstruct } from '../utils';
  *                   },
  *               }
  *          }
- * } as EmrServerlessSparkJobProps);
+ * } as EmrServerlessSparkJobApiProps);
  *
  * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
  *   value: job.stateMachine.stateMachineArn,
@@ -62,6 +62,7 @@ export class EmrServerlessSparkJob extends SparkJob {
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
     super(scope, id, EmrServerlessSparkJob.name);
+    this.scope = scope;
     if ('jobConfig' in props) {
       this.setJobApiPropsDefaults(props as EmrServerlessSparkJobApiProps);
     } else {
@@ -82,7 +83,7 @@ export class EmrServerlessSparkJob extends SparkJob {
 
     this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
     this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());
-  
+    
   }
 
 
@@ -208,11 +209,6 @@ export class EmrServerlessSparkJob extends SparkJob {
 
     this.config = props;
 
-    //Tag the AWs Step Functions State Machine
-    if (!this.config.jobConfig.tags) {
-      this.config.jobConfig.tags = {};
-    }
-    this.config.jobConfig.tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
   }
 
   private setJobPropsDefaults(props: EmrServerlessSparkJobProps): void {
@@ -233,11 +229,11 @@ export class EmrServerlessSparkJob extends SparkJob {
     }
     
 
-    config.jobConfig.configurationOverrides.monitoringConfiguration.s3MonitoringConfiguration!.logUri = this.createS3LogBucket(props.s3LogUri, props.s3LogUriKeyArn);
+    config.jobConfig.configurationOverrides.monitoringConfiguration.s3MonitoringConfiguration!.logUri = this.createS3LogBucket(this.scope, props.s3LogUri, props.s3LogUriKeyArn);
     config.jobConfig.configurationOverrides.monitoringConfiguration.s3MonitoringConfiguration!.encryptionKeyArn ??= props.s3LogUriKeyArn;
 
     if (props.cloudWatchLogGroupName) {
-      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroupName, props.cloudWatchEncryptionKeyArn);
+      this.createCloudWatchLogsLogGroup(this.scope, props.cloudWatchLogGroupName, props.cloudWatchEncryptionKeyArn);
       config.jobConfig.configurationOverrides.monitoringConfiguration.cloudWatchLoggingConfiguration = {
         enabled: true,
         encryptionKeyArn: props.cloudWatchEncryptionKeyArn,
@@ -282,31 +278,31 @@ export class EmrServerlessSparkJob extends SparkJob {
  */
 
 export interface EmrServerlessSparkJobProps {
-  "name": string,
-  "applicationId": string,
-  "executionRoleArn?": string, // default = a new  role is created
-  "sparkSubmitEntryPoint": string,
-  "sparkSubmitEntryPointArguments"?: [ string ], 
-  "sparkSubmitParameters"?: string, 
-  "applicationConfiguration"?: [
+  name: string,
+  applicationId: string,
+  executionRoleArn?: string, 
+  sparkSubmitEntryPoint: string,
+  sparkSubmitEntryPointArguments?: [ string ], 
+  sparkSubmitParameters?: string, 
+  applicationConfiguration?: [
     {
-      "classification": string,
-      "configurations": [{ [key: string]: any; }],
-      "properties": { 
-        "string" : string 
+      classification: string,
+      configurations: [{ [key: string]: any; }],
+      properties: { 
+        string : string 
       }
     }
   ],
-  "executionTimeoutMinutes"?: number, 
-  "persistentAppUi"?: boolean, 
-  "persistentAppUIKeyArn"?: string, 
-  "s3LogUri"?: string, 
-  "s3LogUriKeyArn"?: string,  
-  "cloudWatchLogGroupName"?: string, 
-  "cloudWatchEncryptionKeyArn"?: string, 
-  "cloudWatchLogGroupStreamPrefix"?: string, 
-  "cloudWatchLogtypes"?: string, 
-  "tags"?: { 
+  executionTimeoutMinutes?: number, 
+  persistentAppUi?: boolean, 
+  persistentAppUIKeyArn?: string, 
+  s3LogUri?: string, 
+  s3LogUriKeyArn?: string,  
+  cloudWatchLogGroupName?: string, 
+  cloudWatchEncryptionKeyArn?: string, 
+  cloudWatchLogGroupStreamPrefix?: string, 
+  cloudWatchLogtypes?: string, 
+  tags?: { 
     string : string 
   }
 
@@ -314,7 +310,8 @@ export interface EmrServerlessSparkJobProps {
 
 
 /**
- * Configuration for the EMR Serverless Job API. Use this interface when 
+ * Configuration for the EMR Serverless Job API. 
+ * Use this interface when EmrServerlessJobProps doesn't give you access to the configuration parameters you need.
  * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
  */
 
@@ -325,36 +322,36 @@ export interface EmrServerlessSparkJobApiProps extends SparkJobProps {
    * @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {
-    "applicationId": string;
-    "clientToken"?: string;
-    "name"?:string;
-    "configurationOverrides":{
-      "applicationConfiguration"?: [ 
+    applicationId: string;
+    clientToken?: string;
+    name?:string;
+    configurationOverrides:{
+      applicationConfiguration?: [ 
         { 
-           "classification": string,
-           "configurations": [ { [key:string] : any}],
-           "properties": { 
-              "string" : string 
+           classification: string,
+           configurations: [ { [key:string] : any}],
+           properties: { 
+              string : string 
            }
         }
      ],
-     "monitoringConfiguration": { 
-        "cloudWatchLoggingConfiguration"?: { 
-           "enabled": boolean,
-           "encryptionKeyArn"?: string,
-           "logGroupName"?: string,
-           "logStreamNamePrefix"?: string,
-           "logTypes"?: { 
+     monitoringConfiguration: { 
+        cloudWatchLoggingConfiguration?: { 
+           enabled: boolean,
+           encryptionKeyArn?: string,
+           logGroupName?: string,
+           logStreamNamePrefix?: string,
+           logTypes?: { 
               string : [ string ]
            }
         },
-        "managedPersistenceMonitoringConfiguration"?: { 
-           "enabled": boolean,
-           "encryptionKeyArn": string
+        managedPersistenceMonitoringConfiguration?: { 
+           enabled: boolean,
+           encryptionKeyArn: string
         },
-        "s3MonitoringConfiguration"?: { 
-           "encryptionKeyArn"?: string,
-           "logUri": string
+        s3MonitoringConfiguration?: { 
+           encryptionKeyArn?: string,
+           logUri: string
         }
      }
     };

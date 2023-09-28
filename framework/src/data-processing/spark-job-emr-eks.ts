@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws } from 'aws-cdk-lib';
-import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Aws, Duration } from 'aws-cdk-lib';
+import { Effect, IRole, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { EmrVersion } from '../utils';
+import { EmrVersion, TrackedConstruct } from '../../utils';
 
 
 /**
@@ -55,19 +55,30 @@ import { EmrVersion } from '../utils';
  * ```
  */
 export class EmrOnEksSparkJob extends SparkJob {
-  readonly config: EmrOnEksSparkJobProps;
+  private scope: Construct;
+  private config!: EmrOnEksSparkJobApiProps;
+  sparkJobExecutionRole?: IRole;
 
-  constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps) {
+  constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps | EmrOnEksSparkJobApiProps) {
     super(scope, id, EmrOnEksSparkJob.name);
+    this.scope = scope;
 
-    //Set defaults
-    props.jobConfig.ClientToken ??= JsonPath.uuid();
-    props.jobConfig.ExecutionTimeoutMinutes ??= 30;
-    props.jobConfig.ReleaseLabel ??= EmrVersion.V6_2;
+    if ('jobConfig' in props) {
+      this.setJobApiPropsDefaults(props as EmrOnEksSparkJobApiProps);
+    } else {
+      this.setJobPropsDefaults(props as EmrOnEksSparkJobProps);
+    } 
 
+    //Tag the AWs Step Functions State Machine
+    if (!this.config.jobConfig.tags) {
+      this.config.jobConfig.tags = {};
+    }
+    this.config.jobConfig.tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
-    this.config = props;
-    this.stateMachine = this.createStateMachine(this.config.schedule);
+    this.stateMachine = this.createStateMachine(scope, Duration.minutes(30), this.config.schedule);
+
+    this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
+    this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());
   }
 
 
@@ -83,7 +94,7 @@ export class EmrOnEksSparkJob extends SparkJob {
       action: 'StartJobRun',
       iamAction: 'emr-containers:StartJobRun',
       parameters: this.config.jobConfig,
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.virtualClusterId}`],
       resultSelector: {
         'JobRunId.$': '$.Id',
       },
@@ -102,7 +113,7 @@ export class EmrOnEksSparkJob extends SparkJob {
       action: 'describeJobRun',
       iamAction: 'emr-container:DescribeJobRun',
       parameters: {
-        VirtualClusterId: this.config.jobConfig.VirtualClusterId,
+        VirtualClusterId: this.config.jobConfig.virtualClusterId,
         Id: JsonPath.stringAt('$.JobRunId'),
       },
       iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
@@ -161,37 +172,163 @@ export class EmrOnEksSparkJob extends SparkJob {
       resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
       conditions: {
         StringEquals: {
-          'emr-containers:ExecutionRoleArn': this.config.jobConfig.ExecutionRoleArn,
+          'emr-containers:ExecutionRoleArn': this.config.jobConfig.executionRoleArn,
         },
       },
     }));
   }
+
+    /**
+   * Returns the spark job execution role. Creates a new role if it is not passed as props. 
+   * @returns IRole
+   */
+    getSparkJobExecutionRole(): IRole {
+      if (!this.sparkJobExecutionRole){
+        this.sparkJobExecutionRole = Role.fromRoleArn(this, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.executionRoleArn);
+      }
+      return this.sparkJobExecutionRole;
+    }
+
+    private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
+
+      //Set defaults
+      props.jobConfig.clientToken ??= JsonPath.uuid();
+      props.jobConfig.releaseLabel ??= EmrVersion.V6_9;
+      this.config = props;
+  
+
+    }
+  
+    private setJobPropsDefaults(props: EmrOnEksSparkJobProps): void {
+  
+      const config = {'jobConfig':{}} as EmrOnEksSparkJobApiProps;
+      config.jobConfig.name = props.name; 
+      config.jobConfig.clientToken = JsonPath.uuid();
+      config.jobConfig.virtualClusterId = props.virtualClusterId;
+      config.jobConfig.jobDriver.sparkSubmitJobDriver!.entryPoint = props.sparkSubmitEntryPoint;
+      if (props.sparkSubmitEntryPointArguments) 
+        config.jobConfig.jobDriver.sparkSubmitJobDriver!.entryPointArguments=props.sparkSubmitEntryPointArguments ;
+      if (props.sparkSubmitParameters) 
+        config.jobConfig.jobDriver.sparkSubmitJobDriver!.sparkSubmitParameters = props.sparkSubmitParameters;
+  
+      config.jobConfig.configurationOverrides.applicationConfiguration ??= props.applicationConfiguration;
+
+      config.jobConfig.retryPolicyConfiguration!.maxAttempts = props.maxRetries ?? 0;
+  
+      if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/)) {
+          throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
+      }
+      
+      config.jobConfig.configurationOverrides.monitoringConfiguration!.s3MonitoringConfiguration!.logUri = this.createS3LogBucket(this.scope, props.s3LogUri);
+
+  
+      if (props.cloudWatchLogGroupName) {
+        this.createCloudWatchLogsLogGroup(this.scope, props.cloudWatchLogGroupName);
+        config.jobConfig.configurationOverrides.monitoringConfiguration!.cloudWatchMonitoringConfiguration! = {
+          logGroupName: props.cloudWatchLogGroupName ,
+          logStreamNamePrefix: props.cloudWatchLogGroupStreamPrefix ?? props.name,
+        }
+      }
+      
+  
+      config.jobConfig.tags = props.tags;
+  
+      this.config = config;
+  
+  
+    }
 }
 
 
+
+export interface EmrOnEksSparkJobProps extends SparkJobProps {
+  name: string,
+  virtualClusterId: string,
+  releaseLabel?: string, 
+  executionRoleArn?: string, 
+  sparkSubmitEntryPoint: string,
+  sparkSubmitEntryPointArguments?: [ string ], 
+  sparkSubmitParameters?: string, 
+  applicationConfiguration?: [  
+    {
+      classification: string,
+      properties: { 
+        string : string 
+      }
+    }
+  ],
+  maxRetries?: number, 
+  s3LogUri?: string,  // default = a bucket (encrypted) is created and exposed by the class
+  cloudWatchLogGroupName?: string,  // default = no cloudwatch
+  cloudWatchLogGroupStreamPrefix?: string, // default = if a CloudWatch log group is provided, the name of the application
+  tags?: { 
+    string : string 
+  }
+}
+
 /**
  * Configuration for the EMR on EKS job.
- * @param virtualClusterId The ID of the EMR on EKS cluster.
- * @param executionRoleArn The ARN of the EMR on EKS job execution role.
  * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
  */
-export interface EmrOnEksSparkJobProps extends SparkJobProps {
+export interface EmrOnEksSparkJobApiProps extends SparkJobProps {
 
   /**
    * EMR on EKS Job Configuration.
    * @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {
-    'VirtualClusterId': string;
-    'ClientToken'?: string;
-    'Name'?:string;
-    'ConfigurationOverrides'?:{ [key:string] : any};
-    'ExecutionRoleArn':string;
-    'JobDriver':{ [key:string] : any};
-    'ExecutionTimeoutMinutes'?:number;
-    'JobTemplateId'?:string;
-    'JobTemplateParameters'?:{ [key:string] : string};
-    'ReleaseLabel'?:EmrVersion;
-    'Tags'?:{ [key:string] : any};
+    virtualClusterId: string,
+    clientToken?: string,
+    configurationOverrides: { 
+       applicationConfiguration?: [ 
+          { 
+             classification: string,
+             configurations?: [ 
+              { string : string }
+             ],
+             properties: { 
+                string : string 
+             }
+          }
+       ],
+       monitoringConfiguration?: { 
+          cloudWatchMonitoringConfiguration: { 
+             logGroupName: string,
+             logStreamNamePrefix: string
+          },
+          containerLogRotationConfiguration?: { 
+             maxFilesToKeep: number,
+             rotationSize: string
+          },
+          persistentAppUI?: string,
+          s3MonitoringConfiguration?: { 
+             logUri: string
+          }
+       }
+    },
+    executionRoleArn: string,
+    jobDriver: { 
+       sparkSqlJobDriver?: { 
+          entryPoint: string,
+          sparkSqlParameters: string
+       },
+       sparkSubmitJobDriver?: { 
+          entryPoint: string,
+          entryPointArguments: [ string ],
+          sparkSubmitParameters: string
+       }
+    },
+    jobTemplateId?: string,
+    jobTemplateParameters?: { 
+       string : string 
+    },
+    name: string,
+    releaseLabel?: string,
+    retryPolicyConfiguration?: { 
+       maxAttempts: number
+    },
+    tags?: { 
+      [key:string] : any
+    }
   };
 }
