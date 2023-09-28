@@ -8,6 +8,7 @@ import { globSync } from 'glob';
 const CDK_VERSION = '2.94.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
 const JSII_VERSION = '~5.0.0';
+const KUBECTL_LAYER_VERSION='v27';
 
 const repositoryUrl = 'git@github.com:awslabs/aws-data-solutions-framework.git';
 const author = 'Amazon Web Services';
@@ -110,7 +111,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 
   deps: [
-    '@aws-cdk/lambda-layer-kubectl-v27',
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
   ],
 
   devDeps: [
@@ -122,7 +123,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'rosetta',
-    '@aws-cdk/lambda-layer-kubectl-v27',
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
   ],
 
   bundledDeps: [
@@ -228,7 +229,7 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
-    "aws-cdk.lambda-layer-kubectl-v27"
+    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
 
   venvOptions: {
