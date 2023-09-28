@@ -9,7 +9,7 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlLayer } from 'aws-cdk-lib/lambda-layer-kubectl';
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { TestStack } from './test-stack';
 import { EmrEksCluster } from '../../src/processing';
 
@@ -21,7 +21,7 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkContainersTestStack', app);
 const { stack } = testStack;
 
-const kubectlLayer = new KubectlLayer(stack, 'kubectlLayer');
+const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
 
 // creation of the construct(s) under test
 const emrEksCluster = EmrEksCluster.getOrCreate(stack, {

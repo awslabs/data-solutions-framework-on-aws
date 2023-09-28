@@ -10,14 +10,14 @@
 import { Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlLayer } from 'aws-cdk-lib/lambda-layer-kubectl';
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { EmrEksCluster } from '../../../src/processing';
 
 const emrEksClusterStack = new Stack();
 const emrEksClusterStackWithEmrServiceLinkedRole = new Stack();
 
-const kubectlLayer = new KubectlLayer(emrEksClusterStack, 'kubectlLayer');
-const kubectlLayerServiceLinkedRole = new KubectlLayer(emrEksClusterStackWithEmrServiceLinkedRole, 'kubectlLayer');
+const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+const kubectlLayerServiceLinkedRole = new KubectlV27Layer(emrEksClusterStackWithEmrServiceLinkedRole, 'kubectlLayer');
 
 const emrEksCluster = EmrEksCluster.getOrCreate(emrEksClusterStack, {
   eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
