@@ -189,9 +189,9 @@ export class EmrEksCluster extends TrackedConstruct {
   }
 
   public readonly eksCluster: Cluster;
-  public readonly notebookDefaultConfig: string;
-  public readonly criticalDefaultConfig: string;
-  public readonly sharedDefaultConfig: string;
+  public readonly notebookDefaultConfig?: string;
+  public readonly criticalDefaultConfig?: string;
+  public readonly sharedDefaultConfig?: string;
   public readonly podTemplateLocation: Location;
   public readonly assetBucket: Bucket;
   public readonly clusterName: string;
@@ -281,7 +281,7 @@ export class EmrEksCluster extends TrackedConstruct {
       });
 
       //Setting up the cluster with the required controller
-      eksClusterSetup(this.eksCluster, scope, props.eksAdminRoleArn, ec2InstanceNodeGroupRole);
+      eksClusterSetup(this.eksCluster, scope, props.eksAdminRoleArn, ec2InstanceNodeGroupRole, EmrEksCluster.DEFAULT_EKS_VERSION);
 
       //Deploy karpenter
       this.karpenterChart = karpenterSetup(
@@ -374,6 +374,8 @@ export class EmrEksCluster extends TrackedConstruct {
         managedPolicies: [lambdaExecutionRolePolicy],
       });
 
+    
+    if (props.defaultNodes) {
 
     // Upload the default podTemplate to the Amazon S3 asset bucket
     this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'));
@@ -398,6 +400,8 @@ export class EmrEksCluster extends TrackedConstruct {
       description: 'Use podTemplates in Amazon EMR jobs from this Amazon S3 Location',
       value: this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}`),
     });
+      
+    }
 
   }
 

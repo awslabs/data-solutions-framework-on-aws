@@ -3,7 +3,7 @@
 
 import { Duration, Fn, Stack, Tags } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType } from 'aws-cdk-lib/aws-eks';
+import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -13,6 +13,7 @@ import { EmrEksCluster } from './emr-eks-cluster';
 import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
 import { Utils } from '../../../utils';
+import { ALB_CONTROLLER_HELM_CHART_VERSION, CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
 
 
 /**
@@ -23,7 +24,7 @@ import { Utils } from '../../../utils';
  * @param {string} eksAdminRoleArn The admin role of the EKS cluster
  * @param {Role} nodeRole: The IAM role used for instance profile by Karpenter
  */
-export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRoleArn: string, nodeRole: Role) {
+export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRoleArn: string, nodeRole: Role, eksClusterK8sVersion: KubernetesVersion) {
 
   // Add the provided Amazon IAM Role as Amazon EKS Admin
   cluster.awsAuth.addMastersRole(Role.fromRoleArn( scope, 'AdminRole', eksAdminRoleArn ), 'AdminRole');
@@ -47,7 +48,7 @@ export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRole
     addonName: 'aws-ebs-csi-driver',
     clusterName: cluster.clusterName,
     serviceAccountRoleArn: ebsCsiDriverIrsa.role.roleArn,
-    addonVersion: 'v1.18.0-eksbuild.1',
+    addonVersion: EBS_CSI_DRIVER_ADDON_VERSION.get(EmrEksCluster.DEFAULT_EKS_VERSION),
     resolveConflicts: 'OVERWRITE',
   });
 
@@ -59,7 +60,7 @@ export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRole
     namespace: 'cert-manager',
     chart: 'cert-manager',
     repository: 'https://charts.jetstack.io',
-    version: '1.11.2',
+    version: CERTMANAGER_HELM_CHART_VERSION.get(EmrEksCluster.DEFAULT_EKS_VERSION),
     timeout: Duration.minutes(14),
     values: {
       startupapicheck: {
@@ -87,7 +88,7 @@ export function eksClusterSetup(cluster: Cluster, scope: Construct, eksAdminRole
     chart: 'aws-load-balancer-controller',
     repository: 'https://aws.github.io/eks-charts',
     namespace: 'kube-system',
-    version: '1.5.2',
+    version: ALB_CONTROLLER_HELM_CHART_VERSION.get(eksClusterK8sVersion),
     timeout: Duration.minutes(14),
     values: {
       clusterName: cluster.clusterName,
