@@ -5,7 +5,7 @@
  */
 
 :root {
-  --ifm-color-primary: #090909; /* #146ee6; */
+  --ifm-color-primary: #131212; /* #146ee6; */
   --ifm-menu-color: #525151;
   --ifm-font-color-base: rgba(30, 32, 34, 1);
   --ifm-navbar-background-color: white;
@@ -40,10 +40,22 @@ html[data-theme="dark"] {
   /*font-family: 'Roboto Mono for Powerline', sans-serif;*/
 }
 
+.hero__subtitle {
+  color: #000;
+  font-size: 2.3em;
+  font-weight: 400;
+}
+
 .button-3d {
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  background-color: #25ced1;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   transform: translateY(-5px);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.4s ease-in-out;
+}
+
+.button-3d:hover {
+  background-color: #fff;
+  color: #25ced1;
 }
 
 .button-sparkles {
@@ -67,9 +79,6 @@ html[data-theme="dark"] {
 }
 
 
-.hero__subtitle {
-  animation: float 2s ease-in-out infinite;
-}
 
 @keyframes float {
   0% {

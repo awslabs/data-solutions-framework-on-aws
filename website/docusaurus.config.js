@@ -10,7 +10,7 @@ const organization = 'awslabs'
 
 const config = {
   title: niceProjectName,
-  tagline: '🚀 Accelerate building your data analytics solutions on AWS 🚀',
+  tagline: 'Accelerate building your data analytics solutions with AWS Data Solutions Framework',
   url: 'https://' + organization + '.github.io',
   baseUrl: '/',
   trailingSlash: false,
@@ -70,7 +70,7 @@ const config = {
           type: 'doc',
           docId: 'intro',
           position: 'left',
-          label: 'Introduction',
+          label: 'Quick start',
         },
         {
           type: 'doc',
@@ -82,7 +82,7 @@ const config = {
           type: 'doc',
           docId: 'solutions/index',
           position: 'left',
-          label: 'Data solutions'
+          label: 'Examples'
         },
         {
           href: 'https://github.com/' + organization + '/' + projectName,
@@ -93,7 +93,7 @@ const config = {
     },
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: false,
+      disableSwitch: true,
       respectPrefersColorScheme: true,
     },
     docs: {
@@ -103,27 +103,7 @@ const config = {
       }
     },
     footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Get Started',
-          items: [
-            {
-              label: 'Docs',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
-          title: 'Get Involved',
-          items: [
-            {
-              label: 'Github',
-              href: 'https://github.com/' + organization + '/' + projectName,
-            }
-          ],
-        },
-      ],
+      style: 'light',
       copyright: `Amazon.com, Inc. or its affiliates. All Rights Reserved`,
     },
     prism: {

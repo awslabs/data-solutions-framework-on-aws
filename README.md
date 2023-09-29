@@ -1,6 +1,6 @@
 # AWS Data Solutions Framework
 
-![ADSF logo](website/static/img/adsf-github-logo.png)
+![ADSF logo](website/static/img/adsf-logo.png)
 
 AWS Data Solutions Framework (AWS DSF) is a framework for implementation and delivery of analytics solutions with built-in AWS best practices. AWS DSF is an abstraction atop AWS services based on [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) [L3 constructs](https://docs.aws.amazon.com/cdk/v2/guide/constructs.html), packaged as a library.
 
