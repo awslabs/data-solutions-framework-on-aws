@@ -62,7 +62,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   sparkJobExecutionRole?: IRole;
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
-    super(scope, id, EmrServerlessSparkJob.name);
+    super(scope, id, EmrServerlessSparkJob.name, props as SparkJobProps);
 
     if ('jobConfig' in props) {
       this.setJobApiPropsDefaults(props as EmrServerlessSparkJobApiProps);
@@ -299,13 +299,13 @@ export class EmrServerlessSparkJob extends SparkJob {
  */
 
 export interface EmrServerlessSparkJobProps {
-  Name: string;
-  ApplicationId: string;
-  ExecutionRoleArn?: string;
-  SparkSubmitEntryPoint: string;
-  SparkSubmitEntryPointArguments?: [ string ];
-  SparkSubmitParameters?: string;
-  ApplicationConfiguration?: [
+  readonly Name: string;
+  readonly ApplicationId: string;
+  readonly ExecutionRoleArn?: string;
+  readonly SparkSubmitEntryPoint: string;
+  readonly SparkSubmitEntryPointArguments?: [ string ];
+  readonly SparkSubmitParameters?: string;
+  readonly ApplicationConfiguration?: [
     {
       Classification: string;
       Configurations: [{ [key: string]: any }];
@@ -314,16 +314,16 @@ export interface EmrServerlessSparkJobProps {
       };
     }
   ];
-  ExecutionTimeoutMinutes?: number;
-  PersistentAppUi?: boolean;
-  PersistentAppUIKeyArn?: string;
-  S3LogUri?: string;
-  S3LogUriKeyArn?: string;
-  CloudWatchLogGroupName?: string;
-  CloudWatchEncryptionKeyArn?: string;
-  CloudWatchLogGroupStreamPrefix?: string;
-  CloudWatchLogtypes?: string;
-  Tags?: {
+  readonly ExecutionTimeoutMinutes?: number;
+  readonly PersistentAppUi?: boolean;
+  readonly PersistentAppUIKeyArn?: string;
+  readonly S3LogUri?: string;
+  readonly S3LogUriKeyArn?: string;
+  readonly CloudWatchLogGroupName?: string;
+  readonly CloudWatchEncryptionKeyArn?: string;
+  readonly CloudWatchLogGroupStreamPrefix?: string;
+  readonly CloudWatchLogtypes?: string;
+  readonly Tags?: {
     string : string;
   };
 

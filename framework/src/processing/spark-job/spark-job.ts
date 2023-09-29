@@ -11,7 +11,7 @@ import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-li
 import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { TrackedConstruct, TrackedConstructProps } from '../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
  * A base construct to run Spark Jobs
@@ -37,18 +37,27 @@ export abstract class SparkJob extends TrackedConstruct {
    */
   protected cloudwatchGroup?: LogGroup;
 
+
+  /**
+   * resourceRemovalPolicy  
+   */
+
+  private resourceRemovalPolicy: RemovalPolicy;
+
+  
   /**
    * Constructs a new instance of the SparkJob class.
    * @param scope the Scope of the CDK Construct.
    * @param id the ID of the CDK Construct.
    * @param props the SparkJobProps properties.
    */
-  constructor(scope: Construct, id: string, trackingTag: string) {
+  constructor(scope: Construct, id: string, trackingTag: string, props: SparkJobProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: trackingTag,
     };
 
     super(scope, id, trackedConstructProps);
+    this.resourceRemovalPolicy = Context.revertRemovalPolicy(scope,props.resourceRemovalPolicy);
   }
 
   /**
@@ -124,8 +133,8 @@ export abstract class SparkJob extends TrackedConstruct {
     );
 
     // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(scope, 'LogGroup', {
-      retention: RetentionDays.ONE_MONTH,
+    const logGroup = new LogGroup(scope, 'LogGroup',{
+      removalPolicy: this.resourceRemovalPolicy
     });
 
     // StepFunctions state machine
@@ -157,11 +166,12 @@ export abstract class SparkJob extends TrackedConstruct {
    * @returns string S3 path to store the logs.
    */
   protected createS3LogBucket(scope:Construct, s3LogUri?:string, encryptionKeyArn?:string): string {
+    
     if (! this.s3LogBucket) {
       this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(scope, 'S3LogBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(scope, 'S3LogBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,
-        removalPolicy: RemovalPolicy.DESTROY,
+        removalPolicy: this.resourceRemovalPolicy,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
         encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
       });
@@ -181,8 +191,8 @@ export abstract class SparkJob extends TrackedConstruct {
     if (! this.cloudwatchGroup) {
       this.cloudwatchGroup = new LogGroup(scope, 'CloudWatchLogsLogGroup', {
         logGroupName: name,
-        retention: RetentionDays.ONE_MONTH,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
+        removalPolicy: this.resourceRemovalPolicy
       });
     }
 
@@ -197,6 +207,11 @@ export abstract class SparkJob extends TrackedConstruct {
  */
 export interface SparkJobProps {
 
+  /**
+   * Resource Removal Policy. @default - global removal policy @see Context.removalPolicy 
+   */
+  readonly resourceRemovalPolicy?: RemovalPolicy;
+  
   /**
    * Schedule to run the Step Functions state machine.
    * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]

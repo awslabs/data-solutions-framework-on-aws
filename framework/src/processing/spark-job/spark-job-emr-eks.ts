@@ -64,7 +64,7 @@ export class EmrOnEksSparkJob extends SparkJob {
   sparkJobExecutionRole?: IRole;
 
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps | EmrOnEksSparkJobApiProps) {
-    super(scope, id, EmrOnEksSparkJob.name);
+    super(scope, id, EmrOnEksSparkJob.name, props as SparkJobProps);
     this.scope = scope;
 
     if ('jobConfig' in props) {
@@ -260,14 +260,14 @@ export class EmrOnEksSparkJob extends SparkJob {
  */
 
 export interface EmrOnEksSparkJobProps extends SparkJobProps {
-  Name: string;
-  VirtualClusterId: string;
-  ReleaseLabel?: string;
-  ExecutionRoleArn?: string;
-  SparkSubmitEntryPoint: string;
-  SparkSubmitEntryPointArguments?: [ string ];
-  SparkSubmitParameters?: string;
-  ApplicationConfiguration?: [
+  readonly Name: string;
+  readonly VirtualClusterId: string;
+  readonly ReleaseLabel?: string;
+  readonly ExecutionRoleArn?: string;
+  readonly SparkSubmitEntryPoint: string;
+  readonly SparkSubmitEntryPointArguments?: [ string ];
+  readonly SparkSubmitParameters?: string;
+  readonly ApplicationConfiguration?: [
     {
       Classification: string;
       Properties: {
@@ -275,11 +275,11 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
       };
     }
   ];
-  MaxRetries?: number;
-  S3LogUri?: string; // default = a bucket (encrypted) is created and exposed by the class
-  CloudWatchLogGroupName?: string; // default = no cloudwatch
-  CloudWatchLogGroupStreamPrefix?: string; // default = if a CloudWatch log group is provided, the name of the application
-  Tags?: {
+  readonly MaxRetries?: number;
+  readonly S3LogUri?: string; 
+  readonly CloudWatchLogGroupName?: string; 
+  readonly CloudWatchLogGroupStreamPrefix?: string;
+  readonly Tags?: {
     string : string;
   };
 }
