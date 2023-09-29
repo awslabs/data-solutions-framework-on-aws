@@ -4950,6 +4950,7 @@ public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty
+- *Default:* a VPC is created
 
 The network configuration for customer VPC connectivity for the application.
 
