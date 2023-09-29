@@ -29,12 +29,20 @@ MIT License
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
 
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
 
 The following npm packages may be included in this product:
 
  - @aws-cdk/asset-awscli-v1@2.2.200
  - @aws-cdk/asset-kubectl-v20@2.1.2
- - @aws-cdk/asset-node-proxy-agent-v5@2.0.166
+ - @aws-cdk/asset-node-proxy-agent-v6@2.0.1
  - constructs@10.2.55
 
 These packages each contain the following license and notice below:
@@ -529,7 +537,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 The following npm package may be included in this product:
 
- - aws-cdk-lib@2.84.0
+ - aws-cdk-lib@2.94.0
 
 This package contains the following license and notice below:
 
@@ -1154,7 +1162,7 @@ The following npm packages may be included in this product:
 
  - lru-cache@6.0.0
  - minimatch@3.1.2
- - semver@7.5.1
+ - semver@7.5.4
  - yallist@4.0.0
 
 These packages each contain the following license and notice below:
@@ -1308,6 +1316,34 @@ The views and conclusions contained in the software and documentation are those 
 
 -----------
 
+The following npm package may be included in this product:
+
+ - yaml@1.10.2
+
+This package contains the following license and notice below:
+
+Copyright 2018 Eemeli Aro <eemeli@gmail.com>
+
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted, provided that the above copyright notice
+and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+THIS SOFTWARE.
+
+-----------
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
+
+
+This file was generated with the generate-license-file npm package!
+https://www.npmjs.com/package/generate-license-file
 
 The following npm packages may be included in this product:
 
@@ -7487,6 +7523,7 @@ The following npm packages may be included in this product:
  - loader-utils@2.0.4
  - loader-utils@3.2.1
  - mini-css-extract-plugin@2.7.6
+ - raw-loader@4.0.2
  - schema-utils@2.7.0
  - schema-utils@2.7.1
  - schema-utils@3.3.0
@@ -19996,6 +20033,36 @@ THE SOFTWARE.
 
 The following npm package may be included in this product:
 
+ - require-from-string@2.0.2
+
+This package contains the following license and notice below:
+
+The MIT License (MIT)
+
+Copyright (c) Vsevolod Strukchinsky <floatdrop@gmail.com> (github.com/floatdrop)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-----------
+
+The following npm package may be included in this product:
+
  - require-like@0.1.2
 
 This package contains the following license and notice below:
@@ -24597,7 +24664,6 @@ TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
 
 -----------
-
 
 This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
