@@ -185,16 +185,16 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
 
   parent: rootProject,
   outdir: 'example',
- 
+
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   cdkVersionPinning: true,
-  
+
   pytest: true,
   devDeps: [
     "pytest",
   ],
-
+  pythonExec: 'python3',
   venvOptions: {
     envdir: '.venv'
   },
