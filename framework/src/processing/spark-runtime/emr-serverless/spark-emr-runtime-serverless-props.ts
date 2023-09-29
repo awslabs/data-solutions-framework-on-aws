@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { aws_emrserverless, IResolvable } from 'aws-cdk-lib';
+import { aws_emrserverless, IResolvable, RemovalPolicy } from 'aws-cdk-lib';
 import { EmrRuntimeVersion } from '../../../utils';
 
 /**
@@ -18,8 +18,18 @@ export interface SparkEmrServerlessRuntimeProps {
   aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty>;
   /**
    * The network configuration for customer VPC connectivity for the application.
+   * If no configuration is created, the a VPC with 3 public subnets and 3 private subnets is created
+   * The VPC has a NAT Gateway and an S3 endpoint
    */
   readonly networkConfiguration?: IResolvable | aws_emrserverless.CfnApplication.NetworkConfigurationProperty;
+    /**
+   * If no VPC is provided, it is created with vpc flowlog activated
+   * This prop control if the logs should be deleted when the stack is deleted 
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
+    readonly vpcFlowlogRemovalPolicy?: RemovalPolicy;
   /**
    * The name of the application. The name must be less than 64 characters.
    *

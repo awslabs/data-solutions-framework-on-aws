@@ -3694,6 +3694,7 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | --- | --- | --- |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -3713,6 +3714,16 @@ The tree node.
 
 ```typescript
 public readonly applicationArn: string;
+```
+
+- *Type:* string
+
+---
+
+##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@adsf/framework.SparkEmrServerlessRuntime.property.applicationId"></a>
+
+```typescript
+public readonly applicationId: string;
 ```
 
 - *Type:* string
@@ -4839,6 +4850,7 @@ const sparkEmrServerlessRuntimeProps: SparkEmrServerlessRuntimeProps = { ... }
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrRuntimeVersion">EmrRuntimeVersion</a></code> | The EMR release version associated with the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.vpcFlowlogRemovalPolicy">vpcFlowlogRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | If no VPC is provided, it is created with vpc flowlog activated This prop control if the logs should be deleted when the stack is deleted  The removal policy when deleting the CDK resource. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
@@ -4941,6 +4953,9 @@ public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty
 
 The network configuration for customer VPC connectivity for the application.
 
+If no configuration is created, the a VPC with 3 public subnets and 3 private subnets is created
+The VPC has a NAT Gateway and an S3 endpoint
+
 ---
 
 ##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.releaseLabel"></a>
@@ -4956,6 +4971,21 @@ The EMR release version associated with the application.
 The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
 
 > [EMR_DEFAULT_VERSION](EMR_DEFAULT_VERSION)
+
+---
+
+##### `vpcFlowlogRemovalPolicy`<sup>Optional</sup> <a name="vpcFlowlogRemovalPolicy" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.vpcFlowlogRemovalPolicy"></a>
+
+```typescript
+public readonly vpcFlowlogRemovalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+If no VPC is provided, it is created with vpc flowlog activated This prop control if the logs should be deleted when the stack is deleted  The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value
 
 ---
 

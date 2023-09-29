@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+import { Stack } from 'aws-cdk-lib';
 import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
 import { EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { vpcBootstrap } from '../../../utils/vpc-helper';
 
 /**
 * A construct to create a Spark EMR Serverless Application
@@ -134,6 +137,10 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   // This is used to expose the ARN of the application to the user.
   public readonly applicationArn: string;
 
+  //The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example
+  // This is used to expose the id of the application to the user.
+  public readonly applicationId: string;
+
   /**
      * @param {Construct} scope the Scope of the CDK Construct
      * @param {string} id the ID of the CDK Construct
@@ -150,13 +157,38 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
     const emrReleaseLabel: EmrRuntimeVersion = props.releaseLabel ? props.releaseLabel : EMR_DEFAULT_VERSION;
 
+    const logKmsKey: Key = Stack.of(scope).node.tryFindChild('logKmsKey') as Key ?? new Key(scope, 'logKmsKey', {
+      enableKeyRotation: true,
+      alias: 'log-vpc-key',
+    });
+
+    let networkConf = undefined;
+
+    if (!props.networkConfiguration) {
+      const vpc = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.vpcFlowlogRemovalPolicy, undefined, props.name);
+
+      let privateSubnetIds: string [] = [];
+
+      vpc.privateSubnets.forEach( function (subnet) {
+        privateSubnetIds.push(subnet.subnetId);
+      });
+
+      networkConf = {
+        securityGroupIds: undefined,
+        subnetIds: privateSubnetIds,
+      };
+    }
+
+
     const sparkApplication: CfnApplication = new CfnApplication(scope, `spark-serverless-application-${props.name}`, {
       ...props,
+      networkConfiguration: props.networkConfiguration ?? networkConf,
       releaseLabel: emrReleaseLabel,
       type: 'Spark',
     });
 
     this.applicationArn = sparkApplication.attrArn;
+    this.applicationId = sparkApplication.attrApplicationId;
   }
 
   /**
