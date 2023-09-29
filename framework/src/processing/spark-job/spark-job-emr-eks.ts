@@ -79,7 +79,7 @@ export class EmrOnEksSparkJob extends SparkJob {
     }
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
-    this.stateMachine = this.createStateMachine(scope, Duration.minutes(30), this.config.schedule);
+    this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(30), this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
     this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());
@@ -159,6 +159,14 @@ export class EmrOnEksSparkJob extends SparkJob {
 
   getJobStatusFailed(): string {
     return 'FAILED';
+  }
+
+  /**
+   * Returns the status of the EMR Serverless job that is cancelled based on the GetJobRun API response
+   * @returns string
+   */
+  protected getJobStatusCancelled(): string {
+    return 'CANCELLED';
   }
 
   /**
@@ -276,8 +284,8 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
     }
   ];
   readonly MaxRetries?: number;
-  readonly S3LogUri?: string; 
-  readonly CloudWatchLogGroupName?: string; 
+  readonly S3LogUri?: string;
+  readonly CloudWatchLogGroupName?: string;
   readonly CloudWatchLogGroupStreamPrefix?: string;
   readonly Tags?: {
     string : string;

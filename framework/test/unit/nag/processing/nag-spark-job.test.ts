@@ -61,7 +61,7 @@ new EmrServerlessSparkJob(stack, 'SparkJob', {
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 
-NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/EmrPipeline/Role/DefaultPolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/EmrPipeline-SparkJob/Role/DefaultPolicy/Resource', [
   { id: 'AwsSolutions-IAM5', reason: 'Job runs generated automatically hence we have to use *' },
 ]);
 

@@ -6,7 +6,7 @@ import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
@@ -39,12 +39,12 @@ export abstract class SparkJob extends TrackedConstruct {
 
 
   /**
-   * resourceRemovalPolicy  
+   * resourceRemovalPolicy
    */
 
   private resourceRemovalPolicy: RemovalPolicy;
 
-  
+
   /**
    * Constructs a new instance of the SparkJob class.
    * @param scope the Scope of the CDK Construct.
@@ -57,7 +57,7 @@ export abstract class SparkJob extends TrackedConstruct {
     };
 
     super(scope, id, trackedConstructProps);
-    this.resourceRemovalPolicy = Context.revertRemovalPolicy(scope,props.resourceRemovalPolicy);
+    this.resourceRemovalPolicy = Context.revertRemovalPolicy(scope, props.resourceRemovalPolicy);
   }
 
   /**
@@ -91,6 +91,11 @@ export abstract class SparkJob extends TrackedConstruct {
   protected abstract getJobStatusFailed(): string;
 
   /**
+   * Returns the status of the Spark job that is cancelled based on the GetJobRun API response
+   */
+  protected abstract getJobStatusCancelled(): string;
+
+  /**
    * Returns the Spark Job Execution Role
    * @param scope the Scope of the CDK Construct.
    * @returns IRole
@@ -106,39 +111,41 @@ export abstract class SparkJob extends TrackedConstruct {
 
   /**
    * Creates a State Machine that orchestrates the Spark Job. This is a default implementation that can be overridden by the extending class.
-   * @param scope the Scope of the CDK Construct.
+   * @param scope scope of the CDK Construct.
+   * @param id ID of the CDK Construct.
    * @param jobTimeout Timeout for the state machine. @defautl 30 minutes
    * @param schedule Schedule to run the state machine. @default no schedule
    * @returns StateMachine
    */
-  protected createStateMachine(scope:Construct, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
+  protected createStateMachine(scope: Construct, id: string, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
 
-    const emrStartJobTask = new CallAwsService(scope, 'EmrStartJobTask', this.getJobStartTaskProps());
+    const emrStartJobTask = new CallAwsService(scope, `EmrStartJobTask-${id}`, this.getJobStartTaskProps());
 
-    const emrMonitorJobTask = new CallAwsService(scope, 'EmrMonitorJobTask', this.getJobMonitorTaskProps());
+    const emrMonitorJobTask = new CallAwsService(scope, `EmrMonitorJobTask-${id}`, this.getJobMonitorTaskProps());
 
-    const wait = new Wait(scope, 'Wait', {
+    const wait = new Wait(scope, `Wait-${id}`, {
       time: WaitTime.duration(Duration.seconds(60)),
     });
 
-    const jobFailed = new Fail(scope, 'JobFailed', this.getJobFailTaskProps());
+    const jobFailed = new Fail(scope, `JobFailed-${id}`, this.getJobFailTaskProps());
 
-    const jobSucceeded = new Succeed(scope, 'JobSucceeded');
+    const jobSucceeded = new Succeed(scope, `JobSucceeded-${id}`);
 
     const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
-      new Choice(scope, 'JobSucceededOrFailed')
+      new Choice(scope, `JobSucceededOrFailed-${id}`)
         .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusSucceed()), jobSucceeded)
         .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusFailed()), jobFailed)
+        .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusCancelled()), jobFailed)
         .otherwise(wait),
     );
 
     // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(scope, 'LogGroup',{
-      removalPolicy: this.resourceRemovalPolicy
+    const logGroup = new LogGroup(scope, 'LogGroup', {
+      removalPolicy: this.resourceRemovalPolicy,
     });
 
     // StepFunctions state machine
-    const stateMachine: StateMachine = new StateMachine(scope, 'EmrPipeline', {
+    const stateMachine: StateMachine = new StateMachine(scope, `EmrPipeline-${id}`, {
       definition: emrPipelineChain,
       tracingEnabled: true,
       timeout: jobTimeout ?? Duration.minutes(30),
@@ -150,7 +157,7 @@ export abstract class SparkJob extends TrackedConstruct {
 
     this.grantExecutionRole(stateMachine.role);
     if (schedule) {
-      new Rule(scope, 'SparkJobPipelineTrigger', {
+      new Rule(scope, `SparkJobPipelineTrigger-${id}`, {
         schedule: schedule,
         targets: [new SfnStateMachine(stateMachine)],
       });
@@ -166,7 +173,7 @@ export abstract class SparkJob extends TrackedConstruct {
    * @returns string S3 path to store the logs.
    */
   protected createS3LogBucket(scope:Construct, s3LogUri?:string, encryptionKeyArn?:string): string {
-    
+
     if (! this.s3LogBucket) {
       this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(scope, 'S3LogBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(scope, 'S3LogBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
@@ -192,7 +199,7 @@ export abstract class SparkJob extends TrackedConstruct {
       this.cloudwatchGroup = new LogGroup(scope, 'CloudWatchLogsLogGroup', {
         logGroupName: name,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
-        removalPolicy: this.resourceRemovalPolicy
+        removalPolicy: this.resourceRemovalPolicy,
       });
     }
 
@@ -208,10 +215,10 @@ export abstract class SparkJob extends TrackedConstruct {
 export interface SparkJobProps {
 
   /**
-   * Resource Removal Policy. @default - global removal policy @see Context.removalPolicy 
+   * Resource Removal Policy. @default - global removal policy @see Context.removalPolicy
    */
   readonly resourceRemovalPolicy?: RemovalPolicy;
-  
+
   /**
    * Schedule to run the Step Functions state machine.
    * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
