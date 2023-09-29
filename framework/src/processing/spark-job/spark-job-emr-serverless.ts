@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Aws, Duration } from 'aws-cdk-lib';
-import { Effect, IRole, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
+import { Effect, PolicyStatement, Role, IRole, PolicyDocument } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -59,7 +59,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   /**
    * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
    */
-  sparkJobExecutionRole?: IRole;
+  public sparkJobExecutionRole?: IRole;
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
     super(scope, id, EmrServerlessSparkJob.name, props as SparkJobProps);
@@ -166,8 +166,6 @@ export class EmrServerlessSparkJob extends SparkJob {
    */
   getSparkJobExecutionRole(scope:Construct): IRole {
 
-    console.log(`${this.config.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')}`);
-
     if (!this.sparkJobExecutionRole) {
       this.sparkJobExecutionRole = this.config.jobConfig.ExecutionRoleArn ?
         Role.fromRoleArn(scope, 'SparkJobEmrServerlessExecutionRole', this.config.jobConfig.ExecutionRoleArn) :
@@ -177,7 +175,7 @@ export class EmrServerlessSparkJob extends SparkJob {
             actions: [
               's3:GetObject',
             ],
-            resources: ['arn:aws:s3:::alexvt-adx-emr-eks/pi.py'],
+            resources: [`${this.config.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')}`],
           })],
         }));
     }
@@ -192,7 +190,7 @@ export class EmrServerlessSparkJob extends SparkJob {
    * @see SparkRuntimeServerless.grantJobExecution
    */
 
-  grantExecutionRole(role: IRole): void {
+  grantExecutionRole(role: Role): void {
 
     const arn = `arn:aws:emr-serverless:${Aws.REGION}:${Aws.ACCOUNT_ID}:/applications/${this.config.jobConfig.ApplicationId}`;
     role.addToPrincipalPolicy(new PolicyStatement({
@@ -241,6 +239,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     config.jobConfig.Name = props.Name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.ExecutionTimeoutMinutes = props.ExecutionTimeoutMinutes ?? 30;
+    config.jobConfig.ExecutionRoleArn=props.ExecutionRoleArn ?? this.getSparkJobExecutionRole(scope).roleArn;
     config.jobConfig.ApplicationId = props.ApplicationId;
     config.jobConfig.JobDriver.SparkSubmit.EntryPoint = props.SparkSubmitEntryPoint;
 

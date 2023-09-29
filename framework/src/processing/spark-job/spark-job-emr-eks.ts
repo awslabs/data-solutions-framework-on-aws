@@ -47,7 +47,7 @@ import { EmrRuntimeVersion, TrackedConstruct } from '../../utils';
  *                   },
  *               }
  *          }
- * } as EmrServerlessSparkJobProps);
+ * } as EmrServerlessSparkJobApiProps);
  *
  * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
  *   value: job.stateMachine.stateMachineArn,
@@ -70,7 +70,7 @@ export class EmrOnEksSparkJob extends SparkJob {
     if ('jobConfig' in props) {
       this.setJobApiPropsDefaults(props as EmrOnEksSparkJobApiProps);
     } else {
-      this.setJobPropsDefaults(props as EmrOnEksSparkJobProps);
+      this.setJobPropsDefaults(scope, props as EmrOnEksSparkJobProps);
     }
 
     //Tag the AWs Step Functions State Machine
@@ -79,10 +79,11 @@ export class EmrOnEksSparkJob extends SparkJob {
     }
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
-    this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(30), this.config.schedule);
+    const executionTimeout = props.ExecutionTimeoutMinutes ?? 30;
+    this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(executionTimeout), this.config.schedule);
 
-    this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
-    this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());
+    this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole(scope));
+    this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole(scope));
   }
 
 
@@ -194,9 +195,9 @@ export class EmrOnEksSparkJob extends SparkJob {
    * Returns the spark job execution role. Creates a new role if it is not passed as props.
    * @returns IRole
    */
-  getSparkJobExecutionRole(): IRole {
+  getSparkJobExecutionRole(scope:Construct): IRole {
     if (!this.sparkJobExecutionRole) {
-      this.sparkJobExecutionRole = Role.fromRoleArn(this, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.ExecutionRoleArn);
+      this.sparkJobExecutionRole = Role.fromRoleArn(scope, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.ExecutionRoleArn);
     }
     return this.sparkJobExecutionRole;
   }
@@ -213,7 +214,6 @@ export class EmrOnEksSparkJob extends SparkJob {
     props.jobConfig.ReleaseLabel ??= EmrRuntimeVersion.V6_9;
     this.config = props;
 
-
   }
 
   /**
@@ -221,12 +221,25 @@ export class EmrOnEksSparkJob extends SparkJob {
      * @param props EmrOnEksSparkJobProps
      */
 
-  private setJobPropsDefaults(props: EmrOnEksSparkJobProps): void {
+  private setJobPropsDefaults(scope:Construct, props: EmrOnEksSparkJobProps): void {
 
-    const config = { jobConfig: {} } as EmrOnEksSparkJobApiProps;
+    const config = {
+      jobConfig: {
+        ConfigurationOverrides: {
+          MonitoringConfiguration: {
+            S3MonitoringConfiguration: {},
+          },
+        },
+        RetryPolicyConfiguration: {},
+        JobDriver: {
+          SparkSubmitJobDriver: {},
+        },
+      },
+    } as EmrOnEksSparkJobApiProps;
     config.jobConfig.Name = props.Name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.VirtualClusterId = props.VirtualClusterId;
+    config.jobConfig.ExecutionRoleArn=props.ExecutionRoleArn ?? this.getSparkJobExecutionRole(scope).roleArn;
     config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPoint = props.SparkSubmitEntryPoint;
     if (props.SparkSubmitEntryPointArguments) {
       config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPointArguments=props.SparkSubmitEntryPointArguments ;
@@ -272,6 +285,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
   readonly VirtualClusterId: string;
   readonly ReleaseLabel?: string;
   readonly ExecutionRoleArn?: string;
+  readonly ExecutionTimeoutMinutes?:number;
   readonly SparkSubmitEntryPoint: string;
   readonly SparkSubmitEntryPointArguments?: [ string ];
   readonly SparkSubmitParameters?: string;
@@ -298,6 +312,12 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
  * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
  */
 export interface EmrOnEksSparkJobApiProps extends SparkJobProps {
+
+  /**
+   * Job execution timeout in minutes. @default 30
+   */
+
+  readonly ExecutionTimeoutMinutes?: number;
 
   /**
    * EMR on EKS Job Configuration.
