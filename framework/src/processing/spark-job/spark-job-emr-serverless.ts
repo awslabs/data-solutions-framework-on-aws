@@ -54,7 +54,6 @@ import { TrackedConstruct } from '../../utils';
  * ```
  */
 export class EmrServerlessSparkJob extends SparkJob {
-  private scope: Construct;
   private config!: EmrServerlessSparkJobApiProps;
 
   /**
@@ -64,11 +63,11 @@ export class EmrServerlessSparkJob extends SparkJob {
 
   constructor(scope: Construct, id: string, props: EmrServerlessSparkJobProps | EmrServerlessSparkJobApiProps) {
     super(scope, id, EmrServerlessSparkJob.name);
-    this.scope = scope;
+
     if ('jobConfig' in props) {
       this.setJobApiPropsDefaults(props as EmrServerlessSparkJobApiProps);
     } else {
-      this.setJobPropsDefaults(props as EmrServerlessSparkJobProps);
+      this.setJobPropsDefaults(scope, props as EmrServerlessSparkJobProps);
     }
     //Tag the AWs Step Functions State Machine
     if (!this.config.jobConfig.Tags) {
@@ -78,8 +77,8 @@ export class EmrServerlessSparkJob extends SparkJob {
 
     this.stateMachine = this.createStateMachine(scope, Duration.minutes(5+this.config.jobConfig.ExecutionTimeoutMinutes!), this.config.schedule);
 
-    this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
-    this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());
+    this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole(scope));
+    this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole(scope));
 
   }
 
@@ -157,17 +156,20 @@ export class EmrServerlessSparkJob extends SparkJob {
    * Returns the spark job execution role. Creates a new role if it is not passed as props.
    * @returns IRole
    */
-  getSparkJobExecutionRole(): IRole {
+  getSparkJobExecutionRole(scope:Construct): IRole {
+
+    console.log(`${this.config.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')}`);
+
     if (!this.sparkJobExecutionRole) {
       this.sparkJobExecutionRole = this.config.jobConfig.ExecutionRoleArn ?
-        Role.fromRoleArn(this, 'SparkJobEmrServerlessExecutionRole', this.config.jobConfig.ExecutionRoleArn) :
-        SparkEmrServerlessRuntime.createExecutionRole(this, 'SparkJobEmrServerlessExecutionRole', new PolicyDocument({
+        Role.fromRoleArn(scope, 'SparkJobEmrServerlessExecutionRole', this.config.jobConfig.ExecutionRoleArn) :
+        SparkEmrServerlessRuntime.createExecutionRole(scope, 'SparkJobEmrServerlessExecutionRole', new PolicyDocument({
           statements: [new PolicyStatement({
             effect: Effect.ALLOW,
             actions: [
               's3:GetObject',
             ],
-            resources: [this.config.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')],
+            resources: [`${this.config.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')}`],
           })],
         }));
     }
@@ -212,7 +214,7 @@ export class EmrServerlessSparkJob extends SparkJob {
    * Set defaults for the EmrOnEksSparkJobProps.
    * @param props EmrOnEksSparkJobProps
    */
-  private setJobPropsDefaults(props: EmrServerlessSparkJobProps): void {
+  private setJobPropsDefaults(scope:Construct, props: EmrServerlessSparkJobProps): void {
 
     const config = {
       jobConfig: {
@@ -245,13 +247,16 @@ export class EmrServerlessSparkJob extends SparkJob {
       throw new Error(`Invalid S3 URI: ${props.S3LogUri}`);
     }
 
-
     config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.S3MonitoringConfiguration!.LogUri =
-    this.createS3LogBucket(this.scope, props.S3LogUri, props.S3LogUriKeyArn);
-    config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.S3MonitoringConfiguration!.EncryptionKeyArn ??= props.S3LogUriKeyArn;
+    this.createS3LogBucket(scope, props.S3LogUri, props.S3LogUriKeyArn);
+
+    if ( props.S3LogUriKeyArn ) {
+      config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.S3MonitoringConfiguration!.EncryptionKeyArn = props.S3LogUriKeyArn;
+    }
+
 
     if (props.CloudWatchLogGroupName) {
-      this.createCloudWatchLogsLogGroup(this.scope, props.CloudWatchLogGroupName, props.CloudWatchEncryptionKeyArn);
+      this.createCloudWatchLogsLogGroup(scope, props.CloudWatchLogGroupName, props.CloudWatchEncryptionKeyArn);
       config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.CloudWatchLoggingConfiguration = {
         Enabled: true,
         EncryptionKeyArn: props.CloudWatchEncryptionKeyArn,

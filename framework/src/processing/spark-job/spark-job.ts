@@ -83,9 +83,10 @@ export abstract class SparkJob extends TrackedConstruct {
 
   /**
    * Returns the Spark Job Execution Role
-   * @param role
+   * @param scope the Scope of the CDK Construct.
+   * @returns IRole
    */
-  protected abstract getSparkJobExecutionRole(): IRole;
+  protected abstract getSparkJobExecutionRole(scope:Construct): IRole;
 
 
   /**
@@ -166,7 +167,7 @@ export abstract class SparkJob extends TrackedConstruct {
       });
     }
 
-    return `s3://${this.s3LogBucket.bucketName}/`;
+    return s3LogUri ? s3LogUri : `s3://${this.s3LogBucket.bucketName}/`;
   }
 
   /**

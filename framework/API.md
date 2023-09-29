@@ -18,6 +18,7 @@ const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
 })
 ```
 
+
 #### Initializers <a name="Initializers" id="@adsf/framework.AccessLogsBucket.Initializer"></a>
 
 ```typescript
@@ -1149,16 +1150,11 @@ first call to addToResourcePolicy(s).
 
 ### AnalyticsBucket <a name="AnalyticsBucket" id="@adsf/framework.AnalyticsBucket"></a>
 
-An Amazon S3 Bucket configured with best practices and defaults for Analytics: * Server side buckets encryption managed by KMS customer key.
+Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
-* SSL communication enforcement.
-* Access logged to an S3 bucket within a prefix matching the bucket name.
-* All public access blocked.
-* Two-step protection for bucket and objects deletion.
+See documentation TODO insert link
 
-For custom requirements that are not covered, use {Bucket} directly.
-
-**Usage example**
+*Example*
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -1168,18 +1164,19 @@ const exampleApp = new cdk.App();
 const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
 
 // Set context value for global data removal policy (or set in cdk.json).
-stack.node.setContext('adsf', {'remove_data_on_destroy': 'true'})
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
 const encryptionKey = new Key(stack, 'DataKey', {
-removalPolicy: RemovalPolicy.DESTROY,
-enableKeyRotation: true,
+ removalPolicy: RemovalPolicy.DESTROY,
+ enableKeyRotation: true,
 });
 
 new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
-encryptionKey,
-removalPolicy: cdk.RemovalPolicy.DESTROY,
+ encryptionKey,
+ removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.AnalyticsBucket.Initializer"></a>
 
@@ -2616,310 +2613,6 @@ The list of CfnOutputs created by the CDK Stack.
 
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="@adsf/framework.DataCatalogDatabase"></a>
 
-ApplicationStage class that creates a CDK Pipelines Stage from an ApplicationStackFactory.
-
-#### Initializers <a name="Initializers" id="@adsf/framework.ApplicationStage.Initializer"></a>
-
-```typescript
-import { ApplicationStage } from '@adsf/framework'
-
-new ApplicationStage(scope: Construct, id: string, props: ApplicationStageProps)
-```
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@adsf/framework.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#@adsf/framework.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#@adsf/framework.ApplicationStage.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.ApplicationStageProps">ApplicationStageProps</a></code> | the SparkCICDStageProps properties. |
-
----
-
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.ApplicationStage.Initializer.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
-the Scope of the CDK Construct.
-
----
-
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.ApplicationStage.Initializer.parameter.id"></a>
-
-- *Type:* string
-
-the ID of the CDK Construct.
-
----
-
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.ApplicationStage.Initializer.parameter.props"></a>
-
-- *Type:* <a href="#@adsf/framework.ApplicationStageProps">ApplicationStageProps</a>
-
-the SparkCICDStageProps properties.
-
----
-
-#### Methods <a name="Methods" id="Methods"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@adsf/framework.ApplicationStage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@adsf/framework.ApplicationStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
-
----
-
-##### `toString` <a name="toString" id="@adsf/framework.ApplicationStage.toString"></a>
-
-```typescript
-public toString(): string
-```
-
-Returns a string representation of this construct.
-
-##### `synth` <a name="synth" id="@adsf/framework.ApplicationStage.synth"></a>
-
-```typescript
-public synth(options?: StageSynthesisOptions): CloudAssembly
-```
-
-Synthesize this stage into a cloud assembly.
-
-Once an assembly has been synthesized, it cannot be modified. Subsequent
-calls will return the same assembly.
-
-###### `options`<sup>Optional</sup> <a name="options" id="@adsf/framework.ApplicationStage.synth.parameter.options"></a>
-
-- *Type:* aws-cdk-lib.StageSynthesisOptions
-
----
-
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@adsf/framework.ApplicationStage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@adsf/framework.ApplicationStage.isStage">isStage</a></code> | Test whether the given construct is a stage. |
-| <code><a href="#@adsf/framework.ApplicationStage.of">of</a></code> | Return the stage this construct is contained with, if available. |
-
----
-
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.ApplicationStage.isConstruct"></a>
-
-```typescript
-import { ApplicationStage } from '@adsf/framework'
-
-ApplicationStage.isConstruct(x: any)
-```
-
-Checks if `x` is a construct.
-
-Use this method instead of `instanceof` to properly detect `Construct`
-instances, even when the construct library is symlinked.
-
-Explanation: in JavaScript, multiple copies of the `constructs` library on
-disk are seen as independent, completely different libraries. As a
-consequence, the class `Construct` in each copy of the `constructs` library
-is seen as a different class, and an instance of one class will not test as
-`instanceof` the other class. `npm install` will not create installations
-like this, but users may manually symlink construct libraries together or
-use a monorepo tool: in those cases, multiple copies of the `constructs`
-library can be accidentally installed, and `instanceof` will behave
-unpredictably. It is safest to avoid using `instanceof`, and using
-this type-testing method instead.
-
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.ApplicationStage.isConstruct.parameter.x"></a>
-
-- *Type:* any
-
-Any object.
-
----
-
-##### `isStage` <a name="isStage" id="@adsf/framework.ApplicationStage.isStage"></a>
-
-```typescript
-import { ApplicationStage } from '@adsf/framework'
-
-ApplicationStage.isStage(x: any)
-```
-
-Test whether the given construct is a stage.
-
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.ApplicationStage.isStage.parameter.x"></a>
-
-- *Type:* any
-
----
-
-##### `of` <a name="of" id="@adsf/framework.ApplicationStage.of"></a>
-
-```typescript
-import { ApplicationStage } from '@adsf/framework'
-
-ApplicationStage.of(construct: IConstruct)
-```
-
-Return the stage this construct is contained with, if available.
-
-If called
-on a nested stage, returns its parent.
-
-###### `construct`<sup>Required</sup> <a name="construct" id="@adsf/framework.ApplicationStage.of.parameter.construct"></a>
-
-- *Type:* constructs.IConstruct
-
----
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@adsf/framework.ApplicationStage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.artifactId">artifactId</a></code> | <code>string</code> | Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.assetOutdir">assetOutdir</a></code> | <code>string</code> | The cloud assembly asset output directory. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.outdir">outdir</a></code> | <code>string</code> | The cloud assembly output directory. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.stageName">stageName</a></code> | <code>string</code> | The name of the stage. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
-| <code><a href="#@adsf/framework.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
-
----
-
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.ApplicationStage.property.node"></a>
-
-```typescript
-public readonly node: Node;
-```
-
-- *Type:* constructs.Node
-
-The tree node.
-
----
-
-##### `artifactId`<sup>Required</sup> <a name="artifactId" id="@adsf/framework.ApplicationStage.property.artifactId"></a>
-
-```typescript
-public readonly artifactId: string;
-```
-
-- *Type:* string
-
-Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string.
-
-Derived from the construct path.
-
----
-
-##### `assetOutdir`<sup>Required</sup> <a name="assetOutdir" id="@adsf/framework.ApplicationStage.property.assetOutdir"></a>
-
-```typescript
-public readonly assetOutdir: string;
-```
-
-- *Type:* string
-
-The cloud assembly asset output directory.
-
----
-
-##### `outdir`<sup>Required</sup> <a name="outdir" id="@adsf/framework.ApplicationStage.property.outdir"></a>
-
-```typescript
-public readonly outdir: string;
-```
-
-- *Type:* string
-
-The cloud assembly output directory.
-
----
-
-##### `policyValidationBeta1`<sup>Required</sup> <a name="policyValidationBeta1" id="@adsf/framework.ApplicationStage.property.policyValidationBeta1"></a>
-
-```typescript
-public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
-```
-
-- *Type:* aws-cdk-lib.IPolicyValidationPluginBeta1[]
-- *Default:* no validation plugins are used
-
-Validation plugins to run during synthesis.
-
-If any plugin reports any violation,
-synthesis will be interrupted and the report displayed to the user.
-
----
-
-##### `stageName`<sup>Required</sup> <a name="stageName" id="@adsf/framework.ApplicationStage.property.stageName"></a>
-
-```typescript
-public readonly stageName: string;
-```
-
-- *Type:* string
-
-The name of the stage.
-
-Based on names of the parent stages separated by
-hypens.
-
----
-
-##### `account`<sup>Optional</sup> <a name="account" id="@adsf/framework.ApplicationStage.property.account"></a>
-
-```typescript
-public readonly account: string;
-```
-
-- *Type:* string
-
-The default account for all resources defined within this stage.
-
----
-
-##### `parentStage`<sup>Optional</sup> <a name="parentStage" id="@adsf/framework.ApplicationStage.property.parentStage"></a>
-
-```typescript
-public readonly parentStage: Stage;
-```
-
-- *Type:* aws-cdk-lib.Stage
-
-The parent stage or `undefined` if this is the app.
-
-*
-
----
-
-##### `region`<sup>Optional</sup> <a name="region" id="@adsf/framework.ApplicationStage.property.region"></a>
-
-```typescript
-public readonly region: string;
-```
-
-- *Type:* string
-
-The default region for all resources defined within this stage.
-
----
-
-##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="@adsf/framework.ApplicationStage.property.stackOutputsEnv"></a>
-
-```typescript
-public readonly stackOutputsEnv: {[ key: string ]: CfnOutput};
-```
-
-- *Type:* {[ key: string ]: aws-cdk-lib.CfnOutput}
-
-The list of CfnOutputs created by the CDK Stack.
-
----
-
-
-### DataCatalogDatabase <a name="DataCatalogDatabase" id="@adsf/framework.DataCatalogDatabase"></a>
-
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
 *Example*
@@ -2937,6 +2630,7 @@ new DataCatalogDatabase(stack, 'ExampleDatabase', {
    name: 'example-db'
 });
 ```
+
 
 #### Initializers <a name="Initializers" id="@adsf/framework.DataCatalogDatabase.Initializer"></a>
 
@@ -3055,7 +2749,7 @@ Any object.
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
 | <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
-| <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS encryption key used by the Crawler. |
 
 ---
 
@@ -3125,12 +2819,12 @@ KMS encryption key used by the Crawler.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#framework.DataCatalogDatabase.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataCatalogDatabase.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="framework.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3140,7 +2834,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3152,11 +2846,13 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### DataLakeStorage <a name="DataLakeStorage" id="@adsf/framework.DataLakeStorage"></a>
 
-Creates AWS Glue Catalog Database for each storage layer.
+Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
-Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
+See documentation TODO insert link.
 
-*Example*
+For custom requirements not covered by {DataLakeStorageProps}, consider using {AnalyticsBucket} directly.
+
+**Usage example**
 
 ```typescript
 import { DataLakeStorage } from 'aws-data-solutions-framework';
@@ -3175,16 +2871,14 @@ new DataLakeStorage(this, 'MyDataLakeStorage', {
  goldInfrequentAccessDelay: 180,
  goldArchiveDelay: 360,
  removalPolicy: cdk.RemovalPolicy.DESTROY,
- dataLakeKey: new Key(stack, 'MyDataLakeKey')
 });
-```
 
 #### Initializers <a name="Initializers" id="@adsf/framework.DataLakeStorage.Initializer"></a>
 
 ```typescript
 import { DataLakeStorage } from '@adsf/framework'
 
-new DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
+new DataLakeStorage(scope: Construct, id: string, props?: DataLakeStorageProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -3215,7 +2909,7 @@ the ID of the CDK Construct.
 
 - *Type:* <a href="#@adsf/framework.DataLakeStorageProps">DataLakeStorageProps</a>
 
-the DataLakeCatalog properties.
+the DataLakeStorageProps properties.
 
 ---
 
@@ -3354,12 +3048,12 @@ public readonly silverBucket: AnalyticsBucket;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#framework.DataLakeStorage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#framework.DataLakeStorage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeStorage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.DataLakeStorage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="framework.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3369,11 +3063,85 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="framework.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
 ```
+
+- *Type:* string
+
+---
+
+### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="@adsf/framework.SparkEmrCICDPipeline"></a>
+
+A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
+
+*Example*
+
+```typescript
+const stack = new Stack();
+
+interface MyApplicationStackProps extends StackProps {
+  readonly stage: CICDStage;
+}
+
+class MyApplicationStack extends Stack {
+  constructor(scope: Stack, props?: MyApplicationStackProps) {
+    super(scope, 'MyApplicationStack');
+*     const bucket = new Bucket(this, 'TestBucket', {
+      autoDeleteObjects: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+    new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
+  }
+}
+
+class MyStackFactory implements ApplicationStackFactory {
+  createStack(scope: Stack, stage: CICDStage): Stack {
+    return new MyApplicationStack(scope, { stage });
+  }
+}
+
+new SparkCICDPipeline(stack, 'TestConstruct', {
+  applicationName: 'test',
+  applicationStackFactory: new MyStackFactory(),
+  cdkApplicationPath: 'cdk/',
+  sparkApplicationPath: 'spark/',
+  sparkImage: SparkImage.EMR_SERVERLESS_6_10,
+  integTestScript: 'cdk/integ-test.sh',
+  integTestEnv: {
+    TEST_BUCKET: 'BucketName',
+  },
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@adsf/framework.SparkEmrCICDPipeline.Initializer"></a>
+
+```typescript
+import { SparkEmrCICDPipeline } from '@adsf/framework'
+
+new SparkEmrCICDPipeline(scope: Construct, id: string, props: SparkEmrCICDPipelineProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.SparkEmrCICDPipelineProps">SparkEmrCICDPipelineProps</a></code> | the SparkCICDPipelineProps properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkEmrCICDPipeline.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3478,6 +3246,34 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 ---
 
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly ADSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
 
 ### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="@adsf/framework.SparkEmrServerlessRuntime"></a>
 
@@ -3756,12 +3552,12 @@ public readonly applicationArn: string;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#framework.SparkRuntimeServerless.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#framework.SparkRuntimeServerless.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="framework.SparkRuntimeServerless.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3771,7 +3567,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="framework.SparkRuntimeServerless.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4340,6 +4136,7 @@ const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
 | <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#@adsf/framework.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
 
@@ -4401,12 +4198,12 @@ public readonly autoCrawlSchedule: ScheduleProperty;
 ```
 
 - *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
-- *Default:* `cron(1 0 * * * *)`
+- *Default:* `cron(1 0 * * ? *)`
 
 The schedule when the Crawler would run.
 
 Default is once a day at 00:01h.
- 
+
 ---
 
 ##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@adsf/framework.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
@@ -4419,6 +4216,20 @@ public readonly crawlerLogEncryptionKey: Key;
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.DataCatalogDatabaseProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Policy to apply when the bucket is removed from this stack.
+
+* @default - RETAIN (The bucket will be orphaned).
 
 ---
 
@@ -4489,7 +4300,7 @@ public readonly bronzeBucketName: string;
 
 Name of the Bronze bucket.
 
-Will be appended by the unique ID.
+Will be appended by a unique ID.
 
 ---
 
@@ -4543,7 +4354,7 @@ public readonly goldBucketName: string;
 
 Name of the Gold bucket.
 
-Will be appended by the unique ID.
+Will be appended by a unique ID.
 
 ---
 
@@ -4600,7 +4411,7 @@ public readonly silverBucketName: string;
 
 Name of the Silver bucket.
 
-Will be appended by the unique ID.
+Will be appended by a unique ID.
 
 ---
 
@@ -4953,7 +4764,7 @@ new ApplicationStackFactory()
 ##### `createStack` <a name="createStack" id="@adsf/framework.ApplicationStackFactory.createStack"></a>
 
 ```typescript
-public createStack(scope: Construct, id: string, stage?: CICDStage): ApplicationStack
+public createStack(scope: Construct, stage: CICDStage): Stack
 ```
 
 Abstract method that needs to be implemented to return the application Stack.
