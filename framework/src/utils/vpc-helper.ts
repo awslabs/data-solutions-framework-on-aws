@@ -13,18 +13,18 @@ import { Context } from './context';
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} vpcCidr The cidr for vpc
  * @param {Key} logKmsKey The KMS key used to encrypt the VPC flow log
- * @param {RemovalPolicy} vpcFlowlogRemovalPolicy The removal policy for vpc flowlog in cloudwatch log 
+ * @param {RemovalPolicy} vpcFlowlogRemovalPolicy The removal policy for vpc flowlog in cloudwatch log
  * @param {string} eksClusterName The name used to tag the subnet and vpc
  * @param {string} emrAppName The name used to tag the subnet and vpc
  */
 
 export function vpcBootstrap(
-    scope: Construct, 
-    vpcCidr: string, 
-    logKmsKey: Key,
-    vpcFlowlogRemovalPolicy?: RemovalPolicy,
-    eksClusterName?: string,
-    emrAppName?: string): Vpc {
+  scope: Construct,
+  vpcCidr: string,
+  logKmsKey: Key,
+  vpcFlowlogRemovalPolicy?: RemovalPolicy,
+  eksClusterName?: string,
+  emrAppName?: string): Vpc {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
   const smallestVpcCidr: number = 28;
@@ -64,7 +64,7 @@ export function vpcBootstrap(
     logGroupName: `/aws/emr-eks-vpc-flow/${eksClusterName}`,
     encryptionKey: logKmsKey,
     retention: RetentionDays.ONE_WEEK,
-    removalPolicy: removalPolicy
+    removalPolicy: removalPolicy,
   });
 
   //Allow vpc flowlog to access KMS key to encrypt logs

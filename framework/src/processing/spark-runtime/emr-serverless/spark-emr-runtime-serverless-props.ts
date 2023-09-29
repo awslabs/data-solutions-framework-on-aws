@@ -22,14 +22,14 @@ export interface SparkEmrServerlessRuntimeProps {
    * The VPC has a NAT Gateway and an S3 endpoint
    */
   readonly networkConfiguration?: IResolvable | aws_emrserverless.CfnApplication.NetworkConfigurationProperty;
-    /**
+  /**
    * If no VPC is provided, it is created with vpc flowlog activated
-   * This prop control if the logs should be deleted when the stack is deleted 
+   * This prop control if the logs should be deleted when the stack is deleted
    * The removal policy when deleting the CDK resource.
    * If DESTROY is selected, context value
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
-    readonly vpcFlowlogRemovalPolicy?: RemovalPolicy;
+  readonly vpcFlowlogRemovalPolicy?: RemovalPolicy;
   /**
    * The name of the application. The name must be less than 64 characters.
    *
