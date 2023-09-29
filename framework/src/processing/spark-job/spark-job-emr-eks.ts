@@ -79,7 +79,7 @@ export class EmrOnEksSparkJob extends SparkJob {
     }
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
-    this.stateMachine = this.createStateMachine(scope, Duration.minutes(30), this.config.schedule);
+    this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(30), this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole());
     this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole());

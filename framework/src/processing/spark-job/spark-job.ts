@@ -102,34 +102,34 @@ export abstract class SparkJob extends TrackedConstruct {
    * @param schedule Schedule to run the state machine. @default no schedule
    * @returns StateMachine
    */
-  protected createStateMachine(scope:Construct, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
+  protected createStateMachine(scope: Construct, id: string, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
 
-    const emrStartJobTask = new CallAwsService(scope, 'EmrStartJobTask', this.getJobStartTaskProps());
+    const emrStartJobTask = new CallAwsService(scope, `EmrStartJobTask-${id}`, this.getJobStartTaskProps());
 
-    const emrMonitorJobTask = new CallAwsService(scope, 'EmrMonitorJobTask', this.getJobMonitorTaskProps());
+    const emrMonitorJobTask = new CallAwsService(scope, `EmrMonitorJobTask-${id}`, this.getJobMonitorTaskProps());
 
-    const wait = new Wait(scope, 'Wait', {
+    const wait = new Wait(scope, `Wait-${id}`, {
       time: WaitTime.duration(Duration.seconds(60)),
     });
 
-    const jobFailed = new Fail(scope, 'JobFailed', this.getJobFailTaskProps());
+    const jobFailed = new Fail(scope, `JobFailed-${id}`, this.getJobFailTaskProps());
 
-    const jobSucceeded = new Succeed(scope, 'JobSucceeded');
+    const jobSucceeded = new Succeed(scope, `JobSucceeded-${id}`);
 
     const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
-      new Choice(scope, 'JobSucceededOrFailed')
+      new Choice(scope, `JobSucceededOrFailed-${id}`)
         .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusSucceed()), jobSucceeded)
         .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusFailed()), jobFailed)
         .otherwise(wait),
     );
 
     // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(scope, 'LogGroup', {
+    const logGroup = new LogGroup(scope, `LogGroup-${id}`, {
       retention: RetentionDays.ONE_MONTH,
     });
 
     // StepFunctions state machine
-    const stateMachine: StateMachine = new StateMachine(scope, 'EmrPipeline', {
+    const stateMachine: StateMachine = new StateMachine(scope, `EmrPipeline-${id}`, {
       definition: emrPipelineChain,
       tracingEnabled: true,
       timeout: jobTimeout ?? Duration.minutes(30),
@@ -141,7 +141,7 @@ export abstract class SparkJob extends TrackedConstruct {
 
     this.grantExecutionRole(stateMachine.role);
     if (schedule) {
-      new Rule(scope, 'SparkJobPipelineTrigger', {
+      new Rule(scope, `SparkJobPipelineTrigger-${id}`, {
         schedule: schedule,
         targets: [new SfnStateMachine(stateMachine)],
       });

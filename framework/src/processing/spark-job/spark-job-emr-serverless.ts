@@ -75,7 +75,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     }
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
-    this.stateMachine = this.createStateMachine(scope, Duration.minutes(5+this.config.jobConfig.ExecutionTimeoutMinutes!), this.config.schedule);
+    this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(5+this.config.jobConfig.ExecutionTimeoutMinutes!), this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole(scope));
     this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole(scope));
@@ -169,10 +169,11 @@ export class EmrServerlessSparkJob extends SparkJob {
             actions: [
               's3:GetObject',
             ],
-            resources: [`${this.config.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')}`],
+            resources: ['arn:aws:s3:::alexvt-adx-emr-eks/pi.py'],
           })],
         }));
     }
+
     return this.sparkJobExecutionRole;
   }
 
@@ -234,6 +235,7 @@ export class EmrServerlessSparkJob extends SparkJob {
     config.jobConfig.ExecutionTimeoutMinutes = props.ExecutionTimeoutMinutes ?? 30;
     config.jobConfig.ApplicationId = props.ApplicationId;
     config.jobConfig.JobDriver.SparkSubmit.EntryPoint = props.SparkSubmitEntryPoint;
+
     if (props.SparkSubmitEntryPointArguments) {
       config.jobConfig.JobDriver.SparkSubmit.EntryPointArguments = props.SparkSubmitEntryPointArguments;
     }
@@ -264,7 +266,6 @@ export class EmrServerlessSparkJob extends SparkJob {
         LogStreamNamePrefix: props.CloudWatchLogGroupStreamPrefix,
       };
     }
-
 
     config.jobConfig.Tags = props.Tags;
 
