@@ -179,6 +179,7 @@ export abstract class SparkJob extends TrackedConstruct {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,
         removalPolicy: this.resourceRemovalPolicy,
+        autoDeleteObjects: this.resourceRemovalPolicy == RemovalPolicy.DESTROY,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
         encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
       });
