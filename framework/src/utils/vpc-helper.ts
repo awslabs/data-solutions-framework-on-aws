@@ -1,15 +1,24 @@
 import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { FlowLogDestination, GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { FlowLogDestination, GatewayVpcEndpoint, GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Effect, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { Context } from './context';
 
+/**
+ * @internal
+ * @param {Vpc} vpc the vpc created by the function vpcBootstrap
+ * @param {GatewayVpcEndpoint} s3GatewayVpcEndpoint the vpc endpoint attached to the vpc the function vpcBootstrap created
+*/
+export interface NetworkConfiguration {
+  readonly vpc: Vpc;
+  readonly s3GatewayVpcEndpoint: GatewayVpcEndpoint;
+}
 
 /**
  * @internal
- * Create a VPC with the provided CIDR
+ * Create a VPC with the provided CIDR and attach to it an Amazon S3 Gateway Vpc Endpoint
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} vpcCidr The cidr for vpc
  * @param {Key} logKmsKey The KMS key used to encrypt the VPC flow log
@@ -24,7 +33,7 @@ export function vpcBootstrap(
   logKmsKey: Key,
   vpcFlowlogRemovalPolicy?: RemovalPolicy,
   eksClusterName?: string,
-  emrAppName?: string): Vpc {
+  emrAppName?: string): NetworkConfiguration {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
   const smallestVpcCidr: number = 28;
@@ -98,7 +107,7 @@ export function vpcBootstrap(
   });
 
   // Create a gateway endpoint for S3
-  vpc.addGatewayEndpoint('S3Endpoint', {
+  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('S3Endpoint', {
     service: GatewayVpcEndpointAwsService.S3,
   });
 
@@ -126,5 +135,10 @@ export function vpcBootstrap(
 
   }
 
-  return vpc;
+  const networkConfiguration: NetworkConfiguration = {
+    vpc: vpc,
+    s3GatewayVpcEndpoint: s3GatewayVpcEndpoint,
+  };
+
+  return networkConfiguration;
 }

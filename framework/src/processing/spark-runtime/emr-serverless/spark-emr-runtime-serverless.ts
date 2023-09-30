@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Stack } from 'aws-cdk-lib';
-import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { GatewayVpcEndpoint, SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { Key, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
-import { EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { vpcBootstrap } from '../../../utils/vpc-helper';
+import { Context, EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { NetworkConfiguration, vpcBootstrap } from '../../../utils/vpc-helper';
 
 /**
 * A construct to create a Spark EMR Serverless Application
@@ -149,15 +148,24 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
   /**
    * If no VPC is provided, one is created by default
-   * This attribute is used to expose the VPC
+   * This attribute is used to expose the VPC,
+   * if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`
    */
   public readonly vpc: Vpc | undefined;
 
   /**
    * If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application
-   * This attribute is used to expose the security group
+   * This attribute is used to expose the security group,
+   * if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`
    */
   public readonly emrApplicationSecurityGroup: SecurityGroup | undefined;
+
+  /**
+   * If no VPC is provided, one is created by default
+   * This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3
+   * The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}
+   */
+  public readonly s3GatewayVpcEndpoint: GatewayVpcEndpoint | undefined;
 
   /**
    * @param {Construct} scope the Scope of the CDK Construct
@@ -175,41 +183,46 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
     const emrReleaseLabel: EmrRuntimeVersion = props.releaseLabel ? props.releaseLabel : EMR_DEFAULT_VERSION;
 
-    const logKmsKey: Key = Stack.of(scope).node.tryFindChild('logKmsKey') as Key ?? new Key(scope, 'logKmsKey', {
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.vpcFlowlogRemovalPolicy);
+
+    const logKmsKey: Key = new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
-      alias: 'log-vpc-key',
+      alias: `flowlog-vpc-key-for-emr-application-${props.name}`,
+      removalPolicy: removalPolicy,
+      keyUsage: KeyUsage.ENCRYPT_DECRYPT,
+      description: `Key used by the VPC created for EMR serverless application ${props.name}`,
     });
 
-    let networkConfiguration = undefined;
+    let emrNetworkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
-      const vpc = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.vpcFlowlogRemovalPolicy, undefined, props.name);
+      const networkConfiguration: NetworkConfiguration = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.vpcFlowlogRemovalPolicy, undefined, props.name);
 
       let privateSubnetIds: string [] = [];
 
-      vpc.privateSubnets.forEach( function (subnet) {
+      networkConfiguration.vpc.privateSubnets.forEach( function (subnet) {
         privateSubnetIds.push(subnet.subnetId);
       });
 
       const emrApplicationSecurityGroup = new SecurityGroup(this, 'SecurityGroup', {
-        vpc,
+        vpc: networkConfiguration.vpc,
         description: `Security group used by emr serverless application ${props.name}`,
-        allowAllOutbound: false,
       });
 
-      networkConfiguration = {
+      emrNetworkConfiguration = {
         securityGroupIds: [emrApplicationSecurityGroup.securityGroupId],
         subnetIds: privateSubnetIds,
       };
 
-      this.vpc = vpc;
+      this.vpc = networkConfiguration.vpc;
       this.emrApplicationSecurityGroup = emrApplicationSecurityGroup;
+      this.s3GatewayVpcEndpoint = networkConfiguration.s3GatewayVpcEndpoint;
     }
 
 
     const sparkApplication: CfnApplication = new CfnApplication(scope, `spark-serverless-application-${props.name}`, {
       ...props,
-      networkConfiguration: props.networkConfiguration ?? networkConfiguration,
+      networkConfiguration: props.networkConfiguration ?? emrNetworkConfiguration,
       releaseLabel: emrReleaseLabel,
       type: 'Spark',
     });
