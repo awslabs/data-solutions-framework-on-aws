@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Stack } from 'aws-cdk-lib';
+import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
@@ -9,7 +10,6 @@ import { Construct } from 'constructs';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
 import { EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { vpcBootstrap } from '../../../utils/vpc-helper';
-import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 
 /**
 * A construct to create a Spark EMR Serverless Application
@@ -185,7 +185,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
       const emrApplicationSecurityGroup = new SecurityGroup(this, 'SecurityGroup', {
         vpc,
         description: `Security group used by emr serverless application ${props.name}`,
-        allowAllOutbound: false
+        allowAllOutbound: false,
       });
 
       networkConfiguration = {
