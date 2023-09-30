@@ -3695,6 +3695,8 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | *No description.* |
 
 ---
 
@@ -3727,6 +3729,26 @@ public readonly applicationId: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="@adsf/framework.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
+
+```typescript
+public readonly emrApplicationSecurityGroup: SecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SecurityGroup
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@adsf/framework.SparkEmrServerlessRuntime.property.vpc"></a>
+
+```typescript
+public readonly vpc: Vpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.Vpc
 
 ---
 
@@ -4950,7 +4972,7 @@ public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty
-- *Default:* a VPC is created
+- *Default:* a VPC and a security group are created, these are accessed as construct attribute.
 
 The network configuration for customer VPC connectivity for the application.
 
