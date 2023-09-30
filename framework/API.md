@@ -3693,10 +3693,10 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup</code> | *No description.* |
-| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | If no VPC is provided, one is created by default This attribute is used to expose the VPC. |
 
 ---
 
@@ -3720,6 +3720,8 @@ public readonly applicationArn: string;
 
 - *Type:* string
 
+The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user.
+
 ---
 
 ##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@adsf/framework.SparkEmrServerlessRuntime.property.applicationId"></a>
@@ -3729,6 +3731,8 @@ public readonly applicationId: string;
 ```
 
 - *Type:* string
+
+The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user.
 
 ---
 
@@ -3740,6 +3744,8 @@ public readonly emrApplicationSecurityGroup: SecurityGroup;
 
 - *Type:* aws-cdk-lib.aws_ec2.SecurityGroup
 
+If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group.
+
 ---
 
 ##### `vpc`<sup>Optional</sup> <a name="vpc" id="@adsf/framework.SparkEmrServerlessRuntime.property.vpc"></a>
@@ -3749,6 +3755,8 @@ public readonly vpc: Vpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.Vpc
+
+If no VPC is provided, one is created by default This attribute is used to expose the VPC.
 
 ---
 

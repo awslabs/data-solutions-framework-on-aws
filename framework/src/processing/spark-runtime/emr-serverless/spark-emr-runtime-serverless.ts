@@ -160,10 +160,10 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   public readonly emrApplicationSecurityGroup: SecurityGroup | undefined;
 
   /**
-     * @param {Construct} scope the Scope of the CDK Construct
-     * @param {string} id the ID of the CDK Construct
-     * @param props {@link SparkEmrServerlessRuntimeProps}
-     */
+   * @param {Construct} scope the Scope of the CDK Construct
+   * @param {string} id the ID of the CDK Construct
+   * @param props {@link SparkEmrServerlessRuntimeProps}
+   */
 
   constructor(scope: Construct, id: string, props: SparkEmrServerlessRuntimeProps) {
 
