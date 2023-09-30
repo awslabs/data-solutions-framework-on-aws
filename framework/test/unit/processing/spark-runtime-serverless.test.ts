@@ -56,6 +56,16 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
     );
   });
 
+  test('Check a VPC is created when no network configuration is created', () => {
+    template.hasResource('AWS::EC2::VPC',
+      Match.objectLike({
+        Properties: {
+          CidrBlock: Match.stringLikeRegexp('10.0.0.0/16')
+        },
+      }),
+    );
+  });
+
   test('Static methods create the right role and policy scoped to passrole', () => {
     template.hasResource('AWS::IAM::Policy',
       Match.objectLike({

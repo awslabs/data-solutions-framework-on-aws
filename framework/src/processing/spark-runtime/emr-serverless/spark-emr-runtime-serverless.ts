@@ -9,6 +9,7 @@ import { Construct } from 'constructs';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
 import { EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { vpcBootstrap } from '../../../utils/vpc-helper';
+import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 
 /**
 * A construct to create a Spark EMR Serverless Application
@@ -141,6 +142,14 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   // This is used to expose the id of the application to the user.
   public readonly applicationId: string;
 
+  // If no VPC is provided, one is created by default
+  // This attribute is used to expose the VPC
+  public readonly vpc: Vpc | undefined;
+
+  // If no VPC is provided, one is created by default
+  // This attribute is used to expose the VPC
+  public readonly emrApplicationSecurityGroup: SecurityGroup | undefined;
+
   /**
      * @param {Construct} scope the Scope of the CDK Construct
      * @param {string} id the ID of the CDK Construct
@@ -162,7 +171,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
       alias: 'log-vpc-key',
     });
 
-    let networkConf = undefined;
+    let networkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
       const vpc = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.vpcFlowlogRemovalPolicy, undefined, props.name);
@@ -173,16 +182,25 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
         privateSubnetIds.push(subnet.subnetId);
       });
 
-      networkConf = {
-        securityGroupIds: undefined,
+      const emrApplicationSecurityGroup = new SecurityGroup(this, 'SecurityGroup', {
+        vpc,
+        description: `Security group used by emr serverless application ${props.name}`,
+        allowAllOutbound: false
+      });
+
+      networkConfiguration = {
+        securityGroupIds: [emrApplicationSecurityGroup.securityGroupId],
         subnetIds: privateSubnetIds,
       };
+
+      this.vpc = vpc;
+      this.emrApplicationSecurityGroup = emrApplicationSecurityGroup;
     }
 
 
     const sparkApplication: CfnApplication = new CfnApplication(scope, `spark-serverless-application-${props.name}`, {
       ...props,
-      networkConfiguration: props.networkConfiguration ?? networkConf,
+      networkConfiguration: props.networkConfiguration ?? networkConfiguration,
       releaseLabel: emrReleaseLabel,
       type: 'Spark',
     });
