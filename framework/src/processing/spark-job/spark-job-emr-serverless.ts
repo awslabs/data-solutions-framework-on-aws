@@ -78,8 +78,14 @@ export class EmrServerlessSparkJob extends SparkJob {
     this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(5+this.config.jobConfig.ExecutionTimeoutMinutes!), this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.getSparkJobExecutionRole(scope));
+    this.cloudwatchGroup?.grantRead(this.getSparkJobExecutionRole(scope));
     this.cloudwatchGroup?.grantWrite(this.getSparkJobExecutionRole(scope));
-
+    if (this.cloudwatchGroup) {
+      this.getSparkJobExecutionRole(scope).addToPrincipalPolicy(new PolicyStatement({
+        actions: ['logs:DescribeLogGroups', 'logs:DescribeLogStreams'],
+        resources: [`arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group::log-stream:*`],
+      }));
+    }
   }
 
 
