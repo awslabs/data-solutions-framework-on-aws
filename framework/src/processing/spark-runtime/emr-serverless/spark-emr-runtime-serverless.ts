@@ -146,8 +146,8 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   // This attribute is used to expose the VPC
   public readonly vpc: Vpc | undefined;
 
-  // If no VPC is provided, one is created by default
-  // This attribute is used to expose the VPC
+  // If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application
+  // This attribute is used to expose the security group
   public readonly emrApplicationSecurityGroup: SecurityGroup | undefined;
 
   /**
