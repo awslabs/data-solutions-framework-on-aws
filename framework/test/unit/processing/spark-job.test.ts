@@ -113,15 +113,14 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
 
 
   new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
-    Name: 'SparkSimpleProps',
-    ApplicationId: '00fcn9hll0rv1j09',
-    ExecutionRoleArn: myExecutionRole.roleArn,
-    ExecutionTimeoutMinutes: 30,
-    S3LogUri: 's3://s3-bucket/monitoring-logs',
-    CloudWatchLogGroupName: 'spark-serverless-log',
-    SparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
-    SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
-
+    name: 'SparkSimpleProps',
+    applicationId: '00fcn9hll0rv1j09',
+    executionRoleArn: myExecutionRole.roleArn,
+    executionTimeoutMinutes: 30,
+    s3LogUri: 's3://s3-bucket/monitoring-logs',
+    cloudWatchLogGroupName: 'spark-serverless-log',
+    sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
+    sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
   } as EmrServerlessSparkJobProps);
 
 
@@ -238,14 +237,14 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
 
 
   new EmrOnEksSparkJob(stack, 'SparkJobEmrOnEksSimple', {
-    Name: 'SparkJob',
-    VirtualClusterId: 'clusterId',
-    ReleaseLabel: EmrRuntimeVersion.V6_2,
-    ExecutionRoleArn: myExecutionRole.roleArn,
-    S3LogUri: 's3://s3-bucket/monitoring-logs',
-    CloudWatchLogGroupName: 'spark-job-log-group-emreks-simple',
-    SparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
-    SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
+    name: 'SparkJob',
+    virtualClusterId: 'clusterId',
+    releaseLabel: EmrRuntimeVersion.V6_2,
+    executionRoleArn: myExecutionRole.roleArn,
+    s3LogUri: 's3://s3-bucket/monitoring-logs',
+    cloudWatchLogGroupName: 'spark-job-log-group-emreks-simple',
+    sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
+    sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
   } as EmrOnEksSparkJobProps);
 
 

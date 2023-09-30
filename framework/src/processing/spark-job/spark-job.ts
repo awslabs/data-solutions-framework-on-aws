@@ -64,43 +64,43 @@ export abstract class SparkJob extends TrackedConstruct {
    * Parameters for Step Functions task that runs the Spark job
    * @returns CallAwsServiceProps
    */
-  protected abstract getJobStartTaskProps(): CallAwsServiceProps;
+  protected abstract returnJobStartTaskProps(): CallAwsServiceProps;
 
   /**
    * Parameters for Step Functions task that monitors the Spark job
    * @returns CallAwsServiceProps
    */
-  protected abstract getJobMonitorTaskProps(): CallAwsServiceProps;
+  protected abstract returnJobMonitorTaskProps(): CallAwsServiceProps;
 
   /**
    * Parameters for Step Functions task that fails the Spark job
    * @returns FailProps
    */
-  protected abstract getJobFailTaskProps(): FailProps;
+  protected abstract returnJobFailTaskProps(): FailProps;
 
   /**
    * Returns the status of the Spark job that succeeded based on the GetJobRun API response
    * @returns string
    */
-  protected abstract getJobStatusSucceed(): string;
+  protected abstract returnJobStatusSucceed(): string;
 
   /**
    * Returns the status of the Spark job that failed based on the GetJobRun API response
    * @returns string
    */
-  protected abstract getJobStatusFailed(): string;
+  protected abstract returnJobStatusFailed(): string;
 
   /**
    * Returns the status of the Spark job that is cancelled based on the GetJobRun API response
    */
-  protected abstract getJobStatusCancelled(): string;
+  protected abstract returnJobStatusCancelled(): string;
 
   /**
    * Returns the Spark Job Execution Role
    * @param scope the Scope of the CDK Construct.
    * @returns IRole
    */
-  protected abstract getSparkJobExecutionRole(scope:Construct): IRole;
+  protected abstract returnSparkJobExecutionRole(scope:Construct): IRole;
 
 
   /**
@@ -119,23 +119,23 @@ export abstract class SparkJob extends TrackedConstruct {
    */
   protected createStateMachine(scope: Construct, id: string, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
 
-    const emrStartJobTask = new CallAwsService(scope, `EmrStartJobTask-${id}`, this.getJobStartTaskProps());
+    const emrStartJobTask = new CallAwsService(scope, `EmrStartJobTask-${id}`, this.returnJobStartTaskProps());
 
-    const emrMonitorJobTask = new CallAwsService(scope, `EmrMonitorJobTask-${id}`, this.getJobMonitorTaskProps());
+    const emrMonitorJobTask = new CallAwsService(scope, `EmrMonitorJobTask-${id}`, this.returnJobMonitorTaskProps());
 
     const wait = new Wait(scope, `Wait-${id}`, {
       time: WaitTime.duration(Duration.seconds(60)),
     });
 
-    const jobFailed = new Fail(scope, `JobFailed-${id}`, this.getJobFailTaskProps());
+    const jobFailed = new Fail(scope, `JobFailed-${id}`, this.returnJobFailTaskProps());
 
     const jobSucceeded = new Succeed(scope, `JobSucceeded-${id}`);
 
     const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
       new Choice(scope, `JobSucceededOrFailed-${id}`)
-        .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusSucceed()), jobSucceeded)
-        .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusFailed()), jobFailed)
-        .when(Condition.stringEquals('$.JobRunState.State', this.getJobStatusCancelled()), jobFailed)
+        .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusSucceed()), jobSucceeded)
+        .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusFailed()), jobFailed)
+        .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusCancelled()), jobFailed)
         .otherwise(wait),
     );
 
