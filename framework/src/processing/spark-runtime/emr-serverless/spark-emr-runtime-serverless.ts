@@ -134,20 +134,29 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     }));
 
   }
-  //The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example
-  // This is used to expose the ARN of the application to the user.
+
+  /**
+   * The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example
+   * This is used to expose the ARN of the application to the user.
+   */
   public readonly applicationArn: string;
 
-  //The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example
-  // This is used to expose the id of the application to the user.
+  /**
+   * The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example
+   * This is used to expose the id of the application to the user.
+   */
   public readonly applicationId: string;
 
-  // If no VPC is provided, one is created by default
-  // This attribute is used to expose the VPC
+  /**
+   * If no VPC is provided, one is created by default
+   * This attribute is used to expose the VPC
+   */
   public readonly vpc: Vpc | undefined;
 
-  // If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application
-  // This attribute is used to expose the security group
+  /**
+   * If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application
+   * This attribute is used to expose the security group 
+   */
   public readonly emrApplicationSecurityGroup: SecurityGroup | undefined;
 
   /**
