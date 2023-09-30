@@ -140,7 +140,7 @@ export abstract class SparkJob extends TrackedConstruct {
     );
 
     // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(scope, 'LogGroup', {
+    const logGroup = new LogGroup(scope, `LogGroup-${id}`, {
       removalPolicy: this.resourceRemovalPolicy,
     });
 
@@ -197,7 +197,7 @@ export abstract class SparkJob extends TrackedConstruct {
    */
   protected createCloudWatchLogsLogGroup(scope:Construct, name:string, encryptionKeyArn?:string): LogGroup {
     if (! this.cloudwatchGroup) {
-      this.cloudwatchGroup = new LogGroup(scope, 'CloudWatchLogsLogGroup', {
+      this.cloudwatchGroup = new LogGroup(scope, `CloudWatchLogsLogGroup-${name}`, {
         logGroupName: name,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
         removalPolicy: this.resourceRemovalPolicy,

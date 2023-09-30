@@ -3523,6 +3523,7 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | --- | --- | --- |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -3542,6 +3543,16 @@ The tree node.
 
 ```typescript
 public readonly applicationArn: string;
+```
+
+- *Type:* string
+
+---
+
+##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@adsf/framework.SparkEmrServerlessRuntime.property.applicationId"></a>
+
+```typescript
+public readonly applicationId: string;
 ```
 
 - *Type:* string

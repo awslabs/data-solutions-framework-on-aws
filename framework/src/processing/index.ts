@@ -3,3 +3,5 @@
 
 export { SparkEmrServerlessRuntimeProps, Architecture, SparkEmrServerlessRuntime } from './spark-runtime/emr-serverless';
 export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps, SparkImage, ApplicationStackFactory, CICDStage } from './cicd-pipeline';
+export { SparkJob, SparkJobProps, EmrOnEksSparkJob, EmrOnEksSparkJobProps, EmrOnEksSparkJobApiProps } from './spark-job';
+export { EmrServerlessSparkJob, EmrServerlessSparkJobProps, EmrServerlessSparkJobApiProps } from './spark-job';
