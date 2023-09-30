@@ -134,6 +134,8 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   // This is used to expose the ARN of the application to the user.
   public readonly applicationArn: string;
 
+  public readonly applicationId: string;
+
   /**
      * @param {Construct} scope the Scope of the CDK Construct
      * @param {string} id the ID of the CDK Construct
@@ -157,6 +159,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     });
 
     this.applicationArn = sparkApplication.attrArn;
+    this.applicationId = sparkApplication.attrApplicationId;
   }
 
   /**
