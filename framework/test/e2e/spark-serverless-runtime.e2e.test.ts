@@ -7,21 +7,24 @@
  * @group e2e/spark-runtime-serverless
  */
 
-import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { SparkEmrServerlessRuntime } from '../../src/';
+import { App, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 
 jest.setTimeout(6000000);
 
 // GIVEN
-const app = new cdk.App();
+const app = new App();
 const testStack = new TestStack('SparkServerlessTestStack', app);
 const { stack } = testStack;
+
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
 // creation of the construct(s) under test
 const serverlessRuntime = new SparkEmrServerlessRuntime(stack, 'EmrApp', {
   name: 'SparkRuntimeServerless',
+  vpcFlowlogRemovalPolicy: RemovalPolicy.DESTROY,
 });
 
 const s3Read = new PolicyDocument({
@@ -35,11 +38,11 @@ const s3Read = new PolicyDocument({
 
 const execRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole', s3Read);
 
-new cdk.CfnOutput(stack, 'applicationArn', {
+new CfnOutput(stack, 'applicationArn', {
   value: serverlessRuntime.applicationArn,
 });
 
-new cdk.CfnOutput(stack, 'execRoleArn', {
+new CfnOutput(stack, 'execRoleArn', {
   value: execRole.roleArn,
 });
 
