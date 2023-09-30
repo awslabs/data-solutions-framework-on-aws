@@ -11,47 +11,17 @@ import { Context, EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, Trac
 import { NetworkConfiguration, vpcBootstrap } from '../../../utils/vpc-helper';
 
 /**
-* A construct to create a Spark EMR Serverless Application
-*   The construct takes as props {@link SparkEmrServerlessRuntimeProps}
-*   The construct offers method to create execution role for EMR Serverless
-*   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job
-*
-* @example
-* const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
-*    releaseLabel: 'emr-6.12.0',
-*    name: 'spark-serverless-demo'
-* });
-
-* const myFileSystemPolicy = new PolicyDocument({
-*    statements: [new PolicyStatement({
-*      actions: [
-*        's3:GetObject',
-*      ],
-*      resources: ['S3-BUCKET'],
-*    })],
-*  });
-*
-* let myTestRole = new Role (stack, 'TestRole', {
-*    assumedBy: IAM-PRINCIPAL,
-* });
-*
-* const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
-* const myExecutionRole1 = SparkRuntimeServerless.createExecutionRole(stack, 'execRole2', myFileSystemPolicy)
-*
-* runtimeServerless.grantJobExecution(myTestRole, myExecutionRole.roleArn);
-*
-* new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
-*    value: runtimeServerless.applicationArn,
-* });
+* A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 */
 export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
   /**
-     * A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it
-     *
+     * A static method which will create an execution IAM role that can be assumed by EMR Serverless
+     * The method return the role it creates.
+     * 
      * @param scope the scope in which to create the role
      * @param id passed to the IAM Role construct object
-     * @param executionRolePolicyDocument the inline policy to attach to the role, this is the IAM policies needed by the job, for example they can be either access to S3 bucket or DynamDB table.
+     * @param executionRolePolicyDocument the inline policy to attach to the role, this is the IAM policies needed by the job.
      * This parameter is mutually execlusive with iamPolicyName.
      * @param iamPolicyName the IAM policy name to attach to the role, this is mutually execlusive with executionRolePolicyDocument
      */
