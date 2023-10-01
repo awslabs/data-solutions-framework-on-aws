@@ -19,7 +19,7 @@ The construct creates an AWS Step Function that is used to submit the job and or
 
 ## Usage
 
-### Define EMR Serverless Spark Job
+### Define an EMR Serverless Spark Job
 
 The stack defined below shows a usage example of the `EmrServerlessSparkJob` construct. The stack combines also `SparkEmrServerlessRuntime` to show you how to create an EMR Serverless Application and pass it as an argument to the `Spark job` and use it as a runtime for the job. 
 
@@ -83,7 +83,7 @@ class NightlyJobStack(Stack):
 ```
 
 
-### Define EMR on EKS Spark Job
+### Define an EMR on EKS Spark Job
 
 The stack defined below shows a usage example of the `EmrOnEksSparkJob` construct.
 
