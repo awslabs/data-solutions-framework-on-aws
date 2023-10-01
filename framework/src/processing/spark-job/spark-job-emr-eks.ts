@@ -17,41 +17,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  * @see EmrOnEksSparkJobProps parameters to be specified for the construct
  * @default ExecutionTimeoutMinutes: 30
  * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
- * @default ReleaseLabel: EMR version 6.2
- *
- * **Usage example**
- * @example
- *
- * const myFileSystemPolicy = new PolicyDocument({
- *   statements: [new PolicyStatement({
- *     actions: [
- *       's3:GetObject',
- *     ],
- *     resources: ['*'],
- *   })],
- * });
- *
- *
- * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
- * const applicationId = "APPLICATION_ID";
- * const job = new SparkJob(stack, 'SparkJob', {
- *          jobConfig:{
- *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
- *               "VirtualClusterId": "virtualClusterId",
- *               "ExecutionRoleArn": myExecutionRole.roleArn,
- *               "JobDriver": {
- *                   "SparkSubmit": {
- *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
- *                       "EntryPointArguments": [],
- *                       "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
- *                   },
- *               }
- *          }
- * } as EmrServerlessSparkJobApiProps);
- *
- * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
- *   value: job.stateMachine.stateMachineArn,
- * });
+ * @default ReleaseLabel: EMR version 6.12
  */
 export class EmrOnEksSparkJob extends SparkJob {
   private scope: Construct;
@@ -62,6 +28,12 @@ export class EmrOnEksSparkJob extends SparkJob {
    */
   sparkJobExecutionRole?: IRole;
 
+  /**
+   * The initializer for construct, can take two type of props either {@link EmrOnEksSparkJobProps } or {@link EmrOnEksSparkJobApiProps }
+   * @param {Construct} scope the Scope of the CDK Construct
+   * @param {string} id the ID of the CDK Construct
+   * @param props {@link EmrOnEksSparkJobProps } {@link EmrOnEksSparkJobApiProps }
+   */
   constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps | EmrOnEksSparkJobApiProps) {
     super(scope, id, EmrOnEksSparkJob.name, props as SparkJobProps);
     this.scope = scope;
