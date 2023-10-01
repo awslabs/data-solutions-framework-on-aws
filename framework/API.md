@@ -3081,42 +3081,6 @@ creates a State Machine that orchestrates the Spark Job.
 
 > [EmrOnEksSparkJobProps parameters to be specified for the construct](EmrOnEksSparkJobProps parameters to be specified for the construct)
 
-*Example*
-
-```typescript
-const myFileSystemPolicy = new PolicyDocument({
-  statements: [new PolicyStatement({
-    actions: [
-      's3:GetObject',
-    ],
-    resources: ['*'],
-  })],
-});
-
-
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
-const applicationId = "APPLICATION_ID";
-const job = new SparkJob(stack, 'SparkJob', {
-         jobConfig:{
-              "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
-              "VirtualClusterId": "virtualClusterId",
-              "ExecutionRoleArn": myExecutionRole.roleArn,
-              "JobDriver": {
-                  "SparkSubmit": {
-                      "EntryPoint": "s3://S3-BUCKET/pi.py",
-                      "EntryPointArguments": [],
-                      "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
-                  },
-              }
-         }
-} as EmrServerlessSparkJobApiProps);
-
-new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
-  value: job.stateMachine.stateMachineArn,
-});
-```
-
-
 #### Initializers <a name="Initializers" id="@adsf/framework.EmrOnEksSparkJob.Initializer"></a>
 
 ```typescript
@@ -3127,9 +3091,9 @@ new EmrOnEksSparkJob(scope: Construct, id: string, props: EmrOnEksSparkJobApiPro
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> \| <a href="#@adsf/framework.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> \| <a href="#@adsf/framework.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a></code> | {@link EmrOnEksSparkJobProps} {@link EmrOnEksSparkJobApiProps}. |
 
 ---
 
@@ -3137,17 +3101,23 @@ new EmrOnEksSparkJob(scope: Construct, id: string, props: EmrOnEksSparkJobApiPro
 
 - *Type:* constructs.Construct
 
+the Scope of the CDK Construct.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
+the ID of the CDK Construct.
+
 ---
 
 ##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.props"></a>
 
 - *Type:* <a href="#@adsf/framework.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> | <a href="#@adsf/framework.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a>
+
+{@link EmrOnEksSparkJobProps} {@link EmrOnEksSparkJobApiProps}.
 
 ---
 
@@ -3292,42 +3262,6 @@ creates a State Machine that orchestrates the Spark Job.
 
 > [EmrServerlessSparkJobProps parameters to be specified for the construct](EmrServerlessSparkJobProps parameters to be specified for the construct)
 
-*Example*
-
-```typescript
-const myFileSystemPolicy = new PolicyDocument({
-  statements: [new PolicyStatement({
-    actions: [
-      's3:GetObject',
-    ],
-    resources: ['*'],
-  })],
-});
-
-
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
-const applicationId = "APPLICATION_ID";
-const job = new SparkJob(stack, 'SparkJob', {
-         jobConfig:{
-              "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
-              "ApplicationId": applicationId,
-              "ExecutionRoleArn": myExecutionRole.roleArn,
-              "JobDriver": {
-                  "SparkSubmit": {
-                      "EntryPoint": "s3://S3-BUCKET/pi.py",
-                      "EntryPointArguments": [],
-                      "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
-                  },
-              }
-         }
-} as EmrServerlessSparkJobApiProps);
-
-new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
-  value: job.stateMachine.stateMachineArn,
-});
-```
-
-
 #### Initializers <a name="Initializers" id="@adsf/framework.EmrServerlessSparkJob.Initializer"></a>
 
 ```typescript
@@ -3338,9 +3272,9 @@ new EmrServerlessSparkJob(scope: Construct, id: string, props: EmrServerlessSpar
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> \| <a href="#@adsf/framework.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a></code> | *No description.* |
+| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> \| <a href="#@adsf/framework.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a></code> | {@link EmrServerlessSparkJobProps} {@link EmrServerlessSparkJobApiProps}. |
 
 ---
 
@@ -3348,17 +3282,23 @@ new EmrServerlessSparkJob(scope: Construct, id: string, props: EmrServerlessSpar
 
 - *Type:* constructs.Construct
 
+the Scope of the CDK Construct.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
+the ID of the CDK Construct.
+
 ---
 
 ##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.props"></a>
 
 - *Type:* <a href="#@adsf/framework.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> | <a href="#@adsf/framework.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a>
+
+{@link EmrServerlessSparkJobProps} {@link EmrServerlessSparkJobApiProps}.
 
 ---
 
