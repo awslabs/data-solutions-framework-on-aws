@@ -206,7 +206,6 @@ export abstract class SparkJob extends TrackedConstruct {
 
     return this.cloudwatchGroup;
   }
-
 }
 
 

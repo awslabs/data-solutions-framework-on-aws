@@ -8,6 +8,7 @@ import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
 import { EmrRuntimeVersion, TrackedConstruct } from '../../utils';
+import { StepFunctionUtils } from '../../utils/step-function-utils';
 
 
 /**
@@ -214,11 +215,16 @@ export class EmrOnEksSparkJob extends SparkJob {
      */
   private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
 
+    const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
-    props.jobConfig.ClientToken ??= JsonPath.uuid();
-    props.jobConfig.ReleaseLabel ??= EmrRuntimeVersion.V6_9;
-    this.config = props;
+    propsPascalCase.ClientToken ??= JsonPath.uuid();
+    propsPascalCase.ReleaseLabel ??= EmrRuntimeVersion.V6_9;
 
+    this.config = {
+      jobConfig: propsPascalCase,
+      resourceRemovalPolicy: props.resourceRemovalPolicy,
+      schedule: props.schedule,
+    };
   }
 
   /**
@@ -227,7 +233,6 @@ export class EmrOnEksSparkJob extends SparkJob {
      */
 
   private setJobPropsDefaults(scope:Construct, props: EmrOnEksSparkJobProps): void {
-
     const config = {
       jobConfig: {
         ConfigurationOverrides: {
@@ -251,7 +256,10 @@ export class EmrOnEksSparkJob extends SparkJob {
     }
     if (props.sparkSubmitParameters) {config.jobConfig.JobDriver.SparkSubmitJobDriver!.SparkSubmitParameters = props.sparkSubmitParameters;}
 
-    config.jobConfig.ConfigurationOverrides.ApplicationConfiguration ??= props.applicationConfiguration;
+    if (props.applicationConfiguration) {
+      config.jobConfig.ConfigurationOverrides.ApplicationConfiguration = StepFunctionUtils.camelToPascal(props.applicationConfiguration);
+    }
+
 
     config.jobConfig.RetryPolicyConfiguration!.MaxAttempts = props.maxRetries ?? 0;
 
@@ -273,9 +281,7 @@ export class EmrOnEksSparkJob extends SparkJob {
 
 
     config.jobConfig.Tags = props.tags;
-
     this.config = config;
-
 
   }
 }

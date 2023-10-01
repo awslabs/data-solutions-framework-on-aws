@@ -9,6 +9,7 @@ import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
 import { SparkEmrServerlessRuntime } from '../../processing/spark-runtime/emr-serverless';
 import { TrackedConstruct } from '../../utils';
+import { StepFunctionUtils } from '../../utils/step-function-utils';
 
 /**
  * A construct to run Spark Jobs using EMR Serverless.
@@ -72,6 +73,7 @@ export class EmrServerlessSparkJob extends SparkJob {
       this.config.jobConfig.Tags = {};
     }
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
+
 
     this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(5+this.config.jobConfig.ExecutionTimeoutMinutes!), this.config.schedule);
 
@@ -213,12 +215,16 @@ export class EmrServerlessSparkJob extends SparkJob {
    */
   private setJobApiPropsDefaults(props: EmrServerlessSparkJobApiProps): void {
 
+    const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
-    props.jobConfig.ClientToken ??= JsonPath.uuid();
-    props.jobConfig.ExecutionTimeoutMinutes ??= 30;
+    propsPascalCase.ClientToken ??= JsonPath.uuid();
+    propsPascalCase.ExecutionTimeoutMinutes ??= 30;
 
-    this.config = props;
-
+    this.config = {
+      jobConfig: propsPascalCase,
+      resourceRemovalPolicy: props.resourceRemovalPolicy,
+      schedule: props.schedule,
+    };
   }
 
   /**
@@ -254,7 +260,9 @@ export class EmrServerlessSparkJob extends SparkJob {
       config.jobConfig.JobDriver.SparkSubmit.SparkSubmitParameters = props.sparkSubmitParameters;
     }
 
-    config.jobConfig.ConfigurationOverrides!.ApplicationConfiguration ??= props.applicationConfiguration;
+    if (props.applicationConfiguration) {
+      config.jobConfig.ConfigurationOverrides.ApplicationConfiguration = StepFunctionUtils.camelToPascal(props.applicationConfiguration);
+    }
 
     if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/)) {
       throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
@@ -281,7 +289,6 @@ export class EmrServerlessSparkJob extends SparkJob {
     config.jobConfig.Tags = props.tags;
 
     this.config = config;
-
 
   }
 
@@ -344,6 +351,4 @@ export interface EmrServerlessSparkJobApiProps extends SparkJobProps {
    * @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
    */
   readonly jobConfig: {[key: string] : any};
-
-
 }
