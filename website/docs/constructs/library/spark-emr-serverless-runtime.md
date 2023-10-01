@@ -3,7 +3,7 @@ sidebar_position: 5
 sidebar_label: Spark EMR Serverless Runtime
 ---
 
-# SparkEmrServerlessRuntime
+# Spark Emr Serverless Runtime
 
 A construct to create a [Spark EMR Serverless Application](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html), along with methods to grant a principal (ie. IAM Role or IAM User) the right to start an EMR Serverless job as well as method to create an IAM execution that is assumed by EMR Serverless to execute job. 
 
