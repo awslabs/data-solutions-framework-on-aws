@@ -1,7 +1,7 @@
 import os
 from aws_cdk import Stack
 from constructs import Construct
-from adsf import ApplicationStackFactory, CICDStage
+from aws_dsf import ApplicationStackFactory, CICDStage
 
 class EmrApplicationStackFactory(ApplicationStackFactory):
     def __init__(self) -> None:
