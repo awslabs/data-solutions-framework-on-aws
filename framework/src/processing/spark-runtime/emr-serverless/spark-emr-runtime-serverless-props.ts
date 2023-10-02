@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { aws_emrserverless, IResolvable } from 'aws-cdk-lib';
+import { aws_emrserverless, IResolvable, RemovalPolicy } from 'aws-cdk-lib';
 import { EmrRuntimeVersion } from '../../../utils';
 
 /**
@@ -18,8 +18,19 @@ export interface SparkEmrServerlessRuntimeProps {
   aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty>;
   /**
    * The network configuration for customer VPC connectivity for the application.
+   * If no configuration is created, the a VPC with 3 public subnets and 3 private subnets is created
+   * The 3 public subnets and 3 private subnets are each created in an Availability Zone (AZ)
+   * The VPC has one NAT Gateway per AZ and an S3 endpoint
+   * @default - a VPC and a security group are created, these are accessed as construct attribute.
    */
   readonly networkConfiguration?: IResolvable | aws_emrserverless.CfnApplication.NetworkConfigurationProperty;
+  /**
+   * The removal policy when deleting the CDK resource.
+   * Resources like Amazon cloudwatch log or Amazon S3 bucket
+   * If DESTROY is selected, context value
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
+  readonly removalPolicy?: RemovalPolicy;
   /**
    * The name of the application. The name must be less than 64 characters.
    *

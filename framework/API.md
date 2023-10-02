@@ -3693,7 +3693,11 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.GatewayVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | If no VPC is provided, one is created by default This attribute is used to expose the VPC, if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
 
 ---
 
@@ -3716,6 +3720,56 @@ public readonly applicationArn: string;
 ```
 
 - *Type:* string
+
+The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user.
+
+---
+
+##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@adsf/framework.SparkEmrServerlessRuntime.property.applicationId"></a>
+
+```typescript
+public readonly applicationId: string;
+```
+
+- *Type:* string
+
+The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user.
+
+---
+
+##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="@adsf/framework.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
+
+```typescript
+public readonly emrApplicationSecurityGroup: SecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SecurityGroup
+
+If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`.
+
+---
+
+##### `s3GatewayVpcEndpoint`<sup>Optional</sup> <a name="s3GatewayVpcEndpoint" id="@adsf/framework.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint"></a>
+
+```typescript
+public readonly s3GatewayVpcEndpoint: GatewayVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.GatewayVpcEndpoint
+
+If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@adsf/framework.SparkEmrServerlessRuntime.property.vpc"></a>
+
+```typescript
+public readonly vpc: Vpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.Vpc
+
+If no VPC is provided, one is created by default This attribute is used to expose the VPC, if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`.
 
 ---
 
@@ -4839,6 +4893,7 @@ const sparkEmrServerlessRuntimeProps: SparkEmrServerlessRuntimeProps = { ... }
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrRuntimeVersion">EmrRuntimeVersion</a></code> | The EMR release version associated with the application. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
@@ -4938,8 +4993,13 @@ public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty
+- *Default:* a VPC and a security group are created, these are accessed as construct attribute.
 
 The network configuration for customer VPC connectivity for the application.
+
+If no configuration is created, the a VPC with 3 public subnets and 3 private subnets is created
+The 3 public subnets and 3 private subnets are each created in an Availability Zone (AZ)
+The VPC has one NAT Gateway per AZ and an S3 endpoint
 
 ---
 
@@ -4956,6 +5016,22 @@ The EMR release version associated with the application.
 The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
 
 > [EMR_DEFAULT_VERSION](EMR_DEFAULT_VERSION)
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+Resources like Amazon cloudwatch log or Amazon S3 bucket
+If DESTROY is selected, context value
 
 ---
 
