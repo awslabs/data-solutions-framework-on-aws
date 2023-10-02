@@ -19,7 +19,7 @@ export interface NetworkConfiguration {
 /**
  * @internal
  * Create a VPC with the provided CIDR and attach to it an Amazon S3 Gateway Vpc Endpoint
- * @param {Construct} scope The local path of the yaml podTemplate files to upload
+ * @param {Construct} scope The scope of the stack where the VPC will be created
  * @param {string} vpcCidr The cidr for vpc
  * @param {Key} logKmsKey The KMS key used to encrypt the VPC flow log
  * @param {RemovalPolicy} vpcFlowlogRemovalPolicy The removal policy for vpc flowlog in cloudwatch log
