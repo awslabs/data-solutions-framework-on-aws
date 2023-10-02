@@ -46,7 +46,7 @@ We can now install AWS DSF:
   
 
   ```bash
-  npm i aws-cdk --save
+  npm i aws-dsf --save
   ```
   
   ```mdx-code-block
