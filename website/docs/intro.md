@@ -47,7 +47,7 @@ We can now install AWS DSF:
   
 
   ```bash
-  npm i aws-analytics-reference-architecture --save
+  npm i aws-dsf --save
   ```
   
   ```mdx-code-block
@@ -59,7 +59,7 @@ We can now install AWS DSF:
     
     # requirements.txt:
     ...
-    aws_data_solutions_framework==1.0.0
+    aws_dsf==1.0.0
     ...
 
     # Then you can install CDK app requirements:
@@ -142,5 +142,5 @@ Now you can deploy your stack!
 cdk deploy
 ```
 
-Congrats, you created your first CDK app using AWS DSF! Go ahead and explore all available [constructs](category/constructs) and [solutions](category/data-solutions).
+Congrats, you created your first CDK app using AWS DSF! Go ahead and explore all available [constructs](category/constructs) and [examples](category/examples).
 

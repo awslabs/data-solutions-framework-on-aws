@@ -80,9 +80,9 @@ const config = {
         },
         {
           type: 'doc',
-          docId: 'solutions/index',
+          docId: 'examples/index',
           position: 'left',
-          label: 'Examples'
+          label: 'Examples solutions'
         },
         {
           href: 'https://github.com/' + organization + '/' + projectName,
