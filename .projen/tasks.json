@@ -130,9 +130,6 @@
           "exec": "lerna-projen copy-dist framework/dist dist"
         },
         {
-          "exec": "lerna-projen copy-dist solutions/dist dist"
-        },
-        {
           "exec": "lerna-projen copy-dist example/undefined dist"
         }
       ]

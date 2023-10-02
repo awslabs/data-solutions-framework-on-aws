@@ -180,13 +180,13 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --upgrade --target=minor --filter=@jest/globals,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,ts-jest,typescript,aws-cdk-lib,constructs"
+          "exec": "npm-check-updates --upgrade --target=minor --filter=@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,ts-jest,typescript,js-yaml,simple-base,aws-cdk-lib,constructs"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @jest/globals @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta ts-jest typescript aws-cdk-lib constructs"
+          "exec": "yarn upgrade @aws-cdk/lambda-layer-kubectl-v27 @jest/globals @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta ts-jest typescript js-yaml simple-base aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

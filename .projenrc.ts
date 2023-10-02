@@ -6,8 +6,10 @@ import { Transform } from "projen/lib/javascript";
 const CDK_VERSION = '2.94.0';
 const CDK_CONSTRUCTS_VERSION = '10.2.55';
 const JSII_VERSION = '~5.0.0';
+const KUBECTL_LAYER_VERSION='v27';
 
 const repositoryUrl = 'git@github.com:awslabs/aws-data-solutions-framework.git';
+const homepage = 'https://awslabs.github.io/aws-data-solutions-framework/';
 const author = 'Amazon Web Services';
 const authorAddress = 'https://aws.amazon.com';
 const authorOrganization = true;
@@ -17,7 +19,6 @@ const copyrightPeriod = `2021-${new Date().getFullYear()}`;
 const defaultReleaseBranch = 'main';
 const release = false; /* to update and configure when ready to release */
 const name = 'aws-data-solutions-framework';
-const shortName = 'adsf';
 const keywords= [
   'awscdk',
   'aws',
@@ -44,10 +45,11 @@ const rootProject = new LernaProject({
   authorName: author,
   authorUrl: authorAddress,
   authorOrganization,
+  homepage,
   license,
   copyrightOwner,
   copyrightPeriod,
-  release,
+  release: false,
 
   pullRequestTemplate: false, // define it manually
   githubOptions: {
@@ -58,7 +60,7 @@ const rootProject = new LernaProject({
     labels: ["npm", "dependencies"],
     scheduleInterval: DependabotScheduleInterval.DAILY,
   },
-  packageName: `@${shortName}/${name}`,
+  packageName: name,
 
   gitignore: [
     '.idea',
@@ -73,7 +75,6 @@ const rootProject = new LernaProject({
 const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
-  packageName: `@${shortName}/framework`,
   parent: rootProject,
   outdir: 'framework',
   repositoryDirectory: 'framework',
@@ -84,6 +85,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   author,
   authorAddress,
   authorOrganization,
+  homepage,
   license,
   copyrightOwner,
   copyrightPeriod,
@@ -95,10 +97,16 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   jsiiVersion: JSII_VERSION,
 
+  packageName: 'aws-dsf',
+
   publishToPypi: {
-    distName: 'adsf',
-    module: 'adsf'
+    distName: 'aws_dsf',
+    module: 'aws_dsf'
   },
+
+  deps: [
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
+  ],
 
   devDeps: [
     'cdk-nag@^2.0.0',
@@ -108,12 +116,13 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'rosetta',
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
   ],
 
-  python: {
-    distName: 'adsf',
-    module: 'adsf',
-  },
+  bundledDeps: [
+    'js-yaml',
+    'simple-base'
+  ],
 
   jestOptions: {
     jestConfig: {
@@ -146,33 +155,6 @@ fwkProject.addTask('test:e2e', {
   exec: 'npx projen test --group=e2e'
 });
 
-new awscdk.AwsCdkConstructLibrary({
-  name: 'solutions',
-  packageName: `@${shortName}/solutions`,
-  description: 'Pre-packaged data solutions built with the AWS Data Solutions Framework (@adsf/framework)',
-  author,
-  authorAddress,
-  authorOrganization,
-  license,
-
-  parent: rootProject,
-  outdir: 'solutions',
-
-  keywords,
-
-  repositoryUrl,
-  repositoryDirectory: 'solutions',
-  defaultReleaseBranch,
-
-  cdkVersion: CDK_VERSION,
-  constructsVersion: CDK_CONSTRUCTS_VERSION,
-  jsiiVersion: JSII_VERSION,
-
-  devDeps: [
-    '@types/jest',
-  ],
-});
-
 const exampleApp = new awscdk.AwsCdkPythonApp({
   name: 'example',
   moduleName: 'adsf_example',
@@ -193,6 +175,7 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
+    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
   pythonExec: 'python3',
   venvOptions: {
@@ -220,7 +203,7 @@ synthTask?.reset();
 synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
 const buildExampleTask = exampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ../framework/dist/python adsf` },
+    { exec: `pip install --no-index --find-links ../framework/dist/python aws_dsf` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]

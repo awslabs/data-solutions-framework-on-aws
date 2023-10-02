@@ -46,7 +46,7 @@ We can now install AWS DSF:
   
 
   ```bash
-  npm i aws-analytics-reference-architecture --save
+  npm i aws-dsf --save
   ```
   
   ```mdx-code-block
@@ -58,7 +58,7 @@ We can now install AWS DSF:
     
     # requirements.txt:
     ...
-    aws_data_solutions_framework==1.0.0
+    aws_dsf==1.0.0
     ...
 
     # Then you can install CDK app requirements:
@@ -80,7 +80,7 @@ We will now use [***DataLakeStorage***](constructs/library/data-lake-storage) to
   In `lib/adsf-example-stack.ts`
   ```typescript
   import * as cdk from 'aws-cdk-lib';
-  import { DataLakeStorage } from 'aws-data-solutions-framework';
+  import { DataLakeStorage } from 'aws-dsf';
 
   export class AdsfExampleStack extends cdk.Stack {
     constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -111,7 +111,7 @@ We will now use [***DataLakeStorage***](constructs/library/data-lake-storage) to
     In `adsf_example/adsf_example_stack.py`
     ```python
     import aws_cdk as cdk
-    import aws_data_solutions_framework as adsf
+    import aws_dsf as adsf
 
     class AdsfExampleStack(cdk.Stack):
 

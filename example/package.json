@@ -8,6 +8,6 @@
         "package": "npx projen package"
     },
     "dependencies": {
-        "@adsf/framework": "*"
+        "aws-dsf": "*"
     }
 }

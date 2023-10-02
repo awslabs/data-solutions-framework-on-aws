@@ -1,5 +1,5 @@
 {
-  "name": "@adsf/framework",
+  "name": "aws-dsf",
   "description": "L3 CDK Constructs used to build data solutions with AWS",
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@aws-cdk/cli-lib-alpha": "2.94.0-alpha.0",
+    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
     "@jest/globals": "^29.6.4",
     "@types/jest": "^29.5.3",
     "@types/node": "^16",
@@ -64,6 +65,15 @@
     "aws-cdk-lib": "^2.94.0",
     "constructs": "^10.2.55"
   },
+  "dependencies": {
+    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "simple-base": "^1.0.0"
+  },
+  "bundledDependencies": [
+    "js-yaml",
+    "simple-base"
+  ],
   "keywords": [
     "analytics",
     "aws",
@@ -75,6 +85,7 @@
   ],
   "main": "lib/index.js",
   "license": "MIT-0",
+  "homepage": "https://awslabs.github.io/aws-data-solutions-framework/",
   "version": "0.0.0",
   "jest": {
     "runner": "groups",
@@ -129,8 +140,8 @@
     "outdir": "dist",
     "targets": {
       "python": {
-        "distName": "adsf",
-        "module": "adsf"
+        "distName": "aws_dsf",
+        "module": "aws_dsf"
       }
     },
     "tsc": {
