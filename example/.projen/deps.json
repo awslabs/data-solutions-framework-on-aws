@@ -1,6 +1,10 @@
 {
   "dependencies": [
     {
+      "name": "aws-cdk.lambda-layer-kubectl-v27",
+      "type": "devenv"
+    },
+    {
       "name": "pytest",
       "type": "devenv"
     },
