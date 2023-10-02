@@ -10,3 +10,4 @@ export { EmrRuntimeVersion, SparkImage, EMR_DEFAULT_VERSION } from './utils/emr-
 export { CICDStage, ApplicationStageProps, ApplicationStage } from './utils/application-stage';
 export { ApplicationStackFactory } from './utils/application-stack-factory';
 export { NetworkConfiguration, vpcBootstrap } from './utils/vpc-helper';
+export { PySparkApplicationPackage, PySparkApplicationPackageProps } from './processing';
