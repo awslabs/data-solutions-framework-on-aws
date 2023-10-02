@@ -4,14 +4,15 @@
 
 AWS Data Solutions Framework (AWS DSF) is a framework for implementation and delivery of analytics solutions with built-in AWS best practices. AWS DSF is an abstraction atop AWS services based on [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) [L3 constructs](https://docs.aws.amazon.com/cdk/v2/guide/constructs.html), packaged as a library.
 
-AWS team has built several ready-to-deploy solutions using AWS DSF, that address the most common data analytics requirements. You can leverage AWS DSF to implement your data platform in weeks rather than in months.
+You can leverage AWS DSF to implement your data platform in weeks rather than in months.
 
 - AWS DSF is available in TypeScript and Python.
-- You can build custom solutions using AWS DSF.
-- You can deploy AWS DSF solutions built by AWS.
-- You can easily customize solutions, and integrate with the rest of your platform.
+- Use the framework to build your data solutions instead of building cloud infrastructure from scratch.
+- Compose data solutions using integrated building blocks via Infrastructure as Code (IaC).
+- Benefit from smart defaults and built-in AWS best practices.
+- Customize or extend according your requirements.
 
-**Get started** by exploring available [solutions](./solutions/) and the [framework](./framework/)!
+**Get started** by exploring the [framework](./framework/) and available [examples](./example/)
 
 ## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.

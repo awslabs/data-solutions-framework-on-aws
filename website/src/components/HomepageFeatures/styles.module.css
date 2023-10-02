@@ -7,7 +7,8 @@
 }
 
 .featureSvg {
-  color: var(--ifm-color-primary);
+  stroke: var(--icons-color);
+  fill: none;
   height: 250px;
   width: 250px;
 }

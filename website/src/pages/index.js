@@ -6,20 +6,20 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import styles from './index.module.css';
 
-//TODO - fix code to get the correct theme to show the light-logo.png or dark-logo.png
+
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
-  // const currentTheme = document.documentElement.getAttribute('data-theme');
+  // const currentTheme = document.documentElement.getAttribute('data-theme');  
 
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container" style={{textAlign: 'center'}}>
         <div className="row">
           <div className="col col--6">
-            <img src="img/adsf-logo.png" alt="Header image" style={{width: '85%', paddingTop: '3%'}}/>
+            <img id="logo" className="navLogo" src="img/adsf-logo-light.png" alt="Header image"/>
           </div>
           <div className="col col--6">
-          <img src="img/code-shadow.png" alt="Header image" style={{width: '100%'}}/>
+          <img id="codeSample" className='navCodeExample' src="img/code-shadow-light.png" alt="Header image"/>
           </div>
         </div>
         <p className='hero__subtitle'>{siteConfig.tagline}</p>

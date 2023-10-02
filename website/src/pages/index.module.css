@@ -4,7 +4,7 @@
  */
 
 .heroBanner {
-  background: #FCEADE;
+  background: var(--header-background);
   padding: 2rem 0;
   text-align: center;
   position: relative;

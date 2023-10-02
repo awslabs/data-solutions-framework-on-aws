@@ -16,6 +16,10 @@
   --ifm-toc-border-color: #dadde1b8;
   --ifm-link-color: #0000EE;
   --ifm-link-hover-color: #0000EE;
+  --header-background: #FCEADE;
+  --header-subtitle: #000;
+  --button-color: #25ced1;
+  --icons-color: #131212;
 }
 
 html[data-theme="light"] {
@@ -33,6 +37,26 @@ html[data-theme="dark"] {
   --ifm-toc-border-color: #333;
   --ifm-background-color: #141520;
   --docusaurus-highlighted-code-line-bg: #494b62;
+  --ifm-link-color: #2fbef1;
+  --ifm-link-hover-color: #2fbef1;
+  --nav-logo: url('/img/adsf-logo-dark.png');
+  --header-code-img: url('/img/code-shadow-dark.png');
+  --header-background: #25ced1;
+  --header-subtitle: #fff;
+  --button-color: #fff;
+  --button-hover: #fceade;
+  --icons-color: #f6f6f6;
+}
+
+.navCodeExample {
+  content: var(--header-code-img);
+  width: '100%';
+}
+
+.navLogo {
+  content: var(--nav-logo);
+  width: '85%';
+  padding-top: '3%';
 }
 
 .boldTagline {
@@ -41,13 +65,13 @@ html[data-theme="dark"] {
 }
 
 .hero__subtitle {
-  color: #000;
+  color: var(--header-subtitle);
   font-size: 2.3em;
   font-weight: 400;
 }
 
 .button-3d {
-  background-color: #25ced1;
+  background-color: var(--button-color);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   transform: translateY(-5px);
   transition: transform 0.4s ease-in-out;

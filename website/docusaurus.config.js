@@ -60,7 +60,7 @@ const config = {
   themeConfig:
   {
     navbar: {
-      // title: 'AWS DSF',
+      title: 'AWS DSF',
       logo: {
         alt: niceProjectName + 'Logo',
         src: 'img/header-icon.png',
@@ -93,7 +93,7 @@ const config = {
     },
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: true,
+      disableSwitch: false,
       respectPrefersColorScheme: true,
     },
     docs: {
