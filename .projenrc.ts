@@ -8,6 +8,7 @@ const CDK_CONSTRUCTS_VERSION = '10.2.55';
 const JSII_VERSION = '~5.0.0';
 
 const repositoryUrl = 'git@github.com:awslabs/aws-data-solutions-framework.git';
+const homepage = 'https://awslabs.github.io/aws-data-solutions-framework/';
 const author = 'Amazon Web Services';
 const authorAddress = 'https://aws.amazon.com';
 const authorOrganization = true;
@@ -17,7 +18,6 @@ const copyrightPeriod = `2021-${new Date().getFullYear()}`;
 const defaultReleaseBranch = 'main';
 const release = false; /* to update and configure when ready to release */
 const name = 'aws-data-solutions-framework';
-const shortName = 'adsf';
 const keywords= [
   'awscdk',
   'aws',
@@ -44,10 +44,11 @@ const rootProject = new LernaProject({
   authorName: author,
   authorUrl: authorAddress,
   authorOrganization,
+  homepage,
   license,
   copyrightOwner,
   copyrightPeriod,
-  release,
+  release: false,
 
   pullRequestTemplate: false, // define it manually
   githubOptions: {
@@ -58,7 +59,7 @@ const rootProject = new LernaProject({
     labels: ["npm", "dependencies"],
     scheduleInterval: DependabotScheduleInterval.DAILY,
   },
-  packageName: `@${shortName}/${name}`,
+  packageName: name,
 
   gitignore: [
     '.idea',
@@ -73,7 +74,6 @@ const rootProject = new LernaProject({
 const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
   description: 'L3 CDK Constructs used to build data solutions with AWS',
-  packageName: `@${shortName}/framework`,
   parent: rootProject,
   outdir: 'framework',
   repositoryDirectory: 'framework',
@@ -84,6 +84,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   author,
   authorAddress,
   authorOrganization,
+  homepage,
   license,
   copyrightOwner,
   copyrightPeriod,
@@ -95,9 +96,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   jsiiVersion: JSII_VERSION,
 
+  packageName: 'aws-dsf',
+
   publishToPypi: {
-    distName: 'adsf',
-    module: 'adsf'
+    distName: 'aws_dsf',
+    module: 'aws_dsf'
   },
 
   devDeps: [
@@ -109,11 +112,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'rosetta',
   ],
-
-  python: {
-    distName: 'adsf',
-    module: 'adsf',
-  },
 
   jestOptions: {
     jestConfig: {
@@ -144,33 +142,6 @@ fwkProject.setScript('test', 'npx projen test --group=-e2e');
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
   exec: 'npx projen test --group=e2e'
-});
-
-new awscdk.AwsCdkConstructLibrary({
-  name: 'solutions',
-  packageName: `@${shortName}/solutions`,
-  description: 'Pre-packaged data solutions built with the AWS Data Solutions Framework (@adsf/framework)',
-  author,
-  authorAddress,
-  authorOrganization,
-  license,
-
-  parent: rootProject,
-  outdir: 'solutions',
-
-  keywords,
-
-  repositoryUrl,
-  repositoryDirectory: 'solutions',
-  defaultReleaseBranch,
-
-  cdkVersion: CDK_VERSION,
-  constructsVersion: CDK_CONSTRUCTS_VERSION,
-  jsiiVersion: JSII_VERSION,
-
-  devDeps: [
-    '@types/jest',
-  ],
 });
 
 const exampleApp = new awscdk.AwsCdkPythonApp({

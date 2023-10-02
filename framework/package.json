@@ -1,5 +1,5 @@
 {
-  "name": "@adsf/framework",
+  "name": "aws-dsf",
   "description": "L3 CDK Constructs used to build data solutions with AWS",
   "repository": {
     "type": "git",
@@ -75,6 +75,7 @@
   ],
   "main": "lib/index.js",
   "license": "MIT-0",
+  "homepage": "https://awslabs.github.io/aws-data-solutions-framework/",
   "version": "0.0.0",
   "jest": {
     "runner": "groups",
@@ -129,8 +130,8 @@
     "outdir": "dist",
     "targets": {
       "python": {
-        "distName": "adsf",
-        "module": "adsf"
+        "distName": "aws_dsf",
+        "module": "aws_dsf"
       }
     },
     "tsc": {
