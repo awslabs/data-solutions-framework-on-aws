@@ -4998,7 +4998,8 @@ public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty
 The network configuration for customer VPC connectivity for the application.
 
 If no configuration is created, the a VPC with 3 public subnets and 3 private subnets is created
-The VPC has a NAT Gateway and an S3 endpoint
+The 3 public subnets and 3 private subnets are each created in an Availability Zone (AZ)
+The VPC has one NAT Gateway per AZ and an S3 endpoint
 
 ---
 
