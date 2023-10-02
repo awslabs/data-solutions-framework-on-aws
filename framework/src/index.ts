@@ -11,3 +11,6 @@ export { CICDStage, ApplicationStageProps, ApplicationStage } from './utils/appl
 export { ApplicationStackFactory } from './utils/application-stack-factory';
 export { NetworkConfiguration, vpcBootstrap } from './utils/vpc-helper';
 export { PySparkApplicationPackage, PySparkApplicationPackageProps } from './processing';
+export { SparkJob, SparkJobProps, EmrOnEksSparkJob, EmrOnEksSparkJobProps, EmrOnEksSparkJobApiProps } from './processing/spark-job';
+export { EmrServerlessSparkJob, EmrServerlessSparkJobProps, EmrServerlessSparkJobApiProps } from './processing/spark-job';
+
