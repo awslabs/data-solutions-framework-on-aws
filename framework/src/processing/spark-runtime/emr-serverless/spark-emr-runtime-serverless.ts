@@ -183,7 +183,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
     const emrReleaseLabel: EmrRuntimeVersion = props.releaseLabel ? props.releaseLabel : EMR_DEFAULT_VERSION;
 
-    const removalPolicy = Context.revertRemovalPolicy(scope, props.vpcFlowlogRemovalPolicy);
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     const logKmsKey: Key = new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
@@ -196,7 +196,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     let emrNetworkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
-      const networkConfiguration: NetworkConfiguration = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.vpcFlowlogRemovalPolicy, undefined, props.name);
+      const networkConfiguration: NetworkConfiguration = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.removalPolicy, undefined, props.name);
 
       let privateSubnetIds: string [] = [];
 

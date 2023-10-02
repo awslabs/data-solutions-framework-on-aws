@@ -25,7 +25,7 @@ stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true)
 // creation of the construct(s) under test
 const serverlessRuntime = new SparkEmrServerlessRuntime(stack, 'EmrApp', {
   name: 'SparkRuntimeServerless',
-  vpcFlowlogRemovalPolicy: RemovalPolicy.DESTROY,
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 const s3Read = new PolicyDocument({

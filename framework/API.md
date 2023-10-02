@@ -4893,7 +4893,7 @@ const sparkEmrServerlessRuntimeProps: SparkEmrServerlessRuntimeProps = { ... }
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#@adsf/framework.EmrRuntimeVersion">EmrRuntimeVersion</a></code> | The EMR release version associated with the application. |
-| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.vpcFlowlogRemovalPolicy">vpcFlowlogRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | If no VPC is provided, it is created with vpc flowlog activated This prop control if the logs should be deleted when the stack is deleted The removal policy when deleting the CDK resource. |
+| <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@adsf/framework.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
@@ -5019,17 +5019,18 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-##### `vpcFlowlogRemovalPolicy`<sup>Optional</sup> <a name="vpcFlowlogRemovalPolicy" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.vpcFlowlogRemovalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@adsf/framework.SparkEmrServerlessRuntimeProps.property.removalPolicy"></a>
 
 ```typescript
-public readonly vpcFlowlogRemovalPolicy: RemovalPolicy;
+public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 - *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-If no VPC is provided, it is created with vpc flowlog activated This prop control if the logs should be deleted when the stack is deleted The removal policy when deleting the CDK resource.
+The removal policy when deleting the CDK resource.
 
+Resources like Amazon cloudwatch log or Amazon S3 bucket
 If DESTROY is selected, context value
 
 ---

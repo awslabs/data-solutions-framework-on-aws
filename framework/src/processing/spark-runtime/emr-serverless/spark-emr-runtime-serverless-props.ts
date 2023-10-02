@@ -25,13 +25,12 @@ export interface SparkEmrServerlessRuntimeProps {
    */
   readonly networkConfiguration?: IResolvable | aws_emrserverless.CfnApplication.NetworkConfigurationProperty;
   /**
-   * If no VPC is provided, it is created with vpc flowlog activated
-   * This prop control if the logs should be deleted when the stack is deleted
    * The removal policy when deleting the CDK resource.
+   * Resources like Amazon cloudwatch log or Amazon S3 bucket
    * If DESTROY is selected, context value
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
-  readonly vpcFlowlogRemovalPolicy?: RemovalPolicy;
+  readonly removalPolicy?: RemovalPolicy;
   /**
    * The name of the application. The name must be less than 64 characters.
    *
