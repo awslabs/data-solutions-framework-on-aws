@@ -13,6 +13,27 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 /**
 * A construct that takes your pyspark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket
 * This construct requires Docker daemon installed locally to run
+* @example
+* ```
+* let pysparkPacker = new PySparkApplicationPackage (stack, 'pysparkPacker', {
+*                             entrypointFileName: 'app-pyspark.py',
+*                             pysparkApplicationName: 'my-pyspark',
+*                             dependenciesPath: '/Users/mouhib/tech-summit-demo/app',
+*                             entrypointPath: '/Users/mouhib/tech-summit-demo/app',
+*                             removalPolicy: RemovalPolicy.DESTROY,
+*                           });
+* let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.virtualEnvironmentArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
+* new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
+*   name: 'SparkSimpleProps',
+*   applicationId: 'xxxxxxxxx',
+*   executionRoleArn: 'ROLE-ARN,
+*   executionTimeoutMinutes: 30,
+*   s3LogUri: 's3://s3-bucket/monitoring-logs',
+*   cloudWatchLogGroupName: 'spark-serverless-log',
+*   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
+*   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
+* } as EmrServerlessSparkJobProps);
+* ```
 */
 export class PySparkApplicationPackage extends TrackedConstruct {
 
@@ -27,20 +48,21 @@ export class PySparkApplicationPackage extends TrackedConstruct {
    * The S3 location where the archive of python virtual envirobment is stored
    * You pass this location to your Spark job
    */
-  public readonly dependenciesS3Uri: string;
+  public readonly virtualEnvironmentArchiveS3Uri: string;
 
 
   /**
-   * A bucket is created and exposed as an attribute
-   * The bucket object where your assets are stored
-   * A bucket is created for you if you do not provide on in the props
+   * A bucket is created and exposed as an attribute, 
+   * this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct
+   * @default A bucket is created for you if you do not provide on in the props
    */
-  public readonly assetBucket: IBucket;
+  public readonly artifactsBucket: IBucket;
 
 
   /**
-   * The role used by the BucketDeployment to upload the artifacts to the artifact S3 bucket
-   * A role
+   * The role used by the BucketDeployment to upload the artifacts to an s3 bucket.
+   * In case you provide your own bucket for storing the artifacts (entrypoint and virtual environment archive),
+   * you must provide s3 write access to this role to upload the artifacts
    */
   public readonly assetUploadBucketRole: IRole;
 
@@ -59,6 +81,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
+    const virtualEnvironmentArchiveName = props.virtualEnvironmentArchiveName ?? 'pyspark-env.tar.gz';
+
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
 
     s3DeploymentLambdaPolicyStatement.push(new PolicyStatement({
@@ -76,20 +100,20 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     //Create an execution role for the lambda and attach to it a policy formed from user input
     const assetUploadBucketRole = new Role(this,
       `s3BucketDeploymentRole-${props.pysparkApplicationName}`, {
-        assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-        description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
-        managedPolicies: [lambdaExecutionRolePolicy],
-      });
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
+      managedPolicies: [lambdaExecutionRolePolicy],
+    });
 
     let artifactsBucket: IBucket;
 
     if (!props.artifactsBucket) {
 
-      artifactsBucket = new Bucket (this, 'assetBucket', {
+      artifactsBucket = new Bucket(this, 'assetBucket', {
         encryption: BucketEncryption.KMS_MANAGED,
         enforceSSL: true,
         removalPolicy: removalPolicy,
-        autoDeleteObjects: true,
+        autoDeleteObjects: false,
       });
 
       artifactsBucket.grantWrite(assetUploadBucketRole);
@@ -107,7 +131,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
         command: [
           'sh',
           '-c',
-          'cp /output/pyspark-env.tar.gz /asset-output/',
+          `cp /output/${virtualEnvironmentArchiveName} /asset-output/`,
         ],
       },
     });
@@ -164,8 +188,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     });
 
     this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${props.pysparkApplicationName}/${props.entrypointFileName}`);
-    this.depsS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${props.pysparkApplicationName}/pyspark-env.tar.gz`);
-    this.assetBucket = artifactsBucket;
+    this.virtualEnvironmentArchiveS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${props.pysparkApplicationName}/pyspark-env.tar.gz`);
+    this.artifactsBucket = artifactsBucket;
     this.assetUploadBucketRole = assetUploadBucketRole;
 
   }

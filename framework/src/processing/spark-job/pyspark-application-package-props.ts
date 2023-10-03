@@ -12,14 +12,13 @@ export interface PySparkApplicationPackageProps {
 
 
   /**
-   * The source directory where you have `requirements.txt` or `pyproject.toml`
-   * This location must have a `Dockerfile` that will build the archive of the virtual environment
+   * The source directory where you have you have the entrypoint stored
+   * example `~/my-project/src/entrypoint.py`, the path would be `~/my-project/src`
    */
   readonly entrypointPath: string;
 
   /**
-   * The source directory where you have `requirements.txt` or `pyproject.toml`
-   * This location must have a `Dockerfile` that will build the archive of the virtual environment
+   * The file that serves as entrypoint of your pyspark appplication
    */
   readonly entrypointFileName: string;
 
@@ -28,6 +27,12 @@ export interface PySparkApplicationPackageProps {
    * This location must have a `Dockerfile` that will build the archive of the virtual environment
    */
   readonly dependenciesPath: string;
+
+  /**
+   * The name of the virtual environment archive that the construct will upload to s3
+   * @default pyspark-env.tar.gz
+   */
+  readonly virtualEnvironmentArchiveName?: string;
 
   /**
     * The name of the pyspark application
@@ -39,16 +44,15 @@ export interface PySparkApplicationPackageProps {
   /**
    * The S3 bucket where to upload the artifacts of the Spark Job
    * This is where the entry point and archive of the virtual environment will be stored
-   * @default If no bucket is provided, one will be created for you
-   *
+   * @default 'If no bucket is provided, one will be created for you'
    */
   readonly artifactsBucket?: IBucket;
-
 
   /**
    * The removal policy when deleting the CDK resource.
    * Resources like Amazon cloudwatch log or Amazon S3 bucket
-   * If DESTROY is selected, context value
+   * If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy' 
+   * in the 'cdk.json' or 'cdk.context.json' must be set to true
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
