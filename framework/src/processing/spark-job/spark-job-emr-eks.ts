@@ -13,7 +13,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
 
 /**
  * A construct to run Spark Jobs using EMR on EKS.
- * creates a State Machine that orchestrates the Spark Job.
+ * Creates a Step Functions State Machine that orchestrates the Spark Job.
  * @see EmrOnEksSparkJobProps parameters to be specified for the construct
  * @default ExecutionTimeoutMinutes: 30
  * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
@@ -133,8 +133,6 @@ export class EmrOnEksSparkJob extends SparkJob {
         'StateDetails.$': '$.StateDetails',
       },
       resultPath: '$.JobRunState',
-
-
     } as CallAwsServiceProps;
   }
 
@@ -142,7 +140,6 @@ export class EmrOnEksSparkJob extends SparkJob {
    * Returns the props for the Step Functions task that handles the failure  if the EMR Serverless job fails.
    * @returns FailProps The error details of the failed Spark Job
    */
-
   protected returnJobFailTaskProps(): FailProps {
     return {
       cause: 'EMRonEKSJobFailed',
@@ -154,7 +151,6 @@ export class EmrOnEksSparkJob extends SparkJob {
    * Returns the status of the EMR on EKS job that succeeded  based on the GetJobRun API response
    * @returns string
    */
-
   protected returnJobStatusSucceed(): string {
     return 'COMPLETED';
   }
@@ -163,7 +159,6 @@ export class EmrOnEksSparkJob extends SparkJob {
    * Returns the status of the EMR on EKS job that failed based on the GetJobRun API response
    * @returns string
    */
-
   protected returnJobStatusFailed(): string {
     return 'FAILED';
   }
@@ -180,7 +175,6 @@ export class EmrOnEksSparkJob extends SparkJob {
    * Grants the necessary permissions to the Step Functions StateMachine to be able to start EMR on EKS job
    * @param role Step Functions StateMachine IAM role
    */
-
   protected grantExecutionRole(role: IRole): void {
     role.addToPrincipalPolicy(new PolicyStatement({
       effect: Effect.ALLOW,
@@ -260,7 +254,6 @@ export class EmrOnEksSparkJob extends SparkJob {
       config.jobConfig.ConfigurationOverrides.ApplicationConfiguration = StepFunctionUtils.camelToPascal(props.applicationConfiguration);
     }
 
-
     config.jobConfig.RetryPolicyConfiguration!.MaxAttempts = props.maxRetries ?? 0;
 
     if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/)) {
@@ -270,7 +263,6 @@ export class EmrOnEksSparkJob extends SparkJob {
     config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.S3MonitoringConfiguration!.LogUri =
     this.createS3LogBucket(this.scope, props.s3LogUri);
 
-
     if (props.cloudWatchLogGroupName) {
       this.createCloudWatchLogsLogGroup(this.scope, props.cloudWatchLogGroupName);
       config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.CloudWatchMonitoringConfiguration! = {
@@ -279,10 +271,8 @@ export class EmrOnEksSparkJob extends SparkJob {
       };
     }
 
-
     config.jobConfig.Tags = props.tags;
     this.config = config;
-
   }
 }
 
@@ -290,7 +280,6 @@ export class EmrOnEksSparkJob extends SparkJob {
  * Simplified configuration for the EMR on EKS job.
  * @see EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties.
  */
-
 export interface EmrOnEksSparkJobProps extends SparkJobProps {
   readonly name: string;
   readonly virtualClusterId: string;
@@ -320,7 +309,6 @@ export interface EmrOnEksSparkJobApiProps extends SparkJobProps {
   /**
    * Job execution timeout in minutes. @default 30
    */
-
   readonly executionTimeoutMinutes?: number;
 
   /**
