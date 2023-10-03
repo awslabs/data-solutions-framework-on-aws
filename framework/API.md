@@ -2825,6 +2825,7 @@ KMS encryption key used by the Crawler.
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
+<<<<<<< HEAD
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -2842,6 +2843,8 @@ public readonly ADSF_OWNED_TAG: string;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
+=======
+>>>>>>> f458650 (add `API.md`)
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -2851,8 +2854,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3057,6 +3059,7 @@ public readonly crawlerLogEncryptionKey: Key;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataLakeCatalog.property.ADSF_OWNED_TAG"></a>
+<<<<<<< HEAD
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3074,6 +3077,8 @@ public readonly ADSF_OWNED_TAG: string;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.DataLakeCatalog.property.ADSF_OWNED_TAG"></a>
+=======
+>>>>>>> f458650 (add `API.md`)
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3083,8 +3088,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3305,6 +3309,7 @@ public readonly silverBucket: AnalyticsBucket;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
+<<<<<<< HEAD
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3322,6 +3327,8 @@ public readonly ADSF_OWNED_TAG: string;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
+=======
+>>>>>>> f458650 (add `API.md`)
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3331,8 +3338,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3342,6 +3348,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
+<<<<<<< HEAD
 ### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.PySparkApplicationPackage"></a>
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
@@ -3604,10 +3611,13 @@ The prefix used to store artifacts on the artifact bucket.
 ### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.SparkEmrCICDPipeline"></a>
 =======
 ### EmrOnEksSparkJob <a name="EmrOnEksSparkJob" id="@adsf/framework.EmrOnEksSparkJob"></a>
+=======
+### EmrOnEksSparkJob <a name="EmrOnEksSparkJob" id="aws-dsf.EmrOnEksSparkJob"></a>
+>>>>>>> f458650 (add `API.md`)
 
 A construct to run Spark Jobs using EMR on EKS.
 
-creates a State Machine that orchestrates the Spark Job.
+Creates a Step Functions State Machine that orchestrates the Spark Job.
 
 > [EmrOnEksSparkJobProps parameters to be specified for the construct](EmrOnEksSparkJobProps parameters to be specified for the construct)
 
@@ -3647,37 +3657,37 @@ new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
 ```
 
 
-#### Initializers <a name="Initializers" id="@adsf/framework.EmrOnEksSparkJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.EmrOnEksSparkJob.Initializer"></a>
 
 ```typescript
-import { EmrOnEksSparkJob } from '@adsf/framework'
+import { EmrOnEksSparkJob } from 'aws-dsf'
 
 new EmrOnEksSparkJob(scope: Construct, id: string, props: EmrOnEksSparkJobApiProps | EmrOnEksSparkJobProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> \| <a href="#@adsf/framework.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a></code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> \| <a href="#aws-dsf.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.EmrOnEksSparkJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.EmrOnEksSparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.EmrOnEksSparkJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.EmrOnEksSparkJob.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@adsf/framework.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> | <a href="#@adsf/framework.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a>
+- *Type:* <a href="#aws-dsf.EmrOnEksSparkJobApiProps">EmrOnEksSparkJobApiProps</a> | <a href="#aws-dsf.EmrOnEksSparkJobProps">EmrOnEksSparkJobProps</a>
 
 ---
 
@@ -3685,11 +3695,11 @@ new EmrOnEksSparkJob(scope: Construct, id: string, props: EmrOnEksSparkJobApiPro
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
 
 ---
 
-##### `toString` <a name="toString" id="@adsf/framework.EmrOnEksSparkJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.EmrOnEksSparkJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3701,14 +3711,14 @@ Returns a string representation of this construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.EmrOnEksSparkJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.EmrOnEksSparkJob.isConstruct"></a>
 
 ```typescript
-import { EmrOnEksSparkJob } from '@adsf/framework'
+import { EmrOnEksSparkJob } from 'aws-dsf'
 
 EmrOnEksSparkJob.isConstruct(x: any)
 ```
@@ -3729,7 +3739,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.EmrOnEksSparkJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.EmrOnEksSparkJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3741,13 +3751,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.EmrOnEksSparkJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.EmrOnEksSparkJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3759,7 +3769,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="@adsf/framework.EmrOnEksSparkJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.EmrOnEksSparkJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -3771,7 +3781,7 @@ Step Functions StateMachine created to orchestrate the Spark Job.
 
 ---
 
-##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="@adsf/framework.EmrOnEksSparkJob.property.sparkJobExecutionRole"></a>
+##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="aws-dsf.EmrOnEksSparkJob.property.sparkJobExecutionRole"></a>
 
 ```typescript
 public readonly sparkJobExecutionRole: IRole;
@@ -3789,12 +3799,12 @@ Use this property to add additional IAM permissions if necessary.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.EmrOnEksSparkJob.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.EmrOnEksSparkJob.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3804,7 +3814,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.EmrOnEksSparkJob.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.EmrOnEksSparkJob.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3814,7 +3824,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### EmrServerlessSparkJob <a name="EmrServerlessSparkJob" id="@adsf/framework.EmrServerlessSparkJob"></a>
+### EmrServerlessSparkJob <a name="EmrServerlessSparkJob" id="aws-dsf.EmrServerlessSparkJob"></a>
 
 A construct to run Spark Jobs using EMR Serverless.
 
@@ -3858,37 +3868,37 @@ new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
 ```
 
 
-#### Initializers <a name="Initializers" id="@adsf/framework.EmrServerlessSparkJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.EmrServerlessSparkJob.Initializer"></a>
 
 ```typescript
-import { EmrServerlessSparkJob } from '@adsf/framework'
+import { EmrServerlessSparkJob } from 'aws-dsf'
 
 new EmrServerlessSparkJob(scope: Construct, id: string, props: EmrServerlessSparkJobApiProps | EmrServerlessSparkJobProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> \| <a href="#@adsf/framework.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a></code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> \| <a href="#aws-dsf.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.EmrServerlessSparkJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.EmrServerlessSparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.EmrServerlessSparkJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.EmrServerlessSparkJob.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@adsf/framework.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> | <a href="#@adsf/framework.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a>
+- *Type:* <a href="#aws-dsf.EmrServerlessSparkJobApiProps">EmrServerlessSparkJobApiProps</a> | <a href="#aws-dsf.EmrServerlessSparkJobProps">EmrServerlessSparkJobProps</a>
 
 ---
 
@@ -3896,11 +3906,11 @@ new EmrServerlessSparkJob(scope: Construct, id: string, props: EmrServerlessSpar
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
 
 ---
 
-##### `toString` <a name="toString" id="@adsf/framework.EmrServerlessSparkJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.EmrServerlessSparkJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3912,14 +3922,14 @@ Returns a string representation of this construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.EmrServerlessSparkJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.EmrServerlessSparkJob.isConstruct"></a>
 
 ```typescript
-import { EmrServerlessSparkJob } from '@adsf/framework'
+import { EmrServerlessSparkJob } from 'aws-dsf'
 
 EmrServerlessSparkJob.isConstruct(x: any)
 ```
@@ -3940,7 +3950,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.EmrServerlessSparkJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.EmrServerlessSparkJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3952,13 +3962,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.EmrServerlessSparkJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.EmrServerlessSparkJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3970,7 +3980,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="@adsf/framework.EmrServerlessSparkJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.EmrServerlessSparkJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -3982,7 +3992,7 @@ Step Functions StateMachine created to orchestrate the Spark Job.
 
 ---
 
-##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="@adsf/framework.EmrServerlessSparkJob.property.sparkJobExecutionRole"></a>
+##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="aws-dsf.EmrServerlessSparkJob.property.sparkJobExecutionRole"></a>
 
 ```typescript
 public readonly sparkJobExecutionRole: IRole;
@@ -4000,12 +4010,12 @@ Use this property to add additional IAM permissions if necessary.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.EmrServerlessSparkJob.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.EmrServerlessSparkJob.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4015,7 +4025,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.EmrServerlessSparkJob.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.EmrServerlessSparkJob.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4025,8 +4035,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="@adsf/framework.SparkEmrCICDPipeline"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.SparkEmrCICDPipeline"></a>
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
@@ -4209,6 +4218,7 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
+<<<<<<< HEAD
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4226,6 +4236,8 @@ public readonly ADSF_OWNED_TAG: string;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
+=======
+>>>>>>> f458650 (add `API.md`)
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4235,8 +4247,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4552,6 +4563,7 @@ If no VPC is provided, one is created by default This attribute is used to expos
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
+<<<<<<< HEAD
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4569,6 +4581,8 @@ public readonly ADSF_OWNED_TAG: string;
 ---
 
 ##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
+=======
+>>>>>>> f458650 (add `API.md`)
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4578,8 +4592,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4589,30 +4602,30 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkJob <a name="SparkJob" id="@adsf/framework.SparkJob"></a>
+### SparkJob <a name="SparkJob" id="aws-dsf.SparkJob"></a>
 
 A base construct to run Spark Jobs Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
 
 > [EmrOnEksSparkJob for EMR On EKS implementation](EmrOnEksSparkJob for EMR On EKS implementation)
 
-#### Initializers <a name="Initializers" id="@adsf/framework.SparkJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.SparkJob.Initializer"></a>
 
 ```typescript
-import { SparkJob } from '@adsf/framework'
+import { SparkJob } from 'aws-dsf'
 
 new SparkJob(scope: Construct, id: string, trackingTag: string, props: SparkJobProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#@adsf/framework.SparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#@adsf/framework.SparkJob.Initializer.parameter.trackingTag">trackingTag</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.SparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#@adsf/framework.SparkJobProps">SparkJobProps</a></code> | the SparkJobProps properties. |
+| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.trackingTag">trackingTag</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.SparkJobProps">SparkJobProps</a></code> | the SparkJobProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@adsf/framework.SparkJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -4620,7 +4633,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@adsf/framework.SparkJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -4628,15 +4641,15 @@ the ID of the CDK Construct.
 
 ---
 
-##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="@adsf/framework.SparkJob.Initializer.parameter.trackingTag"></a>
+##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="aws-dsf.SparkJob.Initializer.parameter.trackingTag"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@adsf/framework.SparkJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.SparkJob.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@adsf/framework.SparkJobProps">SparkJobProps</a>
+- *Type:* <a href="#aws-dsf.SparkJobProps">SparkJobProps</a>
 
 the SparkJobProps properties.
 
@@ -4646,11 +4659,11 @@ the SparkJobProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
 
 ---
 
-##### `toString` <a name="toString" id="@adsf/framework.SparkJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.SparkJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4662,14 +4675,14 @@ Returns a string representation of this construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@adsf/framework.SparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.SparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@adsf/framework.SparkJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.SparkJob.isConstruct"></a>
 
 ```typescript
-import { SparkJob } from '@adsf/framework'
+import { SparkJob } from 'aws-dsf'
 
 SparkJob.isConstruct(x: any)
 ```
@@ -4690,7 +4703,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@adsf/framework.SparkJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.SparkJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4702,12 +4715,12 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@adsf/framework.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@adsf/framework.SparkJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.SparkJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4719,7 +4732,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="@adsf/framework.SparkJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.SparkJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -4735,12 +4748,12 @@ Step Functions StateMachine created to orchestrate the Spark Job.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.SparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.SparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.SparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="@adsf/framework.SparkJob.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkJob.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4750,7 +4763,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="@adsf/framework.SparkJob.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkJob.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -5705,6 +5718,7 @@ Will be appended by a unique ID.
 
 ---
 
+<<<<<<< HEAD
 ### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.PySparkApplicationPackageProps"></a>
 
 Properties for the {PySparkApplicationPackage} construct.
@@ -5817,6 +5831,9 @@ This is the output path used in the `venv-pack -o` command in your Dockerfile.
 ### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="aws-dsf.SparkEmrCICDPipelineProps"></a>
 =======
 ### EmrOnEksSparkJobApiProps <a name="EmrOnEksSparkJobApiProps" id="@adsf/framework.EmrOnEksSparkJobApiProps"></a>
+=======
+### EmrOnEksSparkJobApiProps <a name="EmrOnEksSparkJobApiProps" id="aws-dsf.EmrOnEksSparkJobApiProps"></a>
+>>>>>>> f458650 (add `API.md`)
 
 Configuration for the EMR on EKS job.
 
@@ -5824,10 +5841,10 @@ Use this interface when EmrOnEksSparkJobProps doesn't give you access to the con
 
 > [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="@adsf/framework.EmrOnEksSparkJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.EmrOnEksSparkJobApiProps.Initializer"></a>
 
 ```typescript
-import { EmrOnEksSparkJobApiProps } from '@adsf/framework'
+import { EmrOnEksSparkJobApiProps } from 'aws-dsf'
 
 const emrOnEksSparkJobApiProps: EmrOnEksSparkJobApiProps = { ... }
 ```
@@ -5836,14 +5853,14 @@ const emrOnEksSparkJobApiProps: EmrOnEksSparkJobApiProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS Job Configuration. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobApiProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS Job Configuration. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
 
 ---
 
-##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="@adsf/framework.EmrOnEksSparkJobApiProps.property.resourceRemovalPolicy"></a>
+##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="aws-dsf.EmrOnEksSparkJobApiProps.property.resourceRemovalPolicy"></a>
 
 ```typescript
 public readonly resourceRemovalPolicy: RemovalPolicy;
@@ -5857,7 +5874,7 @@ Resource Removal Policy.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="@adsf/framework.EmrOnEksSparkJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.EmrOnEksSparkJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -5873,7 +5890,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="@adsf/framework.EmrOnEksSparkJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.EmrOnEksSparkJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -5887,7 +5904,7 @@ EMR on EKS Job Configuration.
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="@adsf/framework.EmrOnEksSparkJobApiProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.EmrOnEksSparkJobApiProps.property.executionTimeoutMinutes"></a>
 
 ```typescript
 public readonly executionTimeoutMinutes: number;
@@ -5901,16 +5918,16 @@ Job execution timeout in minutes.
 
 ---
 
-### EmrOnEksSparkJobProps <a name="EmrOnEksSparkJobProps" id="@adsf/framework.EmrOnEksSparkJobProps"></a>
+### EmrOnEksSparkJobProps <a name="EmrOnEksSparkJobProps" id="aws-dsf.EmrOnEksSparkJobProps"></a>
 
 Simplified configuration for the EMR on EKS job.
 
 > [EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties.](EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties.)
 
-#### Initializer <a name="Initializer" id="@adsf/framework.EmrOnEksSparkJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.EmrOnEksSparkJobProps.Initializer"></a>
 
 ```typescript
-import { EmrOnEksSparkJobProps } from '@adsf/framework'
+import { EmrOnEksSparkJobProps } from 'aws-dsf'
 
 const emrOnEksSparkJobProps: EmrOnEksSparkJobProps = { ... }
 ```
@@ -5919,26 +5936,26 @@ const emrOnEksSparkJobProps: EmrOnEksSparkJobProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrOnEksSparkJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrOnEksSparkJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 
 ---
 
-##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="@adsf/framework.EmrOnEksSparkJobProps.property.resourceRemovalPolicy"></a>
+##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="aws-dsf.EmrOnEksSparkJobProps.property.resourceRemovalPolicy"></a>
 
 ```typescript
 public readonly resourceRemovalPolicy: RemovalPolicy;
@@ -5952,7 +5969,7 @@ Resource Removal Policy.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="@adsf/framework.EmrOnEksSparkJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.EmrOnEksSparkJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -5968,7 +5985,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="@adsf/framework.EmrOnEksSparkJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.EmrOnEksSparkJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -5978,7 +5995,7 @@ public readonly name: string;
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="@adsf/framework.EmrOnEksSparkJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.EmrOnEksSparkJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -5988,7 +6005,7 @@ public readonly sparkSubmitEntryPoint: string;
 
 ---
 
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="@adsf/framework.EmrOnEksSparkJobProps.property.virtualClusterId"></a>
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.EmrOnEksSparkJobProps.property.virtualClusterId"></a>
 
 ```typescript
 public readonly virtualClusterId: string;
@@ -5998,7 +6015,7 @@ public readonly virtualClusterId: string;
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="@adsf/framework.EmrOnEksSparkJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.EmrOnEksSparkJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -6008,7 +6025,7 @@ public readonly applicationConfiguration: {[ key: string ]: any};
 
 ---
 
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="@adsf/framework.EmrOnEksSparkJobProps.property.cloudWatchLogGroupName"></a>
+##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.EmrOnEksSparkJobProps.property.cloudWatchLogGroupName"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupName: string;
@@ -6018,7 +6035,7 @@ public readonly cloudWatchLogGroupName: string;
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="@adsf/framework.EmrOnEksSparkJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.EmrOnEksSparkJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -6028,7 +6045,7 @@ public readonly cloudWatchLogGroupStreamPrefix: string;
 
 ---
 
-##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="@adsf/framework.EmrOnEksSparkJobProps.property.executionRoleArn"></a>
+##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="aws-dsf.EmrOnEksSparkJobProps.property.executionRoleArn"></a>
 
 ```typescript
 public readonly executionRoleArn: string;
@@ -6038,7 +6055,7 @@ public readonly executionRoleArn: string;
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="@adsf/framework.EmrOnEksSparkJobProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.EmrOnEksSparkJobProps.property.executionTimeoutMinutes"></a>
 
 ```typescript
 public readonly executionTimeoutMinutes: number;
@@ -6048,7 +6065,7 @@ public readonly executionTimeoutMinutes: number;
 
 ---
 
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="@adsf/framework.EmrOnEksSparkJobProps.property.maxRetries"></a>
+##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.EmrOnEksSparkJobProps.property.maxRetries"></a>
 
 ```typescript
 public readonly maxRetries: number;
@@ -6058,7 +6075,7 @@ public readonly maxRetries: number;
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@adsf/framework.EmrOnEksSparkJobProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.EmrOnEksSparkJobProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: string;
@@ -6068,7 +6085,7 @@ public readonly releaseLabel: string;
 
 ---
 
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="@adsf/framework.EmrOnEksSparkJobProps.property.s3LogUri"></a>
+##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.EmrOnEksSparkJobProps.property.s3LogUri"></a>
 
 ```typescript
 public readonly s3LogUri: string;
@@ -6078,7 +6095,7 @@ public readonly s3LogUri: string;
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="@adsf/framework.EmrOnEksSparkJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.EmrOnEksSparkJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string;
@@ -6088,7 +6105,7 @@ public readonly sparkSubmitEntryPointArguments: string;
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="@adsf/framework.EmrOnEksSparkJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.EmrOnEksSparkJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -6098,7 +6115,7 @@ public readonly sparkSubmitParameters: string;
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="@adsf/framework.EmrOnEksSparkJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.EmrOnEksSparkJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -6108,7 +6125,7 @@ public readonly tags: {[ key: string ]: any};
 
 ---
 
-### EmrServerlessSparkJobApiProps <a name="EmrServerlessSparkJobApiProps" id="@adsf/framework.EmrServerlessSparkJobApiProps"></a>
+### EmrServerlessSparkJobApiProps <a name="EmrServerlessSparkJobApiProps" id="aws-dsf.EmrServerlessSparkJobApiProps"></a>
 
 Configuration for the EMR Serverless Job API.
 
@@ -6116,10 +6133,10 @@ Use this interface when EmrServerlessJobProps doesn't give you access to the con
 
 > [[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="@adsf/framework.EmrServerlessSparkJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.EmrServerlessSparkJobApiProps.Initializer"></a>
 
 ```typescript
-import { EmrServerlessSparkJobApiProps } from '@adsf/framework'
+import { EmrServerlessSparkJobApiProps } from 'aws-dsf'
 
 const emrServerlessSparkJobApiProps: EmrServerlessSparkJobApiProps = { ... }
 ```
@@ -6128,13 +6145,13 @@ const emrServerlessSparkJobApiProps: EmrServerlessSparkJobApiProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobApiProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobApiProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
 
 ---
 
-##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="@adsf/framework.EmrServerlessSparkJobApiProps.property.resourceRemovalPolicy"></a>
+##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="aws-dsf.EmrServerlessSparkJobApiProps.property.resourceRemovalPolicy"></a>
 
 ```typescript
 public readonly resourceRemovalPolicy: RemovalPolicy;
@@ -6148,7 +6165,7 @@ Resource Removal Policy.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="@adsf/framework.EmrServerlessSparkJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.EmrServerlessSparkJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -6164,7 +6181,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="@adsf/framework.EmrServerlessSparkJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.EmrServerlessSparkJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -6178,7 +6195,7 @@ EMR Serverless Job Configuration.
 
 ---
 
-### EmrServerlessSparkJobProps <a name="EmrServerlessSparkJobProps" id="@adsf/framework.EmrServerlessSparkJobProps"></a>
+### EmrServerlessSparkJobProps <a name="EmrServerlessSparkJobProps" id="aws-dsf.EmrServerlessSparkJobProps"></a>
 
 Simplified configuration for the EMR Serverless Job.
 
@@ -6191,10 +6208,10 @@ s3://BUCKET_NAME/
 ```
 
 
-#### Initializer <a name="Initializer" id="@adsf/framework.EmrServerlessSparkJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.EmrServerlessSparkJobProps.Initializer"></a>
 
 ```typescript
-import { EmrServerlessSparkJobProps } from '@adsf/framework'
+import { EmrServerlessSparkJobProps } from 'aws-dsf'
 
 const emrServerlessSparkJobProps: EmrServerlessSparkJobProps = { ... }
 ```
@@ -6203,27 +6220,27 @@ const emrServerlessSparkJobProps: EmrServerlessSparkJobProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@adsf/framework.EmrServerlessSparkJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.EmrServerlessSparkJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 
 ---
 
-##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@adsf/framework.EmrServerlessSparkJobProps.property.applicationId"></a>
+##### `applicationId`<sup>Required</sup> <a name="applicationId" id="aws-dsf.EmrServerlessSparkJobProps.property.applicationId"></a>
 
 ```typescript
 public readonly applicationId: string;
@@ -6233,7 +6250,7 @@ public readonly applicationId: string;
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="@adsf/framework.EmrServerlessSparkJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.EmrServerlessSparkJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -6243,7 +6260,7 @@ public readonly name: string;
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="@adsf/framework.EmrServerlessSparkJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.EmrServerlessSparkJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -6253,7 +6270,7 @@ public readonly sparkSubmitEntryPoint: string;
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="@adsf/framework.EmrServerlessSparkJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.EmrServerlessSparkJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -6263,7 +6280,7 @@ public readonly applicationConfiguration: {[ key: string ]: any};
 
 ---
 
-##### `cloudWatchEncryptionKeyArn`<sup>Optional</sup> <a name="cloudWatchEncryptionKeyArn" id="@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchEncryptionKeyArn"></a>
+##### `cloudWatchEncryptionKeyArn`<sup>Optional</sup> <a name="cloudWatchEncryptionKeyArn" id="aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchEncryptionKeyArn"></a>
 
 ```typescript
 public readonly cloudWatchEncryptionKeyArn: string;
@@ -6273,7 +6290,7 @@ public readonly cloudWatchEncryptionKeyArn: string;
 
 ---
 
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchLogGroupName"></a>
+##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchLogGroupName"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupName: string;
@@ -6283,7 +6300,7 @@ public readonly cloudWatchLogGroupName: string;
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -6293,7 +6310,7 @@ public readonly cloudWatchLogGroupStreamPrefix: string;
 
 ---
 
-##### `cloudWatchLogtypes`<sup>Optional</sup> <a name="cloudWatchLogtypes" id="@adsf/framework.EmrServerlessSparkJobProps.property.cloudWatchLogtypes"></a>
+##### `cloudWatchLogtypes`<sup>Optional</sup> <a name="cloudWatchLogtypes" id="aws-dsf.EmrServerlessSparkJobProps.property.cloudWatchLogtypes"></a>
 
 ```typescript
 public readonly cloudWatchLogtypes: string;
@@ -6303,7 +6320,7 @@ public readonly cloudWatchLogtypes: string;
 
 ---
 
-##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="@adsf/framework.EmrServerlessSparkJobProps.property.executionRoleArn"></a>
+##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="aws-dsf.EmrServerlessSparkJobProps.property.executionRoleArn"></a>
 
 ```typescript
 public readonly executionRoleArn: string;
@@ -6313,7 +6330,7 @@ public readonly executionRoleArn: string;
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="@adsf/framework.EmrServerlessSparkJobProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.EmrServerlessSparkJobProps.property.executionTimeoutMinutes"></a>
 
 ```typescript
 public readonly executionTimeoutMinutes: number;
@@ -6323,7 +6340,7 @@ public readonly executionTimeoutMinutes: number;
 
 ---
 
-##### `persistentAppUi`<sup>Optional</sup> <a name="persistentAppUi" id="@adsf/framework.EmrServerlessSparkJobProps.property.persistentAppUi"></a>
+##### `persistentAppUi`<sup>Optional</sup> <a name="persistentAppUi" id="aws-dsf.EmrServerlessSparkJobProps.property.persistentAppUi"></a>
 
 ```typescript
 public readonly persistentAppUi: boolean;
@@ -6333,7 +6350,7 @@ public readonly persistentAppUi: boolean;
 
 ---
 
-##### `persistentAppUIKeyArn`<sup>Optional</sup> <a name="persistentAppUIKeyArn" id="@adsf/framework.EmrServerlessSparkJobProps.property.persistentAppUIKeyArn"></a>
+##### `persistentAppUIKeyArn`<sup>Optional</sup> <a name="persistentAppUIKeyArn" id="aws-dsf.EmrServerlessSparkJobProps.property.persistentAppUIKeyArn"></a>
 
 ```typescript
 public readonly persistentAppUIKeyArn: string;
@@ -6343,7 +6360,7 @@ public readonly persistentAppUIKeyArn: string;
 
 ---
 
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="@adsf/framework.EmrServerlessSparkJobProps.property.s3LogUri"></a>
+##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.EmrServerlessSparkJobProps.property.s3LogUri"></a>
 
 ```typescript
 public readonly s3LogUri: string;
@@ -6353,7 +6370,7 @@ public readonly s3LogUri: string;
 
 ---
 
-##### `s3LogUriKeyArn`<sup>Optional</sup> <a name="s3LogUriKeyArn" id="@adsf/framework.EmrServerlessSparkJobProps.property.s3LogUriKeyArn"></a>
+##### `s3LogUriKeyArn`<sup>Optional</sup> <a name="s3LogUriKeyArn" id="aws-dsf.EmrServerlessSparkJobProps.property.s3LogUriKeyArn"></a>
 
 ```typescript
 public readonly s3LogUriKeyArn: string;
@@ -6363,7 +6380,7 @@ public readonly s3LogUriKeyArn: string;
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="@adsf/framework.EmrServerlessSparkJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.EmrServerlessSparkJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string;
@@ -6373,7 +6390,7 @@ public readonly sparkSubmitEntryPointArguments: string;
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="@adsf/framework.EmrServerlessSparkJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.EmrServerlessSparkJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -6383,7 +6400,7 @@ public readonly sparkSubmitParameters: string;
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="@adsf/framework.EmrServerlessSparkJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.EmrServerlessSparkJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -6393,8 +6410,7 @@ public readonly tags: {[ key: string ]: any};
 
 ---
 
-### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="@adsf/framework.SparkEmrCICDPipelineProps"></a>
->>>>>>> 0e793c9 (sparkjob construct)
+### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="aws-dsf.SparkEmrCICDPipelineProps"></a>
 
 Properties for SparkEmrCICDPipeline class.
 
@@ -6708,14 +6724,14 @@ This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserG
 
 ---
 
-### SparkJobProps <a name="SparkJobProps" id="@adsf/framework.SparkJobProps"></a>
+### SparkJobProps <a name="SparkJobProps" id="aws-dsf.SparkJobProps"></a>
 
 Properties for the SparkJob construct.
 
-#### Initializer <a name="Initializer" id="@adsf/framework.SparkJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.SparkJobProps.Initializer"></a>
 
 ```typescript
-import { SparkJobProps } from '@adsf/framework'
+import { SparkJobProps } from 'aws-dsf'
 
 const sparkJobProps: SparkJobProps = { ... }
 ```
@@ -6724,12 +6740,12 @@ const sparkJobProps: SparkJobProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@adsf/framework.SparkJobProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
-| <code><a href="#@adsf/framework.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.SparkJobProps.property.resourceRemovalPolicy">resourceRemovalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Resource Removal Policy. |
+| <code><a href="#aws-dsf.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
 
 ---
 
-##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="@adsf/framework.SparkJobProps.property.resourceRemovalPolicy"></a>
+##### `resourceRemovalPolicy`<sup>Optional</sup> <a name="resourceRemovalPolicy" id="aws-dsf.SparkJobProps.property.resourceRemovalPolicy"></a>
 
 ```typescript
 public readonly resourceRemovalPolicy: RemovalPolicy;
@@ -6743,7 +6759,7 @@ Resource Removal Policy.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="@adsf/framework.SparkJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.SparkJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
