@@ -39,7 +39,11 @@ export abstract class SparkJob extends TrackedConstruct {
 
 
   /**
-   * resourceRemovalPolicy
+   * The removal policy when deleting the CDK resource.
+   * Resources like Amazon cloudwatch log or Amazon S3 bucket
+   * If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
+   * in the 'cdk.json' or 'cdk.context.json' must be set to true
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   private resourceRemovalPolicy: RemovalPolicy;
 
@@ -167,7 +171,7 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    *
    * @param scope Construct
-   * @param s3LogUri S3 path to store the logs. @example s3://<bucket-name>/
+   * @param s3LogUri S3 path to store the logs of the Spark job. @example s3://<bucket-name>/
    * @param encryptionKeyArn KMS Key ARN for encryption. @default MAster KMS key for the account.
    * @returns string S3 path to store the logs.
    */
@@ -190,7 +194,7 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    *
    * @param scope Construct
-   * @param name CloudWatch Logs group name.
+   * @param name CloudWatch Logs group name of cloudwatch log group to store the Spark job logs
    * @param encryptionKeyArn KMS Key ARN for encryption. @default no key.
    * @returns LogGroup CloudWatch Logs group.
    */

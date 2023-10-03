@@ -90,7 +90,7 @@ export class EmrServerlessSparkJob extends SparkJob {
 
 
   /**
-   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job, it calls the [StartJobRun API](https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html)
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
@@ -108,7 +108,7 @@ export class EmrServerlessSparkJob extends SparkJob {
   }
 
   /**
-   * Returns the props for the Step Functions CallAwsService Construct that checks the execution status of the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that checks the execution status of the Spark job, it calls the [GetJobRun API](https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_GetJobRun.html)
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */

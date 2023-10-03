@@ -3624,23 +3624,11 @@ Creates a Step Functions State Machine that orchestrates the Spark Job.
 *Example*
 
 ```typescript
-const myFileSystemPolicy = new PolicyDocument({
-  statements: [new PolicyStatement({
-    actions: [
-      's3:GetObject',
-    ],
-    resources: ['*'],
-  })],
-});
-
-
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
-const applicationId = "APPLICATION_ID";
 const job = new SparkJob(stack, 'SparkJob', {
          jobConfig:{
               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
               "VirtualClusterId": "virtualClusterId",
-              "ExecutionRoleArn": myExecutionRole.roleArn,
+              "ExecutionRoleArn": "ROLE-ARN",
               "JobDriver": {
                   "SparkSubmit": {
                       "EntryPoint": "s3://S3-BUCKET/pi.py",
@@ -3649,7 +3637,7 @@ const job = new SparkJob(stack, 'SparkJob', {
                   },
               }
          }
-} as EmrServerlessSparkJobApiProps);
+} as EmrOnEksSparkJobApiProps);
 
 new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
   value: job.stateMachine.stateMachineArn,
