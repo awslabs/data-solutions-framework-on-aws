@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+import { RemovalPolicy } from 'aws-cdk-lib';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
-import { RemovalPolicy } from "aws-cdk-lib";
 
 
 /**
@@ -34,13 +34,13 @@ export interface PySparkApplicationPackageProps {
     * This name is used as a parent directory in s3
     * to store the entrypoint as well as virtual environment archive
    */
-    readonly pysparkApplicationName: string;
+  readonly pysparkApplicationName: string;
 
   /**
    * The S3 bucket where to upload the artifacts of the Spark Job
    * This is where the entry point and archive of the virtual environment will be stored
    * @default If no bucket is provided, one will be created for you
-   * 
+   *
    */
   readonly artifactsBucket?: IBucket;
 

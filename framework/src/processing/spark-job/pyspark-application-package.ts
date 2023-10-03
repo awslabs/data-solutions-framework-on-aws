@@ -11,7 +11,8 @@ import { PySparkApplicationPackageProps } from './pyspark-application-package-pr
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
-*
+* A construct that take your pyspark application, package its virtual environment and upload it along its entrypoint to an Amazon S3 bucket
+* This construct requires Docker deamon installed locally to run
 */
 export class PySparkApplicationPackage extends TrackedConstruct {
 
