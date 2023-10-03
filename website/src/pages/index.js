@@ -6,26 +6,29 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import styles from './index.module.css';
 
-//TODO - fix code to get the correct theme to show the light-logo.png or dark-logo.png
+
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
-  // const currentTheme = document.documentElement.getAttribute('data-theme');
+  // const currentTheme = document.documentElement.getAttribute('data-theme');  
 
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container" style={{textAlign: 'center'}}>
-        <img src="img/adsf-logo-header.png" alt="Header image" style={{width: '45%'}}/>
-        {/*<img src={currentTheme === 'dark' ? 'img/dark-logo.png' : 'img/light-logo.png'} alt="Header image" style={{width: '45%'}}/>*/}
-          {/*<main className={styles.main}>*/}
-        {/*<h1 className="hero__title">{siteConfig.title}</h1>*/}
-          {/*</main>*/}
-          <p className='hero__subtitle' style={{fontSize: 18, fontSmooth: "auto", animation: "float 2s ease-in-out infinite"}}>{siteConfig.tagline}</p>
+        <div className="row">
+          <div className="col col--6">
+            <img id="logo" className="navLogo" src="img/adsf-logo-light.png" alt="Header image"/>
+          </div>
+          <div className="col col--6">
+          <img id="codeSample" className='navCodeExample' src="img/code-shadow-light.png" alt="Header image"/>
+          </div>
+        </div>
+        <p className='hero__subtitle'>{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg button-3d"
-            style={{padding: '0.5rem 1.5rem', fontSize: '0.9rem'}}
+            className="button button--lg button-3d"
+            style={{padding: '0.8rem 1.8rem', fontSize: '1.3rem'}}
             to="/docs/intro">
-            Get started!
+            GET STARTED
           </Link>
         </div>
       </div>
