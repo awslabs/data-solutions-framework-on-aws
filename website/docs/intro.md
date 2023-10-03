@@ -81,7 +81,7 @@ We will now use [***DataLakeStorage***](constructs/library/data-lake-storage) to
   In `lib/adsf-example-stack.ts`
   ```typescript
   import * as cdk from 'aws-cdk-lib';
-  import { DataLakeStorage } from 'aws-data-solutions-framework';
+  import { DataLakeStorage } from 'aws-dsf';
 
   export class AdsfExampleStack extends cdk.Stack {
     constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -112,7 +112,7 @@ We will now use [***DataLakeStorage***](constructs/library/data-lake-storage) to
     In `adsf_example/adsf_example_stack.py`
     ```python
     import aws_cdk as cdk
-    import aws_data_solutions_framework as adsf
+    import aws_dsf as adsf
 
     class AdsfExampleStack(cdk.Stack):
 
