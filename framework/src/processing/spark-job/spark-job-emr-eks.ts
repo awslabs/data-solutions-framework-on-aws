@@ -192,9 +192,9 @@ export class EmrOnEksSparkJob extends SparkJob {
 
 
   /**
-     * Set defaults for the EmrOnEksSparkJobApiProps.
-     * @param props EmrOnEksSparkJobApiProps
-     */
+   * Set defaults for the EmrOnEksSparkJobApiProps.
+   * @param props EmrOnEksSparkJobApiProps
+   */
   private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
 
     const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
@@ -210,9 +210,9 @@ export class EmrOnEksSparkJob extends SparkJob {
   }
 
   /**
-     * Set defaults for the EmrOnEksSparkJobProps.
-     * @param props EmrOnEksSparkJobProps
-     */
+   * Set defaults for the EmrOnEksSparkJobProps.
+   * @param props EmrOnEksSparkJobProps
+   */
 
   private setJobPropsDefaults(scope:Construct, props: EmrOnEksSparkJobProps): void {
     const config = {

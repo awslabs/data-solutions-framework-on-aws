@@ -30,7 +30,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     let executionRole: Role;
 
     if (!executionRolePolicyDocument && !iamPolicyName) {
-      throw new Error('You must provide either executionRolePolicyDocument or iamPolicyArn');
+      throw new Error('You must provide either executionRolePolicyDocument or iamPolicyName');
     }
 
     if (executionRolePolicyDocument) {

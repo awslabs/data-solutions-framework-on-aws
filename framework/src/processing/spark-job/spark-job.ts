@@ -172,7 +172,7 @@ export abstract class SparkJob extends TrackedConstruct {
    *
    * @param scope Construct
    * @param s3LogUri S3 path to store the logs of the Spark job. @example s3://<bucket-name>/
-   * @param encryptionKeyArn KMS Key ARN for encryption. @default MAster KMS key for the account.
+   * @param encryptionKeyArn KMS Key ARN for encryption. @default - Master KMS key of the account.
    * @returns string S3 path to store the logs.
    */
   protected createS3LogBucket(scope:Construct, s3LogUri?:string, encryptionKeyArn?:string): string {
@@ -195,7 +195,7 @@ export abstract class SparkJob extends TrackedConstruct {
    *
    * @param scope Construct
    * @param name CloudWatch Logs group name of cloudwatch log group to store the Spark job logs
-   * @param encryptionKeyArn KMS Key ARN for encryption. @default no key.
+   * @param encryptionKeyArn KMS Key ARN for encryption. @default - Server-side encryption managed by CloudWatch Logs.
    * @returns LogGroup CloudWatch Logs group.
    */
   protected createCloudWatchLogsLogGroup(scope:Construct, name:string, encryptionKeyArn?:string): LogGroup {
