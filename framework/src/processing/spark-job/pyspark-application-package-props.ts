@@ -9,12 +9,22 @@ import { IBucket } from 'aws-cdk-lib/aws-s3';
  */
 export interface PySparkApplicationPackageProps {
 
-    readonly entrypointPath: string;
+  readonly entrypointPath: string;
 
-    readonly depenciesPath: string;
+  readonly entrypointFileName: string;
 
-    readonly pysparkApplicationName: string;
+  readonly depenciesPath: string;
 
-    readonly artefactS3Bucker?: IBucket;
+  readonly pysparkApplicationName: string;
+
+  /**
+   * 
+   */
+  readonly artifactsBucket?: IBucket;
+
+  /**
+   * @default true
+   */
+  readonly createArtefactBucket?: boolean;
 
 }

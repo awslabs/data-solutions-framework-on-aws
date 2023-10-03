@@ -3255,6 +3255,164 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
+### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.PySparkApplicationPackage"></a>
+
+#### Initializers <a name="Initializers" id="aws-dsf.PySparkApplicationPackage.Initializer"></a>
+
+```typescript
+import { PySparkApplicationPackage } from 'aws-dsf'
+
+new PySparkApplicationPackage(scope: Construct, id: string, props: PySparkApplicationPackageProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.PySparkApplicationPackageProps">PySparkApplicationPackageProps</a></code> | {@link PySparkApplicationPackageProps}. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.PySparkApplicationPackage.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.PySparkApplicationPackage.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.PySparkApplicationPackage.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#aws-dsf.PySparkApplicationPackageProps">PySparkApplicationPackageProps</a>
+
+{@link PySparkApplicationPackageProps}.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.PySparkApplicationPackage.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.PySparkApplicationPackage.isConstruct"></a>
+
+```typescript
+import { PySparkApplicationPackage } from 'aws-dsf'
+
+PySparkApplicationPackage.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.PySparkApplicationPackage.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.depsUri">depsUri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.PySparkApplicationPackage.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `depsUri`<sup>Required</sup> <a name="depsUri" id="aws-dsf.PySparkApplicationPackage.property.depsUri"></a>
+
+```typescript
+public readonly depsUri: string;
+```
+
+- *Type:* string
+
+---
+
+##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="aws-dsf.PySparkApplicationPackage.property.entrypointUri"></a>
+
+```typescript
+public readonly entrypointUri: string;
+```
+
+- *Type:* string
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.PySparkApplicationPackage.property.ADSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly ADSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.SparkEmrCICDPipeline"></a>
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
@@ -4702,6 +4860,80 @@ public readonly silverBucketName: string;
 Name of the Silver bucket.
 
 Will be appended by a unique ID.
+
+---
+
+### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.PySparkApplicationPackageProps"></a>
+
+Properties for the {PySparkApplicationPackage} construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.PySparkApplicationPackageProps.Initializer"></a>
+
+```typescript
+import { PySparkApplicationPackageProps } from 'aws-dsf'
+
+const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.depenciesPath">depenciesPath</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName">entrypointFileName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artefactS3Bucker">artefactS3Bucker</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
+
+---
+
+##### `depenciesPath`<sup>Required</sup> <a name="depenciesPath" id="aws-dsf.PySparkApplicationPackageProps.property.depenciesPath"></a>
+
+```typescript
+public readonly depenciesPath: string;
+```
+
+- *Type:* string
+
+---
+
+##### `entrypointFileName`<sup>Required</sup> <a name="entrypointFileName" id="aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName"></a>
+
+```typescript
+public readonly entrypointFileName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `entrypointPath`<sup>Required</sup> <a name="entrypointPath" id="aws-dsf.PySparkApplicationPackageProps.property.entrypointPath"></a>
+
+```typescript
+public readonly entrypointPath: string;
+```
+
+- *Type:* string
+
+---
+
+##### `pysparkApplicationName`<sup>Required</sup> <a name="pysparkApplicationName" id="aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName"></a>
+
+```typescript
+public readonly pysparkApplicationName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `artefactS3Bucker`<sup>Optional</sup> <a name="artefactS3Bucker" id="aws-dsf.PySparkApplicationPackageProps.property.artefactS3Bucker"></a>
+
+```typescript
+public readonly artefactS3Bucker: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
 
 ---
 
