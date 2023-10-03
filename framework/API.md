@@ -3257,6 +3257,8 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.PySparkApplicationPackage"></a>
 
+A construct that take your pyspark application, package its virtual environment and upload it along its entrypoint to an Amazon S3 bucket This construct requires Docker deamon installed locally to run.
+
 #### Initializers <a name="Initializers" id="aws-dsf.PySparkApplicationPackage.Initializer"></a>
 
 ```typescript
@@ -3358,10 +3360,10 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.depsS3Uri">depsS3Uri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | A bucker is created and exposed as an attribute The bucket object where your assets are stored A bucket is created for you if you do not provide on in the props. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to the artifact S3 bucket A role. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.depsS3Uri">depsS3Uri</a></code> | <code>string</code> | The S3 location where the archive of python virtual envirobment is stored You pass this location to your Spark job. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3 You pass this location to your Spark job. |
 
 ---
 
@@ -3385,15 +3387,19 @@ public readonly assetBucket: IBucket;
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
+A bucker is created and exposed as an attribute The bucket object where your assets are stored A bucket is created for you if you do not provide on in the props.
+
 ---
 
 ##### `assetUploadBucketRole`<sup>Required</sup> <a name="assetUploadBucketRole" id="aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole"></a>
 
 ```typescript
-public readonly assetUploadBucketRole: Role;
+public readonly assetUploadBucketRole: IRole;
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.Role
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used by the BucketDeployment to upload the artifacts to the artifact S3 bucket A role.
 
 ---
 
@@ -3405,6 +3411,8 @@ public readonly depsS3Uri: string;
 
 - *Type:* string
 
+The S3 location where the archive of python virtual envirobment is stored You pass this location to your Spark job.
+
 ---
 
 ##### `entrypointS3Uri`<sup>Required</sup> <a name="entrypointS3Uri" id="aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri"></a>
@@ -3414,6 +3422,8 @@ public readonly entrypointS3Uri: string;
 ```
 
 - *Type:* string
+
+The S3 location where the entry point is saved in S3 You pass this location to your Spark job.
 
 ---
 
@@ -4901,22 +4911,24 @@ const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.depenciesPath">depenciesPath</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName">entrypointFileName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.createArtefactBucket">createArtefactBucket</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesPath">dependenciesPath</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName">entrypointFileName</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | The name of the pyspark application This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
-##### `depenciesPath`<sup>Required</sup> <a name="depenciesPath" id="aws-dsf.PySparkApplicationPackageProps.property.depenciesPath"></a>
+##### `dependenciesPath`<sup>Required</sup> <a name="dependenciesPath" id="aws-dsf.PySparkApplicationPackageProps.property.dependenciesPath"></a>
 
 ```typescript
-public readonly depenciesPath: string;
+public readonly dependenciesPath: string;
 ```
 
 - *Type:* string
+
+The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment.
 
 ---
 
@@ -4928,6 +4940,8 @@ public readonly entrypointFileName: string;
 
 - *Type:* string
 
+The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment.
+
 ---
 
 ##### `entrypointPath`<sup>Required</sup> <a name="entrypointPath" id="aws-dsf.PySparkApplicationPackageProps.property.entrypointPath"></a>
@@ -4937,6 +4951,8 @@ public readonly entrypointPath: string;
 ```
 
 - *Type:* string
+
+The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment.
 
 ---
 
@@ -4948,6 +4964,8 @@ public readonly pysparkApplicationName: string;
 
 - *Type:* string
 
+The name of the pyspark application This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive.
+
 ---
 
 ##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket"></a>
@@ -4957,17 +4975,25 @@ public readonly artifactsBucket: IBucket;
 ```
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
+- *Default:* If no bucket is provided, one will be created for you
+
+The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored.
 
 ---
 
-##### `createArtefactBucket`<sup>Optional</sup> <a name="createArtefactBucket" id="aws-dsf.PySparkApplicationPackageProps.property.createArtefactBucket"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.PySparkApplicationPackageProps.property.removalPolicy"></a>
 
 ```typescript
-public readonly createArtefactBucket: boolean;
+public readonly removalPolicy: RemovalPolicy;
 ```
 
-- *Type:* boolean
-- *Default:* true
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+Resources like Amazon cloudwatch log or Amazon S3 bucket
+If DESTROY is selected, context value
 
 ---
 
