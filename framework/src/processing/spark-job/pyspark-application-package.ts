@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT-0
 
 import { ManagedPolicy, ServicePrincipal, IRole, PolicyStatement, Effect, Role } from 'aws-cdk-lib/aws-iam';
-import { Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
+import { Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
-import { RemovalPolicy, BundlingOutput, Size, DockerImage, Aws } from 'aws-cdk-lib/core';
+import { BundlingOutput, Size, DockerImage, Aws } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import { PySparkApplicationPackageProps } from './pyspark-application-package-props';
-import { TrackedConstruct, TrackedConstructProps } from '../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
 *
@@ -57,6 +57,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
 
     s3DeploymentLambdaPolicyStatement.push(new PolicyStatement({
@@ -83,9 +85,11 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     if (!props.artifactsBucket) {
 
-      artifactsBucket = new Bucket(this, `ArtifactsBucket-${props.pysparkApplicationName}`, {
+      artifactsBucket = new Bucket (this, 'assetBucket', {
+        encryption: BucketEncryption.KMS_MANAGED,
+        enforceSSL: true,
+        removalPolicy: removalPolicy,
         autoDeleteObjects: true,
-        removalPolicy: RemovalPolicy.DESTROY,
       });
 
       artifactsBucket.grantWrite(assetUploadBucketRole);
@@ -96,9 +100,9 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     // Build dependencies using the Dockerfile in app/ folder and deploy a zip into CDK asset bucket
     const emrDepsAsset = new Asset(this, `EmrDepsAsset-${props.pysparkApplicationName}`, {
-      path: props.depenciesPath,
+      path: props.dependenciesPath,
       bundling: {
-        image: DockerImage.fromBuild(props.depenciesPath),
+        image: DockerImage.fromBuild(props.dependenciesPath),
         outputType: BundlingOutput.ARCHIVED,
         command: [
           'sh',
@@ -131,7 +135,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     // We are using an S3 asset because the name of the file changes each time we deploy the app
     // If we used an S3 deployment directly, the entrypoint would still have the same name, and the resource wouldn't be updated by CDK
     const emrAppAsset = new Asset(this, `EmrAppAsset-${props.pysparkApplicationName}`, {
-      path: '',
+      path: props.entrypointPath,
       bundling: {
         image: DockerImage.fromRegistry('public.ecr.aws/docker/library/alpine:latest'),
         outputType: BundlingOutput.NOT_ARCHIVED,
@@ -159,8 +163,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       role: assetUploadBucketRole,
     });
 
-    this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(emrAppArtifacts.objectKeys[0]);
-    this.depsS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(emrDepsArtifacts.objectKeys[0]);
+    this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${props.pysparkApplicationName}/${props.entrypointFileName}`);
+    this.depsS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${props.pysparkApplicationName}/pyspark-env.tar.gz`);
     this.assetBucket = artifactsBucket;
     this.assetUploadBucketRole = assetUploadBucketRole;
 
