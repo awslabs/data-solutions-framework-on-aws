@@ -3358,8 +3358,10 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.depsUri">depsUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.depsS3Uri">depsS3Uri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -3375,20 +3377,40 @@ The tree node.
 
 ---
 
-##### `depsUri`<sup>Required</sup> <a name="depsUri" id="aws-dsf.PySparkApplicationPackage.property.depsUri"></a>
+##### `assetBucket`<sup>Required</sup> <a name="assetBucket" id="aws-dsf.PySparkApplicationPackage.property.assetBucket"></a>
 
 ```typescript
-public readonly depsUri: string;
+public readonly assetBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+---
+
+##### `assetUploadBucketRole`<sup>Required</sup> <a name="assetUploadBucketRole" id="aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole"></a>
+
+```typescript
+public readonly assetUploadBucketRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+---
+
+##### `depsS3Uri`<sup>Required</sup> <a name="depsS3Uri" id="aws-dsf.PySparkApplicationPackage.property.depsS3Uri"></a>
+
+```typescript
+public readonly depsS3Uri: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="aws-dsf.PySparkApplicationPackage.property.entrypointUri"></a>
+##### `entrypointS3Uri`<sup>Required</sup> <a name="entrypointS3Uri" id="aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri"></a>
 
 ```typescript
-public readonly entrypointUri: string;
+public readonly entrypointS3Uri: string;
 ```
 
 - *Type:* string
@@ -4883,7 +4905,8 @@ const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName">entrypointFileName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artefactS3Bucker">artefactS3Bucker</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.createArtefactBucket">createArtefactBucket</a></code> | <code>boolean</code> | *No description.* |
 
 ---
 
@@ -4927,13 +4950,24 @@ public readonly pysparkApplicationName: string;
 
 ---
 
-##### `artefactS3Bucker`<sup>Optional</sup> <a name="artefactS3Bucker" id="aws-dsf.PySparkApplicationPackageProps.property.artefactS3Bucker"></a>
+##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket"></a>
 
 ```typescript
-public readonly artefactS3Bucker: IBucket;
+public readonly artifactsBucket: IBucket;
 ```
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
+
+---
+
+##### `createArtefactBucket`<sup>Optional</sup> <a name="createArtefactBucket" id="aws-dsf.PySparkApplicationPackageProps.property.createArtefactBucket"></a>
+
+```typescript
+public readonly createArtefactBucket: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
 
 ---
 

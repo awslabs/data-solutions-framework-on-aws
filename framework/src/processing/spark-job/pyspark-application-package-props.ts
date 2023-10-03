@@ -9,22 +9,33 @@ import { IBucket } from 'aws-cdk-lib/aws-s3';
  */
 export interface PySparkApplicationPackageProps {
 
+
+  /**
+   * The source directory where you have `requirements.txt` or `pyproject.toml`
+   * This location must have a `Dockerfile` that will build the archive of the virtual environment
+   */
   readonly entrypointPath: string;
 
   readonly entrypointFileName: string;
 
+  /**
+   * The source directory where you have `requirements.txt` or `pyproject.toml`
+   * This location must have a `Dockerfile` that will build the archive of the virtual environment
+   */
   readonly depenciesPath: string;
 
-  readonly pysparkApplicationName: string;
+  /**
+    * The name of the pyspark application
+    * This name is used as a parent directory in s3
+    * to store the entrypoint as well as virtual environment archive
+   */
+    readonly pysparkApplicationName: string;
 
   /**
-   * 
+   * The S3 bucket where to upload the artifacts of the Spark Job
+   * This is where the entry point and archive of the virtual environment will be stored
+   * @default If no bucket is provided, one will be created for you
    */
   readonly artifactsBucket?: IBucket;
-
-  /**
-   * @default true
-   */
-  readonly createArtefactBucket?: boolean;
 
 }
