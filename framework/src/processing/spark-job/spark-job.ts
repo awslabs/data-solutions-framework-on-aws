@@ -41,7 +41,6 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * resourceRemovalPolicy
    */
-
   private resourceRemovalPolicy: RemovalPolicy;
 
 

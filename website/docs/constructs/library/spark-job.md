@@ -5,17 +5,14 @@ sidebar_label: Spark Job
 
 # Spark job
 
-A construct to create a step function which submit a Spark job. The step function can submit a job with either [Amazon EMR on EKS](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/getting-started.html) or [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html). 
+A construct to create an AWS Step Functions state machine which submit a Spark job. The state machine can submit a job with either [Amazon EMR on EKS](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/getting-started.html) or [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html). 
 
 ## Overview
 
-The construct creates an AWS Step Function that is used to submit the job and orchestarte the life cycle of a job. The construct leverage the [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) to submit the jobs. The step function can takes a cron expression to trigger the job at a given interval. The schema below shows the state machine of the step function.
+The construct creates an AWS Step Functions state machine that is used to submit a Spark job and orchestrate the lifecycle of the job. The construct leverages the [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) to submit the jobs. The state machine can take a cron expression to trigger the job at a given interval. The schema below shows the state machine:
 
 
 ![Spark Job State Machine](../../../static/img/adsf-spark-job-statemachine.svg)
-
-
-
 
 ## Usage
 
@@ -30,7 +27,7 @@ from aws_cdk import (
     Stack,
 )
 from constructs import Construct
-from adsf import ( 
+from aws_dsf import ( 
     EmrServerlessSparkJob, 
     EmrServerlessSparkJobProps,
     SparkEmrServerlessRuntime
@@ -73,7 +70,6 @@ class NightlyJobStack(Stack):
             s3_log_uri='s3://emr-job-logs-EXAMPLE/logs',
             spark_submit_entry_point= 'local:///usr/lib/spark/examples/src/main/python/pi.py',
             spark_submit_parameters= '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4'
-
         )
 
         nightly_job = EmrServerlessSparkJob (scope=scope, id='nightly_job', props=nightly_job_props)
@@ -94,7 +90,7 @@ from aws_cdk import (
     Stack,
 )
 from constructs import Construct
-from adsf import ( 
+from aws_dsf import ( 
     EmrOnEksSparkJob,
     EmrOnEksSparkJobProps
 )
