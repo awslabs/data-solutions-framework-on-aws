@@ -22,23 +22,11 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  * **Usage example**
  * @example
  *
- * const myFileSystemPolicy = new PolicyDocument({
- *   statements: [new PolicyStatement({
- *     actions: [
- *       's3:GetObject',
- *     ],
- *     resources: ['*'],
- *   })],
- * });
- *
- *
- * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
- * const applicationId = "APPLICATION_ID";
  * const job = new SparkJob(stack, 'SparkJob', {
  *          jobConfig:{
  *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *               "VirtualClusterId": "virtualClusterId",
- *               "ExecutionRoleArn": myExecutionRole.roleArn,
+ *               "ExecutionRoleArn": "ROLE-ARN",
  *               "JobDriver": {
  *                   "SparkSubmit": {
  *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
@@ -47,7 +35,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  *                   },
  *               }
  *          }
- * } as EmrServerlessSparkJobApiProps);
+ * } as EmrOnEksSparkJobApiProps);
  *
  * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
  *   value: job.stateMachine.stateMachineArn,
@@ -94,7 +82,7 @@ export class EmrOnEksSparkJob extends SparkJob {
 
 
   /**
-   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job, it calls the [StartJobRun API](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
@@ -102,7 +90,7 @@ export class EmrOnEksSparkJob extends SparkJob {
   protected returnJobStartTaskProps(): CallAwsServiceProps {
     return {
       service: 'emrcontainers',
-      action: 'StartJobRun',
+      action: 'startJobRun',
       iamAction: 'emr-containers:StartJobRun',
       parameters: this.config.jobConfig,
       iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
