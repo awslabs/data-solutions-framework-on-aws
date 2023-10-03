@@ -3384,7 +3384,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | A bucket is created and exposed as an attribute,  this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | A bucket is created and exposed as an attribute, this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3 You pass this location to your Spark job. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.virtualEnvironmentArchiveS3Uri">virtualEnvironmentArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of python virtual envirobment is stored You pass this location to your Spark job. |
@@ -3412,7 +3412,7 @@ public readonly artifactsBucket: IBucket;
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 - *Default:* A bucket is created for you if you do not provide on in the props
 
-A bucket is created and exposed as an attribute,  this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct.
+A bucket is created and exposed as an attribute, this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct.
 
 ---
 
@@ -5022,7 +5022,7 @@ public readonly removalPolicy: RemovalPolicy;
 The removal policy when deleting the CDK resource.
 
 Resources like Amazon cloudwatch log or Amazon S3 bucket
-If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy' 
+If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
 in the 'cdk.json' or 'cdk.context.json' must be set to true
 
 ---

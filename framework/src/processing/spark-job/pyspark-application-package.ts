@@ -14,7 +14,6 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 * A construct that takes your pyspark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket
 * This construct requires Docker daemon installed locally to run
 * @example
-* ```
 * let pysparkPacker = new PySparkApplicationPackage (stack, 'pysparkPacker', {
 *                             entrypointFileName: 'app-pyspark.py',
 *                             pysparkApplicationName: 'my-pyspark',
@@ -33,7 +32,6 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 *   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
 *   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
 * } as EmrServerlessSparkJobProps);
-* ```
 */
 export class PySparkApplicationPackage extends TrackedConstruct {
 
@@ -52,7 +50,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
 
   /**
-   * A bucket is created and exposed as an attribute, 
+   * A bucket is created and exposed as an attribute,
    * this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct
    * @default A bucket is created for you if you do not provide on in the props
    */
@@ -100,10 +98,10 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     //Create an execution role for the lambda and attach to it a policy formed from user input
     const assetUploadBucketRole = new Role(this,
       `s3BucketDeploymentRole-${props.pysparkApplicationName}`, {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
-      managedPolicies: [lambdaExecutionRolePolicy],
-    });
+        assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+        description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
+        managedPolicies: [lambdaExecutionRolePolicy],
+      });
 
     let artifactsBucket: IBucket;
 
