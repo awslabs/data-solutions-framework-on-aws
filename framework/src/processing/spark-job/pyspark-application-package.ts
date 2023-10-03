@@ -11,8 +11,8 @@ import { PySparkApplicationPackageProps } from './pyspark-application-package-pr
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
-* A construct that take your pyspark application, package its virtual environment and upload it along its entrypoint to an Amazon S3 bucket
-* This construct requires Docker deamon installed locally to run
+* A construct that takes your pyspark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket
+* This construct requires Docker daemon installed locally to run
 */
 export class PySparkApplicationPackage extends TrackedConstruct {
 
@@ -27,11 +27,11 @@ export class PySparkApplicationPackage extends TrackedConstruct {
    * The S3 location where the archive of python virtual envirobment is stored
    * You pass this location to your Spark job
    */
-  public readonly depsS3Uri: string;
+  public readonly dependenciesS3Uri: string;
 
 
   /**
-   * A bucker is created and exposed as an attribute
+   * A bucket is created and exposed as an attribute
    * The bucket object where your assets are stored
    * A bucket is created for you if you do not provide on in the props
    */
@@ -49,7 +49,6 @@ export class PySparkApplicationPackage extends TrackedConstruct {
    * @param {string} id the ID of the CDK Construct
    * @param props {@link PySparkApplicationPackageProps}
    */
-
   constructor(scope: Construct, id: string, props: PySparkApplicationPackageProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
@@ -170,6 +169,4 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     this.assetUploadBucketRole = assetUploadBucketRole;
 
   }
-
-
 }
