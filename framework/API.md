@@ -3448,39 +3448,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="aws-dsf.SparkEmrServerlessRuntime"></a>
 
-A construct to create a Spark EMR Serverless Application   The construct takes as props {@link SparkEmrServerlessRuntimeProps}   The construct offers method to create execution role for EMR Serverless   The construct offers a method to allow an IAM role to call the `StartJobRun` and monitor the status of the job.
-
-*Example*
-
-```typescript
-const runtimeServerless = new SparkRuntimeServerless(stack, 'SparkRuntimeServerlessStack', {
-   releaseLabel: 'emr-6.12.0',
-   name: 'spark-serverless-demo'
-});
-
-const myFileSystemPolicy = new PolicyDocument({
-   statements: [new PolicyStatement({
-     actions: [
-       's3:GetObject',
-     ],
-     resources: ['S3-BUCKET'],
-   })],
- });
-
-let myTestRole = new Role (stack, 'TestRole', {
-   assumedBy: IAM-PRINCIPAL,
-});
-
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
-const myExecutionRole1 = SparkRuntimeServerless.createExecutionRole(stack, 'execRole2', myFileSystemPolicy)
-
-runtimeServerless.grantJobExecution(myTestRole, myExecutionRole.roleArn);
-
-new cdk.CfnOutput(stack, 'SparkRuntimeServerlessStackApplicationArn', {
-   value: runtimeServerless.applicationArn,
-});
-```
-
+A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 
 #### Initializers <a name="Initializers" id="aws-dsf.SparkEmrServerlessRuntime.Initializer"></a>
 
@@ -3571,7 +3539,7 @@ the role use by EMR Serverless to access resources during the job execution.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method return the role it creates. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantJobExecution">grantJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
@@ -3616,7 +3584,7 @@ import { SparkEmrServerlessRuntime } from 'aws-dsf'
 SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
 ```
 
-A static method which will create an execution IAM role that can be assumed by EMR Serverless and return it.
+A static method which will create an execution IAM role that can be assumed by EMR Serverless The method return the role it creates.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
 
@@ -3638,7 +3606,7 @@ passed to the IAM Role construct object.
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyDocument
 
-the inline policy to attach to the role, this is the IAM policies needed by the job, for example they can be either access to S3 bucket or DynamDB table.
+the inline policy to attach to the role, this is the IAM policies needed by the job.
 
 This parameter is mutually execlusive with iamPolicyName.
 
