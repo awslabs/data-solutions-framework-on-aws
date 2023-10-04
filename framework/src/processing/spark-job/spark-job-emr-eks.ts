@@ -283,7 +283,7 @@ export class SparkEmrEksJob extends SparkJob {
  * @param tags Tags to be added to the EMR Serverless job. @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags)
  */
 export interface SparkEmrEksJobProps extends SparkJobProps {
-  readonly name: string; 
+  readonly name: string;
   readonly virtualClusterId: string;
   readonly releaseLabel?: string;
   readonly executionRoleArn: string;
