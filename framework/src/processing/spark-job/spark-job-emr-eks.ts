@@ -277,7 +277,7 @@ export class SparkEmrEksJob extends SparkJob {
  * @param applicationConfiguration The override configurations for the application. @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_ConfigurationOverrides.html#emroneks-Type-ConfigurationOverrides-applicationConfiguration)
  * @param executionTimeoutMinutes Job execution timeout in minutes. @default 30
  * @param maxRetries The maximum number of attempts on the job's driver.
- * @param s3LogUri The Amazon S3 destination URI for log publishing. @example s3://BUCKET_NAME/ @default Create new bucket. @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_S3MonitoringConfiguration.html#emroneks-Type-S3MonitoringConfiguration-logUri)
+ * @param s3LogUri The Amazon S3 destination URI for log publishing. @default Create new bucket. @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_S3MonitoringConfiguration.html#emroneks-Type-S3MonitoringConfiguration-logUri)
  * @param cloudWatchLogGroupName CloudWatch log group name for job monitoring.  @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_CloudWatchMonitoringConfiguration.html#emroneks-Type-CloudWatchMonitoringConfiguration-logGroupName)
  * @param cloudWatchLogGroupStreamPrefix CloudWatch log group stream prefix. @default The name of the spark job. @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_CloudWatchMonitoringConfiguration.html#emroneks-Type-CloudWatchMonitoringConfiguration-logGroupName)
  * @param tags Tags to be added to the EMR Serverless job. @see @link(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags)

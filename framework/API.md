@@ -7024,13 +7024,6 @@ Simplified configuration for the EMR Serverless Job.
 
 > [(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags)]((https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags))
 
-*Example*
-
-```typescript
-s3://BUCKET_NAME/
-```
-
-
 #### Initializer <a name="Initializer" id="aws-dsf.SparkEmrEksJobProps.Initializer"></a>
 
 ```typescript
