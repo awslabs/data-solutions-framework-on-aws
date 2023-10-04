@@ -3539,7 +3539,7 @@ the role use by EMR Serverless to access resources during the job execution.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method return the role it creates. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantJobExecution">grantJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
@@ -3584,7 +3584,7 @@ import { SparkEmrServerlessRuntime } from 'aws-dsf'
 SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
 ```
 
-A static method which will create an execution IAM role that can be assumed by EMR Serverless The method return the role it creates.
+A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
 
@@ -3606,8 +3606,9 @@ passed to the IAM Role construct object.
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyDocument
 
-the inline policy to attach to the role, this is the IAM policies needed by the job.
+the inline policy document to attach to the role.
 
+These are IAM policies needed by the job.
 This parameter is mutually execlusive with iamPolicyName.
 
 ---
