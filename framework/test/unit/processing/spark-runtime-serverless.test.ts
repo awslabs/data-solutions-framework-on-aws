@@ -97,18 +97,14 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
               },
               {
                 Effect: 'Allow',
-                Action: [
-                  'emr-serverless:StartJobRun',
-                ],
+                Action: 'emr-serverless:StartJobRun',
                 Resource: {
                   'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
                 },
               },
               {
                 Effect: 'Allow',
-                Action: [
-                  'emr-serverless:TagResource',
-                ],
+                Action: 'emr-serverless:TagResource',
                 Resource: {
                   'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
                 },
@@ -172,27 +168,17 @@ describe('Test static methods', () => {
                   'emr-serverless:DescribeApplication',
                   'emr-serverless:GetJobRun',
                 ],
-                Resource: {
-                  'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
-                },
+                Resource: 'emr-serverless-app-id',
               },
               {
                 Effect: 'Allow',
-                Action: [
-                  'emr-serverless:StartJobRun',
-                ],
-                Resource: {
-                  'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
-                },
+                Action: 'emr-serverless:StartJobRun',
+                Resource: 'emr-serverless-app-id',
               },
               {
                 Effect: 'Allow',
-                Action: [
-                  'emr-serverless:TagResource',
-                ],
-                Resource: {
-                  'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
-                },
+                Action: 'emr-serverless:TagResource',
+                Resource: 'emr-serverless-app-id',
               },
             ],
           },
