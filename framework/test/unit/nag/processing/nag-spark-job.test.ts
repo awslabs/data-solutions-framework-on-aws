@@ -5,7 +5,7 @@
 /**
  * Nag for Spark runtime EMR Serverless
  *
- * @group unit/best-practice/spark-runtime-serverless
+ * @group unit/best-practice/spark-job
  */
 
 import { App, Aspects, Stack } from 'aws-cdk-lib';
@@ -13,7 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { EmrServerlessSparkJob, EmrServerlessSparkJobApiProps } from '../../../../src/processing/spark-job/spark-job-emr-serverless';
+import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps } from '../../../../src/processing/spark-job/spark-job-emr-serverless';
 import { SparkEmrServerlessRuntime } from '../../../../src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless';
 
 
@@ -35,7 +35,7 @@ const myFileSystemPolicy = new PolicyDocument({
 const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
-new EmrServerlessSparkJob(stack, 'SparkJob', {
+new SparkEmrServerlessJob(stack, 'SparkJob', {
   jobConfig: {
     Name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
     ApplicationId: '00fcn9hll0rv1j09',
@@ -56,23 +56,25 @@ new EmrServerlessSparkJob(stack, 'SparkJob', {
       },
     },
   },
-} as EmrServerlessSparkJobApiProps);
+} as SparkEmrServerlessJobApiProps);
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 
-NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/EmrPipeline-SparkJob/Role/DefaultPolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(stack, '/SparkJobRuntimeServerlessStack1111/SparkJob/EmrPipeline/Role/DefaultPolicy/Resource', [
   { id: 'AwsSolutions-IAM5', reason: 'Job runs generated automatically hence we have to use *' },
 ]);
 
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
+  console.log(warnings);
   expect(warnings).toHaveLength(0);
 });
 
 test('No unsuppressed Errors', () => {
   const errors = Annotations.fromStack(stack).findError('*', Match.stringLikeRegexp('AwsSolutions-.*'));
+  console.log(errors);
   expect(errors).toHaveLength(0);
 });
 

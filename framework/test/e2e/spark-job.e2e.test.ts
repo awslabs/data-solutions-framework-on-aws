@@ -11,7 +11,7 @@ import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { TestStack } from './test-stack';
-import { EmrServerlessSparkJob, EmrServerlessSparkJobApiProps, EmrServerlessSparkJobProps, SparkEmrServerlessRuntime } from '../../src/';
+import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps, SparkEmrServerlessRuntime } from '../../src/';
 
 jest.setTimeout(6000000);
 
@@ -40,7 +40,7 @@ const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'ex
 const myExecutionRole1 = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
-const job = new EmrServerlessSparkJob(stack, 'SparkJob', {
+const job = new SparkEmrServerlessJob(stack, 'SparkJob', {
   jobConfig: {
     Name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
     ApplicationId: emrApp.applicationId,
@@ -61,10 +61,10 @@ const job = new EmrServerlessSparkJob(stack, 'SparkJob', {
       },
     },
   },
-} as EmrServerlessSparkJobApiProps);
+} as SparkEmrServerlessJobApiProps);
 
 
-const jobSimple = new EmrServerlessSparkJob(stack, 'SparkJobSimple', {
+const jobSimple = new SparkEmrServerlessJob(stack, 'SparkJobSimple', {
   name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
   applicationId: emrApp.applicationId,
   clientToken: JsonPath.uuid(),
@@ -74,7 +74,7 @@ const jobSimple = new EmrServerlessSparkJob(stack, 'SparkJobSimple', {
   sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
   sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
 
-} as EmrServerlessSparkJobProps);
+} as SparkEmrServerlessJobProps);
 
 new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
   value: job.stateMachine!.stateMachineArn,

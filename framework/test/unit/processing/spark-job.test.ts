@@ -14,7 +14,7 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { Schedule } from 'aws-cdk-lib/aws-events';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { SparkEmrServerlessRuntime } from '../../../src/processing';
-import { EmrOnEksSparkJob, EmrOnEksSparkJobApiProps, EmrOnEksSparkJobProps, EmrServerlessSparkJob, EmrServerlessSparkJobApiProps, EmrServerlessSparkJobProps } from '../../../src/processing/spark-job';
+import { SparkEmrEksJob, SparkEmrEksJobApiProps, SparkEmrEksJobProps, SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps } from '../../../src/processing/spark-job';
 
 
 import { EmrRuntimeVersion } from '../../../src/utils/emr-releases';
@@ -38,7 +38,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
-  new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
+  new SparkEmrServerlessJob(stack, 'SparkJobServerless', {
     jobConfig: {
       ApplicationId: 'appId',
       ExecutionRoleArn: myExecutionRole.roleArn,
@@ -57,7 +57,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
       },
     },
     schedule: Schedule.rate(Duration.hours(1)),
-  } as EmrServerlessSparkJobApiProps);
+  } as SparkEmrServerlessJobApiProps);
 
 
   const template = Template.fromStack(stack, {});
@@ -79,13 +79,13 @@ describe('Create an SparkJob using EMR Serverless Application for Spark with sch
         'Fn::Join': [
           '',
           [
-            '{"StartAt":"EmrStartJobTask-SparkJobServerless","States":{"EmrStartJobTask-SparkJobServerless":{"Next":"Wait-SparkJobServerless","Type":"Task","ResultSelector":{"JobRunId.$":"$.JobRunId"},"Resource":"arn:',
+            '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.JobRunId"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
             ':states:::aws-sdk:emrserverless:startJobRun","Parameters":{"ApplicationId":"appId","ExecutionRoleArn":"',
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
-            '","ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":30,"Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait-SparkJobServerless":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask-SparkJobServerless"},"EmrMonitorJobTask-SparkJobServerless":{"Next":"JobSucceededOrFailed-SparkJobServerless","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.JobRun.State","StateDetails.$":"$.JobRun.StateDetails"},"Resource":"arn:',
+            '","ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":30,"Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.JobRun.State","StateDetails.$":"$.JobRun.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrserverless:getJobRun","Parameters":{"ApplicationId":"appId","JobRunId.$":"$.JobRunId"}},"JobSucceededOrFailed-SparkJobServerless":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"SUCCESS","Next":"JobSucceeded-SparkJobServerless"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed-SparkJobServerless"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed-SparkJobServerless"}],"Default":"Wait-SparkJobServerless"},"JobSucceeded-SparkJobServerless":{"Type":"Succeed"},"JobFailed-SparkJobServerless":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRServerlessJobFailed"}},"TimeoutSeconds":2100}',
+            ':states:::aws-sdk:emrserverless:getJobRun","Parameters":{"ApplicationId":"appId","JobRunId.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"SUCCESS","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRServerlessJobFailed"}},"TimeoutSeconds":2100}',
           ],
         ],
       },
@@ -112,7 +112,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
-  new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
+  new SparkEmrServerlessJob(stack, 'SparkJobServerless', {
     name: 'SparkSimpleProps',
     applicationId: '00fcn9hll0rv1j09',
     executionRoleArn: myExecutionRole.roleArn,
@@ -121,7 +121,7 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
     cloudWatchLogGroupName: 'spark-serverless-log',
     sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
     sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
-  } as EmrServerlessSparkJobProps);
+  } as SparkEmrServerlessJobProps);
 
 
   const template = Template.fromStack(stack, {});
@@ -136,13 +136,13 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
         'Fn::Join': [
           '',
           [
-            '{"StartAt":"EmrStartJobTask-SparkJobServerless","States":{"EmrStartJobTask-SparkJobServerless":{"Next":"Wait-SparkJobServerless","Type":"Task","ResultSelector":{"JobRunId.$":"$.JobRunId"},"Resource":"arn:',
+            '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.JobRunId"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
             ':states:::aws-sdk:emrserverless:startJobRun","Parameters":{"ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"},"CloudWatchLoggingConfiguration":{"Enabled":true,"LogGroupName":"spark-serverless-log"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"Name":"SparkSimpleProps","ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":30,"ExecutionRoleArn":"',
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
-            '","ApplicationId":"00fcn9hll0rv1j09","Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait-SparkJobServerless":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask-SparkJobServerless"},"EmrMonitorJobTask-SparkJobServerless":{"Next":"JobSucceededOrFailed-SparkJobServerless","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.JobRun.State","StateDetails.$":"$.JobRun.StateDetails"},"Resource":"arn:',
+            '","ApplicationId":"00fcn9hll0rv1j09","Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.JobRun.State","StateDetails.$":"$.JobRun.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrserverless:getJobRun","Parameters":{"ApplicationId":"00fcn9hll0rv1j09","JobRunId.$":"$.JobRunId"}},"JobSucceededOrFailed-SparkJobServerless":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"SUCCESS","Next":"JobSucceeded-SparkJobServerless"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed-SparkJobServerless"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed-SparkJobServerless"}],"Default":"Wait-SparkJobServerless"},"JobSucceeded-SparkJobServerless":{"Type":"Succeed"},"JobFailed-SparkJobServerless":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRServerlessJobFailed"}},"TimeoutSeconds":2100}',
+            ':states:::aws-sdk:emrserverless:getJobRun","Parameters":{"ApplicationId":"00fcn9hll0rv1j09","JobRunId.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"SUCCESS","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRServerlessJobFailed"}},"TimeoutSeconds":2100}',
           ],
         ],
       },
@@ -168,7 +168,7 @@ describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
   //TODO add ErmOnEks specific role
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-  new EmrOnEksSparkJob(stack, 'SparkJobEmrOnEks', {
+  new SparkEmrEksJob(stack, 'SparkJobEmrOnEks', {
     jobConfig: {
       Name: 'SparkJob',
       VirtualClusterId: 'clusterId',
@@ -189,7 +189,7 @@ describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
         },
       },
     },
-  } as EmrOnEksSparkJobApiProps);
+  } as SparkEmrEksJobApiProps);
 
 
   const template = Template.fromStack(stack, {});
@@ -204,13 +204,13 @@ describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
         'Fn::Join': [
           '',
           [
-            '{"StartAt":"EmrStartJobTask-SparkJobEmrOnEks","States":{"EmrStartJobTask-SparkJobEmrOnEks":{"Next":"Wait-SparkJobEmrOnEks","Type":"Task","ResultSelector":{"JobRunId.$":"$.Id"},"Resource":"arn:',
+            '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.Id"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
             ':states:::aws-sdk:emrcontainers:startJobRun","Parameters":{"Name":"SparkJob","VirtualClusterId":"clusterId","ReleaseLabel":"emr-6.2.0","ExecutionRoleArn":"',
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
-            '","ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","EntryPointArguments":[],"SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"ClientToken.$":"States.UUID()","Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait-SparkJobEmrOnEks":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask-SparkJobEmrOnEks"},"EmrMonitorJobTask-SparkJobEmrOnEks":{"Next":"JobSucceededOrFailed-SparkJobEmrOnEks","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.State","StateDetails.$":"$.StateDetails"},"Resource":"arn:',
+            '","ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","EntryPointArguments":[],"SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"ClientToken.$":"States.UUID()","Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.State","StateDetails.$":"$.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrcontainers:describeJobRun","Parameters":{"VirtualClusterId":"clusterId","Id.$":"$.JobRunId"}},"JobSucceededOrFailed-SparkJobEmrOnEks":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"COMPLETED","Next":"JobSucceeded-SparkJobEmrOnEks"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed-SparkJobEmrOnEks"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed-SparkJobEmrOnEks"}],"Default":"Wait-SparkJobEmrOnEks"},"JobSucceeded-SparkJobEmrOnEks":{"Type":"Succeed"},"JobFailed-SparkJobEmrOnEks":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRonEKSJobFailed"}},"TimeoutSeconds":1800}',
+            ':states:::aws-sdk:emrcontainers:describeJobRun","Parameters":{"VirtualClusterId":"clusterId","Id.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"COMPLETED","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRonEKSJobFailed"}},"TimeoutSeconds":1800}',
           ],
         ],
       },
@@ -236,7 +236,7 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
-  new EmrOnEksSparkJob(stack, 'SparkJobEmrOnEksSimple', {
+  new SparkEmrEksJob(stack, 'SparkJobEmrOnEksSimple', {
     name: 'SparkJob',
     virtualClusterId: 'clusterId',
     releaseLabel: EmrRuntimeVersion.V6_2,
@@ -245,7 +245,7 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
     cloudWatchLogGroupName: 'spark-job-log-group-emreks-simple',
     sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
     sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
-  } as EmrOnEksSparkJobProps);
+  } as SparkEmrEksJobProps);
 
 
   const template = Template.fromStack(stack, {});
@@ -260,13 +260,13 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
         'Fn::Join': [
           '',
           [
-            '{"StartAt":"EmrStartJobTask-SparkJobEmrOnEksSimple","States":{"EmrStartJobTask-SparkJobEmrOnEksSimple":{"Next":"Wait-SparkJobEmrOnEksSimple","Type":"Task","ResultSelector":{"JobRunId.$":"$.Id"},"Resource":"arn:',
+            '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.Id"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
             ':states:::aws-sdk:emrcontainers:startJobRun","Parameters":{"ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"},"CloudWatchMonitoringConfiguration":{"LogGroupName":"spark-job-log-group-emreks-simple","LogStreamNamePrefix":"SparkJob"}}},"RetryPolicyConfiguration":{"MaxAttempts":0},"JobDriver":{"SparkSubmitJobDriver":{"EntryPoint":"s3://s3-bucket/pi.py","SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"Name":"SparkJob","ClientToken.$":"States.UUID()","VirtualClusterId":"clusterId","ExecutionRoleArn":"',
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
-            '","Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait-SparkJobEmrOnEksSimple":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask-SparkJobEmrOnEksSimple"},"EmrMonitorJobTask-SparkJobEmrOnEksSimple":{"Next":"JobSucceededOrFailed-SparkJobEmrOnEksSimple","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.State","StateDetails.$":"$.StateDetails"},"Resource":"arn:',
+            '","Tags":{"aws-data-solutions-fwk:owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.State","StateDetails.$":"$.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrcontainers:describeJobRun","Parameters":{"VirtualClusterId":"clusterId","Id.$":"$.JobRunId"}},"JobSucceededOrFailed-SparkJobEmrOnEksSimple":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"COMPLETED","Next":"JobSucceeded-SparkJobEmrOnEksSimple"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed-SparkJobEmrOnEksSimple"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed-SparkJobEmrOnEksSimple"}],"Default":"Wait-SparkJobEmrOnEksSimple"},"JobSucceeded-SparkJobEmrOnEksSimple":{"Type":"Succeed"},"JobFailed-SparkJobEmrOnEksSimple":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRonEKSJobFailed"}},"TimeoutSeconds":1800}',
+            ':states:::aws-sdk:emrcontainers:describeJobRun","Parameters":{"VirtualClusterId":"clusterId","Id.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"COMPLETED","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRonEKSJobFailed"}},"TimeoutSeconds":1800}',
           ],
         ],
       },

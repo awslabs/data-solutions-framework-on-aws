@@ -60,7 +60,7 @@ export abstract class SparkJob extends TrackedConstruct {
     };
 
     super(scope, id, trackedConstructProps);
-    this.resourceRemovalPolicy = Context.revertRemovalPolicy(scope, props.resourceRemovalPolicy);
+    this.resourceRemovalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
   }
 
   /**
@@ -114,76 +114,78 @@ export abstract class SparkJob extends TrackedConstruct {
 
   /**
    * Creates a State Machine that orchestrates the Spark Job. This is a default implementation that can be overridden by the extending class.
-   * @param scope scope of the CDK Construct.
-   * @param id ID of the CDK Construct.
    * @param jobTimeout Timeout for the state machine. @defautl 30 minutes
    * @param schedule Schedule to run the state machine. @default no schedule
    * @returns StateMachine
    */
-  protected createStateMachine(scope: Construct, id: string, jobTimeout?: Duration, schedule? : Schedule): StateMachine {
+  protected createStateMachine(jobTimeout?: Duration, schedule? : Schedule): StateMachine {
 
-    const emrStartJobTask = new CallAwsService(scope, `EmrStartJobTask-${id}`, this.returnJobStartTaskProps());
+    if (!this.stateMachine) {
 
-    const emrMonitorJobTask = new CallAwsService(scope, `EmrMonitorJobTask-${id}`, this.returnJobMonitorTaskProps());
+      const emrStartJobTask = new CallAwsService(this, 'EmrStartJobTask', this.returnJobStartTaskProps());
 
-    const wait = new Wait(scope, `Wait-${id}`, {
-      time: WaitTime.duration(Duration.seconds(60)),
-    });
+      const emrMonitorJobTask = new CallAwsService(this, 'EmrMonitorJobTask', this.returnJobMonitorTaskProps());
 
-    const jobFailed = new Fail(scope, `JobFailed-${id}`, this.returnJobFailTaskProps());
-
-    const jobSucceeded = new Succeed(scope, `JobSucceeded-${id}`);
-
-    const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
-      new Choice(scope, `JobSucceededOrFailed-${id}`)
-        .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusSucceed()), jobSucceeded)
-        .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusFailed()), jobFailed)
-        .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusCancelled()), jobFailed)
-        .otherwise(wait),
-    );
-
-    // Enable CloudWatch Logs for the state machine
-    const logGroup = new LogGroup(scope, `LogGroup-${id}`, {
-      removalPolicy: this.resourceRemovalPolicy,
-    });
-
-    // StepFunctions state machine
-    const stateMachine: StateMachine = new StateMachine(scope, `EmrPipeline-${id}`, {
-      definition: emrPipelineChain,
-      tracingEnabled: true,
-      timeout: jobTimeout ?? Duration.minutes(30),
-      logs: {
-        destination: logGroup,
-        level: LogLevel.ALL,
-      },
-    });
-
-    this.grantExecutionRole(stateMachine.role);
-    if (schedule) {
-      new Rule(scope, `SparkJobPipelineTrigger-${id}`, {
-        schedule: schedule,
-        targets: [new SfnStateMachine(stateMachine)],
+      const wait = new Wait(this, 'Wait', {
+        time: WaitTime.duration(Duration.seconds(60)),
       });
+
+      const jobFailed = new Fail(this, 'JobFailed', this.returnJobFailTaskProps());
+
+      const jobSucceeded = new Succeed(this, 'JobSucceeded');
+
+      const emrPipelineChain = emrStartJobTask.next(wait).next(emrMonitorJobTask).next(
+        new Choice(this, 'JobSucceededOrFailed')
+          .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusSucceed()), jobSucceeded)
+          .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusFailed()), jobFailed)
+          .when(Condition.stringEquals('$.JobRunState.State', this.returnJobStatusCancelled()), jobFailed)
+          .otherwise(wait),
+      );
+
+      // Enable CloudWatch Logs for the state machine
+      const logGroup = new LogGroup(this, 'LogGroup', {
+        removalPolicy: this.resourceRemovalPolicy,
+      });
+
+      // StepFunctions state machine
+      this.stateMachine = new StateMachine(this, 'EmrPipeline', {
+        definition: emrPipelineChain,
+        tracingEnabled: true,
+        timeout: jobTimeout ?? Duration.minutes(30),
+        logs: {
+          destination: logGroup,
+          level: LogLevel.ALL,
+        },
+      });
+
+      this.grantExecutionRole(this.stateMachine.role);
+      if (schedule) {
+        new Rule(this, 'SparkJobPipelineTrigger', {
+          schedule: schedule,
+          targets: [new SfnStateMachine(this.stateMachine)],
+        });
+      }
     }
-    return stateMachine;
+
+    return this.stateMachine;
   }
 
   /**
-   *
-   * @param scope Construct
+   * Creates or import an S3 bucket to store the logs of the Spark job.
+   * The bucket is created with SSE encryption (KMS managed or provided by user).
    * @param s3LogUri S3 path to store the logs of the Spark job. @example s3://<bucket-name>/
    * @param encryptionKeyArn KMS Key ARN for encryption. @default - Master KMS key of the account.
    * @returns string S3 path to store the logs.
    */
-  protected createS3LogBucket(scope:Construct, s3LogUri?:string, encryptionKeyArn?:string): string {
+  protected createS3LogBucket(s3LogUri?:string, encryptionKeyArn?:string): string {
 
     if (! this.s3LogBucket) {
-      this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(scope, 'S3LogBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(scope, 'S3LogBucket', {
+      this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(this, 'SparkLogsBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(this, 'SparkLogsBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,
         removalPolicy: this.resourceRemovalPolicy,
         autoDeleteObjects: this.resourceRemovalPolicy == RemovalPolicy.DESTROY,
-        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
+        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'SparkLogsBucketEncryptionKey', encryptionKeyArn) : undefined,
         encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
       });
     }
@@ -192,17 +194,16 @@ export abstract class SparkJob extends TrackedConstruct {
   }
 
   /**
-   *
-   * @param scope Construct
+   * Creates an encrypted CloudWatch Logs group to store the Spark job logs.
    * @param name CloudWatch Logs group name of cloudwatch log group to store the Spark job logs
    * @param encryptionKeyArn KMS Key ARN for encryption. @default - Server-side encryption managed by CloudWatch Logs.
    * @returns LogGroup CloudWatch Logs group.
    */
-  protected createCloudWatchLogsLogGroup(scope:Construct, name:string, encryptionKeyArn?:string): LogGroup {
+  protected createCloudWatchLogsLogGroup(name:string, encryptionKeyArn?:string): LogGroup {
     if (! this.cloudwatchGroup) {
-      this.cloudwatchGroup = new LogGroup(scope, `CloudWatchLogsLogGroup-${name}`, {
+      this.cloudwatchGroup = new LogGroup(this, 'SparkLogsCloudWatchLogGroup', {
         logGroupName: name,
-        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'EncryptionKey', encryptionKeyArn) : undefined,
+        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'SparkLogsCloudWatchEncryptionKey', encryptionKeyArn) : undefined,
         removalPolicy: this.resourceRemovalPolicy,
       });
     }
@@ -218,9 +219,12 @@ export abstract class SparkJob extends TrackedConstruct {
 export interface SparkJobProps {
 
   /**
-   * Resource Removal Policy. @default - global removal policy @see Context.removalPolicy
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
-  readonly resourceRemovalPolicy?: RemovalPolicy;
+  readonly removalPolicy?: RemovalPolicy;
 
   /**
    * Schedule to run the Step Functions state machine.

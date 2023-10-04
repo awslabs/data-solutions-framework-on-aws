@@ -14,7 +14,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
 /**
  * A construct to run Spark Jobs using EMR on EKS.
  * Creates a Step Functions State Machine that orchestrates the Spark Job.
- * @see EmrOnEksSparkJobProps parameters to be specified for the construct
+ * @see SparkEmrEksJobProps parameters to be specified for the construct
  * @default ExecutionTimeoutMinutes: 30
  * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
  * @default ReleaseLabel: EMR version 6.2
@@ -41,23 +41,22 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  *   value: job.stateMachine.stateMachineArn,
  * });
  */
-export class EmrOnEksSparkJob extends SparkJob {
-  private scope: Construct;
-  private config!: EmrOnEksSparkJobApiProps;
+export class SparkEmrEksJob extends SparkJob {
+
+  private config!: SparkEmrEksJobApiProps;
 
   /**
    * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
    */
   sparkJobExecutionRole?: IRole;
 
-  constructor( scope: Construct, id: string, props: EmrOnEksSparkJobProps | EmrOnEksSparkJobApiProps) {
-    super(scope, id, EmrOnEksSparkJob.name, props as SparkJobProps);
-    this.scope = scope;
+  constructor( scope: Construct, id: string, props: SparkEmrEksJobProps | SparkEmrEksJobApiProps) {
+    super(scope, id, SparkEmrEksJob.name, props as SparkJobProps);
 
     if ('jobConfig' in props) {
-      this.setJobApiPropsDefaults(props as EmrOnEksSparkJobApiProps);
+      this.setJobApiPropsDefaults(props as SparkEmrEksJobApiProps);
     } else {
-      this.setJobPropsDefaults(scope, props as EmrOnEksSparkJobProps);
+      this.setJobPropsDefaults(scope, props as SparkEmrEksJobProps);
     }
 
     //Tag the AWs Step Functions State Machine
@@ -67,7 +66,7 @@ export class EmrOnEksSparkJob extends SparkJob {
     this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
     const executionTimeout = props.executionTimeoutMinutes ?? 30;
-    this.stateMachine = this.createStateMachine(scope, id, Duration.minutes(executionTimeout), this.config.schedule);
+    this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.config.schedule);
 
     this.s3LogBucket?.grantReadWrite(this.returnSparkJobExecutionRole(scope));
     this.cloudwatchGroup?.grantRead(this.returnSparkJobExecutionRole(scope));
@@ -195,7 +194,7 @@ export class EmrOnEksSparkJob extends SparkJob {
    * Set defaults for the EmrOnEksSparkJobApiProps.
    * @param props EmrOnEksSparkJobApiProps
    */
-  private setJobApiPropsDefaults(props: EmrOnEksSparkJobApiProps): void {
+  private setJobApiPropsDefaults(props: SparkEmrEksJobApiProps): void {
 
     const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
@@ -204,7 +203,7 @@ export class EmrOnEksSparkJob extends SparkJob {
 
     this.config = {
       jobConfig: propsPascalCase,
-      resourceRemovalPolicy: props.resourceRemovalPolicy,
+      removalPolicy: props.removalPolicy,
       schedule: props.schedule,
     };
   }
@@ -214,7 +213,7 @@ export class EmrOnEksSparkJob extends SparkJob {
    * @param props EmrOnEksSparkJobProps
    */
 
-  private setJobPropsDefaults(scope:Construct, props: EmrOnEksSparkJobProps): void {
+  private setJobPropsDefaults(scope:Construct, props: SparkEmrEksJobProps): void {
     const config = {
       jobConfig: {
         ConfigurationOverrides: {
@@ -227,7 +226,7 @@ export class EmrOnEksSparkJob extends SparkJob {
           SparkSubmitJobDriver: {},
         },
       },
-    } as EmrOnEksSparkJobApiProps;
+    } as SparkEmrEksJobApiProps;
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.VirtualClusterId = props.virtualClusterId;
@@ -249,10 +248,10 @@ export class EmrOnEksSparkJob extends SparkJob {
     }
 
     config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.S3MonitoringConfiguration!.LogUri =
-    this.createS3LogBucket(this.scope, props.s3LogUri);
+    this.createS3LogBucket(props.s3LogUri);
 
     if (props.cloudWatchLogGroupName) {
-      this.createCloudWatchLogsLogGroup(this.scope, props.cloudWatchLogGroupName);
+      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroupName);
       config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.CloudWatchMonitoringConfiguration! = {
         LogGroupName: props.cloudWatchLogGroupName,
         LogStreamNamePrefix: props.cloudWatchLogGroupStreamPrefix ?? props.name,
@@ -266,9 +265,9 @@ export class EmrOnEksSparkJob extends SparkJob {
 
 /**
  * Simplified configuration for the EMR on EKS job.
- * @see EmrOnEksSparkJobApiProps if you want to use official AWS SDK spark job properties.
+ * @see SparkEmrEksJobApiProps if you want to use official AWS SDK spark job properties.
  */
-export interface EmrOnEksSparkJobProps extends SparkJobProps {
+export interface SparkEmrEksJobProps extends SparkJobProps {
   readonly name: string;
   readonly virtualClusterId: string;
   readonly releaseLabel?: string;
@@ -292,7 +291,7 @@ export interface EmrOnEksSparkJobProps extends SparkJobProps {
  * Use this interface when EmrOnEksSparkJobProps doesn't give you access to the configuration parameters you need.
  * @param jobConfig The job configuration. @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
  */
-export interface EmrOnEksSparkJobApiProps extends SparkJobProps {
+export interface SparkEmrEksJobApiProps extends SparkJobProps {
 
   /**
    * Job execution timeout in minutes. @default 30

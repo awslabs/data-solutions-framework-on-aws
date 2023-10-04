@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-
 export { DataLakeStorageProps, DataLakeStorage, AnalyticsBucket, AnalyticsBucketProps, AccessLogsBucket } from './storage';
 export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps } from './processing';
 export { DataCatalogDatabase, DataCatalogDatabaseProps, DataLakeCatalog, DataLakeCatalogProps } from './governance';
@@ -13,4 +12,3 @@ export { NetworkConfiguration, vpcBootstrap } from './utils/vpc-helper';
 export { PySparkApplicationPackage, PySparkApplicationPackageProps } from './processing';
 export { SparkJob, SparkJobProps, EmrOnEksSparkJob, EmrOnEksSparkJobProps, EmrOnEksSparkJobApiProps } from './processing/spark-job';
 export { EmrServerlessSparkJob, EmrServerlessSparkJobProps, EmrServerlessSparkJobApiProps } from './processing/spark-job';
-
