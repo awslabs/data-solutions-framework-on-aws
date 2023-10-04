@@ -21,7 +21,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
      *
      * @param scope the scope in which to create the role
      * @param id passed to the IAM Role construct object
-     * @param executionRolePolicyDocument the inline policy to attach to the role, this is the IAM policies needed by the job.
+     * @param executionRolePolicyDocument the inline policy document to attach to the role. These are IAM policies needed by the job.
      * This parameter is mutually execlusive with iamPolicyName.
      * @param iamPolicyName the IAM policy name to attach to the role, this is mutually execlusive with executionRolePolicyDocument
      */
