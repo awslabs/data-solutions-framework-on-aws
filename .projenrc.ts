@@ -64,7 +64,8 @@ const rootProject = new LernaProject({
 
   gitignore: [
     '.idea',
-    'dist'
+    'dist',
+    '__pycache__',
   ],
 
   projenrcTs: true,
