@@ -45,7 +45,7 @@ export abstract class SparkJob extends TrackedConstruct {
    * in the 'cdk.json' or 'cdk.context.json' must be set to true
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
-  private resourceRemovalPolicy: RemovalPolicy;
+  private removalPolicy: RemovalPolicy;
 
 
   /**
@@ -60,7 +60,7 @@ export abstract class SparkJob extends TrackedConstruct {
     };
 
     super(scope, id, trackedConstructProps);
-    this.resourceRemovalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
   }
 
   /**
@@ -98,12 +98,12 @@ export abstract class SparkJob extends TrackedConstruct {
    */
   protected abstract returnJobStatusCancelled(): string;
 
-  /**
-   * Returns the Spark Job Execution Role
-   * @param scope the Scope of the CDK Construct.
-   * @returns IRole
-   */
-  protected abstract returnSparkJobExecutionRole(scope:Construct): IRole;
+  // /**
+  //  * Returns the Spark Job Execution Role
+  //  * @param scope the Scope of the CDK Construct.
+  //  * @returns IRole
+  //  */
+  // protected abstract returnSparkJobExecutionRole(scope:Construct): IRole;
 
 
   /**
@@ -144,7 +144,7 @@ export abstract class SparkJob extends TrackedConstruct {
 
       // Enable CloudWatch Logs for the state machine
       const logGroup = new LogGroup(this, 'LogGroup', {
-        removalPolicy: this.resourceRemovalPolicy,
+        removalPolicy: this.removalPolicy,
       });
 
       // StepFunctions state machine
@@ -183,8 +183,8 @@ export abstract class SparkJob extends TrackedConstruct {
       this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(this, 'SparkLogsBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(this, 'SparkLogsBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,
-        removalPolicy: this.resourceRemovalPolicy,
-        autoDeleteObjects: this.resourceRemovalPolicy == RemovalPolicy.DESTROY,
+        removalPolicy: this.removalPolicy,
+        autoDeleteObjects: this.removalPolicy == RemovalPolicy.DESTROY,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'SparkLogsBucketEncryptionKey', encryptionKeyArn) : undefined,
         encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
       });
@@ -204,7 +204,7 @@ export abstract class SparkJob extends TrackedConstruct {
       this.cloudwatchGroup = new LogGroup(this, 'SparkLogsCloudWatchLogGroup', {
         logGroupName: name,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'SparkLogsCloudWatchEncryptionKey', encryptionKeyArn) : undefined,
-        removalPolicy: this.resourceRemovalPolicy,
+        removalPolicy: this.removalPolicy,
       });
     }
 

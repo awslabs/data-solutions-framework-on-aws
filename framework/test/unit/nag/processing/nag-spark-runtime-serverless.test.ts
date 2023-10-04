@@ -40,7 +40,7 @@ let myTestRole = new Role (stack, 'TestRole', {
 
 const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-runtimeServerless.grantExecution(myTestRole, myExecutionRole.roleArn);
+runtimeServerless.grantStartExecution(myTestRole, myExecutionRole.roleArn);
 
 
 Aspects.of(stack).add(new AwsSolutionsChecks());

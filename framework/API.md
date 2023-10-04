@@ -4376,7 +4376,6 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrEksJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkEmrEksJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.SparkEmrEksJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
 
 ---
 
@@ -4401,20 +4400,6 @@ public readonly stateMachine: StateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 Step Functions StateMachine created to orchestrate the Spark Job.
-
----
-
-##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="aws-dsf.SparkEmrEksJob.property.sparkJobExecutionRole"></a>
-
-```typescript
-public readonly sparkJobExecutionRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-Spark Job execution role.
-
-Use this property to add additional IAM permissions if necessary.
 
 ---
 
@@ -4707,7 +4692,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantExecution">grantExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
 
@@ -4719,10 +4704,10 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantExecution` <a name="grantExecution" id="aws-dsf.SparkEmrServerlessRuntime.grantExecution"></a>
+##### `grantStartExecution` <a name="grantStartExecution" id="aws-dsf.SparkEmrServerlessRuntime.grantStartExecution"></a>
 
 ```typescript
-public grantExecution(startJobRole: IRole, executionRoleArn: string): void
+public grantStartExecution(startJobRole: IRole, executionRoleArn: string): void
 ```
 
 A method which will grant an IAM Role the right to start and monitor a job.
@@ -4730,7 +4715,7 @@ A method which will grant an IAM Role the right to start and monitor a job.
 The method will also attach an iam:PassRole permission to limited to the IAM Job Execution roles passed.
 The excution role will be able to submit job to the EMR Serverless application created by the construct.
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.SparkEmrServerlessRuntime.grantExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.SparkEmrServerlessRuntime.grantStartExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -4738,7 +4723,7 @@ the role that will call the start job api and which need to have the iam:PassRol
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessRuntime.grantExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessRuntime.grantStartExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string
 
@@ -4752,7 +4737,7 @@ the role use by EMR Serverless to access resources during the job execution.
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantJobExecution">grantJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
 
@@ -4833,19 +4818,19 @@ the IAM policy name to attach to the role, this is mutually execlusive with exec
 
 ---
 
-##### `grantJobExecution` <a name="grantJobExecution" id="aws-dsf.SparkEmrServerlessRuntime.grantJobExecution"></a>
+##### `grantStartJobExecution` <a name="grantStartJobExecution" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution"></a>
 
 ```typescript
 import { SparkEmrServerlessRuntime } from 'aws-dsf'
 
-SparkEmrServerlessRuntime.grantJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
+SparkEmrServerlessRuntime.grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
 ```
 
 A static method which will grant an IAM Role the right to start and monitor a job.
 
 The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.SparkEmrServerlessRuntime.grantJobExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -4853,7 +4838,7 @@ the role that will call the start job api and which needs to have the iam:PassRo
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessRuntime.grantJobExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string[]
 
@@ -4861,7 +4846,7 @@ the role used by EMR Serverless to access resources during the job execution.
 
 ---
 
-###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="aws-dsf.SparkEmrServerlessRuntime.grantJobExecution.parameter.applicationArns"></a>
+###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.applicationArns"></a>
 
 - *Type:* string[]
 
@@ -7053,13 +7038,13 @@ const sparkEmrEksJobProps: SparkEmrEksJobProps = { ... }
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
@@ -7099,6 +7084,16 @@ Schedule to run the Step Functions state machine.
 > [Schedule](Schedule)
 
 > [[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]]([https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html])
+
+---
+
+##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrEksJobProps.property.executionRoleArn"></a>
+
+```typescript
+public readonly executionRoleArn: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -7156,16 +7151,6 @@ public readonly cloudWatchLogGroupName: string;
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
-```
-
-- *Type:* string
-
----
-
-##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrEksJobProps.property.executionRoleArn"></a>
-
-```typescript
-public readonly executionRoleArn: string;
 ```
 
 - *Type:* string

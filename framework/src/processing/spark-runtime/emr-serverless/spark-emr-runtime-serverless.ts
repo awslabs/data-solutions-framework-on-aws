@@ -59,7 +59,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
      * @param applicationArns the EMR Serverless aplication ARN,
      * this is used by the method to limit the EMR Serverless applications the role can submit job to.
      */
-  public static grantJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[]) {
+  public static grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[]) {
 
     //method to validate if IAM Role ARN is valid or if a token do not fail
     //We need to test for CDK token in case the ARN is resolved at deployment time
@@ -89,17 +89,27 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
       actions: [
         'emr-serverless:StartApplication',
         'emr-serverless:StopApplication',
-        'emr-serverless:StartJobRun',
         'emr-serverless:StopJobRun',
         'emr-serverless:DescribeApplication',
         'emr-serverless:GetJobRun',
       ],
       resources: applicationArns,
-      conditions: {
-        StringEquals: {
-          'aws:ResourceTag/aws-data-solutions-fwk': 'owned',
-        },
-      },
+    }));
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-serverless:StartJobRun',
+      ],
+      resources: applicationArns,
+    }));
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-serverless:TagResource',
+      ],
+      resources: applicationArns,
     }));
 
   }
@@ -209,9 +219,9 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     * @param startJobRole the role that will call the start job api and which need to have the iam:PassRole permission
     * @param executionRoleArn the role use by EMR Serverless to access resources during the job execution
     */
-  public grantExecution(startJobRole: IRole, executionRoleArn: string) {
+  public grantStartExecution(startJobRole: IRole, executionRoleArn: string) {
 
-    SparkEmrServerlessRuntime.grantJobExecution(startJobRole, [executionRoleArn], [this.applicationArn]);
+    SparkEmrServerlessRuntime.grantStartJobExecution(startJobRole, [executionRoleArn], [this.applicationArn]);
   }
 
 }

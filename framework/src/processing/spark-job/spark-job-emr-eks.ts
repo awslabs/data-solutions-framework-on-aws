@@ -7,7 +7,7 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { EmrRuntimeVersion, TrackedConstruct } from '../../utils';
+import { EMR_DEFAULT_VERSION, TrackedConstruct } from '../../utils';
 import { StepFunctionUtils } from '../../utils/step-function-utils';
 
 
@@ -17,7 +17,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  * @see SparkEmrEksJobProps parameters to be specified for the construct
  * @default ExecutionTimeoutMinutes: 30
  * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
- * @default ReleaseLabel: EMR version 6.2
+ * @default ReleaseLabel: EMR version 6.12
  *
  * **Usage example**
  * @example
@@ -43,36 +43,35 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  */
 export class SparkEmrEksJob extends SparkJob {
 
-  private config!: SparkEmrEksJobApiProps;
-
-  /**
-   * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
-   */
-  sparkJobExecutionRole?: IRole;
+  private constructJobConfig: SparkEmrEksJobApiProps;
 
   constructor( scope: Construct, id: string, props: SparkEmrEksJobProps | SparkEmrEksJobApiProps) {
     super(scope, id, SparkEmrEksJob.name, props as SparkJobProps);
 
+    let sparkJobExecutionRole: IRole;
+
     if ('jobConfig' in props) {
-      this.setJobApiPropsDefaults(props as SparkEmrEksJobApiProps);
+      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrEksJobApiProps);
     } else {
-      this.setJobPropsDefaults(scope, props as SparkEmrEksJobProps);
+      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrEksJobProps);
     }
 
-    //Tag the AWs Step Functions State Machine
-    if (!this.config.jobConfig.Tags) {
-      this.config.jobConfig.Tags = {};
+    sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
+
+    //Tag the AWS Step Functions State Machine
+    if (!this.constructJobConfig.jobConfig.Tags) {
+      this.constructJobConfig.jobConfig.Tags = {};
     }
-    this.config.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
+    this.constructJobConfig.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
 
     const executionTimeout = props.executionTimeoutMinutes ?? 30;
-    this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.config.schedule);
+    this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.constructJobConfig.schedule);
 
-    this.s3LogBucket?.grantReadWrite(this.returnSparkJobExecutionRole(scope));
-    this.cloudwatchGroup?.grantRead(this.returnSparkJobExecutionRole(scope));
-    this.cloudwatchGroup?.grantWrite(this.returnSparkJobExecutionRole(scope));
+    this.s3LogBucket?.grantReadWrite(sparkJobExecutionRole);
+    this.cloudwatchGroup?.grantRead(sparkJobExecutionRole);
+    this.cloudwatchGroup?.grantWrite(sparkJobExecutionRole);
     if (this.cloudwatchGroup) {
-      this.returnSparkJobExecutionRole(scope).addToPrincipalPolicy(new PolicyStatement({
+      sparkJobExecutionRole.addToPrincipalPolicy(new PolicyStatement({
         actions: ['logs:DescribeLogGroups', 'logs:DescribeLogStreams'],
         resources: [`arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group::log-stream:*`],
       }));
@@ -91,8 +90,8 @@ export class SparkEmrEksJob extends SparkJob {
       service: 'emrcontainers',
       action: 'startJobRun',
       iamAction: 'emr-containers:StartJobRun',
-      parameters: this.config.jobConfig,
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`],
+      parameters: this.constructJobConfig.jobConfig,
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.constructJobConfig.jobConfig.VirtualClusterId}`],
       resultSelector: {
         'JobRunId.$': '$.Id',
       },
@@ -111,10 +110,10 @@ export class SparkEmrEksJob extends SparkJob {
       action: 'describeJobRun',
       iamAction: 'emr-container:DescribeJobRun',
       parameters: {
-        VirtualClusterId: this.config.jobConfig.VirtualClusterId,
+        VirtualClusterId: this.constructJobConfig.jobConfig.VirtualClusterId,
         Id: JsonPath.stringAt('$.JobRunId'),
       },
-      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
+      iamResources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.constructJobConfig.jobConfig.VirtualClusterId}/jobruns/*`],
       resultSelector: {
         'State.$': '$.State',
         'StateDetails.$': '$.StateDetails',
@@ -169,10 +168,10 @@ export class SparkEmrEksJob extends SparkJob {
         'emr-containers:StartJobRun',
         'emr-containers:DescribeJobRun',
       ],
-      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}`, `arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.config.jobConfig.VirtualClusterId}/jobruns/*`],
+      resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.constructJobConfig.jobConfig.VirtualClusterId}`, `arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/${this.constructJobConfig.jobConfig.VirtualClusterId}/jobruns/*`],
       conditions: {
         StringEquals: {
-          'emr-containers:ExecutionRoleArn': this.config.jobConfig.ExecutionRoleArn,
+          'emr-containers:ExecutionRoleArn': this.constructJobConfig.jobConfig.ExecutionRoleArn,
         },
       },
     }));
@@ -182,30 +181,33 @@ export class SparkEmrEksJob extends SparkJob {
    * Returns the spark job execution role. Creates a new role if it is not passed as props.
    * @returns IRole
    */
-  protected returnSparkJobExecutionRole(scope:Construct): IRole {
-    if (!this.sparkJobExecutionRole) {
-      this.sparkJobExecutionRole = Role.fromRoleArn(scope, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.ExecutionRoleArn);
-    }
-    return this.sparkJobExecutionRole;
-  }
+  // protected returnSparkJobExecutionRole(scope:Construct): IRole {
+  //   if (!this.sparkJobExecutionRole) {
+  //     this.sparkJobExecutionRole = Role.fromRoleArn(scope, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.ExecutionRoleArn);
+  //   }
+  //   return this.sparkJobExecutionRole;
+  // }
 
 
   /**
    * Set defaults for the EmrOnEksSparkJobApiProps.
    * @param props EmrOnEksSparkJobApiProps
    */
-  private setJobApiPropsDefaults(props: SparkEmrEksJobApiProps): void {
+  private setJobApiPropsDefaults(props: SparkEmrEksJobApiProps): SparkEmrEksJobApiProps {
 
     const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
     propsPascalCase.ClientToken ??= JsonPath.uuid();
-    propsPascalCase.ReleaseLabel ??= EmrRuntimeVersion.V6_9;
+    propsPascalCase.ReleaseLabel ??= EMR_DEFAULT_VERSION;
 
-    this.config = {
+    const config = {
       jobConfig: propsPascalCase,
       removalPolicy: props.removalPolicy,
       schedule: props.schedule,
     };
+
+    return config;
+
   }
 
   /**
@@ -213,7 +215,7 @@ export class SparkEmrEksJob extends SparkJob {
    * @param props EmrOnEksSparkJobProps
    */
 
-  private setJobPropsDefaults(scope:Construct, props: SparkEmrEksJobProps): void {
+  private setJobPropsDefaults(props: SparkEmrEksJobProps): SparkEmrEksJobApiProps {
     const config = {
       jobConfig: {
         ConfigurationOverrides: {
@@ -230,7 +232,7 @@ export class SparkEmrEksJob extends SparkJob {
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.VirtualClusterId = props.virtualClusterId;
-    config.jobConfig.ExecutionRoleArn=props.executionRoleArn ?? this.returnSparkJobExecutionRole(scope).roleArn;
+    config.jobConfig.ExecutionRoleArn=props.executionRoleArn;
     config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPoint = props.sparkSubmitEntryPoint;
     if (props.sparkSubmitEntryPointArguments) {
       config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPointArguments=props.sparkSubmitEntryPointArguments ;
@@ -259,7 +261,7 @@ export class SparkEmrEksJob extends SparkJob {
     }
 
     config.jobConfig.Tags = props.tags;
-    this.config = config;
+    return config;
   }
 }
 
@@ -271,7 +273,7 @@ export interface SparkEmrEksJobProps extends SparkJobProps {
   readonly name: string;
   readonly virtualClusterId: string;
   readonly releaseLabel?: string;
-  readonly executionRoleArn?: string;
+  readonly executionRoleArn: string;
   readonly executionTimeoutMinutes?:number;
   readonly sparkSubmitEntryPoint: string;
   readonly sparkSubmitEntryPointArguments?: string;
