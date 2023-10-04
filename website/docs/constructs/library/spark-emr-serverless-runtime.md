@@ -5,29 +5,29 @@ sidebar_label: Spark EMR Serverless Runtime
 
 # Spark EMR Serverless Runtime
 
-A construct to create a [Spark EMR Serverless Application](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html), along with methods to grant a principal (ie. IAM Role or IAM User) the right to start an EMR Serverless job as well as method to create an IAM execution that is assumed by EMR Serverless to execute job. 
+A construct to create a [Spark EMR Serverless Application](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html), along with methods to grant a principal (ie IAM Role or IAM User) the right to start an EMR Serverless job as well as method to create an IAM execution that is assumed by EMR Serverless to execute job. 
 
 ## Overview
 
 The construct provides a method to create a Spark EMR Serverless Application, with the latest EMR runtime as the default runtime. You can change the runtime by passing your own as a `Resource property` to construct initializer.
 
-The construct creates by default a VPC that is used by EMR Serverless Application. The VPC has the following CIDR range `10.0.0.0/16` and comes with an S3 VPC Endpoint Gateway attached to it. The construct creates also a security group for the EMR Serverless Application. You can override this by defining your own `NetworkConfiguration` as defined in the `Resource properties` of the construct initializer.
+The construct creates a default VPC that is used by EMR Serverless Application. The VPC has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for the EMR Serverless Application. You can override this by defining your own `NetworkConfiguration` as defined in the `Resource properties` of the construct initializer.
 
 The construct has the following interfaces:
 
    * A construct Initializer that takes an object as `Resource properties` to modify the default properties. The properties are defined in `SparkEmrServerlessRuntimeProps` interface.
    * A method to create an execution role for EMR Serverless. The execution role is scoped down to the EMR Serverless Application ARN created by the construct.
-   * A a method that take an IAM role to call the `StartJobRun` and monitor the status of the job.
+   * A method that takes an IAM role to call the `StartJobRun`, and monitors the status of the job.
       * The IAM policies attached to the provided IAM role is as follow:
       * The role has a `PassRole` permission scoped as follow:
 
 The construct has the following attributes:
 
-   * applicationArn: The ARN EMR Serverless Application
-   * applicationId: The Id EMR Serverless Application
-   * vpc: the VPC created if none is provided
-   * emrApplicationSecurityGroup: the security created along the VPC
-   * s3GatewayVpcEndpoint: The vpc endpoint attached to the vpc created
+   * applicationArn: EMR Serverless Application ARN
+   * applicationId: EMR Serverless Application ID
+   * vpc: VPC is created if none is provided
+   * emrApplicationSecurityGroup: security group created with VPC
+   * s3GatewayVpcEndpoint: S3 Gateway endpoint attached to VPC
 
 The screenshot a representation of the construct responsibilities.
 
@@ -40,7 +40,7 @@ The code snipet below shows a usage exampe of the SparkEmrServerlessRuntime cons
 ```python
 
 from aws_cdk import core
-from adsf import SparkRuntimeServerless
+from aws_dsf import SparkRuntimeServerless
 from aws_cdk.aws_iam import PolicyStatement, Role, PolicyDocument
 
 runtime_serverless = SparkEmrServerlessRuntime(
