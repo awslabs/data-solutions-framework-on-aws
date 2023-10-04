@@ -7020,9 +7020,16 @@ Job execution timeout in minutes.
 
 ### SparkEmrEksJobProps <a name="SparkEmrEksJobProps" id="aws-dsf.SparkEmrEksJobProps"></a>
 
-Simplified configuration for the EMR on EKS job.
+Simplified configuration for the EMR Serverless Job.
 
-> [SparkEmrEksJobApiProps if you want to use official AWS SDK spark job properties.](SparkEmrEksJobApiProps if you want to use official AWS SDK spark job properties.)
+> [(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags)]((https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags))
+
+*Example*
+
+```typescript
+s3://BUCKET_NAME/
+```
+
 
 #### Initializer <a name="Initializer" id="aws-dsf.SparkEmrEksJobProps.Initializer"></a>
 
