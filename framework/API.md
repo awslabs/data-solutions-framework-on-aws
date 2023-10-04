@@ -2819,7 +2819,18 @@ KMS encryption key used by the Crawler.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.DataCatalogDatabase.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -3022,7 +3033,18 @@ public readonly crawlerLogEncryptionKey: Key;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.DataLakeCatalog.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataLakeCatalog.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -3241,7 +3263,18 @@ public readonly silverBucket: AnalyticsBucket;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.DataLakeStorage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.DataLakeStorage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -3257,26 +3290,27 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.PySparkApplicationPackage"></a>
 
-A construct that takes your pyspark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
+A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
 
 *Example*
 
 ```typescript
 let pysparkPacker = new PySparkApplicationPackage (stack, 'pysparkPacker', {
-                            entrypointFileName: 'app-pyspark.py',
-                            pysparkApplicationName: 'my-pyspark',
-                            dependenciesPath: '/Users/mouhib/tech-summit-demo/app',
-                            entrypointPath: '/Users/mouhib/tech-summit-demo/app',
-                            removalPolicy: RemovalPolicy.DESTROY,
-                          });
+  pysparkApplicationName: 'my-pyspark',
+  entrypointPath: '/Users/my-user/my-spark-job/app/app-pyspark.py',
+  dependenciesFolder: '/Users/my-user/my-spark-job/app',
+  removalPolicy: RemovalPolicy.DESTROY,
+});
+
 let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.virtualEnvironmentArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
+
 new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
-  name: 'SparkSimpleProps',
+  name: 'MyPySpark',
   applicationId: 'xxxxxxxxx',
   executionRoleArn: 'ROLE-ARN,
   executionTimeoutMinutes: 30,
   s3LogUri: 's3://s3-bucket/monitoring-logs',
-  cloudWatchLogGroupName: 'spark-serverless-log',
+  cloudWatchLogGroupName: 'my-pyspark-serverless-log',
   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
 } as EmrServerlessSparkJobProps);
@@ -3384,10 +3418,11 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | A bucket is created and exposed as an attribute, this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket storing the artifacts (entrypoint and virtual environment archive). |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3 You pass this location to your Spark job. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.virtualEnvironmentArchiveS3Uri">virtualEnvironmentArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of python virtual envirobment is stored You pass this location to your Spark job. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark conf string containing the configuration of virtual environment archive with all dependencies. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of python virtual envirobment is stored. |
 
 ---
 
@@ -3410,9 +3445,8 @@ public readonly artifactsBucket: IBucket;
 ```
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
-- *Default:* A bucket is created for you if you do not provide on in the props
 
-A bucket is created and exposed as an attribute, this bucket stores the artifacts (entrypoint and virtual environment archive) built by the construct.
+The bucket storing the artifacts (entrypoint and virtual environment archive).
 
 ---
 
@@ -3427,7 +3461,7 @@ public readonly assetUploadBucketRole: IRole;
 The role used by the BucketDeployment to upload the artifacts to an s3 bucket.
 
 In case you provide your own bucket for storing the artifacts (entrypoint and virtual environment archive),
-you must provide s3 write access to this role to upload the artifacts
+you must provide s3 write access to this role to upload the artifacts.
 
 ---
 
@@ -3439,19 +3473,35 @@ public readonly entrypointS3Uri: string;
 
 - *Type:* string
 
-The S3 location where the entry point is saved in S3 You pass this location to your Spark job.
+The S3 location where the entry point is saved in S3.
+
+You pass this location to your Spark job.
 
 ---
 
-##### `virtualEnvironmentArchiveS3Uri`<sup>Required</sup> <a name="virtualEnvironmentArchiveS3Uri" id="aws-dsf.PySparkApplicationPackage.property.virtualEnvironmentArchiveS3Uri"></a>
+##### `sparkVenvConf`<sup>Required</sup> <a name="sparkVenvConf" id="aws-dsf.PySparkApplicationPackage.property.sparkVenvConf"></a>
 
 ```typescript
-public readonly virtualEnvironmentArchiveS3Uri: string;
+public readonly sparkVenvConf: string;
 ```
 
 - *Type:* string
 
-The S3 location where the archive of python virtual envirobment is stored You pass this location to your Spark job.
+The Spark conf string containing the configuration of virtual environment archive with all dependencies.
+
+---
+
+##### `venvArchiveS3Uri`<sup>Required</sup> <a name="venvArchiveS3Uri" id="aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
+
+```typescript
+public readonly venvArchiveS3Uri: string;
+```
+
+- *Type:* string
+
+The S3 location where the archive of python virtual envirobment is stored.
+
+You pass this location to your Spark job.
 
 ---
 
@@ -3459,7 +3509,19 @@ The S3 location where the archive of python virtual envirobment is stored You pa
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.ARTIFACTS_PREFIX">ARTIFACTS_PREFIX</a></code> | <code>string</code> | The prefix used to store artifacts on the artifact bucket. |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.PySparkApplicationPackage.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -3470,6 +3532,18 @@ public readonly ADSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `ARTIFACTS_PREFIX`<sup>Required</sup> <a name="ARTIFACTS_PREFIX" id="aws-dsf.PySparkApplicationPackage.property.ARTIFACTS_PREFIX"></a>
+
+```typescript
+public readonly ARTIFACTS_PREFIX: string;
+```
+
+- *Type:* string
+
+The prefix used to store artifacts on the artifact bucket.
 
 ---
 
@@ -3650,7 +3724,18 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -3964,7 +4049,18 @@ If no VPC is provided, one is created by default This attribute is used to expos
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
+
+```typescript
+public readonly ADSF_OWNED_TAG: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -4939,37 +5035,24 @@ const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesPath">dependenciesPath</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName">entrypointFileName</a></code> | <code>string</code> | The file that serves as entrypoint of your pyspark appplication. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source directory where you have you have the entrypoint stored example `~/my-project/src/entrypoint.py`, the path would be `~/my-project/src`. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | The name of the pyspark application This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. For more information on packaging a virtual environment, refer to [EMR documentation](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env). |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | The name of the pyspark application. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.virtualEnvironmentArchiveName">virtualEnvironmentArchiveName</a></code> | <code>string</code> | The name of the virtual environment archive that the construct will upload to s3. |
 
 ---
 
-##### `dependenciesPath`<sup>Required</sup> <a name="dependenciesPath" id="aws-dsf.PySparkApplicationPackageProps.property.dependenciesPath"></a>
+##### `dependenciesFolder`<sup>Required</sup> <a name="dependenciesFolder" id="aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
 
 ```typescript
-public readonly dependenciesPath: string;
+public readonly dependenciesFolder: string;
 ```
 
 - *Type:* string
 
-The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment.
-
----
-
-##### `entrypointFileName`<sup>Required</sup> <a name="entrypointFileName" id="aws-dsf.PySparkApplicationPackageProps.property.entrypointFileName"></a>
-
-```typescript
-public readonly entrypointFileName: string;
-```
-
-- *Type:* string
-
-The file that serves as entrypoint of your pyspark appplication.
+The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. For more information on packaging a virtual environment, refer to [EMR documentation](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env).
 
 ---
 
@@ -4981,7 +5064,7 @@ public readonly entrypointPath: string;
 
 - *Type:* string
 
-The source directory where you have you have the entrypoint stored example `~/my-project/src/entrypoint.py`, the path would be `~/my-project/src`.
+The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`.
 
 ---
 
@@ -4993,7 +5076,23 @@ public readonly pysparkApplicationName: string;
 
 - *Type:* string
 
-The name of the pyspark application This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive.
+The name of the pyspark application.
+
+This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
+
+---
+
+##### `venvArchivePath`<sup>Required</sup> <a name="venvArchivePath" id="aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath"></a>
+
+```typescript
+public readonly venvArchivePath: string;
+```
+
+- *Type:* string
+
+The path of the Python virtual environment archive generated in the Docker container.
+
+This is the output path used in the `venv-pack -o` command.
 
 ---
 
@@ -5004,7 +5103,7 @@ public readonly artifactsBucket: IBucket;
 ```
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
-- *Default:* 'If no bucket is provided, one will be created for you'
+- *Default:* A bucket is created
 
 The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored.
 
@@ -5021,22 +5120,9 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-Resources like Amazon cloudwatch log or Amazon S3 bucket
+Resources like Amazon cloudwatch log or Amazon S3 bucket.
 If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
-in the 'cdk.json' or 'cdk.context.json' must be set to true
-
----
-
-##### `virtualEnvironmentArchiveName`<sup>Optional</sup> <a name="virtualEnvironmentArchiveName" id="aws-dsf.PySparkApplicationPackageProps.property.virtualEnvironmentArchiveName"></a>
-
-```typescript
-public readonly virtualEnvironmentArchiveName: string;
-```
-
-- *Type:* string
-- *Default:* pyspark-env.tar.gz
-
-The name of the virtual environment archive that the construct will upload to s3.
+in the 'cdk.json' or 'cdk.context.json' must be set to true.
 
 ---
 
