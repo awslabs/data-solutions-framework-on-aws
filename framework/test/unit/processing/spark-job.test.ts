@@ -274,3 +274,70 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
   });
 
 });
+
+describe('Create 2 SparkJob within the same stack', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const myFileSystemPolicy = new PolicyDocument({
+    statements: [new PolicyStatement({
+      actions: [
+        's3:GetObject',
+      ],
+      resources: ['*'],
+    })],
+  });
+
+
+  const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+
+
+  new SparkEmrServerlessJob(stack, 'SparkJobServerless1', {
+    jobConfig: {
+      ApplicationId: 'appId',
+      ExecutionRoleArn: myExecutionRole.roleArn,
+      ConfigurationOverrides: {
+        MonitoringConfiguration: {
+          S3MonitoringConfiguration: {
+            LogUri: 's3://s3-bucket/monitoring-logs',
+          },
+        },
+      },
+      JobDriver: {
+        SparkSubmit: {
+          EntryPoint: 's3://s3-bucket/pi.py',
+          SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
+        },
+      },
+    },
+    schedule: Schedule.rate(Duration.hours(1)),
+  } as SparkEmrServerlessJobApiProps);
+
+  new SparkEmrServerlessJob(stack, 'SparkJobServerless2', {
+    jobConfig: {
+      ApplicationId: 'appId',
+      ExecutionRoleArn: myExecutionRole.roleArn,
+      ConfigurationOverrides: {
+        MonitoringConfiguration: {
+          S3MonitoringConfiguration: {
+            LogUri: 's3://s3-bucket/monitoring-logs',
+          },
+        },
+      },
+      JobDriver: {
+        SparkSubmit: {
+          EntryPoint: 's3://s3-bucket/pi.py',
+          SparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
+        },
+      },
+    },
+    schedule: Schedule.rate(Duration.hours(1)),
+  } as SparkEmrServerlessJobApiProps);
+
+  const template = Template.fromStack(stack, {});
+
+  test('don\'t generate any conflict', () => {
+    template.resourceCountIs('AWS::StepFunctions::StateMachine', 2);
+  });
+});
