@@ -130,7 +130,7 @@
           "exec": "lerna-projen copy-dist framework/dist dist"
         },
         {
-          "exec": "lerna-projen copy-dist example/spark-data-lake/infra/undefined dist"
+          "exec": "lerna-projen copy-dist examples/spark-data-lake/infra/undefined dist"
         }
       ]
     },

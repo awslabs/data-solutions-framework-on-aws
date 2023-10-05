@@ -167,7 +167,7 @@ const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   license,
 
   parent: rootProject,
-  outdir: 'example/spark-data-lake/infra',
+  outdir: 'examples/spark-data-lake/infra',
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
