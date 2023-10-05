@@ -50,15 +50,15 @@ export class PySparkApplicationPackage extends TrackedConstruct {
   public readonly entrypointS3Uri: string;
 
   /**
-   * The S3 location where the archive of python virtual envirobment is stored.
+   * The S3 location where the archive of the Python virtual environment with all dependencies is stored.
    * You pass this location to your Spark job.
    */
-  public readonly venvArchiveS3Uri: string;
+  public readonly venvArchiveS3Uri?: string;
 
   /**
-   * The Spark conf string containing the configuration of virtual environment archive with all dependencies.
+   * The Spark config containing the configuration of virtual environment archive with all dependencies.
    */
-  public readonly sparkVenvConf: string;
+  public readonly sparkVenvConf?: string;
 
   /**
    * The bucket storing the artifacts (entrypoint and virtual environment archive).
@@ -89,8 +89,6 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     const entrypointFileName = path.basename(props.entrypointPath);
     const entrypointDirectory = path.dirname(props.entrypointPath);
-
-    const venvArchiveFileName = path.basename(props.venvArchivePath);
 
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
 
@@ -129,39 +127,53 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     }
     artifactsBucket.grantWrite(assetUploadBucketRole);
 
-    // Build dependencies using the Dockerfile in app/ folder and deploy a zip into CDK asset bucket
-    const emrDepsAsset = new Asset(this, 'EmrDepsAsset', {
-      path: props.dependenciesFolder,
-      bundling: {
-        image: DockerImage.fromBuild(props.dependenciesFolder),
-        outputType: BundlingOutput.ARCHIVED,
-        command: [
-          'sh',
-          '-c',
-          `cp ${props.venvArchivePath} /asset-output/`,
-        ],
-      },
-    });
+    // package dependencies if there are any
+    if (props.dependenciesFolder) {
 
-    emrDepsAsset.bucket.grantRead(assetUploadBucketRole);
+      // The sparkVenvArchivePath is required if there are dependencies
+      if (!props.venvArchivePath) {
+        throw new Error('Virtual environment archive path is required if there are dependencies');
+      } else {
 
-    // Move the asset with dependencies into the artifact bucket (because it's a different lifecycle than the CDK app)
-    const emrDepsArtifacts = new BucketDeployment(this, 'EmrDepsArtifacts', {
-      sources: [
-        Source.bucket(
-          emrDepsAsset.bucket,
-          emrDepsAsset.s3ObjectKey,
-        ),
-      ],
-      destinationBucket: artifactsBucket!,
-      destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}`,
-      memoryLimit: 512,
-      ephemeralStorageSize: Size.mebibytes(1000),
-      prune: false,
-      extract: false,
-      role: assetUploadBucketRole,
-      retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
-    });
+        const venvArchiveFileName = path.basename(props.venvArchivePath);
+
+        // Build dependencies using the Dockerfile in app/ folder and deploy a zip into CDK asset bucket
+        const emrDepsAsset = new Asset(this, 'EmrDepsAsset', {
+          path: props.dependenciesFolder,
+          bundling: {
+            image: DockerImage.fromBuild(props.dependenciesFolder),
+            outputType: BundlingOutput.ARCHIVED,
+            command: [
+              'sh',
+              '-c',
+              `cp ${props.venvArchivePath} /asset-output/`,
+            ],
+          },
+        });
+
+        emrDepsAsset.bucket.grantRead(assetUploadBucketRole);
+
+        // Move the asset with dependencies into the artifact bucket (because it's a different lifecycle than the CDK app)
+        const emrDepsArtifacts = new BucketDeployment(this, 'EmrDepsArtifacts', {
+          sources: [
+            Source.bucket(
+              emrDepsAsset.bucket,
+              emrDepsAsset.s3ObjectKey,
+            ),
+          ],
+          destinationBucket: artifactsBucket!,
+          destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}`,
+          memoryLimit: 512,
+          ephemeralStorageSize: Size.mebibytes(1000),
+          prune: false,
+          extract: false,
+          role: assetUploadBucketRole,
+          retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
+        });
+
+        this.venvArchiveS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}/${venvArchiveFileName}`);
+      }
+    }
 
     // Deploy a zip of the Pyspark entrypoint into the CDK asset bucket
     // We are using an S3 asset because the name of the file changes each time we deploy the app
@@ -197,7 +209,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     });
 
     this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}/${entrypointFileName}`);
-    this.venvArchiveS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}/${venvArchiveFileName}`);
+
     this.artifactsBucket = artifactsBucket;
     this.assetUploadBucketRole = assetUploadBucketRole;
     this.sparkVenvConf =`--conf spark.archives=${this.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`;

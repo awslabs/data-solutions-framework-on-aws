@@ -328,3 +328,23 @@ describe('With removalPolicy.DESTROY configuration and global removal policy set
   });
 });
 
+describe('With no dependenciesFolder configuration, the construct', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const appName = 'my-spark';
+
+  new PySparkApplicationPackage (stack, 'PySparkPacker', {
+    pysparkApplicationName: appName,
+    entrypointPath: path.join(__dirname, '../../resources/processing/pyspark-application-package/src/pyspark.py'),
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should not create any deployment of deps', () => {
+    template.resourceCountIs('Custom::CDKBucketDeployment', 1);
+  });
+});
+

@@ -3421,8 +3421,8 @@ Any object.
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket storing the artifacts (entrypoint and virtual environment archive). |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark conf string containing the configuration of virtual environment archive with all dependencies. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of python virtual envirobment is stored. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark config containing the configuration of virtual environment archive with all dependencies. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
 
 ---
 
@@ -3479,7 +3479,7 @@ You pass this location to your Spark job.
 
 ---
 
-##### `sparkVenvConf`<sup>Required</sup> <a name="sparkVenvConf" id="aws-dsf.PySparkApplicationPackage.property.sparkVenvConf"></a>
+##### `sparkVenvConf`<sup>Optional</sup> <a name="sparkVenvConf" id="aws-dsf.PySparkApplicationPackage.property.sparkVenvConf"></a>
 
 ```typescript
 public readonly sparkVenvConf: string;
@@ -3487,11 +3487,11 @@ public readonly sparkVenvConf: string;
 
 - *Type:* string
 
-The Spark conf string containing the configuration of virtual environment archive with all dependencies.
+The Spark config containing the configuration of virtual environment archive with all dependencies.
 
 ---
 
-##### `venvArchiveS3Uri`<sup>Required</sup> <a name="venvArchiveS3Uri" id="aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
+##### `venvArchiveS3Uri`<sup>Optional</sup> <a name="venvArchiveS3Uri" id="aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
 
 ```typescript
 public readonly venvArchiveS3Uri: string;
@@ -3499,7 +3499,7 @@ public readonly venvArchiveS3Uri: string;
 
 - *Type:* string
 
-The S3 location where the archive of python virtual envirobment is stored.
+The S3 location where the archive of the Python virtual environment with all dependencies is stored.
 
 You pass this location to your Spark job.
 
@@ -5035,24 +5035,12 @@ const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. For more information on packaging a virtual environment, refer to [EMR documentation](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env). |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | The name of the pyspark application. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-
----
-
-##### `dependenciesFolder`<sup>Required</sup> <a name="dependenciesFolder" id="aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
-
-```typescript
-public readonly dependenciesFolder: string;
-```
-
-- *Type:* string
-
-The source directory where you have `requirements.txt` or `pyproject.toml` This location must have a `Dockerfile` that will build the archive of the virtual environment. For more information on packaging a virtual environment, refer to [EMR documentation](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env).
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
 
 ---
 
@@ -5082,20 +5070,6 @@ This name is used as a parent directory in s3 to store the entrypoint as well as
 
 ---
 
-##### `venvArchivePath`<sup>Required</sup> <a name="venvArchivePath" id="aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath"></a>
-
-```typescript
-public readonly venvArchivePath: string;
-```
-
-- *Type:* string
-
-The path of the Python virtual environment archive generated in the Docker container.
-
-This is the output path used in the `venv-pack -o` command.
-
----
-
 ##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket"></a>
 
 ```typescript
@@ -5106,6 +5080,19 @@ public readonly artifactsBucket: IBucket;
 - *Default:* A bucket is created
 
 The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored.
+
+---
+
+##### `dependenciesFolder`<sup>Optional</sup> <a name="dependenciesFolder" id="aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
+
+```typescript
+public readonly dependenciesFolder: string;
+```
+
+- *Type:* string
+- *Default:* No dependencies (internal or external) are packaged. Only the entrypoint can be used in the Spark Job.
+
+The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it.
 
 ---
 
@@ -5123,6 +5110,21 @@ The removal policy when deleting the CDK resource.
 Resources like Amazon cloudwatch log or Amazon S3 bucket.
 If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
 in the 'cdk.json' or 'cdk.context.json' must be set to true.
+
+---
+
+##### `venvArchivePath`<sup>Optional</sup> <a name="venvArchivePath" id="aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath"></a>
+
+```typescript
+public readonly venvArchivePath: string;
+```
+
+- *Type:* string
+- *Default:* No virtual environment archive is packaged. Only the entrypoint can be used in the Spark Job. It is required if the `dependenciesFolder` is provided.
+
+The path of the Python virtual environment archive generated in the Docker container.
+
+This is the output path used in the `venv-pack -o` command in your Dockerfile.
 
 ---
 
