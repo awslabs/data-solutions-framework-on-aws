@@ -175,30 +175,6 @@ export class SparkEmrServerlessJob extends SparkJob {
   }
 
   /**
-   * Returns the spark job execution role. Creates a new role if it is not passed as props.
-   * @returns IRole
-   */
-  // protected returnSparkJobExecutionRole(scope:Construct): IRole {
-
-  //   if (!this.sparkJobExecutionRole) {
-  //     this.sparkJobExecutionRole = this.constructJobConfig.jobConfig.ExecutionRoleArn ?
-  //       Role.fromRoleArn(scope, 'SparkJobEmrServerlessExecutionRole', this.constructJobConfig.jobConfig.ExecutionRoleArn) :
-  //       SparkEmrServerlessRuntime.createExecutionRole(scope, 'SparkJobEmrServerlessExecutionRole', new PolicyDocument({
-  //         statements: [new PolicyStatement({
-  //           effect: Effect.ALLOW,
-  //           actions: [
-  //             's3:GetObject',
-  //           ],
-  //           resources: [`${this.constructJobConfig.jobConfig.JobDriver.SparkSubmit.EntryPoint.replace('s3://', 'arn:aws:s3:::')}`],
-  //         })],
-  //       }));
-  //   }
-
-  //   return this.sparkJobExecutionRole;
-  // }
-
-
-  /**
    * Grants the necessary permissions to the Step Functions StateMachine to be able to start EMR Serverless job
    * @param role Step Functions StateMachine IAM role
    * @see SparkRuntimeServerless.grantJobExecution

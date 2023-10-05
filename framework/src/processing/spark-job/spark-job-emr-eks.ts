@@ -177,17 +177,6 @@ export class SparkEmrEksJob extends SparkJob {
     }));
   }
 
-  /**
-   * Returns the spark job execution role. Creates a new role if it is not passed as props.
-   * @returns IRole
-   */
-  // protected returnSparkJobExecutionRole(scope:Construct): IRole {
-  //   if (!this.sparkJobExecutionRole) {
-  //     this.sparkJobExecutionRole = Role.fromRoleArn(scope, 'SparkJobEmrOnEksExecutionRole', this.config.jobConfig.ExecutionRoleArn);
-  //   }
-  //   return this.sparkJobExecutionRole;
-  // }
-
 
   /**
    * Set defaults for the EmrOnEksSparkJobApiProps.
