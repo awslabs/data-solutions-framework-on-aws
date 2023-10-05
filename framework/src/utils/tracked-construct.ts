@@ -25,10 +25,10 @@ export interface TrackedConstructProps {
  */
 export class TrackedConstruct extends Construct {
 
-  public static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
   static readonly ADSF_TRACKING_CODE = 'uksb-1tupboc21';
 
   static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
+
 
   /**
    * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
