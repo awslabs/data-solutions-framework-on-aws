@@ -39,8 +39,7 @@ describe('With minimal configuration, the construct', () => {
   }
 
   class MyStackFactory implements ApplicationStackFactory {
-    createStack(scope: Stack, stage: CICDStage): Stack {
-      console.log(stage);
+    createStack(scope: Stack): Stack {
       return new MyApplicationStack(scope, 'MyApplication');
     }
   }

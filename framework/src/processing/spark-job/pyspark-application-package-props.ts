@@ -23,18 +23,20 @@ export interface PySparkApplicationPackageProps {
   readonly entrypointPath: string;
 
   /**
-   * The source directory where you have `requirements.txt` or `pyproject.toml`
-   * This location must have a `Dockerfile` that will build the archive of the virtual environment.
-   * For more information on packaging a virtual environment,
-   * refer to [EMR documentation](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env)
+   * The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages.
+   * If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+   * This location must also have a `Dockerfile` that will
+   * [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it.
+   * @default - No dependencies (internal or external) are packaged. Only the entrypoint can be used in the Spark Job.
    */
-  readonly dependenciesFolder: string;
+  readonly dependenciesFolder?: string;
 
   /**
    * The path of the Python virtual environment archive generated in the Docker container.
-   * This is the output path used in the `venv-pack -o` command.
+   * This is the output path used in the `venv-pack -o` command in your Dockerfile.
+   * @default - No virtual environment archive is packaged. Only the entrypoint can be used in the Spark Job. It is required if the `dependenciesFolder` is provided.
    */
-  readonly venvArchivePath: string;
+  readonly venvArchivePath?: string;
 
   /**
    * The S3 bucket where to upload the artifacts of the Spark Job
