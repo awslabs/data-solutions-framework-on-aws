@@ -3,7 +3,7 @@ from aws_cdk.aws_iam import *
 from aws_cdk.aws_lambda import *
 from aws_cdk.custom_resources import *
 from constructs import Construct
-from adsf import DataLakeStorage
+from aws_dsf import DataLakeStorage
 
 class ExampleStack(Stack):
   def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
