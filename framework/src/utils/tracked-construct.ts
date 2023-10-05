@@ -29,6 +29,7 @@ export class TrackedConstruct extends Construct {
 
   static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
 
+
   /**
    * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
    */

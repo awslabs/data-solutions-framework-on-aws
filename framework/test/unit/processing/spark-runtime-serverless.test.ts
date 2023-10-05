@@ -41,7 +41,7 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
 
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-  runtimeServerless.grantExecution(myTestRole, myExecutionRole.roleArn);
+  runtimeServerless.grantStartExecution(myTestRole, myExecutionRole.roleArn);
 
   const template = Template.fromStack(stack);
 
@@ -87,11 +87,24 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
                 Action: [
                   'emr-serverless:StartApplication',
                   'emr-serverless:StopApplication',
-                  'emr-serverless:StartJobRun',
                   'emr-serverless:StopJobRun',
                   'emr-serverless:DescribeApplication',
                   'emr-serverless:GetJobRun',
                 ],
+                Resource: {
+                  'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
+                },
+              },
+              {
+                Effect: 'Allow',
+                Action: 'emr-serverless:StartJobRun',
+                Resource: {
+                  'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
+                },
+              },
+              {
+                Effect: 'Allow',
+                Action: 'emr-serverless:TagResource',
                 Resource: {
                   'Fn::GetAtt': ['sparkserverlessapplicationsparkserverlessdemo', 'Arn'],
                 },
@@ -126,7 +139,7 @@ describe('Test static methods', () => {
 
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-  SparkEmrServerlessRuntime.grantJobExecution(myTestRole, [myExecutionRole.roleArn], ['emr-serverless-app-id']);
+  SparkEmrServerlessRuntime.grantStartJobExecution(myTestRole, [myExecutionRole.roleArn], ['emr-serverless-app-id']);
 
   const template = Template.fromStack(stack);
 
@@ -151,11 +164,20 @@ describe('Test static methods', () => {
                 Action: [
                   'emr-serverless:StartApplication',
                   'emr-serverless:StopApplication',
-                  'emr-serverless:StartJobRun',
                   'emr-serverless:StopJobRun',
                   'emr-serverless:DescribeApplication',
                   'emr-serverless:GetJobRun',
                 ],
+                Resource: 'emr-serverless-app-id',
+              },
+              {
+                Effect: 'Allow',
+                Action: 'emr-serverless:StartJobRun',
+                Resource: 'emr-serverless-app-id',
+              },
+              {
+                Effect: 'Allow',
+                Action: 'emr-serverless:TagResource',
                 Resource: 'emr-serverless-app-id',
               },
             ],

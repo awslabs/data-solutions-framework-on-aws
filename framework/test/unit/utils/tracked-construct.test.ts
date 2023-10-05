@@ -110,7 +110,7 @@ test('tracked construct add adsf:owned tag to the inner resources', () => {
   new TestTrackedConstruct(exampleStack, 'MyTestTrackedConstruct');
   const template = Template.fromStack(exampleStack);
 
-  console.log(JSON.stringify(template));
+  // console.log(JSON.stringify(template));
 
   // THEN
   template.hasResource('AWS::S3::Bucket',
