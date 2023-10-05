@@ -236,8 +236,7 @@ export class SparkEmrEksJob extends SparkJob {
 
     config.jobConfig.RetryPolicyConfiguration!.MaxAttempts = props.maxRetries ?? 0;
 
-    if (props.s3LogUri && 
-      (!props.s3LogUri.match(/^s3:\/\/([^\/]+)/) || !props.s3LogUri.match(/^Token\[([0-9]+)\]$/))) {
+    if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/) && !props.s3LogUri.match(/^Token\[([0-9]+)\]$/)) {
       throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
     }
 
