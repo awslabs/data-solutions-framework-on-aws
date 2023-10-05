@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: aws-cdk.lambda-layer-kubectl-v27
+Version: 2.0.0
+Summary: A Lambda Layer that contains kubectl v1.27
+Home-page: https://github.com/cdklabs/awscdk-asset-kubectl#readme
+Author: Amazon Web Services<aws-cdk-dev@amazon.com>
+License: Apache-2.0
+Project-URL: Source, https://github.com/cdklabs/awscdk-asset-kubectl.git
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Typing :: Typed
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved
+Requires-Python: ~=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE
+Requires-Dist: aws-cdk-lib (<3.0.0,>=2.28.0)
+Requires-Dist: constructs (<11.0.0,>=10.0.5)
+Requires-Dist: jsii (<2.0.0,>=1.84.0)
+Requires-Dist: publication (>=0.0.3)
+Requires-Dist: typeguard (~=2.13.3)
+
+# Lambda Layer with KubeCtl v1.27
+
+<!--BEGIN STABILITY BANNER-->---
+
+
+![cdk-constructs: Stable](https://img.shields.io/badge/cdk--constructs-stable-success.svg?style=for-the-badge)
+
+---
+<!--END STABILITY BANNER-->
+
+This module exports a single class called `KubectlV27Layer` which is a `lambda.LayerVersion` that
+bundles the [`kubectl`](https://kubernetes.io/docs/reference/kubectl/kubectl/) and the
+[`helm`](https://helm.sh/) command line.
+
+> * Helm Version: 3.12.1
+> * Kubectl Version: 1.27.1
+
+Usage:
+
+```python
+// KubectlLayer bundles the 'kubectl' and 'helm' command lines
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+
+declare const fn: lambda.Function;
+const kubectl = new KubectlV27Layer(this, 'KubectlLayer');
+fn.addLayers(kubectl);
+```
+
+`kubectl` will be installed under `/opt/kubectl/kubectl`, and `helm` will be installed under `/opt/helm/helm`.
