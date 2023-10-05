@@ -5,7 +5,7 @@ sidebar_label: Spark Job
 
 # Spark job
 
-A construct to create an AWS Step Functions state machine which submit a Spark job. The state machine can submit a job with either [Amazon EMR on EKS](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/getting-started.html) or [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html). 
+A construct to create a Spark job that is orchestrated through AWS Step Functions state machine. The state machine can submit a job with either [Amazon EMR on EKS](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/getting-started.html) or [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html). 
 
 ## Overview
 
@@ -18,8 +18,7 @@ The construct creates an AWS Step Functions state machine that is used to submit
 
 ### Define an EMR Serverless Spark Job
 
-The stack defined below shows a usage example of the `EmrServerlessSparkJob` construct. The stack combines also `SparkEmrServerlessRuntime` to show you how to create an EMR Serverless Application and pass it as an argument to the `Spark job` and use it as a runtime for the job. 
-
+The example stack below shows how to use `EmrServerlessSparkJob` construct. The stack also contains a `SparkEmrServerlessRuntime` to show how to create an EMR Serverless Application and pass it as an argument to the `Spark job` and use it as a runtime for the job. 
 ```python
 
 from aws_cdk import (
@@ -27,11 +26,6 @@ from aws_cdk import (
     Stack,
 )
 from constructs import Construct
-from aws_dsf import ( 
-    EmrServerlessSparkJob, 
-    EmrServerlessSparkJobProps,
-    SparkEmrServerlessRuntime
-)
 from aws_cdk.aws_iam import (
     PolicyDocument,
     PolicyStatement
@@ -40,15 +34,23 @@ from aws_cdk.aws_stepfunctions import (
     JsonPath
 )
 
+from aws_dsf import ( 
+    EmrServerlessSparkJob, 
+    EmrServerlessSparkJobProps,
+    SparkEmrServerlessRuntime
+)
+
 class NightlyJobStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
 
-        emr_app = SparkEmrServerlessRuntime(scope=scope, id='emrApp', 
-                    name='mySparkRuntime',
-                )
+        emr_app = SparkEmrServerlessRuntime(
+            scope=scope, 
+            id='emrApp',
+            name='mySparkRuntime',
+       )
         
         my_s3_read_policy = PolicyDocument(
          statements=[

@@ -110,7 +110,7 @@ export abstract class SparkJob extends TrackedConstruct {
    * Grants the execution role to the Step Functions state machine
    * @param role
    */
-  protected abstract grantExecutionRole(role:IRole):void;
+  protected abstract grantExecutionRole(role:IRole): void;
 
   /**
    * Creates a State Machine that orchestrates the Spark Job. This is a default implementation that can be overridden by the extending class.
@@ -179,7 +179,7 @@ export abstract class SparkJob extends TrackedConstruct {
    */
   protected createS3LogBucket(s3LogUri?:string, encryptionKeyArn?:string): string {
 
-    if (! this.s3LogBucket) {
+    if (!this.s3LogBucket) {
       this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(this, 'SparkLogsBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(this, 'SparkLogsBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,

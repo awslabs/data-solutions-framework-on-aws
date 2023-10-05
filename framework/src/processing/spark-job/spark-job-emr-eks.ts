@@ -196,14 +196,12 @@ export class SparkEmrEksJob extends SparkJob {
     };
 
     return config;
-
   }
 
   /**
    * Set defaults for the EmrOnEksSparkJobProps.
    * @param props EmrOnEksSparkJobProps
    */
-
   private setJobPropsDefaults(props: SparkEmrEksJobProps): SparkEmrEksJobApiProps {
     const config = {
       jobConfig: {
@@ -218,15 +216,19 @@ export class SparkEmrEksJob extends SparkJob {
         },
       },
     } as SparkEmrEksJobApiProps;
+    
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.VirtualClusterId = props.virtualClusterId;
     config.jobConfig.ExecutionRoleArn=props.executionRoleArn;
     config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPoint = props.sparkSubmitEntryPoint;
+    
     if (props.sparkSubmitEntryPointArguments) {
       config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPointArguments=props.sparkSubmitEntryPointArguments ;
     }
-    if (props.sparkSubmitParameters) {config.jobConfig.JobDriver.SparkSubmitJobDriver!.SparkSubmitParameters = props.sparkSubmitParameters;}
+    if (props.sparkSubmitParameters) {
+    config.jobConfig.JobDriver.SparkSubmitJobDriver!.SparkSubmitParameters = props.sparkSubmitParameters;
+    }
 
     if (props.applicationConfiguration) {
       config.jobConfig.ConfigurationOverrides.ApplicationConfiguration = StepFunctionUtils.camelToPascal(props.applicationConfiguration);
