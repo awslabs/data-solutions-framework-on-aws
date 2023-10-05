@@ -326,7 +326,7 @@ export interface SparkEmrServerlessJobProps {
   readonly applicationId: string;
   readonly executionRoleArn?: string;
   readonly sparkSubmitEntryPoint: string;
-  readonly sparkSubmitEntryPointArguments?: string;
+  readonly sparkSubmitEntryPointArguments?: string[];
   readonly sparkSubmitParameters?: string;
   readonly applicationConfiguration?: { [key: string]: any };
   readonly executionTimeoutMinutes?: number;

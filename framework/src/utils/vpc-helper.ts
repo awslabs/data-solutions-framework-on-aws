@@ -1,4 +1,7 @@
-import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+import { Names, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { FlowLogDestination, GatewayVpcEndpoint, GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Effect, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
@@ -67,10 +70,12 @@ export function vpcBootstrap(
     ],
   });
 
+  //Create a loggroup name based on the purpose of the VPC, either used by emr on eks or emr serverless app
+  const logGroupName = eksClusterName ? `/aws/emr-eks-vpc-flow/${eksClusterName}`:`/aws/emr-serverless-vpc/${Names.nodeUniqueId(scope.node)}` ;
 
   //Create VPC flow log for the EKS VPC
   let eksVpcFlowLogLogGroup = new LogGroup(scope, 'eksVpcFlowLogLogGroup', {
-    logGroupName: `/aws/emr-eks-vpc-flow/${eksClusterName}`,
+    logGroupName: logGroupName,
     encryptionKey: logKmsKey,
     retention: RetentionDays.ONE_WEEK,
     removalPolicy: removalPolicy,

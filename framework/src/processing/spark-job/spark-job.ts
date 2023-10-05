@@ -8,7 +8,7 @@ import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { Choice, Condition, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
+import { Choice, Condition, DefinitionBody, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
@@ -149,7 +149,7 @@ export abstract class SparkJob extends TrackedConstruct {
 
       // StepFunctions state machine
       this.stateMachine = new StateMachine(this, 'EmrPipeline', {
-        definition: emrPipelineChain,
+        definitionBody: DefinitionBody.fromChainable(emrPipelineChain),
         tracingEnabled: true,
         timeout: jobTimeout ?? Duration.minutes(30),
         logs: {

@@ -5944,7 +5944,7 @@ const sparkEmrEksJobProps: SparkEmrEksJobProps = { ... }
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrEksJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 
@@ -6095,10 +6095,10 @@ public readonly s3LogUri: string;
 ##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
-public readonly sparkSubmitEntryPointArguments: string;
+public readonly sparkSubmitEntryPointArguments: string[];
 ```
 
-- *Type:* string
+- *Type:* string[]
 
 ---
 
@@ -6233,7 +6233,7 @@ const sparkEmrServerlessJobProps: SparkEmrServerlessJobProps = { ... }
 | <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 
@@ -6382,10 +6382,10 @@ public readonly s3LogUriKeyArn: string;
 ##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
-public readonly sparkSubmitEntryPointArguments: string;
+public readonly sparkSubmitEntryPointArguments: string[];
 ```
 
-- *Type:* string
+- *Type:* string[]
 
 ---
 
