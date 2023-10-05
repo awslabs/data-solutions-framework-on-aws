@@ -156,10 +156,10 @@ fwkProject.addTask('test:e2e', {
   exec: 'npx projen test --group=e2e'
 });
 
-const exampleApp = new awscdk.AwsCdkPythonApp({
-  name: 'example',
-  moduleName: 'adsf_example',
-  packageName: 'adsf_example',
+const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
+  name: 'spark-data-lake-infra-example',
+  moduleName: 'stacks',
+  packageName: 'spark_data_lake',
   version: '0.0.1',
   description: 'An example CDK app demonstrating the most common use cases for AWS Data Solutions Framework',
   authorName: author,
@@ -167,7 +167,7 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
   license,
 
   parent: rootProject,
-  outdir: 'example',
+  outdir: 'example/spark-data-lake/infra',
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
@@ -184,32 +184,32 @@ const exampleApp = new awscdk.AwsCdkPythonApp({
   },
 });
 
-exampleApp.removeTask('deploy');
-exampleApp.removeTask('destroy');
-exampleApp.removeTask('diff');
-exampleApp.removeTask('watch');
-exampleApp.removeTask('synth');
-exampleApp.testTask.reset();
-exampleApp.postCompileTask.reset();
-exampleApp.addTask('test:unit', {
+sparkDataLakeInfraExampleApp.removeTask('deploy');
+sparkDataLakeInfraExampleApp.removeTask('destroy');
+sparkDataLakeInfraExampleApp.removeTask('diff');
+sparkDataLakeInfraExampleApp.removeTask('watch');
+sparkDataLakeInfraExampleApp.removeTask('synth');
+sparkDataLakeInfraExampleApp.testTask.reset();
+sparkDataLakeInfraExampleApp.postCompileTask.reset();
+sparkDataLakeInfraExampleApp.addTask('test:unit', {
   description: 'Run unit tests',
   exec: 'pytest -k "not e2e"'
 });
-exampleApp.addTask('test:e2e', {
+sparkDataLakeInfraExampleApp.addTask('test:e2e', {
   description: 'Run end-to-end tests',
   exec: 'pytest -k e2e'
 });
-const synthTask = exampleApp.tasks.tryFind('synth:silent');
+const synthTask = sparkDataLakeInfraExampleApp.tasks.tryFind('synth:silent');
 synthTask?.reset();
 synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
-const buildExampleTask = exampleApp.addTask('build-example', {
+const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ../framework/dist/python aws_dsf` },
+    { exec: `pip install --no-index --find-links ../../../framework/dist/python aws_dsf` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
 });
-exampleApp.packageTask.spawn(buildExampleTask);
+sparkDataLakeInfraExampleApp.packageTask.spawn(buildExampleTask);
 
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'

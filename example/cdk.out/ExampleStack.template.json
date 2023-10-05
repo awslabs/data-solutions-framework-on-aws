@@ -1,0 +1,851 @@
+{
+ "Description": " (uksb-1tupboc21) (version:0.0.0) (tag:DataLakeStorage)",
+ "Resources": {
+  "DataLakeStorageAccessLogsBucketEF431E51": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "AccessControl": "LogDeliveryWrite",
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": "access-logs-examplestackdatalakestorage7f867727",
+    "OwnershipControls": {
+     "Rules": [
+      {
+       "ObjectOwnership": "ObjectWriter"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/AccessLogsBucket/Resource"
+   }
+  },
+  "DataLakeStorageAccessLogsBucketPolicy4DBAAA4C": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageAccessLogsBucketEF431E51",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageAccessLogsBucketEF431E51",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/AccessLogsBucket/Policy/Resource"
+   }
+  },
+  "DataLakeStorageDataKey0F594BB8": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/DataKey/Resource"
+   }
+  },
+  "DataLakeStorageBronzeBucket40F7C776": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "DataLakeStorageDataKey0F594BB8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": "bronze-examplestackdatalakestorage7f867727",
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "STANDARD_IA",
+         "TransitionInDays": 90
+        },
+        {
+         "StorageClass": "GLACIER",
+         "TransitionInDays": 180
+        }
+       ]
+      },
+      {
+       "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+       },
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+     },
+     "LogFilePrefix": "bronze-bucket"
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/BronzeBucket/Resource"
+   }
+  },
+  "DataLakeStorageBronzeBucketPolicy4F044DF1": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageBronzeBucket40F7C776"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageBronzeBucket40F7C776",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageBronzeBucket40F7C776",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/BronzeBucket/Policy/Resource"
+   }
+  },
+  "DataLakeStorageSilverBucket8F9D2BEA": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "DataLakeStorageDataKey0F594BB8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": "silver-examplestackdatalakestorage7f867727",
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "STANDARD_IA",
+         "TransitionInDays": 180
+        }
+       ]
+      },
+      {
+       "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+       },
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+     },
+     "LogFilePrefix": "silver-bucket"
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/SilverBucket/Resource"
+   }
+  },
+  "DataLakeStorageSilverBucketPolicyF509AAD7": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageSilverBucket8F9D2BEA",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageSilverBucket8F9D2BEA",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/SilverBucket/Policy/Resource"
+   }
+  },
+  "DataLakeStorageGoldBucket728EFA0A": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "DataLakeStorageDataKey0F594BB8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": "gold-examplestackdatalakestorage7f867727",
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "STANDARD_IA",
+         "TransitionInDays": 180
+        }
+       ]
+      },
+      {
+       "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+       },
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+     },
+     "LogFilePrefix": "gold-bucket"
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/GoldBucket/Resource"
+   }
+  },
+  "DataLakeStorageGoldBucketPolicy8A3E196B": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageGoldBucket728EFA0A"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageGoldBucket728EFA0A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageGoldBucket728EFA0A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/DataLakeStorage/GoldBucket/Policy/Resource"
+   }
+  },
+  "CopySampleRoleD7F6C901": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "AllowLogging"
+     },
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "s3:*",
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "AllowS3"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopySampleRole/Resource"
+   }
+  },
+  "CopySampleRoleDefaultPolicyF599451A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageBronzeBucket40F7C776",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageBronzeBucket40F7C776",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeStorageDataKey0F594BB8",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CopySampleRoleDefaultPolicyF599451A",
+    "Roles": [
+     {
+      "Ref": "CopySampleRoleD7F6C901"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopySampleRole/DefaultPolicy/Resource"
+   }
+  },
+  "CopySampleFunction4ADED01A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
+     },
+     "S3Key": "96cb599e96837641af314c1205342e17835ef8de41ac951b79ddf977a3b12f74.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "SOURCE_BUCKET_NAME": "nyc-tlc",
+      "SOURCE_BUCKET_PREFIX": "trip data/",
+      "SOURCE_BUCKET_REGION": "us-east-1",
+      "TARGET_BUCKET_NAME": {
+       "Ref": "DataLakeStorageBronzeBucket40F7C776"
+      },
+      "TARGET_BUCKET_PREFIX": "nyc-taxi/"
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CopySampleRoleD7F6C901",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ],
+    "Timeout": 600
+   },
+   "DependsOn": [
+    "CopySampleRoleDefaultPolicyF599451A",
+    "CopySampleRoleD7F6C901"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopySampleFunction/Resource",
+    "aws:asset:path": "asset.96cb599e96837641af314c1205342e17835ef8de41ac951b79ddf977a3b12f74",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CopyProviderframeworkonEventServiceRole115A6AF0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopyProvider/framework-onEvent/ServiceRole/Resource"
+   }
+  },
+  "CopyProviderframeworkonEventServiceRoleDefaultPolicyFE9A2B6A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "CopySampleFunction4ADED01A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "CopySampleFunction4ADED01A",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CopyProviderframeworkonEventServiceRoleDefaultPolicyFE9A2B6A",
+    "Roles": [
+     {
+      "Ref": "CopyProviderframeworkonEventServiceRole115A6AF0"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopyProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CopyProviderframeworkonEventB88AEB93": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
+     },
+     "S3Key": "f2d30cfc360482320a52a4fcde8a70f3569df79ab30be24650fda58eb60052cf.zip"
+    },
+    "Description": "AWS CDK resource provider framework - onEvent (ExampleStack/CopyProvider)",
+    "Environment": {
+     "Variables": {
+      "USER_ON_EVENT_FUNCTION_ARN": {
+       "Fn::GetAtt": [
+        "CopySampleFunction4ADED01A",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "framework.onEvent",
+    "Role": {
+     "Fn::GetAtt": [
+      "CopyProviderframeworkonEventServiceRole115A6AF0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "aws-data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CopyProviderframeworkonEventServiceRoleDefaultPolicyFE9A2B6A",
+    "CopyProviderframeworkonEventServiceRole115A6AF0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopyProvider/framework-onEvent/Resource",
+    "aws:asset:path": "asset.f2d30cfc360482320a52a4fcde8a70f3569df79ab30be24650fda58eb60052cf",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CopyCustomResource": {
+   "Type": "AWS::CloudFormation::CustomResource",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CopyProviderframeworkonEventB88AEB93",
+      "Arn"
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CopyCustomResource/Default"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/0WOzW7CMAzHn4W7awYdhx0BiQuXqjxAFVLDvDaJFCcgFOXd16+x0+//YVve4tcnfqzUUwrddkXPV0yXoHQHQ9QkKTEdb/YQdUcBZlSuZ/2Cd7z42RyUUIbOCKYzTUMDMrAymGrX05hM/L8yqwy9MtdWYTpFqwM7O3Z/OoOUjRKhILgfkaEmcdFrgskPP9/Z3kFHCc40fikFK+8e3JKH49S8t8Y/Fp2heoVvZ9clbja4W/0Ic+GjDWwI65m/A0ILpCgBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ExampleStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
