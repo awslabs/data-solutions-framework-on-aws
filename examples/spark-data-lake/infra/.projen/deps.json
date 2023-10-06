@@ -5,6 +5,10 @@
       "type": "devenv"
     },
     {
+      "name": "black",
+      "type": "devenv"
+    },
+    {
       "name": "pytest",
       "type": "devenv"
     },

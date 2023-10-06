@@ -9,10 +9,25 @@ from aws_cdk.aws_events_targets import LambdaFunction
 from aws_cdk.custom_resources import *
 from aws_cdk.aws_s3_deployment import *
 from constructs import Construct
-from aws_dsf import DataLakeStorage, SparkEmrServerlessRuntime, SparkEmrServerlessJob, SparkEmrServerlessJobProps, DataCatalogDatabase
+from aws_dsf import (
+  ApplicationStackFactory,
+  CICDStage,
+  DataLakeStorage,
+  SparkEmrServerlessRuntime,
+  SparkEmrServerlessJob, 
+  SparkEmrServerlessJobProps, 
+  DataCatalogDatabase,
+)
+
+
+class SparkApplicationStackFactory(ApplicationStackFactory):
+  
+  def create_stack(self, scope: Construct, stage: CICDStage) -> Stack:
+    return ApplicationStack(scope, 'EmrApplicationStack', stage)
+
 
 class ApplicationStack(Stack):
-  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+  def __init__(self, scope: Construct, construct_id: str, stage: CICDStage, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
     self.node.set_context('@aws-data-solutions-framework/removeDataOnDestroy', True)
