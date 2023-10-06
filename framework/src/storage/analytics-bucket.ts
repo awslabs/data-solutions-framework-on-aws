@@ -4,6 +4,7 @@
 
 import { Duration, Names, RemovalPolicy, UniqueResourceNameOptions } from 'aws-cdk-lib';
 import { Bucket, BucketEncryption, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
+import { Aws } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 
 import { AnalyticsBucketProps } from './analytics-bucket-props';
@@ -39,7 +40,7 @@ export class AnalyticsBucket extends Bucket {
 
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
-    const bucketName = props?.bucketName || 'analytics-bucket';
+    const bucketName = props?.bucketName || ('analytics-bucket' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION) ;
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
     const autoDeleteObjects = removalPolicy == RemovalPolicy.DESTROY;
 

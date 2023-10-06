@@ -48,7 +48,18 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('analytics-bucket-.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'analytics-bucket-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {

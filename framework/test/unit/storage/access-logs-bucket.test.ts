@@ -43,7 +43,18 @@ describe('AccessLogsBucket Construct', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('access-logs-.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'access-logs-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
