@@ -29,7 +29,7 @@ from aws_cdk import (
   App, 
   Stack, 
 )
-from aws_data_solutions_framework import DataLakeStorage
+from aws_dsf import DataLakeStorage
 
 app = App()
 stack = Stack(app, 'DataLakeStorageStack')

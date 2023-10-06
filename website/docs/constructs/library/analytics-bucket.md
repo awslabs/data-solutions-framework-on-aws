@@ -27,7 +27,7 @@ from aws_cdk import (
   Stack, 
   RemovalPolicy, 
 )
-from aws_data_solutions_framework import AnalyticsBucket
+from aws_dsf import AnalyticsBucket
 from aws_cdk.aws_kms import Key
 
 app = App()

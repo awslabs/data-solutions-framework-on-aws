@@ -65,7 +65,7 @@ from aws_cdk import (
   Construct,
   Stack, 
 )
-from adsf import ApplicationStackFactory, CICDStage
+from aws_dsf import ApplicationStackFactory, CICDStage
 
 
 class EmrApplicationStackFactory(ApplicationStackFactory):
@@ -90,7 +90,7 @@ from aws_cdk import (
   Stack, 
 )
 from application_stack import EmrApplicationStackFactory
-from adsf import SparkCICDPipeline, SparkImage
+from aws_dsf import SparkCICDPipeline, SparkImage
 
 
 class CICDPipelineStack(Stack):
