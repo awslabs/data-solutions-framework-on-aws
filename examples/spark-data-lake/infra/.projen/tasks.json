@@ -25,7 +25,7 @@
       "name": "build-example",
       "steps": [
         {
-          "exec": "pip install --no-index --find-links ../../../framework/dist/python aws_dsf --force-reinstall"
+          "exec": "pip install --no-index --find-links ../../../framework/dist/python aws_dsf"
         },
         {
           "spawn": "synth:silent"
