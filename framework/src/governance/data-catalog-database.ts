@@ -175,7 +175,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         crawlerSecurityConfiguration: secConfiguration.name,
       });
 
-      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers`;
+      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/*`;
       crawlerRole.addToPolicy(new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
@@ -185,7 +185,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         ],
         resources: [
           logGroup,
-          `${logGroup}:*`,
+          `${logGroup}:log-stream:*`,
         ],
       }));
     }
