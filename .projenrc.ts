@@ -66,6 +66,7 @@ const rootProject = new LernaProject({
     '.idea',
     'dist',
     '__pycache__',
+    '.devcontainer'
   ],
 
   projenrcTs: true,
@@ -204,7 +205,7 @@ synthTask?.reset();
 synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ../../../framework/dist/python aws_dsf` },
+    { exec: `pip install --no-index --find-links ../../../framework/dist/python aws_dsf --force-reinstall` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
