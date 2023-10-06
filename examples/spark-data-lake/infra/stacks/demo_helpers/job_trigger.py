@@ -68,10 +68,9 @@ class JobTrigger(Construct):
       "StartTaxiCrawlerFunction",
       runtime=Runtime.NODEJS_LATEST,
       role=start_taxi_crawler_role,
-      code=Code.from_asset("./stacks/trigger_crawler_function/"),
+      code=Code.from_asset("./stacks/demo_helpers/trigger_crawler_function/"),
       handler="index.handler",
       timeout=Duration.minutes(1),
-      function_name=start_taxi_crawler_function_name,
       environment={
         "TARGET_CRAWLER_NAME": silver_nyc_taxi_db.crawler.ref
       }

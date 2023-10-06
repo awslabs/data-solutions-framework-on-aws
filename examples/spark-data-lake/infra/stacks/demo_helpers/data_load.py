@@ -60,10 +60,9 @@ class DataLoad(Construct):
       "CopySampleFunction",
       runtime=Runtime.NODEJS_LATEST,
       role=copy_sample_role,
-      code=Code.from_asset("./stacks/copy_sample_function/"),
+      code=Code.from_asset("./stacks/demo_helpers/copy_sample_function/"),
       handler="index.handler",
       timeout=Duration.minutes(15),
-      function_name=copy_sample_function_name,
       environment={
         "SOURCE_BUCKET_NAME": sample_data_bucket_name,
         "SOURCE_BUCKET_PREFIX": sample_data_bucket_prefix,
