@@ -53,8 +53,6 @@ class DataLoad(Construct):
       }
     )
 
-    print(os.path.dirname(__file__))
-
     copy_sample_function = Function(
       self, 
       "CopySampleFunction",
