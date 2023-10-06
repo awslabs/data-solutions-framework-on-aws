@@ -4,6 +4,7 @@
 
 import { Names, RemovalPolicy, UniqueResourceNameOptions } from 'aws-cdk-lib';
 import { Bucket, BucketProps, BucketEncryption, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
+import { Aws } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 
 import { Context } from '../utils';
@@ -22,7 +23,7 @@ import { Context } from '../utils';
 export class AccessLogsBucket extends Bucket {
   constructor(scope: Construct, id: string, props?: BucketProps) {
 
-    const bucketName = props?.bucketName || 'access-logs';
+    const bucketName = props?.bucketName || ('access-logs' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION);
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
     const autoDeleteObjects = removalPolicy == RemovalPolicy.DESTROY;
 

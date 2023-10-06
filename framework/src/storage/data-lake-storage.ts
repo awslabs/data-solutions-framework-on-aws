@@ -5,12 +5,12 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
+import { Aws } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 
 import { AccessLogsBucket } from './access-logs-bucket';
 import { AnalyticsBucket } from './analytics-bucket';
-import { TrackedConstruct, TrackedConstructProps } from '../utils';
-import { Context } from '../utils/context';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 
 /**
@@ -81,7 +81,7 @@ export interface DataLakeStorageProps {
   /**
    * The removal policy when deleting the CDK resource.
    * If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
-   * Otherwise the removalPolicy is reverted to RETAIN.
+   * Otherwise, the removalPolicy is reverted to RETAIN.
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
@@ -159,7 +159,7 @@ export class DataLakeStorage extends TrackedConstruct {
     // Create the bronze data bucket with the bronze transitions
     this.bronzeBucket = new AnalyticsBucket(this, 'BronzeBucket', {
       encryptionKey: this.dataLakeKey,
-      bucketName: props?.bronzeBucketName || 'bronze',
+      bucketName: props?.bronzeBucketName || ('bronze' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION),
       lifecycleRules: [
         {
           transitions: bronzeTransitions,
@@ -189,7 +189,7 @@ export class DataLakeStorage extends TrackedConstruct {
     // Create the silver data bucket
     this.silverBucket = new AnalyticsBucket(this, 'SilverBucket', {
       encryptionKey: this.dataLakeKey,
-      bucketName: props?.silverBucketName || 'silver',
+      bucketName: props?.silverBucketName || ('silver' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION),
       lifecycleRules: [
         {
           transitions: silverTransitions,
@@ -219,7 +219,7 @@ export class DataLakeStorage extends TrackedConstruct {
     // Create the gold data bucket
     this.goldBucket = new AnalyticsBucket(this, 'GoldBucket', {
       encryptionKey: this.dataLakeKey,
-      bucketName: props?.goldBucketName || 'gold',
+      bucketName: props?.goldBucketName || ('gold' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION),
       lifecycleRules: [
         {
           transitions: goldTransitions,

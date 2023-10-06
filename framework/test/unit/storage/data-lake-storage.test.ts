@@ -69,7 +69,18 @@ describe('DataLakeStorage Construct with defaults', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('bronze-.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'bronze-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -119,7 +130,18 @@ describe('DataLakeStorage Construct with defaults', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('gold-.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'gold-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -165,7 +187,18 @@ describe('DataLakeStorage Construct with defaults', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('silver-.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'silver-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -236,7 +269,18 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: Match.objectLike({
-          BucketName: Match.stringLikeRegexp('.*bronze.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'bronze-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
         }),
         UpdateReplacePolicy: 'Delete',
         DeletionPolicy: 'Delete',
@@ -248,7 +292,18 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: Match.objectLike({
-          BucketName: Match.stringLikeRegexp('.*silver.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'silver-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
         }),
         UpdateReplacePolicy: 'Delete',
         DeletionPolicy: 'Delete',
@@ -260,7 +315,18 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: Match.objectLike({
-          BucketName: Match.stringLikeRegexp('.*gold.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'gold-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
         }),
         UpdateReplacePolicy: 'Delete',
         DeletionPolicy: 'Delete',
@@ -298,7 +364,18 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: Match.objectLike({
-          BucketName: Match.stringLikeRegexp('.*bronze.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'bronze-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
         }),
         UpdateReplacePolicy: 'Retain',
         DeletionPolicy: 'Retain',
@@ -310,7 +387,18 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: Match.objectLike({
-          BucketName: Match.stringLikeRegexp('.*silver.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'silver-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
         }),
         UpdateReplacePolicy: 'Retain',
         DeletionPolicy: 'Retain',
@@ -322,7 +410,18 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: Match.objectLike({
-          BucketName: Match.stringLikeRegexp('.*gold.*'),
+          BucketName: {
+            'Fn::Join': [
+              '',
+              [
+                'gold-',
+                { Ref: 'AWS::AccountId' },
+                '-',
+                { Ref: 'AWS::Region' },
+                Match.stringLikeRegexp('-.*'),
+              ],
+            ],
+          },
         }),
         UpdateReplacePolicy: 'Retain',
         DeletionPolicy: 'Retain',
