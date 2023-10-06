@@ -27,7 +27,7 @@ from aws_cdk import (
   App, 
   Stack, 
 )
-from aws_data_solutions_framework import DataCatalogDatabase
+from aws_dsf import DataCatalogDatabase
 
 app = App()
 stack = Stack(app, 'DataCatalogStack')

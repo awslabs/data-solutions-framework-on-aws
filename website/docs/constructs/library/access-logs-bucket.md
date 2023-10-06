@@ -26,7 +26,7 @@ from aws_cdk import (
   Stack, 
   RemovalPolicy, 
 )
-from aws_data_solutions_framework import AccessLogsBucket
+from aws_dsf import AccessLogsBucket
 from aws_cdk.aws_kms import Key
 
 app = App()
