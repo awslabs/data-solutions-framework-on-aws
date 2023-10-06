@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: spark-data-lake-demo
+Version: 0.0.1
+Requires-Dist: pyspark
+Provides-Extra: tests
+Requires-Dist: pytest==7.3.1; extra == "tests"
