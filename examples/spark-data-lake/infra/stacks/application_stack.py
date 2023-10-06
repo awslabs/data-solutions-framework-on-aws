@@ -15,6 +15,8 @@ class ApplicationStack(Stack):
   def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
+    self.node.set_context('@aws-data-solutions-framework/removeDataOnDestroy', True)
+    
     sample_data_bucket_name = "nyc-tlc"
     sample_data_bucket_prefix = "trip data/"
     sample_data_bucket_arn = F"arn:aws:s3:::{sample_data_bucket_name}"
@@ -130,7 +132,8 @@ class ApplicationStack(Stack):
       application_id=spark_runtime.application_id,
       execution_role_arn=processing_exec_role.role_arn,
       spark_submit_entry_point=F"s3://{storage.silver_bucket.bucket_name}/spark_script/agg_trip_distance.py",
-      spark_submit_parameters=F"--conf spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}"
+      spark_submit_parameters=F"--conf spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}",
+      RemovalPolicy= RemovalPolicy.DESTROY
     )
 
     spark_job = SparkEmrServerlessJob(
