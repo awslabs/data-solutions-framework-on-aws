@@ -3,7 +3,7 @@ name: Deploy docs to GitHub Pages
 on:
   push:
     branches: 
-      - $default-branch
+      - main
     paths:
       - "website/**"
   workflow_dispatch:

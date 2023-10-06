@@ -7,7 +7,7 @@ name: Update build dependencies cache
 on:
   push:
     branches: 
-      - $default-branch
+      - main
     paths-ignore:
       - "website/**"
   workflow_dispatch:
