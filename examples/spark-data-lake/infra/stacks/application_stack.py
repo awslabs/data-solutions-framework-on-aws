@@ -28,7 +28,7 @@ class SparkApplicationStackFactory(ApplicationStackFactory):
 
 
 class ApplicationStack(Stack):
-  def __init__(self, scope: Construct, construct_id: str, stage: CICDStage, **kwargs) -> None:
+  def __init__(self, scope: Construct, construct_id: str, stage: CICDStage=None, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
     
     sample_data_bucket_name = "nyc-tlc"
@@ -38,6 +38,7 @@ class ApplicationStack(Stack):
     storage = DataLakeStorage(self, "DataLakeStorage", removal_policy=RemovalPolicy.DESTROY)
     copy_sample_function_name = F"copy-sample-data-{Names.unique_resource_name(self)}"
 
+    #Helper to load data to bronze bucket
     DataLoad(self, "DataLoad", sample_data_bucket_name, copy_sample_function_name, sample_data_bucket_prefix, sample_data_bucket_arn, storage)
 
     processing_policy_doc = PolicyDocument(statements=[
@@ -84,5 +85,7 @@ class ApplicationStack(Stack):
       spark_job_params
     )
 
+    #Helper to trigger job for demo purpose
+    #The construct for SparkJob takes a CRON to trigger the job
     JobTrigger(self, "JobTrigger", spark_job, storage)
     
