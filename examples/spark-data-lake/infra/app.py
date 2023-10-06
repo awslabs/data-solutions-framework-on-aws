@@ -9,6 +9,6 @@ dev_env = Environment(
 )
 
 app = App()
-ApplicationStack(app, "ExampleStack", env=dev_env)
+emr_application = ApplicationStack(app, "ExampleStack", env=dev_env)
 
 app.synth()
