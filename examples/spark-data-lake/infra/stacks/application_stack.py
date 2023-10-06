@@ -15,6 +15,7 @@ from aws_dsf import (
   SparkEmrServerlessRuntime,
   SparkEmrServerlessJob, 
   SparkEmrServerlessJobProps,
+  PySparkApplicationPackage
 )
 
 from stacks.demo_helpers.data_load import DataLoad
@@ -29,8 +30,6 @@ class SparkApplicationStackFactory(ApplicationStackFactory):
 class ApplicationStack(Stack):
   def __init__(self, scope: Construct, construct_id: str, stage: CICDStage, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
-
-    self.node.set_context('@aws-data-solutions-framework/removeDataOnDestroy', True)
     
     sample_data_bucket_name = "nyc-tlc"
     sample_data_bucket_prefix = "trip data/"
@@ -62,23 +61,21 @@ class ApplicationStack(Stack):
 
     spark_runtime = SparkEmrServerlessRuntime(self, "SparkProcessingRuntime", name="TaxiAggregation")
 
-    BucketDeployment(
-      self, 
-      "UploadSparkScript",
-      sources=[
-        Source.asset("./stacks/spark_script/")
-      ],
-      destination_bucket=storage.silver_bucket,
-      destination_key_prefix="spark_script/"
+
+    pyspark_app = PySparkApplicationPackage(
+      self,
+      "PySparkApplicationPackage",
+      entrypoint_path="./../spark/src/agg_trip_distance.py",
+      pyspark_application_name="taxi-trip-aggregation",
+      removal_policy=RemovalPolicy.DESTROY
     )
 
     spark_job_params = SparkEmrServerlessJobProps(
-      name=F"taxi-agg-job-{Names.unique_resource_name(self)}",
+      name=f"taxi-agg-job-{Names.unique_resource_name(self)}",
       application_id=spark_runtime.application_id,
       execution_role_arn=processing_exec_role.role_arn,
-      spark_submit_entry_point=F"s3://{storage.silver_bucket.bucket_name}/spark_script/agg_trip_distance.py",
-      spark_submit_parameters=F"--conf spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}",
-      RemovalPolicy= RemovalPolicy.DESTROY
+      spark_submit_entry_point=pyspark_app.entrypoint_s3_uri,
+      spark_submit_parameters=f"--conf spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}"
     )
 
     spark_job = SparkEmrServerlessJob(

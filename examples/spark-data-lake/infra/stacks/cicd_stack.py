@@ -2,12 +2,12 @@
 # SPDX-License-Identifier: MIT-0
 
 from aws_cdk import (
-  Construct,
   Stack, 
 )
-from aws_dsf import SparkCICDPipeline
+from aws_dsf import SparkEmrCICDPipeline
+from constructs import Construct
 
-from application_stack import SparkApplicationStackFactory
+from stacks.application_stack import SparkApplicationStackFactory
 
 
 class CICDPipelineStack(Stack):
@@ -15,7 +15,7 @@ class CICDPipelineStack(Stack):
   def __init__(self, scope: Construct, id: str, **kwargs) -> None:
     super().__init__(scope, id, **kwargs)
 
-    SparkCICDPipeline(self, "SparkCICDPipeline",
+    SparkEmrCICDPipeline(self, "SparkCICDPipeline",
       application_name="SparkTest",
       application_stack_factory=SparkApplicationStackFactory()
     )

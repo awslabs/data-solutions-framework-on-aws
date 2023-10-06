@@ -1,6 +1,6 @@
 import os
 from aws_cdk import App, Environment
-from stacks.application_stack import ApplicationStack
+from stacks.cicd_stack import CICDPipelineStack 
 
 # for development, use account/region from cdk cli
 dev_env = Environment(
@@ -9,6 +9,6 @@ dev_env = Environment(
 )
 
 app = App()
-emr_application = ApplicationStack(app, "ExampleStack", env=dev_env)
+pipeline_stack = CICDPipelineStack(app, "ExampleStack", env=Environment(region='eu-west-1'))
 
 app.synth()
