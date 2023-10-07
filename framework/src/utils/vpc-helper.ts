@@ -52,7 +52,7 @@ export function vpcBootstrap(
   const publicSubnetMask = vpcMask + 4;
   const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
-  const vpc = new Vpc(scope, 'MyVPC', {
+  const vpc = new Vpc(scope, 'adsfVPC', {
     ipAddresses: IpAddresses.cidr(vpcCidr),
     maxAzs: 3,
     natGateways: 3,
@@ -109,12 +109,12 @@ export function vpcBootstrap(
     assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
   });
 
-  vpc.addFlowLog('eksVpcFlowLog', {
+  vpc.addFlowLog('addVpcFlowLog', {
     destination: FlowLogDestination.toCloudWatchLogs(eksVpcFlowLogLogGroup, iamRoleforFlowLog),
   });
 
   // Create a gateway endpoint for S3
-  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('S3Endpoint', {
+  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('adsfVpcS3Endpoint', {
     service: GatewayVpcEndpointAwsService.S3,
   });
 
