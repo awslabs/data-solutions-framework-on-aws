@@ -73,8 +73,10 @@ export function vpcBootstrap(
   //Create a loggroup name based on the purpose of the VPC, either used by emr on eks or emr serverless app
   const logGroupName = eksClusterName ? `/aws/emr-eks-vpc-flow/${eksClusterName}`:`/aws/emr-serverless-vpc/${Names.nodeUniqueId(scope.node)}` ;
 
+  const logGroupResourceId = eksClusterName ? 'emrEksVpcFlowLog' : 'emrServerlessVpcFlowLog' ;
+
   //Create VPC flow log for the EKS VPC
-  let eksVpcFlowLogLogGroup = new LogGroup(scope, 'eksVpcFlowLogLogGroup', {
+  let eksVpcFlowLogLogGroup = new LogGroup(scope, logGroupResourceId, {
     logGroupName: logGroupName,
     encryptionKey: logKmsKey,
     retention: RetentionDays.ONE_WEEK,
