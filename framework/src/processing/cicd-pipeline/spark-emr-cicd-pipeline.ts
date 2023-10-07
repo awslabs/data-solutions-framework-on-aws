@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { CfnOutput } from 'aws-cdk-lib';
+import { Aws, CfnOutput } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
@@ -245,8 +245,18 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     }));
 
     // Create a CfnOutput to display the CodeCommit repository URL
-    new CfnOutput(this, 'CodeCommitRepositoryUrl', {
-      value: codeRepository.repositoryCloneUrlHttp,
+    new CfnOutput(this, 'CodeCommitRepositoryGrcUrl', {
+      value: codeRepository.repositoryCloneUrlGrc,
+    });
+
+    // Create a CfnOutput to display the CodeCommit repository URL
+    new CfnOutput(this, 'CodeCommitRepositorySshUrl', {
+      value: codeRepository.repositoryCloneUrlSsh,
+    });
+
+    // Create a CfnOutput to display the CodeCommit repository URL
+    new CfnOutput(this, 'GitAddRemoteCommand', {
+      value: `git remote add ${codeRepository.repositoryName} codecommit::${Aws.REGION}://${codeRepository.repositoryName}`,
     });
   }
 

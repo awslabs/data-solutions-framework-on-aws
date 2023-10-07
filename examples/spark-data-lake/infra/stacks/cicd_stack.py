@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT-0
 
 from aws_cdk import (
+  RemovalPolicy,
   Stack, 
 )
 from aws_dsf import SparkEmrCICDPipeline
@@ -17,5 +18,7 @@ class CICDPipelineStack(Stack):
 
     SparkEmrCICDPipeline(self, "SparkCICDPipeline",
       application_name="SparkTest",
-      application_stack_factory=SparkApplicationStackFactory()
+      application_stack_factory=SparkApplicationStackFactory(),
+      cdk_application_path='infra',
+      spark_application_path='spark'
     )

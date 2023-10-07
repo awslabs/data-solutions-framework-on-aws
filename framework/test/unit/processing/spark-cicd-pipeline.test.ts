@@ -59,7 +59,7 @@ describe('With minimal configuration, the construct', () => {
   test('should output the code repository URL', () => {
     template.hasOutput('*', {
       Value: {
-        'Fn::GetAtt': [Match.anyValue(), 'CloneUrlHttp'],
+        'Fn::GetAtt': [Match.anyValue(), 'CloneUrlSsh'],
       },
     });
   });

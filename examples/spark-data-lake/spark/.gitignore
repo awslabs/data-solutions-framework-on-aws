@@ -1,3 +1,5 @@
 .venv
 .devcontainer
 build
+test/__pycache__
+src/__pycache__

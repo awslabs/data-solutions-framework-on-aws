@@ -9,6 +9,6 @@ dev_env = Environment(
 )
 
 app = App()
-pipeline_stack = CICDPipelineStack(app, "ExampleStack", env=Environment(region='eu-west-1'))
+pipeline_stack = CICDPipelineStack(app, "CICDPipelineStack", env=Environment(region='eu-west-1'))
 
 app.synth()

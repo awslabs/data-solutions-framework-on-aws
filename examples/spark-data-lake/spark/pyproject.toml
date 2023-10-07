@@ -6,9 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "spark-data-lake-demo"
 version = "0.0.1"
 
-dependencies = [
-  'pyspark'
-]
+dependencies = []
 
 [project.optional-dependencies]
 tests = [
