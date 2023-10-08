@@ -5,11 +5,13 @@ sidebar_label: PySpark Application Package
 
 # PySpark Application Package
 
-A construct to package your PySpark application (the entrypoint, supporting files and virtual environment) 
-and upload it to an Amazon S3 bucket. In the rest of the documentation we call the entrypoint, 
-supporting files and virtual environment as artifacts.
+A construct to package your PySpark application with its dependencies and upload it to an Amazon S3 bucket.
 
 ## Overview
+
+The construct package your PySpark application (the entrypoint, supporting files and virtual environment) 
+and upload it to an Amazon S3 bucket. In the rest of the documentation we call the entrypoint, 
+supporting files and virtual environment as artifacts.
 
 The PySpark Application Package has two responsibilities:
 
@@ -29,9 +31,10 @@ The construct exposes the artifacts through the following interfaces:
 
   * entrypointS3Uri: The S3 location where the entry point is saved in S3. You pass this location to your Spark job. 
   * venvArchiveS3Uri: The S3 location where the archive of the Python virtual environment with all dependencies is stored. You pass this location to your Spark job. 
+  * sparkVenvConf: The Spark config containing the configuration of virtual environment archive with all dependencies.
 
 ### Resources created
-* An Amazon S3 Bucket to store the PySpark Appliaction artifacts. You can also provide your own if you have already a bucket that you want to use. 
+* An Amazon S3 Bucket to store the PySpark Application artifacts. You can also provide your own if you have already a bucket that you want to use. This bucket comes with configuration to enforce `TLS`, `Block Public Access` and encrypt objects with `SSE-KMS`,
 * An IAM role used by a Lambda to copy from the CDK Asset bucket to the artifcat bucket created above or provided.
 
 The schema below shows the resources created and the responbilies of the consturct:
@@ -41,11 +44,11 @@ The schema below shows the resources created and the responbilies of the constur
 ## Usage
 
 In this example we will show you how you can use the construct to package a PySpark application 
-and submit a job to EMR Serverless leveraging ADSF `Spark EMR Serverless Runtime` and `Spark Job` constructs.
+and submit a job to EMR Serverless leveraging ADSF `SparkEmrServerlessRuntime` and `SparkJob` constructs.
 
-For this example we assume we will have the folder structure to be as shown below. We have two folders, one containing 
-the `PySpark` application called `spark` and a second containing the `CDK` code. 
-The PySpark code, follows the standards `Python` structure. The `spark` also contains the Dockerfile to build the `venv`. 
+For this example we assume we will have the folder structure as shown below. We have two folders, one containing 
+the `PySpark` application called `spark` folder and a second containing the `CDK` code called `cdk`. 
+The PySpark code, follows the standards `Python` structure. The `spark` also contains the `Dockerfile` to build the `venv`. 
 In the next [section](#dockerfile-definition) will describe how to structure the `Dockerfile`. 
 
 ```bash
@@ -60,7 +63,7 @@ root
 |        |--helpers.py
 |    |--requirement.txt
 |    |--Dockerfile #contains the build instructions to package the virtual environment for PySpark
-|--cdk
+|--cdk #contains the CDK application that deploys CDK stack with the PySparkApplicationPackage
 ```
 #### PySpark Application Definition
 
@@ -135,7 +138,8 @@ spark_job_params = SparkEmrServerlessJobProps(
                     name="nightly-job",
                     application_id=spark_runtime.application_id,
                     execution_role_arn=processing_exec_role.role_arn,
-                    spark_submit_entry_point=pyspark_app.entrypoint_s3_uri
+                    spark_submit_entry_point=pyspark_app.entrypoint_s3_uri,
+                    spark_submit_parameters=f"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=2 {sparkEnvConf}"
                   )
 
 spark_job = SparkEmrServerlessJob(
