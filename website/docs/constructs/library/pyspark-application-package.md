@@ -108,12 +108,13 @@ RUN python3 -m pip install --upgrade pip && \
 RUN mkdir /venv-package && venv-pack -o /venv-package/pyspark-env.tar.gz && chmod ugo+r /venv-package/pyspark-env.tar.gz
 ```
 
-### Define a CDK stack to run deploy and run the job
+### Define a CDK stack upload PySpark application and run the job
 
 The stack below levarage the resources defined above for PySpark to build the end to end example for building and submitting a PySpark job.
 
 ```python
-from aws_cdk import RemovalPolicy
+from aws_cdk import RemovalPolicy, App, Stack
+
 from aws_dsf import (
   SparkEmrServerlessRuntime,
   SparkEmrServerlessJob, 
@@ -121,11 +122,15 @@ from aws_dsf import (
   PySparkApplicationPackage
 )
 
-spark_runtime = SparkEmrServerlessRuntime(self, "SparkProcessingRuntime", name="nightly-job-aggregation")
+app = App()
+
+nightly_job_task = Stack(app, "example-dev")
+
+spark_runtime = SparkEmrServerlessRuntime(nightly_job_task, "SparkProcessingRuntime", name="nightly-job-aggregation")
 
 
 pyspark_app = PySparkApplicationPackage(
-                self,
+                nightly_job_task,
                 "PySparkApplicationPackage",
                 entrypoint_path="./../spark/src/entrypoint.py",
                 pyspark_application_name="nightly-job-aggregation",
@@ -143,7 +148,7 @@ spark_job_params = SparkEmrServerlessJobProps(
                   )
 
 spark_job = SparkEmrServerlessJob(
-              self, 
+              nightly_job_task, 
               "SparkProcessingJob",
               spark_job_params
             )
