@@ -4,6 +4,9 @@
 import { Aws, Names } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
+/**
+ * @internal
+ */
 export class BucketUtils {
   /**
    * Return a unique id for the given scope.
