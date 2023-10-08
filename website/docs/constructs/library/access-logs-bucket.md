@@ -10,7 +10,7 @@ Amazon S3 Bucket configured for S3 access logs storage.
 ## Overview
 
 `AccessLogsBucket` construct is an Amazon S3 Bucket configured with best practices and smart defaults for storing S3 access logs:
-- The default bucket name is <CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>
+- The bucket name is in the form of `<BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>`
 - The bucket encryption is S3 Managed.
 - Public access is blocked.
 - Two-step protection for bucket and objects deletion.
