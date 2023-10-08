@@ -14,7 +14,7 @@ import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { AccessLogsBucket } from '../../../src';
 
 
-describe('AccessLogsBucket Construct', () => {
+describe('AccessLogsBucket Construct with default configuration', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -25,36 +25,12 @@ describe('AccessLogsBucket Construct', () => {
   // Instantiate AccessLogsBucket Construct with default
   new AccessLogsBucket(stack, 'DefaultAccessLogsBucket');
 
-  // Instantiate AccessLogsBucket Construct with custom parameters
-  new AccessLogsBucket(stack, 'CustomAccessLogsBucket', {
-    bucketName: 'custom-access-logs',
-    encryption: BucketEncryption.KMS_MANAGED,
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-  });
-
   const template = Template.fromStack(stack);
 
-  test('AccessLogsBucket should provision 2 buckets', () => {
-    template.resourceCountIs('AWS::S3::Bucket', 2);
-  });
-
-  test('AccessLogsBucket should create a bucket with proper default configuration', () => {
+  test(' should create a bucket with proper default configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                'access-logs-',
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
-              ],
-            ],
-          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -77,11 +53,67 @@ describe('AccessLogsBucket Construct', () => {
     );
   });
 
-  test('AccessLogsBucket should create a bucket with proper custom configuration', () => {
+  test(' should create a bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'defaultaccesslogsbucket-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+            ],
+          ],
+        },
+      }),
+    );
+  });
+});
+
+describe('AccessLogsBucket Construct with custom configuration', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Set context value for global data removal policy
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
+  // Instantiate AccessLogsBucket Construct with custom parameters
+  new AccessLogsBucket(stack, 'Custom', {
+    bucketName: 'access-logs',
+    encryption: BucketEncryption.KMS_MANAGED,
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test(' should create a bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'access-logs-custom-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+            ],
+          ],
+        },
+      }),
+    );
+  });
+
+  test(' should create a bucket with proper custom configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('custom-access-logs-.*'),
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -100,6 +132,57 @@ describe('AccessLogsBucket Construct', () => {
         },
         UpdateReplacePolicy: 'Delete',
         DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+});
+
+describe('2 AccessLogsBucket Constructs in the same stack', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Instantiate AccessLogsBucket Construct with default
+  new AccessLogsBucket(stack, 'Default1');
+
+  new AccessLogsBucket(stack, 'Default2');
+
+  const template = Template.fromStack(stack);
+
+  test(' should create the first bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'default1-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+            ],
+          ],
+        },
+      }),
+    );
+  });
+
+  test(' should create the second bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'default2-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+            ],
+          ],
+        },
       }),
     );
   });

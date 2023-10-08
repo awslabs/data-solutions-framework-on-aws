@@ -7,6 +7,9 @@
 
 Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
+The bucket name and the bucket CDK ID must be less than 23 characters together.
+The generated bucket name is <BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>
+
 *Example*
 
 ```typescript
@@ -1152,6 +1155,8 @@ first call to addToResourcePolicy(s).
 
 Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
+The bucket name and the bucket CDK ID must be less than 23 characters together.
+The generated bucket name is <BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>
 See documentation TODO insert link
 
 *Example*
@@ -5471,6 +5476,7 @@ public readonly bronzeBucketName: string;
 Name of the Bronze bucket.
 
 Will be appended by a unique ID.
+The name of the bucket must be less than 17 characters.
 
 ---
 
@@ -5525,6 +5531,7 @@ public readonly goldBucketName: string;
 Name of the Gold bucket.
 
 Will be appended by a unique ID.
+The name of the bucket must be less than 17 characters.
 
 ---
 
@@ -5582,6 +5589,7 @@ public readonly silverBucketName: string;
 Name of the Silver bucket.
 
 Will be appended by a unique ID.
+The name of the bucket must be less than 17 characters.
 
 ---
 

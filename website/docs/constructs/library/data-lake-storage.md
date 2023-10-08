@@ -22,7 +22,7 @@ Here is the overview of `DataLakeStorage` features:
 
 ![Data lake storage](../../../static/img/adsf-data-lake-storage.png)
 
-## Usage Example
+## Usage
 
 ```python
 from aws_cdk import (
@@ -36,6 +36,14 @@ stack = Stack(app, 'DataLakeStorageStack')
 
 DataLakeStorage(stack, 'MyDataLakeStorage')
 ```
+## Bucket naming
+
+The construct ensures bucket names uniqueness globally which is a [pre-requisite](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) to create Amazon S3 buckets. 
+To achieve this, the construct is creating bucket names like `<BUCKET_NAME>-<MEDALLION_LAYER>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>` where:
+ * `<BUCKET_NAME>` is the property passed as the `bucket_name` to the constructor. If not provided the name will be in the form of `<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>`.
+ * `<MEDALLION_LAYER>` is the layer in the medallion architecture (`bronze`, `silver` or `gold`). 
+ * `<AWS_ACCOUNT_ID>` and `<AWS_REGION>` are the account ID and region where you deploy the construct.
+ * `<UNIQUEID>` is a 16 characters unique ID calculated based on the CDK path.
 
 ## Objects removal
 

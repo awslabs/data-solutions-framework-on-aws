@@ -43,7 +43,7 @@ class TestStack implements ICloudAssemblyDirectoryProducer {
   public async deploy(): Promise<Record<string, string>> {
     const outputFilePath = join(
       tmpdir(),
-      'powertools-e2e-testing',
+      'adsf-e2e-testing',
       `${this.stack.stackName}.outputs.json`,
     );
     await this.#cli.deploy({
