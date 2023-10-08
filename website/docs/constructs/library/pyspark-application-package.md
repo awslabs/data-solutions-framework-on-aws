@@ -1,21 +1,34 @@
 ---
 sidebar_position: 7
-sidebar_label: Spark Job
+sidebar_label: PySpark Application Package
 ---
 
 # PySpark Application Package
 
+A construct to package your PySpark application (the entrypoint, supporting files and virtual environment) and upload it to an Amazon S3 bucket. In the rest of the documentation we call the entrypoint, supporting files and virtual environment as artifacts.
 
 ## Overview
 
+The PySpark Application Package has two responsibilities:
 
+* Upload your PySpark entrypoint application to an artifact bucket
+* Package your PySpark virtual environment (venv) and upload it to an artifact bucket. The package of venv is done using docker, an example in the [Usage](#usage) section shows how to write the Dockerfile to package the application.
 
+The constructs uses the [Asset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html) to upload the PySpark Appliaction artifacts to CDK Asset bucket. These are then copied to an S3 bucket we call artifact bucket. 
+
+### Resources created
+* An Amazon S3 Bucket to store the PySpark Appliaction artifacts. You can also provide your own if you have already a bucket that you want to use. 
+* An IAM role used by a Lambda to copy from the CDK Asset bucket to the artifcat bucket created above or provided.
+
+The schema below shows the resources created and the responbilies of the consturct:
+
+![PySpark Application Package](../../../static/img/adsf-pyspark-application-package.png)
 
 ## Usage
 
 ### Package a PySpark application and submit a job
 
-The stack defined below shows a usage example of the `EmrOnEksSparkJob` construct. The path where the PySpark is a defined as follow:
+The stack defined below shows a usage example of the `PySparkApplicationPackage` construct. The path where the PySpark is a defined as follow:
 
 ```bash
 root
@@ -50,19 +63,8 @@ RUN mkdir /output && venv-pack -o /output/pyspark-env.tar.gz && chmod ugo+r /out
 
 
 ```python
-
-
-from aws_cdk import Stack, RemovalPolicy, Names
-from aws_cdk.aws_iam import *
-from aws_cdk.aws_lambda import *
-from aws_cdk.aws_events import *
-from aws_cdk.custom_resources import *
-from aws_cdk.aws_s3_deployment import *
-from constructs import Construct
+from aws_cdk import RemovalPolicy
 from aws_dsf import (
-  ApplicationStackFactory,
-  CICDStage,
-  DataLakeStorage,
   SparkEmrServerlessRuntime,
   SparkEmrServerlessJob, 
   SparkEmrServerlessJobProps,
