@@ -73,7 +73,7 @@ pyspark_app = PySparkApplicationPackage(
                 entrypoint_path="./../spark/src/entrypoint.py",
                 pyspark_application_name="nightly-job-aggregation",
                 dependencies_folder="./../spark",
-                venv_archive_path="./../spark/venv-package",
+                venv_archive_path="/venv-package/pyspark-env.tar.gz",
                 removal_policy=RemovalPolicy.DESTROY
               )
 ```
@@ -84,7 +84,7 @@ The steps below describe how to create the `Dockerfile` so it can be used to be 
 
 * In order to build the virtual environment, the docker container will mount the `dependencies_folder`, in our case we define it as `./../spark`.
 * Then to package the `venv` we need to build `COPY` all the files in `./spark` to the docker container.
-* Last we execute the `venv-package`, in the [PySparkApplication](#pyspark-application-definition) we passed the `venv_archive_path` as `./../spark/venv-package`.
+* Last we execute the `venv-package`, in the [PySparkApplication](#pyspark-application-definition) we passed the `venv_archive_path` as `/venv-package/pyspark-env.tar.gz`.
 So we need to create it with `mkdir /venv-package` and then pass it to the `venv-package` as `venv-pack -o /venv-package/pyspark-env.tar.gz`
 
 ```Dockerfile
@@ -127,7 +127,7 @@ pyspark_app = PySparkApplicationPackage(
                 entrypoint_path="./../spark/src/entrypoint.py",
                 pyspark_application_name="nightly-job-aggregation",
                 dependencies_folder="./../spark",
-                venv_archive_path="./../spark/requirements.txt",
+                venv_archive_path="/venv-package/pyspark-env.tar.gz",
                 removal_policy=RemovalPolicy.DESTROY
               )
 
