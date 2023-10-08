@@ -26,20 +26,31 @@ The schema below shows the resources created and the responbilies of the constur
 
 ## Usage
 
-### Package a PySpark application and submit a job
+In this example we will show you how you can use the construct to package a PySpark application 
+and submit a job to EMR Serverless leveraging ADSF `Spark EMR Serverless Runtime` and `Spark Job` constructs.
 
-The stack defined below shows a usage example of the `PySparkApplicationPackage` construct. The path where the PySpark is a defined as follow:
+For this example we assume we will have the folder structure to be as shown below. We have two folders, one containing 
+the `PySpark` application called `spark` and a second containing the `CDK` code. 
+The PySpark code, follows the standards `Python` structure. The `spark` also contains the Dockerfile to build the `venv`. 
+In the next section will describe how to structure the `Dockerfile`. 
 
 ```bash
 root
 |--spark
 |    |--test
 |    |--src
+        |--__init__.py
 |       |--entrypoint.py
+        |--dir1
+          |--__init__.py
+          |--helpers.py
 |    |--requirement.txt
 |    |--Dockerfile #contains the build instructions to package the virtual environment for PySpark
 |--cdk
 ```
+
+### Dockerfile definition
+
 
 ```Dockerfile
 FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:2 AS base
@@ -50,7 +61,7 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-WORKDIR /app
+WORKDIR /spark
 
 COPY . .
 
@@ -71,28 +82,30 @@ from aws_dsf import (
   PySparkApplicationPackage
 )
 
-spark_runtime = SparkEmrServerlessRuntime(self, "SparkProcessingRuntime", name="TaxiAggregation")
+spark_runtime = SparkEmrServerlessRuntime(self, "SparkProcessingRuntime", name="nightly-job-aggregation")
 
 
-    pyspark_app = PySparkApplicationPackage(
-      self,
-      "PySparkApplicationPackage",
-      entrypoint_path="./../spark/src/agg_trip_distance.py",
-      pyspark_application_name="taxi-trip-aggregation",
-      removal_policy=RemovalPolicy.DESTROY
-    )
+pyspark_app = PySparkApplicationPackage(
+                self,
+                "PySparkApplicationPackage",
+                entrypoint_path="./../spark/src/entrypoint.py",
+                pyspark_application_name="nightly-job-aggregation",
+                dependencies_folder="./../spark",
+                venv_archive_path="./../spark/requirements.txt",
+                removal_policy=RemovalPolicy.DESTROY
+              )
 
-    spark_job_params = SparkEmrServerlessJobProps(
-      name="JOB-NAME",
-      application_id=spark_runtime.application_id,
-      execution_role_arn=processing_exec_role.role_arn,
-      spark_submit_entry_point=pyspark_app.entrypoint_s3_uri
-    )
+spark_job_params = SparkEmrServerlessJobProps(
+                    name="nightly-job",
+                    application_id=spark_runtime.application_id,
+                    execution_role_arn=processing_exec_role.role_arn,
+                    spark_submit_entry_point=pyspark_app.entrypoint_s3_uri
+                  )
 
-    spark_job = SparkEmrServerlessJob(
-      self, 
-      "SparkProcessingJob",
-      spark_job_params
-    )
+spark_job = SparkEmrServerlessJob(
+              self, 
+              "SparkProcessingJob",
+              spark_job_params
+            )
 
 ```
