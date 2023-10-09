@@ -1,9 +1,0 @@
-pyproject.toml
-setup.cfg
-spark_data_lake_demo.egg-info/PKG-INFO
-spark_data_lake_demo.egg-info/SOURCES.txt
-spark_data_lake_demo.egg-info/dependency_links.txt
-spark_data_lake_demo.egg-info/requires.txt
-spark_data_lake_demo.egg-info/top_level.txt
-test/__init__.py
-test/test_agg_trip_distance.py
