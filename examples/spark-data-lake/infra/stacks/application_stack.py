@@ -85,7 +85,7 @@ class ApplicationStack(Stack):
             self,
             "PySparkApplicationPackage",
             entrypoint_path="./../spark/src/agg_trip_distance.py",
-            pyspark_application_name="taxi-trip-aggregation",
+            application_name="taxi-trip-aggregation",
             removal_policy=RemovalPolicy.DESTROY,
         )
 

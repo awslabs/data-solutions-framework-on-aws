@@ -18,7 +18,7 @@ class CICDPipelineStack(Stack):
         dsf.SparkEmrCICDPipeline(
             self,
             "SparkCICDPipeline",
-            application_name="SparkTest",
+            spark_application_name="SparkTest",
             application_stack_factory=SparkApplicationStackFactory(),
             cdk_application_path="infra",
             spark_application_path="spark",
