@@ -74,7 +74,7 @@ pyspark_app = PySparkApplicationPackage(
                 self,
                 "PySparkApplicationPackage",
                 entrypoint_path="./../spark/src/entrypoint.py",
-                pyspark_application_name="nightly-job-aggregation",
+                application_name="nightly-job-aggregation",
                 dependencies_folder="./../spark",
                 venv_archive_path="/venv-package/pyspark-env.tar.gz",
                 removal_policy=RemovalPolicy.DESTROY
@@ -133,7 +133,7 @@ pyspark_app = PySparkApplicationPackage(
                 nightly_job_task,
                 "PySparkApplicationPackage",
                 entrypoint_path="./../spark/src/entrypoint.py",
-                pyspark_application_name="nightly-job-aggregation",
+                application_name="nightly-job-aggregation",
                 dependencies_folder="./../spark",
                 venv_archive_path="/venv-package/pyspark-env.tar.gz",
                 removal_policy=RemovalPolicy.DESTROY

@@ -162,7 +162,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
             ),
           ],
           destinationBucket: artifactsBucket!,
-          destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}`,
+          destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}`,
           memoryLimit: 512,
           ephemeralStorageSize: Size.mebibytes(1000),
           prune: false,
@@ -171,7 +171,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
         });
 
-        this.venvArchiveS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}/${venvArchiveFileName}`);
+        this.venvArchiveS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${venvArchiveFileName}`);
       }
     }
 
@@ -200,7 +200,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
         ),
       ],
       destinationBucket: artifactsBucket!,
-      destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}`,
+      destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}`,
       memoryLimit: 512,
       ephemeralStorageSize: Size.mebibytes(1000),
       prune: false,
@@ -208,7 +208,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
     });
 
-    this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.pysparkApplicationName}/${entrypointFileName}`);
+    this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${entrypointFileName}`);
 
     this.artifactsBucket = artifactsBucket;
     this.assetUploadBucketRole = assetUploadBucketRole;

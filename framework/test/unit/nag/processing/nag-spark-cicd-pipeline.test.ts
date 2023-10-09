@@ -52,7 +52,7 @@ class MyStackFactory implements ApplicationStackFactory {
 }
 
 const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
-  applicationName: 'test',
+  sparkApplicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
   cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',

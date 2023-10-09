@@ -14,7 +14,7 @@ export interface PySparkApplicationPackageProps {
     * The name of the pyspark application.
     * This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
    */
-  readonly pysparkApplicationName: string;
+  readonly applicationName: string;
 
   /**
    * The source path in your code base where you have the entrypoint stored

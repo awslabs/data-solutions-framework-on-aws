@@ -3581,7 +3581,7 @@ class MyStackFactory implements ApplicationStackFactory {
 }
 
 new SparkCICDPipeline(stack, 'TestConstruct', {
-  applicationName: 'test',
+  sparkApplicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
   cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
@@ -5604,12 +5604,26 @@ const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the pyspark application. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | The name of the pyspark application. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
+
+---
+
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-dsf.PySparkApplicationPackageProps.property.applicationName"></a>
+
+```typescript
+public readonly applicationName: string;
+```
+
+- *Type:* string
+
+The name of the pyspark application.
+
+This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
 
 ---
 
@@ -5622,20 +5636,6 @@ public readonly entrypointPath: string;
 - *Type:* string
 
 The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`.
-
----
-
-##### `pysparkApplicationName`<sup>Required</sup> <a name="pysparkApplicationName" id="aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName"></a>
-
-```typescript
-public readonly pysparkApplicationName: string;
-```
-
-- *Type:* string
-
-The name of the pyspark application.
-
-This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
 
 ---
 
@@ -5713,26 +5713,14 @@ const sparkEmrCICDPipelineProps: SparkEmrCICDPipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#aws-dsf.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
-
----
-
-##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-dsf.SparkEmrCICDPipelineProps.property.applicationName"></a>
-
-```typescript
-public readonly applicationName: string;
-```
-
-- *Type:* string
-
-The name of the Spark application to be deployed.
 
 ---
 
@@ -5745,6 +5733,18 @@ public readonly applicationStackFactory: ApplicationStackFactory;
 - *Type:* <a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a>
 
 The application Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `sparkApplicationName`<sup>Required</sup> <a name="sparkApplicationName" id="aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationName"></a>
+
+```typescript
+public readonly sparkApplicationName: string;
+```
+
+- *Type:* string
+
+The name of the Spark application to be deployed.
 
 ---
 

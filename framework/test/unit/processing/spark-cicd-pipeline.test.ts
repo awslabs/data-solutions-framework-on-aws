@@ -45,7 +45,7 @@ describe('With minimal configuration, the construct', () => {
   }
 
   new SparkEmrCICDPipeline(stack, 'TestConstruct', {
-    applicationName: 'test',
+    sparkApplicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
   });
 
@@ -189,7 +189,7 @@ describe('With custom configuration, the construct', () => {
   }
 
   new SparkEmrCICDPipeline(stack, 'TestConstruct', {
-    applicationName: 'test',
+    sparkApplicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
     cdkApplicationPath: 'cdk/',
     sparkApplicationPath: 'spark/',
