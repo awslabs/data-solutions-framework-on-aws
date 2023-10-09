@@ -51,12 +51,20 @@ class ApplicationStack(Stack):
                 iam.PolicyStatement(
                     effect=iam.Effect.ALLOW,
                     actions=[
-                        "s3:GetObject",
+                        "s3:GetObject*",
+                        "s3:GetBucket*",
+                        "s3:List*",
+                        "s3:DeleteObject*",
                         "s3:PutObject",
+                        "s3:PutObjectTagging",
+                        "s3:PutObjectVersionTagging",
+                        "s3:Abort*"
                     ],
                     resources=[
                         f"{storage.bronze_bucket.bucket_arn}/*",
                         f"{storage.silver_bucket.bucket_arn}/*",
+                        storage.silver_bucket.bucket_arn,
+                        storage.bronze_bucket.bucket_arn
                     ],
                 )
             ]
@@ -65,6 +73,7 @@ class ApplicationStack(Stack):
         processing_exec_role = dsf.SparkEmrServerlessRuntime.create_execution_role(
             self, "ProcessingExecRole", processing_policy_doc
         )
+
         storage.bronze_bucket.grant_read_write(processing_exec_role)
         storage.silver_bucket.grant_read_write(processing_exec_role)
 
@@ -79,11 +88,15 @@ class ApplicationStack(Stack):
             pyspark_application_name="taxi-trip-aggregation",
             removal_policy=RemovalPolicy.DESTROY,
         )
+
+        spark_app.artifacts_bucket.grant_read_write(processing_exec_role)
+
         params = (
             f"--conf"
-            " spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi"
-            " --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}"
+            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi"
+            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}"
         )
+
         spark_job = dsf.SparkEmrServerlessJob(
             self,
             "SparkProcessingJob",
