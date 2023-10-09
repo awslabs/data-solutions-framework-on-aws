@@ -5,12 +5,11 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
-import { Aws } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 
 import { AccessLogsBucket } from './access-logs-bucket';
 import { AnalyticsBucket } from './analytics-bucket';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 
 /**
@@ -24,20 +23,20 @@ export interface DataLakeStorageProps {
   readonly dataLakeKey?: Key;
 
   /**
-   * Name of the Bronze bucket. Will be appended by a unique ID.
-   * @default - `bronze` will be used.
+   * Name of the Bronze bucket. Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
+   * @default - `bronze-<ACCOUNT_ID>-<REGION>-<UNIQUE_ID>` will be used.
    */
   readonly bronzeBucketName?: string;
 
   /**
-   * Name of the Silver bucket. Will be appended by a unique ID.
-   * @default - `silver` will be used.
+   * Name of the Silver bucket. Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
+   * @default - `silver-<ACCOUNT_ID>-<REGION>-<UNIQUE_ID>` will be used.
    */
   readonly silverBucketName?: string;
 
   /**
-   * Name of the Gold bucket. Will be appended by a unique ID.
-   * @default - `gold` will be used.
+   * Name of the Gold bucket. Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
+   * @default - `gold-<ACCOUNT_ID>-<REGION>-<UNIQUE_ID>` will be used.
    */
   readonly goldBucketName?: string;
 
@@ -159,7 +158,7 @@ export class DataLakeStorage extends TrackedConstruct {
     // Create the bronze data bucket with the bronze transitions
     this.bronzeBucket = new AnalyticsBucket(this, 'BronzeBucket', {
       encryptionKey: this.dataLakeKey,
-      bucketName: props?.bronzeBucketName || ('bronze' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION),
+      bucketName: props?.bronzeBucketName || BucketUtils.generateUniqueBucketName(this, 'BronzeBucket', 'bronze'),
       lifecycleRules: [
         {
           transitions: bronzeTransitions,
@@ -167,7 +166,6 @@ export class DataLakeStorage extends TrackedConstruct {
       ],
       removalPolicy,
       serverAccessLogsBucket: this.accessLogsBucket,
-      serverAccessLogsPrefix: (props?.bronzeBucketName || 'bronze') + '-bucket',
     });
 
     // Prepare Amazon S3 Lifecycle Rules for silver data
@@ -189,7 +187,7 @@ export class DataLakeStorage extends TrackedConstruct {
     // Create the silver data bucket
     this.silverBucket = new AnalyticsBucket(this, 'SilverBucket', {
       encryptionKey: this.dataLakeKey,
-      bucketName: props?.silverBucketName || ('silver' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION),
+      bucketName: props?.silverBucketName || BucketUtils.generateUniqueBucketName(this, 'SilverBucket', 'silver'),
       lifecycleRules: [
         {
           transitions: silverTransitions,
@@ -197,7 +195,6 @@ export class DataLakeStorage extends TrackedConstruct {
       ],
       removalPolicy,
       serverAccessLogsBucket: this.accessLogsBucket,
-      serverAccessLogsPrefix: (props?.silverBucketName || 'silver') + '-bucket',
     });
 
     // Prepare Amazon S3 Lifecycle Rules for silver data
@@ -219,7 +216,7 @@ export class DataLakeStorage extends TrackedConstruct {
     // Create the gold data bucket
     this.goldBucket = new AnalyticsBucket(this, 'GoldBucket', {
       encryptionKey: this.dataLakeKey,
-      bucketName: props?.goldBucketName || ('gold' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION),
+      bucketName: props?.goldBucketName || BucketUtils.generateUniqueBucketName(this, 'GoldBucket', 'gold'),
       lifecycleRules: [
         {
           transitions: goldTransitions,
@@ -227,7 +224,6 @@ export class DataLakeStorage extends TrackedConstruct {
       ],
       removalPolicy,
       serverAccessLogsBucket: this.accessLogsBucket,
-      serverAccessLogsPrefix: (props?.goldBucketName || 'gold') + '-bucket',
     });
   }
 }

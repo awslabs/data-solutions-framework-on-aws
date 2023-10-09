@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: MIT-0
 
 
-import { Duration, Names, RemovalPolicy, UniqueResourceNameOptions } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Bucket, BucketEncryption, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
-import { Aws } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 
 import { AnalyticsBucketProps } from './analytics-bucket-props';
-import { Context } from '../utils';
+import { Context, BucketUtils } from '../utils';
 
 /**
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
+* The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 * See documentation TODO insert link
 *
 * @example
@@ -40,18 +40,14 @@ export class AnalyticsBucket extends Bucket {
 
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
-    const bucketName = props?.bucketName || ('analytics-bucket' + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION) ;
+    const bucketName = props.bucketName || BucketUtils.generateUniqueBucketName(scope, id, 'analytics');
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
     const autoDeleteObjects = removalPolicy == RemovalPolicy.DESTROY;
-
-    const uniqueResourceNameOptions: UniqueResourceNameOptions = {
-      maxLength: 60 - bucketName.length,
-    };
 
     super(scope, id, {
       ...props,
       autoDeleteObjects,
-      bucketName: bucketName + '-' + Names.uniqueResourceName(scope, uniqueResourceNameOptions).toLowerCase(),
+      bucketName: bucketName,
       blockPublicAccess: props?.blockPublicAccess || BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
       encryption: BucketEncryption.KMS,

@@ -7,6 +7,8 @@
 
 Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
+Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
+
 *Example*
 
 ```typescript
@@ -1152,6 +1154,7 @@ first call to addToResourcePolicy(s).
 
 Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
+The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 See documentation TODO insert link
 
 *Example*
@@ -4772,7 +4775,7 @@ public readonly bucketName: string;
 ```
 
 - *Type:* string
-- *Default:* Assigned by CloudFormation (recommended).
+- *Default:* `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 
 Physical name of this bucket.
 
@@ -5466,11 +5469,11 @@ public readonly bronzeBucketName: string;
 ```
 
 - *Type:* string
-- *Default:* `bronze` will be used.
+- *Default:* `bronze-<ACCOUNT_ID>-<REGION>-<UNIQUE_ID>` will be used.
 
 Name of the Bronze bucket.
 
-Will be appended by a unique ID.
+Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
 
 ---
 
@@ -5520,11 +5523,11 @@ public readonly goldBucketName: string;
 ```
 
 - *Type:* string
-- *Default:* `gold` will be used.
+- *Default:* `gold-<ACCOUNT_ID>-<REGION>-<UNIQUE_ID>` will be used.
 
 Name of the Gold bucket.
 
-Will be appended by a unique ID.
+Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
 
 ---
 
@@ -5577,11 +5580,11 @@ public readonly silverBucketName: string;
 ```
 
 - *Type:* string
-- *Default:* `silver` will be used.
+- *Default:* `silver-<ACCOUNT_ID>-<REGION>-<UNIQUE_ID>` will be used.
 
 Name of the Silver bucket.
 
-Will be appended by a unique ID.
+Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
 
 ---
 
@@ -6722,6 +6725,71 @@ The stage of the pipeline.
 
 ---
 
+
+
+
+### BucketUtils <a name="BucketUtils" id="aws-dsf.BucketUtils"></a>
+
+Utils for working with Amazon S3 buckets.
+
+#### Initializers <a name="Initializers" id="aws-dsf.BucketUtils.Initializer"></a>
+
+```typescript
+import { BucketUtils } from 'aws-dsf'
+
+new BucketUtils()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.BucketUtils.generateUniqueBucketName">generateUniqueBucketName</a></code> | Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope. |
+
+---
+
+##### `generateUniqueBucketName` <a name="generateUniqueBucketName" id="aws-dsf.BucketUtils.generateUniqueBucketName"></a>
+
+```typescript
+import { BucketUtils } from 'aws-dsf'
+
+BucketUtils.generateUniqueBucketName(scope: Construct, id: string, name: string)
+```
+
+Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope.
+
+The bucket name is suffixed the AWS account ID, the AWS region and a unique 8 characters hash.
+The maximum length for name is 26 characters.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.BucketUtils.generateUniqueBucketName.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the current scope where the construct is created (generally `this`).
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.BucketUtils.generateUniqueBucketName.parameter.id"></a>
+
+- *Type:* string
+
+the CDK ID of the construct.
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.BucketUtils.generateUniqueBucketName.parameter.name"></a>
+
+- *Type:* string
+
+the name of the bucket.
+
+---
 
 
 

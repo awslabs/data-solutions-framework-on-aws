@@ -27,7 +27,7 @@ const encryptionKey = new Key(stack, 'DataKey', {
   enableKeyRotation: true,
 });
 
-const bucket = new AnalyticsBucket(stack, 'DefaultAnalyticsBucket', {
+const bucket = new AnalyticsBucket(stack, 'DefBucket', {
   encryptionKey,
   removalPolicy: RemovalPolicy.RETAIN,
 });

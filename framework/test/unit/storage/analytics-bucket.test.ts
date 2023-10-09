@@ -14,12 +14,10 @@ import { Key } from 'aws-cdk-lib/aws-kms';
 import { AnalyticsBucket } from '../../../src';
 
 
-describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
+describe('AnalyticsBucket Construct with default configuration', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
-  // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -31,35 +29,13 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     encryptionKey,
   });
 
-  // Instantiate AnalyticsBucket Construct with custom configuration
-  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
-    bucketName: 'custom-analytics-bucket',
-    removalPolicy: RemovalPolicy.DESTROY,
-    encryptionKey,
-  });
-
   const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('AnalyticsBucket should provision 2 buckets', () => {
-    template.resourceCountIs('AWS::S3::Bucket', 2);
-  });
-
-  test('AnalyticsBucket should create a bucket with a proper default configuration', () => {
+  test(' should create a bucket with a proper default configuration', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                'analytics-bucket-',
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
-              ],
-            ],
-          },
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -92,7 +68,26 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     );
   });
 
-  test('AnalyticsBucket should enforce SSL', () => {
+  test(' should create a bucket with a unique ID', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'analytics-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-[a-z0-9]{8}$'),
+            ],
+          ],
+        },
+      }),
+    );
+  });
+
+  test(' should enforce SSL', () => {
     template.hasResource('AWS::S3::BucketPolicy',
       Match.objectLike({
         Properties: {
@@ -114,20 +109,30 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
       }),
     );
   });
+});
 
-  test('AnalyticsBucket should create a bucket with a proper custom configuration', () => {
-    template.hasResource('AWS::S3::Bucket',
-      Match.objectLike({
-        Properties: {
-          BucketName: Match.stringLikeRegexp('custom-analytics-bucket-.*'),
-        },
-        UpdateReplacePolicy: 'Delete',
-        DeletionPolicy: 'Delete',
-      }),
-    );
+describe('AnalyticsBucket Construct with custom configuration and DESTROY flag set to true', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  // Set context value for global data removal policy
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
+  const encryptionKey = new Key(stack, 'DataKey', {
+    removalPolicy: RemovalPolicy.DESTROY,
+    enableKeyRotation: true,
   });
 
-  test('AnalyticsBucket should destroy objects if set in custom configuration', () => {
+  // Instantiate AnalyticsBucket Construct with custom configuration
+  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
+    bucketName: 'analytics-bucket',
+    removalPolicy: RemovalPolicy.DESTROY,
+    encryptionKey,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test(' with DESTROY removalPolicy should destroy objects', () => {
     template.hasResource('Custom::S3AutoDeleteObjects',
       Match.objectLike({
         Properties: {
@@ -143,20 +148,19 @@ describe('AnalyticsBucket Construct with DESTROY flag set to true', () => {
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 1);
   });
 
-  test('CustomAnalyticsBucket with DESTROY removalPolicy should be destroyed if global removal policy is true', () => {
+  test(' with DESTROY removalPolicy should be destroyed if global removal policy is true', () => {
     // Stack has no a warning about the mismatch between removal policies
     Annotations.fromStack(stack).hasNoWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
 
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('custom-analytics-bucket.*'),
+          BucketName: 'analytics-bucket',
         },
         DeletionPolicy: 'Delete',
       }),
     );
   });
-
 });
 
 describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
@@ -171,33 +175,28 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
     enableKeyRotation: true,
   });
 
-  // Instantiate AnalyticsBucket Construct with the default configuration
-  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket', {
-    encryptionKey: encryptionKey,
-  });
-
   // Instantiate AnalyticsBucket Construct with custom configuration
   new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
-    bucketName: 'custom-analytics-bucket',
+    bucketName: 'analytics-bucket',
     encryptionKey: encryptionKey,
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
   const template = Template.fromStack(stack);
 
-  test('DefaultAnalyticsBucket should not destroy objects if DESTROY flag is false', () => {
+  test(' should not destroy objects if DESTROY flag is false', () => {
     // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
   });
 
-  test('CustomAnalyticsBucket with DESTROY removalPolicy should not be destroyed if global removal policy is false', () => {
+  test(' with DESTROY removalPolicy should not be destroyed if global removal policy is false', () => {
     // Stack has a warning about the mismatch between removal policies
     Annotations.fromStack(stack).hasWarning('*', Match.stringLikeRegexp('WARNING: removalPolicy was reverted back to'));
 
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp('custom-analytics-bucket.*'),
+          BucketName: 'analytics-bucket',
         },
         DeletionPolicy: 'Retain',
       }),
@@ -216,23 +215,75 @@ describe('Use AnalyticsBucket without setting a global data removal policy', () 
     enableKeyRotation: true,
   });
 
-  // Instantiate AnalyticsBucket Construct with the default configuration
-  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket', {
-    encryptionKey: encryptionKey,
-  });
-
   // Instantiate AnalyticsBucket Construct with custom configuration
   new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
-    bucketName: 'custom-analytics-bucket',
+    bucketName: 'analytics-bucket',
     encryptionKey: encryptionKey,
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
   const template = Template.fromStack(stack);
 
-  test('AnalyticsBucket should not destroy objects if DESTROY flag is true but global data removal policy is not set', () => {
+  test(' should not destroy objects if DESTROY flag is true but global data removal policy is not set', () => {
     // Set autoDeleteObjects only if DESTROY flag is true && Removal policy is DESTROY
     template.resourceCountIs('Custom::S3AutoDeleteObjects', 0);
   });
 
 });
+
+describe('2 AnalyticsBucket Constructs in the same stack', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const encryptionKey = new Key(stack, 'DataKey');
+
+  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket1', {
+    encryptionKey,
+  });
+
+  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket2', {
+    encryptionKey,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test(' should create the first bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'analytics-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-73053f9e'),
+            ],
+          ],
+        },
+      }),
+    );
+  });
+
+  test(' should create the second bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'analytics-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              Match.stringLikeRegexp('-6bb27287'),
+            ],
+          ],
+        },
+      }),
+    );
+  });
+});
+

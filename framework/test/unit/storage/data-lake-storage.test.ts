@@ -77,7 +77,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -115,9 +115,20 @@ describe('DataLakeStorage Construct with defaults', () => {
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: Match.stringLikeRegexp('bronze-.*'),
+            LogFilePrefix: {
+              'Fn::Join': [
+                '',
+                [
+                  'bronze-',
+                  { Ref: 'AWS::AccountId' },
+                  '-',
+                  { Ref: 'AWS::Region' },
+                  Match.stringLikeRegexp('-[a-z0-9]{8}$'),
+                ],
+              ],
+            },
           },
         },
         UpdateReplacePolicy: 'Retain',
@@ -138,7 +149,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -172,9 +183,20 @@ describe('DataLakeStorage Construct with defaults', () => {
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: Match.stringLikeRegexp('gold-.*'),
+            LogFilePrefix: {
+              'Fn::Join': [
+                '',
+                [
+                  'gold-',
+                  { Ref: 'AWS::AccountId' },
+                  '-',
+                  { Ref: 'AWS::Region' },
+                  Match.stringLikeRegexp('-[a-z0-9]{8}$'),
+                ],
+              ],
+            },
           },
         },
         UpdateReplacePolicy: 'Retain',
@@ -195,7 +217,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -229,9 +251,20 @@ describe('DataLakeStorage Construct with defaults', () => {
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: Match.stringLikeRegexp('silver-.*'),
+            LogFilePrefix: {
+              'Fn::Join': [
+                '',
+                [
+                  'silver-',
+                  { Ref: 'AWS::AccountId' },
+                  '-',
+                  { Ref: 'AWS::Region' },
+                  Match.stringLikeRegexp('-[a-z0-9]{8}$'),
+                ],
+              ],
+            },
           },
         },
         UpdateReplacePolicy: 'Retain',
@@ -277,7 +310,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -300,7 +333,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -323,7 +356,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -372,7 +405,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -395,7 +428,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -418,7 +451,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-.*'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -467,6 +500,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
   });
 
   const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test(' should not create a KMS key', () => {
     template.resourceCountIs('AWS::KMS::Key', 1);
@@ -481,7 +515,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp(`${customBronzeName}-.*`),
+          BucketName: customBronzeName,
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -516,9 +550,9 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: Match.stringLikeRegexp(`${customBronzeName}-.*`),
+            LogFilePrefix: customBronzeName,
           },
         },
       }),
@@ -529,7 +563,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp(`${customGoldName}-.*`),
+          BucketName: customGoldName,
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -564,9 +598,9 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: Match.stringLikeRegexp(`${customGoldName}-.*`),
+            LogFilePrefix: customGoldName,
           },
         },
       }),
@@ -577,7 +611,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: Match.stringLikeRegexp(`${customSilverName}-.*`),
+          BucketName: customSilverName,
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -612,12 +646,64 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: Match.stringLikeRegexp(`${customSilverName}-.*`),
+            LogFilePrefix: customSilverName,
           },
         },
       }),
     );
   });
 });
+
+describe('2 DataLakeStorageConstructs in the same stack', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  new DataLakeStorage(stack, 'Default1');
+
+  new DataLakeStorage(stack, 'Default2');
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test(' should create the first bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'bronze-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              '-9ab4db34',
+            ],
+          ],
+        },
+      }),
+    );
+  });
+
+  test(' should create the second bucket with unique ID in the name', () => {
+    template.hasResourceProperties('AWS::S3::Bucket',
+      Match.objectLike({
+        BucketName: {
+          'Fn::Join': [
+            '',
+            [
+              'bronze-',
+              { Ref: 'AWS::AccountId' },
+              '-',
+              { Ref: 'AWS::Region' },
+              '-d6f1dbe9',
+            ],
+          ],
+        },
+      }),
+    );
+  });
+});
+

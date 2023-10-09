@@ -36,7 +36,7 @@ new CfnOutput(stack, 'PySparkAppEntrypointS3Uri', {
 });
 
 new CfnOutput(stack, 'PySparkVenvArchiveS3Uri', {
-  value: pysparkApp.venvArchiveS3Uri!,
+  value: pysparkApp.venvArchiveS3Uri || 'no_venv',
   exportName: 'PySparkVenvArchiveS3Uri',
 });
 

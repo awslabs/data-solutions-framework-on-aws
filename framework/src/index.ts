@@ -7,6 +7,7 @@ export { DataCatalogDatabase, DataCatalogDatabaseProps, DataLakeCatalog, DataLak
 export { SparkEmrServerlessRuntimeProps, Architecture, SparkEmrServerlessRuntime } from './processing/spark-runtime/emr-serverless';
 export { EmrRuntimeVersion, SparkImage, EMR_DEFAULT_VERSION } from './utils/emr-releases';
 export { CICDStage, ApplicationStageProps, ApplicationStage } from './utils/application-stage';
+export { BucketUtils } from './utils/bucket-utils';
 export { ApplicationStackFactory } from './utils/application-stack-factory';
 export { NetworkConfiguration, vpcBootstrap } from './utils/vpc-helper';
 export { PySparkApplicationPackage, PySparkApplicationPackageProps } from './processing';

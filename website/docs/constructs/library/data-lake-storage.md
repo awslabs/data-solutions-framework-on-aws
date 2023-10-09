@@ -22,7 +22,7 @@ Here is the overview of `DataLakeStorage` features:
 
 ![Data lake storage](../../../static/img/adsf-data-lake-storage.png)
 
-## Usage Example
+## Usage
 
 ```python
 from aws_cdk import (
@@ -35,6 +35,33 @@ app = App()
 stack = Stack(app, 'DataLakeStorageStack')
 
 DataLakeStorage(stack, 'MyDataLakeStorage')
+```
+## Bucket naming
+
+The construct ensures the default bucket names uniqueness which is a [pre-requisite](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) to create Amazon S3 buckets. 
+To achieve this, the construct is creating the default bucket names like `<LAYER>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>` where:
+ * `<LAYER>` is the layer in the medallion architecture (bronze, silver or gold).
+ * `<AWS_ACCOUNT_ID>` and `<AWS_REGION>` are the account ID and region where you deploy the construct.
+ * `<UNIQUEID>` is an 8 characters unique ID calculated based on the CDK path.
+
+If you provide the `bucketName` parameter, you need to ensure the name is globaly unique. 
+Alternatively, you can use the `BucketUtils.generateUniqueBucketName()` utility method to create unique names. 
+This method generates a unique name based on the provided name, the construct ID and the CDK scope:
+ * The bucket name is suffixed the AWS account ID, the AWS region and an 8 character hash of the CDK path. 
+ * The maximum length for the bucket name is 26 characters.
+
+```python
+from aws_cdk import (
+  App, 
+  Stack, 
+)
+from aws_dsf import DataLakeStorage, BucketUtils
+
+app = App()
+stack = Stack(app, 'DataLakeStorageStack')
+
+DataLakeStorage(stack, 'MyDataLakeStorage',
+                bronze_bucket_name=BucketUtils.generate_unique_bucket_name(stack, 'MyDataLakeStorage', 'my-custom-bronze'))
 ```
 
 ## Objects removal
