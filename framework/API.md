@@ -5604,12 +5604,26 @@ const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the pyspark application. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName">pysparkApplicationName</a></code> | <code>string</code> | The name of the pyspark application. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
+
+---
+
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-dsf.PySparkApplicationPackageProps.property.applicationName"></a>
+
+```typescript
+public readonly applicationName: string;
+```
+
+- *Type:* string
+
+The name of the pyspark application.
+
+This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
 
 ---
 
@@ -5622,20 +5636,6 @@ public readonly entrypointPath: string;
 - *Type:* string
 
 The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`.
-
----
-
-##### `pysparkApplicationName`<sup>Required</sup> <a name="pysparkApplicationName" id="aws-dsf.PySparkApplicationPackageProps.property.pysparkApplicationName"></a>
-
-```typescript
-public readonly pysparkApplicationName: string;
-```
-
-- *Type:* string
-
-The name of the pyspark application.
-
-This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
 
 ---
 

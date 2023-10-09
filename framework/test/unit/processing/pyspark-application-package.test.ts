@@ -23,7 +23,7 @@ describe('With minimal configuration, the construct', () => {
   const appName = 'my-spark';
 
   new PySparkApplicationPackage (stack, 'PySparkPacker', {
-    pysparkApplicationName: appName,
+    applicationName: appName,
     entrypointPath: path.join(__dirname, '../../resources/processing/pyspark-application-package/src/pyspark.py'),
     dependenciesFolder: path.join(__dirname, '../../resources/processing/pyspark-application-package'),
     venvArchivePath: '/output/pyspark.tar.gz',
@@ -283,7 +283,7 @@ describe('With removalPolicy.DESTROY configuration and no global removal policy 
   const appName = 'my-spark';
 
   new PySparkApplicationPackage (stack, 'PySparkPacker', {
-    pysparkApplicationName: appName,
+    applicationName: appName,
     entrypointPath: path.join(__dirname, '../../resources/processing/pyspark-application-package/src/pyspark.py'),
     dependenciesFolder: path.join(__dirname, '../../resources/processing/pyspark-application-package'),
     venvArchivePath: '/output/pyspark.tar.gz',
@@ -310,7 +310,7 @@ describe('With removalPolicy.DESTROY configuration and global removal policy set
   const appName = 'my-spark';
 
   new PySparkApplicationPackage (stack, 'PySparkPacker', {
-    pysparkApplicationName: appName,
+    applicationName: appName,
     entrypointPath: path.join(__dirname, '../../resources/processing/pyspark-application-package/src/pyspark.py'),
     dependenciesFolder: path.join(__dirname, '../../resources/processing/pyspark-application-package'),
     venvArchivePath: '/output/pyspark.tar.gz',
@@ -336,7 +336,7 @@ describe('With no dependenciesFolder configuration, the construct', () => {
   const appName = 'my-spark';
 
   new PySparkApplicationPackage (stack, 'PySparkPacker', {
-    pysparkApplicationName: appName,
+    applicationName: appName,
     entrypointPath: path.join(__dirname, '../../resources/processing/pyspark-application-package/src/pyspark.py'),
   });
 

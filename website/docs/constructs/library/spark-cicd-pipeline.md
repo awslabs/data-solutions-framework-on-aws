@@ -99,7 +99,7 @@ class CICDPipelineStack(Stack):
     super().__init__(scope, id, **kwargs)
 
     SparkCICDPipeline(self, "SparkCICDPipeline",
-      application_name="SparkTest",
+      spark_application_name="SparkTest",
       application_stack_factory=EmrApplicationStackFactory()
     )
 ```
@@ -175,7 +175,7 @@ class CICDPipelineStack(Stack):
     super().__init__(scope, id, **kwargs)
     
     SparkCICDPipeline(self, "SparkCICDPipeline",
-      application_name="SparkTest",
+      spark_application_name="SparkTest",
       application_stack_factory=EmrApplicationStackFactory(),
       integ_test_script='spark/integ.sh',
       integ_test_env={

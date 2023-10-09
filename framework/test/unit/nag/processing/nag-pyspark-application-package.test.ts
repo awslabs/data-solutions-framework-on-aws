@@ -20,7 +20,7 @@ const app = new App();
 const stack = new Stack(app, 'Stack');
 
 new PySparkApplicationPackage (stack, 'PySparkPacker', {
-  pysparkApplicationName: 'my-pyspark',
+  applicationName: 'my-pyspark',
   entrypointPath: path.join(__dirname, '../../../resources/processing/pyspark-application-package/src/pyspark.py'),
   dependenciesFolder: path.join(__dirname, '../../../resources/processing/pyspark-application-package'),
   venvArchivePath: '/output/pyspark.tar.gz',
