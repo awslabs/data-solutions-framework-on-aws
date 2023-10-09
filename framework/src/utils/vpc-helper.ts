@@ -52,7 +52,7 @@ export function vpcBootstrap(
   const publicSubnetMask = vpcMask + 4;
   const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
-  const vpc = new Vpc(scope, 'MyVPC', {
+  const vpc = new Vpc(scope, 'AdsfVPC', {
     ipAddresses: IpAddresses.cidr(vpcCidr),
     maxAzs: 3,
     natGateways: 3,
@@ -73,8 +73,10 @@ export function vpcBootstrap(
   //Create a loggroup name based on the purpose of the VPC, either used by emr on eks or emr serverless app
   const logGroupName = eksClusterName ? `/aws/emr-eks-vpc-flow/${eksClusterName}`:`/aws/emr-serverless-vpc/${Names.nodeUniqueId(scope.node)}` ;
 
+  const logGroupResourceId = eksClusterName ? 'EmrEksVpcFlowLog' : 'EmrServerlessVpcFlowLog' ;
+
   //Create VPC flow log for the EKS VPC
-  let eksVpcFlowLogLogGroup = new LogGroup(scope, 'eksVpcFlowLogLogGroup', {
+  let eksVpcFlowLogLogGroup = new LogGroup(scope, `${logGroupResourceId}Group`, {
     logGroupName: logGroupName,
     encryptionKey: logKmsKey,
     retention: RetentionDays.ONE_WEEK,
@@ -107,12 +109,12 @@ export function vpcBootstrap(
     assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
   });
 
-  vpc.addFlowLog('eksVpcFlowLog', {
+  vpc.addFlowLog(`${logGroupResourceId}`, {
     destination: FlowLogDestination.toCloudWatchLogs(eksVpcFlowLogLogGroup, iamRoleforFlowLog),
   });
 
   // Create a gateway endpoint for S3
-  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('S3Endpoint', {
+  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('AdsfVpcS3Endpoint', {
     service: GatewayVpcEndpointAwsService.S3,
   });
 
