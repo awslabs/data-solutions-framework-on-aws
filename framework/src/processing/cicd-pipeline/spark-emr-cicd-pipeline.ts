@@ -31,7 +31,7 @@ export interface SparkEmrCICDPipelineProps {
   /**
   * The name of the Spark application to be deployed.
   */
-  readonly applicationName: string;
+  readonly sparkApplicationName: string;
 
   /**
    * The application Stack to deploy in the different CDK Pipelines Stages
@@ -105,7 +105,7 @@ export interface SparkEmrCICDPipelineProps {
 * }
 *
 * new SparkCICDPipeline(stack, 'TestConstruct', {
-*   applicationName: 'test',
+*   sparkApplicationName: 'test',
 *   applicationStackFactory: new MyStackFactory(),
 *   cdkApplicationPath: 'cdk/',
 *   sparkApplicationPath: 'spark/',
@@ -197,7 +197,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
 
     // Create a CodeCommit repository to host the code
     const codeRepository = new Repository(this, 'CodeCommitRepository', {
-      repositoryName: props.applicationName,
+      repositoryName: props.sparkApplicationName,
     });
 
     const buildStage = new CodeBuildStep('CodeBuildSynthStep', {

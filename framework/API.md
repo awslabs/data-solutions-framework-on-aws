@@ -3581,7 +3581,7 @@ class MyStackFactory implements ApplicationStackFactory {
 }
 
 new SparkCICDPipeline(stack, 'TestConstruct', {
-  applicationName: 'test',
+  sparkApplicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
   cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
@@ -5713,26 +5713,14 @@ const sparkEmrCICDPipelineProps: SparkEmrCICDPipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#aws-dsf.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
-
----
-
-##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-dsf.SparkEmrCICDPipelineProps.property.applicationName"></a>
-
-```typescript
-public readonly applicationName: string;
-```
-
-- *Type:* string
-
-The name of the Spark application to be deployed.
 
 ---
 
@@ -5745,6 +5733,18 @@ public readonly applicationStackFactory: ApplicationStackFactory;
 - *Type:* <a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a>
 
 The application Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `sparkApplicationName`<sup>Required</sup> <a name="sparkApplicationName" id="aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationName"></a>
+
+```typescript
+public readonly sparkApplicationName: string;
+```
+
+- *Type:* string
+
+The name of the Spark application to be deployed.
 
 ---
 
