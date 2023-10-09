@@ -27,7 +27,7 @@ If using different accounts, bootstrap staging and production accounts with CDK 
 cdk bootstrap --profile staging \
 aws://<STAGING_ACCOUNT_ID>/<REGION> \
 --trust <CICD_ACCOUNT_ID> \
---cloudformation-execution-policies “arn:aws:iam::aws:policy/<POLICY>”
+--cloudformation-execution-policies “POLICY_ARN”
 ```
 More information is available [here](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html#cdk_pipeline_bootstrap)
 
