@@ -11,8 +11,7 @@ import { Context, BucketUtils } from '../utils';
 
 /**
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
-* The bucket name and the bucket CDK ID must be less than 23 characters together.
-* The generated bucket name is <BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>
+* The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 * See documentation TODO insert link
 *
 * @example
@@ -41,10 +40,9 @@ export class AnalyticsBucket extends Bucket {
 
   constructor(scope: Construct, id: string, props: AnalyticsBucketProps) {
 
+    const bucketName = props.bucketName || BucketUtils.generateUniqueBucketName(scope, id, 'analytics');
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
     const autoDeleteObjects = removalPolicy == RemovalPolicy.DESTROY;
-
-    const bucketName = BucketUtils.generateUniqueBucketName(id, scope, props.bucketName);
 
     super(scope, id, {
       ...props,

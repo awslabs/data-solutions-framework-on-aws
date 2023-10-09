@@ -27,12 +27,12 @@ const encryptionKey = new Key(stack, 'DataKey', {
 });
 
 // Instantiate AnalyticsBucket Construct with default
-new AnalyticsBucket(stack, 'DefaultAnalyticsBucket', {
+new AnalyticsBucket(stack, 'DefaultBucket', {
   encryptionKey,
 });
 
 // Instantiate AnalyticsBucket Construct with custom parameters
-new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
+new AnalyticsBucket(stack, 'CustomBucket', {
   encryptionKey,
   removalPolicy: RemovalPolicy.DESTROY,
 });

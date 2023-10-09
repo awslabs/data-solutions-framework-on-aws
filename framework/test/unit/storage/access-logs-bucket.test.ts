@@ -60,11 +60,11 @@ describe('AccessLogsBucket Construct with default configuration', () => {
           'Fn::Join': [
             '',
             [
-              'defaultaccesslogsbucket-',
+              'accesslogs-',
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+              Match.stringLikeRegexp('-[a-z0-9]{8}$'),
             ],
           ],
         },
@@ -82,8 +82,8 @@ describe('AccessLogsBucket Construct with custom configuration', () => {
   stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with custom parameters
-  new AccessLogsBucket(stack, 'Custom', {
-    bucketName: 'access-logs',
+  new AccessLogsBucket(stack, 'CustomAccessLogsBucket', {
+    bucketName: 'accesslogs',
     encryption: BucketEncryption.KMS_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
@@ -94,18 +94,7 @@ describe('AccessLogsBucket Construct with custom configuration', () => {
   test(' should create a bucket with unique ID in the name', () => {
     template.hasResourceProperties('AWS::S3::Bucket',
       Match.objectLike({
-        BucketName: {
-          'Fn::Join': [
-            '',
-            [
-              'access-logs-custom-',
-              { Ref: 'AWS::AccountId' },
-              '-',
-              { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
-            ],
-          ],
-        },
+        BucketName: 'accesslogs',
       }),
     );
   });
@@ -143,9 +132,9 @@ describe('2 AccessLogsBucket Constructs in the same stack', () => {
   const stack = new Stack(app, 'Stack');
 
   // Instantiate AccessLogsBucket Construct with default
-  new AccessLogsBucket(stack, 'Default1');
+  new AccessLogsBucket(stack, 'DefaultAccessLogsBucket1');
 
-  new AccessLogsBucket(stack, 'Default2');
+  new AccessLogsBucket(stack, 'DefaultAccessLogsBucket2');
 
   const template = Template.fromStack(stack);
 
@@ -156,11 +145,11 @@ describe('2 AccessLogsBucket Constructs in the same stack', () => {
           'Fn::Join': [
             '',
             [
-              'default1-',
+              'accesslogs-',
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+              Match.stringLikeRegexp('-69eed7d8'),
             ],
           ],
         },
@@ -175,11 +164,11 @@ describe('2 AccessLogsBucket Constructs in the same stack', () => {
           'Fn::Join': [
             '',
             [
-              'default2-',
+              'accesslogs-',
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+              Match.stringLikeRegexp('-0d8ce964'),
             ],
           ],
         },

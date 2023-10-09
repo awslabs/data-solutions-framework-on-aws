@@ -1,41 +1,47 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws, Names } from 'aws-cdk-lib';
+import { createHmac } from 'crypto';
+import { Aws } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 /**
- * @internal
+ * Utils for working with Amazon S3 buckets.
  */
 export class BucketUtils {
+
   /**
-   * Return a unique id for the given scope.
-   * Calculated based on the hash of the scope path and the last maxLength characters.
-   * @param scope
-   * @param maxLength
-   * @returns the unique ID for the given scope.
+   * Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope.
+   * The bucket name is suffixed the AWS account ID, the AWS region and a unique 8 characters hash.
+   * The maximum length for name is 26 characters.
+   * @param name the name of the bucket
+   * @param id the CDK ID of the construct
+   * @param scope the current scope where the construct is created (generally `this`)
+   * @returns the unique Name for the bucket
    */
-  public static generateId(scope: Construct, maxLength: number): string {
-    const cdkUniqueName = Names.uniqueResourceName(scope, {
-      maxLength: maxLength,
-    }).toLowerCase();
-    const cdkUniqueNameLength = cdkUniqueName.length;
-    const offset = cdkUniqueNameLength > maxLength ? maxLength : cdkUniqueNameLength ;
-    return cdkUniqueName.substring(cdkUniqueNameLength - offset, cdkUniqueNameLength);
+  public static generateUniqueBucketName(scope: Construct, id: string, name: string): string {
+    if (name.length > 26) {
+      throw new Error('Bucket name is too long, maximum length for bucketName is 26');
+    }
+    return name + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION + '-' + BucketUtils.generateHash(scope, id);
   }
 
   /**
-   * Generate a unique Amazon S3 bucket name based on the provided name.
-   * The bucket name is suffixed with the CDK ID, the AWS account ID, the AWS region and a hash.
-   * @param name the name of the bucket
-   * @param id the CDK
-   * @param scope the scope of the bucket
-   * @returns the unique Name for the bucket
+   * Generate an 8 characters hash of the CDK scope using its path.
+   * @param scope the CDK construct scope
+   * @returns the hash
    */
-  public static generateUniqueBucketName(id: string, scope: Construct, name?: string): string {
-    const bucketNameSuffix = id.toLowerCase() + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION + '-' + BucketUtils.generateId(scope, 16);
-    const bucketName = name ? name + '-' : '' ;
+  private static generateHash(scope: Construct, id: string): string {
+    const node = scope.node;
 
-    return bucketName + bucketNameSuffix;
+    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id);
+
+    const secret = 'AWS Data Solutions Framework';
+    const hash = createHmac('sha256', secret)
+      .update(components)
+      .digest('hex')
+      .slice(0, 8);
+
+    return hash;
   }
 }

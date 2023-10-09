@@ -77,7 +77,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -115,7 +115,7 @@ describe('DataLakeStorage Construct with defaults', () => {
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
             LogFilePrefix: {
               'Fn::Join': [
@@ -125,7 +125,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                   { Ref: 'AWS::AccountId' },
                   '-',
                   { Ref: 'AWS::Region' },
-                  Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                  Match.stringLikeRegexp('-[a-z0-9]{8}$'),
                 ],
               ],
             },
@@ -149,7 +149,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -183,7 +183,7 @@ describe('DataLakeStorage Construct with defaults', () => {
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
             LogFilePrefix: {
               'Fn::Join': [
@@ -193,7 +193,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                   { Ref: 'AWS::AccountId' },
                   '-',
                   { Ref: 'AWS::Region' },
-                  Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                  Match.stringLikeRegexp('-[a-z0-9]{8}$'),
                 ],
               ],
             },
@@ -217,7 +217,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -251,7 +251,7 @@ describe('DataLakeStorage Construct with defaults', () => {
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
             LogFilePrefix: {
               'Fn::Join': [
@@ -261,7 +261,7 @@ describe('DataLakeStorage Construct with defaults', () => {
                   { Ref: 'AWS::AccountId' },
                   '-',
                   { Ref: 'AWS::Region' },
-                  Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                  Match.stringLikeRegexp('-[a-z0-9]{8}$'),
                 ],
               ],
             },
@@ -310,7 +310,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -333,7 +333,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -356,7 +356,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -405,7 +405,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -428,7 +428,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -451,7 +451,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
                 { Ref: 'AWS::AccountId' },
                 '-',
                 { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
+                Match.stringLikeRegexp('-[a-z0-9]{8}$'),
               ],
             ],
           },
@@ -515,18 +515,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                `${customBronzeName}-bronze-`,
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
-              ],
-            ],
-          },
+          BucketName: customBronzeName,
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -561,20 +550,9 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: {
-              'Fn::Join': [
-                '',
-                [
-                  Match.stringLikeRegexp(`${customBronzeName}-bronze.*`),
-                  { Ref: 'AWS::AccountId' },
-                  '-',
-                  { Ref: 'AWS::Region' },
-                  Match.stringLikeRegexp('-[a-z0-9]{16}$'),
-                ],
-              ],
-            },
+            LogFilePrefix: customBronzeName,
           },
         },
       }),
@@ -585,18 +563,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                `${customGoldName}-gold-`,
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
-              ],
-            ],
-          },
+          BucketName: customGoldName,
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -631,20 +598,9 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: {
-              'Fn::Join': [
-                '',
-                [
-                  Match.stringLikeRegexp(`${customGoldName}-gold.*`),
-                  { Ref: 'AWS::AccountId' },
-                  '-',
-                  { Ref: 'AWS::Region' },
-                  Match.stringLikeRegexp('-[a-z0-9]{16}$'),
-                ],
-              ],
-            },
+            LogFilePrefix: customGoldName,
           },
         },
       }),
@@ -655,18 +611,7 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                `${customSilverName}-silver-`,
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{16}$'),
-              ],
-            ],
-          },
+          BucketName: customSilverName,
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
@@ -701,20 +646,9 @@ describe('DataLakeStorage Construct with custom KMS and lifecycle rules configur
           },
           LoggingConfiguration: {
             DestinationBucketName: {
-              Ref: Match.stringLikeRegexp('AccessLogsBucket.*'),
+              Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
             },
-            LogFilePrefix: {
-              'Fn::Join': [
-                '',
-                [
-                  Match.stringLikeRegexp(`${customSilverName}-silver.*`),
-                  { Ref: 'AWS::AccountId' },
-                  '-',
-                  { Ref: 'AWS::Region' },
-                  Match.stringLikeRegexp('-[a-z0-9]{16}$'),
-                ],
-              ],
-            },
+            LogFilePrefix: customSilverName,
           },
         },
       }),
@@ -732,7 +666,7 @@ describe('2 DataLakeStorageConstructs in the same stack', () => {
   new DataLakeStorage(stack, 'Default2');
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test(' should create the first bucket with unique ID in the name', () => {
     template.hasResourceProperties('AWS::S3::Bucket',
@@ -745,7 +679,7 @@ describe('2 DataLakeStorageConstructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              '-stacult195838d20',
+              '-9ab4db34',
             ],
           ],
         },
@@ -753,7 +687,7 @@ describe('2 DataLakeStorageConstructs in the same stack', () => {
     );
   });
 
-  test('AccessLogsBucket should create the second bucket with unique ID in the name', () => {
+  test(' should create the second bucket with unique ID in the name', () => {
     template.hasResourceProperties('AWS::S3::Bucket',
       Match.objectLike({
         BucketName: {
@@ -764,7 +698,7 @@ describe('2 DataLakeStorageConstructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              '-stacult268918bf6',
+              '-d6f1dbe9',
             ],
           ],
         },

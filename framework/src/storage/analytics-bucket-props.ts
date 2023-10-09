@@ -124,7 +124,7 @@ export interface AnalyticsBucketProps {
 
   /**
    * Physical name of this bucket.
-   * @default - Assigned by CloudFormation (recommended).
+   * @default - `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
    */
   readonly bucketName?: string;
 

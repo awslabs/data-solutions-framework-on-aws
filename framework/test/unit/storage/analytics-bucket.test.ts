@@ -30,10 +30,7 @@ describe('AnalyticsBucket Construct with default configuration', () => {
   });
 
   const template = Template.fromStack(stack);
-
-  test(' should provision 2 buckets', () => {
-    template.resourceCountIs('AWS::S3::Bucket', 1);
-  });
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test(' should create a bucket with a proper default configuration', () => {
     template.hasResource('AWS::S3::Bucket',
@@ -78,11 +75,11 @@ describe('AnalyticsBucket Construct with default configuration', () => {
           'Fn::Join': [
             '',
             [
-              'defaultanalyticsbucket-',
+              'analytics-',
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+              Match.stringLikeRegexp('-[a-z0-9]{8}$'),
             ],
           ],
         },
@@ -127,7 +124,7 @@ describe('AnalyticsBucket Construct with custom configuration and DESTROY flag s
   });
 
   // Instantiate AnalyticsBucket Construct with custom configuration
-  new AnalyticsBucket(stack, 'Custom', {
+  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
     bucketName: 'analytics-bucket',
     removalPolicy: RemovalPolicy.DESTROY,
     encryptionKey,
@@ -140,7 +137,7 @@ describe('AnalyticsBucket Construct with custom configuration and DESTROY flag s
       Match.objectLike({
         Properties: {
           BucketName: {
-            Ref: Match.stringLikeRegexp('Custom.*'),
+            Ref: Match.stringLikeRegexp('CustomAnalyticsBucket.*'),
           },
         },
         UpdateReplacePolicy: 'Delete',
@@ -158,18 +155,7 @@ describe('AnalyticsBucket Construct with custom configuration and DESTROY flag s
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                'analytics-bucket-custom-',
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{5}$'),
-              ],
-            ],
-          },
+          BucketName: 'analytics-bucket',
         },
         DeletionPolicy: 'Delete',
       }),
@@ -190,7 +176,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   });
 
   // Instantiate AnalyticsBucket Construct with custom configuration
-  new AnalyticsBucket(stack, 'Custom', {
+  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
     bucketName: 'analytics-bucket',
     encryptionKey: encryptionKey,
     removalPolicy: RemovalPolicy.DESTROY,
@@ -210,18 +196,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
     template.hasResource('AWS::S3::Bucket',
       Match.objectLike({
         Properties: {
-          BucketName: {
-            'Fn::Join': [
-              '',
-              [
-                'analytics-bucket-custom-',
-                { Ref: 'AWS::AccountId' },
-                '-',
-                { Ref: 'AWS::Region' },
-                Match.stringLikeRegexp('-[a-z0-9]{5}$'),
-              ],
-            ],
-          },
+          BucketName: 'analytics-bucket',
         },
         DeletionPolicy: 'Retain',
       }),
@@ -241,7 +216,7 @@ describe('Use AnalyticsBucket without setting a global data removal policy', () 
   });
 
   // Instantiate AnalyticsBucket Construct with custom configuration
-  new AnalyticsBucket(stack, 'Custom', {
+  new AnalyticsBucket(stack, 'CustomAnalyticsBucket', {
     bucketName: 'analytics-bucket',
     encryptionKey: encryptionKey,
     removalPolicy: RemovalPolicy.DESTROY,
@@ -263,11 +238,11 @@ describe('2 AnalyticsBucket Constructs in the same stack', () => {
 
   const encryptionKey = new Key(stack, 'DataKey');
 
-  new AnalyticsBucket(stack, 'Default1', {
+  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket1', {
     encryptionKey,
   });
 
-  new AnalyticsBucket(stack, 'Default2', {
+  new AnalyticsBucket(stack, 'DefaultAnalyticsBucket2', {
     encryptionKey,
   });
 
@@ -280,11 +255,11 @@ describe('2 AnalyticsBucket Constructs in the same stack', () => {
           'Fn::Join': [
             '',
             [
-              'default1-',
+              'analytics-',
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+              Match.stringLikeRegexp('-73053f9e'),
             ],
           ],
         },
@@ -299,11 +274,11 @@ describe('2 AnalyticsBucket Constructs in the same stack', () => {
           'Fn::Join': [
             '',
             [
-              'default2-',
+              'analytics-',
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-[a-z0-9]{5}$'),
+              Match.stringLikeRegexp('-6bb27287'),
             ],
           ],
         },
