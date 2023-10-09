@@ -5,9 +5,9 @@ from aws_cdk import (
     RemovalPolicy,
     Stack,
 )
-from aws_dsf import SparkEmrCICDPipeline
 from constructs import Construct
 
+import aws_dsf as dsf
 from stacks.application_stack import SparkApplicationStackFactory
 
 
@@ -15,7 +15,7 @@ class CICDPipelineStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        SparkEmrCICDPipeline(
+        dsf.SparkEmrCICDPipeline(
             self,
             "SparkCICDPipeline",
             application_name="SparkTest",

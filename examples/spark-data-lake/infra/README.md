@@ -10,8 +10,9 @@ The business code is a simple PySpark application packaged in a common Python pr
  * A `test` folder containing the unit tests run via `pytest .` command from the root folder of the Spark project. You can use the [EMR Vscode toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonEMR.emr-tools) to locally test the application on an EMR local runtime.
 
 The infrastructure code is an AWS CDK application using the AWS DSF library to create the required resources. It contains 2 CDK stacks:
- * An application stack which provisions the Data Lake and the Spark runtime resources via the following constructs:
+ * An application stack which provisions the Data Lake, data catalog, and the Spark runtime resources via the following constructs:
    * A `DataLakeStorage` 
+   * A `DataCatalogDatatabse`
    * A `SparkEmrServerlessRuntime`
    * A `SparkEmrServerlessJob`
  * A CICD stack which provisions a CICD Pipeline to manage the application development lifecycle via the following constructs:
