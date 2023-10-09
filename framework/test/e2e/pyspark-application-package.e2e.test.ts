@@ -21,7 +21,7 @@ stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true)
 const appName = 'my-spark';
 
 const pysparkApp = new PySparkApplicationPackage (stack, 'PySparkPacker', {
-  pysparkApplicationName: appName,
+  applicationName: appName,
   entrypointPath: path.join(__dirname, '../resources/processing/pyspark-application-package/src/pyspark.py'),
   dependenciesFolder: path.join(__dirname, '../resources/processing/pyspark-application-package'),
   venvArchivePath: '/output/pyspark.tar.gz',

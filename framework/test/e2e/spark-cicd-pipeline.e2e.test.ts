@@ -12,7 +12,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { TestStack } from './test-stack';
 import { ApplicationStackFactory, SparkEmrCICDPipeline, SparkImage, CICDStage } from '../../src';
 
-jest.setTimeout(6000000);
+jest.setTimeout(9000000);
 
 // GIVEN
 const app = new App();
@@ -53,7 +53,7 @@ class MyStackFactory implements ApplicationStackFactory {
 }
 
 const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
-  applicationName: 'test',
+  sparkApplicationName: 'test',
   applicationStackFactory: new MyStackFactory(),
   cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
