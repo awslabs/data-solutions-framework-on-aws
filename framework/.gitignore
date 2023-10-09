@@ -33,6 +33,8 @@ jspm_packages/
 /test-reports/
 junit.xml
 /coverage/
+/dist/changelog.md
+/dist/version.txt
 !/.npmrc
 !/test/
 !/tsconfig.dev.json
