@@ -78,10 +78,35 @@ AnalyticsBucket(stack, 'AnalyticsBucket',
 
 ## Bucket Naming
 
-The construct ensures bucket name uniqueness globally which is a [pre-requisite](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) to create Amazon S3 buckets. 
-To achieve this, the construct is creating bucket names like `<BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>` where:
- * `<BUCKET_NAME>` is the property passed as the `bucket_name` to the constructor. If not provided the name will be in the form of `<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>`.
- * `<CDK_ID>` is the ID used in the CDK application and passed as the `id` parameter to the constructor.
+The construct ensures the default bucket name uniqueness which is a [pre-requisite](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) to create Amazon S3 buckets. 
+To achieve this, the construct is creating the default bucket name like `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>` where:
  * `<AWS_ACCOUNT_ID>` and `<AWS_REGION>` are the account ID and region where you deploy the construct.
- * `<UNIQUEID>` is a 16 characters unique ID calculated based on the CDK path.
+ * `<UNIQUEID>` is an 8 characters unique ID calculated based on the CDK path.
 
+If you provide the `bucketName` parameter, you need to ensure the name is globaly unique. 
+Alternatively, you can use the `BucketUtils.generateUniqueBucketName()` utility method to create unique names. 
+This method generates a unique name based on the provided name, the construct ID and the CDK scope:
+ * The bucket name is suffixed the AWS account ID, the AWS region and an 8 character hash of the CDK path. 
+ * The maximum length for the bucket name is 26 characters.
+
+```python
+from aws_cdk import (
+  App, 
+  Stack, 
+  RemovalPolicy, 
+)
+from aws_dsf import AccessLogsBucket, BucketUtils
+from aws_cdk.aws_kms import Key
+
+app = App()
+stack = Stack(app, 'AnalyticsBucketStack')
+
+
+encryption_key = Key(stack, 'DataKey',
+                     removal_policy=RemovalPolicy.DESTROY,
+                     enable_key_rotation=True)
+
+AnalyticsBucket(stack, 'MyAnalyticsBucket',
+                bucket_name=BucketUtils.generate_unique_bucket_name(stack, 'MyAnalyticsBucket', 'my-custom-name')
+                encryption_key=encryption_key)
+```
