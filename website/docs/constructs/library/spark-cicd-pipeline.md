@@ -24,10 +24,10 @@ The CICD pipeline uses [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/c
 You can use the same account or optionally use different accounts for CICD (where this construct is deployed), staging and production (where the application stack is deployed). 
 If using different accounts, bootstrap staging and production accounts with CDK and add a trust relationship from the CICD account:
 ```bash
-cdk bootstrap \
-  --profile staging \
-  --trust <CICD_ACCOUNT_ID> \
-  aws://<STAGING_ACCOUNT_ID>/<REGION>
+cdk bootstrap --profile staging \
+aws://<STAGING_ACCOUNT_ID>/<REGION> \
+--trust <CICD_ACCOUNT_ID> \
+--cloudformation-execution-policies “POLICY_ARN”
 ```
 More information is available [here](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html#cdk_pipeline_bootstrap)
 

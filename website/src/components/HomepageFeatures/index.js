@@ -30,7 +30,7 @@ const FeatureList = [
     description: (
       <div>
           Benefit from smart defaults and built-in AWS best practices, while being able to easily
-          customize or extend according your requirements.
+          customize or extend according to your requirements.
       </div>
     ),
   },
