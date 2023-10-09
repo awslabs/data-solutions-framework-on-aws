@@ -1,14 +1,6 @@
 import os
 from aws_cdk import Stack
 from constructs import Construct
-from aws_dsf import ApplicationStackFactory, CICDStage
-
-class EmrApplicationStackFactory(ApplicationStackFactory):
-    def __init__(self) -> None:
-        super().__init__()
-
-    def create_stack(self, scope: Construct, stage: CICDStage) -> Stack:
-        return None
 
 
 class MyStack(Stack):

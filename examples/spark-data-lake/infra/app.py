@@ -1,6 +1,6 @@
 import os
 from aws_cdk import App, Environment
-from adsf_example.main import MyStack
+from stacks.main import MyStack
 
 # for development, use account/region from cdk cli
 dev_env = Environment(
@@ -9,7 +9,7 @@ dev_env = Environment(
 )
 
 app = App()
-MyStack(app, "example-dev", env=dev_env)
-# MyStack(app, "example-prod", env=prod_env)
+MyStack(app, "spark-data-lake-infra-example-dev", env=dev_env)
+# MyStack(app, "spark-data-lake-infra-example-prod", env=prod_env)
 
 app.synth()
