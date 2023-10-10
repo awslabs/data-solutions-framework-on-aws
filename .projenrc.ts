@@ -222,8 +222,6 @@ rootProject.addTask('test:e2e', {
 
 rootProject.addTask('release',  {
   description: 'Release project',
-  cwd: 'framework',
-  exec: 'npx projen release'
 })
 
 rootProject.synth();

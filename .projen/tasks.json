@@ -160,13 +160,9 @@
       "description": "Release project",
       "steps": [
         {
-          "exec": "npx projen release"
-        },
-        {
           "exec": "lerna run release --stream"
         }
-      ],
-      "cwd": "framework"
+      ]
     },
     "test": {
       "name": "test",
