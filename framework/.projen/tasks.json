@@ -21,6 +21,23 @@
         }
       ]
     },
+    "bump": {
+      "name": "bump",
+      "description": "Bumps version based on latest git tag and generates a changelog entry",
+      "env": {
+        "OUTFILE": "package.json",
+        "CHANGELOG": "dist/changelog.md",
+        "BUMPFILE": "dist/version.txt",
+        "RELEASETAG": "dist/releasetag.txt",
+        "RELEASE_TAG_PREFIX": ""
+      },
+      "steps": [
+        {
+          "builtin": "release/bump-version"
+        }
+      ],
+      "condition": "! git log --oneline -1 | grep -q \"chore(release):\""
+    },
     "compat": {
       "name": "compat",
       "description": "Perform API compatibility check against latest version",
@@ -138,6 +155,32 @@
       "name": "pre-compile",
       "description": "Prepare the project for compilation"
     },
+    "release": {
+      "name": "release",
+      "description": "Prepare a release from \"main\" branch",
+      "env": {
+        "RELEASE": "true",
+        "MAJOR": "1",
+        "PRERELEASE": "RC1"
+      },
+      "steps": [
+        {
+          "exec": "rm -fr dist"
+        },
+        {
+          "spawn": "bump"
+        },
+        {
+          "spawn": "build"
+        },
+        {
+          "spawn": "unbump"
+        },
+        {
+          "exec": "git diff --ignore-space-at-eol --exit-code"
+        }
+      ]
+    },
     "test": {
       "name": "test",
       "description": "Run tests",
@@ -169,6 +212,22 @@
         }
       ]
     },
+    "unbump": {
+      "name": "unbump",
+      "description": "Restores version to 0.0.0",
+      "env": {
+        "OUTFILE": "package.json",
+        "CHANGELOG": "dist/changelog.md",
+        "BUMPFILE": "dist/version.txt",
+        "RELEASETAG": "dist/releasetag.txt",
+        "RELEASE_TAG_PREFIX": ""
+      },
+      "steps": [
+        {
+          "builtin": "release/reset-version"
+        }
+      ]
+    },
     "upgrade": {
       "name": "upgrade",
       "description": "upgrade dependencies",
@@ -180,13 +239,13 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --upgrade --target=minor --filter=@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,ts-jest,typescript,js-yaml,simple-base,aws-cdk-lib,constructs"
+          "exec": "npm-check-updates --upgrade --target=minor --filter=@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,cdk-nag,eslint-import-resolver-node,eslint-import-resolver-typescript,eslint-plugin-import,eslint,jest,jest-junit,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,npm-check-updates,projen,rosetta,standard-version,ts-jest,typescript,js-yaml,simple-base,aws-cdk-lib,constructs"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-cdk/lambda-layer-kubectl-v27 @jest/globals @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta ts-jest typescript js-yaml simple-base aws-cdk-lib constructs"
+          "exec": "yarn upgrade @aws-cdk/lambda-layer-kubectl-v27 @jest/globals @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak npm-check-updates projen rosetta standard-version ts-jest typescript js-yaml simple-base aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

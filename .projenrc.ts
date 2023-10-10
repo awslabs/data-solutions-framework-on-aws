@@ -17,7 +17,7 @@ const license = 'MIT-0';
 const copyrightOwner = 'Amazon.com, Inc. or its affiliates. All Rights Reserved.';
 const copyrightPeriod = `2021-${new Date().getFullYear()}`;
 const defaultReleaseBranch = 'main';
-const release = false; /* to update and configure when ready to release */
+const release = true;
 const name = 'aws-data-solutions-framework';
 const keywords= [
   'awscdk',
@@ -81,8 +81,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   outdir: 'framework',
   repositoryDirectory: 'framework',
 
-  defaultReleaseBranch,
-
   repositoryUrl,
   author,
   authorAddress,
@@ -91,7 +89,12 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   license,
   copyrightOwner,
   copyrightPeriod,
+
+  majorVersion: 1,
+  defaultReleaseBranch,
   release,
+  releaseToNpm: release,
+  prerelease: 'RC1', /* TODO remove after RC */
 
   keywords,
 
