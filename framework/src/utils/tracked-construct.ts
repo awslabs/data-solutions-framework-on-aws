@@ -68,7 +68,7 @@ export class TrackedConstruct extends Construct {
     }
   }
 
-  private getVersion() {
+  public getVersion() {
     // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require
     const file = '../../package.json';
     // eslint-disable-next-line @typescript-eslint/no-require-imports
