@@ -90,6 +90,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     const currentStack = Stack.of(this);
 
     if (autoCrawl) {
+      const tableLevel = props.crawlerTableLevelDepth || 3;
       const crawlerRole = new Role(this, 'CrawlerRole', {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         inlinePolicies: {
@@ -173,20 +174,46 @@ export class DataCatalogDatabase extends TrackedConstruct {
         databaseName: this.databaseName,
         name: crawlerName,
         crawlerSecurityConfiguration: secConfiguration.name,
+        configuration: JSON.stringify({
+          Version: 1.0,
+          Grouping: {
+            TableLevelConfiguration: tableLevel,
+          },
+        }),
       });
 
-      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers`;
+      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers*`;
       crawlerRole.addToPolicy(new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
           'logs:CreateLogGroup',
           'logs:CreateLogStream',
           'logs:PutLogEvents',
+          'logs:AssociateKmsKey',
         ],
         resources: [
           logGroup,
           `${logGroup}:*`,
         ],
+      }));
+
+      this.crawlerLogEncryptionKey.addToResourcePolicy(new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          'kms:Decrypt',
+          'kms:Encrypt',
+          'kms:ReEncrypt*',
+          'kms:GenerateDataKey*',
+        ],
+        resources: ['*'],
+        principals: [
+          new ServicePrincipal(`logs.${currentStack.region}.amazonaws.com`),
+        ],
+        conditions: {
+          ArnEquals: {
+            'kms:EncryptionContext:aws:logs:arn': logGroup,
+          },
+        },
       }));
     }
   }
@@ -262,6 +289,12 @@ export interface DataCatalogDatabaseProps {
    * @default Create a new key if none is provided
    */
   readonly crawlerLogEncryptionKey?: Key;
+
+  /**
+   * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
+   * @default 3. The default value follows the structure: `<bucket>/<databaseFolder>/<table1Folder>/`
+   */
+  readonly crawlerTableLevelDepth?: number;
 
   /**
    * Policy to apply when the bucket is removed from this stack.
