@@ -34,6 +34,7 @@ jobs:
         id: git_remote
         run: echo "latest_commit=$(git ls-remote origin -h ${{ github.ref }} | cut -f1)" >> $GITHUB_OUTPUT
       - name: Backup artifact permissions
+        working-directory: framework
         if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
         run: cd dist && getfacl -R . > permissions-backup.acl
         continue-on-error: true
@@ -42,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
         with:
           name: build-artifact
-          path: dist
+          path: framework/dist
   release_github:
     name: Publish to GitHub Releases
     needs: release
@@ -58,15 +59,19 @@ jobs:
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
           name: build-artifact
-          path: dist
+          path: framework/dist
       - name: Restore build artifact permissions
+        working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Prepare Repository
+        working-directory: framework
         run: mv dist .repo
       - name: Collect GitHub Metadata
+        working-directory: framework
         run: mv .repo/dist dist
       - name: Release
+        working-directory: framework
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -87,17 +92,22 @@ jobs:
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
           name: build-artifact
-          path: dist
+          path: framework/dist
       - name: Restore build artifact permissions
+        working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Prepare Repository
+        working-directory: framework
         run: mv dist .repo
       - name: Install Dependencies
+        working-directory: framework
         run: cd .repo && yarn install --check-files --frozen-lockfile
       - name: Create js artifact
+        working-directory: framework
         run: cd .repo && npx projen package:js
       - name: Collect js Artifact
+        working-directory: framework
         run: mv .repo/dist dist
       - name: Release
         env:
@@ -123,17 +133,22 @@ jobs:
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
           name: build-artifact
-          path: dist
+          path: framework/dist
       - name: Restore build artifact permissions
+        working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Prepare Repository
+        working-directory: framework
         run: mv dist .repo
       - name: Install Dependencies
+        working-directory: framework
         run: cd .repo && yarn install --check-files --frozen-lockfile
       - name: Create python artifact
+        working-directory: framework
         run: cd .repo && npx projen package:python
       - name: Collect python Artifact
+        working-directory: framework
         run: mv .repo/dist dist
       - name: Release
         env:
