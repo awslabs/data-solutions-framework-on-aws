@@ -94,7 +94,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   defaultReleaseBranch,
   release,
   releaseToNpm: release,
-  prerelease: 'RC1', /* TODO remove after RC */
+  prerelease: 'rc', /* TODO remove after RC */
 
   keywords,
 

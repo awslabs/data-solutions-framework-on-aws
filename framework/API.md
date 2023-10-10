@@ -2675,6 +2675,7 @@ new DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabase
 | --- | --- |
 | <code><a href="#aws-dsf.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#aws-dsf.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
+| <code><a href="#aws-dsf.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -2703,6 +2704,14 @@ This would attach an IAM policy to the principal allowing read access to the dat
 Principal to attach the database read access to.
 
 ---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.DataCatalogDatabase.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -2917,6 +2926,7 @@ the DataLakeCatalog properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -2927,6 +2937,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.DataLakeCatalog.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3136,6 +3154,7 @@ the DataLakeStorageProps properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -3146,6 +3165,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.DataLakeStorage.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3365,6 +3392,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -3375,6 +3403,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.PySparkApplicationPackage.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3639,6 +3675,7 @@ the SparkCICDPipelineProps properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -3649,6 +3686,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrCICDPipeline.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3823,6 +3868,7 @@ new SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobApiProps |
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrEksJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.SparkEmrEksJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -3833,6 +3879,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrEksJob.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4019,6 +4073,7 @@ new SparkEmrServerlessJob(scope: Construct, id: string, props: SparkEmrServerles
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -4029,6 +4084,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrServerlessJob.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4197,6 +4260,7 @@ the ID of the CDK Construct.
 | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -4234,6 +4298,14 @@ the role that will call the start job api and which need to have the iam:PassRol
 the role use by EMR Serverless to access resources during the job execution.
 
 ---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrServerlessRuntime.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4530,6 +4602,7 @@ the SparkJobProps properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
@@ -4540,6 +4613,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkJob.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve ADSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
