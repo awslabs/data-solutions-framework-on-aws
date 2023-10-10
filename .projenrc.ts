@@ -8,7 +8,7 @@ const CDK_CONSTRUCTS_VERSION = '10.2.55';
 const JSII_VERSION = '~5.0.0';
 const KUBECTL_LAYER_VERSION='v27';
 
-const repositoryUrl = 'git@github.com:awslabs/aws-data-solutions-framework.git';
+const repositoryUrl = 'https://github.com/awslabs/aws-data-solutions-framework.git';
 const homepage = 'https://awslabs.github.io/aws-data-solutions-framework/';
 const author = 'Amazon Web Services';
 const authorAddress = 'https://aws.amazon.com';
