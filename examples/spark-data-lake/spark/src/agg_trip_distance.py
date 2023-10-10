@@ -28,6 +28,6 @@ if __name__ == "__main__":
     yellow_agg_df = aggregate_trip_distance(yellow_df)
 
     combined_df = combine_taxi_types(green_agg_df, yellow_agg_df)
-    combined_df.write.mode("overwrite").parquet(
+    combined_df.write.partitionBy("taxi_type").mode("overwrite").parquet(
         f"{target_location}/nyc_taxis/agg_trip_distance/"
     )

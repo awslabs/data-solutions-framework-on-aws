@@ -173,20 +173,46 @@ export class DataCatalogDatabase extends TrackedConstruct {
         databaseName: this.databaseName,
         name: crawlerName,
         crawlerSecurityConfiguration: secConfiguration.name,
+        configuration: JSON.stringify({
+          Version: 1.0,
+          Grouping: {
+            TableLevelConfiguration: 3,
+          },
+        }),
       });
 
-      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers`;
+      const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers*`;
       crawlerRole.addToPolicy(new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
           'logs:CreateLogGroup',
           'logs:CreateLogStream',
           'logs:PutLogEvents',
+          'logs:AssociateKmsKey',
         ],
         resources: [
           logGroup,
           `${logGroup}:*`,
         ],
+      }));
+
+      this.crawlerLogEncryptionKey.addToResourcePolicy(new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          'kms:Decrypt',
+          'kms:Encrypt',
+          'kms:ReEncrypt*',
+          'kms:GenerateDataKey*',
+        ],
+        resources: ['*'],
+        principals: [
+          new ServicePrincipal(`logs.${currentStack.region}.amazonaws.com`),
+        ],
+        conditions: {
+          ArnEquals: {
+            'kms:EncryptionContext:aws:logs:arn': logGroup,
+          },
+        },
       }));
     }
   }
