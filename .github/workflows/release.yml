@@ -43,6 +43,8 @@ jobs:
         with:
           name: build-artifact
           path: dist
+    container:
+      image: jsii/superchain:1-buster-slim-node16
   release_github:
     name: Publish to GitHub Releases
     needs: release
@@ -105,6 +107,8 @@ jobs:
           NPM_REGISTRY: registry.npmjs.org
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx -p publib@latest publib-npm
+    container:
+      image: jsii/superchain:1-buster-slim-node16
   release_pypi:
     name: Publish to PyPI
     needs: release
@@ -140,3 +144,5 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: npx -p publib@latest publib-pypi
+    container:
+      image: jsii/superchain:1-buster-slim-node16
