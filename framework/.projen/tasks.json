@@ -165,6 +165,9 @@
       },
       "steps": [
         {
+          "spawn": "install:ci"
+        },
+        {
           "exec": "rm -fr dist"
         },
         {

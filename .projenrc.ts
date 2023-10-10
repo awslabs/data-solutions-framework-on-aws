@@ -1,5 +1,5 @@
 import { LernaProject } from 'lerna-projen';
-import { awscdk } from 'projen';
+import { awscdk, Task } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
 import { Transform } from "projen/lib/javascript";
 
@@ -159,6 +159,8 @@ fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
   exec: 'npx projen test --group=e2e'
 });
+
+fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
 
 const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   name: 'spark-data-lake-infra-example',
