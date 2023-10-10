@@ -220,4 +220,9 @@ rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
 });
 
+rootProject.addTask('release',  {
+  description: 'Release project',
+  exec: "npx projen release"
+})
+
 rootProject.synth();
