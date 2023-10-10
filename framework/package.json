@@ -3,7 +3,7 @@
   "description": "L3 CDK Constructs used to build data solutions with AWS",
   "repository": {
     "type": "git",
-    "url": "git@github.com:awslabs/aws-data-solutions-framework.git",
+    "url": "https://github.com/awslabs/aws-data-solutions-framework.git",
     "directory": "framework"
   },
   "scripts": {

@@ -10,9 +10,9 @@ You can leverage AWS DSF to implement your data platform in weeks rather than in
 - Use the framework to build your data solutions instead of building cloud infrastructure from scratch.
 - Compose data solutions using integrated building blocks via Infrastructure as Code (IaC).
 - Benefit from smart defaults and built-in AWS best practices.
-- Customize or extend according your requirements.
+- Customize or extend according to your requirements.
 
-**Get started** by exploring the [framework](./framework/) and available [examples](./example/)
+**Get started** by exploring the [framework](./framework/) and available [examples](./examples/). Learn more from [documentation](https://awslabs.github.io/aws-data-solutions-framework/). 
 
 ## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.

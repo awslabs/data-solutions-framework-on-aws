@@ -12,7 +12,8 @@ const config = {
   title: niceProjectName,
   tagline: 'Accelerate building your data analytics solutions with AWS Data Solutions Framework',
   url: 'https://' + organization + '.github.io',
-  baseUrl: '/',
+  // baseUrl: '/', //uncomment for local dev
+  baseUrl: '/aws-data-solutions-framework/',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
