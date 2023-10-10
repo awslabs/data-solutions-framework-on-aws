@@ -155,6 +155,18 @@
         }
       ]
     },
+    "release": {
+      "name": "release",
+      "description": "Release project",
+      "steps": [
+        {
+          "exec": "npx projen release"
+        },
+        {
+          "exec": "lerna run release --stream"
+        }
+      ]
+    },
     "test": {
       "name": "test",
       "description": "Run tests",
