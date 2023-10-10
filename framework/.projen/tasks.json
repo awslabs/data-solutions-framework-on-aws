@@ -161,7 +161,7 @@
       "env": {
         "RELEASE": "true",
         "MAJOR": "1",
-        "PRERELEASE": "RC1"
+        "PRERELEASE": "rc"
       },
       "steps": [
         {
