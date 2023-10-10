@@ -153,7 +153,8 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 });
 
-fwkProject.setScript('test', 'npx projen test --group=-e2e');
+fwkProject.testTask.reset('jest --passWithNoTests --updateSnapshot --group=-e2e', {receiveArgs: true});
+fwkProject.testTask.spawn(new Task('eslint'));
 
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
