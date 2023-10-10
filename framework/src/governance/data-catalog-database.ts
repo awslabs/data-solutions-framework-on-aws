@@ -90,6 +90,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     const currentStack = Stack.of(this);
 
     if (autoCrawl) {
+      const tableLevel = props.crawlerTableLevelDepth || 3;
       const crawlerRole = new Role(this, 'CrawlerRole', {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         inlinePolicies: {
@@ -176,7 +177,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         configuration: JSON.stringify({
           Version: 1.0,
           Grouping: {
-            TableLevelConfiguration: 3,
+            TableLevelConfiguration: tableLevel,
           },
         }),
       });
@@ -288,6 +289,12 @@ export interface DataCatalogDatabaseProps {
    * @default Create a new key if none is provided
    */
   readonly crawlerLogEncryptionKey?: Key;
+
+  /**
+   * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
+   * @default 3. The default value follows the structure: `<bucket>/<databaseFolder>/<table1Folder>/`
+   */
+  readonly crawlerTableLevelDepth?: number;
 
   /**
    * Policy to apply when the bucket is removed from this stack.
