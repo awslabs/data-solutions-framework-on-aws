@@ -57,7 +57,7 @@ export class TrackedConstruct extends Construct {
 
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
     const fullDescription = TrackedConstruct.trackingRegExp.exec(currentDescription);
-    const version = this.getVersion();
+    const version = this.retrieveVersion();
 
     const tag = props.trackingTag.split(TrackedConstruct.TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
@@ -68,7 +68,7 @@ export class TrackedConstruct extends Construct {
     }
   }
 
-  public getVersion() {
+  public retrieveVersion() {
     // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require
     const file = '../../package.json';
     // eslint-disable-next-line @typescript-eslint/no-require-imports
