@@ -28,14 +28,19 @@ class ApplicationStack(Stack):
         storage = dsf.DataLakeStorage(
             self, "DataLakeStorage", removal_policy=RemovalPolicy.DESTROY
         )
-        silver_nyc_taxi_db = dsf.DataCatalogDatabase(
-            self,
-            "SilverNycTaxiDatabase",
-            name="nyc_taxi",
-            location_bucket=storage.silver_bucket,
-            location_prefix="nyc_taxis/",
-            removal_policy=RemovalPolicy.DESTROY,
+
+        catalog = dsf.DataLakeCatalog(
+            self, "DataLakeCatalog", 
+            removal_policy=RemovalPolicy.DESTROY
         )
+        # silver_nyc_taxi_db = dsf.DataCatalogDatabase(
+        #     self,
+        #     "SilverNycTaxiDatabase",
+        #     name="nyc_taxi",
+        #     location_bucket=storage.silver_bucket,
+        #     location_prefix="nyc_taxis/",
+        #     removal_policy=RemovalPolicy.DESTROY,
+        # )
 
         # Helper to load example data to bronze bucket. For the demo purposes only.
         DataLoad(
@@ -79,7 +84,8 @@ class ApplicationStack(Stack):
 
         # Use AWS DSF to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
         spark_runtime = dsf.SparkEmrServerlessRuntime(
-            self, "SparkProcessingRuntime", name="TaxiAggregation",
+            self, "SparkProcessingRuntime", 
+            name="TaxiAggregation",
             removal_policy=RemovalPolicy.DESTROY,
         )
         spark_app = dsf.PySparkApplicationPackage(
@@ -94,8 +100,8 @@ class ApplicationStack(Stack):
 
         params = (
             f"--conf"
-            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi"
-            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}"
+            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.silver_bucket.bucket_name}/nyc-taxi"
+            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.gold_bucket.bucket_name}"
         )
 
         spark_job = dsf.SparkEmrServerlessJob(
@@ -111,4 +117,4 @@ class ApplicationStack(Stack):
         )
 
         # Helper with the custom resource to trigger the Spark job. For the demo purposes only.
-        SparkJobTrigger(self, "JobTrigger", spark_job=spark_job, db=silver_nyc_taxi_db)
+        SparkJobTrigger(self, "JobTrigger", spark_job=spark_job, db=catalog.gold_catalog_database)
