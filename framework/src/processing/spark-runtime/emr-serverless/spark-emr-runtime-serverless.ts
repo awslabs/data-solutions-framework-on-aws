@@ -39,8 +39,8 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
         assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com'),
         inlinePolicies: { executionRolePolicyDocument },
       });
-    } 
-    
+    }
+
     if (iamPolicyName) {
       return new Role(scope, id, {
         assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com'),
@@ -49,7 +49,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     }
 
     return new Role(scope, id, {
-      assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com')
+      assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com'),
     });
   }
 
