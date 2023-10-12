@@ -17,7 +17,9 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
   /**
      * A static method which will create an execution IAM role that can be assumed by EMR Serverless
-     * The method returns the role it creates.
+     * The method returns the role it creates. If no `executionRolePolicyDocument` or `iamPolicyName`
+     * The method will return a role with only a trust policy to EMR Servereless service principal.
+     * You can use this role then to grant access to any resources you control.
      *
      * @param scope the scope in which to create the role
      * @param id passed to the IAM Role construct object
@@ -27,27 +29,28 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
      */
   public static createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string): Role {
 
-    let executionRole: Role;
-
-    if (!executionRolePolicyDocument && !iamPolicyName) {
+    if (executionRolePolicyDocument && iamPolicyName) {
       throw new Error('You must provide either executionRolePolicyDocument or iamPolicyName');
     }
 
     if (executionRolePolicyDocument) {
       //create an IAM role with emr-serverless as service pricinpal and return it
-      executionRole = new Role(scope, id, {
+      return new Role(scope, id, {
         assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com'),
         inlinePolicies: { executionRolePolicyDocument },
       });
-
-    } else {
-      executionRole = new Role(scope, id, {
+    } 
+    
+    if (iamPolicyName) {
+      return new Role(scope, id, {
         assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com'),
         managedPolicies: [ManagedPolicy.fromManagedPolicyName(scope, id, iamPolicyName!)],
       });
     }
 
-    return executionRole;
+    return new Role(scope, id, {
+      assumedBy: new ServicePrincipal('emr-serverless.amazonaws.com')
+    });
   }
 
   /**
