@@ -121,10 +121,17 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
     cloudWatchLogGroupName: 'spark-serverless-log',
     sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
     sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
+    schedule: Schedule.rate(Duration.hours(1)),
   } as SparkEmrServerlessJobProps);
 
 
   const template = Template.fromStack(stack, {});
+
+  test('Schedule is created', () => {
+    template.hasResourceProperties('AWS::Events::Rule', {
+      ScheduleExpression: 'rate(1 hour)',
+    });
+  });
 
   test('State function is created EMR Serverless', () => {
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
