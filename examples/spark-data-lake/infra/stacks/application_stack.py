@@ -79,7 +79,8 @@ class ApplicationStack(Stack):
 
         # Use AWS DSF to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
         spark_runtime = dsf.SparkEmrServerlessRuntime(
-            self, "SparkProcessingRuntime", name="TaxiAggregation"
+            self, "SparkProcessingRuntime", name="TaxiAggregation",
+            removal_policy=RemovalPolicy.DESTROY,
         )
         spark_app = dsf.PySparkApplicationPackage(
             self,
