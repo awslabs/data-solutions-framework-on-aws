@@ -116,6 +116,26 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
     );
   });
 
+  test('Test for execution role', () => {
+    template.hasResource('AWS::IAM::Role',
+      Match.objectLike({
+        Properties: {
+          AssumeRolePolicyDocument: {
+            Statement: [
+              {
+                Effect: 'Allow',
+                Action: 'sts:AssumeRole',
+                Principal: {
+                  Service: 'emr-serverless.amazonaws.com',
+                },
+              },
+            ],
+          },
+        },
+      }),
+    );
+  });
+
 });
 
 
