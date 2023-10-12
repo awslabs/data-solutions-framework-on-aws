@@ -224,6 +224,8 @@ export class SparkEmrServerlessJob extends SparkJob {
           SparkSubmit: {},
         },
       },
+      removalPolicy: props.removalPolicy,
+      schedule: props.schedule,
     } as SparkEmrServerlessJobApiProps;
 
     config.jobConfig.Name = props.name;
@@ -297,7 +299,7 @@ export class SparkEmrServerlessJob extends SparkJob {
  * @param tags Tags to be added to the EMR Serverless job. @see @link[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]
  */
 
-export interface SparkEmrServerlessJobProps {
+export interface SparkEmrServerlessJobProps extends SparkJobProps {
   readonly name: string;
   readonly applicationId: string;
   readonly executionRoleArn?: string;

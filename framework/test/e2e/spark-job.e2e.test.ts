@@ -25,6 +25,8 @@ const emrApp = new SparkEmrServerlessRuntime(stack, 'emrApp', {
   name: 'my-test-app',
 });
 
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
 const myFileSystemPolicy = new PolicyDocument({
   statements: [new PolicyStatement({
     actions: [
@@ -61,6 +63,7 @@ const job = new SparkEmrServerlessJob(stack, 'SparkJob', {
       },
     },
   },
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 } as SparkEmrServerlessJobApiProps);
 
 
