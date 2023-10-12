@@ -61,6 +61,7 @@ const job = new SparkEmrServerlessJob(stack, 'SparkJob', {
       },
     },
   },
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 } as SparkEmrServerlessJobApiProps);
 
 
