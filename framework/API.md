@@ -4359,6 +4359,10 @@ SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, exec
 
 A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates.
 
+If no `executionRolePolicyDocument` or `iamPolicyName`
+The method will return a role with only a trust policy to EMR Servereless service principal.
+You can use this role then to grant access to any resources you control.
+
 ###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
 
 - *Type:* constructs.Construct
