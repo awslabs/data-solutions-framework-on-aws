@@ -1,6 +1,6 @@
 # Spark Data Lake example 
 
-In this example, we build a Data Lake and process aggregations from the NY taxi dataset with Spark application. This `README` is a step-by-step deployment guide. You can read more details about this example solution in the [documentation](https://awslabs.github.io/aws-data-solutions-framework/)
+In this example, we build a Data Lake and process aggregations from the NY taxi dataset with a Spark application. This `README` is a step-by-step deployment guide. You can read more details about this example solution in the [documentation](https://awslabs.github.io/aws-data-solutions-framework/)
 
 We are using a self-contained application where developers can manage both business code (Spark code in `./spark` folder), and the infrastructure code (AWS CDK code in `./infra` folder).
 
@@ -12,7 +12,7 @@ The business code is a simple **PySpark** application packaged in a common Pytho
 The infrastructure code is an AWS CDK application using the AWS DSF library to create the required resources. It contains 2 CDK stacks:
  * An **application stack** which provisions the Data Lake, data catalog, and the Spark runtime resources via the following constructs:
    * A `DataLakeStorage` 
-   * A `DataCatalogDatatabse`
+   * A `DataLakeCatalog`
    * A `SparkEmrServerlessRuntime`
    * A `SparkEmrServerlessJob`
  * A **CICD stack** which provisions a CICD Pipeline to manage the application development lifecycle via the following constructs:
@@ -75,11 +75,11 @@ pip install -r requirements.txt
 ```json
 {
   "staging": {
-    "accountId": "<STAGING_ACCOUNT_ID>",
+    "account": "<STAGING_ACCOUNT_ID>",
     "region": "<STAGING_REGION>"
   },
   "prod": {
-    "accountId": "<PRODUCTION_ACCOUNT_ID>",
+    "account": "<PRODUCTION_ACCOUNT_ID>",
     "region": "<PRODUCTION_REGION>"
   },
   "@aws-data-solutions-framework/removeDataOnDestroy": true
