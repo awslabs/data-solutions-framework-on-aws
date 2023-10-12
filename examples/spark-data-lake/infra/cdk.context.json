@@ -1,10 +1,10 @@
 {
     "staging": {
-      "accountId": "ACCOUNT-ID",
+      "account": "ACCOUNT-ID",
       "region": "REGION"
     },
     "prod": {
-      "accountId": "ACCOUNT-ID",
+      "account": "ACCOUNT-ID",
       "region": "REGION"
     },
     "@aws-data-solutions-framework/removeDataOnDestroy": true
