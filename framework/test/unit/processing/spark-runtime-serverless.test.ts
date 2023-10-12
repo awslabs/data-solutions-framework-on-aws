@@ -126,8 +126,8 @@ describe('Create an EMR Serverless Application for Spark and grant access', () =
                 Effect: 'Allow',
                 Action: 'sts:AssumeRole',
                 Principal: {
-                  'Service': 'emr-serverless.amazonaws.com'
-                }
+                  Service: 'emr-serverless.amazonaws.com',
+                },
               },
             ],
           },
