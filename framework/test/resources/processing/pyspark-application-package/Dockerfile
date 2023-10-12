@@ -1,9 +1,9 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
 
-FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:2 AS base
+FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:latest AS base
 
-RUN yum install -y python3 
+RUN dnf install -y python3
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV

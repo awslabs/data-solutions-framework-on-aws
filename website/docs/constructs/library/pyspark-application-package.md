@@ -91,9 +91,9 @@ The steps below describe how to create the `Dockerfile` so it can be used to be 
 So we need to create it with `mkdir /venv-package` and then pass it to the `venv-package` as `venv-pack -o /venv-package/pyspark-env.tar.gz`
 
 ```Dockerfile
-FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:2 AS base
+FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:latest AS base
 
-RUN yum install -y python3 
+RUN dnf install -y python3
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
