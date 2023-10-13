@@ -18,6 +18,10 @@
       "type": "build"
     },
     {
+      "name": "@types/js-yaml",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^16",
       "type": "build"
@@ -78,6 +82,10 @@
       "type": "build"
     },
     {
+      "name": "js-yaml",
+      "type": "build"
+    },
+    {
       "name": "jsii-diff",
       "type": "build"
     },
@@ -124,6 +132,10 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "@types/js-yaml",
+      "type": "bundled"
     },
     {
       "name": "js-yaml",
