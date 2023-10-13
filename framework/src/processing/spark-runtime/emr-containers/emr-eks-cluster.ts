@@ -275,9 +275,9 @@ export class EmrEksCluster extends TrackedConstruct {
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
     if (props.eksCluster == undefined) {
 
-      const vpcCidr = props.vpcCidr ? props.vpcCidr :EmrEksCluster.DEFAULT_VPC_CIDR;
+      const vpcCidr = props.vpcCidr ? props.vpcCidr : EmrEksCluster.DEFAULT_VPC_CIDR;
 
-      let eksVpc: IVpc | undefined = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, this.clusterName, undefined).vpc;
+      let eksVpc: IVpc = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, this.clusterName, undefined).vpc;
 
       this.eksCluster = new Cluster(scope, `${this.clusterName}Cluster`, {
         defaultCapacity: 0,
