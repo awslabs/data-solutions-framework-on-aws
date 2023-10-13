@@ -60,7 +60,7 @@ class DataLoad(Construct):
                 ),
             },
         )
-        storage.bronze_bucket.grant_read_write(copy_sample_role)
+        storage.silver_bucket.grant_read_write(copy_sample_role)
 
         copy_sample_function = _lambda.Function(
             self,
@@ -74,13 +74,13 @@ class DataLoad(Construct):
                 "SOURCE_BUCKET_NAME": src_bucket_name,
                 "SOURCE_BUCKET_PREFIX": src_bucket_prefix,
                 "SOURCE_BUCKET_REGION": "us-east-1",
-                "TARGET_BUCKET_NAME": storage.bronze_bucket.bucket_name,
-                "TARGET_BUCKET_PREFIX": "nyc-taxi/",
+                "TARGET_BUCKET_NAME": storage.silver_bucket.bucket_name,
+                "TARGET_BUCKET_PREFIX": "spark_data_lake/nyc-taxi/",
             },
         )
         copy_provider = Provider(
             self, "CopyProvider", on_event_handler=copy_sample_function
         )
         CustomResource(
-            self, "CopyCustomResource", service_token=copy_provider.service_token
+            self, "CopyDataCustomResource", service_token=copy_provider.service_token
         )

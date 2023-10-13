@@ -11,8 +11,7 @@ In this example, we will be using AWS DSF to quickly build an end-to-end solutio
 
 We will be using several constructs from the AWS DSF:
 - [`DataLakeStorage`](/docs/constructs/library/data-lake-storage)
-- [`DataCatalogDatabase`](/docs/constructs/library/data-catalog-database)
-- [`DataLakeStorage`](/docs/constructs/library/data-lake-storage)
+- [`DataLakeCatalog`](/docs/constructs/library/data-lake-catalog)
 - [`SparkEMRServerlessRuntime`](/docs/constructs/library/spark-emr-serverless-runtime)
 - [`SparkEmrServerlessJob`](/docs/constructs/library/spark-job)
 - [`SparkEmrCICDPipeline`](/docs/constructs/library/spark-cicd-pipeline)

@@ -75,11 +75,11 @@ pip install -r requirements.txt
 ```json
 {
   "staging": {
-    "accountId": "<STAGING_ACCOUNT_ID>",
+    "account": "<STAGING_ACCOUNT_ID>",
     "region": "<STAGING_REGION>"
   },
   "prod": {
-    "accountId": "<PRODUCTION_ACCOUNT_ID>",
+    "account": "<PRODUCTION_ACCOUNT_ID>",
     "region": "<PRODUCTION_REGION>"
   },
   "@aws-data-solutions-framework/removeDataOnDestroy": true

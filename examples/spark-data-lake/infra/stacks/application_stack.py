@@ -20,7 +20,7 @@ class SparkApplicationStackFactory(dsf.ApplicationStackFactory):
 
 class ApplicationStack(Stack):
     def __init__(
-        self, scope: Construct, construct_id: str, stage: dsf.CICDStage = None, **kwargs
+        self, scope: Construct, construct_id: str, stage: dsf.CICDStage=None, **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
@@ -28,12 +28,11 @@ class ApplicationStack(Stack):
         storage = dsf.DataLakeStorage(
             self, "DataLakeStorage", removal_policy=RemovalPolicy.DESTROY
         )
-        silver_nyc_taxi_db = dsf.DataCatalogDatabase(
-            self,
-            "SilverNycTaxiDatabase",
-            name="nyc_taxi",
-            location_bucket=storage.silver_bucket,
-            location_prefix="nyc_taxis/",
+
+        catalog = dsf.DataLakeCatalog(
+            self, "DataLakeCatalog",
+            data_lake_storage=storage,
+            database_name='spark_data_lake',
             removal_policy=RemovalPolicy.DESTROY,
         )
 
@@ -46,36 +45,10 @@ class ApplicationStack(Stack):
             storage=storage,
         )
 
-        processing_policy_doc = iam.PolicyDocument(
-            statements=[
-                iam.PolicyStatement(
-                    effect=iam.Effect.ALLOW,
-                    actions=[
-                        "s3:GetObject*",
-                        "s3:GetBucket*",
-                        "s3:List*",
-                        "s3:DeleteObject*",
-                        "s3:PutObject",
-                        "s3:PutObjectTagging",
-                        "s3:PutObjectVersionTagging",
-                        "s3:Abort*"
-                    ],
-                    resources=[
-                        f"{storage.bronze_bucket.bucket_arn}/*",
-                        f"{storage.silver_bucket.bucket_arn}/*",
-                        storage.silver_bucket.bucket_arn,
-                        storage.bronze_bucket.bucket_arn
-                    ],
-                )
-            ]
-        )
+        processing_exec_role = dsf.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
 
-        processing_exec_role = dsf.SparkEmrServerlessRuntime.create_execution_role(
-            self, "ProcessingExecRole", processing_policy_doc
-        )
-
-        storage.bronze_bucket.grant_read_write(processing_exec_role)
-        storage.silver_bucket.grant_read_write(processing_exec_role)
+        storage.gold_bucket.grant_read_write(processing_exec_role)
+        storage.silver_bucket.grant_read(processing_exec_role)
 
         # Use AWS DSF to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
         spark_runtime = dsf.SparkEmrServerlessRuntime(
@@ -94,8 +67,8 @@ class ApplicationStack(Stack):
 
         params = (
             f"--conf"
-            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.bronze_bucket.bucket_name}/nyc-taxi"
-            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.silver_bucket.bucket_name}"
+            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.silver_bucket.bucket_name}/spark_data_lake/nyc-taxi"
+            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.gold_bucket.bucket_name}/spark_data_lake"
         )
 
         spark_job = dsf.SparkEmrServerlessJob(
@@ -107,8 +80,8 @@ class ApplicationStack(Stack):
                 execution_role_arn=processing_exec_role.role_arn,
                 spark_submit_entry_point=spark_app.entrypoint_s3_uri,
                 spark_submit_parameters=params,
-            ),
+            )
         )
 
         # Helper with the custom resource to trigger the Spark job. For the demo purposes only.
-        SparkJobTrigger(self, "JobTrigger", spark_job=spark_job, db=silver_nyc_taxi_db)
+        SparkJobTrigger(self, "JobTrigger", spark_job=spark_job, db=catalog.gold_catalog_database)
