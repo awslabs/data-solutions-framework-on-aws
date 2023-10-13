@@ -33,7 +33,7 @@ export class TrackedConstruct extends Construct {
   /**
    * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
    */
-  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\)( \\(version:(.+)\\))? \\(tag:(.+)\\)');
+  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\)( \\(version:([^)]*)\\))?( \\(tag:([^)]*)\\))?');
   private static readonly TRACKING_TAG_SEPARATOR = ',';
 
   /**
@@ -57,14 +57,29 @@ export class TrackedConstruct extends Construct {
 
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
     const fullDescription = TrackedConstruct.trackingRegExp.exec(currentDescription);
+
     const version = this.retrieveVersion();
 
     const tag = props.trackingTag.split(TrackedConstruct.TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
       return `${currentDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${version}) (tag:${tag})`;
     } else {
-      let tags = fullDescription[4] + TrackedConstruct.TRACKING_TAG_SEPARATOR + tag;
-      return `${fullDescription[1]} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${fullDescription[3]}) (tag:${tags})`;
+      const description = fullDescription[1];
+      const existingTags = fullDescription[5];
+
+      let newTags;
+      if (existingTags) {
+        const tags = existingTags.split(TrackedConstruct.TRACKING_TAG_SEPARATOR);
+        if (tags.includes(tag)) {
+          newTags = existingTags;
+        } else {
+          newTags = existingTags + TrackedConstruct.TRACKING_TAG_SEPARATOR + tag;
+        }
+      } else {
+        newTags = tag;
+      }
+
+      return `${description} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${version}) (tag:${newTags})`;
     }
   }
 
