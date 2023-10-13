@@ -30,6 +30,7 @@ import { Bucket, BucketEncryption, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
+import { vpcBootstrap } from './../../../utils/vpc-helper';
 import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners, createNamespace } from './emr-eks-cluster-helpers';
 import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
@@ -37,7 +38,6 @@ import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
 import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
-import { vpcBootstrap } from './../../../utils/vpc-helper';
 import { Context, EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**

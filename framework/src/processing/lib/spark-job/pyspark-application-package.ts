@@ -188,7 +188,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     const emrAppAsset = new Asset(this, 'EmrAppAsset', {
       path: entrypointDirectory,
       bundling: {
-        image: DockerImage.fromRegistry('public.ecr.aws/docker/library/alpine:latest'),
+        image: DockerImage.fromRegistry('public.ecr.aws/amazonlinux/amazonlinux:2023-minimal'),
         outputType: BundlingOutput.NOT_ARCHIVED,
         command: [
           'sh',
