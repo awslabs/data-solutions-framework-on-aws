@@ -45,33 +45,7 @@ class ApplicationStack(Stack):
             storage=storage,
         )
 
-        processing_policy_doc = iam.PolicyDocument(
-            statements=[
-                iam.PolicyStatement(
-                    effect=iam.Effect.ALLOW,
-                    actions=[
-                        "s3:GetObject*",
-                        "s3:GetBucket*",
-                        "s3:List*",
-                        "s3:DeleteObject*",
-                        "s3:PutObject",
-                        "s3:PutObjectTagging",
-                        "s3:PutObjectVersionTagging",
-                        "s3:Abort*"
-                    ],
-                    resources=[
-                        f"{storage.silver_bucket.bucket_arn}/*",
-                        f"{storage.gold_bucket.bucket_arn}/*",
-                        storage.silver_bucket.bucket_arn,
-                        storage.gold_bucket.bucket_arn
-                    ],
-                )
-            ]
-        )
-
-        processing_exec_role = dsf.SparkEmrServerlessRuntime.create_execution_role(
-            self, "ProcessingExecRole", execution_role_policy_document=processing_policy_doc
-        )
+        processing_exec_role = dsf.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
 
         storage.gold_bucket.grant_read_write(processing_exec_role)
         storage.silver_bucket.grant_read(processing_exec_role)
