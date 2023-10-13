@@ -53,6 +53,18 @@
       "steps": [
         {
           "exec": "jsii --silence-warnings=reserved-word"
+        },
+        {
+          "exec": "npx projen copy-resources"
+        }
+      ]
+    },
+    "copy-resources": {
+      "name": "copy-resources",
+      "description": "Copy all resources directories from src to lib",
+      "steps": [
+        {
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/processing/spark-runtime/emr-containers/resources lib/processing/spark-runtime/emr-containers"
         }
       ]
     },
