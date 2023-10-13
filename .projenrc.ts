@@ -158,7 +158,7 @@ fwkProject.testTask.spawn(new Task('eslint'));
 
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
-  exec: 'npx projen test --group=e2e'
+  exec: 'jest --passWithNoTests --updateSnapshot --group=e2e'
 });
 
 fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
