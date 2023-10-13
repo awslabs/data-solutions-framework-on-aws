@@ -3741,6 +3741,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit repository created as part of the Spark CICD Pipeline. |
 
 ---
 
@@ -3765,6 +3766,18 @@ public readonly pipeline: CodePipeline;
 - *Type:* aws-cdk-lib.pipelines.CodePipeline
 
 The CodePipeline created as part of the Spark CICD Pipeline.
+
+---
+
+##### `repository`<sup>Required</sup> <a name="repository" id="aws-dsf.SparkEmrCICDPipeline.property.repository"></a>
+
+```typescript
+public readonly repository: Repository;
+```
+
+- *Type:* aws-cdk-lib.aws_codecommit.Repository
+
+The CodeCommit repository created as part of the Spark CICD Pipeline.
 
 ---
 
@@ -5836,6 +5849,7 @@ const sparkEmrCICDPipelineProps: SparkEmrCICDPipelineProps = { ... }
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#aws-dsf.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
 
@@ -5917,6 +5931,22 @@ public readonly integTestScript: string;
 - *Default:* No integration tests are run
 
 The path to the Shell script that contains integration tests.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrCICDPipelineProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
