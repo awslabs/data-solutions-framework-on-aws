@@ -1,18 +1,18 @@
 ---
-sidebar_position: 5
-sidebar_label: Data lake catalog
+sidebar_position: 4
+sidebar_label: Data catalog database
 ---
 
-# DataLakeCatalog
+# DataCatalogDatabase
 
-AWS Glue Catalog databases on top of a DataLakeStorage.
+AWS Glue Catalog database for an Amazon S3 dataset.
 
 ## Overview
 
-`DataLakeCatalog` is a set of [AWS Glue Data Catalog Databases](https://docs.aws.amazon.com/glue/latest/dg/define-database.html) configured on top of a [`DataLakeStorage`](./data-lake-storage). 
-The construct creates 3 databases pointing to each of the `DataLakeStorage` bucket:
-- The database default location is pointing to the corresponding S3 bucket location `s3://<locationBucket>/<locationPrefix>/`
-- By default, each database has an active crawler scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
+`DataCatalogDatabase` is an [AWS Glue Data Catalog Database](https://docs.aws.amazon.com/glue/latest/dg/define-database.html) configured for an Amazon S3 based dataset:
+- The database default location is pointing to an S3 bucket location `s3://<locationBucket>/<locationPrefix>/`
+- The database can store various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`
+- By default, a database level crawler is scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
 
 ![Data Catalog Database](../../../static/img/adsf-data-catalog.png)
 
