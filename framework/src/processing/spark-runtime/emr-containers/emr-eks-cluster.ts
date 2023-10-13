@@ -37,8 +37,8 @@ import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
 import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
 import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
-import { vpcBootstrap } from './vpc-helper';
-import { EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { vpcBootstrap } from './../../../utils/vpc-helper';
+import { Context, EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * The properties for the EmrEksCluster Construct class.
@@ -121,6 +121,14 @@ export interface EmrEksClusterProps {
   * @default - true
   */
   readonly createEmrOnEksServiceLinkedRole?: boolean;
+
+  /**
+   * The removal policy when deleting the CDK resource.
+   * Resources like Amazon cloudwatch log or Amazon S3 bucket
+   * If DESTROY is selected, context value
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
+  readonly removalPolicy?: RemovalPolicy;
 }
 
 /**
@@ -217,6 +225,8 @@ export class EmrEksCluster extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
     this.logKmsKey = Stack.of(scope).node.tryFindChild('logKmsKey') as Key ?? new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
       alias: 'log-vpc-key',
@@ -267,7 +277,7 @@ export class EmrEksCluster extends TrackedConstruct {
 
       const vpcCidr = props.vpcCidr ? props.vpcCidr :EmrEksCluster.DEFAULT_VPC_CIDR;
 
-      let eksVpc: IVpc | undefined = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.clusterName, this.logKmsKey);
+      let eksVpc: IVpc | undefined = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, this.clusterName, undefined).vpc;
 
       this.eksCluster = new Cluster(scope, `${this.clusterName}Cluster`, {
         defaultCapacity: 0,
