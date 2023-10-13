@@ -202,7 +202,7 @@
       "description": "Run framework end-to-end tests",
       "steps": [
         {
-          "exec": "npx projen test --group=e2e"
+          "exec": "jest --passWithNoTests --updateSnapshot --group=e2e"
         }
       ]
     },
