@@ -12,9 +12,9 @@ import {
   DEFAULT_SPARK_IMAGE,
   SparkImage,
   TrackedConstruct,
-  TrackedConstructProps
+  TrackedConstructProps,
 } from '../../utils';
-import { ApplicationStackFactory } from '../../utils/application-stack-factory';
+import { ApplicationStackFactory } from '../../utils';
 
 /**
  * The account information for deploying the Spark Application stack.
@@ -132,6 +132,59 @@ export interface SparkEmrCICDPipelineProps {
 export class SparkEmrCICDPipeline extends TrackedConstruct {
 
   /**
+   * Extract the path and the script name from a script path
+   * @param path the script path
+   * @return [path, scriptName]
+   */
+  private static extractPath(path: string): [string, string] {
+    const pathParts = path.split('/');
+    const integPath = pathParts.length > 1 ? pathParts.slice(0, -1).join('/') : '.';
+    const integScript = pathParts[pathParts.length - 1];
+
+    return [integPath, integScript];
+  }
+
+  /**
+   * Build the install commands for the CodeBuild step based on the runtime
+   * @param cdkPath the path of the CDK application
+   * @param sparkPath the path of the Spark application
+   * @return installCommands
+   */
+  private static synthCommands(cdkPath: string, sparkPath: string, sparkImage: SparkImage): string[] {
+    // Get the runtime of the CDK Construct
+    const runtime = process.env.JSII_AGENT || 'node.js';
+    let commands = [
+      'curl -qLk -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq',
+      'curl -qL -o aws_credentials.json http://169.254.170.2/$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI',
+      "eval \"$(jq -r '@sh \"AWS_ACCESS_KEY_ID=\\\(.AccessKeyId) AWS_SECRET_ACCESS_KEY=\\\(.SecretAccessKey) AWS_SESSION_TOKEN=\\\(.Token)\"' aws_credentials.json)\"",
+      'rm -f aws_credentials.json',
+      `chmod -R o+w $(pwd)/${sparkPath}`,
+      `docker run -i -v $(pwd)/${sparkPath}:/home/hadoop/ -e AWS_REGION=$AWS_REGION -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e DISABLE_SSL=true --rm --name pytest ${sparkImage} sh -c \"export PATH=$PATH:/home/hadoop/.local/bin && export PYTHONPATH=$PYTHONPATH:/usr/lib/spark/python/lib/py4j-src.zip:/usr/lib/spark/python && python3 -m pip install pytest . && python3 -m pytest\"`,
+      `cd ${cdkPath}`,
+      'npm install -g aws-cdk',
+    ];
+
+    // Build the list of commands depending on the runtime
+    switch (runtime.split('/')[0].toLowerCase()) {
+      case 'node.js':
+        commands = commands.concat([
+          'npm ci',
+          'npm run build',
+        ]);
+        break;
+      case 'python':
+        commands = commands.concat([
+          'pip install -r requirements.txt',
+        ]);
+        break;
+      default:
+        throw new Error('Runtime not supported');
+    }
+    // Full set of commands
+    return commands.concat(['npx cdk synth --all']);
+  }
+
+  /**
    * The CodePipeline created as part of the Spark CICD Pipeline
    */
   public readonly pipeline: CodePipeline;
@@ -208,59 +261,6 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     new CfnOutput(this, 'CodeCommitRepositoryUrl', {
       value: codeRepository.repositoryCloneUrlHttp,
     });
-  }
-
-  /**
-   * Extract the path and the script name from a script path
-   * @param path the script path
-   * @return [path, scriptName]
-   */
-  private static extractPath(path: string): [string, string] {
-    const pathParts = path.split('/');
-    const integPath = pathParts.length > 1 ? pathParts.slice(0, -1).join('/') : '.';
-    const integScript = pathParts[pathParts.length - 1];
-
-    return [integPath, integScript];
-  }
-
-  /**
-   * Build the install commands for the CodeBuild step based on the runtime
-   * @param cdkPath the path of the CDK application
-   * @param sparkPath the path of the Spark application
-   * @return installCommands
-   */
-  private static synthCommands(cdkPath: string, sparkPath: string, sparkImage: SparkImage): string[] {
-    // Get the runtime of the CDK Construct
-    const runtime = process.env.JSII_AGENT || 'node.js';
-    let commands = [
-      'curl -qLk -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq',
-      'curl -qL -o aws_credentials.json http://169.254.170.2/$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI',
-      "eval \"$(jq -r '@sh \"AWS_ACCESS_KEY_ID=\\\(.AccessKeyId) AWS_SECRET_ACCESS_KEY=\\\(.SecretAccessKey) AWS_SESSION_TOKEN=\\\(.Token)\"' aws_credentials.json)\"",
-      'rm -f aws_credentials.json',
-      `chmod -R o+w $(pwd)/${sparkPath}`,
-      `docker run -i -v $(pwd)/${sparkPath}:/home/hadoop/ -e AWS_REGION=$AWS_REGION -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e DISABLE_SSL=true --rm --name pytest ${sparkImage} sh -c \"export PATH=$PATH:/home/hadoop/.local/bin && export PYTHONPATH=$PYTHONPATH:/usr/lib/spark/python/lib/py4j-src.zip:/usr/lib/spark/python && python3 -m pip install pytest . && python3 -m pytest\"`,
-      `cd ${cdkPath}`,
-      'npm install -g aws-cdk',
-    ];
-
-    // Build the list of commands depending on the runtime
-    switch (runtime.split('/')[0].toLowerCase()) {
-      case 'node.js':
-        commands = commands.concat([
-          'npm ci',
-          'npm run build',
-        ]);
-        break;
-      case 'python':
-        commands = commands.concat([
-          'pip install -r requirements.txt',
-        ]);
-        break;
-      default:
-        throw new Error('Runtime not supported');
-    }
-    // Full set of commands
-    return commands.concat(['npx cdk synth --all']);
   }
 
   /**

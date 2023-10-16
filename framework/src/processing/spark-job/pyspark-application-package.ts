@@ -158,8 +158,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
         const emrDepsArtifacts = new BucketDeployment(this, 'EmrDepsArtifacts', {
           sources: [
             Source.bucket(
-                emrDepsAsset.bucket,
-                emrDepsAsset.s3ObjectKey,
+              emrDepsAsset.bucket,
+              emrDepsAsset.s3ObjectKey,
             ),
           ],
           destinationBucket: artifactsBucket!,
@@ -196,8 +196,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     const emrAppArtifacts = new BucketDeployment(this, 'EmrAppArtifacts', {
       sources: [
         Source.bucket(
-            emrAppAsset.bucket,
-            emrAppAsset.s3ObjectKey,
+          emrAppAsset.bucket,
+          emrAppAsset.s3ObjectKey,
         ),
       ],
       destinationBucket: artifactsBucket!,
