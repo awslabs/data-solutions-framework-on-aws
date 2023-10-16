@@ -14,6 +14,100 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { DataCatalogDatabase } from '../../../src';
 
+describe('DataCatalogDatabase with no top-level database', () => {
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  const dbBucketName = 'sample-db';
+
+  const dbBucket = new Bucket(stack, 'dbBucket', {
+    bucketName: dbBucketName,
+  });
+
+  const locationPrefix = '/';
+  const dbName = 'sample';
+  new DataCatalogDatabase(stack, 'database', {
+    locationBucket: dbBucket,
+    locationPrefix: locationPrefix,
+    name: dbName,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('DataCatalogDatabase should create crawler', () => {
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      Configuration: '{"Version":1,"Grouping":{"TableLevelConfiguration":2}}',
+      DatabaseName: Match.stringLikeRegexp(`^${dbName}\_.+`),
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  Match.exact('s3://'),
+                  Match.anyValue(),
+                  Match.exact(locationPrefix),
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      Schedule: {
+        ScheduleExpression: 'cron(1 0 * * ? *)',
+      },
+    });
+  });
+});
+
+describe('DataCatalogDatabase with multiple org location prefix', () => {
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  const dbBucketName = 'sample-db';
+
+  const dbBucket = new Bucket(stack, 'dbBucket', {
+    bucketName: dbBucketName,
+  });
+
+  const locationPrefix = '/org1/database/';
+  const dbName = 'sample';
+  new DataCatalogDatabase(stack, 'database', {
+    locationBucket: dbBucket,
+    locationPrefix: locationPrefix,
+    name: dbName,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('DataCatalogDatabase should create crawler', () => {
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      Configuration: '{"Version":1,"Grouping":{"TableLevelConfiguration":4}}',
+      DatabaseName: Match.stringLikeRegexp(`^${dbName}\_.+`),
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  Match.exact('s3://'),
+                  Match.anyValue(),
+                  Match.exact(locationPrefix),
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      Schedule: {
+        ScheduleExpression: 'cron(1 0 * * ? *)',
+      },
+    });
+  });
+});
+
 describe('DataCatalogDatabase default construct', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -264,6 +358,7 @@ describe('DataCatalogDatabase default construct', () => {
 
   test('DataCatalogDatabase should create crawler', () => {
     template.hasResourceProperties('AWS::Glue::Crawler', {
+      Configuration: '{"Version":1,"Grouping":{"TableLevelConfiguration":3}}',
       DatabaseName: Match.stringLikeRegexp(`^${dbName}\_.+`),
       Targets: {
         S3Targets: [
