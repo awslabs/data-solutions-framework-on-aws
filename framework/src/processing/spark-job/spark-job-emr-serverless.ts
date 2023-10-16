@@ -13,7 +13,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
 
 /**
  * A construct to run Spark Jobs using EMR Serverless.
- * creates a State Machine that orchestrates the Spark Job.
+ * Creates a State Machine that orchestrates the Spark Job.
  * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
  *
  * @example

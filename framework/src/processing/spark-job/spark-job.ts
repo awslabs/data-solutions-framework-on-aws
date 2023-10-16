@@ -22,6 +22,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
  * Available implementations:
  * * {@link SparkEmrServerlessJob} for Emr Serverless implementation
  * * {@link SparkEmrEksJob} for EMR On EKS implementation
+ *
  */
 export abstract class SparkJob extends TrackedConstruct {
 
