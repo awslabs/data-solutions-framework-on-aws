@@ -13,15 +13,11 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 * Creates AWS Glue Catalog Database for each storage layer. Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 *
 * @example
-* import * as cdk from 'aws-cdk-lib';
 * import { Key } from 'aws-cdk-lib/aws-kms';
-* import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
 *
-* const exampleApp = new cdk.App();
-* const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
-* const storage = new DataLakeStorage(stack, "ExampleStorage");
-* const logEncryptionKey = new Key(stack, 'LogEncryptionKey');
-* const dataLakeCatalog = new DataLakeCatalog(stack, "ExampleDataLakeCatalog", {
+* const logEncryptionKey = new Key(this, 'LogEncryptionKey');
+* const storage = new dsf.DataLakeStorage(this, "ExampleStorage");
+* const dataLakeCatalog = new dsf.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
 *   dataLakeStorage: storage,
 *   databaseName: "exampledb",
 *   crawlerLogEncryptionKey: logEncryptionKey

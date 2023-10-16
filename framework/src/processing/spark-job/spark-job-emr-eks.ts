@@ -19,26 +19,26 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
  * @default ReleaseLabel: EMR version 6.12
  *
- * **Usage example**
  * @example
+ * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
- * const job = new SparkJob(stack, 'SparkJob', {
- *          jobConfig:{
- *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
- *               "VirtualClusterId": "virtualClusterId",
- *               "ExecutionRoleArn": "ROLE-ARN",
- *               "JobDriver": {
- *                   "SparkSubmit": {
- *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
- *                       "EntryPointArguments": [],
- *                       "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
- *                   },
- *               }
- *          }
- * } as EmrOnEksSparkJobApiProps);
+ * const job = new dsf.SparkEmrEksJob(this, 'SparkJob', {
+ *   jobConfig:{
+ *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+ *     "VirtualClusterId": "virtualClusterId",
+ *     "ExecutionRoleArn": "ROLE-ARN",
+ *     "JobDriver": {
+ *       "SparkSubmit": {
+ *           "EntryPoint": "s3://S3-BUCKET/pi.py",
+ *           "EntryPointArguments": [],
+ *           "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+ *       },
+ *     }
+ *   }
+ * } as dsf.SparkEmrEksJobApiProps);
  *
- * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
- *   value: job.stateMachine.stateMachineArn,
+ * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
+ *   value: job.stateMachine!.stateMachineArn,
  * });
  */
 export class SparkEmrEksJob extends SparkJob {

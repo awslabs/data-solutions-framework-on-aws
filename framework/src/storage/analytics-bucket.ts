@@ -15,21 +15,17 @@ import { Context, BucketUtils } from '../utils';
 * See documentation TODO insert link
 *
 * @example
-* import * as cdk from 'aws-cdk-lib';
-* import { AnalyticsBucket} from 'aws-data-solutions-framework';
-*
-* const exampleApp = new cdk.App();
-* const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
+* import { Key } from 'aws-cdk-lib/aws-kms';
 *
 * // Set context value for global data removal policy (or set in cdk.json).
-* stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+* this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 *
-* const encryptionKey = new Key(stack, 'DataKey', {
-*  removalPolicy: RemovalPolicy.DESTROY,
+* const encryptionKey = new Key(this, 'DataKey', {
+*  removalPolicy: cdk.RemovalPolicy.DESTROY,
 *  enableKeyRotation: true,
 * });
 *
-* new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
+* new dsf.AnalyticsBucket(this, 'MyAnalyticsBucket', {
 *  encryptionKey,
 *  removalPolicy: cdk.RemovalPolicy.DESTROY,
 * });

@@ -173,7 +173,7 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * Creates or import an S3 bucket to store the logs of the Spark job.
    * The bucket is created with SSE encryption (KMS managed or provided by user).
-   * @param s3LogUri S3 path to store the logs of the Spark job. @example s3://<bucket-name>/
+   * @param s3LogUri S3 path to store the logs of the Spark job. Example: s3://<bucket-name>/
    * @param encryptionKeyArn KMS Key ARN for encryption. @default - Master KMS key of the account.
    * @returns string S3 path to store the logs.
    */

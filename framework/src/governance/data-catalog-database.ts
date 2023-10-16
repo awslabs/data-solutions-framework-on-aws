@@ -10,21 +10,17 @@ import { Construct } from 'constructs';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
-* An AWS Glue Data Catalog Database configured with the location and a crawler.
-*
-* @example
-* import * as cdk from 'aws-cdk-lib';
-* import { DataCatalogDatabase } from 'aws-data-solutions-framework';
-*
-* const exampleApp = new cdk.App();
-* const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
-*
-* new DataCatalogDatabase(stack, 'ExampleDatabase', {
-*    locationBucket: bucket,
-*    locationPrefix: '/databasePath',
-*    name: 'example-db'
-* });
-*/
+ * An AWS Glue Data Catalog Database configured with the location and a crawler.
+ *
+ * @example
+ * import { Bucket } from 'aws-cdk-lib/aws-s3';
+ *
+ * new dsf.DataCatalogDatabase(this, 'ExampleDatabase', {
+ *    locationBucket: new Bucket(scope, 'LocationBucket'),
+ *    locationPrefix: '/databasePath',
+ *    name: 'example-db'
+ * });
+ */
 export class DataCatalogDatabase extends TrackedConstruct {
   /**
    * The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). This property can be undefined if `autoCrawl` is set to `false`.

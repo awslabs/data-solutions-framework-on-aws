@@ -11,6 +11,7 @@
     "bump": "npx projen bump",
     "compat": "npx projen compat",
     "compile": "npx projen compile",
+    "compile-examples": "npx projen compile-examples",
     "default": "npx projen default",
     "docgen": "npx projen docgen",
     "eslint": "npx projen eslint",

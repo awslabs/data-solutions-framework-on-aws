@@ -91,13 +91,10 @@ export interface DataLakeStorageProps {
  * See documentation TODO insert link.
  *
  * @example
- * import * as cdk from 'aws-cdk-lib';
- * import { DataLakeStorage } from 'aws-data-solutions-framework';
- *
  * // Set the context value for global data removal policy
- * stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+ * this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
  *
- * new DataLakeStorage(this, 'MyDataLakeStorage', {
+ * new dsf.DataLakeStorage(this, 'MyDataLakeStorage', {
  *  bronzeBucketName: 'my-bronze',
  *  bronzeBucketInfrequentAccessDelay: 90,
  *  bronzeBucketArchiveDelay: 180,

@@ -2,40 +2,41 @@
 // SPDX-License-Identifier: MIT-0
 
 import * as path from 'path';
-import { ManagedPolicy, ServicePrincipal, IRole, PolicyStatement, Effect, Role } from 'aws-cdk-lib/aws-iam';
-import { Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
-import { BundlingOutput, Size, DockerImage, Aws, RemovalPolicy } from 'aws-cdk-lib/core';
+import { Aws, BundlingOutput, DockerImage, RemovalPolicy, Size } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import { PySparkApplicationPackageProps } from './pyspark-application-package-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 
 /**
-* A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket
-* This construct requires Docker daemon installed locally to run
-* @example
-* let pysparkPacker = new PySparkApplicationPackage (stack, 'pysparkPacker', {
-*   pysparkApplicationName: 'my-pyspark',
-*   entrypointPath: '/Users/my-user/my-spark-job/app/app-pyspark.py',
-*   dependenciesFolder: '/Users/my-user/my-spark-job/app',
-*   removalPolicy: RemovalPolicy.DESTROY,
-* });
-*
-* let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.virtualEnvironmentArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
-*
-* new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
-*   name: 'MyPySpark',
-*   applicationId: 'xxxxxxxxx',
-*   executionRoleArn: 'ROLE-ARN,
-*   executionTimeoutMinutes: 30,
-*   s3LogUri: 's3://s3-bucket/monitoring-logs',
-*   cloudWatchLogGroupName: 'my-pyspark-serverless-log',
-*   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
-*   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
-* } as EmrServerlessSparkJobProps);
-*/
+ * A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket
+ * This construct requires Docker daemon installed locally to run.
+ *
+ * @example
+ * let pysparkPacker = new dsf.PySparkApplicationPackage (this, 'pysparkPacker', {
+ *   applicationName: 'my-pyspark',
+ *   entrypointPath: '/Users/my-user/my-spark-job/app/app-pyspark.py',
+ *   dependenciesFolder: '/Users/my-user/my-spark-job/app',
+ *   removalPolicy: cdk.RemovalPolicy.DESTROY,
+ * });
+ *
+ * let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
+ *
+ * new dsf.SparkEmrServerlessJob(this, 'SparkJobServerless', {
+ *   name: 'MyPySpark',
+ *   applicationId: 'xxxxxxxxx',
+ *   executionRoleArn: 'ROLE-ARN',
+ *   executionTimeoutMinutes: 30,
+ *   s3LogUri: 's3://s3-bucket/monitoring-logs',
+ *   cloudWatchLogGroupName: 'my-pyspark-serverless-log',
+ *   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
+ *   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
+ * } as dsf.SparkEmrServerlessJobProps);
+ */
 export class PySparkApplicationPackage extends TrackedConstruct {
 
   /**
@@ -157,8 +158,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
         const emrDepsArtifacts = new BucketDeployment(this, 'EmrDepsArtifacts', {
           sources: [
             Source.bucket(
-              emrDepsAsset.bucket,
-              emrDepsAsset.s3ObjectKey,
+                emrDepsAsset.bucket,
+                emrDepsAsset.s3ObjectKey,
             ),
           ],
           destinationBucket: artifactsBucket!,
@@ -195,8 +196,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     const emrAppArtifacts = new BucketDeployment(this, 'EmrAppArtifacts', {
       sources: [
         Source.bucket(
-          emrAppAsset.bucket,
-          emrAppAsset.s3ObjectKey,
+            emrAppAsset.bucket,
+            emrAppAsset.s3ObjectKey,
         ),
       ],
       destinationBucket: artifactsBucket!,
@@ -212,7 +213,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     this.artifactsBucket = artifactsBucket;
     this.assetUploadBucketRole = assetUploadBucketRole;
-    this.sparkVenvConf =`--conf spark.archives=${this.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`;
+    this.sparkVenvConf = `--conf spark.archives=${this.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`;
 
   }
 }

@@ -12,11 +12,8 @@ import { BucketUtils, Context } from '../utils';
  * Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
  *
  * @example
- * import * as cdk from 'aws-cdk-lib';
- * import { AccessLogsBucket } from 'aws-data-solutions-framework';
- *
- * const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
- *  removalPolicy: RemovalPolicy.DESTROY,
+ * const bucket = new dsf.AccessLogsBucket(this, 'AccessLogsBucket', {
+ *  removalPolicy: cdk.RemovalPolicy.DESTROY,
  * })
  */
 export class AccessLogsBucket extends Bucket {
