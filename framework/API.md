@@ -12,11 +12,8 @@ Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 *Example*
 
 ```typescript
-import * as cdk from 'aws-cdk-lib';
-import { AccessLogsBucket } from 'aws-data-solutions-framework';
-
-const bucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
- removalPolicy: RemovalPolicy.DESTROY,
+const bucket = new dsf.AccessLogsBucket(this, 'AccessLogsBucket', {
+ removalPolicy: cdk.RemovalPolicy.DESTROY,
 })
 ```
 
@@ -1160,21 +1157,17 @@ See documentation TODO insert link
 *Example*
 
 ```typescript
-import * as cdk from 'aws-cdk-lib';
-import { AnalyticsBucket} from 'aws-data-solutions-framework';
-
-const exampleApp = new cdk.App();
-const stack = new cdk.Stack(exampleApp, 'AnalyticsBucketStack');
+import { Key } from 'aws-cdk-lib/aws-kms';
 
 // Set context value for global data removal policy (or set in cdk.json).
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
-const encryptionKey = new Key(stack, 'DataKey', {
- removalPolicy: RemovalPolicy.DESTROY,
+const encryptionKey = new Key(this, 'DataKey', {
+ removalPolicy: cdk.RemovalPolicy.DESTROY,
  enableKeyRotation: true,
 });
 
-new AnalyticsBucket(stack, 'MyAnalyticsBucket', {
+new dsf.AnalyticsBucket(this, 'MyAnalyticsBucket', {
  encryptionKey,
  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
@@ -2621,14 +2614,10 @@ An AWS Glue Data Catalog Database configured with the location and a crawler.
 *Example*
 
 ```typescript
-import * as cdk from 'aws-cdk-lib';
-import { DataCatalogDatabase } from 'aws-data-solutions-framework';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
-const exampleApp = new cdk.App();
-const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
-
-new DataCatalogDatabase(stack, 'ExampleDatabase', {
-   locationBucket: bucket,
+new dsf.DataCatalogDatabase(this, 'ExampleDatabase', {
+   locationBucket: new Bucket(scope, 'LocationBucket'),
    locationPrefix: '/databasePath',
    name: 'example-db'
 });
@@ -2865,15 +2854,11 @@ Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 *Example*
 
 ```typescript
-import * as cdk from 'aws-cdk-lib';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { DataLakeCatalog, DataLakeStorage } from 'aws-data-solutions-framework';
 
-const exampleApp = new cdk.App();
-const stack = new cdk.Stack(exampleApp, 'DataCatalogStack');
-const storage = new DataLakeStorage(stack, "ExampleStorage");
-const logEncryptionKey = new Key(stack, 'LogEncryptionKey');
-const dataLakeCatalog = new DataLakeCatalog(stack, "ExampleDataLakeCatalog", {
+const logEncryptionKey = new Key(this, 'LogEncryptionKey');
+const storage = new dsf.DataLakeStorage(this, "ExampleStorage");
+const dataLakeCatalog = new dsf.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
   dataLakeStorage: storage,
   databaseName: "exampledb",
   crawlerLogEncryptionKey: logEncryptionKey
@@ -3088,13 +3073,10 @@ See documentation TODO insert link.
 *Example*
 
 ```typescript
-import * as cdk from 'aws-cdk-lib';
-import { DataLakeStorage } from 'aws-data-solutions-framework';
-
 // Set the context value for global data removal policy
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
-new DataLakeStorage(this, 'MyDataLakeStorage', {
+new dsf.DataLakeStorage(this, 'MyDataLakeStorage', {
  bronzeBucketName: 'my-bronze',
  bronzeBucketInfrequentAccessDelay: 90,
  bronzeBucketArchiveDelay: 180,
@@ -3325,25 +3307,25 @@ A construct that takes your PySpark application, packages its virtual environmen
 *Example*
 
 ```typescript
-let pysparkPacker = new PySparkApplicationPackage (stack, 'pysparkPacker', {
-  pysparkApplicationName: 'my-pyspark',
+let pysparkPacker = new dsf.PySparkApplicationPackage (this, 'pysparkPacker', {
+  applicationName: 'my-pyspark',
   entrypointPath: '/Users/my-user/my-spark-job/app/app-pyspark.py',
   dependenciesFolder: '/Users/my-user/my-spark-job/app',
-  removalPolicy: RemovalPolicy.DESTROY,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.virtualEnvironmentArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
+let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
 
-new EmrServerlessSparkJob(stack, 'SparkJobServerless', {
+new dsf.SparkEmrServerlessJob(this, 'SparkJobServerless', {
   name: 'MyPySpark',
   applicationId: 'xxxxxxxxx',
-  executionRoleArn: 'ROLE-ARN,
+  executionRoleArn: 'ROLE-ARN',
   executionTimeoutMinutes: 30,
   s3LogUri: 's3://s3-bucket/monitoring-logs',
   cloudWatchLogGroupName: 'my-pyspark-serverless-log',
   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
-} as EmrServerlessSparkJobProps);
+} as dsf.SparkEmrServerlessJobProps);
 ```
 
 
@@ -3593,40 +3575,45 @@ A CICD Pipeline that tests and deploys a Spark application in cross-account envi
 *Example*
 
 ```typescript
-const stack = new Stack();
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
-interface MyApplicationStackProps extends StackProps {
-  readonly stage: CICDStage;
+interface MyApplicationStackProps extends cdk.StackProps {
+  readonly stage: dsf.CICDStage;
 }
 
-class MyApplicationStack extends Stack {
-  constructor(scope: Stack, props?: MyApplicationStackProps) {
+class MyApplicationStack extends cdk.Stack {
+  constructor(scope: cdk.Stack, props?: MyApplicationStackProps) {
     super(scope, 'MyApplicationStack');
-*     const bucket = new Bucket(this, 'TestBucket', {
+    const bucket = new Bucket(this, 'TestBucket', {
       autoDeleteObjects: true,
-      removalPolicy: RemovalPolicy.DESTROY,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-    new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
+    new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });
   }
 }
 
-class MyStackFactory implements ApplicationStackFactory {
-  createStack(scope: Stack, stage: CICDStage): Stack {
+class MyStackFactory implements dsf.ApplicationStackFactory {
+  createStack(scope: cdk.Stack, stage: dsf.CICDStage): cdk.Stack {
     return new MyApplicationStack(scope, { stage });
   }
 }
 
-new SparkCICDPipeline(stack, 'TestConstruct', {
-  sparkApplicationName: 'test',
-  applicationStackFactory: new MyStackFactory(),
-  cdkApplicationPath: 'cdk/',
-  sparkApplicationPath: 'spark/',
-  sparkImage: SparkImage.EMR_SERVERLESS_6_10,
-  integTestScript: 'cdk/integ-test.sh',
-  integTestEnv: {
-    TEST_BUCKET: 'BucketName',
-  },
-});
+class MyCICDStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.SparkEmrCICDPipeline(this, 'TestConstruct', {
+       sparkApplicationName: 'test',
+       applicationStackFactory: new MyStackFactory(),
+       cdkApplicationPath: 'cdk/',
+       sparkApplicationPath: 'spark/',
+       sparkImage: dsf.SparkImage.EMR_6_12,
+       integTestScript: 'cdk/integ-test.sh',
+       integTestEnv: {
+         TEST_BUCKET: 'BucketName',
+       },
+    });
+  }
+}
 ```
 
 
@@ -3808,23 +3795,25 @@ Creates a Step Functions State Machine that orchestrates the Spark Job.
 *Example*
 
 ```typescript
-const job = new SparkJob(stack, 'SparkJob', {
-         jobConfig:{
-              "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
-              "VirtualClusterId": "virtualClusterId",
-              "ExecutionRoleArn": "ROLE-ARN",
-              "JobDriver": {
-                  "SparkSubmit": {
-                      "EntryPoint": "s3://S3-BUCKET/pi.py",
-                      "EntryPointArguments": [],
-                      "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
-                  },
-              }
-         }
-} as EmrOnEksSparkJobApiProps);
+import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
-new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
-  value: job.stateMachine.stateMachineArn,
+const job = new dsf.SparkEmrEksJob(this, 'SparkJob', {
+  jobConfig:{
+    "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+    "VirtualClusterId": "virtualClusterId",
+    "ExecutionRoleArn": "ROLE-ARN",
+    "JobDriver": {
+      "SparkSubmit": {
+          "EntryPoint": "s3://S3-BUCKET/pi.py",
+          "EntryPointArguments": [],
+          "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+      },
+    }
+  }
+} as dsf.SparkEmrEksJobApiProps);
+
+new cdk.CfnOutput(this, 'SparkJobStateMachine', {
+  value: job.stateMachine!.stateMachineArn,
 });
 ```
 
@@ -4001,6 +3990,9 @@ creates a State Machine that orchestrates the Spark Job.
 *Example*
 
 ```typescript
+import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
+
 const myFileSystemPolicy = new PolicyDocument({
   statements: [new PolicyStatement({
     actions: [
@@ -4011,25 +4003,25 @@ const myFileSystemPolicy = new PolicyDocument({
 });
 
 
-const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+const myExecutionRole = dsf.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1', myFileSystemPolicy);
 const applicationId = "APPLICATION_ID";
-const job = new SparkJob(stack, 'SparkJob', {
-         jobConfig:{
-              "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
-              "ApplicationId": applicationId,
-              "ExecutionRoleArn": myExecutionRole.roleArn,
-              "JobDriver": {
-                  "SparkSubmit": {
-                      "EntryPoint": "s3://S3-BUCKET/pi.py",
-                      "EntryPointArguments": [],
-                      "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
-                  },
-              }
-         }
-} as EmrServerlessSparkJobApiProps);
+const job = new dsf.SparkEmrServerlessJob(this, 'SparkJob', {
+  jobConfig:{
+    "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+    "ApplicationId": applicationId,
+    "ExecutionRoleArn": myExecutionRole.roleArn,
+    "JobDriver": {
+      "SparkSubmit": {
+          "EntryPoint": "s3://S3-BUCKET/pi.py",
+          "EntryPointArguments": [],
+          "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+      },
+    }
+  }
+} as dsf.SparkEmrServerlessJobApiProps);
 
-new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
-  value: job.stateMachine.stateMachineArn,
+new cdk.CfnOutput(this, 'SparkJobStateMachine', {
+  value: job.stateMachine!.stateMachineArn,
 });
 ```
 
@@ -6304,13 +6296,6 @@ Simplified configuration for the EMR Serverless Job.
 
 > [[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html])
 
-*Example*
-
-```typescript
-s3://BUCKET_NAME/
-```
-
-
 #### Initializer <a name="Initializer" id="aws-dsf.SparkEmrServerlessJobProps.Initializer"></a>
 
 ```typescript
@@ -6791,22 +6776,19 @@ Abstract class that needs to be implemented to pass the application Stack to the
 *Example*
 
 ```typescript
-import { ApplicationStackFactory }
-import { CICDStage } from './application-stage';
-
-interface MyApplicationStackProps extends StackProps {
-  readonly stage: CICDStage;
+interface MyApplicationStackProps extends cdk.StackProps {
+  readonly stage: dsf.CICDStage;
 }
 
-class MyApplicationStack extends Stack {
-  constructor(scope: Stack, id: string, props?: MyApplicationStackProps) {
+class MyApplicationStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: MyApplicationStackProps) {
     super(scope, id, props);
     // stack logic goes here... and can be customized using props.stage
   }
 }
 
-class MyApplicationStackFactory extends ApplicationStackFactory {
-  createStack(scope: Construct, stage: CICDStage): Stack {
+class MyApplicationStackFactory extends dsf.ApplicationStackFactory {
+  createStack(scope: Construct, stage: dsf.CICDStage): cdk.Stack {
     return new MyApplicationStack(scope, 'MyApplication', {
       stage: stage
     } as MyApplicationStackProps);
