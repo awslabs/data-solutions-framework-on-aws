@@ -90,7 +90,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     const currentStack = Stack.of(this);
 
     if (autoCrawl) {
-      const tableLevel = props.crawlerTableLevelDepth || 3;
+      const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(locationPrefix);
       const crawlerRole = new Role(this, 'CrawlerRole', {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         inlinePolicies: {
@@ -251,6 +251,20 @@ export class DataCatalogDatabase extends TrackedConstruct {
       ],
     }));
   }
+
+  private calculateDefaultTableLevelDepth(locationPrefix: string): number {
+    const baseCount = 2;
+
+    const locationTokens = locationPrefix.split('/');
+
+    let ctrValidToken = 0;
+
+    locationTokens.forEach((token) => {
+      ctrValidToken += (token) ? 1 : 0;
+    });
+
+    return ctrValidToken + baseCount;
+  }
 }
 
 /**
@@ -292,7 +306,7 @@ export interface DataCatalogDatabaseProps {
 
   /**
    * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
-   * @default 3. The default value follows the structure: `<bucket>/<databaseFolder>/<table1Folder>/`
+   * @default calculated based on `locationPrefix`
    */
   readonly crawlerTableLevelDepth?: number;
 

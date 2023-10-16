@@ -20,12 +20,12 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkJobTestStack', app);
 const { stack } = testStack;
 
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
 // creation of the construct(s) under test
 const emrApp = new SparkEmrServerlessRuntime(stack, 'emrApp', {
   name: 'my-test-app',
 });
-
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
 const myFileSystemPolicy = new PolicyDocument({
   statements: [new PolicyStatement({

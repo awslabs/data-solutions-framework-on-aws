@@ -5378,7 +5378,7 @@ public readonly crawlerTableLevelDepth: number;
 ```
 
 - *Type:* number
-- *Default:* 3. The default value follows the structure: `<bucket>/<databaseFolder>/<table1Folder>/`
+- *Default:* calculated based on `locationPrefix`
 
 Directory depth where the table folders are located.
 
@@ -5420,6 +5420,7 @@ const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database in the Glue Data Catalog. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
@@ -5475,6 +5476,21 @@ public readonly crawlerLogEncryptionKey: Key;
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
+
+---
+
+##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth"></a>
+
+```typescript
+public readonly crawlerTableLevelDepth: number;
+```
+
+- *Type:* number
+- *Default:* calculated based on `locationPrefix`
+
+Directory depth where the table folders are located.
+
+This helps the crawler understand the layout of the folders in S3.
 
 ---
 
