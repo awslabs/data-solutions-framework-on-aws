@@ -7,6 +7,7 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import {
+  ApplicationStackFactory,
   ApplicationStage,
   CICDStage,
   DEFAULT_SPARK_IMAGE,
@@ -14,7 +15,6 @@ import {
   TrackedConstruct,
   TrackedConstructProps,
 } from '../../utils';
-import { ApplicationStackFactory } from '../../utils';
 
 /**
  * The account information for deploying the Spark Application stack.
