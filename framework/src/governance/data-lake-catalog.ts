@@ -57,34 +57,42 @@ export class DataLakeCatalog extends TrackedConstruct {
     const extractedBronzeBucketName = this.extractBucketName(props.dataLakeStorage.bronzeBucket);
     const extractedSilverBucketName = this.extractBucketName(props.dataLakeStorage.silverBucket);
     const extractedGoldBucketName = this.extractBucketName(props.dataLakeStorage.goldBucket);
+    const locationPrefix = props.databaseName || '/';
+
+    const defaultTableLevelDepth = locationPrefix == '/' ? 2 : 3;
+
+    const crawlerTableLevelDepth = props.crawlerTableLevelDepth || defaultTableLevelDepth;
 
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
-      locationPrefix: props.databaseName || '/',
+      locationPrefix,
       name: props.databaseName ? `${extractedBronzeBucketName}_${props.databaseName}` : extractedBronzeBucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
+      crawlerTableLevelDepth,
       removalPolicy,
     });
 
     this.silverCatalogDatabase = new DataCatalogDatabase(this, 'SilverCatalogDatabase', {
       locationBucket: props.dataLakeStorage.silverBucket,
-      locationPrefix: props.databaseName || '/',
+      locationPrefix,
       name: props.databaseName ? `${extractedSilverBucketName}_${props.databaseName}` : extractedSilverBucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
+      crawlerTableLevelDepth,
       removalPolicy,
     });
 
     this.goldCatalogDatabase = new DataCatalogDatabase(this, 'GoldCatalogDatabase', {
       locationBucket: props.dataLakeStorage.goldBucket,
-      locationPrefix: props.databaseName || '/',
+      locationPrefix,
       name: props.databaseName ? `${extractedGoldBucketName}_${props.databaseName}` : extractedGoldBucketName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
+      crawlerTableLevelDepth,
       removalPolicy,
     });
   }
@@ -133,6 +141,12 @@ export interface DataLakeCatalogProps {
    * @default Create a new key if none is provided
    */
   readonly crawlerLogEncryptionKey?: Key;
+
+  /**
+   * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
+   * @default 3 if locationPrefix is not `/`, otherwise 2.
+   */
+  readonly crawlerTableLevelDepth?: number;
 
   /**
    * Policy to apply when the bucket is removed from this stack.
