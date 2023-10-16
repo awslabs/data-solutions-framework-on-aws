@@ -59,10 +59,6 @@ export class DataLakeCatalog extends TrackedConstruct {
     const extractedGoldBucketName = this.extractBucketName(props.dataLakeStorage.goldBucket);
     const locationPrefix = props.databaseName || '/';
 
-    const defaultTableLevelDepth = locationPrefix == '/' ? 2 : 3;
-
-    const crawlerTableLevelDepth = props.crawlerTableLevelDepth || defaultTableLevelDepth;
-
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
       locationPrefix,
@@ -70,7 +66,7 @@ export class DataLakeCatalog extends TrackedConstruct {
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
-      crawlerTableLevelDepth,
+      crawlerTableLevelDepth: props.crawlerTableLevelDepth,
       removalPolicy,
     });
 
@@ -81,7 +77,7 @@ export class DataLakeCatalog extends TrackedConstruct {
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
-      crawlerTableLevelDepth,
+      crawlerTableLevelDepth: props.crawlerTableLevelDepth,
       removalPolicy,
     });
 
@@ -92,7 +88,7 @@ export class DataLakeCatalog extends TrackedConstruct {
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
-      crawlerTableLevelDepth,
+      crawlerTableLevelDepth: props.crawlerTableLevelDepth,
       removalPolicy,
     });
   }
@@ -144,7 +140,7 @@ export interface DataLakeCatalogProps {
 
   /**
    * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
-   * @default 3 if locationPrefix is not `/`, otherwise 2.
+   * @default calculated based on `locationPrefix`
    */
   readonly crawlerTableLevelDepth?: number;
 

@@ -5378,7 +5378,7 @@ public readonly crawlerTableLevelDepth: number;
 ```
 
 - *Type:* number
-- *Default:* 3 if locationPrefix is not `/`, otherwise 2.
+- *Default:* calculated based on `locationPrefix`
 
 Directory depth where the table folders are located.
 
@@ -5486,7 +5486,7 @@ public readonly crawlerTableLevelDepth: number;
 ```
 
 - *Type:* number
-- *Default:* 3 if locationPrefix is not `/`, otherwise 2.
+- *Default:* calculated based on `locationPrefix`
 
 Directory depth where the table folders are located.
 
