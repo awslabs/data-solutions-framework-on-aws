@@ -11,7 +11,6 @@
     "bump": "npx projen bump",
     "compat": "npx projen compat",
     "compile": "npx projen compile",
-    "compile-examples": "npx projen compile-examples",
     "default": "npx projen default",
     "docgen": "npx projen docgen",
     "eslint": "npx projen eslint",
@@ -28,6 +27,7 @@
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
+    "validate-examples": "npx projen validate-examples",
     "watch": "npx projen watch",
     "projen": "npx projen"
   },

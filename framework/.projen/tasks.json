@@ -56,15 +56,6 @@
         }
       ]
     },
-    "compile-examples": {
-      "name": "compile-examples",
-      "description": "Compiling examples using jsii-rosetta",
-      "steps": [
-        {
-          "exec": "jsii-rosetta extract --fail .jsii"
-        }
-      ]
-    },
     "default": {
       "name": "default",
       "description": "Synthesize project files"
@@ -264,6 +255,15 @@
         },
         {
           "spawn": "post-upgrade"
+        }
+      ]
+    },
+    "validate-examples": {
+      "name": "validate-examples",
+      "description": "Validating examples using jsii-rosetta",
+      "steps": [
+        {
+          "exec": "jsii-rosetta extract --fail .jsii"
         }
       ]
     },
