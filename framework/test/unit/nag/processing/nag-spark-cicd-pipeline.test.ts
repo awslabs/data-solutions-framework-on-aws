@@ -75,11 +75,11 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 // @See https://github.com/aws/aws-cdk/issues/18440
 cicd.pipeline.buildPipeline();
 
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/TestConstruct/CodePipeline/Pipeline/ArtifactsBucket/Resource',
-  [{ id: 'AwsSolutions-S1', reason: 'This bucket is provided by CDK Pipeline construct' }],
-);
+// NagSuppressions.addResourceSuppressionsByPath(
+//   stack,
+//   '/Stack/TestConstruct/CodePipeline/Pipeline/ArtifactsBucket/Resource',
+//   [{ id: 'AwsSolutions-S1', reason: 'This bucket is provided by CDK Pipeline construct' }],
+// );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,

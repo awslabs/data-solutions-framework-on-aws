@@ -24,6 +24,7 @@ const cicdStack = new Stack(app, 'CICDStack', {
 const testStack = new TestStack('SparkCICDPipelineTestStack', app, cicdStack);
 const { stack } = testStack;
 
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 stack.node.setContext('staging', { accountId: '123456789012', region: 'eu-west-1' });
 stack.node.setContext('prod', { accountId: '123456789012', region: 'eu-west-1' });
 
@@ -62,6 +63,7 @@ const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
   },
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 // Force the pipeline construct creation forward before applying suppressions.

@@ -5,7 +5,7 @@
 /**
 * Tests SparkCICDPipeline construct
 *
-* @group unit/spark-processing
+* @group unit/spark-cicd
 */
 
 import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
@@ -23,8 +23,8 @@ describe('With minimal configuration, the construct', () => {
       region: 'us-east-1',
     },
   });
-  stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
-  stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
+  stack.node.setContext('staging', { account: '111111111111', region: 'us-east-1' });
+  stack.node.setContext('prod', { account: '123456789012', region: 'us-east-1' });
 
   class MyApplicationStack extends Stack {
 
@@ -54,14 +54,6 @@ describe('With minimal configuration, the construct', () => {
 
   test('should create a code repository', () => {
     template.resourceCountIs('AWS::CodeCommit::Repository', 1);
-  });
-
-  test('should output the code repository URL', () => {
-    template.hasOutput('*', {
-      Value: {
-        'Fn::GetAtt': [Match.anyValue(), 'CloneUrlHttp'],
-      },
-    });
   });
 
   test('should create a code pipeline', () => {
@@ -154,6 +146,146 @@ describe('With minimal configuration, the construct', () => {
       ]),
     });
   });
+
+  test('should create an access log bucket for the artifact bucket', () => {
+    template.hasResourceProperties('AWS::S3::Bucket', {
+      BucketName: {
+        'Fn::Join': Match.arrayWith([
+          Match.arrayWith([
+            'accesslogs-',
+            {
+              Ref: 'AWS::AccountId',
+            },
+            '-',
+            {
+              Ref: 'AWS::Region',
+            },
+          ]),
+        ]),
+      },
+    });
+  });
+
+  test('should create the output with the git remote add command', () => {
+    template.hasOutput('*', {
+      Value: {
+        'Fn::Join': Match.arrayWith([
+          Match.arrayWith([
+            'git remote add ',
+            {
+              'Fn::GetAtt': Match.arrayWith([
+                Match.stringLikeRegexp('.*CodeCommitRepository.*'),
+              ]),
+            },
+            ' codecommit::',
+            {
+              Ref: 'AWS::Region',
+            },
+            {
+              'Fn::GetAtt': Match.arrayWith([
+                Match.stringLikeRegexp('.*CodeCommitRepository.*'),
+              ]),
+            },
+          ]),
+        ]),
+      },
+    });
+  });
+
+  test('should create bucket artifact', () => {
+    template.hasResourceProperties('AWS::S3::Bucket', {
+      BucketEncryption: {
+        ServerSideEncryptionConfiguration: [
+          {
+            ServerSideEncryptionByDefault: {
+              KMSMasterKeyID: {
+                'Fn::GetAtt': Match.arrayWith([
+                  Match.stringLikeRegexp('.*ArtifactBucketKey.*'),
+                ]),
+              },
+              SSEAlgorithm: 'aws:kms',
+            },
+          },
+        ],
+      },
+      LoggingConfiguration: {
+        DestinationBucketName: {
+          Ref: Match.stringLikeRegexp('.*AccessLogsBucket.*'),
+        },
+      },
+    });
+  });
+
+  test('should store CodePipeline artifacts in the bucket artifact', () => {
+    template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
+      ArtifactStore: {
+        Location: {
+          Ref: Match.stringLikeRegexp('.*ArtifactBucket.*'),
+        },
+        Type: 'S3',
+      },
+    });
+  });
+
+  test('should store build logs of the synth step in the CloudWatch loggroup', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project',
+      Match.objectLike({
+        LogsConfig: {
+          CloudWatchLogs: {
+            GroupName: {
+              Ref: Match.stringLikeRegexp('.*BuildLogGroupC9AE8173.*'),
+            },
+            Status: 'ENABLED',
+          },
+        },
+        Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
+      }),
+    );
+  });
+
+  test('should store build logs of the self mutation step in the CloudWatch loggroup', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project',
+      Match.objectLike({
+        LogsConfig: {
+          CloudWatchLogs: {
+            GroupName: {
+              Ref: Match.stringLikeRegexp('.*BuildLogGroupC9AE8173.*'),
+            },
+            Status: 'ENABLED',
+          },
+        },
+        Description: Match.stringLikeRegexp('.*SelfMutate.*'),
+      }),
+    );
+  });
+
+  test('should create a CloudWatch loggroup for build logs', () => {
+    template.hasResourceProperties('AWS::Logs::LogGroup', {
+      RetentionInDays: 731,
+    });
+  });
+
+  test('should create cross account and cross region deployments policy', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          {
+            Action: 'sts:AssumeRole',
+            Effect: 'Allow',
+            Resource: [
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*111111111111.*'),
+              },
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*123456789012.*'),
+              },
+            ],
+          },
+        ]),
+      }),
+      PolicyName: Match.stringLikeRegexp('.*CodePipelineAssetsFileRoleDefaultPolicy.*'),
+    });
+  });
 });
 
 describe('With custom configuration, the construct', () => {
@@ -164,8 +296,8 @@ describe('With custom configuration, the construct', () => {
       region: 'us-east-1',
     },
   });
-  stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
-  stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
+  stack.node.setContext('staging', { account: '11111111111', region: 'us-east-1' });
+  stack.node.setContext('prod', { account: '123456789012', region: 'us-east-1' });
 
   class MyApplicationStack extends Stack {
 
@@ -206,6 +338,7 @@ describe('With custom configuration, the construct', () => {
         resources: ['*'],
       }),
     ],
+    removalPolicy: RemovalPolicy.DESTROY,
   });
 
   const template = Template.fromStack(stack);
@@ -278,5 +411,84 @@ describe('With custom configuration, the construct', () => {
       PolicyName: Match.stringLikeRegexp('.*CodePipelineStagingIntegrationTestsRoleDefaultPolicy.*'),
     });
   });
+
+  test('with global removal policy UNSET, should not destroy the build log group', () => {
+    template.hasResource('AWS::Logs::LogGroup',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+  test('with global removal policy UNSET, should not destroy the artifact bucket', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+
+});
+
+describe('With removal policy set to DESTROY and global removal policy set to true, the construct', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'TestStack', {
+    env: {
+      region: 'us-east-1',
+    },
+  });
+  stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
+  stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
+  // Set context value for global data removal policy
+  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
+  class MyApplicationStack extends Stack {
+
+    constructor(scope: Stack, id: string) {
+      super(scope, id);
+
+      new Bucket(this, 'TestBucket', {
+        autoDeleteObjects: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+      });
+    }
+  }
+
+  class MyStackFactory implements ApplicationStackFactory {
+    createStack(scope: Stack): Stack {
+      return new MyApplicationStack(scope, 'MyApplication');
+    }
+  }
+
+  new SparkEmrCICDPipeline(stack, 'TestConstruct', {
+    sparkApplicationName: 'test',
+    applicationStackFactory: new MyStackFactory(),
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should destroy the log group', () => {
+    template.hasResource('AWS::Logs::LogGroup',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
+  test('should destroy the artifact bucket', () => {
+    template.hasResource('AWS::S3::Bucket',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
+
 });
 

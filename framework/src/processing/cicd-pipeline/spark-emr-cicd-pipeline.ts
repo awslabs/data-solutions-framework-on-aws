@@ -1,12 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { CfnOutput } from 'aws-cdk-lib';
+import { Aws, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
+import { LogGroup } from 'aws-cdk-lib/aws-logs';
+import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { TrackedConstruct, TrackedConstructProps, CICDStage, ApplicationStage, DEFAULT_SPARK_IMAGE, SparkImage } from '../../utils';
+import { AccessLogsBucket } from '../../storage';
+import { TrackedConstruct, TrackedConstructProps, CICDStage, ApplicationStage, DEFAULT_SPARK_IMAGE, SparkImage, Context } from '../../utils';
 import { ApplicationStackFactory } from '../../utils/application-stack-factory';
 
 /**
@@ -16,7 +20,7 @@ export interface AccountInfo {
   /**
    * The account ID to deploy the Spark Application stack
    */
-  readonly accountId: string;
+  readonly account: string;
 
   /**
    * The region to deploy the Spark Application stack
@@ -75,6 +79,14 @@ export interface SparkEmrCICDPipelineProps {
    * @default - No permissions
    */
   readonly integTestPermissions?: PolicyStatement[];
+
+  /**
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
+  readonly removalPolicy?: RemovalPolicy;
 }
 
 /**
@@ -177,6 +189,11 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
   public readonly pipeline: CodePipeline;
 
   /**
+   * The CodeCommit repository created as part of the Spark CICD Pipeline
+   */
+  public readonly repository: Repository;
+
+  /**
    * Construct a new instance of the SparkCICDPipeline class.
    * @param {Construct} scope the Scope of the CDK Construct
    * @param {string} id the ID of the CDK Construct
@@ -190,20 +207,40 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
     // Set the defaults
     const cdkPath = props.cdkApplicationPath ? props.cdkApplicationPath : '.';
     const sparkPath = props.sparkApplicationPath ? props.sparkApplicationPath : '.';
     const sparkImage = props.sparkImage ? props.sparkImage : DEFAULT_SPARK_IMAGE;
 
     // Create a CodeCommit repository to host the code
-    const codeRepository = new Repository(this, 'CodeCommitRepository', {
+    this.repository = new Repository(this, 'CodeCommitRepository', {
       repositoryName: props.sparkApplicationName,
     });
 
     const buildStage = new CodeBuildStep('CodeBuildSynthStep', {
-      input: CodePipelineSource.codeCommit(codeRepository, 'main'),
+      input: CodePipelineSource.codeCommit(this.repository, 'main'),
       commands: SparkEmrCICDPipeline.synthCommands(cdkPath, sparkPath, sparkImage),
       primaryOutputDirectory: `${cdkPath}/cdk.out`,
+    });
+
+    const artifactAccessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
+      removalPolicy: props?.removalPolicy,
+    });
+
+    const artifactBucketKey = new Key(this, 'ArtifactBucketKey', {
+      removalPolicy,
+      enableKeyRotation: true,
+    });
+
+    const artifactBucket = new Bucket(this, 'ArtifactBucket', {
+      enforceSSL: true,
+      encryption: BucketEncryption.KMS,
+      encryptionKey: artifactBucketKey,
+      removalPolicy,
+      serverAccessLogsBucket: artifactAccessLogsBucket,
+      autoDeleteObjects: removalPolicy == RemovalPolicy.DESTROY,
     });
 
     // Create the CodePipeline to run the CICD
@@ -213,6 +250,16 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       useChangeSets: false,
       synth: buildStage,
       dockerEnabledForSynth: true,
+      artifactBucket: artifactBucket,
+      codeBuildDefaults: {
+        logging: {
+          cloudWatch: {
+            logGroup: new LogGroup(this, 'BuildLogGroup', {
+              removalPolicy: removalPolicy,
+            }),
+          },
+        },
+      },
     });
 
     // Create the Staging stage of the CICD
@@ -245,8 +292,8 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     }));
 
     // Create a CfnOutput to display the CodeCommit repository URL
-    new CfnOutput(this, 'CodeCommitRepositoryUrl', {
-      value: codeRepository.repositoryCloneUrlHttp,
+    new CfnOutput(this, 'CodeCommitRepositoryCommand', {
+      value: `git remote add ${this.repository.repositoryName} codecommit::${Aws.REGION}://${this.repository.repositoryName}`,
     });
   }
 
