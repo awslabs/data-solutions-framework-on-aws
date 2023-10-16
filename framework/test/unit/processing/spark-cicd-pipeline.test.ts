@@ -23,8 +23,8 @@ describe('With minimal configuration, the construct', () => {
       region: 'us-east-1',
     },
   });
-  stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
-  stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
+  stack.node.setContext('staging', { account: '111111111111', region: 'us-east-1' });
+  stack.node.setContext('prod', { account: '123456789012', region: 'us-east-1' });
 
   class MyApplicationStack extends Stack {
 
@@ -50,7 +50,7 @@ describe('With minimal configuration, the construct', () => {
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a code repository', () => {
     template.resourceCountIs('AWS::CodeCommit::Repository', 1);
@@ -264,6 +264,28 @@ describe('With minimal configuration, the construct', () => {
       RetentionInDays: 731,
     });
   });
+
+  test('should create cross account and cross region deployments policy', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          {
+            Action: 'sts:AssumeRole',
+            Effect: 'Allow',
+            Resource: [
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*111111111111.*'),
+              },
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*123456789012.*'),
+              },
+            ],
+          },
+        ]),
+      }),
+      PolicyName: Match.stringLikeRegexp('.*CodePipelineAssetsFileRoleDefaultPolicy.*'),
+    });
+  });
 });
 
 describe('With custom configuration, the construct', () => {
@@ -274,8 +296,8 @@ describe('With custom configuration, the construct', () => {
       region: 'us-east-1',
     },
   });
-  stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
-  stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
+  stack.node.setContext('staging', { account: '11111111111', region: 'us-east-1' });
+  stack.node.setContext('prod', { account: '123456789012', region: 'us-east-1' });
 
   class MyApplicationStack extends Stack {
 

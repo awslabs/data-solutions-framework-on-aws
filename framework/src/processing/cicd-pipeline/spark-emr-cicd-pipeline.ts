@@ -20,7 +20,7 @@ export interface AccountInfo {
   /**
    * The account ID to deploy the Spark Application stack
    */
-  readonly accountId: string;
+  readonly account: string;
 
   /**
    * The region to deploy the Spark Application stack
