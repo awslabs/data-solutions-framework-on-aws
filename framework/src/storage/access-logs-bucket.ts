@@ -10,11 +10,13 @@ import { BucketUtils, Context } from '../utils';
 /**
  * Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
  * Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/access-logs-bucket
  *
  * @example
  * const bucket = new dsf.AccessLogsBucket(this, 'AccessLogsBucket', {
  *  removalPolicy: cdk.RemovalPolicy.DESTROY,
  * })
+ *
  */
 export class AccessLogsBucket extends Bucket {
   constructor(scope: Construct, id: string, props?: BucketProps) {

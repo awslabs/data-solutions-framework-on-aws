@@ -86,6 +86,7 @@ export interface SparkEmrCICDPipelineProps {
 
 /**
  * A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-cicd-pipeline
  *
  * @exampleMetadata fixture=imports-only
  * @example

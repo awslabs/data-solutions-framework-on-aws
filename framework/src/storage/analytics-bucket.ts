@@ -12,7 +12,7 @@ import { Context, BucketUtils } from '../utils';
 /**
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
 * The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
-* See documentation TODO insert link
+* @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/analytics-bucket
 *
 * @example
 * import { Key } from 'aws-cdk-lib/aws-kms';

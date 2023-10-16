@@ -14,9 +14,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
 /**
  * A construct to run Spark Jobs using EMR Serverless.
  * creates a State Machine that orchestrates the Spark Job.
- * @see SparkEmrServerlessJobProps parameters to be specified for the construct
- * @default ExecutionTimeoutMinutes: 30
- * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
  *
  * @example
  * import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';

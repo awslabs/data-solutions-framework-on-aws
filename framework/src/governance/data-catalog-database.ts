@@ -11,6 +11,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-catalog-database
  *
  * @example
  * import { Bucket } from 'aws-cdk-lib/aws-s3';

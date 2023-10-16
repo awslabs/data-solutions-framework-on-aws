@@ -14,11 +14,14 @@ import { Construct } from 'constructs';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
- * A base construct to run Spark Jobs
+ * A base construct to run Spark Jobs.
+ *
  * Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
- * @see SparkJobProps parameters to be specified for the construct
- * @see EmrServerlessSparkJob for Emr Serverless implementation
- * @see EmrOnEksSparkJob for EMR On EKS implementation
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
+ *
+ * Available implementations:
+ * * {@link SparkEmrServerlessJob} for Emr Serverless implementation
+ * * {@link SparkEmrEksJob} for EMR On EKS implementation
  */
 export abstract class SparkJob extends TrackedConstruct {
 

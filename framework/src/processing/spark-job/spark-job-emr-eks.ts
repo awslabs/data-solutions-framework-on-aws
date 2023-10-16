@@ -14,10 +14,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
 /**
  * A construct to run Spark Jobs using EMR on EKS.
  * Creates a Step Functions State Machine that orchestrates the Spark Job.
- * @see SparkEmrEksJobProps parameters to be specified for the construct
- * @default ExecutionTimeoutMinutes: 30
- * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
- * @default ReleaseLabel: EMR version 6.12
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
  *
  * @example
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';

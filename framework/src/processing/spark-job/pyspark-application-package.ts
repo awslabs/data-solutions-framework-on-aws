@@ -15,6 +15,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 /**
  * A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket
  * This construct requires Docker daemon installed locally to run.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/pyspark-application-package
  *
  * @example
  * let pysparkPacker = new dsf.PySparkApplicationPackage (this, 'pysparkPacker', {

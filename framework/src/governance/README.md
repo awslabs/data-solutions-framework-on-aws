@@ -1,1 +1,0 @@
-# Data catalog database construct
