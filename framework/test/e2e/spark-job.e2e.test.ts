@@ -25,6 +25,7 @@ stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true)
 // creation of the construct(s) under test
 const emrApp = new SparkEmrServerlessRuntime(stack, 'emrApp', {
   name: 'my-test-app',
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
 const myFileSystemPolicy = new PolicyDocument({
@@ -76,7 +77,7 @@ const jobSimple = new SparkEmrServerlessJob(stack, 'SparkJobSimple', {
   s3LogUri: 's3://log-bucker-dummy/monitoring-logs',
   sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
   sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
-
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 } as SparkEmrServerlessJobProps);
 
 new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
