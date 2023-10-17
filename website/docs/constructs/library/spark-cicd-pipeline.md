@@ -35,11 +35,11 @@ You need to also provide the accounts information in the cdk.json in the form of
 ```json
 {
   "staging": {
-    "accountId": "<STAGING_ACCOUNT_ID>",
+    "account": "<STAGING_ACCOUNT_ID>",
     "region": "<REGION>"
   },
   "prod": {
-    "accountId": "<PROD_ACCOUNT_ID>",
+    "account": "<PROD_ACCOUNT_ID>",
     "region": "<REGION>"
   }
 }

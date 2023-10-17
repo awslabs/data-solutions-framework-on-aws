@@ -3739,6 +3739,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit repository created as part of the Spark CICD Pipeline. |
 
 ---
 
@@ -3763,6 +3764,18 @@ public readonly pipeline: CodePipeline;
 - *Type:* aws-cdk-lib.pipelines.CodePipeline
 
 The CodePipeline created as part of the Spark CICD Pipeline.
+
+---
+
+##### `repository`<sup>Required</sup> <a name="repository" id="aws-dsf.SparkEmrCICDPipeline.property.repository"></a>
+
+```typescript
+public readonly repository: Repository;
+```
+
+- *Type:* aws-cdk-lib.aws_codecommit.Repository
+
+The CodeCommit repository created as part of the Spark CICD Pipeline.
 
 ---
 
@@ -5393,7 +5406,7 @@ public readonly crawlerTableLevelDepth: number;
 ```
 
 - *Type:* number
-- *Default:* 3. The default value follows the structure: `<bucket>/<databaseFolder>/<table1Folder>/`
+- *Default:* calculated based on `locationPrefix`
 
 Directory depth where the table folders are located.
 
@@ -5435,6 +5448,7 @@ const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database in the Glue Data Catalog. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
@@ -5490,6 +5504,21 @@ public readonly crawlerLogEncryptionKey: Key;
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
+
+---
+
+##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth"></a>
+
+```typescript
+public readonly crawlerTableLevelDepth: number;
+```
+
+- *Type:* number
+- *Default:* calculated based on `locationPrefix`
+
+Directory depth where the table folders are located.
+
+This helps the crawler understand the layout of the folders in S3.
 
 ---
 
@@ -5835,6 +5864,7 @@ const sparkEmrCICDPipelineProps: SparkEmrCICDPipelineProps = { ... }
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#aws-dsf.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
 
@@ -5916,6 +5946,22 @@ public readonly integTestScript: string;
 - *Default:* No integration tests are run
 
 The path to the Shell script that contains integration tests.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrCICDPipelineProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
