@@ -11,7 +11,8 @@ import { Context, EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, Trac
 import { NetworkConfiguration, vpcBootstrap } from '../../../utils/vpc-helper';
 
 /**
-* A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
+ * A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-serverless-runtime
 */
 export class SparkEmrServerlessRuntime extends TrackedConstruct {
 

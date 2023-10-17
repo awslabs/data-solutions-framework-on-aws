@@ -14,11 +14,15 @@ import { Construct } from 'constructs';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
- * A base construct to run Spark Jobs
+ * A base construct to run Spark Jobs.
+ *
  * Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
- * @see SparkJobProps parameters to be specified for the construct
- * @see EmrServerlessSparkJob for Emr Serverless implementation
- * @see EmrOnEksSparkJob for EMR On EKS implementation
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
+ *
+ * Available implementations:
+ * * {@link SparkEmrServerlessJob} for Emr Serverless implementation
+ * * {@link SparkEmrEksJob} for EMR On EKS implementation
+ *
  */
 export abstract class SparkJob extends TrackedConstruct {
 
@@ -173,7 +177,7 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * Creates or import an S3 bucket to store the logs of the Spark job.
    * The bucket is created with SSE encryption (KMS managed or provided by user).
-   * @param s3LogUri S3 path to store the logs of the Spark job. @example s3://<bucket-name>/
+   * @param s3LogUri S3 path to store the logs of the Spark job. Example: s3://<bucket-name>/
    * @param encryptionKeyArn KMS Key ARN for encryption. @default - Master KMS key of the account.
    * @returns string S3 path to store the logs.
    */

@@ -258,6 +258,15 @@
         }
       ]
     },
+    "validate-examples": {
+      "name": "validate-examples",
+      "description": "Validating examples using jsii-rosetta",
+      "steps": [
+        {
+          "exec": "jsii-rosetta extract --fail .jsii"
+        }
+      ]
+    },
     "watch": {
       "name": "watch",
       "description": "Watch & compile in the background",

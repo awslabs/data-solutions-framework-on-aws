@@ -88,16 +88,13 @@ export interface DataLakeStorageProps {
 
 /**
  * Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
- * See documentation TODO insert link.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-lake-storage
  *
  * @example
- * import * as cdk from 'aws-cdk-lib';
- * import { DataLakeStorage } from 'aws-data-solutions-framework';
- *
  * // Set the context value for global data removal policy
- * stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+ * this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
  *
- * new DataLakeStorage(this, 'MyDataLakeStorage', {
+ * new dsf.DataLakeStorage(this, 'MyDataLakeStorage', {
  *  bronzeBucketName: 'my-bronze',
  *  bronzeBucketInfrequentAccessDelay: 90,
  *  bronzeBucketArchiveDelay: 180,

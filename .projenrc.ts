@@ -163,6 +163,11 @@ fwkProject.addTask('test:e2e', {
 
 fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
 
+fwkProject.tasks.addTask('validate-examples', {
+  description: 'Validating examples using jsii-rosetta',
+  exec: 'jsii-rosetta extract --fail .jsii'
+});
+
 const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   name: 'spark-data-lake-infra-example',
   moduleName: 'stacks',

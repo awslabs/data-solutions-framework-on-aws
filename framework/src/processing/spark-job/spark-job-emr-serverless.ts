@@ -13,13 +13,12 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
 
 /**
  * A construct to run Spark Jobs using EMR Serverless.
- * creates a State Machine that orchestrates the Spark Job.
- * @see SparkEmrServerlessJobProps parameters to be specified for the construct
- * @default ExecutionTimeoutMinutes: 30
- * @default ClientToken: universally unique identifier (v4 UUID) generated using random numbers
+ * Creates a State Machine that orchestrates the Spark Job.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
  *
- * **Usage example**
  * @example
+ * import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+ * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
  * const myFileSystemPolicy = new PolicyDocument({
  *   statements: [new PolicyStatement({
@@ -31,25 +30,25 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  * });
  *
  *
- * const myExecutionRole = SparkRuntimeServerless.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
+ * const myExecutionRole = dsf.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1', myFileSystemPolicy);
  * const applicationId = "APPLICATION_ID";
- * const job = new SparkJob(stack, 'SparkJob', {
- *          jobConfig:{
- *               "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
- *               "ApplicationId": applicationId,
- *               "ExecutionRoleArn": myExecutionRole.roleArn,
- *               "JobDriver": {
- *                   "SparkSubmit": {
- *                       "EntryPoint": "s3://S3-BUCKET/pi.py",
- *                       "EntryPointArguments": [],
- *                       "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
- *                   },
- *               }
- *          }
- * } as EmrServerlessSparkJobApiProps);
+ * const job = new dsf.SparkEmrServerlessJob(this, 'SparkJob', {
+ *   jobConfig:{
+ *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+ *     "ApplicationId": applicationId,
+ *     "ExecutionRoleArn": myExecutionRole.roleArn,
+ *     "JobDriver": {
+ *       "SparkSubmit": {
+ *           "EntryPoint": "s3://S3-BUCKET/pi.py",
+ *           "EntryPointArguments": [],
+ *           "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+ *       },
+ *     }
+ *   }
+ * } as dsf.SparkEmrServerlessJobApiProps);
  *
- * new cdk.CfnOutput(stack, 'SparkJobStateMachine', {
- *   value: job.stateMachine.stateMachineArn,
+ * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
+ *   value: job.stateMachine!.stateMachineArn,
  * });
  */
 export class SparkEmrServerlessJob extends SparkJob {
@@ -290,7 +289,7 @@ export class SparkEmrServerlessJob extends SparkJob {
  * @param executionTimeoutMinutes Job execution timeout in minutes. @default 30
  * @param persistentAppUi Enable Persistent UI. @default true @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_ManagedPersistenceMonitoringConfiguration.html)
  * @param persistentAppUIKeyArn Persistent application UI encryption key ARN @default AWS Managed default KMS key used @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_ManagedPersistenceMonitoringConfiguration.html)
- * @param s3LogUri The Amazon S3 destination URI for log publishing. @example s3://BUCKET_NAME/ @default Create new bucket. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_S3MonitoringConfiguration.html)
+ * @param s3LogUri The Amazon S3 destination URI for log publishing. Example: s3://BUCKET_NAME/ @default Create new bucket. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_S3MonitoringConfiguration.html)
  * @param s3LogUriKeyArn KMS Encryption key for S3 log monitoring bucket. @default AWS Managed default KMS key used. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_S3MonitoringConfiguration.html)
  * @param cloudWatchLogGroupName CloudWatch log group name for job monitoring.  @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_CloudWatchLoggingConfiguration.html)
  * @param cloudWatchEncryptionKeyArn CloudWatch log encryption key ARN. @default AWS Managed default KMS key used. @see @link(https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_CloudWatchLoggingConfiguration.html)
