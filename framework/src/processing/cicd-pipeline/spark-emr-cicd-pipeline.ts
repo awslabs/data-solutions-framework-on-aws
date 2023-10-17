@@ -9,6 +9,7 @@ import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
+import { AccessLogsBucket } from '../../storage';
 import {
   ApplicationStackFactory,
   ApplicationStage,
@@ -19,7 +20,6 @@ import {
   TrackedConstruct,
   TrackedConstructProps,
 } from '../../utils';
-import { AccessLogsBucket } from '../../storage';
 
 /**
  * The account information for deploying the Spark Application stack.
