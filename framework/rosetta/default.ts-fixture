@@ -1,0 +1,11 @@
+import { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib';
+import * as dsf from 'aws-dsf';
+
+class MyStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    /// here
+  }
+}

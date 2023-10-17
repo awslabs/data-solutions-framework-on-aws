@@ -10,8 +10,16 @@ import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import { AccessLogsBucket } from '../../storage';
-import { TrackedConstruct, TrackedConstructProps, CICDStage, ApplicationStage, DEFAULT_SPARK_IMAGE, SparkImage, Context } from '../../utils';
-import { ApplicationStackFactory } from '../../utils/application-stack-factory';
+import {
+  ApplicationStackFactory,
+  ApplicationStage,
+  CICDStage,
+  Context,
+  DEFAULT_SPARK_IMAGE,
+  SparkImage,
+  TrackedConstruct,
+  TrackedConstructProps,
+} from '../../utils';
 
 /**
  * The account information for deploying the Spark Application stack.
@@ -29,12 +37,12 @@ export interface AccountInfo {
 }
 
 /**
-* Properties for SparkEmrCICDPipeline class.
-*/
+ * Properties for SparkEmrCICDPipeline class.
+ */
 export interface SparkEmrCICDPipelineProps {
   /**
-  * The name of the Spark application to be deployed.
-  */
+   * The name of the Spark application to be deployed.
+   */
   readonly sparkApplicationName: string;
 
   /**
@@ -90,44 +98,51 @@ export interface SparkEmrCICDPipelineProps {
 }
 
 /**
-* A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
-*
-* @example
-* const stack = new Stack();
-*
-* interface MyApplicationStackProps extends StackProps {
-*   readonly stage: CICDStage;
-* }
-*
-* class MyApplicationStack extends Stack {
-*   constructor(scope: Stack, props?: MyApplicationStackProps) {
-*     super(scope, 'MyApplicationStack');
-**     const bucket = new Bucket(this, 'TestBucket', {
-*       autoDeleteObjects: true,
-*       removalPolicy: RemovalPolicy.DESTROY,
-*     });
-*     new CfnOutput(this, 'BucketName', { value: bucket.bucketName });
-*   }
-* }
-*
-* class MyStackFactory implements ApplicationStackFactory {
-*   createStack(scope: Stack, stage: CICDStage): Stack {
-*     return new MyApplicationStack(scope, { stage });
-*   }
-* }
-*
-* new SparkCICDPipeline(stack, 'TestConstruct', {
-*   sparkApplicationName: 'test',
-*   applicationStackFactory: new MyStackFactory(),
-*   cdkApplicationPath: 'cdk/',
-*   sparkApplicationPath: 'spark/',
-*   sparkImage: SparkImage.EMR_SERVERLESS_6_10,
-*   integTestScript: 'cdk/integ-test.sh',
-*   integTestEnv: {
-*     TEST_BUCKET: 'BucketName',
-*   },
-* });
-*/
+ * A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
+ * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-cicd-pipeline
+ *
+ * @exampleMetadata fixture=imports-only
+ * @example
+ * import { Bucket } from 'aws-cdk-lib/aws-s3';
+ *
+ * interface MyApplicationStackProps extends cdk.StackProps {
+ *   readonly stage: dsf.CICDStage;
+ * }
+ *
+ * class MyApplicationStack extends cdk.Stack {
+ *   constructor(scope: cdk.Stack, props?: MyApplicationStackProps) {
+ *     super(scope, 'MyApplicationStack');
+ *     const bucket = new Bucket(this, 'TestBucket', {
+ *       autoDeleteObjects: true,
+ *       removalPolicy: cdk.RemovalPolicy.DESTROY,
+ *     });
+ *     new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });
+ *   }
+ * }
+ *
+ * class MyStackFactory implements dsf.ApplicationStackFactory {
+ *   createStack(scope: cdk.Stack, stage: dsf.CICDStage): cdk.Stack {
+ *     return new MyApplicationStack(scope, { stage });
+ *   }
+ * }
+ *
+ * class MyCICDStack extends cdk.Stack {
+ *   constructor(scope: Construct, id: string) {
+ *     super(scope, id);
+ *     new dsf.SparkEmrCICDPipeline(this, 'TestConstruct', {
+ *        sparkApplicationName: 'test',
+ *        applicationStackFactory: new MyStackFactory(),
+ *        cdkApplicationPath: 'cdk/',
+ *        sparkApplicationPath: 'spark/',
+ *        sparkImage: dsf.SparkImage.EMR_6_12,
+ *        integTestScript: 'cdk/integ-test.sh',
+ *        integTestEnv: {
+ *          TEST_BUCKET: 'BucketName',
+ *        },
+ *     });
+ *   }
+ * }
+ */
 export class SparkEmrCICDPipeline extends TrackedConstruct {
 
   /**
@@ -151,7 +166,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   private static synthCommands(cdkPath: string, sparkPath: string, sparkImage: SparkImage): string[] {
     // Get the runtime of the CDK Construct
-    const runtime = process.env.JSII_AGENT || 'node.js';
+    const runtime = process.env.JSII_AGENT || 'node.js';
     let commands = [
       'curl -qLk -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq',
       'curl -qL -o aws_credentials.json http://169.254.170.2/$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI',
