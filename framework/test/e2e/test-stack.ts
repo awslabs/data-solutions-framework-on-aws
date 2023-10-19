@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { AwsCdkCli, ICloudAssemblyDirectoryProducer, RequireApproval } from '@aws-cdk/cli-lib-alpha';
 import { App, Stack } from 'aws-cdk-lib';
-import { ContextOptions } from "../../src/utils";
+import { ContextOptions } from '../../src/utils';
 
 /**
  * Test stack that can be deployed to the selected environment.
