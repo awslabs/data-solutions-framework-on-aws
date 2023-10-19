@@ -8,6 +8,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { AwsCdkCli, ICloudAssemblyDirectoryProducer, RequireApproval } from '@aws-cdk/cli-lib-alpha';
 import { App, Stack } from 'aws-cdk-lib';
+import { ContextOptions } from "../../src/utils";
 
 /**
  * Test stack that can be deployed to the selected environment.
@@ -32,6 +33,7 @@ class TestStack implements ICloudAssemblyDirectoryProducer {
   public constructor(stackName: string, app?: App, stack?: Stack) {
     this.app = app ?? new App();
     this.stack = stack ?? new Stack(this.app, stackName + '-' + randomUUID().substring(0, 8).toLowerCase());
+    this.stack.node.setContext(ContextOptions.DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING, true);
     this.#cli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
   }
 
