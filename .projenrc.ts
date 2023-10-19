@@ -154,6 +154,8 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   },
 });
 
+fwkProject.addPackageIgnore("!*.lit.ts");
+
 fwkProject.testTask.reset('jest --passWithNoTests --updateSnapshot --group=-e2e', {receiveArgs: true});
 fwkProject.testTask.spawn(new Task('eslint'));
 

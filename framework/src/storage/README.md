@@ -1,0 +1,22 @@
+# DataLakeStorage
+
+Data Lake based on medallion architecture and AWS best-practices.
+
+## Overview
+
+At the high level, `DataLakeStorage` creates three [Amazon S3](https://aws.amazon.com/s3) buckets configured specifically for data lake on AWS. By default these buckets are named *Bronze*, *Silver*, and *Gold* to represent [different data layers](https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/data-layer-definitions.html). You can customize bucket names according to your needs.
+`DataLakeStorage` uses [`AnalyticsBucket`](analytics-bucket) and [`AccessLogsBucket`](access-logs-bucket) constructs from AWS DSF, to create storage and access logs buckets respectively. Your data lake storage is encrypted using [AWS KMS](https://aws.amazon.com/kms/) a default customer managed key. You can also provide your own KMS Key. We provide data lifecycle management that you can customize to your needs.
+
+Here is the overview of `DataLakeStorage` features:
+- Medalion design with S3 buckets for Bronze, Silver, and Gold data.
+- Server-side encryption using a single KMS customer key for all S3 buckets.
+- Enforced SSL in-transit encryption.
+- Logs data lake access in a dedicated bucket within a prefix matching the bucket name.
+- Buckets, objects and encryption keys can be retained when the CDK resource is destroyed (default).
+- All public access blocked.
+
+![Data lake storage](../../../website/static/img/adsf-data-lake-storage.png)
+
+## Usage
+
+[smart default configuration](../../test/examples/storage/datalakestorage.default.lit.ts)
