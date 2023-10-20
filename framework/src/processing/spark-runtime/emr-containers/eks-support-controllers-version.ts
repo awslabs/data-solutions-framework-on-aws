@@ -3,15 +3,6 @@
 
 import { KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 
-
-//TODO put the right version here
-export const ALB_CONTROLLER_HELM_CHART_VERSION: Map<KubernetesVersion, string> = new Map([
-  [KubernetesVersion.V1_24, '1.6.0'],
-  [KubernetesVersion.V1_25, '1.6.0'],
-  [KubernetesVersion.V1_26, '1.6.0'],
-  [KubernetesVersion.V1_27, '1.6.0'],
-]);
-
 //TODO put the right version here
 export const EBS_CSI_DRIVER_ADDON_VERSION: Map<KubernetesVersion, string> = new Map([
   [KubernetesVersion.V1_24, 'v1.18.0-eksbuild.1'],

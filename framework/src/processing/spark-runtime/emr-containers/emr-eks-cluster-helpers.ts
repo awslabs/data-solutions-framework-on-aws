@@ -9,10 +9,9 @@ import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
-import { ALB_CONTROLLER_HELM_CHART_VERSION, CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
-import { EmrEksCluster } from './emr-eks-cluster';
-import * as IamPolicyAlb from './resources/k8s/iam-policy-alb.json';
-import * as IamPolicyEbsCsiDriver from './resources/k8s/iam-policy-ebs-csi-driver.json';
+import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
+import { SparkEmrContainersRuntime } from './emr-eks-cluster';
+import * as IamPolicyEbsCsiDriver from './resources/k8s/controllers-iam-policies/iam-policy-ebs-csi-driver.json';
 import { Utils } from '../../../utils';
 
 
@@ -54,19 +53,19 @@ export function eksClusterSetup(
     addonName: 'aws-ebs-csi-driver',
     clusterName: cluster.clusterName,
     serviceAccountRoleArn: ebsCsiDriverIrsa.role.roleArn,
-    addonVersion: EBS_CSI_DRIVER_ADDON_VERSION.get(EmrEksCluster.DEFAULT_EKS_VERSION),
+    addonVersion: EBS_CSI_DRIVER_ADDON_VERSION.get(eksClusterK8sVersion),
     resolveConflicts: 'OVERWRITE',
   });
 
   ebsCSIDriver.node.addDependency(ebsCsiDriverIrsa);
 
   // Deploy the Helm Chart for the Certificate Manager. Required for EMR Studio ALB.
-  const certManager = cluster.addHelmChart('CertManager', {
+  cluster.addHelmChart('CertManager', {
     createNamespace: true,
     namespace: 'cert-manager',
     chart: 'cert-manager',
     repository: 'https://charts.jetstack.io',
-    version: CERTMANAGER_HELM_CHART_VERSION.get(EmrEksCluster.DEFAULT_EKS_VERSION),
+    version: CERTMANAGER_HELM_CHART_VERSION.get(eksClusterK8sVersion),
     timeout: Duration.minutes(14),
     values: {
       startupapicheck: {
@@ -75,38 +74,6 @@ export function eksClusterSetup(
       installCRDs: true,
     },
   });
-
-  //Create service account for ALB and install ALB
-  const albPolicyDocument = PolicyDocument.fromJson(IamPolicyAlb);
-  const albIAMPolicy = new Policy(
-    scope,
-    'AWSLoadBalancerControllerIAMPolicy',
-    { document: albPolicyDocument },
-  );
-
-  const albServiceAccount = cluster.addServiceAccount('ALB', {
-    name: 'aws-load-balancer-controller',
-    namespace: 'kube-system',
-  });
-  albIAMPolicy.attachToRole(albServiceAccount.role);
-
-  const albService = cluster.addHelmChart('ALB', {
-    chart: 'aws-load-balancer-controller',
-    repository: 'https://aws.github.io/eks-charts',
-    namespace: 'kube-system',
-    version: ALB_CONTROLLER_HELM_CHART_VERSION.get(eksClusterK8sVersion),
-    timeout: Duration.minutes(14),
-    values: {
-      clusterName: cluster.clusterName,
-      serviceAccount: {
-        name: 'aws-load-balancer-controller',
-        create: false,
-      },
-    },
-  });
-
-  albService.node.addDependency(albServiceAccount);
-  albService.node.addDependency(certManager);
 
   // Nodegroup capacity needed for all the tooling components including Karpenter
   toolingManagedNodegroupSetup(scope, cluster, nodeRole);
@@ -205,26 +172,26 @@ systemctl start amazon-ssm-agent
  * @internal
  * Method to add the default Karpenter provisioners for Spark workloads
  */
-export function setDefaultKarpenterProvisioners(cluster: EmrEksCluster) {
+export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRuntime, karpenterVersion: string) {
   const subnets = cluster.eksCluster.vpc.selectSubnets({
     onePerAz: true,
     subnetType: SubnetType.PRIVATE_WITH_EGRESS,
   }).subnets;
 
   subnets.forEach( (subnet, index) => {
-    let criticalManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/critical-provisioner.yml`, subnet);
+    let criticalManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
-    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-driver-provisioner.yml`, subnet);
+    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
 
-    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/shared-executor-provisioner.yml`, subnet);
+    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
 
-    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-driver-provisioner.yml`, subnet);
+    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
 
-    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/notebook-executor-provisioner.yml`, subnet);
+    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet);
     cluster.addKarpenterProvisioner(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
   });
 }
@@ -473,13 +440,15 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(allowInterruptionQueueActions);
   karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
 
+  const karpenterV = karpenterVersion  || SparkEmrContainersRuntime.DEFAULT_KARPENTER_VERSION;
+
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('KarpenterHelmChart', {
     chart: 'karpenter',
     release: 'karpenter',
     repository: 'oci://public.ecr.aws/karpenter/karpenter',
     namespace: 'karpenter',
-    version: karpenterVersion || EmrEksCluster.DEFAULT_KARPENTER_VERSION,
+    version: karpenterV,
     timeout: Duration.minutes(14),
     wait: true,
     values: {
@@ -548,7 +517,7 @@ export function karpenterSetup(cluster: Cluster,
 
   let listPrivateSubnets: string[] = privateSubnets.map(subnet => subnet.subnetId);
 
-  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/tooling-provisioner.yml`);
+  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterV}/tooling-provisioner.yml`);
 
   manifest = manifest.replace(/(\{{cluster-name}})/g, eksClusterName);
   manifest = manifest.replace(/(\{{subnet-list}})/g, listPrivateSubnets.join(','));
