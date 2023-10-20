@@ -141,10 +141,14 @@ export interface SparkEmrContainersRuntimeProps {
  * @example
  *
  * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
- *
+ *import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+ * 
+ * const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+ * 
  * const emrEks: dsf.SparkEmrContainersRuntime = dsf.SparkEmrContainersRuntime.getOrCreate(this, {
- *   eksAdminRoleArn: "arn:aws:iam::1234567890:role/EksAdmin",
+ *   eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
  *   publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
+ *   kubectlLambdaLayer: kubectlLayer,
  * });
  *
  * const policy = new ManagedPolicy(this, 'testPolicy', {
@@ -167,12 +171,12 @@ export interface SparkEmrContainersRuntimeProps {
  * const role = emrEks.createExecutionRole(this, 'execRole', policy, 'data-platform', 'execRole');
  *
  * // EMR on EKS virtual cluster ID
- * new CfnOutput(this, 'VirtualClusterId', { value : virtualCluster.attr_id });
+ * new cdk.CfnOutput(this, 'VirtualClusterId', { value : virtualCluster.attrId });
  * // Job config for each nodegroup
- * new CfnOutput(this, "CriticalConfig", { value : emrEks.criticalDefaultConfig });
- * new CfnOutput(this, "SharedConfig", { value : emrEks.sharedDefaultConfig});
+ * new cdk.CfnOutput(this, "CriticalConfig", { value : emrEks.criticalDefaultConfig });
+ * new cdk.CfnOutput(this, "SharedConfig", { value : emrEks.sharedDefaultConfig});
  * // Execution role arn
- * new CfnOutput(this,'ExecRoleArn', { value : role.roleArn});
+ * new cdk.CfnOutput(this,'ExecRoleArn', { value : role.roleArn});
  *
  */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
