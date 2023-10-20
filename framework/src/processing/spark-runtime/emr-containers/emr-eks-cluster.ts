@@ -138,8 +138,11 @@ export interface SparkEmrContainersRuntimeProps {
  *
  * Usage example:
  *
- * ```typescript
- * const emrEks: sparkRuntimeContainer = SparkEmrContainersRuntime.getOrCreate(this, {
+ * @example
+ *
+ * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+ *
+ * const emrEks: dsf.SparkEmrContainersRuntime = dsf.SparkEmrContainersRuntime.getOrCreate(this, {
  *   eksAdminRoleArn: "arn:aws:iam::1234567890:role/EksAdmin",
  *   publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
  * });
@@ -164,13 +167,12 @@ export interface SparkEmrContainersRuntimeProps {
  * const role = emrEks.createExecutionRole(this, 'execRole', policy, 'data-platform', 'execRole');
  *
  * // EMR on EKS virtual cluster ID
- * cdk.CfnOutput(this, 'VirtualClusterId',value = virtualCluster.attr_id)
+ * new CfnOutput(this, 'VirtualClusterId', { value : virtualCluster.attr_id });
  * // Job config for each nodegroup
- * cdk.CfnOutput(this, "CriticalConfig", value = emrEks.criticalDefaultConfig)
- * cdk.CfnOutput(this, "SharedConfig", value = emrEks.sharedDefaultConfig)
+ * new CfnOutput(this, "CriticalConfig", { value : emrEks.criticalDefaultConfig });
+ * new CfnOutput(this, "SharedConfig", { value : emrEks.sharedDefaultConfig});
  * // Execution role arn
- * cdk.CfnOutput(this,'ExecRoleArn', value = role.roleArn)
- * ```
+ * new CfnOutput(this,'ExecRoleArn', { value : role.roleArn});
  *
  */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
