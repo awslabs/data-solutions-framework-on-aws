@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { join } from 'path';
 import { readFileSync } from 'fs';
+import { join } from 'path';
 import { Aws, CfnOutput, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
@@ -193,7 +193,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     const stack = Stack.of(scope);
     const id = props.eksClusterName || SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
 
-    let emrEksCluster: SparkEmrContainersRuntime = stack.node.tryFindChild(id) as SparkEmrContainersRuntime ?? new SparkEmrContainersRuntime(stack, id, props);
+    let emrEksCluster: SparkEmrContainersRuntime =
+      stack.node.tryFindChild(id) as SparkEmrContainersRuntime ??
+      new SparkEmrContainersRuntime(stack, id, props);
 
     return emrEksCluster;
   }
@@ -294,8 +296,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         secretsEncryptionKey: this.eksSecretKmsKey,
         albController: {
           version: AlbControllerVersion.V2_5_1,
-          policy: JSON.parse(readFileSync(join(__dirname, "resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json"), 'utf8')),
-        }
+          policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
+        },
       });
 
       //Setting up the cluster with the required controller
@@ -399,18 +401,29 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'));
 
       // Replace the pod template location for driver and executor with the correct Amazon S3 path in the notebook default config
-      NotebookDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/notebook-driver.yaml`);
-      NotebookDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/notebook-executor.yaml`);
+      NotebookDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] =
+      this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/notebook-driver.yaml`);
+
+      NotebookDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] =
+      this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/notebook-executor.yaml`);
+
       this.notebookDefaultConfig = JSON.parse(JSON.stringify(NotebookDefaultConfig));
 
       // Replace the pod template location for driver and executor with the correct Amazon S3 path in the critical default config
-      CriticalDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/critical-driver.yaml`);
-      CriticalDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/critical-executor.yaml`);
+      CriticalDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] =
+      this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/critical-driver.yaml`);
+      CriticalDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] =
+      this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/critical-executor.yaml`);
+
       this.criticalDefaultConfig = JSON.stringify(CriticalDefaultConfig);
 
       // Replace the pod template location for driver and executor with the correct Amazon S3 path in the shared default config
-      SharedDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-driver.yaml`);
-      SharedDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-executor.yaml`);
+      SharedDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] =
+      this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-driver.yaml`);
+
+      SharedDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.executor.podTemplateFile'] =
+      this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-executor.yaml`);
+
       this.sharedDefaultConfig = JSON.stringify(SharedDefaultConfig);
 
       // Provide the podTemplate location on Amazon S3
