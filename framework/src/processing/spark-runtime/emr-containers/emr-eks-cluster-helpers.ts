@@ -17,7 +17,8 @@ import { Utils } from '../../../utils';
 
 /**
  * @internal
- * Upload podTemplates to the Amazon S3 location used by the cluster.
+ * Setup the EKS cluster with the right controllers to function
+ *
  * @param {Cluster} cluster the unique ID of the CDK resource
  * @param {Construct} scope The local path of the yaml podTemplate files to upload
  * @param {string} eksAdminRoleArn The admin role of the EKS cluster
@@ -112,7 +113,7 @@ export function eksClusterSetup(
 }
 /**
  * @internal
- * Method to setup a managed group to bootstrap all cluster vital componenets like
+ * Method to setup a managed nodegroup to bootstrap all cluster vital componenets like
  * core dns, karpenter, ebs csi driver
  */
 function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: Role) {

@@ -135,42 +135,41 @@ export interface SparkEmrContainersRuntimeProps {
 
 /**
  * EmrEksCluster Construct packaging all the resources and configuration required to run Amazon EMR on EKS.
- * It deploys:
- * * An EKS cluster (VPC configuration can be customized)
- * * A tooling nodegroup to run tools including the Kubedashboard and the Cluster Autoscaler
- * * Optionally multiple nodegroups (one per AZ) for critical/shared/notebook EMR workloads
- * * Additional nodegroups can be configured
- *
- * The construct will upload on S3 the Pod templates required to run EMR jobs on the default nodegroups.
- * It will also parse and store the configuration of EMR on EKS jobs for each default nodegroup in object parameters
- *
- * Methods are available to add EMR Virtual Clusters to the EKS cluster and to create execution roles for the virtual clusters.
  *
  * Usage example:
  *
  * ```typescript
- * const emrEks: EmrEksCluster = EmrEksCluster.getOrCreate(stack, {
- *   eksAdminRoleArn: <ROLE_ARN>,
- *   publicAccessCIDRs: ["x.x.x.x/x"],
+ * const emrEks: sparkRuntimeContainer = SparkEmrContainersRuntime.getOrCreate(this, {
+ *   eksAdminRoleArn: "arn:aws:iam::1234567890:role/EksAdmin",
+ *   publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
  * });
  *
- * const virtualCluster = emrEks.addEmrVirtualCluster(stack, {
- *   name: <Virtual_Cluster_Name>,
- *   createNamespace: <TRUE OR FALSE>,
- *   eksNamespace: <K8S_namespace>,
+ * const policy = new ManagedPolicy(this, 'testPolicy', {
+ *   document: new PolicyDocument({
+ *     statements: [
+ *       new PolicyStatement({
+ *         resources: ['arn:aws:s3:::your-bucket/key_name'],
+ *         actions: ['s3:GetObject'],
+ *       }),
+ *     ],
+ *  }),
  * });
  *
- * const role = emrEks.createExecutionRole(stack, 'ExecRole',{
- *   policy: <POLICY>,
+ * const virtualCluster = emrEks.addEmrVirtualCluster(this, {
+ *   name: "intra-day-jobs",
+ *   createNamespace: true,
+ *   eksNamespace: "data-platform",
  * });
+ *
+ * const role = emrEks.createExecutionRole(this, 'execRole', policy, 'data-platform', 'execRole');
  *
  * // EMR on EKS virtual cluster ID
- * cdk.CfnOutput(self, 'VirtualClusterId',value = virtualCluster.attr_id)
+ * cdk.CfnOutput(this, 'VirtualClusterId',value = virtualCluster.attr_id)
  * // Job config for each nodegroup
- * cdk.CfnOutput(self, "CriticalConfig", value = emrEks.criticalDefaultConfig)
- * cdk.CfnOutput(self, "SharedConfig", value = emrEks.sharedDefaultConfig)
+ * cdk.CfnOutput(this, "CriticalConfig", value = emrEks.criticalDefaultConfig)
+ * cdk.CfnOutput(this, "SharedConfig", value = emrEks.sharedDefaultConfig)
  * // Execution role arn
- * cdk.CfnOutput(self,'ExecRoleArn', value = role.roleArn)
+ * cdk.CfnOutput(this,'ExecRoleArn', value = role.roleArn)
  * ```
  *
  */
