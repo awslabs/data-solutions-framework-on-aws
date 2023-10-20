@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: MIT-0
 
 import { join } from 'path';
+import { readFileSync } from 'fs';
 import { Aws, CfnOutput, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
+  AlbControllerVersion,
   Cluster,
   ClusterLoggingTypes,
   EndpointAccess,
@@ -43,7 +45,7 @@ import { Context, EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps }
 /**
  * The properties for the EmrEksCluster Construct class.
  */
-export interface EmrEksClusterProps {
+export interface SparkEmrContainersRuntimeProps {
   /**
    * Name of the Amazon EKS cluster to be created
    * @default -  The [default cluster name]{@link DEFAULT_CLUSTER_NAME}
@@ -172,7 +174,7 @@ export interface EmrEksClusterProps {
  * ```
  *
  */
-export class EmrEksCluster extends TrackedConstruct {
+export class SparkEmrContainersRuntime extends TrackedConstruct {
 
   public static readonly DEFAULT_EMR_VERSION = EMR_DEFAULT_VERSION;
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
@@ -186,12 +188,12 @@ export class EmrEksCluster extends TrackedConstruct {
    * @param {Construct} scope the CDK scope used to search or create the cluster
    * @param {EmrEksClusterProps} props the EmrEksClusterProps [properties]{@link EmrEksClusterProps} if created
    */
-  public static getOrCreate(scope: Construct, props: EmrEksClusterProps) {
+  public static getOrCreate(scope: Construct, props: SparkEmrContainersRuntimeProps) {
 
     const stack = Stack.of(scope);
-    const id = props.eksClusterName || EmrEksCluster.DEFAULT_CLUSTER_NAME;
+    const id = props.eksClusterName || SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
 
-    let emrEksCluster: EmrEksCluster = stack.node.tryFindChild(id) as EmrEksCluster ?? new EmrEksCluster(stack, id, props);
+    let emrEksCluster: SparkEmrContainersRuntime = stack.node.tryFindChild(id) as SparkEmrContainersRuntime ?? new SparkEmrContainersRuntime(stack, id, props);
 
     return emrEksCluster;
   }
@@ -217,10 +219,10 @@ export class EmrEksCluster extends TrackedConstruct {
    * @param {string} id the ID of the CDK Construct
    * @param {EmrEksClusterProps} props the EmrEksClusterProps [properties]{@link EmrEksClusterProps}
    */
-  private constructor(scope: Construct, id: string, props: EmrEksClusterProps) {
+  private constructor(scope: Construct, id: string, props: SparkEmrContainersRuntimeProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: EmrEksCluster.name,
+      trackingTag: SparkEmrContainersRuntime.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -237,7 +239,7 @@ export class EmrEksCluster extends TrackedConstruct {
       alias: 'eks-key',
     });
 
-    this.clusterName = props.eksClusterName ?? EmrEksCluster.DEFAULT_CLUSTER_NAME;
+    this.clusterName = props.eksClusterName ?? SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
 
     //Define EKS cluster logging
     const eksClusterLogging: ClusterLoggingTypes[] = [
@@ -253,6 +255,8 @@ export class EmrEksCluster extends TrackedConstruct {
 
     //Set flag for default karpenter provisioners for Spark jobs
     this.defaultNodes = props.defaultNodes ?? true;
+
+    const karpenterVersion: string = props.karpenterVersion ?? SparkEmrContainersRuntime.DEFAULT_KARPENTER_VERSION;
 
     // Create a role to be used as instance profile for nodegroups
     let ec2InstanceNodeGroupRole = new Role(scope, 'ec2InstanceNodeGroupRole', {
@@ -275,23 +279,27 @@ export class EmrEksCluster extends TrackedConstruct {
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
     if (props.eksCluster == undefined) {
 
-      const vpcCidr = props.vpcCidr ? props.vpcCidr : EmrEksCluster.DEFAULT_VPC_CIDR;
+      const vpcCidr = props.vpcCidr ? props.vpcCidr : SparkEmrContainersRuntime.DEFAULT_VPC_CIDR;
 
       let eksVpc: IVpc = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, this.clusterName, undefined).vpc;
 
       this.eksCluster = new Cluster(scope, `${this.clusterName}Cluster`, {
         defaultCapacity: 0,
         clusterName: this.clusterName,
-        version: props.kubernetesVersion ?? EmrEksCluster.DEFAULT_EKS_VERSION,
+        version: props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION,
         clusterLogging: eksClusterLogging,
         kubectlLayer: props.kubectlLambdaLayer,
         vpc: eksVpc,
         endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE,
         secretsEncryptionKey: this.eksSecretKmsKey,
+        albController: {
+          version: AlbControllerVersion.V2_5_1,
+          policy: JSON.parse(readFileSync(join(__dirname, "resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json"), 'utf8')),
+        }
       });
 
       //Setting up the cluster with the required controller
-      eksClusterSetup(this.eksCluster, scope, props.eksAdminRoleArn, ec2InstanceNodeGroupRole, EmrEksCluster.DEFAULT_EKS_VERSION);
+      eksClusterSetup(this.eksCluster, scope, props.eksAdminRoleArn, ec2InstanceNodeGroupRole, SparkEmrContainersRuntime.DEFAULT_EKS_VERSION);
 
       //Deploy karpenter
       this.karpenterChart = karpenterSetup(
@@ -300,7 +308,7 @@ export class EmrEksCluster extends TrackedConstruct {
         this,
         clusterInstanceProfile,
         ec2InstanceNodeGroupRole,
-        props.karpenterVersion ?? EmrEksCluster.DEFAULT_KARPENTER_VERSION,
+        karpenterVersion,
       );
 
     } else {
@@ -311,7 +319,7 @@ export class EmrEksCluster extends TrackedConstruct {
     //Check if the user want to use the default Karpenter provisioners and
     //Add the defaults pre-configured and optimized to run Spark workloads
     if (this.defaultNodes ) {
-      setDefaultKarpenterProvisioners(this);
+      setDefaultKarpenterProvisioners(this, karpenterVersion);
     }
 
     // Tags the Amazon VPC and Subnets of the Amazon EKS Cluster
