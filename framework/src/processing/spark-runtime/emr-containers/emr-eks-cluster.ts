@@ -142,9 +142,9 @@ export interface SparkEmrContainersRuntimeProps {
  *
  * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
  *import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
- * 
+ *
  * const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
- * 
+ *
  * const emrEks: dsf.SparkEmrContainersRuntime = dsf.SparkEmrContainersRuntime.getOrCreate(this, {
  *   eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
  *   publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
