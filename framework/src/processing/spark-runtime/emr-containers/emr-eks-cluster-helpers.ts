@@ -440,7 +440,7 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(allowInterruptionQueueActions);
   karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
 
-  const karpenterV = karpenterVersion  || SparkEmrContainersRuntime.DEFAULT_KARPENTER_VERSION;
+  const karpenterV = karpenterVersion || SparkEmrContainersRuntime.DEFAULT_KARPENTER_VERSION;
 
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('KarpenterHelmChart', {

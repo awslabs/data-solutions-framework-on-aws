@@ -4,3 +4,4 @@
 export { SparkEmrServerlessRuntimeProps, Architecture, SparkEmrServerlessRuntime } from './spark-runtime/emr-serverless';
 export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps, ApplicationStackFactory, CICDStage } from './cicd-pipeline';
 export { PySparkApplicationPackage, PySparkApplicationPackageProps } from './spark-job';
+export { SparkEmrContainersRuntimeProps, SparkEmrContainersRuntime, EmrVirtualClusterOptions } from './spark-runtime/emr-containers';
