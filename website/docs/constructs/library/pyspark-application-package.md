@@ -5,7 +5,7 @@ sidebar_label: PySpark Application Package
 
 # PySpark Application Package
 
-A construct to package your PySpark application with its dependencies and upload it to an Amazon S3 bucket.
+A PySpark application packaged with its dependencies and uploaded on an S3 artifact bucket.
 
 ## Overview
 
