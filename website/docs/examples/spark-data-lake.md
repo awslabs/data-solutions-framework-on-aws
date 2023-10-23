@@ -21,7 +21,7 @@ We will be using several constructs from the AWS DSF:
 - [`DataLakeStorage`](/docs/constructs/library/data-lake-storage)
 - [`DataLakeCatalog`](/docs/constructs/library/data-lake-catalog)
 - [`SparkEmrServerlessRuntime`](/docs/constructs/library/spark-emr-serverless-runtime)
-- [`SparkEmrServerlessJob`](/docs/constructs/library/spark-job)
+- [`SparkEmrServerlessJob`](/docs/constructs/library/spark-emr-serverless-job)
 - [`SparkEmrCICDPipeline`](/docs/constructs/library/spark-cicd-pipeline)
 - [`ApplicationStackFactory`](/docs/constructs/library/spark-cicd-pipeline#defining-a-cdk-stack-for-the-spark-application)
 - [`PySparkApplicationPackage`](/docs/constructs/library/pyspark-application-package)
