@@ -130,6 +130,10 @@
       "type": "bundled"
     },
     {
+      "name": "semver",
+      "type": "bundled"
+    },
+    {
       "name": "simple-base",
       "type": "bundled"
     },

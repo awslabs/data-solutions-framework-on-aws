@@ -4466,6 +4466,7 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.emrServerlessApplication">emrServerlessApplication</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The CfnApplication object of the EMR Serverless application. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.GatewayVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | If no VPC is provided, one is created by default This attribute is used to expose the VPC, if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
@@ -4505,6 +4506,18 @@ public readonly applicationId: string;
 - *Type:* string
 
 The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user.
+
+---
+
+##### `emrServerlessApplication`<sup>Required</sup> <a name="emrServerlessApplication" id="aws-dsf.SparkEmrServerlessRuntime.property.emrServerlessApplication"></a>
+
+```typescript
+public readonly emrServerlessApplication: CfnApplication;
+```
+
+- *Type:* aws-cdk-lib.aws_emrserverless.CfnApplication
+
+The CfnApplication object of the EMR Serverless application.
 
 ---
 
