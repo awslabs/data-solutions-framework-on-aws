@@ -126,7 +126,8 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
 
   bundledDeps: [
     'js-yaml',
-    'simple-base'
+    'simple-base',
+    'semver',
   ],
 
   jestOptions: {

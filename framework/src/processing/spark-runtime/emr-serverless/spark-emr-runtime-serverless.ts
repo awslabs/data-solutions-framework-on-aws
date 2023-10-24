@@ -6,6 +6,7 @@ import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
 import { Key, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
+import * as semver from 'semver';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
 import { Context, EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { NetworkConfiguration, vpcBootstrap } from '../../../utils/vpc-helper';
@@ -131,6 +132,11 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   public readonly applicationId: string;
 
   /**
+   * The CfnApplication object of the EMR Serverless application.
+   */
+  public readonly emrServerlessApplication: CfnApplication;
+
+  /**
    * If no VPC is provided, one is created by default
    * This attribute is used to expose the VPC,
    * if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`
@@ -177,6 +183,13 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
       description: `Key used by the VPC created for EMR serverless application ${props.name}`,
     });
 
+    const releaseLabelSemver : string = emrReleaseLabel.split('-')[1];
+
+    if (semver.lt(releaseLabelSemver, '6.9.0')) {
+      throw new Error(`EMR Serverless supports release EMR 6.9 and above, provided release is ${emrReleaseLabel.toString()}`);
+    }
+
+
     let emrNetworkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
@@ -213,6 +226,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
     this.applicationArn = sparkApplication.attrArn;
     this.applicationId = sparkApplication.attrApplicationId;
+    this.emrServerlessApplication = sparkApplication;
   }
 
   /**
