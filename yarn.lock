@@ -1025,10 +1025,10 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-11.0.0.tgz#43e19c25dbedc8256203538e8d7e9346877a6f67"
-  integrity sha512-9HMlXtt/BNoYr8ooyjjNRdIilOTkVJXB+GhxMTtOKwk0R4j4lS4NpjuqmRxroBfnfTSHQIHQB7wryHhXarNjmQ==
+commander@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
+  integrity sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
 
 comment-json@4.2.2:
   version "4.2.2"
@@ -2195,11 +2195,11 @@ kind-of@^6.0.2, kind-of@^6.0.3:
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
 lerna-projen@^0.1.200:
-  version "0.1.245"
-  resolved "https://registry.yarnpkg.com/lerna-projen/-/lerna-projen-0.1.245.tgz#2bf4a598f87b610585a3f908e5f77b543e0d43a5"
-  integrity sha512-l36djCNIi4gyTZm+23K9BfhRGDKYCmVD4wzu5BbQASZHJDw7AwC6pQkJcG9Ex0Cm+2Y6JlgYq0kZ1dWY1QDtSg==
+  version "0.1.264"
+  resolved "https://registry.yarnpkg.com/lerna-projen/-/lerna-projen-0.1.264.tgz#4f3bbca322403812228ae58203405473a89d3741"
+  integrity sha512-Kt+CrKrE7t3GxPWK9WCcukoHkbzr/LzsyVGlAx2A8R94CJ8ARqDivSWhTOhgE2YZMVezc4jpsHroXmvrjprJYQ==
   dependencies:
-    commander "^11.0.0"
+    commander "^11.1.0"
     fs-extra "^9.1.0"
 
 lerna@^7.1.5:
