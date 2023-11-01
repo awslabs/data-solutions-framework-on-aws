@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-export { DataLakeStorageProps, DataLakeStorage, AnalyticsBucket, AnalyticsBucketProps, AccessLogsBucket } from './storage';
+export * as storage from './storage';
 export { SparkEmrCICDPipeline, SparkEmrCICDPipelineProps } from './processing';
 export { DataCatalogDatabase, DataCatalogDatabaseProps, DataLakeCatalog, DataLakeCatalogProps } from './governance';
 export { SparkEmrServerlessRuntimeProps, Architecture, SparkEmrServerlessRuntime } from './processing/spark-runtime/emr-serverless';

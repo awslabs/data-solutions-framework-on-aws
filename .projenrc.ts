@@ -234,5 +234,5 @@ rootProject.addTask('test:e2e', {
 rootProject.addTask('release',  {
   description: 'Release project',
 })
-
+rootProject.addPackageIgnore("!*.lit.ts");
 rootProject.synth();

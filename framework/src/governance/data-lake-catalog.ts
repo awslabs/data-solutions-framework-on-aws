@@ -17,7 +17,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 * import { Key } from 'aws-cdk-lib/aws-kms';
 *
 * const logEncryptionKey = new Key(this, 'LogEncryptionKey');
-* const storage = new dsf.DataLakeStorage(this, "ExampleStorage");
+* const storage = new dsf.storage.DataLakeStorage(this, "ExampleStorage");
 * const dataLakeCatalog = new dsf.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
 *   dataLakeStorage: storage,
 *   databaseName: "exampledb",

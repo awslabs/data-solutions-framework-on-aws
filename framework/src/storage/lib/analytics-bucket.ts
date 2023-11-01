@@ -7,7 +7,7 @@ import { Bucket, BucketEncryption, BlockPublicAccess } from 'aws-cdk-lib/aws-s3'
 import { Construct } from 'constructs';
 
 import { AnalyticsBucketProps } from './analytics-bucket-props';
-import { Context, BucketUtils } from '../utils';
+import { Context, BucketUtils } from '../../utils';
 
 /**
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
@@ -25,7 +25,7 @@ import { Context, BucketUtils } from '../utils';
 *  enableKeyRotation: true,
 * });
 *
-* new dsf.AnalyticsBucket(this, 'MyAnalyticsBucket', {
+* new dsf.storage.AnalyticsBucket(this, 'MyAnalyticsBucket', {
 *  encryptionKey,
 *  removalPolicy: cdk.RemovalPolicy.DESTROY,
 * });

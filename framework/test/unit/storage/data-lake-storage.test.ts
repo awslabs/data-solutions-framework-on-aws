@@ -11,7 +11,7 @@
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Annotations, Match, Template } from 'aws-cdk-lib/assertions';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { DataLakeStorage } from '../../../src';
+import { DataLakeStorage } from '../../../src/storage';
 
 
 describe('DataLakeStorage Construct with defaults', () => {

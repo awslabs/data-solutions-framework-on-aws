@@ -13,7 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { AccessLogsBucket } from '../../../../src';
+import { AccessLogsBucket } from '../../../../src/storage';
 
 const app = new App();
 const stack = new Stack(app, 'Stack');

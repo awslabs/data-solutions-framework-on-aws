@@ -9,7 +9,7 @@ import { Construct } from 'constructs';
 
 import { AccessLogsBucket } from './access-logs-bucket';
 import { AnalyticsBucket } from './analytics-bucket';
-import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 
 /**
@@ -94,7 +94,7 @@ export interface DataLakeStorageProps {
  * // Set the context value for global data removal policy
  * this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
  *
- * new dsf.DataLakeStorage(this, 'MyDataLakeStorage', {
+ * new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
  *  bronzeBucketName: 'my-bronze',
  *  bronzeBucketInfrequentAccessDelay: 90,
  *  bronzeBucketArchiveDelay: 180,

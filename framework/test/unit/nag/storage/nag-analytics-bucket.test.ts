@@ -13,7 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { Key } from 'aws-cdk-lib/aws-kms';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AwsSolutionsChecks } from 'cdk-nag';
-import { AnalyticsBucket } from '../../../../src';
+import { AnalyticsBucket } from '../../../../src/storage';
 
 const app = new App();
 const stack = new Stack(app, 'Stack');
