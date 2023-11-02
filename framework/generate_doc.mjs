@@ -7,6 +7,7 @@ const snippets = Object.fromEntries(
         .filter(([_,v]) => v.location.api.api === 'moduleReadme')
 );
 
+let previousSubmodule = '';
 let previousStart = 0;
 let codeLength = 0;
 let fullReadme = {};
@@ -20,6 +21,11 @@ for (let key in snippets) {
     const python = snippet.translations.python.source;
 
     const submodule = snippet.location.api.moduleFqn.replace('aws-dsf.', '');
+    if (previousSubmodule !== submodule) {
+        previousSubmodule = submodule;
+        previousStart = 0;
+        codeLength = 0;
+    }
     const file = `src/${submodule}/README.md`;
 
     // do not read file on each snippet
@@ -36,6 +42,8 @@ for (let key in snippets) {
     // jsii does not count comments, we must add lines for each one
     // let numberOfComments = lines.slice(0, realLine).filter(elt => elt.startsWith("[//]: # ")).length;
     // realLine += numberOfComments;
+
+    // console.log(line + ' - ' + realLine);
 
     if (!fullReadme[submodule]) {
         fullReadme[submodule] = '';
@@ -75,19 +83,25 @@ for (let module in fullReadme) {
     for (let i = 0; i < constructReadmes.length; i++) {
         let constructReadme = constructReadmes[i];
         if (constructReadme.startsWith(module)) {
-            filename = '../website/docs/constructs/library/_' + constructReadme.replace('.', '-') + '.mdx';
+            filename = '../website/docs/constructs/library/generated/_' + constructReadme.replace('.', '-') + '.mdx';
             console.log(filename + ' exported');
         } else if (constructReadme.length !== 0 && filename.length !== 0) {
             let constructReadmeLines = constructReadme.split('\n');
             constructReadmeLines.shift(); // remove title
             constructReadme = constructReadmeLines.join('\n');
-            constructReadme = `import Tabs from '@theme/Tabs';
+            constructReadme = `[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/${module})
+import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 ${constructReadme}`;
 
             constructReadme = constructReadme.replaceAll("website/static/img", "static/img"); // change image path
+            try {
+                fs.chmodSync(filename, 0o744);
+            } catch (e) {
+                // file might not exist
+            }
             fs.writeFileSync(filename, constructReadme);
+            fs.chmodSync(filename, 0o444);
             filename = '';
         }
     }
