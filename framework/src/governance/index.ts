@@ -1,2 +1,5 @@
-export { DataCatalogDatabase, DataCatalogDatabaseProps } from './data-catalog-database';
-export { DataLakeCatalog, DataLakeCatalogProps } from './data-lake-catalog';
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+
+export * from './lib';

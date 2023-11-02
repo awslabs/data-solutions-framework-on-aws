@@ -10,7 +10,7 @@
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { DataLakeCatalog } from '../../../src';
+import { DataLakeCatalog } from '../../../src/governance';
 import { DataLakeStorage } from '../../../src/storage';
 
 

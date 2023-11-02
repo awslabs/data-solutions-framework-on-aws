@@ -12,7 +12,7 @@
 import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { DataLakeCatalog } from '../../../../src';
+import { DataLakeCatalog } from '../../../../src/governance';
 import { DataLakeStorage } from '../../../../src/storage';
 
 const app = new App();

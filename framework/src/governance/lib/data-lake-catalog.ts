@@ -6,8 +6,8 @@ import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { DataCatalogDatabase } from './data-catalog-database';
-import { AnalyticsBucket, DataLakeStorage } from '../storage';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { AnalyticsBucket, DataLakeStorage } from '../../storage';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
 * Creates AWS Glue Catalog Database for each storage layer. Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
@@ -18,7 +18,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 *
 * const logEncryptionKey = new Key(this, 'LogEncryptionKey');
 * const storage = new dsf.storage.DataLakeStorage(this, "ExampleStorage");
-* const dataLakeCatalog = new dsf.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
+* const dataLakeCatalog = new dsf.governance.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
 *   dataLakeStorage: storage,
 *   databaseName: "exampledb",
 *   crawlerLogEncryptionKey: logEncryptionKey

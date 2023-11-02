@@ -1,0 +1,104 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/governance)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+AWS Glue Catalog databases on top of a DataLakeStorage.
+
+## Overview
+
+`DataLakeCatalog` is a data catalog for your data lake. It's a set of [AWS Glue Data Catalog Databases](https://docs.aws.amazon.com/glue/latest/dg/define-database.html) configured on top of a [`DataLakeStorage`](./data-lake-storage.mdx).
+The construct creates three databases pointing to the respective medallion layers (bronze, silve or gold) of the `DataLakeStorage`:
+- The database default location is pointing to the corresponding S3 bucket location `s3://<locationBucket>/<locationPrefix>/`
+- By default, each database has an active crawler scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
+
+![Data Lake Catalog](../../../static/img/adsf-data-lake-catalog.png)
+
+:::caution Data Catalog encryption
+The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` construct are not encrypted because the encryption is only available at the catalog level. Changing the encryption at the catalog level has a wide impact on existing Glue resources and producers/consumers. Similarly, changing the encryption configuration at the catalog level after this construct is deployed can break all the resources created as part of AWS DSF.
+:::caution
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+  class ExampleDefaultDataLakeCatalogStack extends cdk.Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id);
+        const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
+
+        new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
+            dataLakeStorage: storage,
+        });
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+  class ExampleDefaultDataLakeCatalogStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        storage = dsf.storage.DataLakeStorage(self, "MyDataLakeStorage")
+
+        dsf.governance.DataLakeCatalog(self, "DataCatalog",
+            data_lake_storage=storage
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Modifying the crawlers behavior for the entire catalog
+
+You can change the default configuration of the AWS Glue Crawlers associated with the different databases to match your requirements:
+* Enable or disable the crawlers
+* Change the crawlers run frequency
+* Provide your own key to encrypt the crawlers logs
+
+The parameters apply to the three databases, if you need fine-grained configuration per database, you can use the [DataCatalogDatabase](./data-catalog-database) construct.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+          const encryptionKey = new Key(this,  'CrawlerLogEncryptionKey');
+
+        new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
+            dataLakeStorage: storage,
+            autoCrawl: true,
+            autoCrawlSchedule: {
+                scheduleExpression: 'cron(1 0 * * ? *)'
+            },
+            crawlerLogEncryptionKey: encryptionKey,
+            crawlerTableLevelDepth: 3
+        });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+  encryption_key = Key(self, "CrawlerLogEncryptionKey")
+
+dsf.governance.DataLakeCatalog(self, "DataCatalog",
+    data_lake_storage=storage,
+    auto_crawl=True,
+    auto_crawl_schedule=cdk.aws_glue.CfnCrawler.ScheduleProperty(
+        schedule_expression="cron(1 0 * * ? *)"
+    ),
+    crawler_log_encryption_key=encryption_key,
+    crawler_table_level_depth=3
+)
+  ```
+
+  </TabItem>
+</Tabs>
+

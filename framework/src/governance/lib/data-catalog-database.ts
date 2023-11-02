@@ -7,7 +7,7 @@ import { AddToPrincipalPolicyResult, Effect, IPrincipal, IRole, PolicyDocument, 
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -16,7 +16,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
  * @example
  * import { Bucket } from 'aws-cdk-lib/aws-s3';
  *
- * new dsf.DataCatalogDatabase(this, 'ExampleDatabase', {
+ * new dsf.governance.DataCatalogDatabase(this, 'ExampleDatabase', {
  *    locationBucket: new Bucket(scope, 'LocationBucket'),
  *    locationPrefix: '/databasePath',
  *    name: 'example-db'

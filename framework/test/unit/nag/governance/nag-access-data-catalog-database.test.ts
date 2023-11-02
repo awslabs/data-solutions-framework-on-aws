@@ -14,7 +14,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { DataCatalogDatabase } from '../../../../src';
+import { DataCatalogDatabase } from '../../../../src/governance';
 import { AnalyticsBucket } from '../../../../src/storage';
 
 const app = new App();
