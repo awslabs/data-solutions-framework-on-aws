@@ -37,4 +37,5 @@ __pycache__
 !/.mergify.yml
 !/.github/dependabot.yml
 !/.npmrc
+.jsii.tabl.json
 !/lerna.json

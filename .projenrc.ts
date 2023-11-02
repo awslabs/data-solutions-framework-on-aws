@@ -234,5 +234,6 @@ rootProject.addTask('test:e2e', {
 rootProject.addTask('release',  {
   description: 'Release project',
 })
+rootProject.addGitIgnore(".jsii.tabl.json");
 rootProject.addPackageIgnore("!*.lit.ts");
 rootProject.synth();
