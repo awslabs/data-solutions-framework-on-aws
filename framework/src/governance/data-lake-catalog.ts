@@ -3,7 +3,7 @@
 
 import { Fn, RemovalPolicy } from 'aws-cdk-lib';
 import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { DataCatalogDatabase } from './data-catalog-database';
 import { AnalyticsBucket, DataLakeStorage } from '../storage';
@@ -25,10 +25,22 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
 * })
 */
 export class DataLakeCatalog extends TrackedConstruct {
+  /**
+   * The Glue Database for Bronze bucket
+   */
   readonly bronzeCatalogDatabase: DataCatalogDatabase;
+  /**
+   * The Glue Database for Silver bucket
+   */
   readonly silverCatalogDatabase: DataCatalogDatabase;
+  /**
+   * The Glue Database for Gold bucket
+   */
   readonly goldCatalogDatabase: DataCatalogDatabase;
-  readonly crawlerLogEncryptionKey?: Key;
+  /**
+   * The KMS Key used to encrypt the crawler logs.
+   */
+  readonly crawlerLogEncryptionKey?: IKey;
 
   /**
    * Constructs a new instance of DataLakeCatalog
@@ -112,8 +124,9 @@ export interface DataLakeCatalogProps {
   readonly dataLakeStorage: DataLakeStorage;
 
   /**
-   * The name of the database in the Glue Data Catalog. This is also used as the prefix inside the data lake bucket.
-   * @default Use the bucket name as the database name and / as the prefix
+   * The suffix of the database in the Glue Data Catalog. The name of the database is composed of the bucket name and this suffix.
+   * The suffix is also added to the S3 location inside the data lake buckets.
+   * @default Use the bucket name as the database name and / as the S3 location
    */
   readonly databaseName?: string;
 
@@ -133,7 +146,7 @@ export interface DataLakeCatalogProps {
    * Encryption key used for Crawler logs
    * @default Create a new key if none is provided
    */
-  readonly crawlerLogEncryptionKey?: Key;
+  readonly crawlerLogEncryptionKey?: IKey;
 
   /**
    * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.

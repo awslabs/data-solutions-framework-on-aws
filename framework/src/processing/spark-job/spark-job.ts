@@ -6,7 +6,7 @@ import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { LogGroup } from 'aws-cdk-lib/aws-logs';
+import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Choice, Condition, DefinitionBody, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
@@ -32,6 +32,11 @@ export abstract class SparkJob extends TrackedConstruct {
   public stateMachine?: StateMachine;
 
   /**
+   * The CloudWatch Log Group used by the State Machine
+   */
+  public stateMachineLogGroup?: ILogGroup;
+
+  /**
    * S3 log bucket for the Spark job logs
    */
   protected s3LogBucket?: IBucket;
@@ -39,7 +44,7 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * CloudWatch Logs Group for the Spark job logs
    */
-  protected cloudwatchGroup?: LogGroup;
+  protected emrJobLogGroup?: ILogGroup;
 
 
   /**
@@ -147,7 +152,7 @@ export abstract class SparkJob extends TrackedConstruct {
       );
 
       // Enable CloudWatch Logs for the state machine
-      const logGroup = new LogGroup(this, 'LogGroup', {
+      this.stateMachineLogGroup = new LogGroup(this, 'LogGroup', {
         removalPolicy: this.removalPolicy,
       });
 
@@ -157,7 +162,7 @@ export abstract class SparkJob extends TrackedConstruct {
         tracingEnabled: true,
         timeout: jobTimeout ?? Duration.minutes(30),
         logs: {
-          destination: logGroup,
+          destination: this.stateMachineLogGroup,
           level: LogLevel.ALL,
         },
       });
@@ -203,16 +208,16 @@ export abstract class SparkJob extends TrackedConstruct {
    * @param encryptionKeyArn KMS Key ARN for encryption. @default - Server-side encryption managed by CloudWatch Logs.
    * @returns LogGroup CloudWatch Logs group.
    */
-  protected createCloudWatchLogsLogGroup(name:string, encryptionKeyArn?:string): LogGroup {
-    if (! this.cloudwatchGroup) {
-      this.cloudwatchGroup = new LogGroup(this, 'SparkLogsCloudWatchLogGroup', {
+  protected createCloudWatchLogsLogGroup(name:string, encryptionKeyArn?:string): ILogGroup {
+    if (! this.emrJobLogGroup) {
+      this.emrJobLogGroup = new LogGroup(this, 'SparkLogsCloudWatchLogGroup', {
         logGroupName: name,
         encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'SparkLogsCloudWatchEncryptionKey', encryptionKeyArn) : undefined,
         removalPolicy: this.removalPolicy,
       });
     }
 
-    return this.cloudwatchGroup;
+    return this.emrJobLogGroup;
   }
 }
 

@@ -65,9 +65,9 @@ export class SparkEmrEksJob extends SparkJob {
     this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.constructJobConfig.schedule);
 
     this.s3LogBucket?.grantReadWrite(sparkJobExecutionRole);
-    this.cloudwatchGroup?.grantRead(sparkJobExecutionRole);
-    this.cloudwatchGroup?.grantWrite(sparkJobExecutionRole);
-    if (this.cloudwatchGroup) {
+    this.emrJobLogGroup?.grantRead(sparkJobExecutionRole);
+    this.emrJobLogGroup?.grantWrite(sparkJobExecutionRole);
+    if (this.emrJobLogGroup) {
       sparkJobExecutionRole.addToPrincipalPolicy(new PolicyStatement({
         actions: ['logs:DescribeLogGroups', 'logs:DescribeLogStreams'],
         resources: [`arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group::log-stream:*`],

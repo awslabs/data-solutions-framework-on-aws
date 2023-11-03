@@ -1,6 +1,6 @@
 ---
-sidebar_position: 3
-sidebar_label: Cookbook
+sidebar_position: 4
+sidebar_label: Construct Cookbook
 ---
 
 # Best practices for building ADSF constructs

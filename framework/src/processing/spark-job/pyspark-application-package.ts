@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import * as path from 'path';
-import { Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, IManagedPolicy, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
@@ -72,7 +72,12 @@ export class PySparkApplicationPackage extends TrackedConstruct {
    * In case you provide your own bucket for storing the artifacts (entrypoint and virtual environment archive),
    * you must provide s3 write access to this role to upload the artifacts.
    */
-  public readonly assetUploadBucketRole: IRole;
+  public readonly assetUploadRole: IRole;
+
+  /**
+   * The IAM managed policy used by the custom resource for the assets deployment
+   */
+  public readonly assetUploadManagedPolicy: IManagedPolicy;
 
   /**
    * @param {Construct} scope the Scope of the CDK Construct
@@ -101,16 +106,16 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     }));
 
     // Policy to allow lambda access to cloudwatch logs
-    const lambdaExecutionRolePolicy = new ManagedPolicy(this, 's3BucketDeploymentPolicy', {
+    this.assetUploadManagedPolicy = new ManagedPolicy(this, 's3BucketDeploymentPolicy', {
       statements: s3DeploymentLambdaPolicyStatement,
       description: 'Policy used by S3 deployment cdk construct for PySparkApplicationPackage',
     });
 
     // Create an execution role for the lambda and attach to it a policy formed from user input
-    const assetUploadBucketRole = new Role(this, 's3BucketDeploymentRole', {
+    this.assetUploadRole = new Role(this, 's3BucketDeploymentRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
-      managedPolicies: [lambdaExecutionRolePolicy],
+      managedPolicies: [this.assetUploadManagedPolicy],
     });
 
     let artifactsBucket: IBucket;
@@ -127,7 +132,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     } else {
       artifactsBucket = props.artifactsBucket!;
     }
-    artifactsBucket.grantWrite(assetUploadBucketRole);
+    artifactsBucket.grantWrite(this.assetUploadRole);
 
     // package dependencies if there are any
     if (props.dependenciesFolder) {
@@ -153,7 +158,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           },
         });
 
-        emrDepsAsset.bucket.grantRead(assetUploadBucketRole);
+        emrDepsAsset.bucket.grantRead(this.assetUploadRole);
 
         // Move the asset with dependencies into the artifact bucket (because it's a different lifecycle than the CDK app)
         const emrDepsArtifacts = new BucketDeployment(this, 'EmrDepsArtifacts', {
@@ -169,7 +174,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           ephemeralStorageSize: Size.mebibytes(1000),
           prune: false,
           extract: false,
-          role: assetUploadBucketRole,
+          role: this.assetUploadRole,
           retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
         });
 
@@ -206,14 +211,13 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       memoryLimit: 512,
       ephemeralStorageSize: Size.mebibytes(1000),
       prune: false,
-      role: assetUploadBucketRole,
+      role: this.assetUploadRole,
       retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
     });
 
     this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${entrypointFileName}`);
 
     this.artifactsBucket = artifactsBucket;
-    this.assetUploadBucketRole = assetUploadBucketRole;
     this.sparkVenvConf = `--conf spark.archives=${this.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`;
 
   }

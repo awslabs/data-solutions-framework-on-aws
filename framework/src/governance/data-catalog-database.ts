@@ -3,8 +3,8 @@
 
 import { Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
-import { AddToPrincipalPolicyResult, Effect, IPrincipal, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { AddToPrincipalPolicyResult, Effect, IPrincipal, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../utils';
@@ -29,6 +29,16 @@ export class DataCatalogDatabase extends TrackedConstruct {
   readonly crawler?: CfnCrawler;
 
   /**
+   * The Glue security configuration used by the Glue Crawler when created.
+   */
+  readonly crawlerSecurityConfiguration?: CfnSecurityConfiguration;
+
+  /**
+   * The IAM role used by the Glue crawler when created.
+   */
+  readonly crawlerRole?: IRole;
+
+  /**
    * The Glue database that's created
    */
   readonly database: CfnDatabase;
@@ -41,7 +51,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
   /**
    * KMS encryption key used by the Crawler
    */
-  readonly crawlerLogEncryptionKey?: Key;
+  readonly crawlerLogEncryptionKey?: IKey;
 
   /**
    * Caching constructor properties for internal reuse by constructor methods
@@ -144,7 +154,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
       this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
 
-      const secConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
+      this.crawlerSecurityConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
         name: `${props.name}-secconfig-${Names.uniqueResourceName(this, {}).toLowerCase()}`,
         encryptionConfiguration: {
           cloudWatchEncryption: {
@@ -170,7 +180,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         schedule: autoCrawlSchedule,
         databaseName: this.databaseName,
         name: crawlerName,
-        crawlerSecurityConfiguration: secConfiguration.name,
+        crawlerSecurityConfiguration: this.crawlerSecurityConfiguration.name,
         configuration: JSON.stringify({
           Version: 1.0,
           Grouping: {
@@ -193,6 +203,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
           `${logGroup}:*`,
         ],
       }));
+      this.crawlerRole = crawlerRole;
 
       this.crawlerLogEncryptionKey.addToResourcePolicy(new PolicyStatement({
         effect: Effect.ALLOW,
@@ -299,7 +310,7 @@ export interface DataCatalogDatabaseProps {
    * Encryption key used for Crawler logs
    * @default Create a new key if none is provided
    */
-  readonly crawlerLogEncryptionKey?: Key;
+  readonly crawlerLogEncryptionKey?: IKey;
 
   /**
    * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
