@@ -40,7 +40,7 @@ const s3Read = new PolicyDocument({
 const execRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole', s3Read);
 
 new CfnOutput(stack, 'applicationArn', {
-  value: serverlessRuntime.applicationArn,
+  value: serverlessRuntime.application.attrArn,
 });
 
 new CfnOutput(stack, 'execRoleArn', {

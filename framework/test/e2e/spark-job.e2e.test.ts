@@ -46,7 +46,7 @@ const myExecutionRole1 = SparkEmrServerlessRuntime.createExecutionRole(stack, 'e
 const job = new SparkEmrServerlessJob(stack, 'SparkJob', {
   jobConfig: {
     Name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
-    ApplicationId: emrApp.applicationId,
+    ApplicationId: emrApp.application.attrApplicationId,
     ClientToken: JsonPath.uuid(),
     ExecutionRoleArn: myExecutionRole.roleArn,
     ExecutionTimeoutMinutes: 30,
@@ -70,7 +70,7 @@ const job = new SparkEmrServerlessJob(stack, 'SparkJob', {
 
 const jobSimple = new SparkEmrServerlessJob(stack, 'SparkJobSimple', {
   name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
-  applicationId: emrApp.applicationId,
+  applicationId: emrApp.application.attrApplicationId,
   clientToken: JsonPath.uuid(),
   executionRoleArn: myExecutionRole1.roleArn,
   executionTimeoutMinutes: 30,
