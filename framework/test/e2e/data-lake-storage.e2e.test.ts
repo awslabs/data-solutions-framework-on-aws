@@ -135,4 +135,5 @@ test('2 DataLakeStorage constructs are created in different stacks', async() => 
 
 afterAll(async () => {
   await testStack.destroy();
+  await testStack2.destroy();
 }, 900000);
