@@ -175,24 +175,24 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
     const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    const logKmsKey: Key = new Key(scope, 'logKmsKey', {
-      enableKeyRotation: true,
-      alias: `flowlog-vpc-key-for-emr-application-${props.name}`,
-      removalPolicy: removalPolicy,
-      keyUsage: KeyUsage.ENCRYPT_DECRYPT,
-      description: `Key used by the VPC created for EMR serverless application ${props.name}`,
-    });
-
     const releaseLabelSemver : string = emrReleaseLabel.split('-')[1];
 
     if (semver.lt(releaseLabelSemver, '6.9.0')) {
       throw new Error(`EMR Serverless supports release EMR 6.9 and above, provided release is ${emrReleaseLabel.toString()}`);
     }
 
-
     let emrNetworkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
+
+      const logKmsKey: Key = new Key(scope, 'logKmsKey', {
+        enableKeyRotation: true,
+        alias: `flowlog-vpc-key-for-emr-application-${props.name}`,
+        removalPolicy: removalPolicy,
+        keyUsage: KeyUsage.ENCRYPT_DECRYPT,
+        description: `Key used by the VPC created for EMR serverless application ${props.name}`,
+      });
+
       const networkConfiguration: NetworkConfiguration = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.removalPolicy, undefined, props.name);
 
       let privateSubnetIds: string [] = [];
