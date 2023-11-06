@@ -10,7 +10,7 @@ AWS Glue Catalog database for an Amazon S3 dataset.
 - The database can store various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`
 - By default, a database level crawler is scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
 
-![Data Catalog Database](../../../static/img/adsf-data-catalog.png)
+![Data Catalog Database](../../../website/static/img/adsf-data-catalog.png)
 
 :::caution Data Catalog encryption
 The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` construct are not encrypted because the encryption is only available at the catalog level. Changing the encryption at the catalog level has a wide impact on existing Glue resources and producers/consumers. Similarly, changing the encryption configuration at the catalog level after this construct is deployed can break all the resources created as part of AWS DSF.
@@ -41,7 +41,7 @@ The construct creates three databases pointing to the respective medallion layer
 - The database default location is pointing to the corresponding S3 bucket location `s3://<locationBucket>/<locationPrefix>/`
 - By default, each database has an active crawler scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
 
-![Data Lake Catalog](../../../static/img/adsf-data-lake-catalog.png)
+![Data Lake Catalog](../../../website/static/img/adsf-data-lake-catalog.png)
 
 :::caution Data Catalog encryption
 The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` construct are not encrypted because the encryption is only available at the catalog level. Changing the encryption at the catalog level has a wide impact on existing Glue resources and producers/consumers. Similarly, changing the encryption configuration at the catalog level after this construct is deployed can break all the resources created as part of AWS DSF.

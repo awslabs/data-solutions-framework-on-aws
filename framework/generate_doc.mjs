@@ -94,7 +94,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ${constructReadme}`;
 
-            constructReadme = constructReadme.replaceAll("website/static/img", "static/img"); // change image path
+            constructReadme = constructReadme.replaceAll("website/static/img", "../static/img"); // change image path
             try {
                 fs.chmodSync(filename, 0o744);
             } catch (e) {
