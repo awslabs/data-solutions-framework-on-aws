@@ -65,7 +65,7 @@ The code snippet below shows a usage example of the `SparkEmrServerlessRuntime` 
         runtimeServerless.grantStartExecution(jobTrigger, executionRole.roleArn);
 
         new cdk.CfnOutput(this, 'SparkRuntimeServerlessStackApplicationArn', {
-            value: runtimeServerless.applicationArn,
+            value: runtimeServerless.application.attrArn,
         });
     }
 }
@@ -104,7 +104,7 @@ The code snippet below shows a usage example of the `SparkEmrServerlessRuntime` 
         runtime_serverless.grant_start_execution(job_trigger, execution_role.role_arn)
 
         cdk.CfnOutput(self, "SparkRuntimeServerlessStackApplicationArn",
-            value=runtime_serverless.application_arn
+            value=runtime_serverless.application.attr_arn
         )
   ```
 

@@ -31,7 +31,7 @@ class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
         });
 
         new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
-            applicationId: runtime.applicationId,
+            applicationId: runtime.application.attrApplicationId,
             name: 'nightly_job',
             executionRoleArn: executionRole.roleArn,
             executionTimeoutMinutes: 30,

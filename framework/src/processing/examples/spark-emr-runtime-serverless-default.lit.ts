@@ -31,7 +31,7 @@ class ExampleSparkEmrServerlessStack extends cdk.Stack {
         runtimeServerless.grantStartExecution(jobTrigger, executionRole.roleArn);
 
         new cdk.CfnOutput(this, 'SparkRuntimeServerlessStackApplicationArn', {
-            value: runtimeServerless.applicationArn,
+            value: runtimeServerless.application.attrArn,
         });
     }
 }

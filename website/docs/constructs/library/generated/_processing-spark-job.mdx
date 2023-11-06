@@ -37,7 +37,7 @@ The example stack below shows how to use `EmrServerlessSparkJob` construct. The 
         const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'EmrServerlessExecutionRole', s3ReadPolicy);
 
         const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
-            applicationId: runtime.applicationId,
+            applicationId: runtime.application.attrApplicationId,
             name: 'nightly_job',
             executionRoleArn: executionRole.roleArn,
             executionTimeoutMinutes: 30,
@@ -78,7 +78,7 @@ The example stack below shows how to use `EmrServerlessSparkJob` construct. The 
         execution_role = dsf.processing.SparkEmrServerlessRuntime.create_execution_role(self, "EmrServerlessExecutionRole", s3_read_policy)
 
         night_job = dsf.processing.SparkEmrServerlessJob(self, "SparkNightlyJob",
-            application_id=runtime.application_id,
+            application_id=runtime.application.attr_application_id,
             name="nightly_job",
             execution_role_arn=execution_role.role_arn,
             execution_timeout_minutes=30,

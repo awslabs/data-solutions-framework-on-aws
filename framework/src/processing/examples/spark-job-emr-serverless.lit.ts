@@ -24,7 +24,7 @@ class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
         const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'EmrServerlessExecutionRole', s3ReadPolicy);
 
         const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
-            applicationId: runtime.applicationId,
+            applicationId: runtime.application.attrApplicationId,
             name: 'nightly_job',
             executionRoleArn: executionRole.roleArn,
             executionTimeoutMinutes: 30,

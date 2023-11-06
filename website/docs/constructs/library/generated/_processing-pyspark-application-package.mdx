@@ -142,7 +142,7 @@ The stack below leverages the resources defined above for PySpark to build the e
         });
 
         new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
-            applicationId: runtime.applicationId,
+            applicationId: runtime.application.attrApplicationId,
             name: 'nightly_job',
             executionRoleArn: executionRole.roleArn,
             executionTimeoutMinutes: 30,
@@ -170,7 +170,7 @@ application_package = dsf.processing.PySparkApplicationPackage(self, "PySparkApp
 )
 
 dsf.processing.SparkEmrServerlessJob(self, "SparkNightlyJob",
-    application_id=runtime.application_id,
+    application_id=runtime.application.attr_application_id,
     name="nightly_job",
     execution_role_arn=execution_role.role_arn,
     execution_timeout_minutes=30,
