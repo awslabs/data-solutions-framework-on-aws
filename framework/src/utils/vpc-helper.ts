@@ -2,21 +2,25 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Names, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { FlowLogDestination, GatewayVpcEndpoint, GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Effect, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { FlowLogDestination, GatewayVpcEndpoint, GatewayVpcEndpointAwsService, IVpc, IVpcEndpoint, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Effect, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { Context } from './context';
 
 /**
- * @internal
- * @param {Vpc} vpc the vpc created by the function vpcBootstrap
- * @param {GatewayVpcEndpoint} s3GatewayVpcEndpoint the vpc endpoint attached to the vpc the function vpcBootstrap created
+ * A network configuration created by the vpcBootstrap function.
+ * @param {IVpc} vpc the vpc created by the function vpcBootstrap
+ * @param {IVpcEndpoint} s3GatewayVpcEndpoint the vpc endpoint attached to the vpc the function vpcBootstrap created
+ * @param {ILogGroup} vpcFlowLogLogGroup the log group used to store the vpc flow logs
+ * @param {IRole} iamFlowLogRole the role used to store the vpc flow logs
 */
 export interface NetworkConfiguration {
-  readonly vpc: Vpc;
-  readonly s3GatewayVpcEndpoint: GatewayVpcEndpoint;
+  readonly vpc: IVpc;
+  readonly s3GatewayVpcEndpoint: IVpcEndpoint;
+  readonly vpcFlowLogLogGroup: ILogGroup;
+  readonly iamFlowLogRole: IRole;
 }
 
 /**
@@ -33,7 +37,7 @@ export interface NetworkConfiguration {
 export function vpcBootstrap(
   scope: Construct,
   vpcCidr: string,
-  logKmsKey: Key,
+  logKmsKey: IKey,
   vpcFlowlogRemovalPolicy?: RemovalPolicy,
   eksClusterName?: string,
   emrAppName?: string): NetworkConfiguration {
@@ -75,8 +79,8 @@ export function vpcBootstrap(
 
   const logGroupResourceId = eksClusterName ? 'EmrEksVpcFlowLog' : 'EmrServerlessVpcFlowLog' ;
 
-  //Create VPC flow log for the EKS VPC
-  let eksVpcFlowLogLogGroup = new LogGroup(scope, `${logGroupResourceId}Group`, {
+  //Create VPC flow log for the VPC
+  let vpcFlowLogLogGroup = new LogGroup(scope, `${logGroupResourceId}Group`, {
     logGroupName: logGroupName,
     encryptionKey: logKmsKey,
     retention: RetentionDays.ONE_WEEK,
@@ -105,12 +109,12 @@ export function vpcBootstrap(
   );
 
   //Setup the VPC flow logs
-  const iamRoleforFlowLog = new Role(scope, 'iamRoleforFlowLog', {
+  const iamFlowLogRole = new Role(scope, 'iamRoleforFlowLog', {
     assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
   });
 
   vpc.addFlowLog(`${logGroupResourceId}`, {
-    destination: FlowLogDestination.toCloudWatchLogs(eksVpcFlowLogLogGroup, iamRoleforFlowLog),
+    destination: FlowLogDestination.toCloudWatchLogs(vpcFlowLogLogGroup, iamFlowLogRole),
   });
 
   // Create a gateway endpoint for S3
@@ -143,8 +147,10 @@ export function vpcBootstrap(
   }
 
   const networkConfiguration: NetworkConfiguration = {
-    vpc: vpc,
-    s3GatewayVpcEndpoint: s3GatewayVpcEndpoint,
+    vpc,
+    s3GatewayVpcEndpoint,
+    vpcFlowLogLogGroup,
+    iamFlowLogRole,
   };
 
   return networkConfiguration;

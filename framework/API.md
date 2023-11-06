@@ -2762,7 +2762,9 @@ Any object.
 | <code><a href="#aws-dsf.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
 | <code><a href="#aws-dsf.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
 | <code><a href="#aws-dsf.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS encryption key used by the Crawler. |
+| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption key used by the Crawler. |
+| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Glue crawler when created. |
+| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerSecurityConfiguration">crawlerSecurityConfiguration</a></code> | <code>aws-cdk-lib.aws_glue.CfnSecurityConfiguration</code> | The Glue security configuration used by the Glue Crawler when created. |
 
 ---
 
@@ -2819,12 +2821,36 @@ This property can be undefined if `autoCrawl` is set to `false`.
 ##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
-public readonly crawlerLogEncryptionKey: Key;
+public readonly crawlerLogEncryptionKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_kms.Key
+- *Type:* aws-cdk-lib.aws_kms.IKey
 
 KMS encryption key used by the Crawler.
+
+---
+
+##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="aws-dsf.DataCatalogDatabase.property.crawlerRole"></a>
+
+```typescript
+public readonly crawlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used by the Glue crawler when created.
+
+---
+
+##### `crawlerSecurityConfiguration`<sup>Optional</sup> <a name="crawlerSecurityConfiguration" id="aws-dsf.DataCatalogDatabase.property.crawlerSecurityConfiguration"></a>
+
+```typescript
+public readonly crawlerSecurityConfiguration: CfnSecurityConfiguration;
+```
+
+- *Type:* aws-cdk-lib.aws_glue.CfnSecurityConfiguration
+
+The Glue security configuration used by the Glue Crawler when created.
 
 ---
 
@@ -2990,10 +3016,10 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | *No description.* |
+| <code><a href="#aws-dsf.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | The Glue Database for Bronze bucket. |
+| <code><a href="#aws-dsf.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | The Glue Database for Gold bucket. |
+| <code><a href="#aws-dsf.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | The Glue Database for Silver bucket. |
+| <code><a href="#aws-dsf.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the crawler logs. |
 
 ---
 
@@ -3017,6 +3043,8 @@ public readonly bronzeCatalogDatabase: DataCatalogDatabase;
 
 - *Type:* <a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a>
 
+The Glue Database for Bronze bucket.
+
 ---
 
 ##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="aws-dsf.DataLakeCatalog.property.goldCatalogDatabase"></a>
@@ -3026,6 +3054,8 @@ public readonly goldCatalogDatabase: DataCatalogDatabase;
 ```
 
 - *Type:* <a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a>
+
+The Glue Database for Gold bucket.
 
 ---
 
@@ -3037,15 +3067,19 @@ public readonly silverCatalogDatabase: DataCatalogDatabase;
 
 - *Type:* <a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a>
 
+The Glue Database for Silver bucket.
+
 ---
 
 ##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
-public readonly crawlerLogEncryptionKey: Key;
+public readonly crawlerLogEncryptionKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_kms.Key
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used to encrypt the crawler logs.
 
 ---
 
@@ -3215,11 +3249,11 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code><a href="#aws-dsf.AccessLogsBucket">AccessLogsBucket</a></code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | *No description.* |
+| <code><a href="#aws-dsf.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code><a href="#aws-dsf.AccessLogsBucket">AccessLogsBucket</a></code> | The S3 Bucket for access logs. |
+| <code><a href="#aws-dsf.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | The S3 Bucket for Bronze layer. |
+| <code><a href="#aws-dsf.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#aws-dsf.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | The S3 Bucket for Gold layer. |
+| <code><a href="#aws-dsf.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | The S3 Bucket for Silver layer. |
 
 ---
 
@@ -3243,6 +3277,8 @@ public readonly accessLogsBucket: AccessLogsBucket;
 
 - *Type:* <a href="#aws-dsf.AccessLogsBucket">AccessLogsBucket</a>
 
+The S3 Bucket for access logs.
+
 ---
 
 ##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="aws-dsf.DataLakeStorage.property.bronzeBucket"></a>
@@ -3253,15 +3289,19 @@ public readonly bronzeBucket: AnalyticsBucket;
 
 - *Type:* <a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a>
 
+The S3 Bucket for Bronze layer.
+
 ---
 
 ##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="aws-dsf.DataLakeStorage.property.dataLakeKey"></a>
 
 ```typescript
-public readonly dataLakeKey: Key;
+public readonly dataLakeKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_kms.Key
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used to encrypt all DataLakeStorage S3 buckets.
 
 ---
 
@@ -3273,6 +3313,8 @@ public readonly goldBucket: AnalyticsBucket;
 
 - *Type:* <a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a>
 
+The S3 Bucket for Gold layer.
+
 ---
 
 ##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="aws-dsf.DataLakeStorage.property.silverBucket"></a>
@@ -3282,6 +3324,8 @@ public readonly silverBucket: AnalyticsBucket;
 ```
 
 - *Type:* <a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a>
+
+The S3 Bucket for Silver layer.
 
 ---
 
@@ -3456,7 +3500,8 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket storing the artifacts (entrypoint and virtual environment archive). |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM managed policy used by the custom resource for the assets deployment. |
+| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark config containing the configuration of virtual environment archive with all dependencies. |
 | <code><a href="#aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
@@ -3487,10 +3532,22 @@ The bucket storing the artifacts (entrypoint and virtual environment archive).
 
 ---
 
-##### `assetUploadBucketRole`<sup>Required</sup> <a name="assetUploadBucketRole" id="aws-dsf.PySparkApplicationPackage.property.assetUploadBucketRole"></a>
+##### `assetUploadManagedPolicy`<sup>Required</sup> <a name="assetUploadManagedPolicy" id="aws-dsf.PySparkApplicationPackage.property.assetUploadManagedPolicy"></a>
 
 ```typescript
-public readonly assetUploadBucketRole: IRole;
+public readonly assetUploadManagedPolicy: IManagedPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IManagedPolicy
+
+The IAM managed policy used by the custom resource for the assets deployment.
+
+---
+
+##### `assetUploadRole`<sup>Required</sup> <a name="assetUploadRole" id="aws-dsf.PySparkApplicationPackage.property.assetUploadRole"></a>
+
+```typescript
+public readonly assetUploadRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
@@ -3745,8 +3802,12 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing access logs on the artifact bucket. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing the artifacts. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
 | <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit repository created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
 
 ---
 
@@ -3762,6 +3823,30 @@ The tree node.
 
 ---
 
+##### `artifactAccessLogsBucket`<sup>Required</sup> <a name="artifactAccessLogsBucket" id="aws-dsf.SparkEmrCICDPipeline.property.artifactAccessLogsBucket"></a>
+
+```typescript
+public readonly artifactAccessLogsBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The S3 bucket for storing access logs on the artifact bucket.
+
+---
+
+##### `artifactBucket`<sup>Required</sup> <a name="artifactBucket" id="aws-dsf.SparkEmrCICDPipeline.property.artifactBucket"></a>
+
+```typescript
+public readonly artifactBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The S3 bucket for storing the artifacts.
+
+---
+
 ##### `pipeline`<sup>Required</sup> <a name="pipeline" id="aws-dsf.SparkEmrCICDPipeline.property.pipeline"></a>
 
 ```typescript
@@ -3774,6 +3859,18 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 ---
 
+##### `pipelineLogGroup`<sup>Required</sup> <a name="pipelineLogGroup" id="aws-dsf.SparkEmrCICDPipeline.property.pipelineLogGroup"></a>
+
+```typescript
+public readonly pipelineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for storing the CodePipeline logs.
+
+---
+
 ##### `repository`<sup>Required</sup> <a name="repository" id="aws-dsf.SparkEmrCICDPipeline.property.repository"></a>
 
 ```typescript
@@ -3783,6 +3880,18 @@ public readonly repository: Repository;
 - *Type:* aws-cdk-lib.aws_codecommit.Repository
 
 The CodeCommit repository created as part of the Spark CICD Pipeline.
+
+---
+
+##### `integrationTestStage`<sup>Optional</sup> <a name="integrationTestStage" id="aws-dsf.SparkEmrCICDPipeline.property.integrationTestStage"></a>
+
+```typescript
+public readonly integrationTestStage: CodeBuildStep;
+```
+
+- *Type:* aws-cdk-lib.pipelines.CodeBuildStep
+
+The CodeBuild Step for the staging stage.
 
 ---
 
@@ -3954,6 +4063,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrEksJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkEmrEksJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.SparkEmrEksJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
@@ -3978,6 +4088,18 @@ public readonly stateMachine: StateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 Step Functions StateMachine created to orchestrate the Spark Job.
+
+---
+
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.SparkEmrEksJob.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the State Machine.
 
 ---
 
@@ -4162,6 +4284,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 | <code><a href="#aws-dsf.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
 
 ---
@@ -4187,6 +4310,18 @@ public readonly stateMachine: StateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 Step Functions StateMachine created to orchestrate the Spark Job.
+
+---
+
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.SparkEmrServerlessJob.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the State Machine.
 
 ---
 
@@ -4464,12 +4599,10 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.applicationArn">applicationArn</a></code> | <code>string</code> | The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.applicationId">applicationId</a></code> | <code>string</code> | The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.emrServerlessApplication">emrServerlessApplication</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The CfnApplication object of the EMR Serverless application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.GatewayVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | If no VPC is provided, one is created by default This attribute is used to expose the VPC, if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.networkConfiguration">networkConfiguration</a></code> | <code><a href="#aws-dsf.NetworkConfiguration">NetworkConfiguration</a></code> | The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs. |
+| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
 
 ---
 
@@ -4485,75 +4618,51 @@ The tree node.
 
 ---
 
-##### `applicationArn`<sup>Required</sup> <a name="applicationArn" id="aws-dsf.SparkEmrServerlessRuntime.property.applicationArn"></a>
+##### `application`<sup>Required</sup> <a name="application" id="aws-dsf.SparkEmrServerlessRuntime.property.application"></a>
 
 ```typescript
-public readonly applicationArn: string;
-```
-
-- *Type:* string
-
-The ARN of the EMR Serverless application, such as arn:aws:emr-serverless:us-east-1:123456789012:application/ab4rp1abcs8xz47n3x0example This is used to expose the ARN of the application to the user.
-
----
-
-##### `applicationId`<sup>Required</sup> <a name="applicationId" id="aws-dsf.SparkEmrServerlessRuntime.property.applicationId"></a>
-
-```typescript
-public readonly applicationId: string;
-```
-
-- *Type:* string
-
-The id of the EMR Serverless application, such as ab4rp1abcs8xz47n3x0example This is used to expose the id of the application to the user.
-
----
-
-##### `emrServerlessApplication`<sup>Required</sup> <a name="emrServerlessApplication" id="aws-dsf.SparkEmrServerlessRuntime.property.emrServerlessApplication"></a>
-
-```typescript
-public readonly emrServerlessApplication: CfnApplication;
+public readonly application: CfnApplication;
 ```
 
 - *Type:* aws-cdk-lib.aws_emrserverless.CfnApplication
 
-The CfnApplication object of the EMR Serverless application.
+The EMR Serverless application.
 
 ---
 
 ##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="aws-dsf.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
 
 ```typescript
-public readonly emrApplicationSecurityGroup: SecurityGroup;
+public readonly emrApplicationSecurityGroup: ISecurityGroup;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.SecurityGroup
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
 If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`.
+
+---
+
+##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-dsf.SparkEmrServerlessRuntime.property.networkConfiguration"></a>
+
+```typescript
+public readonly networkConfiguration: NetworkConfiguration;
+```
+
+- *Type:* <a href="#aws-dsf.NetworkConfiguration">NetworkConfiguration</a>
+
+The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs.
 
 ---
 
 ##### `s3GatewayVpcEndpoint`<sup>Optional</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint"></a>
 
 ```typescript
-public readonly s3GatewayVpcEndpoint: GatewayVpcEndpoint;
+public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.GatewayVpcEndpoint
+- *Type:* aws-cdk-lib.aws_ec2.IVpcEndpoint
 
 If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}.
-
----
-
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.SparkEmrServerlessRuntime.property.vpc"></a>
-
-```typescript
-public readonly vpc: Vpc;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.Vpc
-
-If no VPC is provided, one is created by default This attribute is used to expose the VPC, if you provide your own VPC through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`.
 
 ---
 
@@ -4720,6 +4829,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.SparkJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
@@ -4744,6 +4854,18 @@ public readonly stateMachine: StateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 Step Functions StateMachine created to orchestrate the Spark Job.
+
+---
+
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.SparkJob.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the State Machine.
 
 ---
 
@@ -5334,7 +5456,7 @@ const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
 | <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
 | <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
 | <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
 | <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
@@ -5409,10 +5531,10 @@ Default is once a day at 00:01h.
 ##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
-public readonly crawlerLogEncryptionKey: Key;
+public readonly crawlerLogEncryptionKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_kms.Key
+- *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
@@ -5467,9 +5589,9 @@ const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code><a href="#aws-dsf.DataLakeStorage">DataLakeStorage</a></code> | Location of data lake files. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database in the Glue Data Catalog. |
+| <code><a href="#aws-dsf.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the database in the Glue Data Catalog. |
 | <code><a href="#aws-dsf.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
@@ -5517,10 +5639,10 @@ Default is once a day at 00:01h.
 ##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
-public readonly crawlerLogEncryptionKey: Key;
+public readonly crawlerLogEncryptionKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_kms.Key
+- *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
@@ -5549,11 +5671,12 @@ public readonly databaseName: string;
 ```
 
 - *Type:* string
-- *Default:* Use the bucket name as the database name and / as the prefix
+- *Default:* Use the bucket name as the database name and / as the S3 location
 
-The name of the database in the Glue Data Catalog.
+The suffix of the database in the Glue Data Catalog.
 
-This is also used as the prefix inside the data lake bucket.
+The name of the database is composed of the bucket name and this suffix.
+The suffix is also added to the S3 location inside the data lake buckets.
 
 ---
 
@@ -5590,7 +5713,7 @@ const dataLakeStorageProps: DataLakeStorageProps = { ... }
 | <code><a href="#aws-dsf.DataLakeStorageProps.property.bronzeBucketArchiveDelay">bronzeBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
 | <code><a href="#aws-dsf.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay">bronzeBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
 | <code><a href="#aws-dsf.DataLakeStorageProps.property.bronzeBucketName">bronzeBucketName</a></code> | <code>string</code> | Name of the Bronze bucket. |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#aws-dsf.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
 | <code><a href="#aws-dsf.DataLakeStorageProps.property.goldBucketArchiveDelay">goldBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
 | <code><a href="#aws-dsf.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay">goldBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
 | <code><a href="#aws-dsf.DataLakeStorageProps.property.goldBucketName">goldBucketName</a></code> | <code>string</code> | Name of the Gold bucket. |
@@ -5645,10 +5768,10 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 ##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="aws-dsf.DataLakeStorageProps.property.dataLakeKey"></a>
 
 ```typescript
-public readonly dataLakeKey: Key;
+public readonly dataLakeKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_kms.Key
+- *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* A single KMS customer key is created.
 
 The KMS Key used to encrypt all DataLakeStorage S3 buckets.
@@ -5750,6 +5873,69 @@ public readonly silverBucketName: string;
 Name of the Silver bucket.
 
 Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
+
+---
+
+### NetworkConfiguration <a name="NetworkConfiguration" id="aws-dsf.NetworkConfiguration"></a>
+
+A network configuration created by the vpcBootstrap function.
+
+#### Initializer <a name="Initializer" id="aws-dsf.NetworkConfiguration.Initializer"></a>
+
+```typescript
+import { NetworkConfiguration } from 'aws-dsf'
+
+const networkConfiguration: NetworkConfiguration = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.NetworkConfiguration.property.iamFlowLogRole">iamFlowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#aws-dsf.NetworkConfiguration.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | *No description.* |
+| <code><a href="#aws-dsf.NetworkConfiguration.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#aws-dsf.NetworkConfiguration.property.vpcFlowLogLogGroup">vpcFlowLogLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+
+---
+
+##### `iamFlowLogRole`<sup>Required</sup> <a name="iamFlowLogRole" id="aws-dsf.NetworkConfiguration.property.iamFlowLogRole"></a>
+
+```typescript
+public readonly iamFlowLogRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `s3GatewayVpcEndpoint`<sup>Required</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.NetworkConfiguration.property.s3GatewayVpcEndpoint"></a>
+
+```typescript
+public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpcEndpoint
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.NetworkConfiguration.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `vpcFlowLogLogGroup`<sup>Required</sup> <a name="vpcFlowLogLogGroup" id="aws-dsf.NetworkConfiguration.property.vpcFlowLogLogGroup"></a>
+
+```typescript
+public readonly vpcFlowLogLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
 ---
 

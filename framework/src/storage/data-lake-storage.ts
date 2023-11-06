@@ -3,7 +3,7 @@
 
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
@@ -20,7 +20,7 @@ export interface DataLakeStorageProps {
    * The KMS Key used to encrypt all DataLakeStorage S3 buckets.
    * @default - A single KMS customer key is created.
    */
-  readonly dataLakeKey?: Key;
+  readonly dataLakeKey?: IKey;
 
   /**
    * Name of the Bronze bucket. Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
@@ -109,10 +109,25 @@ export interface DataLakeStorageProps {
  */
 export class DataLakeStorage extends TrackedConstruct {
 
+  /**
+   * The S3 Bucket for Bronze layer.
+   */
   public readonly bronzeBucket: AnalyticsBucket;
+  /**
+   * The S3 Bucket for Silver layer.
+   */
   public readonly silverBucket: AnalyticsBucket;
+  /**
+   * The S3 Bucket for Gold layer.
+   */
   public readonly goldBucket: AnalyticsBucket;
-  public readonly dataLakeKey: Key;
+  /**
+   * The KMS Key used to encrypt all DataLakeStorage S3 buckets.
+   */
+  public readonly dataLakeKey: IKey;
+  /**
+   * The S3 Bucket for access logs.
+   */
   public readonly accessLogsBucket: AccessLogsBucket;
 
   /**

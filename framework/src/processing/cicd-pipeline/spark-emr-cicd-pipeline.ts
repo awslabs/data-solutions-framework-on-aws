@@ -5,8 +5,8 @@ import { Aws, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { LogGroup } from 'aws-cdk-lib/aws-logs';
-import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
+import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import { AccessLogsBucket } from '../../storage';
@@ -202,12 +202,26 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    * The CodePipeline created as part of the Spark CICD Pipeline
    */
   public readonly pipeline: CodePipeline;
-
   /**
    * The CodeCommit repository created as part of the Spark CICD Pipeline
    */
   public readonly repository: Repository;
-
+  /**
+   * The S3 bucket for storing the artifacts
+   */
+  public readonly artifactBucket: IBucket;
+  /**
+   * The S3 bucket for storing access logs on the artifact bucket
+   */
+  public readonly artifactAccessLogsBucket: IBucket;
+  /**
+   * The CloudWatch Log Group for storing the CodePipeline logs
+   */
+  public readonly pipelineLogGroup: ILogGroup;
+  /**
+   * The CodeBuild Step for the staging stage
+   */
+  public readonly integrationTestStage?: CodeBuildStep;
   /**
    * Construct a new instance of the SparkCICDPipeline class.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -240,7 +254,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       primaryOutputDirectory: `${cdkPath}/cdk.out`,
     });
 
-    const artifactAccessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
+    this.artifactAccessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
       removalPolicy: props?.removalPolicy,
     });
 
@@ -249,15 +263,18 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       enableKeyRotation: true,
     });
 
-    const artifactBucket = new Bucket(this, 'ArtifactBucket', {
+    this.artifactBucket = new Bucket(this, 'ArtifactBucket', {
       enforceSSL: true,
       encryption: BucketEncryption.KMS,
       encryptionKey: artifactBucketKey,
       removalPolicy,
-      serverAccessLogsBucket: artifactAccessLogsBucket,
+      serverAccessLogsBucket: this.artifactAccessLogsBucket,
       autoDeleteObjects: removalPolicy == RemovalPolicy.DESTROY,
     });
 
+    this.pipelineLogGroup = new LogGroup(this, 'BuildLogGroup', {
+      removalPolicy: removalPolicy,
+    }),
     // Create the CodePipeline to run the CICD
     this.pipeline = new CodePipeline(this, 'CodePipeline', {
       crossAccountKeys: true,
@@ -265,13 +282,11 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       useChangeSets: false,
       synth: buildStage,
       dockerEnabledForSynth: true,
-      artifactBucket: artifactBucket,
+      artifactBucket: this.artifactBucket,
       codeBuildDefaults: {
         logging: {
           cloudWatch: {
-            logGroup: new LogGroup(this, 'BuildLogGroup', {
-              removalPolicy: removalPolicy,
-            }),
+            logGroup: this.pipelineLogGroup,
           },
         },
       },
@@ -290,13 +305,14 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       // Extract the path and script name from the integration tests script path
       const [integPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
 
-      // Add a post step to run the integration tests
-      stagingDeployment.addPost(new CodeBuildStep('IntegrationTests', {
+      this.integrationTestStage = new CodeBuildStep('IntegrationTests', {
         input: buildStage.addOutputDirectory(integPath),
         commands: [`chmod +x ${integScript} && ./${integScript}`],
         envFromCfnOutputs: staging.stackOutputsEnv,
         rolePolicyStatements: props.integTestPermissions,
-      }));
+      });
+      // Add a post step to run the integration tests
+      stagingDeployment.addPost(this.integrationTestStage);
     }
 
     // Create the Production stage of the CICD
