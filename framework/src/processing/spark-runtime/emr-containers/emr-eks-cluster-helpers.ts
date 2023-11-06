@@ -441,15 +441,13 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(allowInterruptionQueueActions);
   karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
 
-  const karpenterV = karpenterVersion || SparkEmrContainersRuntime.DEFAULT_KARPENTER_VERSION;
-
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('KarpenterHelmChart', {
     chart: 'karpenter',
     release: 'karpenter',
     repository: 'oci://public.ecr.aws/karpenter/karpenter',
     namespace: 'karpenter',
-    version: karpenterV,
+    version: karpenterVersion,
     timeout: Duration.minutes(14),
     wait: true,
     values: {
@@ -518,7 +516,7 @@ export function karpenterSetup(cluster: Cluster,
 
   let listPrivateSubnets: string[] = privateSubnets.map(subnet => subnet.subnetId);
 
-  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterV}/tooling-provisioner.yml`);
+  let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/tooling-provisioner.yml`);
 
   manifest = manifest.replace(/(\{{cluster-name}})/g, eksClusterName);
   manifest = manifest.replace(/(\{{subnet-list}})/g, listPrivateSubnets.join(','));

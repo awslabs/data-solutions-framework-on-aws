@@ -1,24 +1,25 @@
-apiVersion: karpenter.sh/v1alpha5
-kind: Provisioner
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
 metadata:
-  name: notebook-executor-{{az}}
+  name: notebook-driver-{{az}}
 spec:
   # References cloud provider-specific custom resource, see your cloud provider specific documentation
-  providerRef:
-    name: notebook-executor-nodes-{{az}}
+  template:
+    spec:
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: notebook-driver-nodes-{{az}}
 
   # Labels are arbitrary key-values that are applied to all nodes
   labels:
     role: notebook
-    node-lifecycle: spot
-    spark-role: executor
+    node-lifecycle: on-demand
+    spark-role: driver
 
   taints:
     - key: role
       value: notebook
-      effect: NoSchedule
-    - key: node-lifecycle
-      value: spot
       effect: NoSchedule
 
   # Requirements that constrain the parameters of provisioned nodes.
@@ -28,17 +29,17 @@ spec:
     # Include general purpose instance families
     - key: "karpenter.k8s.aws/instance-family"
       operator: In
-      values: ["t3","t3a"]
+      values: ["t3", "t3a"]
     - key: "kubernetes.io/arch"
       operator: In
       values: ["amd64"]
     # Exclude smaller instance sizes
     - key: "karpenter.k8s.aws/instance-size"
       operator: NotIn
-      values: [nano, micro, small, medium, large]
+      values: [nano, micro, small]
     - key: "karpenter.sh/capacity-type" # If not included, the webhook for the AWS cloud provider will default to on-demand
       operator: In
-      values: ["spot"]
+      values: ["on-demand"]
     - key: "topology.kubernetes.io/zone"
       operator: In
       values: ["{{az}}"]
@@ -50,8 +51,8 @@ spec:
   # Limits prevent Karpenter from creating new instances once the limit is exceeded.
   limits:
     resources:
-      cpu: "800"
-      memory: 3200Gi
+      cpu: "40"
+      memory: 160Gi
 
   # If omitted, the feature is disabled and nodes will never expire.  If set to less time than it requires for a node
   # to become ready, the node may expire before any pods successfully start.
@@ -66,14 +67,14 @@ spec:
   weight: 20
   
 ---
-apiVersion: karpenter.k8s.aws/v1alpha1
-kind: AWSNodeTemplate
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
 metadata:
-  name: notebook-executor-nodes-{{az}}
+  name: notebook-driver-nodes-{{az}}
 spec:
   amiFamily: Bottlerocket
   subnetSelector:
-    aws-ids: {{subnet-id}}
+     aws-ids: {{subnet-id}}
   metadataOptions:
     httpEndpoint: enabled
     httpProtocolIPv6: disabled
@@ -82,7 +83,7 @@ spec:
   securityGroupSelector:
     kubernetes.io/cluster/{{cluster-name}}: owned
   tags:
-    KarpenerProvisionerName: "notebook-executor"
+    KarpenerProvisionerName: "notebook-driver"
   userData: |
     MIME-Version: 1.0
     Content-Type: multipart/mixed; boundary="BOUNDARY"
