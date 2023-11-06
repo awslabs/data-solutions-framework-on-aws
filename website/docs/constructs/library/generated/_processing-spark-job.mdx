@@ -2,18 +2,15 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A construct to create a Spark job that is orchestrated through AWS Step Functions state machine. The state machine can submit a job with either [Amazon EMR on EKS](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/getting-started.html) or [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html).
+An [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html) Spark job orchestrated through AWS Step Functions state machine.
 
 ## Overview
 
 The construct creates an AWS Step Functions state machine that is used to submit a Spark job and orchestrate the lifecycle of the job. The construct leverages the [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) to submit the jobs. The state machine can take a cron expression to trigger the job at a given interval. The schema below shows the state machine:
 
-
-![Spark Job State Machine](../../../../static/img/adsf-spark-job-statemachine.svg)
+![Spark EMR Serverless Job](../../../../static/img/adsf-spark-emr-serverless-job.png)
 
 ## Usage
-
-### Define an EMR Serverless Spark Job
 
 The example stack below shows how to use `EmrServerlessSparkJob` construct. The stack also contains a `SparkEmrServerlessRuntime` to show how to create an EMR Serverless Application and pass it as an argument to the `Spark job` and use it as a runtime for the job.
 
@@ -92,63 +89,6 @@ The example stack below shows how to use `EmrServerlessSparkJob` construct. The 
 
         CfnOutput(self, "job-state-machine",
             value=night_job.state_machine.state_machine_arn
-        )
-  ```
-
-  </TabItem>
-</Tabs>
-
-### Define an EMR on EKS Spark Job
-
-The stack defined below shows a usage example of the `EmrOnEksSparkJob` construct.
-
-<Tabs>
-  <TabItem value="typescript" label="TypeScript" default>
-
-  ```typescript
-  class ExampleSparkJobEmrEksStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-
-        const dailyJob = new dsf.processing.SparkEmrEksJob(this, 'SparkNightlyJob', {
-            name: 'daily_job',
-            virtualClusterId: 'exampleId123',
-            executionRoleArn: 'arn:aws:iam::123456789012:role/role',
-            executionTimeoutMinutes: 30,
-            s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
-            sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
-            sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
-        });
-
-        new CfnOutput(this, 'daily-job-state-machine', {
-            value: dailyJob.stateMachine!.stateMachineArn,
-        });
-    }
-}
-  ```
-  
-  ```mdx-code-block
-  
-  </TabItem>
-  <TabItem value="python" label="Python">
-
-  ```python
-  class ExampleSparkJobEmrEksStack(cdk.Stack):
-    def __init__(self, scope, id):
-        super().__init__(scope, id)
-
-        daily_job = dsf.processing.SparkEmrEksJob(self, "SparkNightlyJob",
-            name="daily_job",
-            virtual_cluster_id="exampleId123",
-            execution_role_arn="arn:aws:iam::123456789012:role/role",
-            execution_timeout_minutes=30,
-            s3_log_uri="s3://emr-job-logs-EXAMPLE/logs",
-            spark_submit_entry_point="local:///usr/lib/spark/examples/src/main/python/pi.py",
-            spark_submit_parameters="--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
-        )
-
-        CfnOutput(self, "daily-job-state-machine",
-            value=daily_job.state_machine.state_machine_arn
         )
   ```
 
