@@ -184,6 +184,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     let emrNetworkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
+      
       const logKmsKey: Key = new Key(scope, 'logKmsKey', {
         enableKeyRotation: true,
         alias: `flowlog-vpc-key-for-emr-application-${props.name}`,
@@ -191,7 +192,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
         keyUsage: KeyUsage.ENCRYPT_DECRYPT,
         description: `Key used by the VPC created for EMR serverless application ${props.name}`,
       });
-      
+
       const networkConfiguration: NetworkConfiguration = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.removalPolicy, undefined, props.name);
 
       let privateSubnetIds: string [] = [];
