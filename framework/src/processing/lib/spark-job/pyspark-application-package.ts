@@ -9,7 +9,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Aws, BundlingOutput, DockerImage, RemovalPolicy, Size } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import { PySparkApplicationPackageProps } from './pyspark-application-package-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 
 /**
@@ -18,7 +18,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
  * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/pyspark-application-package
  *
  * @example
- * let pysparkPacker = new dsf.PySparkApplicationPackage (this, 'pysparkPacker', {
+ * let pysparkPacker = new dsf.processing.PySparkApplicationPackage (this, 'pysparkPacker', {
  *   applicationName: 'my-pyspark',
  *   entrypointPath: '/Users/my-user/my-spark-job/app/app-pyspark.py',
  *   dependenciesFolder: '/Users/my-user/my-spark-job/app',
@@ -27,7 +27,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
  *
  * let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
  *
- * new dsf.SparkEmrServerlessJob(this, 'SparkJobServerless', {
+ * new dsf.processing.SparkEmrServerlessJob(this, 'SparkJobServerless', {
  *   name: 'MyPySpark',
  *   applicationId: 'xxxxxxxxx',
  *   executionRoleArn: 'ROLE-ARN',
@@ -36,7 +36,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
  *   cloudWatchLogGroupName: 'my-pyspark-serverless-log',
  *   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
  *   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
- * } as dsf.SparkEmrServerlessJobProps);
+ * } as dsf.processing.SparkEmrServerlessJobProps);
  */
 export class PySparkApplicationPackage extends TrackedConstruct {
 

@@ -2,4 +2,4 @@
 // SPDX-License-Identifier: MIT-0
 
 
-export * from './lib';
+export * from './emr-serverless';

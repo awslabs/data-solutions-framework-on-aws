@@ -7,8 +7,9 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { EMR_DEFAULT_VERSION, TrackedConstruct } from '../../utils';
-import { StepFunctionUtils } from '../../utils/step-function-utils';
+import { TrackedConstruct } from '../../../utils';
+import { StepFunctionUtils } from '../../../utils/step-function-utils';
+import { EMR_DEFAULT_VERSION } from '../emr-releases';
 
 
 /**
@@ -19,7 +20,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  * @example
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
- * const job = new dsf.SparkEmrEksJob(this, 'SparkJob', {
+ * const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
  *   jobConfig:{
  *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *     "VirtualClusterId": "virtualClusterId",
@@ -32,7 +33,7 @@ import { StepFunctionUtils } from '../../utils/step-function-utils';
  *       },
  *     }
  *   }
- * } as dsf.SparkEmrEksJobApiProps);
+ * } as dsf.processing.SparkEmrEksJobApiProps);
  *
  * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
  *   value: job.stateMachine!.stateMachineArn,
@@ -186,13 +187,11 @@ export class SparkEmrEksJob extends SparkJob {
     propsPascalCase.ClientToken ??= JsonPath.uuid();
     propsPascalCase.ReleaseLabel ??= EMR_DEFAULT_VERSION;
 
-    const config = {
+    return {
       jobConfig: propsPascalCase,
       removalPolicy: props.removalPolicy,
       schedule: props.schedule,
     };
-
-    return config;
   }
 
   /**

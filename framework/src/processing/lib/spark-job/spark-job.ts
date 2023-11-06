@@ -11,7 +11,7 @@ import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-li
 import { Choice, Condition, DefinitionBody, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A base construct to run Spark Jobs.

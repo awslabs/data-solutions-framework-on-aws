@@ -10,7 +10,7 @@
 import { App, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { SparkEmrServerlessRuntime } from '../../src/';
+import { SparkEmrServerlessRuntime } from '../../src/processing';
 
 
 jest.setTimeout(6000000);

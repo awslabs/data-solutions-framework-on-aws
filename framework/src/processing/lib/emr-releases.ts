@@ -21,8 +21,7 @@ export enum EmrRuntimeVersion {
   V6_2 = 'emr-6.2.0',
   V5_33 = 'emr-5.33.0',
   V5_32 = 'emr-5.32.0',
-};
-
+}
 
 const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
 

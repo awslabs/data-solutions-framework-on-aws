@@ -10,7 +10,8 @@
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { TestStack } from './test-stack';
-import { ApplicationStackFactory, SparkEmrCICDPipeline, SparkImage, CICDStage } from '../../src';
+import { SparkImage } from '../../lib';
+import { ApplicationStackFactory, SparkEmrCICDPipeline, CICDStage } from '../../src/processing';
 
 jest.setTimeout(9000000);
 

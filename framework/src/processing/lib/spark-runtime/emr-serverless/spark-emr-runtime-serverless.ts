@@ -8,8 +8,9 @@ import { Key, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import * as semver from 'semver';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
-import { Context, EMR_DEFAULT_VERSION, EmrRuntimeVersion, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { NetworkConfiguration, vpcBootstrap } from '../../../utils/vpc-helper';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../../utils';
+import { NetworkConfiguration, vpcBootstrap } from '../../../../utils/vpc-helper';
+import { EMR_DEFAULT_VERSION, EmrRuntimeVersion } from '../../emr-releases';
 
 /**
  * A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.

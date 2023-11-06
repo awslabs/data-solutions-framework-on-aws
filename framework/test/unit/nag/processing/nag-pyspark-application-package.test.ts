@@ -13,7 +13,7 @@ import { App, Aspects, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { PySparkApplicationPackage } from '../../../../src';
+import { PySparkApplicationPackage } from '../../../../src/processing';
 
 
 const app = new App();

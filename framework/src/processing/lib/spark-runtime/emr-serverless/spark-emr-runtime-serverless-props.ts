@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { aws_emrserverless, IResolvable, RemovalPolicy } from 'aws-cdk-lib';
-import { EmrRuntimeVersion } from '../../../utils';
+import { EmrRuntimeVersion } from '../../../../processing';
 
 /**
  * Properties for the {SparkRuntimeServerless} construct

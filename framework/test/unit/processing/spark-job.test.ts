@@ -13,11 +13,16 @@ import { Stack, App, Duration } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { Schedule } from 'aws-cdk-lib/aws-events';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { SparkEmrServerlessRuntime } from '../../../src/processing';
-import { SparkEmrEksJob, SparkEmrEksJobApiProps, SparkEmrEksJobProps, SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps } from '../../../src/processing/spark-job';
-
-
-import { EmrRuntimeVersion } from '../../../src/utils/emr-releases';
+import {
+  EmrRuntimeVersion,
+  SparkEmrEksJob,
+  SparkEmrEksJobApiProps,
+  SparkEmrEksJobProps,
+  SparkEmrServerlessJob,
+  SparkEmrServerlessJobApiProps,
+  SparkEmrServerlessJobProps,
+  SparkEmrServerlessRuntime,
+} from '../../../src/processing';
 
 
 describe('Create an SparkJob using EMR Serverless Application for Spark with schedule', () => {

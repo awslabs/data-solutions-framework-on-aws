@@ -9,17 +9,16 @@ import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { AccessLogsBucket } from '../../storage';
+import { AccessLogsBucket } from '../../../storage';
 import {
   ApplicationStackFactory,
   ApplicationStage,
   CICDStage,
   Context,
-  DEFAULT_SPARK_IMAGE,
-  SparkImage,
   TrackedConstruct,
   TrackedConstructProps,
-} from '../../utils';
+} from '../../../utils';
+import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
 /**
  * The account information for deploying the Spark Application stack.
@@ -129,12 +128,12 @@ export interface SparkEmrCICDPipelineProps {
  * class MyCICDStack extends cdk.Stack {
  *   constructor(scope: Construct, id: string) {
  *     super(scope, id);
- *     new dsf.SparkEmrCICDPipeline(this, 'TestConstruct', {
+ *     new dsf.processing.SparkEmrCICDPipeline(this, 'TestConstruct', {
  *        sparkApplicationName: 'test',
  *        applicationStackFactory: new MyStackFactory(),
  *        cdkApplicationPath: 'cdk/',
  *        sparkApplicationPath: 'spark/',
- *        sparkImage: dsf.SparkImage.EMR_6_12,
+ *        sparkImage: dsf.processing.SparkImage.EMR_6_12,
  *        integTestScript: 'cdk/integ-test.sh',
  *        integTestEnv: {
  *          TEST_BUCKET: 'BucketName',

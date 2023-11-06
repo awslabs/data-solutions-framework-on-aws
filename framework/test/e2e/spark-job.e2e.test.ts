@@ -11,7 +11,7 @@ import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { TestStack } from './test-stack';
-import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps, SparkEmrServerlessRuntime } from '../../src/';
+import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps, SparkEmrServerlessRuntime } from '../../src/processing';
 
 jest.setTimeout(6000000);
 
