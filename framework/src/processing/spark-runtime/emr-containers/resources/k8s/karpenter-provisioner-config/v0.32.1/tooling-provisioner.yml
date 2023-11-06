@@ -1,22 +1,19 @@
-apiVersion: karpenter.sh/v1alpha5
-kind: Provisioner
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
 metadata:
-  name: notebook-driver-{{az}}
+  name: tooling-nodes
 spec:
   # References cloud provider-specific custom resource, see your cloud provider specific documentation
-  providerRef:
-    name: notebook-driver-nodes-{{az}}
+  template:
+    spec:
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: tooling-nodes
 
   # Labels are arbitrary key-values that are applied to all nodes
   labels:
-    role: notebook
-    node-lifecycle: on-demand
-    spark-role: driver
-
-  taints:
-    - key: role
-      value: notebook
-      effect: NoSchedule
+    role: tooling
 
   # Requirements that constrain the parameters of provisioned nodes.
   # These requirements are combined with pod.spec.affinity.nodeAffinity rules.
@@ -31,14 +28,11 @@ spec:
       values: ["amd64"]
     # Exclude smaller instance sizes
     - key: "karpenter.k8s.aws/instance-size"
-      operator: NotIn
-      values: [nano, micro, small]
+      operator: In
+      values: [medium, large, xlarge]
     - key: "karpenter.sh/capacity-type" # If not included, the webhook for the AWS cloud provider will default to on-demand
       operator: In
       values: ["on-demand"]
-    - key: "topology.kubernetes.io/zone"
-      operator: In
-      values: ["{{az}}"]
     - key: "karpenter.k8s.aws/instance-hypervisor"
       operator: In
       values: ["nitro"]
@@ -47,8 +41,8 @@ spec:
   # Limits prevent Karpenter from creating new instances once the limit is exceeded.
   limits:
     resources:
-      cpu: "40"
-      memory: 160Gi
+      cpu: "100"
+      memory: 100Gi
 
   # If omitted, the feature is disabled and nodes will never expire.  If set to less time than it requires for a node
   # to become ready, the node may expire before any pods successfully start.
@@ -60,17 +54,17 @@ spec:
   # Priority given to the provisioner when the scheduler considers which provisioner
   # to select. Higher weights indicate higher priority when comparing provisioners.
   # Specifying no weight is equivalent to specifying a weight of 0.
-  weight: 20
+  weight: 50
   
 ---
-apiVersion: karpenter.k8s.aws/v1alpha1
-kind: AWSNodeTemplate
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
 metadata:
-  name: notebook-driver-nodes-{{az}}
+  name: tooling-nodes
 spec:
   amiFamily: Bottlerocket
   subnetSelector:
-     aws-ids: {{subnet-id}}
+    aws-ids: {{subnet-list}}
   metadataOptions:
     httpEndpoint: enabled
     httpProtocolIPv6: disabled
@@ -79,7 +73,7 @@ spec:
   securityGroupSelector:
     kubernetes.io/cluster/{{cluster-name}}: owned
   tags:
-    KarpenerProvisionerName: "notebook-driver"
+    KarpenerProvisionerName: "tooling"
   userData: |
     MIME-Version: 1.0
     Content-Type: multipart/mixed; boundary="BOUNDARY"

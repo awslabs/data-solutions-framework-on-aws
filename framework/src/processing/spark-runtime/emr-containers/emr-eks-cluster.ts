@@ -184,7 +184,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   public static readonly DEFAULT_EMR_VERSION = EMR_DEFAULT_VERSION;
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
-  public static readonly DEFAULT_KARPENTER_VERSION = 'v0.30.0';
+  public static readonly DEFAULT_KARPENTER_VERSION = 'v0.32.1';
   public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
 
   /**

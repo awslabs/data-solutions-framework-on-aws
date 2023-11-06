@@ -1,11 +1,15 @@
-apiVersion: karpenter.sh/v1alpha5
-kind: Provisioner
+apiVersion: karpenter.sh/v1beta1
+kind: NodePool
 metadata:
   name: shared-executor-{{az}}
 spec:
   # References cloud provider-specific custom resource, see your cloud provider specific documentation
-  providerRef:
-    name: shared-executor-nodes-{{az}}
+  template:
+    spec:
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: shared-executor-nodes-{{az}}
 
   # Labels are arbitrary key-values that are applied to all nodes
   labels:
@@ -63,8 +67,8 @@ spec:
   weight: 10
   
 ---
-apiVersion: karpenter.k8s.aws/v1alpha1
-kind: AWSNodeTemplate
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
 metadata:
   name: shared-executor-nodes-{{az}}
 spec:
