@@ -3,7 +3,8 @@
 
 import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
-import { DataLakeCatalog, DataLakeStorage } from '../../src';
+import { DataLakeCatalog } from '../../src/governance';
+import { DataLakeStorage } from '../../src/storage';
 
 /**
  * E2E test for DataCatalogDatabase

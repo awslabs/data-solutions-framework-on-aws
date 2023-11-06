@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
-import { Bucket } from "aws-cdk-lib/aws-s3";
 
 /// !show
 class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
@@ -12,7 +12,7 @@ class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
         new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
             locationBucket: bucket,
             locationPrefix: '/databasePath',
-            name: 'example-db'
+            name: 'example-db',
         });
     }
 }

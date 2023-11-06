@@ -1,8 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
+import { Key } from 'aws-cdk-lib/aws-kms';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
-import { Bucket } from "aws-cdk-lib/aws-s3";
-import { Key } from "aws-cdk-lib/aws-kms";
 
 class ExampleDataCatalogDatabaseCrawlerStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
@@ -10,7 +10,7 @@ class ExampleDataCatalogDatabaseCrawlerStack extends cdk.Stack {
         const bucket = new Bucket(this, 'DataCatalogBucket');
 
 /// !show
-        const encryptionKey = new Key(this,  'CrawlerLogEncryptionKey');
+        const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
 
         new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
             locationBucket: bucket,
@@ -18,10 +18,10 @@ class ExampleDataCatalogDatabaseCrawlerStack extends cdk.Stack {
             name: 'example-db',
             autoCrawl: true,
             autoCrawlSchedule: {
-                scheduleExpression: 'cron(1 0 * * ? *)'
+                scheduleExpression: 'cron(1 0 * * ? *)',
             },
             crawlerLogEncryptionKey: encryptionKey,
-            crawlerTableLevelDepth: 3
+            crawlerTableLevelDepth: 3,
         });
 /// !hide
     }

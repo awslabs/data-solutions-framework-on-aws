@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
-import { Key } from "aws-cdk-lib/aws-kms";
 
 /// !show
 class ExampleDefaultAnalyticsBucketStack extends cdk.Stack {

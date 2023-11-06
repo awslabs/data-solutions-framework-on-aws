@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
-import { BucketUtils } from "../../index";
+import { BucketUtils } from '../../index';
 
 class ExampleAccessLogsBucketNamingStack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
