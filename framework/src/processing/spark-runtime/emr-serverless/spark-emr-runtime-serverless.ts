@@ -184,7 +184,7 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     let emrNetworkConfiguration = undefined;
 
     if (!props.networkConfiguration) {
-      
+
       const logKmsKey: Key = new Key(scope, 'logKmsKey', {
         enableKeyRotation: true,
         alias: `flowlog-vpc-key-for-emr-application-${props.name}`,
