@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 > :heavy_exclamation_mark: If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
 
-The AWS DSF library is available in Typescript or Python, select the right tab for code examples in your prefered language.
+The AWS DSF library is available in Typescript or Python, select the right tab for code examples in your preferred language.
 
 ### Create a CDK app
 ```bash
@@ -71,7 +71,7 @@ We can now install AWS DSF:
 
 ### Use AWS DSF to create a data lake storage
 
-We will now use [***DataLakeStorage***](constructs/library/data-lake-storage) to create a storage layer for our data lake on AWS. When we deploy this simple AWS CDK application we will have the following resources created:
+We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-lake-storage.mdx) to create a storage layer for our data lake on AWS. When we deploy this simple AWS CDK application we will have the following resources created:
 
 ![Data lake storage](../static/img/adsf-data-lake-storage.png)
 

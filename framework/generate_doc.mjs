@@ -7,6 +7,11 @@ const snippets = Object.fromEntries(
         .filter(([_,v]) => v.location.api.api === 'moduleReadme')
 );
 
+const linksMapping = {
+    '../storage/README.md#datalakestorage' : '../02-Storage/03-data-lake-storage.mdx',
+    '#datacatalogdatabase': './data-catalog-database'
+}
+
 let previousSubmodule = '';
 let previousStart = 0;
 let codeLength = 0;
@@ -95,6 +100,9 @@ import TabItem from '@theme/TabItem';
 ${constructReadme}`;
 
             constructReadme = constructReadme.replaceAll("website/static/img", "../static/img"); // change image path
+            for (const [key, value] of Object.entries(linksMapping)) {
+                constructReadme = constructReadme.replaceAll(`(${key})`, `(${value})`); // replace internal links
+            }
             try {
                 fs.chmodSync(filename, 0o744);
             } catch (e) {
