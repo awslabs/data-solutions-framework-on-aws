@@ -1,25 +1,21 @@
 [//]: # (processing.spark-emr-runtime-serverless)
 # Spark EMR Serverless Runtime
 
-A construct to create a [Spark EMR Serverless Application](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html), along with methods to grant a principal (ie IAM Role or IAM User) the right to start an EMR Serverless job as well as method to create an IAM execution that is assumed by EMR Serverless to execute job.
+A [Spark EMR Serverless Application](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html) with IAM roles and permissions helpers.
 
 ## Overview
 
-The construct provides a method to create a Spark EMR Serverless Application, with the latest EMR runtime as the default runtime. 
-You can change the runtime by passing your own as a `Resource property` to construct initializer.
+The construct creates a Spark EMR Serverless Application, with the latest EMR runtime as the default runtime. You can change the runtime by passing your own as a `Resource property` to construct initializer. It also provides methods to create a principal or grant an existing principal (ie IAM Role or IAM User) with the permission to start a job on this EMR Serverless application.
 
-The construct creates a default VPC that is used by EMR Serverless Application. 
-The VPC has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. 
-The construct also creates a security group for the EMR Serverless Application. 
-You can override this by defining your own `NetworkConfiguration` as defined in the `Resource properties` of the construct initializer.
+The construct creates a default VPC that is used by EMR Serverless Application. The VPC has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for the EMR Serverless Application. You can override this by defining your own `NetworkConfiguration` as defined in the `Resource properties` of the construct initializer.
 
 The construct has the following interfaces:
 
 * A construct Initializer that takes an object as `Resource properties` to modify the default properties. The properties are defined in `SparkEmrServerlessRuntimeProps` interface.
 * A method to create an execution role for EMR Serverless. The execution role is scoped down to the EMR Serverless Application ARN created by the construct.
 * A method that takes an IAM role to call the `StartJobRun`, and monitors the status of the job.
-    * The IAM policies attached to the provided IAM role is as [follow](https://github.com/awslabs/aws-data-solutions-framework/blob/c965202f48088f5ae51ce0e719cf92adefac94ac/framework/src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless.ts#L117).
-    * The role has a `PassRole` permission scoped as [follow](https://github.com/awslabs/aws-data-solutions-framework/blob/c965202f48088f5ae51ce0e719cf92adefac94ac/framework/src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless.ts#L106).
+  * The IAM policies attached to the provided IAM role is as [follow](https://github.com/awslabs/aws-data-solutions-framework/blob/c965202f48088f5ae51ce0e719cf92adefac94ac/framework/src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless.ts#L117).
+  * The role has a `PassRole` permission scoped as [follow](https://github.com/awslabs/aws-data-solutions-framework/blob/c965202f48088f5ae51ce0e719cf92adefac94ac/framework/src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless.ts#L106).
 
 The construct has the following attributes:
 
@@ -35,42 +31,33 @@ The construct is depicted below:
 
 ## Usage
 
-The code snippet below shows a usage example of the SparkEmrServerlessRuntime construct.
+The code snippet below shows a usage example of the `SparkEmrServerlessRuntime` construct.
 
 [example usage](examples/spark-emr-runtime-serverless-default.lit.ts)
 
 
 [//]: # (processing.spark-job)
-# Spark job
+# Spark EMR Serverless job
 
-A construct to create a Spark job that is orchestrated through AWS Step Functions state machine. The state machine can submit a job with either [Amazon EMR on EKS](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/getting-started.html) or [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html).
+An [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html) Spark job orchestrated through AWS Step Functions state machine.
 
 ## Overview
 
 The construct creates an AWS Step Functions state machine that is used to submit a Spark job and orchestrate the lifecycle of the job. The construct leverages the [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) to submit the jobs. The state machine can take a cron expression to trigger the job at a given interval. The schema below shows the state machine:
 
-
-![Spark Job State Machine](../../../website/static/img/adsf-spark-job-statemachine.svg)
+![Spark EMR Serverless Job](../../../website/static/img/adsf-spark-emr-serverless-job.png)
 
 ## Usage
-
-### Define an EMR Serverless Spark Job
 
 The example stack below shows how to use `EmrServerlessSparkJob` construct. The stack also contains a `SparkEmrServerlessRuntime` to show how to create an EMR Serverless Application and pass it as an argument to the `Spark job` and use it as a runtime for the job.
 
 [example usage spark job on emr serverless](./examples/spark-job-emr-serverless.lit.ts)
 
-### Define an EMR on EKS Spark Job
-
-The stack defined below shows a usage example of the `EmrOnEksSparkJob` construct.
-
-[example usage spark job on emr serverless](./examples/spark-job-emr-eks.lit.ts)
-
 
 [//]: # (processing.pyspark-application-package)
 # PySpark Application Package
 
-A construct to package your PySpark application with its dependencies and upload it to an Amazon S3 bucket.
+A PySpark application packaged with its dependencies and uploaded on an S3 artifact bucket.
 
 ## Overview
 
@@ -84,8 +71,8 @@ The PySpark Application Package has two responsibilities:
 * Package your PySpark virtual environment (venv) and upload it to an artifact bucket. The package of venv is done using docker,
   an example in the [Usage](#usage) section shows how to write the Dockerfile to package the application.
 
-The constructs uses the [Asset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)
-to upload the PySpark Appliaction artifacts to CDK Asset bucket. These are then copied to an S3 bucket we call artifact bucket.
+The construct uses the [Asset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)
+to upload the PySpark Application artifacts to CDK Asset bucket. These are then copied to an S3 bucket we call artifact bucket.
 
 To manage the lifecycle of the artifacts as CDK assets, the constructs need Docker daemon running on the local machine.
 Make sure to have Docker running before using the construct.
@@ -102,7 +89,7 @@ The construct exposes the artifacts through the following interfaces:
 * An Amazon S3 Bucket to store the PySpark Application artifacts. You can also provide your own if you have already a bucket that you want to use. This bucket comes with configuration to enforce `TLS`, `Block Public Access` and encrypt objects with `SSE-KMS`,
 * An IAM role used by a Lambda to copy from the CDK Asset bucket to the artifact bucket created above or provided.
 
-The schema below shows the resources created and the responsibilities of the construct:
+The schema below shows the resources created and the responsible of the construct:
 
 ![PySpark Application Package](../../../website/static/img/adsf-pyspark-application-package.png)
 
@@ -165,7 +152,7 @@ RUN mkdir /venv-package && venv-pack -o /venv-package/pyspark-env.tar.gz && chmo
 
 ### Define a CDK stack upload PySpark application and run the job
 
-The stack below levarage the resources defined above for PySpark to build the end to end example for building and submitting a PySpark job.
+The stack below leverages the resources defined above for PySpark to build the end to end example for building and submitting a PySpark job.
 
 [example pyspark app on emr serverless](./examples/pyspark-application-emr-serverless.lit.ts)
 
