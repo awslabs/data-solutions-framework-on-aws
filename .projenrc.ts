@@ -152,6 +152,18 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       target: "ES2021"
     }
   },
+
+  eslintOptions: {
+    dirs: ['src'],
+    ignorePatterns: [
+      '*.lit.ts',
+      '*.js',
+      '*.d.ts',
+      'node_modules/',
+      '*.generated.ts',
+      'coverage'
+    ]
+  },
 });
 
 fwkProject.addPackageIgnore("!*.lit.ts");

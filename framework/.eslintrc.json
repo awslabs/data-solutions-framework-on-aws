@@ -34,6 +34,7 @@
     }
   },
   "ignorePatterns": [
+    "*.lit.ts",
     "*.js",
     "*.d.ts",
     "node_modules/",
