@@ -5,8 +5,9 @@ from stacks.cicd_stack import CICDPipelineStack
 app = App()
 
 cicd_environment = Environment(
-    region=os.environ["CDK_DEFAULT_REGION"], # replace this value with your Region, if you don't use a profile
-    account=os.environ["CDK_DEFAULT_ACCOUNT"] # replace this value with your Account ID, if you don't use a profile
+    # Configure your environment as needed, see https://docs.aws.amazon.com/cdk/v2/guide/environments.html
+    ## region=os.environ["CDK_DEFAULT_REGION"], 
+    ## account=os.environ["CDK_DEFAULT_ACCOUNT"]     
 )
 
 # Create a CICD Pipeline Stack that will provision an Application stack and a CICD for it
