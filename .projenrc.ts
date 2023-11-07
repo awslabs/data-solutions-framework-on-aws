@@ -290,7 +290,7 @@ adsfQuickstartSynthTask?.reset();
 adsfQuickstartSynthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ../../../framework/dist/python aws_dsf` },
+    { exec: `pip install --no-index --find-links ../../framework/dist/python aws_dsf` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
