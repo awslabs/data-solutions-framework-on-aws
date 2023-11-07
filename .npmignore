@@ -3,4 +3,3 @@
 /.projen/
 permissions-backup.acl
 /.mergify.yml
-!*.lit.ts

@@ -1,16 +1,20 @@
 import * as fs from 'fs';
 import data from './.jsii.tabl.json' assert { type: 'json' };
 
+const GENERATED_MD_PATH = '../website/docs/constructs/library/generated/_';
+const IMAGE_FULL_PATH = "website/static/img";
+const IMAGE_RELATIVE_PATH = "../static/img";
+const LINKS_MAPPING = {
+    '../storage/README.md#datalakestorage' : '../02-Storage/03-data-lake-storage.mdx',
+    '#datacatalogdatabase': './data-catalog-database'
+};
+const COMMENT_REGEXP = new RegExp('\\[\\/\\/\]: # \\((.*)\\)\\n', 'gm');
+
 // select only snippets for readme files
 const snippets = Object.fromEntries(
     Object.entries(data.snippets)
         .filter(([_,v]) => v.location.api.api === 'moduleReadme')
 );
-
-const linksMapping = {
-    '../storage/README.md#datalakestorage' : '../02-Storage/03-data-lake-storage.mdx',
-    '#datacatalogdatabase': './data-catalog-database'
-}
 
 let previousSubmodule = '';
 let previousStart = 0;
@@ -36,17 +40,13 @@ for (let key in snippets) {
     // do not read file on each snippet
     if (file !== currentMDFile) {
         currentMDFile = file;
-        const buffer= fs.readFileSync(file);
-        const str= buffer.toString();
+        const buffer = fs.readFileSync(file);
+        const str = buffer.toString();
         lines = str.split("\n");
     }
 
     let line = snippet.location.field.line;
     let realLine = line - codeLength;
-
-    // jsii does not count comments, we must add lines for each one
-    // let numberOfComments = lines.slice(0, realLine).filter(elt => elt.startsWith("[//]: # ")).length;
-    // realLine += numberOfComments;
 
     // console.log(line + ' - ' + realLine);
 
@@ -79,16 +79,14 @@ for (let key in snippets) {
     codeLength += typescript.split("\n").length + 1;
 }
 
-const titleRegEx = new RegExp('\\[\\/\\/\]: # \\((.*)\\)\\n', 'gm');
-
 for (let module in fullReadme) {
     const moduleReadme = fullReadme[module];
-    const constructReadmes = moduleReadme.split(titleRegEx);
+    const constructReadmes = moduleReadme.split(COMMENT_REGEXP);
     let filename = '';
     for (let i = 0; i < constructReadmes.length; i++) {
         let constructReadme = constructReadmes[i];
         if (constructReadme.startsWith(module)) {
-            filename = '../website/docs/constructs/library/generated/_' + constructReadme.replace('.', '-') + '.mdx';
+            filename = GENERATED_MD_PATH + constructReadme.replace('.', '-') + '.mdx';
             console.log(filename + ' exported');
         } else if (constructReadme.length !== 0 && filename.length !== 0) {
             let constructReadmeLines = constructReadme.split('\n');
@@ -99,8 +97,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ${constructReadme}`;
 
-            constructReadme = constructReadme.replaceAll("website/static/img", "../static/img"); // change image path
-            for (const [key, value] of Object.entries(linksMapping)) {
+            constructReadme = constructReadme.replaceAll(IMAGE_FULL_PATH, IMAGE_RELATIVE_PATH); // change image path
+            for (const [key, value] of Object.entries(LINKS_MAPPING)) {
                 constructReadme = constructReadme.replaceAll(`(${key})`, `(${value})`); // replace internal links
             }
             try {
