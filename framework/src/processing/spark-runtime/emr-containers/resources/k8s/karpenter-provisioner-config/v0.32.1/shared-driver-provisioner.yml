@@ -72,12 +72,11 @@ metadata:
   name: shared-driver-nodes-{{az}}
 spec:
   amiFamily: Bottlerocket
-  spec:
-    subnetSelectorTerms:
-      - id: {{subnet-id}}
-    securityGroupSelectorTerms:
-      - tags:
-          kubernetes.io/cluster/{{cluster-name}}: owned
+  subnetSelectorTerms:
+    - id: {{subnet-id}}
+  securityGroupSelectorTerms:
+    - tags:
+        kubernetes.io/cluster/{{cluster-name}}: owned
 
   metadataOptions:
     httpEndpoint: enabled
