@@ -87,8 +87,6 @@ spec:
     httpProtocolIPv6: disabled
     httpPutResponseHopLimit: 2
     httpTokens: required
-  securityGroupSelector:
-    kubernetes.io/cluster/{{cluster-name}}: owned
     
   tags:
     KarpenerProvisionerName: "shared-executor"
