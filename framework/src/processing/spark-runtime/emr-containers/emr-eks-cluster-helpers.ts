@@ -6,7 +6,7 @@ import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetTy
 import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
-import { CfnInstanceProfile, Effect, FederatedPrincipal, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { CfnInstanceProfile, Effect, FederatedPrincipal, IRole, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
@@ -173,26 +173,26 @@ function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeR
  * @internal
  * Method to add the default Karpenter provisioners for Spark workloads
  */
-export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRuntime, karpenterVersion: string) {
+export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRuntime, karpenterVersion: string, nodeRole: IRole) {
   const subnets = cluster.eksCluster.vpc.selectSubnets({
     onePerAz: true,
     subnetType: SubnetType.PRIVATE_WITH_EGRESS,
   }).subnets;
 
   subnets.forEach( (subnet, index) => {
-    let criticalManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet);
+    let criticalManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterProvisioner(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
-    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet);
+    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterProvisioner(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
 
-    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet);
+    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterProvisioner(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
 
-    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet);
+    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterProvisioner(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
 
-    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet);
+    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.clusterName, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterProvisioner(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
   });
 }
@@ -201,13 +201,14 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
  * @internal
  * Method to generate the Karpenter manifests from templates and targeted to the specific EKS cluster
  */
-export function karpenterManifestSetup(clusterName: string, path: string, subnet: ISubnet): any {
+export function karpenterManifestSetup(clusterName: string, path: string, subnet: ISubnet, nodeRole: IRole): any {
 
   let manifest = Utils.readYamlDocument(path);
 
   manifest = manifest.replace('{{subnet-id}}', subnet.subnetId);
   manifest = manifest.replace( /(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', clusterName);
+  manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName); 
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 
@@ -415,6 +416,13 @@ export function karpenterSetup(cluster: Cluster,
     actions: ['eks:DescribeCluster'],
   });
 
+  const allowInstanceProfileReadActions: PolicyStatement = new PolicyStatement({
+      sid: 'AllowInstanceProfileReadActions',
+      effect: Effect.ALLOW,
+      resources: ['*'],
+      actions: ['iam:GetInstanceProfile']
+  });
+
 
   const karpenterNS = cluster.addManifest('karpenterNS', {
     apiVersion: 'v1',
@@ -440,6 +448,7 @@ export function karpenterSetup(cluster: Cluster,
   karpenterAccount.addToPrincipalPolicy(allowScopedDeletion);
   karpenterAccount.addToPrincipalPolicy(allowInterruptionQueueActions);
   karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
+  karpenterAccount.addToPrincipalPolicy(allowInstanceProfileReadActions);
 
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('KarpenterHelmChart', {
@@ -514,12 +523,21 @@ export function karpenterSetup(cluster: Cluster,
     subnetType: SubnetType.PRIVATE_WITH_EGRESS,
   }).subnets;
 
-  let listPrivateSubnets: string[] = privateSubnets.map(subnet => subnet.subnetId);
-
   let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/tooling-provisioner.yml`);
 
   manifest = manifest.replace(/(\{{cluster-name}})/g, eksClusterName);
-  manifest = manifest.replace(/(\{{subnet-list}})/g, listPrivateSubnets.join(','));
+
+  manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName);
+
+  const subnetIdHolder: string[] = ['subnet-1', 'subnet-2'];
+
+  privateSubnets.forEach((subnet, index) => {
+
+    let subnetHolder = `{{${subnetIdHolder[index]}}}`;
+    let re = new RegExp(subnetHolder,"g");
+    manifest = manifest.replace(re, subnet.subnetId);
+    
+  });
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 

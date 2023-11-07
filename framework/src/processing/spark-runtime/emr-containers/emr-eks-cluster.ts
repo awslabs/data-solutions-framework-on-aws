@@ -232,7 +232,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    let removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     this.logKmsKey = Stack.of(scope).node.tryFindChild('logKmsKey') as Key ?? new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
@@ -324,7 +324,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     //Check if the user want to use the default Karpenter provisioners and
     //Add the defaults pre-configured and optimized to run Spark workloads
     if (this.defaultNodes ) {
-      setDefaultKarpenterProvisioners(this, karpenterVersion);
+      setDefaultKarpenterProvisioners(this, karpenterVersion, ec2InstanceNodeGroupRole);
     }
 
     // Tags the Amazon VPC and Subnets of the Amazon EKS Cluster
