@@ -10,6 +10,5 @@ dev_env = Environment(
 
 app = App()
 DataStack(app, "adsf-quickstart-dev", env=dev_env)
-# MyStack(app, "adsf-quickstart-prod", env=prod_env)
 
 app.synth()
