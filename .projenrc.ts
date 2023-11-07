@@ -241,6 +241,62 @@ const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
 });
 sparkDataLakeInfraExampleApp.packageTask.spawn(buildExampleTask);
 
+const adsfQuickstart = new awscdk.AwsCdkPythonApp({
+  name: 'adsf-quickstart',
+  moduleName: 'stacks',
+  packageName: 'adsf-quickstart',
+  version: '0.0.1',
+  description: 'An example CDK app demonstrating the most common use cases for AWS Data Solutions Framework',
+  authorName: author,
+  authorEmail: authorAddress,
+  license,
+
+  parent: rootProject,
+  outdir: 'examples/adsf-quickstart',
+
+  cdkVersion: CDK_VERSION,
+  constructsVersion: CDK_CONSTRUCTS_VERSION,
+  cdkVersionPinning: true,
+
+  pytest: true,
+  devDeps: [
+    "pytest",
+    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
+    "black"
+  ],
+  pythonExec: 'python3',
+  venvOptions: {
+    envdir: '.venv'
+  },
+});
+
+adsfQuickstart.removeTask('deploy');
+adsfQuickstart.removeTask('destroy');
+adsfQuickstart.removeTask('diff');
+adsfQuickstart.removeTask('watch');
+adsfQuickstart.removeTask('synth');
+adsfQuickstart.testTask.reset();
+adsfQuickstart.postCompileTask.reset();
+adsfQuickstart.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'pytest -k "not e2e"'
+});
+adsfQuickstart.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'pytest -k e2e'
+});
+const adsfQuickstartSynthTask = adsfQuickstart.tasks.tryFind('synth:silent');
+adsfQuickstartSynthTask?.reset();
+adsfQuickstartSynthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
+const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
+  steps: [
+    { exec: `pip install --no-index --find-links ../../../framework/dist/python aws_dsf` },
+    { spawn: 'synth:silent' },
+    { spawn: 'test:unit' },
+  ]
+});
+adsfQuickstart.packageTask.spawn(buildAdsfQuickstartTask);
+
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
 });
