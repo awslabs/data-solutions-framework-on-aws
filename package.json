@@ -24,6 +24,7 @@
     "organization": true
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.8",
     "@types/node": "16.0.0",
     "glob": "^10.3.6",
     "lerna": "^7.1.5",

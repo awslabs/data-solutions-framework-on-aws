@@ -34,6 +34,7 @@ dist
 __pycache__
 .devcontainer
 .venv
+cdk.out
 !/.projenrc.js
 !/.mergify.yml
 !/.github/dependabot.yml
