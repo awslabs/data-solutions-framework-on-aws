@@ -234,7 +234,7 @@ synthTask?.reset();
 synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ../../../framework/dist/python aws_dsf` },
+    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python aws_dsf` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -290,7 +290,7 @@ adsfQuickstartSynthTask?.reset();
 adsfQuickstartSynthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --no-index --find-links ../../framework/dist/python aws_dsf` },
+    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python aws_dsf` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
