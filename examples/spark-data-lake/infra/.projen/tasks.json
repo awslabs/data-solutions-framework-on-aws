@@ -80,7 +80,7 @@
       "description": "Synthesizes your cdk app into cdk.out and suppresses the template in stdout (part of \"yarn build\")",
       "steps": [
         {
-          "exec": "npx -y cdk@2.94.0 synth -q"
+          "exec": "npx -y cdk@2.94.0 synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER"
         }
       ]
     },
