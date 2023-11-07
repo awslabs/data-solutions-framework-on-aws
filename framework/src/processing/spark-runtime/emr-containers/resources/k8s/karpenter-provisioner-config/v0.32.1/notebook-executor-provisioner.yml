@@ -5,17 +5,18 @@ metadata:
 spec:
   # References cloud provider-specific custom resource, see your cloud provider specific documentation
   template:
-    spec:
-      nodeClassRef:
-        apiVersion: karpenter.k8s.aws/v1beta1
-        kind: EC2NodeClass
-        name: notebook-executor-nodes-{{az}}
-
+    metadata:
       # Labels are arbitrary key-values that are applied to all nodes
       labels:
         role: notebook
         node-lifecycle: spot
         spark-role: executor
+
+    spec:
+      nodeClassRef:
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        name: notebook-executor-nodes-{{az}}
 
       taints:
         - key: role
@@ -53,9 +54,8 @@ spec:
   # Resource limits constrain the total size of the cluster.
   # Limits prevent Karpenter from creating new instances once the limit is exceeded.
   limits:
-    resources:
-      cpu: "800"
-      memory: 3200Gi
+    cpu: "800"
+    memory: 3200Gi
 
 
   disruption:
@@ -67,7 +67,7 @@ spec:
     expireAfter: 720h # 30 Days = 60 * 60 * 24 * 30 Seconds;
 
     # If omitted, the feature is disabled, nodes will never scale down due to low utilization
-    consolidateAfter: 300
+    consolidateAfter: 300s
 
   # Priority given to the provisioner when the scheduler considers which provisioner
   # to select. Higher weights indicate higher priority when comparing provisioners.
@@ -81,27 +81,20 @@ metadata:
   name: notebook-executor-nodes-{{az}}
 spec:
   amiFamily: Bottlerocket
-  subnetSelector:
-    aws-ids: {{subnet-id}}
+  subnetSelectorTerms:
+    - id: {{subnet-id}}
+  securityGroupSelectorTerms:
+    - tags:
+        kubernetes.io/cluster/{{cluster-name}}: owned
+
   metadataOptions:
     httpEndpoint: enabled
     httpProtocolIPv6: disabled
     httpPutResponseHopLimit: 2
     httpTokens: required
-  securityGroupSelector:
-    kubernetes.io/cluster/{{cluster-name}}: owned
+
   tags:
     KarpenerProvisionerName: "notebook-executor"
-  userData: |
-    MIME-Version: 1.0
-    Content-Type: multipart/mixed; boundary="BOUNDARY"
 
-    --BOUNDARY
-    Content-Type: text/x-shellscript; charset="us-ascii"
-
-    #!/bin/bash
-    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm,
-    systemctl enable amazon-ssm-agent,
-    systemctl start amazon-ssm-agent,
-
-    --BOUNDARY--
+  role: {{ROLENAME}}
+  
