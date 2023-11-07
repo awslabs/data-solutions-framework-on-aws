@@ -38,9 +38,7 @@ import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
-import * as K8sRoleBinding from './resources/k8s/rbac/emr-containers-role-binding.json';
-import * as K8sRole from './resources/k8s/rbac/emr-containers-role.json';
-import { Context, EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
 
 /**
  * The properties for the EmrEksCluster Construct class.
@@ -455,19 +453,16 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       ns = createNamespace(this.eksCluster, options.eksNamespace!);
     }
 
-    // deep clone the Role template object and replace the namespace
-    const k8sRole = JSON.parse(JSON.stringify(K8sRole));
-    k8sRole.metadata.namespace = eksNamespace;
-    const role = this.eksCluster.addManifest(`${options.name}Role`, k8sRole);
-
-
-    if (ns) {role.node.addDependency(ns);}
-
     // deep clone the Role Binding template object and replace the namespace
-    const k8sRoleBinding = JSON.parse(JSON.stringify(K8sRoleBinding));
-    k8sRoleBinding.metadata.namespace = eksNamespace;
-    const roleBinding = this.eksCluster.addManifest(`${options.name}RoleBinding`, k8sRoleBinding);
-    roleBinding.node.addDependency(role);
+    let manifest = Utils.readYamlDocument(`${__dirname}/resources/k8s/rbac/emr-containers-rbac.yaml`);
+
+    manifest = manifest.replace(/(\{{NAMESPACE}})/g, eksNamespace);
+
+    let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
+
+    const manifestApply = this.eksCluster.addManifest(`emr-containers-rbac-${eksNamespace}`, ...manfifestYAML);
+
+    if (ns) {manifestApply.node.addDependency(ns);}
 
     const virtualCluster = new CfnVirtualCluster(scope, `${options.name}VirtualCluster`, {
       name: options.name,
@@ -478,10 +473,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       },
     });
 
-    virtualCluster.node.addDependency(roleBinding);
+    virtualCluster.node.addDependency(manifestApply);
 
     if (this.emrServiceRole) {
-      role.node.addDependency(this.emrServiceRole);
+      manifestApply.node.addDependency(this.emrServiceRole);
       virtualCluster.node.addDependency(this.emrServiceRole);
     }
 

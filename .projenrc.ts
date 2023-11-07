@@ -38,6 +38,7 @@ const rootProject = new LernaProject({
     'ts-node',
     'typescript',
     'glob@^10.3.6',
+    '@types/js-yaml'
   ],
   peerDeps: [
     '@types/node@^16',
@@ -70,7 +71,8 @@ const rootProject = new LernaProject({
     'dist',
     '__pycache__',
     '.devcontainer',
-    '.venv'
+    '.venv',
+    'cdk.out'
   ],
 
   projenrcTs: true,

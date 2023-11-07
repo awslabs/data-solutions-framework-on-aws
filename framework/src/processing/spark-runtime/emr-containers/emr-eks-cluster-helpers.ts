@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Duration, Fn, Stack, Tags } from 'aws-cdk-lib';
+import { Duration, Stack, Tags } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, ISubnet, InstanceType, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Cluster, HelmChart, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
@@ -123,25 +123,25 @@ function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeR
   //if it gets linted, we have spaces/tabs that break the launchtemplate
   //Which in turn break and fail the deployment
 
-  const userData = `MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+//   const userData = `MIME-Version: 1.0
+// Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 
---==MYBOUNDARY==
-Content-Type: text/x-shellscript; charset="us-ascii"
+// --==MYBOUNDARY==
+// Content-Type: text/x-shellscript; charset="us-ascii"
 
-#!/bin/bash
-yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-systemctl enable amazon-ssm-agent
-systemctl start amazon-ssm-agent
+// #!/bin/bash
+// yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+// systemctl enable amazon-ssm-agent
+// systemctl start amazon-ssm-agent
 
---==MYBOUNDARY==--\\
-`;
+// --==MYBOUNDARY==--\\
+// `;
 
   const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(scope, 'toolinglaunchtemplate', {
     launchTemplateName: 'ToolingNodegroup',
 
     launchTemplateData: {
-      userData: Fn.base64(userData),
+      //userData: Fn.base64(userData),
       metadataOptions: {
         httpEndpoint: 'enabled',
         httpProtocolIpv6: 'disabled',
