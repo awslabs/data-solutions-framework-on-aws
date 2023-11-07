@@ -13,8 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AccountRootPrincipal, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { AwsSolutionsChecks } from 'cdk-nag';
-import { SparkEmrServerlessRuntime } from '../../../../src/processing';
-import { EmrRuntimeVersion } from '../../../../src/utils';
+import { EmrRuntimeVersion, SparkEmrServerlessRuntime } from '../../../../src/processing';
 
 
 const app = new App();

@@ -13,7 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { DataLakeStorage } from '../../../../src';
+import { DataLakeStorage } from '../../../../src/storage';
 
 const app = new App();
 const stack = new Stack(app, 'Stack');

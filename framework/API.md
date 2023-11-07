@@ -10,7 +10,7 @@ AWS Data Solutions Framework (AWS DSF) is a framework for implementation and del
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
-### AccessLogsBucket <a name="AccessLogsBucket" id="aws-dsf.AccessLogsBucket"></a>
+### AccessLogsBucket <a name="AccessLogsBucket" id="aws-dsf.storage.AccessLogsBucket"></a>
 
 Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
@@ -21,41 +21,41 @@ Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 *Example*
 
 ```typescript
-const bucket = new dsf.AccessLogsBucket(this, 'AccessLogsBucket', {
+const bucket = new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket', {
  removalPolicy: cdk.RemovalPolicy.DESTROY,
 })
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.AccessLogsBucket.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.storage.AccessLogsBucket.Initializer"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-new AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
+new storage.AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.AccessLogsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.AccessLogsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.AccessLogsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AccessLogsBucket.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AccessLogsBucket.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-dsf.AccessLogsBucket.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="aws-dsf.storage.AccessLogsBucket.Initializer.parameter.props"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketProps
 
@@ -65,36 +65,36 @@ new AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.AccessLogsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.AccessLogsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
-| <code><a href="#aws-dsf.AccessLogsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
-| <code><a href="#aws-dsf.AccessLogsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-dsf.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
-| <code><a href="#aws-dsf.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
-| <code><a href="#aws-dsf.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
-| <code><a href="#aws-dsf.AccessLogsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
-| <code><a href="#aws-dsf.AccessLogsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
-| <code><a href="#aws-dsf.AccessLogsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
-| <code><a href="#aws-dsf.AccessLogsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
-| <code><a href="#aws-dsf.AccessLogsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.AccessLogsBucket.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.storage.AccessLogsBucket.toString"></a>
 
 ```typescript
 public toString(): string
@@ -102,7 +102,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-dsf.AccessLogsBucket.applyRemovalPolicy"></a>
+##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-dsf.storage.AccessLogsBucket.applyRemovalPolicy"></a>
 
 ```typescript
 public applyRemovalPolicy(policy: RemovalPolicy): void
@@ -118,13 +118,13 @@ to be replaced.
 The resource can be deleted (`RemovalPolicy.DESTROY`), or left in your AWS
 account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-dsf.AccessLogsBucket.applyRemovalPolicy.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="aws-dsf.storage.AccessLogsBucket.applyRemovalPolicy.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
-##### `addEventNotification` <a name="addEventNotification" id="aws-dsf.AccessLogsBucket.addEventNotification"></a>
+##### `addEventNotification` <a name="addEventNotification" id="aws-dsf.storage.AccessLogsBucket.addEventNotification"></a>
 
 ```typescript
 public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -143,7 +143,7 @@ Adds a bucket notification event destination.
 ```
 
 
-###### `event`<sup>Required</sup> <a name="event" id="aws-dsf.AccessLogsBucket.addEventNotification.parameter.event"></a>
+###### `event`<sup>Required</sup> <a name="event" id="aws-dsf.storage.AccessLogsBucket.addEventNotification.parameter.event"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.EventType
 
@@ -151,7 +151,7 @@ The event to trigger the notification.
 
 ---
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.AccessLogsBucket.addEventNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.storage.AccessLogsBucket.addEventNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -159,7 +159,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.AccessLogsBucket.addEventNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.storage.AccessLogsBucket.addEventNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -171,7 +171,7 @@ for details about allowed filter rules.
 
 ---
 
-##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-dsf.AccessLogsBucket.addObjectCreatedNotification"></a>
+##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-dsf.storage.AccessLogsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
 public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -182,7 +182,7 @@ Subscribes a destination to receive notifications when an object is created in t
 This is identical to calling
 `onEvent(EventType.OBJECT_CREATED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.AccessLogsBucket.addObjectCreatedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -190,7 +190,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -198,7 +198,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-dsf.AccessLogsBucket.addObjectRemovedNotification"></a>
+##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-dsf.storage.AccessLogsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
 public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -209,7 +209,7 @@ Subscribes a destination to receive notifications when an object is removed from
 This is identical to calling
 `onEvent(EventType.OBJECT_REMOVED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.AccessLogsBucket.addObjectRemovedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -217,7 +217,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -225,7 +225,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-dsf.AccessLogsBucket.addToResourcePolicy"></a>
+##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-dsf.storage.AccessLogsBucket.addToResourcePolicy"></a>
 
 ```typescript
 public addToResourcePolicy(permission: PolicyStatement): AddToResourcePolicyResult
@@ -239,7 +239,7 @@ it's not possible to tell whether the bucket already has a policy
 attached, let alone to re-use that policy to add more statements to it.
 So it's safest to do nothing in these cases.
 
-###### `permission`<sup>Required</sup> <a name="permission" id="aws-dsf.AccessLogsBucket.addToResourcePolicy.parameter.permission"></a>
+###### `permission`<sup>Required</sup> <a name="permission" id="aws-dsf.storage.AccessLogsBucket.addToResourcePolicy.parameter.permission"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
@@ -247,7 +247,7 @@ the policy statement to be added to the bucket's policy.
 
 ---
 
-##### `arnForObjects` <a name="arnForObjects" id="aws-dsf.AccessLogsBucket.arnForObjects"></a>
+##### `arnForObjects` <a name="arnForObjects" id="aws-dsf.storage.AccessLogsBucket.arnForObjects"></a>
 
 ```typescript
 public arnForObjects(keyPattern: string): string
@@ -261,13 +261,13 @@ If you need to specify a keyPattern with multiple components, concatenate them i
 
   arnForObjects(`home/${team}/${user}/*`)
 
-###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-dsf.AccessLogsBucket.arnForObjects.parameter.keyPattern"></a>
+###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-dsf.storage.AccessLogsBucket.arnForObjects.parameter.keyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-dsf.AccessLogsBucket.enableEventBridgeNotification"></a>
+##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-dsf.storage.AccessLogsBucket.enableEventBridgeNotification"></a>
 
 ```typescript
 public enableEventBridgeNotification(): void
@@ -286,7 +286,7 @@ Object Deleted (DeleteObject)
 - Object Tags Added
 - Object Tags Deleted
 
-##### `grantDelete` <a name="grantDelete" id="aws-dsf.AccessLogsBucket.grantDelete"></a>
+##### `grantDelete` <a name="grantDelete" id="aws-dsf.storage.AccessLogsBucket.grantDelete"></a>
 
 ```typescript
 public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -294,7 +294,7 @@ public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
 
 Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AccessLogsBucket.grantDelete.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AccessLogsBucket.grantDelete.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -302,7 +302,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AccessLogsBucket.grantDelete.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AccessLogsBucket.grantDelete.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -310,7 +310,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-dsf.AccessLogsBucket.grantPublicAccess"></a>
+##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-dsf.storage.AccessLogsBucket.grantPublicAccess"></a>
 
 ```typescript
 public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
@@ -337,7 +337,7 @@ Note that if this `IBucket` refers to an existing bucket, possibly not
 managed by CloudFormation, this method will have no effect, since it's
 impossible to modify the policy of an existing bucket.
 
-###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-dsf.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
+###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-dsf.storage.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
 - *Type:* string
 
@@ -347,7 +347,7 @@ Default is "s3:GetObject".
 
 ---
 
-###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-dsf.AccessLogsBucket.grantPublicAccess.parameter.keyPrefix"></a>
+###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-dsf.storage.AccessLogsBucket.grantPublicAccess.parameter.keyPrefix"></a>
 
 - *Type:* string
 
@@ -355,7 +355,7 @@ the prefix of S3 object keys (e.g. `home/*`). Default is "*".
 
 ---
 
-##### `grantPut` <a name="grantPut" id="aws-dsf.AccessLogsBucket.grantPut"></a>
+##### `grantPut` <a name="grantPut" id="aws-dsf.storage.AccessLogsBucket.grantPut"></a>
 
 ```typescript
 public grantPut(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -366,7 +366,7 @@ Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM princip
 If encryption is used, permission to use the key to encrypt the contents
 of written files will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AccessLogsBucket.grantPut.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AccessLogsBucket.grantPut.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -374,7 +374,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AccessLogsBucket.grantPut.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AccessLogsBucket.grantPut.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -382,7 +382,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPutAcl` <a name="grantPutAcl" id="aws-dsf.AccessLogsBucket.grantPutAcl"></a>
+##### `grantPutAcl` <a name="grantPutAcl" id="aws-dsf.storage.AccessLogsBucket.grantPutAcl"></a>
 
 ```typescript
 public grantPutAcl(identity: IGrantable, objectsKeyPattern?: string): Grant
@@ -394,19 +394,19 @@ If your application has the '@aws-cdk/aws-s3:grantWriteWithoutAcl' feature flag 
 calling `grantWrite` or `grantReadWrite` no longer grants permissions to modify the ACLs of the objects;
 in this case, if you need to modify object ACLs, call this method explicitly.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AccessLogsBucket.grantPutAcl.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AccessLogsBucket.grantPutAcl.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AccessLogsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AccessLogsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `grantRead` <a name="grantRead" id="aws-dsf.AccessLogsBucket.grantRead"></a>
+##### `grantRead` <a name="grantRead" id="aws-dsf.storage.AccessLogsBucket.grantRead"></a>
 
 ```typescript
 public grantRead(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -417,7 +417,7 @@ Grant read permissions for this bucket and it's contents to an IAM principal (Ro
 If encryption is used, permission to use the key to decrypt the contents
 of the bucket will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AccessLogsBucket.grantRead.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AccessLogsBucket.grantRead.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -425,7 +425,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AccessLogsBucket.grantRead.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AccessLogsBucket.grantRead.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -433,7 +433,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantReadWrite` <a name="grantReadWrite" id="aws-dsf.AccessLogsBucket.grantReadWrite"></a>
+##### `grantReadWrite` <a name="grantReadWrite" id="aws-dsf.storage.AccessLogsBucket.grantReadWrite"></a>
 
 ```typescript
 public grantReadWrite(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -452,19 +452,19 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AccessLogsBucket.grantReadWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AccessLogsBucket.grantReadWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-##### `grantWrite` <a name="grantWrite" id="aws-dsf.AccessLogsBucket.grantWrite"></a>
+##### `grantWrite` <a name="grantWrite" id="aws-dsf.storage.AccessLogsBucket.grantWrite"></a>
 
 ```typescript
 public grantWrite(identity: IGrantable, objectsKeyPattern?: any, allowedActionPatterns?: string[]): Grant
@@ -483,25 +483,25 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AccessLogsBucket.grantWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AccessLogsBucket.grantWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AccessLogsBucket.grantWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AccessLogsBucket.grantWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-dsf.AccessLogsBucket.grantWrite.parameter.allowedActionPatterns"></a>
+###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-dsf.storage.AccessLogsBucket.grantWrite.parameter.allowedActionPatterns"></a>
 
 - *Type:* string[]
 
 ---
 
-##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-dsf.AccessLogsBucket.onCloudTrailEvent"></a>
+##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailEvent"></a>
 
 ```typescript
 public onCloudTrailEvent(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -512,7 +512,7 @@ Define a CloudWatch event that triggers when something happens to this repositor
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.onCloudTrailEvent.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailEvent.parameter.id"></a>
 
 - *Type:* string
 
@@ -520,7 +520,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AccessLogsBucket.onCloudTrailEvent.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailEvent.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -528,7 +528,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-dsf.AccessLogsBucket.onCloudTrailPutObject"></a>
+##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailPutObject"></a>
 
 ```typescript
 public onCloudTrailPutObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -543,7 +543,7 @@ so using `onCloudTrailWriteObject` may be preferable.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.onCloudTrailPutObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailPutObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -551,7 +551,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AccessLogsBucket.onCloudTrailPutObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailPutObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -559,7 +559,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-dsf.AccessLogsBucket.onCloudTrailWriteObject"></a>
+##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailWriteObject"></a>
 
 ```typescript
 public onCloudTrailWriteObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -577,7 +577,7 @@ so using this method may be preferable to `onCloudTrailPutObject`.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.onCloudTrailWriteObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailWriteObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -585,7 +585,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AccessLogsBucket.onCloudTrailWriteObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AccessLogsBucket.onCloudTrailWriteObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -593,7 +593,7 @@ Options for adding the rule.
 
 ---
 
-##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-dsf.AccessLogsBucket.s3UrlForObject"></a>
+##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-dsf.storage.AccessLogsBucket.s3UrlForObject"></a>
 
 ```typescript
 public s3UrlForObject(key?: string): string
@@ -604,7 +604,7 @@ The S3 URL of an S3 object. For example:.
 `s3://onlybucket`
 - `s3://bucket/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AccessLogsBucket.s3UrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AccessLogsBucket.s3UrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -615,7 +615,7 @@ bucket is returned.
 
 ---
 
-##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-dsf.AccessLogsBucket.transferAccelerationUrlForObject"></a>
+##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-dsf.storage.AccessLogsBucket.transferAccelerationUrlForObject"></a>
 
 ```typescript
 public transferAccelerationUrlForObject(key?: string, options?: TransferAccelerationUrlOptions): string
@@ -629,7 +629,7 @@ for dual-stack endpoint (connect to the bucket over IPv6). For example:
 - `https://bucket.s3-accelerate.amazonaws.com`
 - `https://bucket.s3-accelerate.amazonaws.com/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AccessLogsBucket.transferAccelerationUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AccessLogsBucket.transferAccelerationUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -640,7 +640,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AccessLogsBucket.transferAccelerationUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AccessLogsBucket.transferAccelerationUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.TransferAccelerationUrlOptions
 
@@ -648,7 +648,7 @@ Options for generating URL.
 
 ---
 
-##### `urlForObject` <a name="urlForObject" id="aws-dsf.AccessLogsBucket.urlForObject"></a>
+##### `urlForObject` <a name="urlForObject" id="aws-dsf.storage.AccessLogsBucket.urlForObject"></a>
 
 ```typescript
 public urlForObject(key?: string): string
@@ -660,7 +660,7 @@ The https URL of an S3 object. Specify `regional: false` at the options for non-
 - `https://s3.us-west-1.amazonaws.com/bucket/key`
 - `https://s3.cn-north-1.amazonaws.com.cn/china-bucket/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AccessLogsBucket.urlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AccessLogsBucket.urlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -671,7 +671,7 @@ bucket is returned.
 
 ---
 
-##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-dsf.AccessLogsBucket.virtualHostedUrlForObject"></a>
+##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-dsf.storage.AccessLogsBucket.virtualHostedUrlForObject"></a>
 
 ```typescript
 public virtualHostedUrlForObject(key?: string, options?: VirtualHostedStyleUrlOptions): string
@@ -684,7 +684,7 @@ The virtual hosted-style URL of an S3 object. Specify `regional: false` at the o
 - `https://bucket.s3.amazonaws.com/key`
 - `https://china-bucket.s3.cn-north-1.amazonaws.com.cn/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AccessLogsBucket.virtualHostedUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AccessLogsBucket.virtualHostedUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -695,7 +695,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AccessLogsBucket.virtualHostedUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AccessLogsBucket.virtualHostedUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.VirtualHostedStyleUrlOptions
 
@@ -703,7 +703,7 @@ Options for generating URL.
 
 ---
 
-##### `addCorsRule` <a name="addCorsRule" id="aws-dsf.AccessLogsBucket.addCorsRule"></a>
+##### `addCorsRule` <a name="addCorsRule" id="aws-dsf.storage.AccessLogsBucket.addCorsRule"></a>
 
 ```typescript
 public addCorsRule(rule: CorsRule): void
@@ -711,7 +711,7 @@ public addCorsRule(rule: CorsRule): void
 
 Adds a cross-origin access configuration for objects in an Amazon S3 bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.AccessLogsBucket.addCorsRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.storage.AccessLogsBucket.addCorsRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CorsRule
 
@@ -719,7 +719,7 @@ The CORS configuration rule to add.
 
 ---
 
-##### `addInventory` <a name="addInventory" id="aws-dsf.AccessLogsBucket.addInventory"></a>
+##### `addInventory` <a name="addInventory" id="aws-dsf.storage.AccessLogsBucket.addInventory"></a>
 
 ```typescript
 public addInventory(inventory: Inventory): void
@@ -727,7 +727,7 @@ public addInventory(inventory: Inventory): void
 
 Add an inventory configuration.
 
-###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-dsf.AccessLogsBucket.addInventory.parameter.inventory"></a>
+###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-dsf.storage.AccessLogsBucket.addInventory.parameter.inventory"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.Inventory
 
@@ -735,7 +735,7 @@ configuration to add.
 
 ---
 
-##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-dsf.AccessLogsBucket.addLifecycleRule"></a>
+##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-dsf.storage.AccessLogsBucket.addLifecycleRule"></a>
 
 ```typescript
 public addLifecycleRule(rule: LifecycleRule): void
@@ -743,7 +743,7 @@ public addLifecycleRule(rule: LifecycleRule): void
 
 Add a lifecycle rule to the bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.AccessLogsBucket.addLifecycleRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.storage.AccessLogsBucket.addLifecycleRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.LifecycleRule
 
@@ -751,7 +751,7 @@ The rule to add.
 
 ---
 
-##### `addMetric` <a name="addMetric" id="aws-dsf.AccessLogsBucket.addMetric"></a>
+##### `addMetric` <a name="addMetric" id="aws-dsf.storage.AccessLogsBucket.addMetric"></a>
 
 ```typescript
 public addMetric(metric: BucketMetrics): void
@@ -759,7 +759,7 @@ public addMetric(metric: BucketMetrics): void
 
 Adds a metrics configuration for the CloudWatch request metrics from the bucket.
 
-###### `metric`<sup>Required</sup> <a name="metric" id="aws-dsf.AccessLogsBucket.addMetric.parameter.metric"></a>
+###### `metric`<sup>Required</sup> <a name="metric" id="aws-dsf.storage.AccessLogsBucket.addMetric.parameter.metric"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketMetrics
 
@@ -771,23 +771,23 @@ The metric configuration to add.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.AccessLogsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.AccessLogsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
-| <code><a href="#aws-dsf.AccessLogsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-dsf.AccessLogsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
-| <code><a href="#aws-dsf.AccessLogsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
-| <code><a href="#aws-dsf.AccessLogsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
-| <code><a href="#aws-dsf.AccessLogsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.AccessLogsBucket.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.storage.AccessLogsBucket.isConstruct"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.isConstruct(x: any)
+storage.AccessLogsBucket.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -806,7 +806,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.AccessLogsBucket.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.storage.AccessLogsBucket.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -814,75 +814,75 @@ Any object.
 
 ---
 
-##### `isOwnedResource` <a name="isOwnedResource" id="aws-dsf.AccessLogsBucket.isOwnedResource"></a>
+##### `isOwnedResource` <a name="isOwnedResource" id="aws-dsf.storage.AccessLogsBucket.isOwnedResource"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.isOwnedResource(construct: IConstruct)
+storage.AccessLogsBucket.isOwnedResource(construct: IConstruct)
 ```
 
 Returns true if the construct was created by CDK, and false otherwise.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.AccessLogsBucket.isOwnedResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.storage.AccessLogsBucket.isOwnedResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `isResource` <a name="isResource" id="aws-dsf.AccessLogsBucket.isResource"></a>
+##### `isResource` <a name="isResource" id="aws-dsf.storage.AccessLogsBucket.isResource"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.isResource(construct: IConstruct)
+storage.AccessLogsBucket.isResource(construct: IConstruct)
 ```
 
 Check whether the given construct is a Resource.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.AccessLogsBucket.isResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.storage.AccessLogsBucket.isResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `fromBucketArn` <a name="fromBucketArn" id="aws-dsf.AccessLogsBucket.fromBucketArn"></a>
+##### `fromBucketArn` <a name="fromBucketArn" id="aws-dsf.storage.AccessLogsBucket.fromBucketArn"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
+storage.AccessLogsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AccessLogsBucket.fromBucketArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AccessLogsBucket.fromBucketArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.fromBucketArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.fromBucketArn.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.AccessLogsBucket.fromBucketArn.parameter.bucketArn"></a>
+###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.storage.AccessLogsBucket.fromBucketArn.parameter.bucketArn"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-dsf.AccessLogsBucket.fromBucketAttributes"></a>
+##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-dsf.storage.AccessLogsBucket.fromBucketAttributes"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
+storage.AccessLogsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
 ```
 
 Creates a Bucket construct that represents an external bucket.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AccessLogsBucket.fromBucketAttributes.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AccessLogsBucket.fromBucketAttributes.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -890,7 +890,7 @@ The parent creating construct (usually `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.fromBucketAttributes.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.fromBucketAttributes.parameter.id"></a>
 
 - *Type:* string
 
@@ -898,7 +898,7 @@ The construct's name.
 
 ---
 
-###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-dsf.AccessLogsBucket.fromBucketAttributes.parameter.attrs"></a>
+###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-dsf.storage.AccessLogsBucket.fromBucketAttributes.parameter.attrs"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketAttributes
 
@@ -909,59 +909,59 @@ Can be obtained from a call to
 
 ---
 
-##### `fromBucketName` <a name="fromBucketName" id="aws-dsf.AccessLogsBucket.fromBucketName"></a>
+##### `fromBucketName` <a name="fromBucketName" id="aws-dsf.storage.AccessLogsBucket.fromBucketName"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
+storage.AccessLogsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AccessLogsBucket.fromBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AccessLogsBucket.fromBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AccessLogsBucket.fromBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AccessLogsBucket.fromBucketName.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.AccessLogsBucket.fromBucketName.parameter.bucketName"></a>
+###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.storage.AccessLogsBucket.fromBucketName.parameter.bucketName"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-dsf.AccessLogsBucket.fromCfnBucket"></a>
+##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-dsf.storage.AccessLogsBucket.fromCfnBucket"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.fromCfnBucket(cfnBucket: CfnBucket)
+storage.AccessLogsBucket.fromCfnBucket(cfnBucket: CfnBucket)
 ```
 
 Create a mutable `IBucket` based on a low-level `CfnBucket`.
 
-###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-dsf.AccessLogsBucket.fromCfnBucket.parameter.cfnBucket"></a>
+###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-dsf.storage.AccessLogsBucket.fromCfnBucket.parameter.cfnBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CfnBucket
 
 ---
 
-##### `validateBucketName` <a name="validateBucketName" id="aws-dsf.AccessLogsBucket.validateBucketName"></a>
+##### `validateBucketName` <a name="validateBucketName" id="aws-dsf.storage.AccessLogsBucket.validateBucketName"></a>
 
 ```typescript
-import { AccessLogsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AccessLogsBucket.validateBucketName(physicalName: string)
+storage.AccessLogsBucket.validateBucketName(physicalName: string)
 ```
 
 Thrown an exception if the given bucket name is not valid.
 
-###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-dsf.AccessLogsBucket.validateBucketName.parameter.physicalName"></a>
+###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-dsf.storage.AccessLogsBucket.validateBucketName.parameter.physicalName"></a>
 
 - *Type:* string
 
@@ -973,23 +973,23 @@ name of the bucket.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
-| <code><a href="#aws-dsf.AccessLogsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
+| <code><a href="#aws-dsf.storage.AccessLogsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.AccessLogsBucket.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.storage.AccessLogsBucket.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -1001,7 +1001,7 @@ The tree node.
 
 ---
 
-##### `env`<sup>Required</sup> <a name="env" id="aws-dsf.AccessLogsBucket.property.env"></a>
+##### `env`<sup>Required</sup> <a name="env" id="aws-dsf.storage.AccessLogsBucket.property.env"></a>
 
 ```typescript
 public readonly env: ResourceEnvironment;
@@ -1020,7 +1020,7 @@ that might be different than the stack they were imported into.
 
 ---
 
-##### `stack`<sup>Required</sup> <a name="stack" id="aws-dsf.AccessLogsBucket.property.stack"></a>
+##### `stack`<sup>Required</sup> <a name="stack" id="aws-dsf.storage.AccessLogsBucket.property.stack"></a>
 
 ```typescript
 public readonly stack: Stack;
@@ -1032,7 +1032,7 @@ The stack in which this resource is defined.
 
 ---
 
-##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.AccessLogsBucket.property.bucketArn"></a>
+##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.storage.AccessLogsBucket.property.bucketArn"></a>
 
 ```typescript
 public readonly bucketArn: string;
@@ -1044,7 +1044,7 @@ The ARN of the bucket.
 
 ---
 
-##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-dsf.AccessLogsBucket.property.bucketDomainName"></a>
+##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-dsf.storage.AccessLogsBucket.property.bucketDomainName"></a>
 
 ```typescript
 public readonly bucketDomainName: string;
@@ -1056,7 +1056,7 @@ The IPv4 DNS name of the specified bucket.
 
 ---
 
-##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-dsf.AccessLogsBucket.property.bucketDualStackDomainName"></a>
+##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-dsf.storage.AccessLogsBucket.property.bucketDualStackDomainName"></a>
 
 ```typescript
 public readonly bucketDualStackDomainName: string;
@@ -1068,7 +1068,7 @@ The IPv6 DNS name of the specified bucket.
 
 ---
 
-##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.AccessLogsBucket.property.bucketName"></a>
+##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.storage.AccessLogsBucket.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -1080,7 +1080,7 @@ The name of the bucket.
 
 ---
 
-##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-dsf.AccessLogsBucket.property.bucketRegionalDomainName"></a>
+##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-dsf.storage.AccessLogsBucket.property.bucketRegionalDomainName"></a>
 
 ```typescript
 public readonly bucketRegionalDomainName: string;
@@ -1092,7 +1092,7 @@ The regional domain name of the specified bucket.
 
 ---
 
-##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-dsf.AccessLogsBucket.property.bucketWebsiteDomainName"></a>
+##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-dsf.storage.AccessLogsBucket.property.bucketWebsiteDomainName"></a>
 
 ```typescript
 public readonly bucketWebsiteDomainName: string;
@@ -1104,7 +1104,7 @@ The Domain name of the static website.
 
 ---
 
-##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-dsf.AccessLogsBucket.property.bucketWebsiteUrl"></a>
+##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-dsf.storage.AccessLogsBucket.property.bucketWebsiteUrl"></a>
 
 ```typescript
 public readonly bucketWebsiteUrl: string;
@@ -1116,7 +1116,7 @@ The URL of the static website.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-dsf.AccessLogsBucket.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-dsf.storage.AccessLogsBucket.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -1128,7 +1128,7 @@ Optional KMS encryption key associated with this bucket.
 
 ---
 
-##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-dsf.AccessLogsBucket.property.isWebsite"></a>
+##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-dsf.storage.AccessLogsBucket.property.isWebsite"></a>
 
 ```typescript
 public readonly isWebsite: boolean;
@@ -1140,7 +1140,7 @@ If this bucket has been configured for static website hosting.
 
 ---
 
-##### `policy`<sup>Optional</sup> <a name="policy" id="aws-dsf.AccessLogsBucket.property.policy"></a>
+##### `policy`<sup>Optional</sup> <a name="policy" id="aws-dsf.storage.AccessLogsBucket.property.policy"></a>
 
 ```typescript
 public readonly policy: BucketPolicy;
@@ -1156,7 +1156,7 @@ first call to addToResourcePolicy(s).
 ---
 
 
-### AnalyticsBucket <a name="AnalyticsBucket" id="aws-dsf.AnalyticsBucket"></a>
+### AnalyticsBucket <a name="AnalyticsBucket" id="aws-dsf.storage.AnalyticsBucket"></a>
 
 Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
@@ -1177,44 +1177,44 @@ const encryptionKey = new Key(this, 'DataKey', {
  enableKeyRotation: true,
 });
 
-new dsf.AnalyticsBucket(this, 'MyAnalyticsBucket', {
+new dsf.storage.AnalyticsBucket(this, 'MyAnalyticsBucket', {
  encryptionKey,
  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.AnalyticsBucket.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.storage.AnalyticsBucket.Initializer"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-new AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucketProps)
+new storage.AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucketProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.AnalyticsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.AnalyticsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.AnalyticsBucket.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.AnalyticsBucketProps">AnalyticsBucketProps</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.Initializer.parameter.props">props</a></code> | <code>aws-dsf.storage.AnalyticsBucketProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AnalyticsBucket.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AnalyticsBucket.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.AnalyticsBucket.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.storage.AnalyticsBucket.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.AnalyticsBucketProps">AnalyticsBucketProps</a>
+- *Type:* aws-dsf.storage.AnalyticsBucketProps
 
 ---
 
@@ -1222,36 +1222,36 @@ new AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucketProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.AnalyticsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.AnalyticsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
-| <code><a href="#aws-dsf.AnalyticsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
-| <code><a href="#aws-dsf.AnalyticsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-dsf.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
-| <code><a href="#aws-dsf.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
-| <code><a href="#aws-dsf.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
-| <code><a href="#aws-dsf.AnalyticsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
-| <code><a href="#aws-dsf.AnalyticsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
-| <code><a href="#aws-dsf.AnalyticsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
-| <code><a href="#aws-dsf.AnalyticsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
-| <code><a href="#aws-dsf.AnalyticsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.AnalyticsBucket.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.storage.AnalyticsBucket.toString"></a>
 
 ```typescript
 public toString(): string
@@ -1259,7 +1259,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-dsf.AnalyticsBucket.applyRemovalPolicy"></a>
+##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-dsf.storage.AnalyticsBucket.applyRemovalPolicy"></a>
 
 ```typescript
 public applyRemovalPolicy(policy: RemovalPolicy): void
@@ -1275,13 +1275,13 @@ to be replaced.
 The resource can be deleted (`RemovalPolicy.DESTROY`), or left in your AWS
 account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-dsf.AnalyticsBucket.applyRemovalPolicy.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="aws-dsf.storage.AnalyticsBucket.applyRemovalPolicy.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
-##### `addEventNotification` <a name="addEventNotification" id="aws-dsf.AnalyticsBucket.addEventNotification"></a>
+##### `addEventNotification` <a name="addEventNotification" id="aws-dsf.storage.AnalyticsBucket.addEventNotification"></a>
 
 ```typescript
 public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1300,7 +1300,7 @@ Adds a bucket notification event destination.
 ```
 
 
-###### `event`<sup>Required</sup> <a name="event" id="aws-dsf.AnalyticsBucket.addEventNotification.parameter.event"></a>
+###### `event`<sup>Required</sup> <a name="event" id="aws-dsf.storage.AnalyticsBucket.addEventNotification.parameter.event"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.EventType
 
@@ -1308,7 +1308,7 @@ The event to trigger the notification.
 
 ---
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.AnalyticsBucket.addEventNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.storage.AnalyticsBucket.addEventNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1316,7 +1316,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.AnalyticsBucket.addEventNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.storage.AnalyticsBucket.addEventNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1328,7 +1328,7 @@ for details about allowed filter rules.
 
 ---
 
-##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-dsf.AnalyticsBucket.addObjectCreatedNotification"></a>
+##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-dsf.storage.AnalyticsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
 public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1339,7 +1339,7 @@ Subscribes a destination to receive notifications when an object is created in t
 This is identical to calling
 `onEvent(EventType.OBJECT_CREATED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.AnalyticsBucket.addObjectCreatedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1347,7 +1347,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1355,7 +1355,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-dsf.AnalyticsBucket.addObjectRemovedNotification"></a>
+##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-dsf.storage.AnalyticsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
 public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1366,7 +1366,7 @@ Subscribes a destination to receive notifications when an object is removed from
 This is identical to calling
 `onEvent(EventType.OBJECT_REMOVED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.AnalyticsBucket.addObjectRemovedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="aws-dsf.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1374,7 +1374,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="aws-dsf.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1382,7 +1382,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-dsf.AnalyticsBucket.addToResourcePolicy"></a>
+##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-dsf.storage.AnalyticsBucket.addToResourcePolicy"></a>
 
 ```typescript
 public addToResourcePolicy(permission: PolicyStatement): AddToResourcePolicyResult
@@ -1396,7 +1396,7 @@ it's not possible to tell whether the bucket already has a policy
 attached, let alone to re-use that policy to add more statements to it.
 So it's safest to do nothing in these cases.
 
-###### `permission`<sup>Required</sup> <a name="permission" id="aws-dsf.AnalyticsBucket.addToResourcePolicy.parameter.permission"></a>
+###### `permission`<sup>Required</sup> <a name="permission" id="aws-dsf.storage.AnalyticsBucket.addToResourcePolicy.parameter.permission"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
@@ -1404,7 +1404,7 @@ the policy statement to be added to the bucket's policy.
 
 ---
 
-##### `arnForObjects` <a name="arnForObjects" id="aws-dsf.AnalyticsBucket.arnForObjects"></a>
+##### `arnForObjects` <a name="arnForObjects" id="aws-dsf.storage.AnalyticsBucket.arnForObjects"></a>
 
 ```typescript
 public arnForObjects(keyPattern: string): string
@@ -1418,13 +1418,13 @@ If you need to specify a keyPattern with multiple components, concatenate them i
 
   arnForObjects(`home/${team}/${user}/*`)
 
-###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-dsf.AnalyticsBucket.arnForObjects.parameter.keyPattern"></a>
+###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-dsf.storage.AnalyticsBucket.arnForObjects.parameter.keyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-dsf.AnalyticsBucket.enableEventBridgeNotification"></a>
+##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-dsf.storage.AnalyticsBucket.enableEventBridgeNotification"></a>
 
 ```typescript
 public enableEventBridgeNotification(): void
@@ -1443,7 +1443,7 @@ Object Deleted (DeleteObject)
 - Object Tags Added
 - Object Tags Deleted
 
-##### `grantDelete` <a name="grantDelete" id="aws-dsf.AnalyticsBucket.grantDelete"></a>
+##### `grantDelete` <a name="grantDelete" id="aws-dsf.storage.AnalyticsBucket.grantDelete"></a>
 
 ```typescript
 public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1451,7 +1451,7 @@ public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
 
 Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AnalyticsBucket.grantDelete.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AnalyticsBucket.grantDelete.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1459,7 +1459,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AnalyticsBucket.grantDelete.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AnalyticsBucket.grantDelete.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1467,7 +1467,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-dsf.AnalyticsBucket.grantPublicAccess"></a>
+##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-dsf.storage.AnalyticsBucket.grantPublicAccess"></a>
 
 ```typescript
 public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
@@ -1494,7 +1494,7 @@ Note that if this `IBucket` refers to an existing bucket, possibly not
 managed by CloudFormation, this method will have no effect, since it's
 impossible to modify the policy of an existing bucket.
 
-###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-dsf.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
+###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-dsf.storage.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
 - *Type:* string
 
@@ -1504,7 +1504,7 @@ Default is "s3:GetObject".
 
 ---
 
-###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-dsf.AnalyticsBucket.grantPublicAccess.parameter.keyPrefix"></a>
+###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-dsf.storage.AnalyticsBucket.grantPublicAccess.parameter.keyPrefix"></a>
 
 - *Type:* string
 
@@ -1512,7 +1512,7 @@ the prefix of S3 object keys (e.g. `home/*`). Default is "*".
 
 ---
 
-##### `grantPut` <a name="grantPut" id="aws-dsf.AnalyticsBucket.grantPut"></a>
+##### `grantPut` <a name="grantPut" id="aws-dsf.storage.AnalyticsBucket.grantPut"></a>
 
 ```typescript
 public grantPut(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1523,7 +1523,7 @@ Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM princip
 If encryption is used, permission to use the key to encrypt the contents
 of written files will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AnalyticsBucket.grantPut.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AnalyticsBucket.grantPut.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1531,7 +1531,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AnalyticsBucket.grantPut.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AnalyticsBucket.grantPut.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1539,7 +1539,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantPutAcl` <a name="grantPutAcl" id="aws-dsf.AnalyticsBucket.grantPutAcl"></a>
+##### `grantPutAcl` <a name="grantPutAcl" id="aws-dsf.storage.AnalyticsBucket.grantPutAcl"></a>
 
 ```typescript
 public grantPutAcl(identity: IGrantable, objectsKeyPattern?: string): Grant
@@ -1551,19 +1551,19 @@ If your application has the '@aws-cdk/aws-s3:grantWriteWithoutAcl' feature flag 
 calling `grantWrite` or `grantReadWrite` no longer grants permissions to modify the ACLs of the objects;
 in this case, if you need to modify object ACLs, call this method explicitly.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AnalyticsBucket.grantPutAcl.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AnalyticsBucket.grantPutAcl.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AnalyticsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AnalyticsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `grantRead` <a name="grantRead" id="aws-dsf.AnalyticsBucket.grantRead"></a>
+##### `grantRead` <a name="grantRead" id="aws-dsf.storage.AnalyticsBucket.grantRead"></a>
 
 ```typescript
 public grantRead(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1574,7 +1574,7 @@ Grant read permissions for this bucket and it's contents to an IAM principal (Ro
 If encryption is used, permission to use the key to decrypt the contents
 of the bucket will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AnalyticsBucket.grantRead.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AnalyticsBucket.grantRead.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1582,7 +1582,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AnalyticsBucket.grantRead.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AnalyticsBucket.grantRead.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1590,7 +1590,7 @@ Restrict the permission to a certain key pattern (default '*').
 
 ---
 
-##### `grantReadWrite` <a name="grantReadWrite" id="aws-dsf.AnalyticsBucket.grantReadWrite"></a>
+##### `grantReadWrite` <a name="grantReadWrite" id="aws-dsf.storage.AnalyticsBucket.grantReadWrite"></a>
 
 ```typescript
 public grantReadWrite(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1609,19 +1609,19 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AnalyticsBucket.grantReadWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AnalyticsBucket.grantReadWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-##### `grantWrite` <a name="grantWrite" id="aws-dsf.AnalyticsBucket.grantWrite"></a>
+##### `grantWrite` <a name="grantWrite" id="aws-dsf.storage.AnalyticsBucket.grantWrite"></a>
 
 ```typescript
 public grantWrite(identity: IGrantable, objectsKeyPattern?: any, allowedActionPatterns?: string[]): Grant
@@ -1640,25 +1640,25 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.AnalyticsBucket.grantWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="aws-dsf.storage.AnalyticsBucket.grantWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.AnalyticsBucket.grantWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-dsf.storage.AnalyticsBucket.grantWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-dsf.AnalyticsBucket.grantWrite.parameter.allowedActionPatterns"></a>
+###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-dsf.storage.AnalyticsBucket.grantWrite.parameter.allowedActionPatterns"></a>
 
 - *Type:* string[]
 
 ---
 
-##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-dsf.AnalyticsBucket.onCloudTrailEvent"></a>
+##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailEvent"></a>
 
 ```typescript
 public onCloudTrailEvent(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1669,7 +1669,7 @@ Define a CloudWatch event that triggers when something happens to this repositor
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.onCloudTrailEvent.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailEvent.parameter.id"></a>
 
 - *Type:* string
 
@@ -1677,7 +1677,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AnalyticsBucket.onCloudTrailEvent.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailEvent.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1685,7 +1685,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-dsf.AnalyticsBucket.onCloudTrailPutObject"></a>
+##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailPutObject"></a>
 
 ```typescript
 public onCloudTrailPutObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1700,7 +1700,7 @@ so using `onCloudTrailWriteObject` may be preferable.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.onCloudTrailPutObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailPutObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -1708,7 +1708,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AnalyticsBucket.onCloudTrailPutObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailPutObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1716,7 +1716,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-dsf.AnalyticsBucket.onCloudTrailWriteObject"></a>
+##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailWriteObject"></a>
 
 ```typescript
 public onCloudTrailWriteObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1734,7 +1734,7 @@ so using this method may be preferable to `onCloudTrailPutObject`.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.onCloudTrailWriteObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailWriteObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -1742,7 +1742,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AnalyticsBucket.onCloudTrailWriteObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AnalyticsBucket.onCloudTrailWriteObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1750,7 +1750,7 @@ Options for adding the rule.
 
 ---
 
-##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-dsf.AnalyticsBucket.s3UrlForObject"></a>
+##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-dsf.storage.AnalyticsBucket.s3UrlForObject"></a>
 
 ```typescript
 public s3UrlForObject(key?: string): string
@@ -1761,7 +1761,7 @@ The S3 URL of an S3 object. For example:.
 `s3://onlybucket`
 - `s3://bucket/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AnalyticsBucket.s3UrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AnalyticsBucket.s3UrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1772,7 +1772,7 @@ bucket is returned.
 
 ---
 
-##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-dsf.AnalyticsBucket.transferAccelerationUrlForObject"></a>
+##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-dsf.storage.AnalyticsBucket.transferAccelerationUrlForObject"></a>
 
 ```typescript
 public transferAccelerationUrlForObject(key?: string, options?: TransferAccelerationUrlOptions): string
@@ -1786,7 +1786,7 @@ for dual-stack endpoint (connect to the bucket over IPv6). For example:
 - `https://bucket.s3-accelerate.amazonaws.com`
 - `https://bucket.s3-accelerate.amazonaws.com/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AnalyticsBucket.transferAccelerationUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AnalyticsBucket.transferAccelerationUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1797,7 +1797,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AnalyticsBucket.transferAccelerationUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AnalyticsBucket.transferAccelerationUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.TransferAccelerationUrlOptions
 
@@ -1805,7 +1805,7 @@ Options for generating URL.
 
 ---
 
-##### `urlForObject` <a name="urlForObject" id="aws-dsf.AnalyticsBucket.urlForObject"></a>
+##### `urlForObject` <a name="urlForObject" id="aws-dsf.storage.AnalyticsBucket.urlForObject"></a>
 
 ```typescript
 public urlForObject(key?: string): string
@@ -1817,7 +1817,7 @@ The https URL of an S3 object. Specify `regional: false` at the options for non-
 - `https://s3.us-west-1.amazonaws.com/bucket/key`
 - `https://s3.cn-north-1.amazonaws.com.cn/china-bucket/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AnalyticsBucket.urlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AnalyticsBucket.urlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1828,7 +1828,7 @@ bucket is returned.
 
 ---
 
-##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-dsf.AnalyticsBucket.virtualHostedUrlForObject"></a>
+##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-dsf.storage.AnalyticsBucket.virtualHostedUrlForObject"></a>
 
 ```typescript
 public virtualHostedUrlForObject(key?: string, options?: VirtualHostedStyleUrlOptions): string
@@ -1841,7 +1841,7 @@ The virtual hosted-style URL of an S3 object. Specify `regional: false` at the o
 - `https://bucket.s3.amazonaws.com/key`
 - `https://china-bucket.s3.cn-north-1.amazonaws.com.cn/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.AnalyticsBucket.virtualHostedUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="aws-dsf.storage.AnalyticsBucket.virtualHostedUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1852,7 +1852,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.AnalyticsBucket.virtualHostedUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.storage.AnalyticsBucket.virtualHostedUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.VirtualHostedStyleUrlOptions
 
@@ -1860,7 +1860,7 @@ Options for generating URL.
 
 ---
 
-##### `addCorsRule` <a name="addCorsRule" id="aws-dsf.AnalyticsBucket.addCorsRule"></a>
+##### `addCorsRule` <a name="addCorsRule" id="aws-dsf.storage.AnalyticsBucket.addCorsRule"></a>
 
 ```typescript
 public addCorsRule(rule: CorsRule): void
@@ -1868,7 +1868,7 @@ public addCorsRule(rule: CorsRule): void
 
 Adds a cross-origin access configuration for objects in an Amazon S3 bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.AnalyticsBucket.addCorsRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.storage.AnalyticsBucket.addCorsRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CorsRule
 
@@ -1876,7 +1876,7 @@ The CORS configuration rule to add.
 
 ---
 
-##### `addInventory` <a name="addInventory" id="aws-dsf.AnalyticsBucket.addInventory"></a>
+##### `addInventory` <a name="addInventory" id="aws-dsf.storage.AnalyticsBucket.addInventory"></a>
 
 ```typescript
 public addInventory(inventory: Inventory): void
@@ -1884,7 +1884,7 @@ public addInventory(inventory: Inventory): void
 
 Add an inventory configuration.
 
-###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-dsf.AnalyticsBucket.addInventory.parameter.inventory"></a>
+###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-dsf.storage.AnalyticsBucket.addInventory.parameter.inventory"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.Inventory
 
@@ -1892,7 +1892,7 @@ configuration to add.
 
 ---
 
-##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-dsf.AnalyticsBucket.addLifecycleRule"></a>
+##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-dsf.storage.AnalyticsBucket.addLifecycleRule"></a>
 
 ```typescript
 public addLifecycleRule(rule: LifecycleRule): void
@@ -1900,7 +1900,7 @@ public addLifecycleRule(rule: LifecycleRule): void
 
 Add a lifecycle rule to the bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.AnalyticsBucket.addLifecycleRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="aws-dsf.storage.AnalyticsBucket.addLifecycleRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.LifecycleRule
 
@@ -1908,7 +1908,7 @@ The rule to add.
 
 ---
 
-##### `addMetric` <a name="addMetric" id="aws-dsf.AnalyticsBucket.addMetric"></a>
+##### `addMetric` <a name="addMetric" id="aws-dsf.storage.AnalyticsBucket.addMetric"></a>
 
 ```typescript
 public addMetric(metric: BucketMetrics): void
@@ -1916,7 +1916,7 @@ public addMetric(metric: BucketMetrics): void
 
 Adds a metrics configuration for the CloudWatch request metrics from the bucket.
 
-###### `metric`<sup>Required</sup> <a name="metric" id="aws-dsf.AnalyticsBucket.addMetric.parameter.metric"></a>
+###### `metric`<sup>Required</sup> <a name="metric" id="aws-dsf.storage.AnalyticsBucket.addMetric.parameter.metric"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketMetrics
 
@@ -1928,23 +1928,23 @@ The metric configuration to add.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.AnalyticsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.AnalyticsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
-| <code><a href="#aws-dsf.AnalyticsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-dsf.AnalyticsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
-| <code><a href="#aws-dsf.AnalyticsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
-| <code><a href="#aws-dsf.AnalyticsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
-| <code><a href="#aws-dsf.AnalyticsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.AnalyticsBucket.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.storage.AnalyticsBucket.isConstruct"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.isConstruct(x: any)
+storage.AnalyticsBucket.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -1963,7 +1963,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.AnalyticsBucket.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.storage.AnalyticsBucket.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -1971,75 +1971,75 @@ Any object.
 
 ---
 
-##### `isOwnedResource` <a name="isOwnedResource" id="aws-dsf.AnalyticsBucket.isOwnedResource"></a>
+##### `isOwnedResource` <a name="isOwnedResource" id="aws-dsf.storage.AnalyticsBucket.isOwnedResource"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.isOwnedResource(construct: IConstruct)
+storage.AnalyticsBucket.isOwnedResource(construct: IConstruct)
 ```
 
 Returns true if the construct was created by CDK, and false otherwise.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.AnalyticsBucket.isOwnedResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.storage.AnalyticsBucket.isOwnedResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `isResource` <a name="isResource" id="aws-dsf.AnalyticsBucket.isResource"></a>
+##### `isResource` <a name="isResource" id="aws-dsf.storage.AnalyticsBucket.isResource"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.isResource(construct: IConstruct)
+storage.AnalyticsBucket.isResource(construct: IConstruct)
 ```
 
 Check whether the given construct is a Resource.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.AnalyticsBucket.isResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.storage.AnalyticsBucket.isResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `fromBucketArn` <a name="fromBucketArn" id="aws-dsf.AnalyticsBucket.fromBucketArn"></a>
+##### `fromBucketArn` <a name="fromBucketArn" id="aws-dsf.storage.AnalyticsBucket.fromBucketArn"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
+storage.AnalyticsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AnalyticsBucket.fromBucketArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AnalyticsBucket.fromBucketArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.fromBucketArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.fromBucketArn.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.AnalyticsBucket.fromBucketArn.parameter.bucketArn"></a>
+###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.storage.AnalyticsBucket.fromBucketArn.parameter.bucketArn"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-dsf.AnalyticsBucket.fromBucketAttributes"></a>
+##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-dsf.storage.AnalyticsBucket.fromBucketAttributes"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
+storage.AnalyticsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
 ```
 
 Creates a Bucket construct that represents an external bucket.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AnalyticsBucket.fromBucketAttributes.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AnalyticsBucket.fromBucketAttributes.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2047,7 +2047,7 @@ The parent creating construct (usually `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.fromBucketAttributes.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.fromBucketAttributes.parameter.id"></a>
 
 - *Type:* string
 
@@ -2055,7 +2055,7 @@ The construct's name.
 
 ---
 
-###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-dsf.AnalyticsBucket.fromBucketAttributes.parameter.attrs"></a>
+###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-dsf.storage.AnalyticsBucket.fromBucketAttributes.parameter.attrs"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketAttributes
 
@@ -2066,59 +2066,59 @@ Can be obtained from a call to
 
 ---
 
-##### `fromBucketName` <a name="fromBucketName" id="aws-dsf.AnalyticsBucket.fromBucketName"></a>
+##### `fromBucketName` <a name="fromBucketName" id="aws-dsf.storage.AnalyticsBucket.fromBucketName"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
+storage.AnalyticsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.AnalyticsBucket.fromBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.AnalyticsBucket.fromBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.AnalyticsBucket.fromBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.AnalyticsBucket.fromBucketName.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.AnalyticsBucket.fromBucketName.parameter.bucketName"></a>
+###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.storage.AnalyticsBucket.fromBucketName.parameter.bucketName"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-dsf.AnalyticsBucket.fromCfnBucket"></a>
+##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-dsf.storage.AnalyticsBucket.fromCfnBucket"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.fromCfnBucket(cfnBucket: CfnBucket)
+storage.AnalyticsBucket.fromCfnBucket(cfnBucket: CfnBucket)
 ```
 
 Create a mutable `IBucket` based on a low-level `CfnBucket`.
 
-###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-dsf.AnalyticsBucket.fromCfnBucket.parameter.cfnBucket"></a>
+###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-dsf.storage.AnalyticsBucket.fromCfnBucket.parameter.cfnBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CfnBucket
 
 ---
 
-##### `validateBucketName` <a name="validateBucketName" id="aws-dsf.AnalyticsBucket.validateBucketName"></a>
+##### `validateBucketName` <a name="validateBucketName" id="aws-dsf.storage.AnalyticsBucket.validateBucketName"></a>
 
 ```typescript
-import { AnalyticsBucket } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-AnalyticsBucket.validateBucketName(physicalName: string)
+storage.AnalyticsBucket.validateBucketName(physicalName: string)
 ```
 
 Thrown an exception if the given bucket name is not valid.
 
-###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-dsf.AnalyticsBucket.validateBucketName.parameter.physicalName"></a>
+###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-dsf.storage.AnalyticsBucket.validateBucketName.parameter.physicalName"></a>
 
 - *Type:* string
 
@@ -2130,23 +2130,23 @@ name of the bucket.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
-| <code><a href="#aws-dsf.AnalyticsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.AnalyticsBucket.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.storage.AnalyticsBucket.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2158,7 +2158,7 @@ The tree node.
 
 ---
 
-##### `env`<sup>Required</sup> <a name="env" id="aws-dsf.AnalyticsBucket.property.env"></a>
+##### `env`<sup>Required</sup> <a name="env" id="aws-dsf.storage.AnalyticsBucket.property.env"></a>
 
 ```typescript
 public readonly env: ResourceEnvironment;
@@ -2177,7 +2177,7 @@ that might be different than the stack they were imported into.
 
 ---
 
-##### `stack`<sup>Required</sup> <a name="stack" id="aws-dsf.AnalyticsBucket.property.stack"></a>
+##### `stack`<sup>Required</sup> <a name="stack" id="aws-dsf.storage.AnalyticsBucket.property.stack"></a>
 
 ```typescript
 public readonly stack: Stack;
@@ -2189,7 +2189,7 @@ The stack in which this resource is defined.
 
 ---
 
-##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.AnalyticsBucket.property.bucketArn"></a>
+##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-dsf.storage.AnalyticsBucket.property.bucketArn"></a>
 
 ```typescript
 public readonly bucketArn: string;
@@ -2201,7 +2201,7 @@ The ARN of the bucket.
 
 ---
 
-##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-dsf.AnalyticsBucket.property.bucketDomainName"></a>
+##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-dsf.storage.AnalyticsBucket.property.bucketDomainName"></a>
 
 ```typescript
 public readonly bucketDomainName: string;
@@ -2213,7 +2213,7 @@ The IPv4 DNS name of the specified bucket.
 
 ---
 
-##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-dsf.AnalyticsBucket.property.bucketDualStackDomainName"></a>
+##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-dsf.storage.AnalyticsBucket.property.bucketDualStackDomainName"></a>
 
 ```typescript
 public readonly bucketDualStackDomainName: string;
@@ -2225,7 +2225,7 @@ The IPv6 DNS name of the specified bucket.
 
 ---
 
-##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.AnalyticsBucket.property.bucketName"></a>
+##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-dsf.storage.AnalyticsBucket.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -2237,7 +2237,7 @@ The name of the bucket.
 
 ---
 
-##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-dsf.AnalyticsBucket.property.bucketRegionalDomainName"></a>
+##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-dsf.storage.AnalyticsBucket.property.bucketRegionalDomainName"></a>
 
 ```typescript
 public readonly bucketRegionalDomainName: string;
@@ -2249,7 +2249,7 @@ The regional domain name of the specified bucket.
 
 ---
 
-##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-dsf.AnalyticsBucket.property.bucketWebsiteDomainName"></a>
+##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-dsf.storage.AnalyticsBucket.property.bucketWebsiteDomainName"></a>
 
 ```typescript
 public readonly bucketWebsiteDomainName: string;
@@ -2261,7 +2261,7 @@ The Domain name of the static website.
 
 ---
 
-##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-dsf.AnalyticsBucket.property.bucketWebsiteUrl"></a>
+##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-dsf.storage.AnalyticsBucket.property.bucketWebsiteUrl"></a>
 
 ```typescript
 public readonly bucketWebsiteUrl: string;
@@ -2273,7 +2273,7 @@ The URL of the static website.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-dsf.AnalyticsBucket.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-dsf.storage.AnalyticsBucket.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -2285,7 +2285,7 @@ Optional KMS encryption key associated with this bucket.
 
 ---
 
-##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-dsf.AnalyticsBucket.property.isWebsite"></a>
+##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-dsf.storage.AnalyticsBucket.property.isWebsite"></a>
 
 ```typescript
 public readonly isWebsite: boolean;
@@ -2297,7 +2297,7 @@ If this bucket has been configured for static website hosting.
 
 ---
 
-##### `policy`<sup>Optional</sup> <a name="policy" id="aws-dsf.AnalyticsBucket.property.policy"></a>
+##### `policy`<sup>Optional</sup> <a name="policy" id="aws-dsf.storage.AnalyticsBucket.property.policy"></a>
 
 ```typescript
 public readonly policy: BucketPolicy;
@@ -2329,7 +2329,7 @@ new ApplicationStage(scope: Construct, id: string, props: ApplicationStageProps)
 | --- | --- | --- |
 | <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
 | <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.ApplicationStageProps">ApplicationStageProps</a></code> | the SparkCICDStageProps properties. |
+| <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.ApplicationStageProps">ApplicationStageProps</a></code> | the ApplicationStage properties. |
 
 ---
 
@@ -2353,7 +2353,7 @@ the ID of the CDK Construct.
 
 - *Type:* <a href="#aws-dsf.ApplicationStageProps">ApplicationStageProps</a>
 
-the SparkCICDStageProps properties.
+the ApplicationStage properties.
 
 ---
 
@@ -2617,7 +2617,7 @@ The list of CfnOutputs created by the CDK Stack.
 ---
 
 
-### DataCatalogDatabase <a name="DataCatalogDatabase" id="aws-dsf.DataCatalogDatabase"></a>
+### DataCatalogDatabase <a name="DataCatalogDatabase" id="aws-dsf.governance.DataCatalogDatabase"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
@@ -2628,7 +2628,7 @@ An AWS Glue Data Catalog Database configured with the location and a crawler.
 ```typescript
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
-new dsf.DataCatalogDatabase(this, 'ExampleDatabase', {
+new dsf.governance.DataCatalogDatabase(this, 'ExampleDatabase', {
    locationBucket: new Bucket(scope, 'LocationBucket'),
    locationPrefix: '/databasePath',
    name: 'example-db'
@@ -2636,37 +2636,37 @@ new dsf.DataCatalogDatabase(this, 'ExampleDatabase', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.DataCatalogDatabase.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.governance.DataCatalogDatabase.Initializer"></a>
 
 ```typescript
-import { DataCatalogDatabase } from 'aws-dsf'
+import { governance } from 'aws-dsf'
 
-new DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabaseProps)
+new governance.DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabaseProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataCatalogDatabase.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.DataCatalogDatabase.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.DataCatalogDatabase.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a></code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.Initializer.parameter.props">props</a></code> | <code>aws-dsf.governance.DataCatalogDatabaseProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.DataCatalogDatabase.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.governance.DataCatalogDatabase.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.DataCatalogDatabase.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.governance.DataCatalogDatabase.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.DataCatalogDatabase.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.governance.DataCatalogDatabase.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.DataCatalogDatabaseProps">DataCatalogDatabaseProps</a>
+- *Type:* aws-dsf.governance.DataCatalogDatabaseProps
 
 ---
 
@@ -2674,13 +2674,13 @@ new DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabase
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.DataCatalogDatabase.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.governance.DataCatalogDatabase.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2688,7 +2688,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantReadOnlyAccess` <a name="grantReadOnlyAccess" id="aws-dsf.DataCatalogDatabase.grantReadOnlyAccess"></a>
+##### `grantReadOnlyAccess` <a name="grantReadOnlyAccess" id="aws-dsf.governance.DataCatalogDatabase.grantReadOnlyAccess"></a>
 
 ```typescript
 public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult
@@ -2698,7 +2698,7 @@ Grants read access via identity based policy to the principal.
 
 This would attach an IAM policy to the principal allowing read access to the database and all its tables.
 
-###### `principal`<sup>Required</sup> <a name="principal" id="aws-dsf.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
+###### `principal`<sup>Required</sup> <a name="principal" id="aws-dsf.governance.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
@@ -2706,7 +2706,7 @@ Principal to attach the database read access to.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.DataCatalogDatabase.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.governance.DataCatalogDatabase.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -2718,16 +2718,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.DataCatalogDatabase.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.DataCatalogDatabase.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.governance.DataCatalogDatabase.isConstruct"></a>
 
 ```typescript
-import { DataCatalogDatabase } from 'aws-dsf'
+import { governance } from 'aws-dsf'
 
-DataCatalogDatabase.isConstruct(x: any)
+governance.DataCatalogDatabase.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -2746,7 +2746,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.DataCatalogDatabase.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.governance.DataCatalogDatabase.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2758,17 +2758,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption key used by the Crawler. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Glue crawler when created. |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.crawlerSecurityConfiguration">crawlerSecurityConfiguration</a></code> | <code>aws-cdk-lib.aws_glue.CfnSecurityConfiguration</code> | The Glue security configuration used by the Glue Crawler when created. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption key used by the Crawler. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Glue crawler when created. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration">crawlerSecurityConfiguration</a></code> | <code>aws-cdk-lib.aws_glue.CfnSecurityConfiguration</code> | The Glue security configuration used by the Glue Crawler when created. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.DataCatalogDatabase.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.governance.DataCatalogDatabase.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2780,7 +2780,7 @@ The tree node.
 
 ---
 
-##### `database`<sup>Required</sup> <a name="database" id="aws-dsf.DataCatalogDatabase.property.database"></a>
+##### `database`<sup>Required</sup> <a name="database" id="aws-dsf.governance.DataCatalogDatabase.property.database"></a>
 
 ```typescript
 public readonly database: CfnDatabase;
@@ -2792,7 +2792,7 @@ The Glue database that's created.
 
 ---
 
-##### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.DataCatalogDatabase.property.databaseName"></a>
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.governance.DataCatalogDatabase.property.databaseName"></a>
 
 ```typescript
 public readonly databaseName: string;
@@ -2804,7 +2804,7 @@ The Glue database name with the randomized suffix to prevent name collisions in 
 
 ---
 
-##### `crawler`<sup>Optional</sup> <a name="crawler" id="aws-dsf.DataCatalogDatabase.property.crawler"></a>
+##### `crawler`<sup>Optional</sup> <a name="crawler" id="aws-dsf.governance.DataCatalogDatabase.property.crawler"></a>
 
 ```typescript
 public readonly crawler: CfnCrawler;
@@ -2818,7 +2818,7 @@ This property can be undefined if `autoCrawl` is set to `false`.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -2830,7 +2830,7 @@ KMS encryption key used by the Crawler.
 
 ---
 
-##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="aws-dsf.DataCatalogDatabase.property.crawlerRole"></a>
+##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="aws-dsf.governance.DataCatalogDatabase.property.crawlerRole"></a>
 
 ```typescript
 public readonly crawlerRole: IRole;
@@ -2842,7 +2842,7 @@ The IAM role used by the Glue crawler when created.
 
 ---
 
-##### `crawlerSecurityConfiguration`<sup>Optional</sup> <a name="crawlerSecurityConfiguration" id="aws-dsf.DataCatalogDatabase.property.crawlerSecurityConfiguration"></a>
+##### `crawlerSecurityConfiguration`<sup>Optional</sup> <a name="crawlerSecurityConfiguration" id="aws-dsf.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration"></a>
 
 ```typescript
 public readonly crawlerSecurityConfiguration: CfnSecurityConfiguration;
@@ -2858,12 +2858,12 @@ The Glue security configuration used by the Glue Crawler when created.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.governance.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -2873,7 +2873,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.governance.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -2883,7 +2883,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### DataLakeCatalog <a name="DataLakeCatalog" id="aws-dsf.DataLakeCatalog"></a>
+### DataLakeCatalog <a name="DataLakeCatalog" id="aws-dsf.governance.DataLakeCatalog"></a>
 
 Creates AWS Glue Catalog Database for each storage layer.
 
@@ -2897,8 +2897,8 @@ Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 import { Key } from 'aws-cdk-lib/aws-kms';
 
 const logEncryptionKey = new Key(this, 'LogEncryptionKey');
-const storage = new dsf.DataLakeStorage(this, "ExampleStorage");
-const dataLakeCatalog = new dsf.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
+const storage = new dsf.storage.DataLakeStorage(this, "ExampleStorage");
+const dataLakeCatalog = new dsf.governance.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
   dataLakeStorage: storage,
   databaseName: "exampledb",
   crawlerLogEncryptionKey: logEncryptionKey
@@ -2906,23 +2906,23 @@ const dataLakeCatalog = new dsf.DataLakeCatalog(this, "ExampleDataLakeCatalog", 
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.DataLakeCatalog.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.governance.DataLakeCatalog.Initializer"></a>
 
 ```typescript
-import { DataLakeCatalog } from 'aws-dsf'
+import { governance } from 'aws-dsf'
 
-new DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
+new governance.DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.DataLakeCatalogProps">DataLakeCatalogProps</a></code> | the DataLakeCatalog properties. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code>aws-dsf.governance.DataLakeCatalogProps</code> | the DataLakeCatalog properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.DataLakeCatalog.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.governance.DataLakeCatalog.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2930,7 +2930,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.DataLakeCatalog.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.governance.DataLakeCatalog.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -2938,9 +2938,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.DataLakeCatalog.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.governance.DataLakeCatalog.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.DataLakeCatalogProps">DataLakeCatalogProps</a>
+- *Type:* aws-dsf.governance.DataLakeCatalogProps
 
 the DataLakeCatalog properties.
 
@@ -2950,12 +2950,12 @@ the DataLakeCatalog properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.DataLakeCatalog.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.governance.DataLakeCatalog.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2963,7 +2963,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.DataLakeCatalog.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.governance.DataLakeCatalog.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -2975,16 +2975,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.DataLakeCatalog.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.governance.DataLakeCatalog.isConstruct"></a>
 
 ```typescript
-import { DataLakeCatalog } from 'aws-dsf'
+import { governance } from 'aws-dsf'
 
-DataLakeCatalog.isConstruct(x: any)
+governance.DataLakeCatalog.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -3003,7 +3003,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.DataLakeCatalog.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.governance.DataLakeCatalog.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3015,15 +3015,15 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | The Glue Database for Bronze bucket. |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | The Glue Database for Gold bucket. |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code><a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a></code> | The Glue Database for Silver bucket. |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the crawler logs. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for Bronze bucket. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for Gold bucket. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for Silver bucket. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the crawler logs. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.DataLakeCatalog.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.governance.DataLakeCatalog.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3035,43 +3035,43 @@ The tree node.
 
 ---
 
-##### `bronzeCatalogDatabase`<sup>Required</sup> <a name="bronzeCatalogDatabase" id="aws-dsf.DataLakeCatalog.property.bronzeCatalogDatabase"></a>
+##### `bronzeCatalogDatabase`<sup>Required</sup> <a name="bronzeCatalogDatabase" id="aws-dsf.governance.DataLakeCatalog.property.bronzeCatalogDatabase"></a>
 
 ```typescript
 public readonly bronzeCatalogDatabase: DataCatalogDatabase;
 ```
 
-- *Type:* <a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a>
+- *Type:* aws-dsf.governance.DataCatalogDatabase
 
 The Glue Database for Bronze bucket.
 
 ---
 
-##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="aws-dsf.DataLakeCatalog.property.goldCatalogDatabase"></a>
+##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="aws-dsf.governance.DataLakeCatalog.property.goldCatalogDatabase"></a>
 
 ```typescript
 public readonly goldCatalogDatabase: DataCatalogDatabase;
 ```
 
-- *Type:* <a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a>
+- *Type:* aws-dsf.governance.DataCatalogDatabase
 
 The Glue Database for Gold bucket.
 
 ---
 
-##### `silverCatalogDatabase`<sup>Required</sup> <a name="silverCatalogDatabase" id="aws-dsf.DataLakeCatalog.property.silverCatalogDatabase"></a>
+##### `silverCatalogDatabase`<sup>Required</sup> <a name="silverCatalogDatabase" id="aws-dsf.governance.DataLakeCatalog.property.silverCatalogDatabase"></a>
 
 ```typescript
 public readonly silverCatalogDatabase: DataCatalogDatabase;
 ```
 
-- *Type:* <a href="#aws-dsf.DataCatalogDatabase">DataCatalogDatabase</a>
+- *Type:* aws-dsf.governance.DataCatalogDatabase
 
 The Glue Database for Silver bucket.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.governance.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -3087,12 +3087,12 @@ The KMS Key used to encrypt the crawler logs.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataLakeCatalog.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.governance.DataLakeCatalog.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3102,7 +3102,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.governance.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3112,7 +3112,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### DataLakeStorage <a name="DataLakeStorage" id="aws-dsf.DataLakeStorage"></a>
+### DataLakeStorage <a name="DataLakeStorage" id="aws-dsf.storage.DataLakeStorage"></a>
 
 Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
@@ -3124,7 +3124,7 @@ Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket}
 // Set the context value for global data removal policy
 this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
-new dsf.DataLakeStorage(this, 'MyDataLakeStorage', {
+new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
  bronzeBucketName: 'my-bronze',
  bronzeBucketInfrequentAccessDelay: 90,
  bronzeBucketArchiveDelay: 180,
@@ -3139,23 +3139,23 @@ new dsf.DataLakeStorage(this, 'MyDataLakeStorage', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.DataLakeStorage.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.storage.DataLakeStorage.Initializer"></a>
 
 ```typescript
-import { DataLakeStorage } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-new DataLakeStorage(scope: Construct, id: string, props?: DataLakeStorageProps)
+new storage.DataLakeStorage(scope: Construct, id: string, props?: DataLakeStorageProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeStorage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.DataLakeStorage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.DataLakeStorage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.DataLakeStorageProps">DataLakeStorageProps</a></code> | the DataLakeStorageProps properties. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.Initializer.parameter.props">props</a></code> | <code>aws-dsf.storage.DataLakeStorageProps</code> | the DataLakeStorageProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.DataLakeStorage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.DataLakeStorage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3163,7 +3163,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.DataLakeStorage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.DataLakeStorage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3171,9 +3171,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-dsf.DataLakeStorage.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="aws-dsf.storage.DataLakeStorage.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.DataLakeStorageProps">DataLakeStorageProps</a>
+- *Type:* aws-dsf.storage.DataLakeStorageProps
 
 the DataLakeStorageProps properties.
 
@@ -3183,12 +3183,12 @@ the DataLakeStorageProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.DataLakeStorage.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.storage.DataLakeStorage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3196,7 +3196,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.DataLakeStorage.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.storage.DataLakeStorage.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3208,16 +3208,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.DataLakeStorage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.DataLakeStorage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.storage.DataLakeStorage.isConstruct"></a>
 
 ```typescript
-import { DataLakeStorage } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-DataLakeStorage.isConstruct(x: any)
+storage.DataLakeStorage.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -3236,7 +3236,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.DataLakeStorage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.storage.DataLakeStorage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3248,16 +3248,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code><a href="#aws-dsf.AccessLogsBucket">AccessLogsBucket</a></code> | The S3 Bucket for access logs. |
-| <code><a href="#aws-dsf.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | The S3 Bucket for Bronze layer. |
-| <code><a href="#aws-dsf.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
-| <code><a href="#aws-dsf.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | The S3 Bucket for Gold layer. |
-| <code><a href="#aws-dsf.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code><a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a></code> | The S3 Bucket for Silver layer. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code>aws-dsf.storage.AccessLogsBucket</code> | The S3 Bucket for access logs. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code>aws-dsf.storage.AnalyticsBucket</code> | The S3 Bucket for Bronze layer. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code>aws-dsf.storage.AnalyticsBucket</code> | The S3 Bucket for Gold layer. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code>aws-dsf.storage.AnalyticsBucket</code> | The S3 Bucket for Silver layer. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.DataLakeStorage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.storage.DataLakeStorage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3269,31 +3269,31 @@ The tree node.
 
 ---
 
-##### `accessLogsBucket`<sup>Required</sup> <a name="accessLogsBucket" id="aws-dsf.DataLakeStorage.property.accessLogsBucket"></a>
+##### `accessLogsBucket`<sup>Required</sup> <a name="accessLogsBucket" id="aws-dsf.storage.DataLakeStorage.property.accessLogsBucket"></a>
 
 ```typescript
 public readonly accessLogsBucket: AccessLogsBucket;
 ```
 
-- *Type:* <a href="#aws-dsf.AccessLogsBucket">AccessLogsBucket</a>
+- *Type:* aws-dsf.storage.AccessLogsBucket
 
 The S3 Bucket for access logs.
 
 ---
 
-##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="aws-dsf.DataLakeStorage.property.bronzeBucket"></a>
+##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="aws-dsf.storage.DataLakeStorage.property.bronzeBucket"></a>
 
 ```typescript
 public readonly bronzeBucket: AnalyticsBucket;
 ```
 
-- *Type:* <a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a>
+- *Type:* aws-dsf.storage.AnalyticsBucket
 
 The S3 Bucket for Bronze layer.
 
 ---
 
-##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="aws-dsf.DataLakeStorage.property.dataLakeKey"></a>
+##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="aws-dsf.storage.DataLakeStorage.property.dataLakeKey"></a>
 
 ```typescript
 public readonly dataLakeKey: IKey;
@@ -3305,25 +3305,25 @@ The KMS Key used to encrypt all DataLakeStorage S3 buckets.
 
 ---
 
-##### `goldBucket`<sup>Required</sup> <a name="goldBucket" id="aws-dsf.DataLakeStorage.property.goldBucket"></a>
+##### `goldBucket`<sup>Required</sup> <a name="goldBucket" id="aws-dsf.storage.DataLakeStorage.property.goldBucket"></a>
 
 ```typescript
 public readonly goldBucket: AnalyticsBucket;
 ```
 
-- *Type:* <a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a>
+- *Type:* aws-dsf.storage.AnalyticsBucket
 
 The S3 Bucket for Gold layer.
 
 ---
 
-##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="aws-dsf.DataLakeStorage.property.silverBucket"></a>
+##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="aws-dsf.storage.DataLakeStorage.property.silverBucket"></a>
 
 ```typescript
 public readonly silverBucket: AnalyticsBucket;
 ```
 
-- *Type:* <a href="#aws-dsf.AnalyticsBucket">AnalyticsBucket</a>
+- *Type:* aws-dsf.storage.AnalyticsBucket
 
 The S3 Bucket for Silver layer.
 
@@ -3333,12 +3333,12 @@ The S3 Bucket for Silver layer.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeStorage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.DataLakeStorage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.storage.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3348,7 +3348,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.storage.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3358,7 +3358,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.PySparkApplicationPackage"></a>
+### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.processing.PySparkApplicationPackage"></a>
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
 
@@ -3367,7 +3367,7 @@ A construct that takes your PySpark application, packages its virtual environmen
 *Example*
 
 ```typescript
-let pysparkPacker = new dsf.PySparkApplicationPackage (this, 'pysparkPacker', {
+let pysparkPacker = new dsf.processing.PySparkApplicationPackage (this, 'pysparkPacker', {
   applicationName: 'my-pyspark',
   entrypointPath: '/Users/my-user/my-spark-job/app/app-pyspark.py',
   dependenciesFolder: '/Users/my-user/my-spark-job/app',
@@ -3376,7 +3376,7 @@ let pysparkPacker = new dsf.PySparkApplicationPackage (this, 'pysparkPacker', {
 
 let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
 
-new dsf.SparkEmrServerlessJob(this, 'SparkJobServerless', {
+new dsf.processing.SparkEmrServerlessJob(this, 'SparkJobServerless', {
   name: 'MyPySpark',
   applicationId: 'xxxxxxxxx',
   executionRoleArn: 'ROLE-ARN',
@@ -3385,27 +3385,27 @@ new dsf.SparkEmrServerlessJob(this, 'SparkJobServerless', {
   cloudWatchLogGroupName: 'my-pyspark-serverless-log',
   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
-} as dsf.SparkEmrServerlessJobProps);
+} as dsf.processing.SparkEmrServerlessJobProps);
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.PySparkApplicationPackage.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.PySparkApplicationPackage.Initializer"></a>
 
 ```typescript
-import { PySparkApplicationPackage } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-new PySparkApplicationPackage(scope: Construct, id: string, props: PySparkApplicationPackageProps)
+new processing.PySparkApplicationPackage(scope: Construct, id: string, props: PySparkApplicationPackageProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.PySparkApplicationPackageProps">PySparkApplicationPackageProps</a></code> | {@link PySparkApplicationPackageProps}. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.PySparkApplicationPackageProps</code> | {@link PySparkApplicationPackageProps}. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.PySparkApplicationPackage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.PySparkApplicationPackage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3413,7 +3413,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.PySparkApplicationPackage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.PySparkApplicationPackage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3421,9 +3421,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.PySparkApplicationPackage.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.PySparkApplicationPackage.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.PySparkApplicationPackageProps">PySparkApplicationPackageProps</a>
+- *Type:* aws-dsf.processing.PySparkApplicationPackageProps
 
 {@link PySparkApplicationPackageProps}.
 
@@ -3433,12 +3433,12 @@ the ID of the CDK Construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.PySparkApplicationPackage.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.PySparkApplicationPackage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3446,7 +3446,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.PySparkApplicationPackage.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.PySparkApplicationPackage.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3458,16 +3458,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.PySparkApplicationPackage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.PySparkApplicationPackage.isConstruct"></a>
 
 ```typescript
-import { PySparkApplicationPackage } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-PySparkApplicationPackage.isConstruct(x: any)
+processing.PySparkApplicationPackage.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -3486,7 +3486,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.PySparkApplicationPackage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.PySparkApplicationPackage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3498,17 +3498,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket storing the artifacts (entrypoint and virtual environment archive). |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM managed policy used by the custom resource for the assets deployment. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark config containing the configuration of virtual environment archive with all dependencies. |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket storing the artifacts (entrypoint and virtual environment archive). |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM managed policy used by the custom resource for the assets deployment. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark config containing the configuration of virtual environment archive with all dependencies. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.PySparkApplicationPackage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.PySparkApplicationPackage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3520,7 +3520,7 @@ The tree node.
 
 ---
 
-##### `artifactsBucket`<sup>Required</sup> <a name="artifactsBucket" id="aws-dsf.PySparkApplicationPackage.property.artifactsBucket"></a>
+##### `artifactsBucket`<sup>Required</sup> <a name="artifactsBucket" id="aws-dsf.processing.PySparkApplicationPackage.property.artifactsBucket"></a>
 
 ```typescript
 public readonly artifactsBucket: IBucket;
@@ -3532,7 +3532,7 @@ The bucket storing the artifacts (entrypoint and virtual environment archive).
 
 ---
 
-##### `assetUploadManagedPolicy`<sup>Required</sup> <a name="assetUploadManagedPolicy" id="aws-dsf.PySparkApplicationPackage.property.assetUploadManagedPolicy"></a>
+##### `assetUploadManagedPolicy`<sup>Required</sup> <a name="assetUploadManagedPolicy" id="aws-dsf.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy"></a>
 
 ```typescript
 public readonly assetUploadManagedPolicy: IManagedPolicy;
@@ -3544,7 +3544,7 @@ The IAM managed policy used by the custom resource for the assets deployment.
 
 ---
 
-##### `assetUploadRole`<sup>Required</sup> <a name="assetUploadRole" id="aws-dsf.PySparkApplicationPackage.property.assetUploadRole"></a>
+##### `assetUploadRole`<sup>Required</sup> <a name="assetUploadRole" id="aws-dsf.processing.PySparkApplicationPackage.property.assetUploadRole"></a>
 
 ```typescript
 public readonly assetUploadRole: IRole;
@@ -3559,7 +3559,7 @@ you must provide s3 write access to this role to upload the artifacts.
 
 ---
 
-##### `entrypointS3Uri`<sup>Required</sup> <a name="entrypointS3Uri" id="aws-dsf.PySparkApplicationPackage.property.entrypointS3Uri"></a>
+##### `entrypointS3Uri`<sup>Required</sup> <a name="entrypointS3Uri" id="aws-dsf.processing.PySparkApplicationPackage.property.entrypointS3Uri"></a>
 
 ```typescript
 public readonly entrypointS3Uri: string;
@@ -3573,7 +3573,7 @@ You pass this location to your Spark job.
 
 ---
 
-##### `sparkVenvConf`<sup>Optional</sup> <a name="sparkVenvConf" id="aws-dsf.PySparkApplicationPackage.property.sparkVenvConf"></a>
+##### `sparkVenvConf`<sup>Optional</sup> <a name="sparkVenvConf" id="aws-dsf.processing.PySparkApplicationPackage.property.sparkVenvConf"></a>
 
 ```typescript
 public readonly sparkVenvConf: string;
@@ -3585,7 +3585,7 @@ The Spark config containing the configuration of virtual environment archive wit
 
 ---
 
-##### `venvArchiveS3Uri`<sup>Optional</sup> <a name="venvArchiveS3Uri" id="aws-dsf.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
+##### `venvArchiveS3Uri`<sup>Optional</sup> <a name="venvArchiveS3Uri" id="aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
 
 ```typescript
 public readonly venvArchiveS3Uri: string;
@@ -3603,13 +3603,13 @@ You pass this location to your Spark job.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.PySparkApplicationPackage.property.ARTIFACTS_PREFIX">ARTIFACTS_PREFIX</a></code> | <code>string</code> | The prefix used to store artifacts on the artifact bucket. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX">ARTIFACTS_PREFIX</a></code> | <code>string</code> | The prefix used to store artifacts on the artifact bucket. |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.PySparkApplicationPackage.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.PySparkApplicationPackage.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3619,7 +3619,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.PySparkApplicationPackage.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.PySparkApplicationPackage.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3629,7 +3629,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-##### `ARTIFACTS_PREFIX`<sup>Required</sup> <a name="ARTIFACTS_PREFIX" id="aws-dsf.PySparkApplicationPackage.property.ARTIFACTS_PREFIX"></a>
+##### `ARTIFACTS_PREFIX`<sup>Required</sup> <a name="ARTIFACTS_PREFIX" id="aws-dsf.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX"></a>
 
 ```typescript
 public readonly ARTIFACTS_PREFIX: string;
@@ -3641,7 +3641,7 @@ The prefix used to store artifacts on the artifact bucket.
 
 ---
 
-### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.SparkEmrCICDPipeline"></a>
+### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.processing.SparkEmrCICDPipeline"></a>
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
@@ -3676,12 +3676,12 @@ class MyStackFactory implements dsf.ApplicationStackFactory {
 class MyCICDStack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
-    new dsf.SparkEmrCICDPipeline(this, 'TestConstruct', {
+    new dsf.processing.SparkEmrCICDPipeline(this, 'TestConstruct', {
        sparkApplicationName: 'test',
        applicationStackFactory: new MyStackFactory(),
        cdkApplicationPath: 'cdk/',
        sparkApplicationPath: 'spark/',
-       sparkImage: dsf.SparkImage.EMR_6_12,
+       sparkImage: dsf.processing.SparkImage.EMR_6_12,
        integTestScript: 'cdk/integ-test.sh',
        integTestEnv: {
          TEST_BUCKET: 'BucketName',
@@ -3692,23 +3692,23 @@ class MyCICDStack extends cdk.Stack {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.SparkEmrCICDPipeline.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrCICDPipeline.Initializer"></a>
 
 ```typescript
-import { SparkEmrCICDPipeline } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-new SparkEmrCICDPipeline(scope: Construct, id: string, props: SparkEmrCICDPipelineProps)
+new processing.SparkEmrCICDPipeline(scope: Construct, id: string, props: SparkEmrCICDPipelineProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.SparkEmrCICDPipelineProps">SparkEmrCICDPipelineProps</a></code> | the SparkCICDPipelineProps properties. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrCICDPipelineProps</code> | the SparkCICDPipelineProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrCICDPipeline.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrCICDPipeline.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3716,7 +3716,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkEmrCICDPipeline.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrCICDPipeline.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3724,9 +3724,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.SparkEmrCICDPipeline.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrCICDPipeline.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.SparkEmrCICDPipelineProps">SparkEmrCICDPipelineProps</a>
+- *Type:* aws-dsf.processing.SparkEmrCICDPipelineProps
 
 the SparkCICDPipelineProps properties.
 
@@ -3736,12 +3736,12 @@ the SparkCICDPipelineProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.SparkEmrCICDPipeline.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrCICDPipeline.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3749,7 +3749,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrCICDPipeline.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrCICDPipeline.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3761,16 +3761,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.SparkEmrCICDPipeline.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrCICDPipeline.isConstruct"></a>
 
 ```typescript
-import { SparkEmrCICDPipeline } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkEmrCICDPipeline.isConstruct(x: any)
+processing.SparkEmrCICDPipeline.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -3789,7 +3789,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.SparkEmrCICDPipeline.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrCICDPipeline.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3801,17 +3801,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing access logs on the artifact bucket. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing the artifacts. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit repository created as part of the Spark CICD Pipeline. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing access logs on the artifact bucket. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing the artifacts. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit repository created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.SparkEmrCICDPipeline.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrCICDPipeline.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3823,7 +3823,7 @@ The tree node.
 
 ---
 
-##### `artifactAccessLogsBucket`<sup>Required</sup> <a name="artifactAccessLogsBucket" id="aws-dsf.SparkEmrCICDPipeline.property.artifactAccessLogsBucket"></a>
+##### `artifactAccessLogsBucket`<sup>Required</sup> <a name="artifactAccessLogsBucket" id="aws-dsf.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket"></a>
 
 ```typescript
 public readonly artifactAccessLogsBucket: IBucket;
@@ -3835,7 +3835,7 @@ The S3 bucket for storing access logs on the artifact bucket.
 
 ---
 
-##### `artifactBucket`<sup>Required</sup> <a name="artifactBucket" id="aws-dsf.SparkEmrCICDPipeline.property.artifactBucket"></a>
+##### `artifactBucket`<sup>Required</sup> <a name="artifactBucket" id="aws-dsf.processing.SparkEmrCICDPipeline.property.artifactBucket"></a>
 
 ```typescript
 public readonly artifactBucket: IBucket;
@@ -3847,7 +3847,7 @@ The S3 bucket for storing the artifacts.
 
 ---
 
-##### `pipeline`<sup>Required</sup> <a name="pipeline" id="aws-dsf.SparkEmrCICDPipeline.property.pipeline"></a>
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="aws-dsf.processing.SparkEmrCICDPipeline.property.pipeline"></a>
 
 ```typescript
 public readonly pipeline: CodePipeline;
@@ -3859,7 +3859,7 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 ---
 
-##### `pipelineLogGroup`<sup>Required</sup> <a name="pipelineLogGroup" id="aws-dsf.SparkEmrCICDPipeline.property.pipelineLogGroup"></a>
+##### `pipelineLogGroup`<sup>Required</sup> <a name="pipelineLogGroup" id="aws-dsf.processing.SparkEmrCICDPipeline.property.pipelineLogGroup"></a>
 
 ```typescript
 public readonly pipelineLogGroup: ILogGroup;
@@ -3871,7 +3871,7 @@ The CloudWatch Log Group for storing the CodePipeline logs.
 
 ---
 
-##### `repository`<sup>Required</sup> <a name="repository" id="aws-dsf.SparkEmrCICDPipeline.property.repository"></a>
+##### `repository`<sup>Required</sup> <a name="repository" id="aws-dsf.processing.SparkEmrCICDPipeline.property.repository"></a>
 
 ```typescript
 public readonly repository: Repository;
@@ -3883,7 +3883,7 @@ The CodeCommit repository created as part of the Spark CICD Pipeline.
 
 ---
 
-##### `integrationTestStage`<sup>Optional</sup> <a name="integrationTestStage" id="aws-dsf.SparkEmrCICDPipeline.property.integrationTestStage"></a>
+##### `integrationTestStage`<sup>Optional</sup> <a name="integrationTestStage" id="aws-dsf.processing.SparkEmrCICDPipeline.property.integrationTestStage"></a>
 
 ```typescript
 public readonly integrationTestStage: CodeBuildStep;
@@ -3899,12 +3899,12 @@ The CodeBuild Step for the staging stage.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -3914,7 +3914,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -3924,7 +3924,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrEksJob <a name="SparkEmrEksJob" id="aws-dsf.SparkEmrEksJob"></a>
+### SparkEmrEksJob <a name="SparkEmrEksJob" id="aws-dsf.processing.SparkEmrEksJob"></a>
 
 A construct to run Spark Jobs using EMR on EKS.
 
@@ -3937,7 +3937,7 @@ Creates a Step Functions State Machine that orchestrates the Spark Job.
 ```typescript
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
-const job = new dsf.SparkEmrEksJob(this, 'SparkJob', {
+const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
     "VirtualClusterId": "virtualClusterId",
@@ -3950,7 +3950,7 @@ const job = new dsf.SparkEmrEksJob(this, 'SparkJob', {
       },
     }
   }
-} as dsf.SparkEmrEksJobApiProps);
+} as dsf.processing.SparkEmrEksJobApiProps);
 
 new cdk.CfnOutput(this, 'SparkJobStateMachine', {
   value: job.stateMachine!.stateMachineArn,
@@ -3958,37 +3958,37 @@ new cdk.CfnOutput(this, 'SparkJobStateMachine', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.SparkEmrEksJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrEksJob.Initializer"></a>
 
 ```typescript
-import { SparkEmrEksJob } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-new SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobApiProps | SparkEmrEksJobProps)
+new processing.SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobApiProps | SparkEmrEksJobProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJob.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.SparkEmrEksJobApiProps">SparkEmrEksJobApiProps</a> \| <a href="#aws-dsf.SparkEmrEksJobProps">SparkEmrEksJobProps</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrEksJobApiProps \| aws-dsf.processing.SparkEmrEksJobProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrEksJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkEmrEksJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.SparkEmrEksJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.SparkEmrEksJobApiProps">SparkEmrEksJobApiProps</a> | <a href="#aws-dsf.SparkEmrEksJobProps">SparkEmrEksJobProps</a>
+- *Type:* aws-dsf.processing.SparkEmrEksJobApiProps | aws-dsf.processing.SparkEmrEksJobProps
 
 ---
 
@@ -3996,12 +3996,12 @@ new SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobApiProps |
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.SparkEmrEksJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.SparkEmrEksJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrEksJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4009,7 +4009,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrEksJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrEksJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4021,16 +4021,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.SparkEmrEksJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrEksJob.isConstruct"></a>
 
 ```typescript
-import { SparkEmrEksJob } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkEmrEksJob.isConstruct(x: any)
+processing.SparkEmrEksJob.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4049,7 +4049,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.SparkEmrEksJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrEksJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4061,13 +4061,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.SparkEmrEksJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.SparkEmrEksJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.SparkEmrEksJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrEksJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4079,7 +4079,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.SparkEmrEksJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrEksJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -4091,7 +4091,7 @@ Step Functions StateMachine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.SparkEmrEksJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrEksJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -4107,12 +4107,12 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrEksJob.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrEksJob.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4122,7 +4122,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkEmrEksJob.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrEksJob.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4132,7 +4132,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrServerlessJob <a name="SparkEmrServerlessJob" id="aws-dsf.SparkEmrServerlessJob"></a>
+### SparkEmrServerlessJob <a name="SparkEmrServerlessJob" id="aws-dsf.processing.SparkEmrServerlessJob"></a>
 
 A construct to run Spark Jobs using EMR Serverless.
 
@@ -4156,9 +4156,9 @@ const myFileSystemPolicy = new PolicyDocument({
 });
 
 
-const myExecutionRole = dsf.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1', myFileSystemPolicy);
+const myExecutionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1', myFileSystemPolicy);
 const applicationId = "APPLICATION_ID";
-const job = new dsf.SparkEmrServerlessJob(this, 'SparkJob', {
+const job = new dsf.processing.SparkEmrServerlessJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
     "ApplicationId": applicationId,
@@ -4171,7 +4171,7 @@ const job = new dsf.SparkEmrServerlessJob(this, 'SparkJob', {
       },
     }
   }
-} as dsf.SparkEmrServerlessJobApiProps);
+} as dsf.processing.SparkEmrServerlessJobApiProps);
 
 new cdk.CfnOutput(this, 'SparkJobStateMachine', {
   value: job.stateMachine!.stateMachineArn,
@@ -4179,37 +4179,37 @@ new cdk.CfnOutput(this, 'SparkJobStateMachine', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.SparkEmrServerlessJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrServerlessJob.Initializer"></a>
 
 ```typescript
-import { SparkEmrServerlessJob } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-new SparkEmrServerlessJob(scope: Construct, id: string, props: SparkEmrServerlessJobApiProps | SparkEmrServerlessJobProps)
+new processing.SparkEmrServerlessJob(scope: Construct, id: string, props: SparkEmrServerlessJobProps | SparkEmrServerlessJobApiProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.SparkEmrServerlessJobApiProps">SparkEmrServerlessJobApiProps</a> \| <a href="#aws-dsf.SparkEmrServerlessJobProps">SparkEmrServerlessJobProps</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrServerlessJobProps \| aws-dsf.processing.SparkEmrServerlessJobApiProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrServerlessJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrServerlessJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkEmrServerlessJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrServerlessJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.SparkEmrServerlessJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrServerlessJob.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.SparkEmrServerlessJobApiProps">SparkEmrServerlessJobApiProps</a> | <a href="#aws-dsf.SparkEmrServerlessJobProps">SparkEmrServerlessJobProps</a>
+- *Type:* aws-dsf.processing.SparkEmrServerlessJobProps | aws-dsf.processing.SparkEmrServerlessJobApiProps
 
 ---
 
@@ -4217,12 +4217,12 @@ new SparkEmrServerlessJob(scope: Construct, id: string, props: SparkEmrServerles
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.SparkEmrServerlessJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrServerlessJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4230,7 +4230,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrServerlessJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrServerlessJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4242,16 +4242,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.SparkEmrServerlessJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrServerlessJob.isConstruct"></a>
 
 ```typescript
-import { SparkEmrServerlessJob } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkEmrServerlessJob.isConstruct(x: any)
+processing.SparkEmrServerlessJob.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4270,7 +4270,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.SparkEmrServerlessJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrServerlessJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4282,14 +4282,14 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.SparkEmrServerlessJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrServerlessJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4301,7 +4301,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.SparkEmrServerlessJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrServerlessJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -4313,7 +4313,7 @@ Step Functions StateMachine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.SparkEmrServerlessJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrServerlessJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -4325,7 +4325,7 @@ The CloudWatch Log Group used by the State Machine.
 
 ---
 
-##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="aws-dsf.SparkEmrServerlessJob.property.sparkJobExecutionRole"></a>
+##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="aws-dsf.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole"></a>
 
 ```typescript
 public readonly sparkJobExecutionRole: IRole;
@@ -4343,12 +4343,12 @@ Use this property to add additional IAM permissions if necessary.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrServerlessJob.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4358,7 +4358,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkEmrServerlessJob.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4368,29 +4368,29 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="aws-dsf.SparkEmrServerlessRuntime"></a>
+### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="aws-dsf.processing.SparkEmrServerlessRuntime"></a>
 
 A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 
 > [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-serverless-runtime](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-serverless-runtime)
 
-#### Initializers <a name="Initializers" id="aws-dsf.SparkEmrServerlessRuntime.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer"></a>
 
 ```typescript
-import { SparkEmrServerlessRuntime } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-new SparkEmrServerlessRuntime(scope: Construct, id: string, props: SparkEmrServerlessRuntimeProps)
+new processing.SparkEmrServerlessRuntime(scope: Construct, id: string, props: SparkEmrServerlessRuntimeProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps">SparkEmrServerlessRuntimeProps</a></code> | {@link SparkEmrServerlessRuntimeProps}. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrServerlessRuntimeProps</code> | {@link SparkEmrServerlessRuntimeProps}. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrServerlessRuntime.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -4398,7 +4398,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkEmrServerlessRuntime.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -4406,9 +4406,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.SparkEmrServerlessRuntime.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.SparkEmrServerlessRuntimeProps">SparkEmrServerlessRuntimeProps</a>
+- *Type:* aws-dsf.processing.SparkEmrServerlessRuntimeProps
 
 {@link SparkEmrServerlessRuntimeProps}.
 
@@ -4418,13 +4418,13 @@ the ID of the CDK Construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.SparkEmrServerlessRuntime.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrServerlessRuntime.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4432,7 +4432,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantStartExecution` <a name="grantStartExecution" id="aws-dsf.SparkEmrServerlessRuntime.grantStartExecution"></a>
+##### `grantStartExecution` <a name="grantStartExecution" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartExecution"></a>
 
 ```typescript
 public grantStartExecution(startJobRole: IRole, executionRoleArn: string): void
@@ -4443,7 +4443,7 @@ A method which will grant an IAM Role the right to start and monitor a job.
 The method will also attach an iam:PassRole permission to limited to the IAM Job Execution roles passed.
 The excution role will be able to submit job to the EMR Serverless application created by the construct.
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.SparkEmrServerlessRuntime.grantStartExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -4451,7 +4451,7 @@ the role that will call the start job api and which need to have the iam:PassRol
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessRuntime.grantStartExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string
 
@@ -4459,7 +4459,7 @@ the role use by EMR Serverless to access resources during the job execution.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkEmrServerlessRuntime.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrServerlessRuntime.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4471,18 +4471,18 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.SparkEmrServerlessRuntime.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrServerlessRuntime.isConstruct"></a>
 
 ```typescript
-import { SparkEmrServerlessRuntime } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkEmrServerlessRuntime.isConstruct(x: any)
+processing.SparkEmrServerlessRuntime.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4501,7 +4501,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.SparkEmrServerlessRuntime.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrServerlessRuntime.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4509,12 +4509,12 @@ Any object.
 
 ---
 
-##### `createExecutionRole` <a name="createExecutionRole" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole"></a>
+##### `createExecutionRole` <a name="createExecutionRole" id="aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole"></a>
 
 ```typescript
-import { SparkEmrServerlessRuntime } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
+processing.SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
 ```
 
 A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates.
@@ -4523,7 +4523,7 @@ If no `executionRolePolicyDocument` or `iamPolicyName`
 The method will return a role with only a trust policy to EMR Servereless service principal.
 You can use this role then to grant access to any resources you control.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -4531,7 +4531,7 @@ the scope in which to create the role.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -4539,7 +4539,7 @@ passed to the IAM Role construct object.
 
 ---
 
-###### `executionRolePolicyDocument`<sup>Optional</sup> <a name="executionRolePolicyDocument" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.executionRolePolicyDocument"></a>
+###### `executionRolePolicyDocument`<sup>Optional</sup> <a name="executionRolePolicyDocument" id="aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.executionRolePolicyDocument"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyDocument
 
@@ -4550,7 +4550,7 @@ This parameter is mutually execlusive with iamPolicyName.
 
 ---
 
-###### `iamPolicyName`<sup>Optional</sup> <a name="iamPolicyName" id="aws-dsf.SparkEmrServerlessRuntime.createExecutionRole.parameter.iamPolicyName"></a>
+###### `iamPolicyName`<sup>Optional</sup> <a name="iamPolicyName" id="aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.iamPolicyName"></a>
 
 - *Type:* string
 
@@ -4558,19 +4558,19 @@ the IAM policy name to attach to the role, this is mutually execlusive with exec
 
 ---
 
-##### `grantStartJobExecution` <a name="grantStartJobExecution" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution"></a>
+##### `grantStartJobExecution` <a name="grantStartJobExecution" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution"></a>
 
 ```typescript
-import { SparkEmrServerlessRuntime } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkEmrServerlessRuntime.grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
+processing.SparkEmrServerlessRuntime.grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
 ```
 
 A static method which will grant an IAM Role the right to start and monitor a job.
 
 The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -4578,7 +4578,7 @@ the role that will call the start job api and which needs to have the iam:PassRo
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string[]
 
@@ -4586,7 +4586,7 @@ the role used by EMR Serverless to access resources during the job execution.
 
 ---
 
-###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="aws-dsf.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.applicationArns"></a>
+###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.applicationArns"></a>
 
 - *Type:* string[]
 
@@ -4598,15 +4598,15 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.networkConfiguration">networkConfiguration</a></code> | <code><a href="#aws-dsf.NetworkConfiguration">NetworkConfiguration</a></code> | The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.networkConfiguration">networkConfiguration</a></code> | <code><a href="#aws-dsf.NetworkConfiguration">NetworkConfiguration</a></code> | The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.SparkEmrServerlessRuntime.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4618,7 +4618,7 @@ The tree node.
 
 ---
 
-##### `application`<sup>Required</sup> <a name="application" id="aws-dsf.SparkEmrServerlessRuntime.property.application"></a>
+##### `application`<sup>Required</sup> <a name="application" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.application"></a>
 
 ```typescript
 public readonly application: CfnApplication;
@@ -4630,7 +4630,7 @@ The EMR Serverless application.
 
 ---
 
-##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="aws-dsf.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
+##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
 
 ```typescript
 public readonly emrApplicationSecurityGroup: ISecurityGroup;
@@ -4642,7 +4642,7 @@ If no VPC is provided, one is created by default along with a security group att
 
 ---
 
-##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-dsf.SparkEmrServerlessRuntime.property.networkConfiguration"></a>
+##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.networkConfiguration"></a>
 
 ```typescript
 public readonly networkConfiguration: NetworkConfiguration;
@@ -4654,7 +4654,7 @@ The EMR Serverless application network configuration including VPC, S3 interface
 
 ---
 
-##### `s3GatewayVpcEndpoint`<sup>Optional</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint"></a>
+##### `s3GatewayVpcEndpoint`<sup>Optional</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint"></a>
 
 ```typescript
 public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
@@ -4670,12 +4670,12 @@ If no VPC is provided, one is created by default This attribute is used to expos
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4685,7 +4685,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4695,7 +4695,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ---
 
-### SparkJob <a name="SparkJob" id="aws-dsf.SparkJob"></a>
+### SparkJob <a name="SparkJob" id="aws-dsf.processing.SparkJob"></a>
 
 A base construct to run Spark Jobs.
 
@@ -4711,24 +4711,24 @@ Available implementations:
 * {@link SparkEmrServerlessJob } for Emr Serverless implementation
 * {@link SparkEmrEksJob } for EMR On EKS implementation)
 
-#### Initializers <a name="Initializers" id="aws-dsf.SparkJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkJob.Initializer"></a>
 
 ```typescript
-import { SparkJob } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-new SparkJob(scope: Construct, id: string, trackingTag: string, props: SparkJobProps)
+new processing.SparkJob(scope: Construct, id: string, trackingTag: string, props: SparkJobProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.trackingTag">trackingTag</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkJob.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.SparkJobProps">SparkJobProps</a></code> | the SparkJobProps properties. |
+| <code><a href="#aws-dsf.processing.SparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.SparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.processing.SparkJob.Initializer.parameter.trackingTag">trackingTag</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkJobProps</code> | the SparkJobProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.SparkJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -4736,7 +4736,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.SparkJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -4744,15 +4744,15 @@ the ID of the CDK Construct.
 
 ---
 
-##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="aws-dsf.SparkJob.Initializer.parameter.trackingTag"></a>
+##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="aws-dsf.processing.SparkJob.Initializer.parameter.trackingTag"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.SparkJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkJob.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.SparkJobProps">SparkJobProps</a>
+- *Type:* aws-dsf.processing.SparkJobProps
 
 the SparkJobProps properties.
 
@@ -4762,12 +4762,12 @@ the SparkJobProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.SparkJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4775,7 +4775,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.SparkJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4787,16 +4787,16 @@ Retrieve ADSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.SparkJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkJob.isConstruct"></a>
 
 ```typescript
-import { SparkJob } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-SparkJob.isConstruct(x: any)
+processing.SparkJob.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4815,7 +4815,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.SparkJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4827,13 +4827,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.SparkJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#aws-dsf.processing.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.SparkJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4845,7 +4845,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.SparkJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -4857,7 +4857,7 @@ Step Functions StateMachine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.SparkJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -4873,12 +4873,12 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.SparkJob.property.ADSF_OWNED_TAG"></a>
+##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkJob.property.ADSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly ADSF_OWNED_TAG: string;
@@ -4888,7 +4888,7 @@ public readonly ADSF_OWNED_TAG: string;
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.SparkJob.property.ADSF_TRACKING_CODE"></a>
+##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkJob.property.ADSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly ADSF_TRACKING_CODE: string;
@@ -4900,49 +4900,94 @@ public readonly ADSF_TRACKING_CODE: string;
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="aws-dsf.AnalyticsBucketProps"></a>
+### AccountInfo <a name="AccountInfo" id="aws-dsf.processing.AccountInfo"></a>
 
-Properties of the {@link AnalyticsBucket } construct.
+The account information for deploying the Spark Application stack.
 
-#### Initializer <a name="Initializer" id="aws-dsf.AnalyticsBucketProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.AccountInfo.Initializer"></a>
 
 ```typescript
-import { AnalyticsBucketProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const analyticsBucketProps: AnalyticsBucketProps = { ... }
+const accountInfo: processing.AccountInfo = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS key to use for bucket encryption. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.accessControl">accessControl</a></code> | <code>aws-cdk-lib.aws_s3.BucketAccessControl</code> | Specifies a canned ACL that grants predefined permissions to the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.blockPublicAccess">blockPublicAccess</a></code> | <code>aws-cdk-lib.aws_s3.BlockPublicAccess</code> | The block public access configuration of this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.bucketKeyEnabled">bucketKeyEnabled</a></code> | <code>boolean</code> | Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | Physical name of this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.cors">cors</a></code> | <code>aws-cdk-lib.aws_s3.CorsRule[]</code> | The CORS configuration of this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.enforceSSL">enforceSSL</a></code> | <code>boolean</code> | Enforces SSL for requests. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this bucket should send notifications to Amazon EventBridge or not. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Inteligent Tiering Configurations. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.lifecycleRules">lifecycleRules</a></code> | <code>aws-cdk-lib.aws_s3.LifecycleRule[]</code> | Rules that define how Amazon S3 manages objects during their lifetime. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.metrics">metrics</a></code> | <code>aws-cdk-lib.aws_s3.BucketMetrics[]</code> | The metrics configuration of this bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role to be used by the notifications handler. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.objectLockDefaultRetention">objectLockDefaultRetention</a></code> | <code>aws-cdk-lib.aws_s3.ObjectLockRetention</code> | The default retention mode and rules for S3 Object Lock. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the bucket. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Destination bucket for the server access logs. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the bucket's access logs. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this bucket should have transfer acceleration turned on or not. |
-| <code><a href="#aws-dsf.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this bucket should have versioning turned on or not. |
+| <code><a href="#aws-dsf.processing.AccountInfo.property.account">account</a></code> | <code>string</code> | The account ID to deploy the Spark Application stack. |
+| <code><a href="#aws-dsf.processing.AccountInfo.property.region">region</a></code> | <code>string</code> | The region to deploy the Spark Application stack. |
 
 ---
 
-##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="aws-dsf.AnalyticsBucketProps.property.encryptionKey"></a>
+##### `account`<sup>Required</sup> <a name="account" id="aws-dsf.processing.AccountInfo.property.account"></a>
+
+```typescript
+public readonly account: string;
+```
+
+- *Type:* string
+
+The account ID to deploy the Spark Application stack.
+
+---
+
+##### `region`<sup>Required</sup> <a name="region" id="aws-dsf.processing.AccountInfo.property.region"></a>
+
+```typescript
+public readonly region: string;
+```
+
+- *Type:* string
+
+The region to deploy the Spark Application stack.
+
+---
+
+### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="aws-dsf.storage.AnalyticsBucketProps"></a>
+
+Properties of the {@link AnalyticsBucket } construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.storage.AnalyticsBucketProps.Initializer"></a>
+
+```typescript
+import { storage } from 'aws-dsf'
+
+const analyticsBucketProps: storage.AnalyticsBucketProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS key to use for bucket encryption. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.accessControl">accessControl</a></code> | <code>aws-cdk-lib.aws_s3.BucketAccessControl</code> | Specifies a canned ACL that grants predefined permissions to the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.blockPublicAccess">blockPublicAccess</a></code> | <code>aws-cdk-lib.aws_s3.BlockPublicAccess</code> | The block public access configuration of this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.bucketKeyEnabled">bucketKeyEnabled</a></code> | <code>boolean</code> | Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | Physical name of this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.cors">cors</a></code> | <code>aws-cdk-lib.aws_s3.CorsRule[]</code> | The CORS configuration of this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.enforceSSL">enforceSSL</a></code> | <code>boolean</code> | Enforces SSL for requests. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this bucket should send notifications to Amazon EventBridge or not. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Inteligent Tiering Configurations. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.lifecycleRules">lifecycleRules</a></code> | <code>aws-cdk-lib.aws_s3.LifecycleRule[]</code> | Rules that define how Amazon S3 manages objects during their lifetime. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.metrics">metrics</a></code> | <code>aws-cdk-lib.aws_s3.BucketMetrics[]</code> | The metrics configuration of this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role to be used by the notifications handler. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectLockDefaultRetention">objectLockDefaultRetention</a></code> | <code>aws-cdk-lib.aws_s3.ObjectLockRetention</code> | The default retention mode and rules for S3 Object Lock. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Destination bucket for the server access logs. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the bucket's access logs. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this bucket should have transfer acceleration turned on or not. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this bucket should have versioning turned on or not. |
+
+---
+
+##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="aws-dsf.storage.AnalyticsBucketProps.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -4958,7 +5003,7 @@ An error will be emitted if `encryption` is set to `UNENCRYPTED` or `S3_MANAGED`
 
 ---
 
-##### `accessControl`<sup>Optional</sup> <a name="accessControl" id="aws-dsf.AnalyticsBucketProps.property.accessControl"></a>
+##### `accessControl`<sup>Optional</sup> <a name="accessControl" id="aws-dsf.storage.AnalyticsBucketProps.property.accessControl"></a>
 
 ```typescript
 public readonly accessControl: BucketAccessControl;
@@ -4971,7 +5016,7 @@ Specifies a canned ACL that grants predefined permissions to the bucket.
 
 ---
 
-##### `autoDeleteObjects`<sup>Optional</sup> <a name="autoDeleteObjects" id="aws-dsf.AnalyticsBucketProps.property.autoDeleteObjects"></a>
+##### `autoDeleteObjects`<sup>Optional</sup> <a name="autoDeleteObjects" id="aws-dsf.storage.AnalyticsBucketProps.property.autoDeleteObjects"></a>
 
 ```typescript
 public readonly autoDeleteObjects: boolean;
@@ -4991,7 +5036,7 @@ by deploying with CDK version `1.126.0` or later **before** switching this value
 
 ---
 
-##### `blockPublicAccess`<sup>Optional</sup> <a name="blockPublicAccess" id="aws-dsf.AnalyticsBucketProps.property.blockPublicAccess"></a>
+##### `blockPublicAccess`<sup>Optional</sup> <a name="blockPublicAccess" id="aws-dsf.storage.AnalyticsBucketProps.property.blockPublicAccess"></a>
 
 ```typescript
 public readonly blockPublicAccess: BlockPublicAccess;
@@ -5004,7 +5049,7 @@ The block public access configuration of this bucket.
 
 ---
 
-##### `bucketKeyEnabled`<sup>Optional</sup> <a name="bucketKeyEnabled" id="aws-dsf.AnalyticsBucketProps.property.bucketKeyEnabled"></a>
+##### `bucketKeyEnabled`<sup>Optional</sup> <a name="bucketKeyEnabled" id="aws-dsf.storage.AnalyticsBucketProps.property.bucketKeyEnabled"></a>
 
 ```typescript
 public readonly bucketKeyEnabled: boolean;
@@ -5023,7 +5068,7 @@ Only relevant, when Encryption is set to `BucketEncryption.KMS` or `BucketEncryp
 
 ---
 
-##### `bucketName`<sup>Optional</sup> <a name="bucketName" id="aws-dsf.AnalyticsBucketProps.property.bucketName"></a>
+##### `bucketName`<sup>Optional</sup> <a name="bucketName" id="aws-dsf.storage.AnalyticsBucketProps.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -5036,7 +5081,7 @@ Physical name of this bucket.
 
 ---
 
-##### `cors`<sup>Optional</sup> <a name="cors" id="aws-dsf.AnalyticsBucketProps.property.cors"></a>
+##### `cors`<sup>Optional</sup> <a name="cors" id="aws-dsf.storage.AnalyticsBucketProps.property.cors"></a>
 
 ```typescript
 public readonly cors: CorsRule[];
@@ -5049,7 +5094,7 @@ The CORS configuration of this bucket.
 
 ---
 
-##### `enforceSSL`<sup>Optional</sup> <a name="enforceSSL" id="aws-dsf.AnalyticsBucketProps.property.enforceSSL"></a>
+##### `enforceSSL`<sup>Optional</sup> <a name="enforceSSL" id="aws-dsf.storage.AnalyticsBucketProps.property.enforceSSL"></a>
 
 ```typescript
 public readonly enforceSSL: boolean;
@@ -5064,7 +5109,7 @@ S3.5 of the AWS Foundational Security Best Practices Regarding S3.
 
 ---
 
-##### `eventBridgeEnabled`<sup>Optional</sup> <a name="eventBridgeEnabled" id="aws-dsf.AnalyticsBucketProps.property.eventBridgeEnabled"></a>
+##### `eventBridgeEnabled`<sup>Optional</sup> <a name="eventBridgeEnabled" id="aws-dsf.storage.AnalyticsBucketProps.property.eventBridgeEnabled"></a>
 
 ```typescript
 public readonly eventBridgeEnabled: boolean;
@@ -5077,7 +5122,7 @@ Whether this bucket should send notifications to Amazon EventBridge or not.
 
 ---
 
-##### `intelligentTieringConfigurations`<sup>Optional</sup> <a name="intelligentTieringConfigurations" id="aws-dsf.AnalyticsBucketProps.property.intelligentTieringConfigurations"></a>
+##### `intelligentTieringConfigurations`<sup>Optional</sup> <a name="intelligentTieringConfigurations" id="aws-dsf.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations"></a>
 
 ```typescript
 public readonly intelligentTieringConfigurations: IntelligentTieringConfiguration[];
@@ -5090,7 +5135,7 @@ Inteligent Tiering Configurations.
 
 ---
 
-##### `inventories`<sup>Optional</sup> <a name="inventories" id="aws-dsf.AnalyticsBucketProps.property.inventories"></a>
+##### `inventories`<sup>Optional</sup> <a name="inventories" id="aws-dsf.storage.AnalyticsBucketProps.property.inventories"></a>
 
 ```typescript
 public readonly inventories: Inventory[];
@@ -5103,7 +5148,7 @@ The inventory configuration of the bucket.
 
 ---
 
-##### `lifecycleRules`<sup>Optional</sup> <a name="lifecycleRules" id="aws-dsf.AnalyticsBucketProps.property.lifecycleRules"></a>
+##### `lifecycleRules`<sup>Optional</sup> <a name="lifecycleRules" id="aws-dsf.storage.AnalyticsBucketProps.property.lifecycleRules"></a>
 
 ```typescript
 public readonly lifecycleRules: LifecycleRule[];
@@ -5116,7 +5161,7 @@ Rules that define how Amazon S3 manages objects during their lifetime.
 
 ---
 
-##### `metrics`<sup>Optional</sup> <a name="metrics" id="aws-dsf.AnalyticsBucketProps.property.metrics"></a>
+##### `metrics`<sup>Optional</sup> <a name="metrics" id="aws-dsf.storage.AnalyticsBucketProps.property.metrics"></a>
 
 ```typescript
 public readonly metrics: BucketMetrics[];
@@ -5129,7 +5174,7 @@ The metrics configuration of this bucket.
 
 ---
 
-##### `notificationsHandlerRole`<sup>Optional</sup> <a name="notificationsHandlerRole" id="aws-dsf.AnalyticsBucketProps.property.notificationsHandlerRole"></a>
+##### `notificationsHandlerRole`<sup>Optional</sup> <a name="notificationsHandlerRole" id="aws-dsf.storage.AnalyticsBucketProps.property.notificationsHandlerRole"></a>
 
 ```typescript
 public readonly notificationsHandlerRole: IRole;
@@ -5142,7 +5187,7 @@ The role to be used by the notifications handler.
 
 ---
 
-##### `objectLockDefaultRetention`<sup>Optional</sup> <a name="objectLockDefaultRetention" id="aws-dsf.AnalyticsBucketProps.property.objectLockDefaultRetention"></a>
+##### `objectLockDefaultRetention`<sup>Optional</sup> <a name="objectLockDefaultRetention" id="aws-dsf.storage.AnalyticsBucketProps.property.objectLockDefaultRetention"></a>
 
 ```typescript
 public readonly objectLockDefaultRetention: ObjectLockRetention;
@@ -5158,7 +5203,7 @@ has object lock enabled. Enabling object lock for existing buckets is not suppor
 
 ---
 
-##### `objectLockEnabled`<sup>Optional</sup> <a name="objectLockEnabled" id="aws-dsf.AnalyticsBucketProps.property.objectLockEnabled"></a>
+##### `objectLockEnabled`<sup>Optional</sup> <a name="objectLockEnabled" id="aws-dsf.storage.AnalyticsBucketProps.property.objectLockEnabled"></a>
 
 ```typescript
 public readonly objectLockEnabled: boolean;
@@ -5174,7 +5219,7 @@ enabled when the bucket is created.
 
 ---
 
-##### `objectOwnership`<sup>Optional</sup> <a name="objectOwnership" id="aws-dsf.AnalyticsBucketProps.property.objectOwnership"></a>
+##### `objectOwnership`<sup>Optional</sup> <a name="objectOwnership" id="aws-dsf.storage.AnalyticsBucketProps.property.objectOwnership"></a>
 
 ```typescript
 public readonly objectOwnership: ObjectOwnership;
@@ -5187,7 +5232,7 @@ The objectOwnership of the bucket.
 
 ---
 
-##### `publicReadAccess`<sup>Optional</sup> <a name="publicReadAccess" id="aws-dsf.AnalyticsBucketProps.property.publicReadAccess"></a>
+##### `publicReadAccess`<sup>Optional</sup> <a name="publicReadAccess" id="aws-dsf.storage.AnalyticsBucketProps.property.publicReadAccess"></a>
 
 ```typescript
 public readonly publicReadAccess: boolean;
@@ -5202,7 +5247,7 @@ Similar to calling `bucket.grantPublicAccess()`
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.AnalyticsBucketProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.storage.AnalyticsBucketProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -5216,7 +5261,7 @@ Policy to apply when the bucket is removed from this stack.
 
 ---
 
-##### `serverAccessLogsBucket`<sup>Optional</sup> <a name="serverAccessLogsBucket" id="aws-dsf.AnalyticsBucketProps.property.serverAccessLogsBucket"></a>
+##### `serverAccessLogsBucket`<sup>Optional</sup> <a name="serverAccessLogsBucket" id="aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsBucket"></a>
 
 ```typescript
 public readonly serverAccessLogsBucket: IBucket;
@@ -5229,7 +5274,7 @@ Destination bucket for the server access logs.
 
 ---
 
-##### `serverAccessLogsPrefix`<sup>Optional</sup> <a name="serverAccessLogsPrefix" id="aws-dsf.AnalyticsBucketProps.property.serverAccessLogsPrefix"></a>
+##### `serverAccessLogsPrefix`<sup>Optional</sup> <a name="serverAccessLogsPrefix" id="aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix"></a>
 
 ```typescript
 public readonly serverAccessLogsPrefix: string;
@@ -5244,7 +5289,7 @@ If defined without "serverAccessLogsBucket", enables access logs to current buck
 
 ---
 
-##### `transferAcceleration`<sup>Optional</sup> <a name="transferAcceleration" id="aws-dsf.AnalyticsBucketProps.property.transferAcceleration"></a>
+##### `transferAcceleration`<sup>Optional</sup> <a name="transferAcceleration" id="aws-dsf.storage.AnalyticsBucketProps.property.transferAcceleration"></a>
 
 ```typescript
 public readonly transferAcceleration: boolean;
@@ -5257,7 +5302,7 @@ Whether this bucket should have transfer acceleration turned on or not.
 
 ---
 
-##### `versioned`<sup>Optional</sup> <a name="versioned" id="aws-dsf.AnalyticsBucketProps.property.versioned"></a>
+##### `versioned`<sup>Optional</sup> <a name="versioned" id="aws-dsf.storage.AnalyticsBucketProps.property.versioned"></a>
 
 ```typescript
 public readonly versioned: boolean;
@@ -5435,34 +5480,34 @@ The list of values to create CfnOutputs.
 
 ---
 
-### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-dsf.DataCatalogDatabaseProps"></a>
+### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-dsf.governance.DataCatalogDatabaseProps"></a>
 
 The Database catalog properties.
 
-#### Initializer <a name="Initializer" id="aws-dsf.DataCatalogDatabaseProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.governance.DataCatalogDatabaseProps.Initializer"></a>
 
 ```typescript
-import { DataCatalogDatabaseProps } from 'aws-dsf'
+import { governance } from 'aws-dsf'
 
-const dataCatalogDatabaseProps: DataCatalogDatabaseProps = { ... }
+const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-dsf.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
 
-##### `locationBucket`<sup>Required</sup> <a name="locationBucket" id="aws-dsf.DataCatalogDatabaseProps.property.locationBucket"></a>
+##### `locationBucket`<sup>Required</sup> <a name="locationBucket" id="aws-dsf.governance.DataCatalogDatabaseProps.property.locationBucket"></a>
 
 ```typescript
 public readonly locationBucket: IBucket;
@@ -5474,7 +5519,7 @@ S3 bucket where data is stored.
 
 ---
 
-##### `locationPrefix`<sup>Required</sup> <a name="locationPrefix" id="aws-dsf.DataCatalogDatabaseProps.property.locationPrefix"></a>
+##### `locationPrefix`<sup>Required</sup> <a name="locationPrefix" id="aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix"></a>
 
 ```typescript
 public readonly locationPrefix: string;
@@ -5486,7 +5531,7 @@ Top level location wwhere table data is stored.
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.DataCatalogDatabaseProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.governance.DataCatalogDatabaseProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -5500,7 +5545,7 @@ Construct would add a randomize suffix as part of the name to prevent name colli
 
 ---
 
-##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="aws-dsf.DataCatalogDatabaseProps.property.autoCrawl"></a>
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawl"></a>
 
 ```typescript
 public readonly autoCrawl: boolean;
@@ -5513,7 +5558,7 @@ When enabled, this automatically creates a top level Glue Crawler that would run
 
 ---
 
-##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="aws-dsf.DataCatalogDatabaseProps.property.autoCrawlSchedule"></a>
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule"></a>
 
 ```typescript
 public readonly autoCrawlSchedule: ScheduleProperty;
@@ -5528,7 +5573,7 @@ Default is once a day at 00:01h.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -5541,7 +5586,7 @@ Encryption key used for Crawler logs.
 
 ---
 
-##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-dsf.DataCatalogDatabaseProps.property.crawlerTableLevelDepth"></a>
+##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth"></a>
 
 ```typescript
 public readonly crawlerTableLevelDepth: number;
@@ -5556,7 +5601,7 @@ This helps the crawler understand the layout of the folders in S3.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.DataCatalogDatabaseProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.governance.DataCatalogDatabaseProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -5570,45 +5615,45 @@ Policy to apply when the bucket is removed from this stack.
 
 ---
 
-### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="aws-dsf.DataLakeCatalogProps"></a>
+### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="aws-dsf.governance.DataLakeCatalogProps"></a>
 
 Properties for the DataLakeCatalog Construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.DataLakeCatalogProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.governance.DataLakeCatalogProps.Initializer"></a>
 
 ```typescript
-import { DataLakeCatalogProps } from 'aws-dsf'
+import { governance } from 'aws-dsf'
 
-const dataLakeCatalogProps: DataLakeCatalogProps = { ... }
+const dataLakeCatalogProps: governance.DataLakeCatalogProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code><a href="#aws-dsf.DataLakeStorage">DataLakeStorage</a></code> | Location of data lake files. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the database in the Glue Data Catalog. |
-| <code><a href="#aws-dsf.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code>aws-dsf.storage.DataLakeStorage</code> | Location of data lake files. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the database in the Glue Data Catalog. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
 ---
 
-##### `dataLakeStorage`<sup>Required</sup> <a name="dataLakeStorage" id="aws-dsf.DataLakeCatalogProps.property.dataLakeStorage"></a>
+##### `dataLakeStorage`<sup>Required</sup> <a name="dataLakeStorage" id="aws-dsf.governance.DataLakeCatalogProps.property.dataLakeStorage"></a>
 
 ```typescript
 public readonly dataLakeStorage: DataLakeStorage;
 ```
 
-- *Type:* <a href="#aws-dsf.DataLakeStorage">DataLakeStorage</a>
+- *Type:* aws-dsf.storage.DataLakeStorage
 
 Location of data lake files.
 
 ---
 
-##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="aws-dsf.DataLakeCatalogProps.property.autoCrawl"></a>
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="aws-dsf.governance.DataLakeCatalogProps.property.autoCrawl"></a>
 
 ```typescript
 public readonly autoCrawl: boolean;
@@ -5621,7 +5666,7 @@ When enabled, this automatically creates a top level Glue Crawler that would run
 
 ---
 
-##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="aws-dsf.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="aws-dsf.governance.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
 
 ```typescript
 public readonly autoCrawlSchedule: ScheduleProperty;
@@ -5636,7 +5681,7 @@ Default is once a day at 00:01h.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-dsf.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -5649,7 +5694,7 @@ Encryption key used for Crawler logs.
 
 ---
 
-##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-dsf.DataLakeCatalogProps.property.crawlerTableLevelDepth"></a>
+##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-dsf.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth"></a>
 
 ```typescript
 public readonly crawlerTableLevelDepth: number;
@@ -5664,7 +5709,7 @@ This helps the crawler understand the layout of the folders in S3.
 
 ---
 
-##### `databaseName`<sup>Optional</sup> <a name="databaseName" id="aws-dsf.DataLakeCatalogProps.property.databaseName"></a>
+##### `databaseName`<sup>Optional</sup> <a name="databaseName" id="aws-dsf.governance.DataLakeCatalogProps.property.databaseName"></a>
 
 ```typescript
 public readonly databaseName: string;
@@ -5680,7 +5725,7 @@ The suffix is also added to the S3 location inside the data lake buckets.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.DataLakeCatalogProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.governance.DataLakeCatalogProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -5694,37 +5739,37 @@ Policy to apply when the bucket is removed from this stack.
 
 ---
 
-### DataLakeStorageProps <a name="DataLakeStorageProps" id="aws-dsf.DataLakeStorageProps"></a>
+### DataLakeStorageProps <a name="DataLakeStorageProps" id="aws-dsf.storage.DataLakeStorageProps"></a>
 
 Properties for the DataLakeStorage Construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.DataLakeStorageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.storage.DataLakeStorageProps.Initializer"></a>
 
 ```typescript
-import { DataLakeStorageProps } from 'aws-dsf'
+import { storage } from 'aws-dsf'
 
-const dataLakeStorageProps: DataLakeStorageProps = { ... }
+const dataLakeStorageProps: storage.DataLakeStorageProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.bronzeBucketArchiveDelay">bronzeBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay">bronzeBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.bronzeBucketName">bronzeBucketName</a></code> | <code>string</code> | Name of the Bronze bucket. |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.goldBucketArchiveDelay">goldBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay">goldBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.goldBucketName">goldBucketName</a></code> | <code>string</code> | Name of the Gold bucket. |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.silverBucketArchiveDelay">silverBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay">silverBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-dsf.DataLakeStorageProps.property.silverBucketName">silverBucketName</a></code> | <code>string</code> | Name of the Silver bucket. |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.bronzeBucketArchiveDelay">bronzeBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay">bronzeBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.bronzeBucketName">bronzeBucketName</a></code> | <code>string</code> | Name of the Bronze bucket. |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.goldBucketArchiveDelay">goldBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay">goldBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.goldBucketName">goldBucketName</a></code> | <code>string</code> | Name of the Gold bucket. |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.silverBucketArchiveDelay">silverBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class). |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay">silverBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class). |
+| <code><a href="#aws-dsf.storage.DataLakeStorageProps.property.silverBucketName">silverBucketName</a></code> | <code>string</code> | Name of the Silver bucket. |
 
 ---
 
-##### `bronzeBucketArchiveDelay`<sup>Optional</sup> <a name="bronzeBucketArchiveDelay" id="aws-dsf.DataLakeStorageProps.property.bronzeBucketArchiveDelay"></a>
+##### `bronzeBucketArchiveDelay`<sup>Optional</sup> <a name="bronzeBucketArchiveDelay" id="aws-dsf.storage.DataLakeStorageProps.property.bronzeBucketArchiveDelay"></a>
 
 ```typescript
 public readonly bronzeBucketArchiveDelay: number;
@@ -5737,7 +5782,7 @@ Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage 
 
 ---
 
-##### `bronzeBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="bronzeBucketInfrequentAccessDelay" id="aws-dsf.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay"></a>
+##### `bronzeBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="bronzeBucketInfrequentAccessDelay" id="aws-dsf.storage.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay"></a>
 
 ```typescript
 public readonly bronzeBucketInfrequentAccessDelay: number;
@@ -5750,7 +5795,7 @@ Delay (in days) before moving BRONZE data to cold storage (Infrequent Access sto
 
 ---
 
-##### `bronzeBucketName`<sup>Optional</sup> <a name="bronzeBucketName" id="aws-dsf.DataLakeStorageProps.property.bronzeBucketName"></a>
+##### `bronzeBucketName`<sup>Optional</sup> <a name="bronzeBucketName" id="aws-dsf.storage.DataLakeStorageProps.property.bronzeBucketName"></a>
 
 ```typescript
 public readonly bronzeBucketName: string;
@@ -5765,7 +5810,7 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="aws-dsf.DataLakeStorageProps.property.dataLakeKey"></a>
+##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="aws-dsf.storage.DataLakeStorageProps.property.dataLakeKey"></a>
 
 ```typescript
 public readonly dataLakeKey: IKey;
@@ -5778,7 +5823,7 @@ The KMS Key used to encrypt all DataLakeStorage S3 buckets.
 
 ---
 
-##### `goldBucketArchiveDelay`<sup>Optional</sup> <a name="goldBucketArchiveDelay" id="aws-dsf.DataLakeStorageProps.property.goldBucketArchiveDelay"></a>
+##### `goldBucketArchiveDelay`<sup>Optional</sup> <a name="goldBucketArchiveDelay" id="aws-dsf.storage.DataLakeStorageProps.property.goldBucketArchiveDelay"></a>
 
 ```typescript
 public readonly goldBucketArchiveDelay: number;
@@ -5791,7 +5836,7 @@ Delay (in days) before archiving GOLD data to frozen storage (Glacier storage cl
 
 ---
 
-##### `goldBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="goldBucketInfrequentAccessDelay" id="aws-dsf.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay"></a>
+##### `goldBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="goldBucketInfrequentAccessDelay" id="aws-dsf.storage.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay"></a>
 
 ```typescript
 public readonly goldBucketInfrequentAccessDelay: number;
@@ -5804,7 +5849,7 @@ Delay (in days) before moving GOLD data to cold storage (Infrequent Access stora
 
 ---
 
-##### `goldBucketName`<sup>Optional</sup> <a name="goldBucketName" id="aws-dsf.DataLakeStorageProps.property.goldBucketName"></a>
+##### `goldBucketName`<sup>Optional</sup> <a name="goldBucketName" id="aws-dsf.storage.DataLakeStorageProps.property.goldBucketName"></a>
 
 ```typescript
 public readonly goldBucketName: string;
@@ -5819,7 +5864,7 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.DataLakeStorageProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.storage.DataLakeStorageProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -5835,7 +5880,7 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `silverBucketArchiveDelay`<sup>Optional</sup> <a name="silverBucketArchiveDelay" id="aws-dsf.DataLakeStorageProps.property.silverBucketArchiveDelay"></a>
+##### `silverBucketArchiveDelay`<sup>Optional</sup> <a name="silverBucketArchiveDelay" id="aws-dsf.storage.DataLakeStorageProps.property.silverBucketArchiveDelay"></a>
 
 ```typescript
 public readonly silverBucketArchiveDelay: number;
@@ -5848,7 +5893,7 @@ Delay (in days) before archiving SILVER data to frozen storage (Glacier storage 
 
 ---
 
-##### `silverBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="silverBucketInfrequentAccessDelay" id="aws-dsf.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay"></a>
+##### `silverBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="silverBucketInfrequentAccessDelay" id="aws-dsf.storage.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay"></a>
 
 ```typescript
 public readonly silverBucketInfrequentAccessDelay: number;
@@ -5861,7 +5906,7 @@ Delay (in days) before moving SILVER data to cold storage (Infrequent Access sto
 
 ---
 
-##### `silverBucketName`<sup>Optional</sup> <a name="silverBucketName" id="aws-dsf.DataLakeStorageProps.property.silverBucketName"></a>
+##### `silverBucketName`<sup>Optional</sup> <a name="silverBucketName" id="aws-dsf.storage.DataLakeStorageProps.property.silverBucketName"></a>
 
 ```typescript
 public readonly silverBucketName: string;
@@ -5939,32 +5984,32 @@ public readonly vpcFlowLogLogGroup: ILogGroup;
 
 ---
 
-### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.PySparkApplicationPackageProps"></a>
+### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.processing.PySparkApplicationPackageProps"></a>
 
 Properties for the {PySparkApplicationPackage} construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.PySparkApplicationPackageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.PySparkApplicationPackageProps.Initializer"></a>
 
 ```typescript
-import { PySparkApplicationPackageProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const pySparkApplicationPackageProps: PySparkApplicationPackageProps = { ... }
+const pySparkApplicationPackageProps: processing.PySparkApplicationPackageProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the pyspark application. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the pyspark application. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
 
 ---
 
-##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-dsf.PySparkApplicationPackageProps.property.applicationName"></a>
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-dsf.processing.PySparkApplicationPackageProps.property.applicationName"></a>
 
 ```typescript
 public readonly applicationName: string;
@@ -5978,7 +6023,7 @@ This name is used as a parent directory in s3 to store the entrypoint as well as
 
 ---
 
-##### `entrypointPath`<sup>Required</sup> <a name="entrypointPath" id="aws-dsf.PySparkApplicationPackageProps.property.entrypointPath"></a>
+##### `entrypointPath`<sup>Required</sup> <a name="entrypointPath" id="aws-dsf.processing.PySparkApplicationPackageProps.property.entrypointPath"></a>
 
 ```typescript
 public readonly entrypointPath: string;
@@ -5990,7 +6035,7 @@ The source path in your code base where you have the entrypoint stored example `
 
 ---
 
-##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="aws-dsf.PySparkApplicationPackageProps.property.artifactsBucket"></a>
+##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="aws-dsf.processing.PySparkApplicationPackageProps.property.artifactsBucket"></a>
 
 ```typescript
 public readonly artifactsBucket: IBucket;
@@ -6003,7 +6048,7 @@ The S3 bucket where to upload the artifacts of the Spark Job This is where the e
 
 ---
 
-##### `dependenciesFolder`<sup>Optional</sup> <a name="dependenciesFolder" id="aws-dsf.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
+##### `dependenciesFolder`<sup>Optional</sup> <a name="dependenciesFolder" id="aws-dsf.processing.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
 
 ```typescript
 public readonly dependenciesFolder: string;
@@ -6016,7 +6061,7 @@ The source directory where you have `requirements.txt` or `pyproject.toml` that 
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.PySparkApplicationPackageProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.PySparkApplicationPackageProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6033,7 +6078,7 @@ in the 'cdk.json' or 'cdk.context.json' must be set to true.
 
 ---
 
-##### `venvArchivePath`<sup>Optional</sup> <a name="venvArchivePath" id="aws-dsf.PySparkApplicationPackageProps.property.venvArchivePath"></a>
+##### `venvArchivePath`<sup>Optional</sup> <a name="venvArchivePath" id="aws-dsf.processing.PySparkApplicationPackageProps.property.venvArchivePath"></a>
 
 ```typescript
 public readonly venvArchivePath: string;
@@ -6048,35 +6093,35 @@ This is the output path used in the `venv-pack -o` command in your Dockerfile.
 
 ---
 
-### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="aws-dsf.SparkEmrCICDPipelineProps"></a>
+### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="aws-dsf.processing.SparkEmrCICDPipelineProps"></a>
 
 Properties for SparkEmrCICDPipeline class.
 
-#### Initializer <a name="Initializer" id="aws-dsf.SparkEmrCICDPipelineProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrCICDPipelineProps.Initializer"></a>
 
 ```typescript
-import { SparkEmrCICDPipelineProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkEmrCICDPipelineProps: SparkEmrCICDPipelineProps = { ... }
+const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
-| <code><a href="#aws-dsf.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code><a href="#aws-dsf.SparkImage">SparkImage</a></code> | The EMR Spark image to use to run the unit tests. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code>aws-dsf.processing.SparkImage</code> | The EMR Spark image to use to run the unit tests. |
 
 ---
 
-##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="aws-dsf.SparkEmrCICDPipelineProps.property.applicationStackFactory"></a>
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory"></a>
 
 ```typescript
 public readonly applicationStackFactory: ApplicationStackFactory;
@@ -6088,7 +6133,7 @@ The application Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
-##### `sparkApplicationName`<sup>Required</sup> <a name="sparkApplicationName" id="aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationName"></a>
+##### `sparkApplicationName`<sup>Required</sup> <a name="sparkApplicationName" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName"></a>
 
 ```typescript
 public readonly sparkApplicationName: string;
@@ -6100,7 +6145,7 @@ The name of the Spark application to be deployed.
 
 ---
 
-##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="aws-dsf.SparkEmrCICDPipelineProps.property.cdkApplicationPath"></a>
+##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath"></a>
 
 ```typescript
 public readonly cdkApplicationPath: string;
@@ -6113,7 +6158,7 @@ The path to the folder that contains the CDK Application.
 
 ---
 
-##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="aws-dsf.SparkEmrCICDPipelineProps.property.integTestEnv"></a>
+##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestEnv"></a>
 
 ```typescript
 public readonly integTestEnv: {[ key: string ]: string};
@@ -6129,7 +6174,7 @@ Key is the name of the environment variable to create. Value is generally a CfnO
 
 ---
 
-##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="aws-dsf.SparkEmrCICDPipelineProps.property.integTestPermissions"></a>
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestPermissions"></a>
 
 ```typescript
 public readonly integTestPermissions: PolicyStatement[];
@@ -6142,7 +6187,7 @@ The IAM policy statements to add permissions for running the integration tests.
 
 ---
 
-##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="aws-dsf.SparkEmrCICDPipelineProps.property.integTestScript"></a>
+##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestScript"></a>
 
 ```typescript
 public readonly integTestScript: string;
@@ -6155,7 +6200,7 @@ The path to the Shell script that contains integration tests.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrCICDPipelineProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6171,7 +6216,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="aws-dsf.SparkEmrCICDPipelineProps.property.sparkApplicationPath"></a>
+##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath"></a>
 
 ```typescript
 public readonly sparkApplicationPath: string;
@@ -6184,20 +6229,20 @@ The path to the folder that contains the Spark Application.
 
 ---
 
-##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="aws-dsf.SparkEmrCICDPipelineProps.property.sparkImage"></a>
+##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkImage"></a>
 
 ```typescript
 public readonly sparkImage: SparkImage;
 ```
 
-- *Type:* <a href="#aws-dsf.SparkImage">SparkImage</a>
+- *Type:* aws-dsf.processing.SparkImage
 - *Default:* EMR v6.12 is used
 
 The EMR Spark image to use to run the unit tests.
 
 ---
 
-### SparkEmrEksJobApiProps <a name="SparkEmrEksJobApiProps" id="aws-dsf.SparkEmrEksJobApiProps"></a>
+### SparkEmrEksJobApiProps <a name="SparkEmrEksJobApiProps" id="aws-dsf.processing.SparkEmrEksJobApiProps"></a>
 
 Configuration for the EMR on EKS job.
 
@@ -6205,26 +6250,26 @@ Use this interface when EmrOnEksSparkJobProps doesn't give you access to the con
 
 > [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="aws-dsf.SparkEmrEksJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrEksJobApiProps.Initializer"></a>
 
 ```typescript
-import { SparkEmrEksJobApiProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkEmrEksJobApiProps: SparkEmrEksJobApiProps = { ... }
+const sparkEmrEksJobApiProps: processing.SparkEmrEksJobApiProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkEmrEksJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.SparkEmrEksJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS Job Configuration. |
-| <code><a href="#aws-dsf.SparkEmrEksJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS Job Configuration. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrEksJobApiProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6240,7 +6285,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.SparkEmrEksJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -6256,7 +6301,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.SparkEmrEksJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -6270,7 +6315,7 @@ EMR on EKS Job Configuration.
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.SparkEmrEksJobApiProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.executionTimeoutMinutes"></a>
 
 ```typescript
 public readonly executionTimeoutMinutes: number;
@@ -6284,44 +6329,44 @@ Job execution timeout in minutes.
 
 ---
 
-### SparkEmrEksJobProps <a name="SparkEmrEksJobProps" id="aws-dsf.SparkEmrEksJobProps"></a>
+### SparkEmrEksJobProps <a name="SparkEmrEksJobProps" id="aws-dsf.processing.SparkEmrEksJobProps"></a>
 
 Simplified configuration for the EMR Serverless Job.
 
 > [(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags)]((https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags))
 
-#### Initializer <a name="Initializer" id="aws-dsf.SparkEmrEksJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrEksJobProps.Initializer"></a>
 
 ```typescript
-import { SparkEmrEksJobProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkEmrEksJobProps: SparkEmrEksJobProps = { ... }
+const sparkEmrEksJobProps: processing.SparkEmrEksJobProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrEksJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrEksJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrEksJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6337,7 +6382,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.SparkEmrEksJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrEksJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -6353,7 +6398,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrEksJobProps.property.executionRoleArn"></a>
+##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrEksJobProps.property.executionRoleArn"></a>
 
 ```typescript
 public readonly executionRoleArn: string;
@@ -6363,7 +6408,7 @@ public readonly executionRoleArn: string;
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.SparkEmrEksJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrEksJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -6373,7 +6418,7 @@ public readonly name: string;
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -6383,7 +6428,7 @@ public readonly sparkSubmitEntryPoint: string;
 
 ---
 
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.SparkEmrEksJobProps.property.virtualClusterId"></a>
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrEksJobProps.property.virtualClusterId"></a>
 
 ```typescript
 public readonly virtualClusterId: string;
@@ -6393,7 +6438,7 @@ public readonly virtualClusterId: string;
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.SparkEmrEksJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrEksJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -6403,7 +6448,7 @@ public readonly applicationConfiguration: {[ key: string ]: any};
 
 ---
 
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.SparkEmrEksJobProps.property.cloudWatchLogGroupName"></a>
+##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupName"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupName: string;
@@ -6413,7 +6458,7 @@ public readonly cloudWatchLogGroupName: string;
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -6423,7 +6468,7 @@ public readonly cloudWatchLogGroupStreamPrefix: string;
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.SparkEmrEksJobProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrEksJobProps.property.executionTimeoutMinutes"></a>
 
 ```typescript
 public readonly executionTimeoutMinutes: number;
@@ -6433,7 +6478,7 @@ public readonly executionTimeoutMinutes: number;
 
 ---
 
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.SparkEmrEksJobProps.property.maxRetries"></a>
+##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.processing.SparkEmrEksJobProps.property.maxRetries"></a>
 
 ```typescript
 public readonly maxRetries: number;
@@ -6443,7 +6488,7 @@ public readonly maxRetries: number;
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.SparkEmrEksJobProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrEksJobProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: string;
@@ -6453,7 +6498,7 @@ public readonly releaseLabel: string;
 
 ---
 
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.SparkEmrEksJobProps.property.s3LogUri"></a>
+##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.processing.SparkEmrEksJobProps.property.s3LogUri"></a>
 
 ```typescript
 public readonly s3LogUri: string;
@@ -6463,7 +6508,7 @@ public readonly s3LogUri: string;
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string[];
@@ -6473,7 +6518,7 @@ public readonly sparkSubmitEntryPointArguments: string[];
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.SparkEmrEksJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -6483,7 +6528,7 @@ public readonly sparkSubmitParameters: string;
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.SparkEmrEksJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrEksJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -6493,7 +6538,7 @@ public readonly tags: {[ key: string ]: any};
 
 ---
 
-### SparkEmrServerlessJobApiProps <a name="SparkEmrServerlessJobApiProps" id="aws-dsf.SparkEmrServerlessJobApiProps"></a>
+### SparkEmrServerlessJobApiProps <a name="SparkEmrServerlessJobApiProps" id="aws-dsf.processing.SparkEmrServerlessJobApiProps"></a>
 
 Configuration for the EMR Serverless Job API.
 
@@ -6501,25 +6546,25 @@ Use this interface when EmrServerlessJobProps doesn't give you access to the con
 
 > [[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="aws-dsf.SparkEmrServerlessJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrServerlessJobApiProps.Initializer"></a>
 
 ```typescript
-import { SparkEmrServerlessJobApiProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkEmrServerlessJobApiProps: SparkEmrServerlessJobApiProps = { ... }
+const sparkEmrServerlessJobApiProps: processing.SparkEmrServerlessJobApiProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrServerlessJobApiProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrServerlessJobApiProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6535,7 +6580,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.SparkEmrServerlessJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrServerlessJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -6551,7 +6596,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.SparkEmrServerlessJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrServerlessJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -6565,47 +6610,43 @@ EMR Serverless Job Configuration.
 
 ---
 
-### SparkEmrServerlessJobProps <a name="SparkEmrServerlessJobProps" id="aws-dsf.SparkEmrServerlessJobProps"></a>
+### SparkEmrServerlessJobProps <a name="SparkEmrServerlessJobProps" id="aws-dsf.processing.SparkEmrServerlessJobProps"></a>
 
-Simplified configuration for the EMR Serverless Job.
-
-> [[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html])
-
-#### Initializer <a name="Initializer" id="aws-dsf.SparkEmrServerlessJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrServerlessJobProps.Initializer"></a>
 
 ```typescript
-import { SparkEmrServerlessJobProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkEmrServerlessJobProps: SparkEmrServerlessJobProps = { ... }
+const sparkEmrServerlessJobProps: processing.SparkEmrServerlessJobProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrServerlessJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6621,7 +6662,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.SparkEmrServerlessJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -6637,7 +6678,7 @@ Schedule to run the Step Functions state machine.
 
 ---
 
-##### `applicationId`<sup>Required</sup> <a name="applicationId" id="aws-dsf.SparkEmrServerlessJobProps.property.applicationId"></a>
+##### `applicationId`<sup>Required</sup> <a name="applicationId" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId"></a>
 
 ```typescript
 public readonly applicationId: string;
@@ -6647,7 +6688,7 @@ public readonly applicationId: string;
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.SparkEmrServerlessJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -6657,7 +6698,7 @@ public readonly name: string;
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -6667,7 +6708,7 @@ public readonly sparkSubmitEntryPoint: string;
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.SparkEmrServerlessJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -6677,7 +6718,7 @@ public readonly applicationConfiguration: {[ key: string ]: any};
 
 ---
 
-##### `cloudWatchEncryptionKeyArn`<sup>Optional</sup> <a name="cloudWatchEncryptionKeyArn" id="aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn"></a>
+##### `cloudWatchEncryptionKeyArn`<sup>Optional</sup> <a name="cloudWatchEncryptionKeyArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn"></a>
 
 ```typescript
 public readonly cloudWatchEncryptionKeyArn: string;
@@ -6687,7 +6728,7 @@ public readonly cloudWatchEncryptionKeyArn: string;
 
 ---
 
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName"></a>
+##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupName: string;
@@ -6697,7 +6738,7 @@ public readonly cloudWatchLogGroupName: string;
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -6707,7 +6748,7 @@ public readonly cloudWatchLogGroupStreamPrefix: string;
 
 ---
 
-##### `cloudWatchLogtypes`<sup>Optional</sup> <a name="cloudWatchLogtypes" id="aws-dsf.SparkEmrServerlessJobProps.property.cloudWatchLogtypes"></a>
+##### `cloudWatchLogtypes`<sup>Optional</sup> <a name="cloudWatchLogtypes" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes"></a>
 
 ```typescript
 public readonly cloudWatchLogtypes: string;
@@ -6717,7 +6758,7 @@ public readonly cloudWatchLogtypes: string;
 
 ---
 
-##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="aws-dsf.SparkEmrServerlessJobProps.property.executionRoleArn"></a>
+##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn"></a>
 
 ```typescript
 public readonly executionRoleArn: string;
@@ -6727,7 +6768,7 @@ public readonly executionRoleArn: string;
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.SparkEmrServerlessJobProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes"></a>
 
 ```typescript
 public readonly executionTimeoutMinutes: number;
@@ -6737,7 +6778,7 @@ public readonly executionTimeoutMinutes: number;
 
 ---
 
-##### `persistentAppUi`<sup>Optional</sup> <a name="persistentAppUi" id="aws-dsf.SparkEmrServerlessJobProps.property.persistentAppUi"></a>
+##### `persistentAppUi`<sup>Optional</sup> <a name="persistentAppUi" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUi"></a>
 
 ```typescript
 public readonly persistentAppUi: boolean;
@@ -6747,7 +6788,7 @@ public readonly persistentAppUi: boolean;
 
 ---
 
-##### `persistentAppUIKeyArn`<sup>Optional</sup> <a name="persistentAppUIKeyArn" id="aws-dsf.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn"></a>
+##### `persistentAppUIKeyArn`<sup>Optional</sup> <a name="persistentAppUIKeyArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn"></a>
 
 ```typescript
 public readonly persistentAppUIKeyArn: string;
@@ -6757,7 +6798,7 @@ public readonly persistentAppUIKeyArn: string;
 
 ---
 
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.SparkEmrServerlessJobProps.property.s3LogUri"></a>
+##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUri"></a>
 
 ```typescript
 public readonly s3LogUri: string;
@@ -6767,7 +6808,7 @@ public readonly s3LogUri: string;
 
 ---
 
-##### `s3LogUriKeyArn`<sup>Optional</sup> <a name="s3LogUriKeyArn" id="aws-dsf.SparkEmrServerlessJobProps.property.s3LogUriKeyArn"></a>
+##### `s3LogUriKeyArn`<sup>Optional</sup> <a name="s3LogUriKeyArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn"></a>
 
 ```typescript
 public readonly s3LogUriKeyArn: string;
@@ -6777,7 +6818,7 @@ public readonly s3LogUriKeyArn: string;
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string[];
@@ -6787,7 +6828,7 @@ public readonly sparkSubmitEntryPointArguments: string[];
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.SparkEmrServerlessJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -6797,7 +6838,7 @@ public readonly sparkSubmitParameters: string;
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.SparkEmrServerlessJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -6807,37 +6848,37 @@ public readonly tags: {[ key: string ]: any};
 
 ---
 
-### SparkEmrServerlessRuntimeProps <a name="SparkEmrServerlessRuntimeProps" id="aws-dsf.SparkEmrServerlessRuntimeProps"></a>
+### SparkEmrServerlessRuntimeProps <a name="SparkEmrServerlessRuntimeProps" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps"></a>
 
 Properties for the {SparkRuntimeServerless} construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.SparkEmrServerlessRuntimeProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.Initializer"></a>
 
 ```typescript
-import { SparkEmrServerlessRuntimeProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkEmrServerlessRuntimeProps: SparkEmrServerlessRuntimeProps = { ... }
+const sparkEmrServerlessRuntimeProps: processing.SparkEmrServerlessRuntimeProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code><a href="#aws-dsf.Architecture">Architecture</a></code> | The CPU architecture type of the application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The image configuration. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code><a href="#aws-dsf.EmrRuntimeVersion">EmrRuntimeVersion</a></code> | The EMR release version associated with the application. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code>aws-dsf.processing.Architecture</code> | The CPU architecture type of the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The image configuration. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -6851,19 +6892,19 @@ The name of the application. The name must be less than 64 characters.
 
 ---
 
-##### `architecture`<sup>Optional</sup> <a name="architecture" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.architecture"></a>
+##### `architecture`<sup>Optional</sup> <a name="architecture" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.architecture"></a>
 
 ```typescript
 public readonly architecture: Architecture;
 ```
 
-- *Type:* <a href="#aws-dsf.Architecture">Architecture</a>
+- *Type:* aws-dsf.processing.Architecture
 
 The CPU architecture type of the application.
 
 ---
 
-##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration"></a>
+##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration"></a>
 
 ```typescript
 public readonly autoStartConfiguration: IResolvable | AutoStartConfigurationProperty;
@@ -6875,7 +6916,7 @@ The configuration for an application to automatically start on job submission.
 
 ---
 
-##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration"></a>
+##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration"></a>
 
 ```typescript
 public readonly autoStopConfiguration: IResolvable | AutoStopConfigurationProperty;
@@ -6887,7 +6928,7 @@ The configuration for an application to automatically stop after a certain amoun
 
 ---
 
-##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.imageConfiguration"></a>
+##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration"></a>
 
 ```typescript
 public readonly imageConfiguration: IResolvable | ImageConfigurationInputProperty;
@@ -6899,7 +6940,7 @@ The image configuration.
 
 ---
 
-##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.initialCapacity"></a>
+##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity"></a>
 
 ```typescript
 public readonly initialCapacity: IResolvable | IResolvable | InitialCapacityConfigKeyValuePairProperty[];
@@ -6911,7 +6952,7 @@ The initial capacity of the application.
 
 ---
 
-##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.maximumCapacity"></a>
+##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity"></a>
 
 ```typescript
 public readonly maximumCapacity: IResolvable | MaximumAllowedResourcesProperty;
@@ -6925,7 +6966,7 @@ This is cumulative across all workers at any given point in time during the life
 
 ---
 
-##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.networkConfiguration"></a>
+##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration"></a>
 
 ```typescript
 public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty;
@@ -6942,13 +6983,13 @@ The VPC has one NAT Gateway per AZ and an S3 endpoint
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
-- *Type:* <a href="#aws-dsf.EmrRuntimeVersion">EmrRuntimeVersion</a>
+- *Type:* aws-dsf.processing.EmrRuntimeVersion
 
 The EMR release version associated with the application.
 
@@ -6958,7 +6999,7 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -6974,7 +7015,7 @@ If DESTROY is selected, context value
 
 ---
 
-##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="aws-dsf.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications"></a>
+##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications"></a>
 
 ```typescript
 public readonly workerTypeSpecifications: IResolvable | {[ key: string ]: IResolvable | WorkerTypeSpecificationInputProperty};
@@ -6989,28 +7030,28 @@ This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserG
 
 ---
 
-### SparkJobProps <a name="SparkJobProps" id="aws-dsf.SparkJobProps"></a>
+### SparkJobProps <a name="SparkJobProps" id="aws-dsf.processing.SparkJobProps"></a>
 
 Properties for the SparkJob construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.SparkJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkJobProps.Initializer"></a>
 
 ```typescript
-import { SparkJobProps } from 'aws-dsf'
+import { processing } from 'aws-dsf'
 
-const sparkJobProps: SparkJobProps = { ... }
+const sparkJobProps: processing.SparkJobProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.SparkJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.SparkJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -7026,7 +7067,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.SparkJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -7188,7 +7229,7 @@ the name of the bucket.
 
 ## Enums <a name="Enums" id="Enums"></a>
 
-### Architecture <a name="Architecture" id="aws-dsf.Architecture"></a>
+### Architecture <a name="Architecture" id="aws-dsf.processing.Architecture"></a>
 
 Enum defining the CPU architecture type of the application, either  X86_64 or ARM64.
 
@@ -7196,17 +7237,17 @@ Enum defining the CPU architecture type of the application, either  X86_64 or AR
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.Architecture.X86_64">X86_64</a></code> | *No description.* |
-| <code><a href="#aws-dsf.Architecture.ARM64">ARM64</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.Architecture.X86_64">X86_64</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.Architecture.ARM64">ARM64</a></code> | *No description.* |
 
 ---
 
-##### `X86_64` <a name="X86_64" id="aws-dsf.Architecture.X86_64"></a>
+##### `X86_64` <a name="X86_64" id="aws-dsf.processing.Architecture.X86_64"></a>
 
 ---
 
 
-##### `ARM64` <a name="ARM64" id="aws-dsf.Architecture.ARM64"></a>
+##### `ARM64` <a name="ARM64" id="aws-dsf.processing.Architecture.ARM64"></a>
 
 ---
 
@@ -7234,7 +7275,7 @@ The list of CICD Stages to deploy the SparkCICDStack.
 ---
 
 
-### EmrRuntimeVersion <a name="EmrRuntimeVersion" id="aws-dsf.EmrRuntimeVersion"></a>
+### EmrRuntimeVersion <a name="EmrRuntimeVersion" id="aws-dsf.processing.EmrRuntimeVersion"></a>
 
 Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html).
 
@@ -7242,100 +7283,100 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
-| <code><a href="#aws-dsf.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
 
-##### `V6_12` <a name="V6_12" id="aws-dsf.EmrRuntimeVersion.V6_12"></a>
-
----
-
-
-##### `V6_11_1` <a name="V6_11_1" id="aws-dsf.EmrRuntimeVersion.V6_11_1"></a>
+##### `V6_12` <a name="V6_12" id="aws-dsf.processing.EmrRuntimeVersion.V6_12"></a>
 
 ---
 
 
-##### `V6_11` <a name="V6_11" id="aws-dsf.EmrRuntimeVersion.V6_11"></a>
+##### `V6_11_1` <a name="V6_11_1" id="aws-dsf.processing.EmrRuntimeVersion.V6_11_1"></a>
 
 ---
 
 
-##### `V6_10_1` <a name="V6_10_1" id="aws-dsf.EmrRuntimeVersion.V6_10_1"></a>
+##### `V6_11` <a name="V6_11" id="aws-dsf.processing.EmrRuntimeVersion.V6_11"></a>
 
 ---
 
 
-##### `V6_10` <a name="V6_10" id="aws-dsf.EmrRuntimeVersion.V6_10"></a>
+##### `V6_10_1` <a name="V6_10_1" id="aws-dsf.processing.EmrRuntimeVersion.V6_10_1"></a>
 
 ---
 
 
-##### `V6_9` <a name="V6_9" id="aws-dsf.EmrRuntimeVersion.V6_9"></a>
+##### `V6_10` <a name="V6_10" id="aws-dsf.processing.EmrRuntimeVersion.V6_10"></a>
 
 ---
 
 
-##### `V6_8` <a name="V6_8" id="aws-dsf.EmrRuntimeVersion.V6_8"></a>
+##### `V6_9` <a name="V6_9" id="aws-dsf.processing.EmrRuntimeVersion.V6_9"></a>
 
 ---
 
 
-##### `V6_7` <a name="V6_7" id="aws-dsf.EmrRuntimeVersion.V6_7"></a>
+##### `V6_8` <a name="V6_8" id="aws-dsf.processing.EmrRuntimeVersion.V6_8"></a>
 
 ---
 
 
-##### `V6_6` <a name="V6_6" id="aws-dsf.EmrRuntimeVersion.V6_6"></a>
+##### `V6_7` <a name="V6_7" id="aws-dsf.processing.EmrRuntimeVersion.V6_7"></a>
 
 ---
 
 
-##### `V6_5` <a name="V6_5" id="aws-dsf.EmrRuntimeVersion.V6_5"></a>
+##### `V6_6` <a name="V6_6" id="aws-dsf.processing.EmrRuntimeVersion.V6_6"></a>
 
 ---
 
 
-##### `V6_4` <a name="V6_4" id="aws-dsf.EmrRuntimeVersion.V6_4"></a>
+##### `V6_5` <a name="V6_5" id="aws-dsf.processing.EmrRuntimeVersion.V6_5"></a>
 
 ---
 
 
-##### `V6_3` <a name="V6_3" id="aws-dsf.EmrRuntimeVersion.V6_3"></a>
+##### `V6_4` <a name="V6_4" id="aws-dsf.processing.EmrRuntimeVersion.V6_4"></a>
 
 ---
 
 
-##### `V6_2` <a name="V6_2" id="aws-dsf.EmrRuntimeVersion.V6_2"></a>
+##### `V6_3` <a name="V6_3" id="aws-dsf.processing.EmrRuntimeVersion.V6_3"></a>
 
 ---
 
 
-##### `V5_33` <a name="V5_33" id="aws-dsf.EmrRuntimeVersion.V5_33"></a>
+##### `V6_2` <a name="V6_2" id="aws-dsf.processing.EmrRuntimeVersion.V6_2"></a>
 
 ---
 
 
-##### `V5_32` <a name="V5_32" id="aws-dsf.EmrRuntimeVersion.V5_32"></a>
+##### `V5_33` <a name="V5_33" id="aws-dsf.processing.EmrRuntimeVersion.V5_33"></a>
 
 ---
 
 
-### SparkImage <a name="SparkImage" id="aws-dsf.SparkImage"></a>
+##### `V5_32` <a name="V5_32" id="aws-dsf.processing.EmrRuntimeVersion.V5_32"></a>
+
+---
+
+
+### SparkImage <a name="SparkImage" id="aws-dsf.processing.SparkImage"></a>
 
 The list of supported Spark images to use in the SparkCICDPipeline.
 
@@ -7343,29 +7384,29 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
-| <code><a href="#aws-dsf.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
-| <code><a href="#aws-dsf.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
-| <code><a href="#aws-dsf.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
 
-##### `EMR_6_12` <a name="EMR_6_12" id="aws-dsf.SparkImage.EMR_6_12"></a>
-
----
-
-
-##### `EMR_6_11` <a name="EMR_6_11" id="aws-dsf.SparkImage.EMR_6_11"></a>
+##### `EMR_6_12` <a name="EMR_6_12" id="aws-dsf.processing.SparkImage.EMR_6_12"></a>
 
 ---
 
 
-##### `EMR_6_10` <a name="EMR_6_10" id="aws-dsf.SparkImage.EMR_6_10"></a>
+##### `EMR_6_11` <a name="EMR_6_11" id="aws-dsf.processing.SparkImage.EMR_6_11"></a>
 
 ---
 
 
-##### `EMR_6_9` <a name="EMR_6_9" id="aws-dsf.SparkImage.EMR_6_9"></a>
+##### `EMR_6_10` <a name="EMR_6_10" id="aws-dsf.processing.SparkImage.EMR_6_10"></a>
+
+---
+
+
+##### `EMR_6_9` <a name="EMR_6_9" id="aws-dsf.processing.SparkImage.EMR_6_9"></a>
 
 ---
 

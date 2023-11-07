@@ -13,9 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps } from '../../../../src/processing/spark-job/spark-job-emr-serverless';
-import { SparkEmrServerlessRuntime } from '../../../../src/processing/spark-runtime/emr-serverless/spark-emr-runtime-serverless';
-
+import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessRuntime } from '../../../../src/processing';
 
 const app = new App();
 

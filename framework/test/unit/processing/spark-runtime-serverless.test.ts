@@ -12,8 +12,7 @@
 import { Stack, App } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { AccountRootPrincipal, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
-import { SparkEmrServerlessRuntime } from '../../../src/processing';
-import { EmrRuntimeVersion } from '../../../src/utils';
+import { EmrRuntimeVersion, SparkEmrServerlessRuntime } from '../../../src/processing';
 
 
 describe('Create an EMR Serverless Application for Spark and grant access', () => {

@@ -14,7 +14,8 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { ApplicationStackFactory, CICDStage, SparkEmrCICDPipeline, SparkImage } from '../../../../src';
+import { SparkEmrCICDPipeline, SparkImage } from '../../../../src/processing';
+import { ApplicationStackFactory, CICDStage } from '../../../../src/utils';
 
 const app = new App();
 const stack = new Stack(app, 'Stack', {

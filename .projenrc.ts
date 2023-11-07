@@ -152,7 +152,21 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       target: "ES2021"
     }
   },
+
+  eslintOptions: {
+    dirs: ['src'],
+    ignorePatterns: [
+      '*.lit.ts',
+      '*.js',
+      '*.d.ts',
+      'node_modules/',
+      '*.generated.ts',
+      'coverage'
+    ]
+  },
 });
+
+fwkProject.addPackageIgnore("!*.lit.ts");
 
 fwkProject.testTask.reset('jest --passWithNoTests --updateSnapshot --group=-e2e', {receiveArgs: true});
 fwkProject.testTask.spawn(new Task('eslint'));
@@ -161,6 +175,8 @@ fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
   exec: 'jest --passWithNoTests --updateSnapshot --group=e2e'
 });
+
+fwkProject.postCompileTask.prependExec('jsii-rosetta extract .jsii && node generate_doc.mjs');
 
 fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
 
@@ -232,5 +248,5 @@ rootProject.addTask('test:e2e', {
 rootProject.addTask('release',  {
   description: 'Release project',
 })
-
+rootProject.addGitIgnore(".jsii.tabl.json");
 rootProject.synth();

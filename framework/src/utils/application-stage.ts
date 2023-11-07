@@ -52,7 +52,7 @@ export class ApplicationStage extends Stage {
    * Construct a new instance of the SparkCICDStage class.
    * @param {Construct} scope the Scope of the CDK Construct
    * @param {string} id the ID of the CDK Construct
-   * @param {SparkCICDStageProps} props the SparkCICDStageProps properties
+   * @param {ApplicationStageProps} props the ApplicationStage properties
    */
   constructor(scope: Construct, id: string, props: ApplicationStageProps) {
     super(scope, id, props);

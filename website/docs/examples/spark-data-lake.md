@@ -18,13 +18,13 @@ The business use case implemented within the Spark application is a simple aggre
 
 
 We will be using several constructs from the AWS DSF:
-- [`DataLakeStorage`](/docs/constructs/library/data-lake-storage)
-- [`DataLakeCatalog`](/docs/constructs/library/data-lake-catalog)
-- [`SparkEmrServerlessRuntime`](/docs/constructs/library/spark-emr-serverless-runtime)
-- [`SparkEmrServerlessJob`](/docs/constructs/library/spark-emr-serverless-job)
-- [`SparkEmrCICDPipeline`](/docs/constructs/library/spark-cicd-pipeline)
-- [`ApplicationStackFactory`](/docs/constructs/library/spark-cicd-pipeline#defining-a-cdk-stack-for-the-spark-application)
-- [`PySparkApplicationPackage`](/docs/constructs/library/pyspark-application-package)
+- [`DataLakeStorage`](../constructs/library/02-Storage/03-data-lake-storage.mdx)
+- [`DataLakeCatalog`](../constructs/library/04-Governance/02-data-lake-catalog.mdx)
+- [`SparkEmrServerlessRuntime`](../constructs/library/03-Processing/01-spark-emr-serverless-runtime.mdx)
+- [`SparkEmrServerlessJob`](../constructs/library/03-Processing/03-spark-emr-serverless-job.mdx)
+- [`SparkEmrCICDPipeline`](../constructs/library/03-Processing/05-spark-cicd-pipeline.mdx)
+- [`ApplicationStackFactory`](../constructs/library/03-Processing/05-spark-cicd-pipeline.mdx#defining-a-cdk-stack-for-the-spark-application)
+- [`PySparkApplicationPackage`](../constructs/library/03-Processing/04-pyspark-application-package.mdx)
 
 ## Deployment guide
 

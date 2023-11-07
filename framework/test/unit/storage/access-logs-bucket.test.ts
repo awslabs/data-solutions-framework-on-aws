@@ -11,7 +11,7 @@
 import { Stack, RemovalPolicy, App } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { AccessLogsBucket } from '../../../src';
+import { AccessLogsBucket } from '../../../src/storage';
 
 
 describe('AccessLogsBucket Construct with default configuration', () => {

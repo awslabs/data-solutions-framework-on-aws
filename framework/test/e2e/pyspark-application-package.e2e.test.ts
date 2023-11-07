@@ -4,7 +4,7 @@
 import path from 'path';
 import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
-import { PySparkApplicationPackage } from '../../src';
+import { PySparkApplicationPackage } from '../../src/processing';
 
 /**
  * E2E test for PySparkApplicationPackage

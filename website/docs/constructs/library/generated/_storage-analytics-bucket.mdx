@@ -1,0 +1,153 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/storage)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Amazon S3 Bucket configured for analytics.
+
+## Overview
+
+`AnalyticsBucket` is an Amazon S3 Bucket configured with the following best-practices and defaults for analytics:
+- The bucket name is in the form of `<BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>`
+- Server side bucket encryption managed by KMS customer key. You need to provide a [KMS Key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
+- SSL communication enforcement.
+- Access logged to an S3 bucket within a prefix matching the bucket name (via the [`AccessLogsBucket`](access-logs-bucket)).
+- All public access blocked.
+- Two-step protection for bucket and objects deletion.
+
+`AnalyticsBucket` extends the Amazon [S3 `Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html) CDK Construct. For custom requirements that are not covered, use the [`Bucket`](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_s3/Bucket.html#bucket) construct directly.
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+  class ExampleDefaultAnalyticsBucketStack extends cdk.Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id);
+        const key = new Key(this, 'DataKey', {
+            enableKeyRotation: true
+        });
+
+        new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+            encryptionKey: key
+        });
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+  class ExampleDefaultAnalyticsBucketStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        key = Key(self, "DataKey",
+            enable_key_rotation=True
+        )
+
+        dsf.storage.AnalyticsBucket(self, "AnalyticsBucket",
+            encryption_key=key
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Objects removal
+
+You can specify if the bucket and objects should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+
+The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and AWS DSF global removal policy are set to remove objects.
+
+You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+
+```json title="cdk.json"
+{
+  "context": {
+    "@aws-data-solutions-framework/removeDataOnDestroy": true
+  }
+}
+```
+
+Or programmatically in your CDK app:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+      // Set context value for global data removal policy
+    this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+    const key = new Key(this, 'DataKey', {
+        enableKeyRotation: true,
+        removalPolicy: RemovalPolicy.DESTROY
+    });
+
+    new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+        encryptionKey: key,
+        removalPolicy: RemovalPolicy.DESTROY
+    });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+  # Set context value for global data removal policy
+self.node.set_context("@aws-data-solutions-framework/removeDataOnDestroy", True)key = Key(self, "DataKey",
+    enable_key_rotation=True,
+    removal_policy=RemovalPolicy.DESTROY
+)
+
+dsf.storage.AnalyticsBucket(self, "AnalyticsBucket",
+    encryption_key=key,
+    removal_policy=RemovalPolicy.DESTROY
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Bucket Naming
+
+The construct ensures the default bucket name uniqueness which is a [pre-requisite](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) to create Amazon S3 buckets.
+To achieve this, the construct is creating the default bucket name like `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>` where:
+* `<AWS_ACCOUNT_ID>` and `<AWS_REGION>` are the account ID and region where you deploy the construct.
+* `<UNIQUEID>` is an 8 characters unique ID calculated based on the CDK path.
+
+If you provide the `bucketName` parameter, you need to ensure the name is globaly unique.
+Alternatively, you can use the `BucketUtils.generateUniqueBucketName()` utility method to create unique names.
+This method generates a unique name based on the provided name, the construct ID and the CDK scope:
+* The bucket name is suffixed the AWS account ID, the AWS region and an 8 character hash of the CDK path.
+* The maximum length for the bucket name is 26 characters.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+  new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+    bucketName: BucketUtils.generateUniqueBucketName(this, 'AnalyticsBucket', 'my-custom-name'),
+    encryptionKey: key
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+  dsf.storage.AnalyticsBucket(self, "AnalyticsBucket",
+    bucket_name=BucketUtils.generate_unique_bucket_name(self, "AnalyticsBucket", "my-custom-name"),
+    encryption_key=key
+)
+  ```
+
+  </TabItem>
+</Tabs>
+

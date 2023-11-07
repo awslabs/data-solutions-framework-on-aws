@@ -12,7 +12,7 @@ import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { DataCatalogDatabase } from '../../../src';
+import { DataCatalogDatabase } from '../../../src/governance';
 
 describe('DataCatalogDatabase with no top-level database', () => {
   const app = new App();

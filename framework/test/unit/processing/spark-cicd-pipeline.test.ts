@@ -12,7 +12,8 @@ import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import { SparkEmrCICDPipeline, ApplicationStackFactory, SparkImage, CICDStage } from '../../../src';
+import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
+import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
 
 
 describe('With minimal configuration, the construct', () => {

@@ -12,7 +12,7 @@
 import path from 'path';
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { PySparkApplicationPackage } from '../../../src';
+import { PySparkApplicationPackage } from '../../../src/processing';
 
 
 describe('With minimal configuration, the construct', () => {

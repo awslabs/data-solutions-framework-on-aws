@@ -6,7 +6,7 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { TestStack } from './test-stack';
-import { DataCatalogDatabase } from '../../src';
+import { DataCatalogDatabase } from '../../src/governance';
 
 /**
  * E2E test for DataCatalogDatabase
