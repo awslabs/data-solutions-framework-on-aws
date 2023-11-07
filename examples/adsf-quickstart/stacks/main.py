@@ -8,11 +8,11 @@ class DataStack(Stack):
   def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
-    storage = dsf.DataLakeStorage(
+    storage = dsf.storage.DataLakeStorage(
             self, "DataLakeStorage", removal_policy=RemovalPolicy.DESTROY
         )
 
-    catalog = dsf.DataLakeCatalog(
+    catalog = dsf.governance.DataLakeCatalog(
             self, "DataLakeCatalog",
             data_lake_storage=storage,
             database_name='spark_data_lake',
@@ -20,12 +20,12 @@ class DataStack(Stack):
         )
     
     # Use AWS DSF to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
-    spark_runtime = dsf.SparkEmrServerlessRuntime(
+    spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
             self, "SparkProcessingRuntime", name="TaxiAggregation",
             removal_policy=RemovalPolicy.DESTROY,
         )
 
-    processing_exec_role = dsf.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
+    processing_exec_role = dsf.processing.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
 
     storage.gold_bucket.grant_read_write(processing_exec_role)
     storage.silver_bucket.grant_read(processing_exec_role)
