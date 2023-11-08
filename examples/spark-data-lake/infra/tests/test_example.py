@@ -15,10 +15,6 @@ def template():
     yield template
 
 
-def test_no_buckets_found(template):
-    template.resource_count_is("AWS::S3::Bucket", 6)
-
-
 def test_e2e_example(template):
     # this method is an example for an E2E test - just include 'e2e' in the test function name
-    template.resource_count_is("AWS::S3::Bucket", 0)
+    template.resource_count_is("AWS::S3::Bucket", 6)
