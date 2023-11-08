@@ -3,7 +3,7 @@
 
 import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
-import { BucketUtils } from '../../src';
+import { BucketUtils } from '../../src/utils';
 import { DataLakeStorage } from '../../src/storage';
 
 /**
