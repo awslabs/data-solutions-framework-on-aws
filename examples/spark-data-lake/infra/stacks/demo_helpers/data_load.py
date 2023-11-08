@@ -17,7 +17,7 @@ class DataLoad(Construct):
         construct_id: str,
         src_bucket_name: str,
         src_bucket_prefix: str,
-        storage: dsf.DataLakeStorage,
+        storage: dsf.storage.DataLakeStorage,
         **kwargs,
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
