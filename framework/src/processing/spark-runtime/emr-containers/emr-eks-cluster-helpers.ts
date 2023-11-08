@@ -118,30 +118,12 @@ export function eksClusterSetup(
  */
 function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: Role) {
 
-  // Add headers and footers to user data and install SSM agent
-  //The below user data need to be formated as is,
-  //if it gets linted, we have spaces/tabs that break the launchtemplate
-  //Which in turn break and fail the deployment
-
-//   const userData = `MIME-Version: 1.0
-// Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-
-// --==MYBOUNDARY==
-// Content-Type: text/x-shellscript; charset="us-ascii"
-
-// #!/bin/bash
-// yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-// systemctl enable amazon-ssm-agent
-// systemctl start amazon-ssm-agent
-
-// --==MYBOUNDARY==--\\
-// `;
 
   const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(scope, 'toolinglaunchtemplate', {
     launchTemplateName: 'ToolingNodegroup',
 
     launchTemplateData: {
-      //userData: Fn.base64(userData),
+      
       metadataOptions: {
         httpEndpoint: 'enabled',
         httpProtocolIpv6: 'disabled',
@@ -208,7 +190,7 @@ export function karpenterManifestSetup(clusterName: string, path: string, subnet
   manifest = manifest.replace('{{subnet-id}}', subnet.subnetId);
   manifest = manifest.replace( /(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', clusterName);
-  manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName); 
+  manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName);
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 
@@ -417,10 +399,10 @@ export function karpenterSetup(cluster: Cluster,
   });
 
   const allowInstanceProfileReadActions: PolicyStatement = new PolicyStatement({
-      sid: 'AllowInstanceProfileReadActions',
-      effect: Effect.ALLOW,
-      resources: ['*'],
-      actions: ['iam:GetInstanceProfile']
+    sid: 'AllowInstanceProfileReadActions',
+    effect: Effect.ALLOW,
+    resources: ['*'],
+    actions: ['iam:GetInstanceProfile'],
   });
 
 
@@ -534,9 +516,9 @@ export function karpenterSetup(cluster: Cluster,
   privateSubnets.forEach((subnet, index) => {
 
     let subnetHolder = `{{${subnetIdHolder[index]}}}`;
-    let re = new RegExp(subnetHolder,"g");
+    let re = new RegExp(subnetHolder, 'g');
     manifest = manifest.replace(re, subnet.subnetId);
-    
+
   });
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));

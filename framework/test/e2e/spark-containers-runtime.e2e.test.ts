@@ -21,6 +21,8 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkContainersTestStack', app);
 const { stack } = testStack;
 
+stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+
 const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
 
 // creation of the construct(s) under test
