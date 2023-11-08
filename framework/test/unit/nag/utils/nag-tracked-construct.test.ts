@@ -11,7 +11,7 @@ import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { AwsSolutionsChecks } from 'cdk-nag';
-import { TrackedConstruct } from '../../../src/utils/tracked-construct';
+import { TrackedConstruct } from '../../../../src/utils';
 
 
 const mockApp = new App();

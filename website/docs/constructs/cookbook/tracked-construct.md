@@ -11,7 +11,7 @@ The description must contain a tracking code (AWS internal) and a tag for each c
 Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)
 ```
 
-To simplify the creation of this description, we provide a class [`TrackedConstruct`](../../../../framework/src/utils/tracked-construct.ts) that you must extend:
+To simplify the creation of this description, we provide a class [`TrackedConstruct`](../../../../framework/src/utils/lib/tracked-construct.ts) that you must extend:
 
 ```typescript {1,3,7-9,11} showLineNumbers
 import { TrackedConstruct, TrackedConstructProps } from '../utils';

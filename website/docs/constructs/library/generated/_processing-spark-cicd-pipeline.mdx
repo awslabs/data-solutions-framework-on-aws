@@ -61,20 +61,20 @@ Create your application stack using the factory pattern:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  export class EmrApplicationStackFactory extends dsf.ApplicationStackFactory {
-    createStack(scope: Construct, stage: dsf.CICDStage): cdk.Stack {
+export class EmrApplicationStackFactory extends dsf.utils.ApplicationStackFactory {
+    createStack(scope: Construct, stage: dsf.utils.CICDStage): cdk.Stack {
         return new EmrApplicationStack(scope, 'EmrApplicationStack', stage);
     }
 }
 
 export class EmrApplicationStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, stage: dsf.CICDStage) {
+    constructor(scope: Construct, id: string, stage: dsf.utils.CICDStage) {
         super(scope, id);
 
         // DEFINE YOUR APPLICATION STACK HERE
         // USE STAGE PARAMETER TO CUSTOMIZE THE STACK BEHAVIOR
 
-        if (stage == CICDStage.PROD) {
+        if (stage == dsf.utils.CICDStage.PROD) {
             // prod only
         }
     }
@@ -87,7 +87,7 @@ export class EmrApplicationStack extends cdk.Stack {
   <TabItem value="python" label="Python">
 
   ```python
-  class EmrApplicationStackFactory(dsf.ApplicationStackFactory):
+class EmrApplicationStackFactory(dsf.utils.ApplicationStackFactory):
     def create_stack(self, scope, stage):
         return EmrApplicationStack(scope, "EmrApplicationStack", stage)
 
@@ -98,7 +98,7 @@ class EmrApplicationStack(cdk.Stack):
         # DEFINE YOUR APPLICATION STACK HERE
         # USE STAGE PARAMETER TO CUSTOMIZE THE STACK BEHAVIOR
 
-        if stage == CICDStage.PROD:
+        if stage == dsf.utils.CICDStage.PROD:
             pass
   ```
 
@@ -111,7 +111,7 @@ Use the factory to pass your application stack to the `SparkCICDPipeline` constr
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  export class CICDPipelineStack extends cdk.Stack {
+export class CICDPipelineStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
         new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
@@ -128,7 +128,7 @@ Use the factory to pass your application stack to the `SparkCICDPipeline` constr
   <TabItem value="python" label="Python">
 
   ```python
-  class CICDPipelineStack(cdk.Stack):
+class CICDPipelineStack(cdk.Stack):
     def __init__(self, scope, id):
         super().__init__(scope, id)
         dsf.processing.SparkEmrCICDPipeline(self, "SparkCICDPipeline",
@@ -195,8 +195,8 @@ To use resources that are deployed by the Application Stack like the Step Functi
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  export class EmrApplicationStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, _stage: dsf.CICDStage) {
+export class EmrApplicationStack extends cdk.Stack {
+    constructor(scope: Construct, id: string, _stage: dsf.utils.CICDStage) {
         super(scope, id);
 
         const processingStateMachine = new StateMachine(this, 'ProcessingStateMachine', {
@@ -216,7 +216,7 @@ To use resources that are deployed by the Application Stack like the Step Functi
   <TabItem value="python" label="Python">
 
   ```python
-  class EmrApplicationStack(cdk.Stack):
+class EmrApplicationStack(cdk.Stack):
     def __init__(self, scope, id, _stage):
         super().__init__(scope, id)
 
@@ -239,7 +239,7 @@ To use resources that are deployed by the Application Stack like the Step Functi
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
+new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
     sparkApplicationName: 'SparkTest',
     applicationStackFactory: new EmrApplicationStackFactory(),
     integTestScript: 'spark/integ.sh',
@@ -264,7 +264,7 @@ To use resources that are deployed by the Application Stack like the Step Functi
   <TabItem value="python" label="Python">
 
   ```python
-  dsf.processing.SparkEmrCICDPipeline(self, "SparkCICDPipeline",
+dsf.processing.SparkEmrCICDPipeline(self, "SparkCICDPipeline",
     spark_application_name="SparkTest",
     application_stack_factory=EmrApplicationStackFactory(),
     integ_test_script="spark/integ.sh",

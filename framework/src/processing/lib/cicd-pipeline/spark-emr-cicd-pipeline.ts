@@ -105,7 +105,7 @@ export interface SparkEmrCICDPipelineProps {
  * import { Bucket } from 'aws-cdk-lib/aws-s3';
  *
  * interface MyApplicationStackProps extends cdk.StackProps {
- *   readonly stage: dsf.CICDStage;
+ *   readonly stage: dsf.utils.CICDStage;
  * }
  *
  * class MyApplicationStack extends cdk.Stack {
@@ -119,8 +119,8 @@ export interface SparkEmrCICDPipelineProps {
  *   }
  * }
  *
- * class MyStackFactory implements dsf.ApplicationStackFactory {
- *   createStack(scope: cdk.Stack, stage: dsf.CICDStage): cdk.Stack {
+ * class MyStackFactory implements dsf.utils.ApplicationStackFactory {
+ *   createStack(scope: cdk.Stack, stage: dsf.utils.CICDStage): cdk.Stack {
  *     return new MyApplicationStack(scope, { stage });
  *   }
  * }

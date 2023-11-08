@@ -23,7 +23,7 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  class ExampleDefaultDataLakeCatalogStack extends cdk.Stack {
+class ExampleDefaultDataLakeCatalogStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
         const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
@@ -41,7 +41,7 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
   <TabItem value="python" label="Python">
 
   ```python
-  class ExampleDefaultDataLakeCatalogStack(cdk.Stack):
+class ExampleDefaultDataLakeCatalogStack(cdk.Stack):
     def __init__(self, scope, id):
         super().__init__(scope, id)
         storage = dsf.storage.DataLakeStorage(self, "MyDataLakeStorage")
@@ -67,7 +67,7 @@ The parameters apply to the three databases, if you need fine-grained configurat
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-          const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
+        const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
 
         new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
             dataLakeStorage: storage,
@@ -86,7 +86,7 @@ The parameters apply to the three databases, if you need fine-grained configurat
   <TabItem value="python" label="Python">
 
   ```python
-  encryption_key = Key(self, "CrawlerLogEncryptionKey")
+encryption_key = Key(self, "CrawlerLogEncryptionKey")
 
 dsf.governance.DataLakeCatalog(self, "DataCatalog",
     data_lake_storage=storage,

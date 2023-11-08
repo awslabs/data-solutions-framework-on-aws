@@ -4,7 +4,7 @@
 import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ContextOptions } from './context';
-import { ADSF_AWS_TAG } from '../constants';
+import { ADSF_AWS_TAG } from '../../constants';
 
 /**
  * The properties for the TrackedConstructProps construct.
@@ -88,7 +88,7 @@ export class TrackedConstruct extends Construct {
    */
   public retrieveVersion() {
     // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require
-    const file = '../../package.json';
+    const file = '../../../package.json';
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const json = require(file);
     return json.version;

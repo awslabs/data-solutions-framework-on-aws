@@ -25,7 +25,7 @@ Here is the overview of `DataLakeStorage` features:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  class ExampleDefaultDataLakeStorageStack extends cdk.Stack {
+class ExampleDefaultDataLakeStorageStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
         new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
@@ -39,7 +39,7 @@ Here is the overview of `DataLakeStorage` features:
   <TabItem value="python" label="Python">
 
   ```python
-  class ExampleDefaultDataLakeStorageStack(cdk.Stack):
+class ExampleDefaultDataLakeStorageStack(cdk.Stack):
     def __init__(self, scope, id):
         super().__init__(scope, id)
         dsf.storage.DataLakeStorage(self, "MyDataLakeStorage")
@@ -66,8 +66,8 @@ This method generates a unique name based on the provided name, the construct ID
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
-    bronzeBucketName: BucketUtils.generateUniqueBucketName(this, 'MyDataLakeStorage', 'custom-bronze-name')
+new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
+    bronzeBucketName: dsf.utils.BucketUtils.generateUniqueBucketName(this, 'MyDataLakeStorage', 'custom-bronze-name')
 });
   ```
   
@@ -77,8 +77,8 @@ This method generates a unique name based on the provided name, the construct ID
   <TabItem value="python" label="Python">
 
   ```python
-  dsf.storage.DataLakeStorage(self, "MyDataLakeStorage",
-    bronze_bucket_name=BucketUtils.generate_unique_bucket_name(self, "MyDataLakeStorage", "custom-bronze-name")
+dsf.storage.DataLakeStorage(self, "MyDataLakeStorage",
+    bronze_bucket_name=dsf.utils.BucketUtils.generate_unique_bucket_name(self, "MyDataLakeStorage", "custom-bronze-name")
 )
   ```
 
@@ -107,7 +107,7 @@ Or programmatically in your CDK app:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  // Set context value for global data removal policy
+// Set context value for global data removal policy
 this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
     removalPolicy: RemovalPolicy.DESTROY
@@ -120,7 +120,7 @@ new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
   <TabItem value="python" label="Python">
 
   ```python
-  # Set context value for global data removal policy
+# Set context value for global data removal policy
 self.node.set_context("@aws-data-solutions-framework/removeDataOnDestroy", True)dsf.storage.DataLakeStorage(self, "DataLakeStorage",
     removal_policy=RemovalPolicy.DESTROY
 )
@@ -141,7 +141,7 @@ Change the data lifecycle rules using the DataLakeStorage properties:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
+new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
     bronzeBucketInfrequentAccessDelay: 90,
     bronzeBucketArchiveDelay: 180,
     silverBucketInfrequentAccessDelay: 180,
@@ -157,7 +157,7 @@ Change the data lifecycle rules using the DataLakeStorage properties:
   <TabItem value="python" label="Python">
 
   ```python
-  dsf.storage.DataLakeStorage(self, "MyDataLakeStorage",
+dsf.storage.DataLakeStorage(self, "MyDataLakeStorage",
     bronze_bucket_infrequent_access_delay=90,
     bronze_bucket_archive_delay=180,
     silver_bucket_infrequent_access_delay=180,

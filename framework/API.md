@@ -2313,27 +2313,27 @@ first call to addToResourcePolicy(s).
 ---
 
 
-### ApplicationStage <a name="ApplicationStage" id="aws-dsf.ApplicationStage"></a>
+### ApplicationStage <a name="ApplicationStage" id="aws-dsf.utils.ApplicationStage"></a>
 
 ApplicationStage class that creates a CDK Pipelines Stage from an ApplicationStackFactory.
 
-#### Initializers <a name="Initializers" id="aws-dsf.ApplicationStage.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.utils.ApplicationStage.Initializer"></a>
 
 ```typescript
-import { ApplicationStage } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-new ApplicationStage(scope: Construct, id: string, props: ApplicationStageProps)
+new utils.ApplicationStage(scope: Construct, id: string, props: ApplicationStageProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-dsf.ApplicationStage.Initializer.parameter.props">props</a></code> | <code><a href="#aws-dsf.ApplicationStageProps">ApplicationStageProps</a></code> | the ApplicationStage properties. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.Initializer.parameter.props">props</a></code> | <code>aws-dsf.utils.ApplicationStageProps</code> | the ApplicationStage properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.ApplicationStage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.ApplicationStage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2341,7 +2341,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.ApplicationStage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.ApplicationStage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -2349,9 +2349,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.ApplicationStage.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.utils.ApplicationStage.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#aws-dsf.ApplicationStageProps">ApplicationStageProps</a>
+- *Type:* aws-dsf.utils.ApplicationStageProps
 
 the ApplicationStage properties.
 
@@ -2361,12 +2361,12 @@ the ApplicationStage properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.ApplicationStage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.ApplicationStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.ApplicationStage.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.utils.ApplicationStage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2374,7 +2374,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `synth` <a name="synth" id="aws-dsf.ApplicationStage.synth"></a>
+##### `synth` <a name="synth" id="aws-dsf.utils.ApplicationStage.synth"></a>
 
 ```typescript
 public synth(options?: StageSynthesisOptions): CloudAssembly
@@ -2385,7 +2385,7 @@ Synthesize this stage into a cloud assembly.
 Once an assembly has been synthesized, it cannot be modified. Subsequent
 calls will return the same assembly.
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.ApplicationStage.synth.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="aws-dsf.utils.ApplicationStage.synth.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.StageSynthesisOptions
 
@@ -2395,18 +2395,18 @@ calls will return the same assembly.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.ApplicationStage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.ApplicationStage.isStage">isStage</a></code> | Test whether the given construct is a stage. |
-| <code><a href="#aws-dsf.ApplicationStage.of">of</a></code> | Return the stage this construct is contained with, if available. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.isStage">isStage</a></code> | Test whether the given construct is a stage. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.of">of</a></code> | Return the stage this construct is contained with, if available. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.ApplicationStage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.utils.ApplicationStage.isConstruct"></a>
 
 ```typescript
-import { ApplicationStage } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-ApplicationStage.isConstruct(x: any)
+utils.ApplicationStage.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -2425,7 +2425,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.ApplicationStage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.utils.ApplicationStage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2433,28 +2433,28 @@ Any object.
 
 ---
 
-##### `isStage` <a name="isStage" id="aws-dsf.ApplicationStage.isStage"></a>
+##### `isStage` <a name="isStage" id="aws-dsf.utils.ApplicationStage.isStage"></a>
 
 ```typescript
-import { ApplicationStage } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-ApplicationStage.isStage(x: any)
+utils.ApplicationStage.isStage(x: any)
 ```
 
 Test whether the given construct is a stage.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.ApplicationStage.isStage.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.utils.ApplicationStage.isStage.parameter.x"></a>
 
 - *Type:* any
 
 ---
 
-##### `of` <a name="of" id="aws-dsf.ApplicationStage.of"></a>
+##### `of` <a name="of" id="aws-dsf.utils.ApplicationStage.of"></a>
 
 ```typescript
-import { ApplicationStage } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-ApplicationStage.of(construct: IConstruct)
+utils.ApplicationStage.of(construct: IConstruct)
 ```
 
 Return the stage this construct is contained with, if available.
@@ -2462,7 +2462,7 @@ Return the stage this construct is contained with, if available.
 If called
 on a nested stage, returns its parent.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.ApplicationStage.of.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="aws-dsf.utils.ApplicationStage.of.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
@@ -2472,20 +2472,20 @@ on a nested stage, returns its parent.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.ApplicationStage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.ApplicationStage.property.artifactId">artifactId</a></code> | <code>string</code> | Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string. |
-| <code><a href="#aws-dsf.ApplicationStage.property.assetOutdir">assetOutdir</a></code> | <code>string</code> | The cloud assembly asset output directory. |
-| <code><a href="#aws-dsf.ApplicationStage.property.outdir">outdir</a></code> | <code>string</code> | The cloud assembly output directory. |
-| <code><a href="#aws-dsf.ApplicationStage.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
-| <code><a href="#aws-dsf.ApplicationStage.property.stageName">stageName</a></code> | <code>string</code> | The name of the stage. |
-| <code><a href="#aws-dsf.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
-| <code><a href="#aws-dsf.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
-| <code><a href="#aws-dsf.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
-| <code><a href="#aws-dsf.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.artifactId">artifactId</a></code> | <code>string</code> | Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.assetOutdir">assetOutdir</a></code> | <code>string</code> | The cloud assembly asset output directory. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.outdir">outdir</a></code> | <code>string</code> | The cloud assembly output directory. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.stageName">stageName</a></code> | <code>string</code> | The name of the stage. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
+| <code><a href="#aws-dsf.utils.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.ApplicationStage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.utils.ApplicationStage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2497,7 +2497,7 @@ The tree node.
 
 ---
 
-##### `artifactId`<sup>Required</sup> <a name="artifactId" id="aws-dsf.ApplicationStage.property.artifactId"></a>
+##### `artifactId`<sup>Required</sup> <a name="artifactId" id="aws-dsf.utils.ApplicationStage.property.artifactId"></a>
 
 ```typescript
 public readonly artifactId: string;
@@ -2511,7 +2511,7 @@ Derived from the construct path.
 
 ---
 
-##### `assetOutdir`<sup>Required</sup> <a name="assetOutdir" id="aws-dsf.ApplicationStage.property.assetOutdir"></a>
+##### `assetOutdir`<sup>Required</sup> <a name="assetOutdir" id="aws-dsf.utils.ApplicationStage.property.assetOutdir"></a>
 
 ```typescript
 public readonly assetOutdir: string;
@@ -2523,7 +2523,7 @@ The cloud assembly asset output directory.
 
 ---
 
-##### `outdir`<sup>Required</sup> <a name="outdir" id="aws-dsf.ApplicationStage.property.outdir"></a>
+##### `outdir`<sup>Required</sup> <a name="outdir" id="aws-dsf.utils.ApplicationStage.property.outdir"></a>
 
 ```typescript
 public readonly outdir: string;
@@ -2535,7 +2535,7 @@ The cloud assembly output directory.
 
 ---
 
-##### `policyValidationBeta1`<sup>Required</sup> <a name="policyValidationBeta1" id="aws-dsf.ApplicationStage.property.policyValidationBeta1"></a>
+##### `policyValidationBeta1`<sup>Required</sup> <a name="policyValidationBeta1" id="aws-dsf.utils.ApplicationStage.property.policyValidationBeta1"></a>
 
 ```typescript
 public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
@@ -2551,7 +2551,7 @@ synthesis will be interrupted and the report displayed to the user.
 
 ---
 
-##### `stageName`<sup>Required</sup> <a name="stageName" id="aws-dsf.ApplicationStage.property.stageName"></a>
+##### `stageName`<sup>Required</sup> <a name="stageName" id="aws-dsf.utils.ApplicationStage.property.stageName"></a>
 
 ```typescript
 public readonly stageName: string;
@@ -2566,7 +2566,7 @@ hypens.
 
 ---
 
-##### `account`<sup>Optional</sup> <a name="account" id="aws-dsf.ApplicationStage.property.account"></a>
+##### `account`<sup>Optional</sup> <a name="account" id="aws-dsf.utils.ApplicationStage.property.account"></a>
 
 ```typescript
 public readonly account: string;
@@ -2578,7 +2578,7 @@ The default account for all resources defined within this stage.
 
 ---
 
-##### `parentStage`<sup>Optional</sup> <a name="parentStage" id="aws-dsf.ApplicationStage.property.parentStage"></a>
+##### `parentStage`<sup>Optional</sup> <a name="parentStage" id="aws-dsf.utils.ApplicationStage.property.parentStage"></a>
 
 ```typescript
 public readonly parentStage: Stage;
@@ -2592,7 +2592,7 @@ The parent stage or `undefined` if this is the app.
 
 ---
 
-##### `region`<sup>Optional</sup> <a name="region" id="aws-dsf.ApplicationStage.property.region"></a>
+##### `region`<sup>Optional</sup> <a name="region" id="aws-dsf.utils.ApplicationStage.property.region"></a>
 
 ```typescript
 public readonly region: string;
@@ -2604,7 +2604,7 @@ The default region for all resources defined within this stage.
 
 ---
 
-##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="aws-dsf.ApplicationStage.property.stackOutputsEnv"></a>
+##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="aws-dsf.utils.ApplicationStage.property.stackOutputsEnv"></a>
 
 ```typescript
 public readonly stackOutputsEnv: {[ key: string ]: CfnOutput};
@@ -3653,7 +3653,7 @@ A CICD Pipeline that tests and deploys a Spark application in cross-account envi
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 interface MyApplicationStackProps extends cdk.StackProps {
-  readonly stage: dsf.CICDStage;
+  readonly stage: dsf.utils.CICDStage;
 }
 
 class MyApplicationStack extends cdk.Stack {
@@ -3667,8 +3667,8 @@ class MyApplicationStack extends cdk.Stack {
   }
 }
 
-class MyStackFactory implements dsf.ApplicationStackFactory {
-  createStack(scope: cdk.Stack, stage: dsf.CICDStage): cdk.Stack {
+class MyStackFactory implements dsf.utils.ApplicationStackFactory {
+  createStack(scope: cdk.Stack, stage: dsf.utils.CICDStage): cdk.Stack {
     return new MyApplicationStack(scope, { stage });
   }
 }
@@ -4601,7 +4601,7 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.networkConfiguration">networkConfiguration</a></code> | <code><a href="#aws-dsf.NetworkConfiguration">NetworkConfiguration</a></code> | The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-dsf.utils.NetworkConfiguration</code> | The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
 
 ---
@@ -4648,7 +4648,7 @@ If no VPC is provided, one is created by default along with a security group att
 public readonly networkConfiguration: NetworkConfiguration;
 ```
 
-- *Type:* <a href="#aws-dsf.NetworkConfiguration">NetworkConfiguration</a>
+- *Type:* aws-dsf.utils.NetworkConfiguration
 
 The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs.
 
@@ -5315,34 +5315,34 @@ Whether this bucket should have versioning turned on or not.
 
 ---
 
-### ApplicationStageProps <a name="ApplicationStageProps" id="aws-dsf.ApplicationStageProps"></a>
+### ApplicationStageProps <a name="ApplicationStageProps" id="aws-dsf.utils.ApplicationStageProps"></a>
 
 Properties for SparkCICDStage class.
 
-#### Initializer <a name="Initializer" id="aws-dsf.ApplicationStageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.utils.ApplicationStageProps.Initializer"></a>
 
 ```typescript
-import { ApplicationStageProps } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-const applicationStageProps: ApplicationStageProps = { ... }
+const applicationStageProps: utils.ApplicationStageProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | Default AWS environment (account/region) for `Stack`s in this `Stage`. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.outdir">outdir</a></code> | <code>string</code> | The output directory into which to emit synthesized artifacts. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.stage">stage</a></code> | <code><a href="#aws-dsf.CICDStage">CICDStage</a></code> | The Stage to deploy the SparkCICDStack in. |
-| <code><a href="#aws-dsf.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | Default AWS environment (account/region) for `Stack`s in this `Stage`. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.outdir">outdir</a></code> | <code>string</code> | The output directory into which to emit synthesized artifacts. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-dsf.utils.ApplicationStackFactory</code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>aws-dsf.utils.CICDStage</code> | The Stage to deploy the SparkCICDStack in. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
 
 ---
 
-##### `env`<sup>Optional</sup> <a name="env" id="aws-dsf.ApplicationStageProps.property.env"></a>
+##### `env`<sup>Optional</sup> <a name="env" id="aws-dsf.utils.ApplicationStageProps.property.env"></a>
 
 ```typescript
 public readonly env: Environment;
@@ -5383,7 +5383,7 @@ new Stage(app, 'Stage2', {
 ```
 
 
-##### `outdir`<sup>Optional</sup> <a name="outdir" id="aws-dsf.ApplicationStageProps.property.outdir"></a>
+##### `outdir`<sup>Optional</sup> <a name="outdir" id="aws-dsf.utils.ApplicationStageProps.property.outdir"></a>
 
 ```typescript
 public readonly outdir: string;
@@ -5400,7 +5400,7 @@ thrown.
 
 ---
 
-##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="aws-dsf.ApplicationStageProps.property.permissionsBoundary"></a>
+##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="aws-dsf.utils.ApplicationStageProps.property.permissionsBoundary"></a>
 
 ```typescript
 public readonly permissionsBoundary: PermissionsBoundary;
@@ -5413,7 +5413,7 @@ Options for applying a permissions boundary to all IAM Roles and Users created w
 
 ---
 
-##### `policyValidationBeta1`<sup>Optional</sup> <a name="policyValidationBeta1" id="aws-dsf.ApplicationStageProps.property.policyValidationBeta1"></a>
+##### `policyValidationBeta1`<sup>Optional</sup> <a name="policyValidationBeta1" id="aws-dsf.utils.ApplicationStageProps.property.policyValidationBeta1"></a>
 
 ```typescript
 public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
@@ -5429,7 +5429,7 @@ synthesis will be interrupted and the report displayed to the user.
 
 ---
 
-##### `stageName`<sup>Optional</sup> <a name="stageName" id="aws-dsf.ApplicationStageProps.property.stageName"></a>
+##### `stageName`<sup>Optional</sup> <a name="stageName" id="aws-dsf.utils.ApplicationStageProps.property.stageName"></a>
 
 ```typescript
 public readonly stageName: string;
@@ -5442,32 +5442,32 @@ Name of this stage.
 
 ---
 
-##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="aws-dsf.ApplicationStageProps.property.applicationStackFactory"></a>
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="aws-dsf.utils.ApplicationStageProps.property.applicationStackFactory"></a>
 
 ```typescript
 public readonly applicationStackFactory: ApplicationStackFactory;
 ```
 
-- *Type:* <a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a>
+- *Type:* aws-dsf.utils.ApplicationStackFactory
 
 The application Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
-##### `stage`<sup>Required</sup> <a name="stage" id="aws-dsf.ApplicationStageProps.property.stage"></a>
+##### `stage`<sup>Required</sup> <a name="stage" id="aws-dsf.utils.ApplicationStageProps.property.stage"></a>
 
 ```typescript
 public readonly stage: CICDStage;
 ```
 
-- *Type:* <a href="#aws-dsf.CICDStage">CICDStage</a>
+- *Type:* aws-dsf.utils.CICDStage
 - *Default:* No stage is passed to the application stack
 
 The Stage to deploy the SparkCICDStack in.
 
 ---
 
-##### `outputsEnv`<sup>Optional</sup> <a name="outputsEnv" id="aws-dsf.ApplicationStageProps.property.outputsEnv"></a>
+##### `outputsEnv`<sup>Optional</sup> <a name="outputsEnv" id="aws-dsf.utils.ApplicationStageProps.property.outputsEnv"></a>
 
 ```typescript
 public readonly outputsEnv: {[ key: string ]: string};
@@ -5921,30 +5921,30 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-### NetworkConfiguration <a name="NetworkConfiguration" id="aws-dsf.NetworkConfiguration"></a>
+### NetworkConfiguration <a name="NetworkConfiguration" id="aws-dsf.utils.NetworkConfiguration"></a>
 
 A network configuration created by the vpcBootstrap function.
 
-#### Initializer <a name="Initializer" id="aws-dsf.NetworkConfiguration.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.utils.NetworkConfiguration.Initializer"></a>
 
 ```typescript
-import { NetworkConfiguration } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-const networkConfiguration: NetworkConfiguration = { ... }
+const networkConfiguration: utils.NetworkConfiguration = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.NetworkConfiguration.property.iamFlowLogRole">iamFlowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#aws-dsf.NetworkConfiguration.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | *No description.* |
-| <code><a href="#aws-dsf.NetworkConfiguration.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
-| <code><a href="#aws-dsf.NetworkConfiguration.property.vpcFlowLogLogGroup">vpcFlowLogLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.iamFlowLogRole">iamFlowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.vpcFlowLogLogGroup">vpcFlowLogLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
 
 ---
 
-##### `iamFlowLogRole`<sup>Required</sup> <a name="iamFlowLogRole" id="aws-dsf.NetworkConfiguration.property.iamFlowLogRole"></a>
+##### `iamFlowLogRole`<sup>Required</sup> <a name="iamFlowLogRole" id="aws-dsf.utils.NetworkConfiguration.property.iamFlowLogRole"></a>
 
 ```typescript
 public readonly iamFlowLogRole: IRole;
@@ -5954,7 +5954,7 @@ public readonly iamFlowLogRole: IRole;
 
 ---
 
-##### `s3GatewayVpcEndpoint`<sup>Required</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.NetworkConfiguration.property.s3GatewayVpcEndpoint"></a>
+##### `s3GatewayVpcEndpoint`<sup>Required</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.utils.NetworkConfiguration.property.s3GatewayVpcEndpoint"></a>
 
 ```typescript
 public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
@@ -5964,7 +5964,7 @@ public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
 
 ---
 
-##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.NetworkConfiguration.property.vpc"></a>
+##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.utils.NetworkConfiguration.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -5974,7 +5974,7 @@ public readonly vpc: IVpc;
 
 ---
 
-##### `vpcFlowLogLogGroup`<sup>Required</sup> <a name="vpcFlowLogLogGroup" id="aws-dsf.NetworkConfiguration.property.vpcFlowLogLogGroup"></a>
+##### `vpcFlowLogLogGroup`<sup>Required</sup> <a name="vpcFlowLogLogGroup" id="aws-dsf.utils.NetworkConfiguration.property.vpcFlowLogLogGroup"></a>
 
 ```typescript
 public readonly vpcFlowLogLogGroup: ILogGroup;
@@ -6109,7 +6109,7 @@ const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code><a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a></code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-dsf.utils.ApplicationStackFactory</code> | The application Stack to deploy in the different CDK Pipelines Stages. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
@@ -6127,7 +6127,7 @@ const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 public readonly applicationStackFactory: ApplicationStackFactory;
 ```
 
-- *Type:* <a href="#aws-dsf.ApplicationStackFactory">ApplicationStackFactory</a>
+- *Type:* aws-dsf.utils.ApplicationStackFactory
 
 The application Stack to deploy in the different CDK Pipelines Stages.
 
@@ -7083,9 +7083,43 @@ Schedule to run the Step Functions state machine.
 
 ---
 
+### TrackedConstructProps <a name="TrackedConstructProps" id="aws-dsf.utils.TrackedConstructProps"></a>
+
+The properties for the TrackedConstructProps construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.utils.TrackedConstructProps.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+const trackedConstructProps: utils.TrackedConstructProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.TrackedConstructProps.property.trackingTag">trackingTag</a></code> | <code>string</code> | Unique code used to measure the number of CloudFormation deployments of this construct. |
+
+---
+
+##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="aws-dsf.utils.TrackedConstructProps.property.trackingTag"></a>
+
+```typescript
+public readonly trackingTag: string;
+```
+
+- *Type:* string
+
+Unique code used to measure the number of CloudFormation deployments of this construct.
+
+*Pattern* : `^[A-Za-z0-9-_]+$`
+
+---
+
 ## Classes <a name="Classes" id="Classes"></a>
 
-### ApplicationStackFactory <a name="ApplicationStackFactory" id="aws-dsf.ApplicationStackFactory"></a>
+### ApplicationStackFactory <a name="ApplicationStackFactory" id="aws-dsf.utils.ApplicationStackFactory"></a>
 
 Abstract class that needs to be implemented to pass the application Stack to the CICD pipeline.
 
@@ -7093,7 +7127,7 @@ Abstract class that needs to be implemented to pass the application Stack to the
 
 ```typescript
 interface MyApplicationStackProps extends cdk.StackProps {
-  readonly stage: dsf.CICDStage;
+  readonly stage: dsf.utils.CICDStage;
 }
 
 class MyApplicationStack extends cdk.Stack {
@@ -7103,8 +7137,8 @@ class MyApplicationStack extends cdk.Stack {
   }
 }
 
-class MyApplicationStackFactory extends dsf.ApplicationStackFactory {
-  createStack(scope: Construct, stage: dsf.CICDStage): cdk.Stack {
+class MyApplicationStackFactory extends dsf.utils.ApplicationStackFactory {
+  createStack(scope: Construct, stage: dsf.utils.CICDStage): cdk.Stack {
     return new MyApplicationStack(scope, 'MyApplication', {
       stage: stage
     } as MyApplicationStackProps);
@@ -7113,12 +7147,12 @@ class MyApplicationStackFactory extends dsf.ApplicationStackFactory {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.ApplicationStackFactory.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.utils.ApplicationStackFactory.Initializer"></a>
 
 ```typescript
-import { ApplicationStackFactory } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-new ApplicationStackFactory()
+new utils.ApplicationStackFactory()
 ```
 
 | **Name** | **Type** | **Description** |
@@ -7130,11 +7164,11 @@ new ApplicationStackFactory()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.ApplicationStackFactory.createStack">createStack</a></code> | Abstract method that needs to be implemented to return the application Stack. |
+| <code><a href="#aws-dsf.utils.ApplicationStackFactory.createStack">createStack</a></code> | Abstract method that needs to be implemented to return the application Stack. |
 
 ---
 
-##### `createStack` <a name="createStack" id="aws-dsf.ApplicationStackFactory.createStack"></a>
+##### `createStack` <a name="createStack" id="aws-dsf.utils.ApplicationStackFactory.createStack"></a>
 
 ```typescript
 public createStack(scope: Construct, stage: CICDStage): Stack
@@ -7142,7 +7176,7 @@ public createStack(scope: Construct, stage: CICDStage): Stack
 
 Abstract method that needs to be implemented to return the application Stack.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.ApplicationStackFactory.createStack.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.ApplicationStackFactory.createStack.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -7150,9 +7184,9 @@ The scope to create the stack in.
 
 ---
 
-###### `stage`<sup>Required</sup> <a name="stage" id="aws-dsf.ApplicationStackFactory.createStack.parameter.stage"></a>
+###### `stage`<sup>Required</sup> <a name="stage" id="aws-dsf.utils.ApplicationStackFactory.createStack.parameter.stage"></a>
 
-- *Type:* <a href="#aws-dsf.CICDStage">CICDStage</a>
+- *Type:* aws-dsf.utils.CICDStage
 
 The stage of the pipeline.
 
@@ -7161,16 +7195,16 @@ The stage of the pipeline.
 
 
 
-### BucketUtils <a name="BucketUtils" id="aws-dsf.BucketUtils"></a>
+### BucketUtils <a name="BucketUtils" id="aws-dsf.utils.BucketUtils"></a>
 
 Utils for working with Amazon S3 buckets.
 
-#### Initializers <a name="Initializers" id="aws-dsf.BucketUtils.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.utils.BucketUtils.Initializer"></a>
 
 ```typescript
-import { BucketUtils } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-new BucketUtils()
+new utils.BucketUtils()
 ```
 
 | **Name** | **Type** | **Description** |
@@ -7183,16 +7217,16 @@ new BucketUtils()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.BucketUtils.generateUniqueBucketName">generateUniqueBucketName</a></code> | Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope. |
+| <code><a href="#aws-dsf.utils.BucketUtils.generateUniqueBucketName">generateUniqueBucketName</a></code> | Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope. |
 
 ---
 
-##### `generateUniqueBucketName` <a name="generateUniqueBucketName" id="aws-dsf.BucketUtils.generateUniqueBucketName"></a>
+##### `generateUniqueBucketName` <a name="generateUniqueBucketName" id="aws-dsf.utils.BucketUtils.generateUniqueBucketName"></a>
 
 ```typescript
-import { BucketUtils } from 'aws-dsf'
+import { utils } from 'aws-dsf'
 
-BucketUtils.generateUniqueBucketName(scope: Construct, id: string, name: string)
+utils.BucketUtils.generateUniqueBucketName(scope: Construct, id: string, name: string)
 ```
 
 Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope.
@@ -7200,7 +7234,7 @@ Generate a unique Amazon S3 bucket name based on the provided name, CDK construc
 The bucket name is suffixed the AWS account ID, the AWS region and a unique 8 characters hash.
 The maximum length for name is 26 characters.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.BucketUtils.generateUniqueBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.BucketUtils.generateUniqueBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -7208,7 +7242,7 @@ the current scope where the construct is created (generally `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.BucketUtils.generateUniqueBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.BucketUtils.generateUniqueBucketName.parameter.id"></a>
 
 - *Type:* string
 
@@ -7216,11 +7250,53 @@ the CDK ID of the construct.
 
 ---
 
-###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.BucketUtils.generateUniqueBucketName.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.utils.BucketUtils.generateUniqueBucketName.parameter.name"></a>
 
 - *Type:* string
 
 the name of the bucket.
+
+---
+
+
+
+### StepFunctionUtils <a name="StepFunctionUtils" id="aws-dsf.utils.StepFunctionUtils"></a>
+
+#### Initializers <a name="Initializers" id="aws-dsf.utils.StepFunctionUtils.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+new utils.StepFunctionUtils()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.utils.StepFunctionUtils.camelToPascal">camelToPascal</a></code> | Internal function to convert camel case properties to pascal case as required by AWS Step Functions API. |
+
+---
+
+##### `camelToPascal` <a name="camelToPascal" id="aws-dsf.utils.StepFunctionUtils.camelToPascal"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.StepFunctionUtils.camelToPascal(config: {[ key: string ]: any})
+```
+
+Internal function to convert camel case properties to pascal case as required by AWS Step Functions API.
+
+###### `config`<sup>Required</sup> <a name="config" id="aws-dsf.utils.StepFunctionUtils.camelToPascal.parameter.config"></a>
+
+- *Type:* {[ key: string ]: any}
 
 ---
 
@@ -7252,7 +7328,7 @@ Enum defining the CPU architecture type of the application, either  X86_64 or AR
 ---
 
 
-### CICDStage <a name="CICDStage" id="aws-dsf.CICDStage"></a>
+### CICDStage <a name="CICDStage" id="aws-dsf.utils.CICDStage"></a>
 
 The list of CICD Stages to deploy the SparkCICDStack.
 
@@ -7260,17 +7336,17 @@ The list of CICD Stages to deploy the SparkCICDStack.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.CICDStage.STAGING">STAGING</a></code> | *No description.* |
-| <code><a href="#aws-dsf.CICDStage.PROD">PROD</a></code> | *No description.* |
+| <code><a href="#aws-dsf.utils.CICDStage.STAGING">STAGING</a></code> | *No description.* |
+| <code><a href="#aws-dsf.utils.CICDStage.PROD">PROD</a></code> | *No description.* |
 
 ---
 
-##### `STAGING` <a name="STAGING" id="aws-dsf.CICDStage.STAGING"></a>
+##### `STAGING` <a name="STAGING" id="aws-dsf.utils.CICDStage.STAGING"></a>
 
 ---
 
 
-##### `PROD` <a name="PROD" id="aws-dsf.CICDStage.PROD"></a>
+##### `PROD` <a name="PROD" id="aws-dsf.utils.CICDStage.PROD"></a>
 
 ---
 

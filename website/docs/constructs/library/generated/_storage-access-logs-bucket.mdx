@@ -21,7 +21,7 @@ Amazon S3 Bucket configured for S3 access logs storage.
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  class ExampleDefaultAccessLogsBucketStack extends cdk.Stack {
+class ExampleDefaultAccessLogsBucketStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
         new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket');
@@ -35,7 +35,7 @@ Amazon S3 Bucket configured for S3 access logs storage.
   <TabItem value="python" label="Python">
 
   ```python
-  class ExampleDefaultAccessLogsBucketStack(cdk.Stack):
+class ExampleDefaultAccessLogsBucketStack(cdk.Stack):
     def __init__(self, scope, id):
         super().__init__(scope, id)
         dsf.storage.AccessLogsBucket(self, "AccessLogsBucket")
@@ -61,8 +61,8 @@ This method generates a unique name based on the provided name, the construct ID
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  new dsf.storage.AccessLogsBucket(this, 'MyAccessLogs', {
-    bucketName: BucketUtils.generateUniqueBucketName(this, 'MyAccessLogs', 'my-custom-name')
+new dsf.storage.AccessLogsBucket(this, 'MyAccessLogs', {
+    bucketName: dsf.utils.BucketUtils.generateUniqueBucketName(this, 'MyAccessLogs', 'my-custom-name')
 });
   ```
   
@@ -72,8 +72,8 @@ This method generates a unique name based on the provided name, the construct ID
   <TabItem value="python" label="Python">
 
   ```python
-  dsf.storage.AccessLogsBucket(self, "MyAccessLogs",
-    bucket_name=BucketUtils.generate_unique_bucket_name(self, "MyAccessLogs", "my-custom-name")
+dsf.storage.AccessLogsBucket(self, "MyAccessLogs",
+    bucket_name=dsf.utils.BucketUtils.generate_unique_bucket_name(self, "MyAccessLogs", "my-custom-name")
 )
   ```
 
