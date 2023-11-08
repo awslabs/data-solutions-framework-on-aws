@@ -15,7 +15,7 @@ class CICDPipelineStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        dsf.SparkEmrCICDPipeline(
+        dsf.processing.SparkEmrCICDPipeline(
             self,
             "SparkCICDPipeline",
             spark_application_name="SparkTest",

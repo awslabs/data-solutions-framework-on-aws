@@ -17,8 +17,8 @@ class SparkJobTrigger(Construct):
         self,
         scope: Construct,
         construct_id: str,
-        spark_job: dsf.SparkEmrServerlessJob,
-        db: dsf.DataCatalogDatabase,
+        spark_job: dsf.processing.SparkEmrServerlessJob,
+        db: dsf.governance.DataCatalogDatabase,
         **kwargs,
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
