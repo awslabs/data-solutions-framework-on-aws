@@ -1,10 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@types/js-yaml",
-      "type": "build"
-    },
-    {
       "name": "@types/node",
       "version": "16.0.0",
       "type": "build"

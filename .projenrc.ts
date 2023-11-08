@@ -37,8 +37,7 @@ const rootProject = new LernaProject({
     'lerna-projen',
     'ts-node',
     'typescript',
-    'glob@^10.3.6',
-    '@types/js-yaml'
+    'glob@^10.3.6'
   ],
   peerDeps: [
     '@types/node@^16',

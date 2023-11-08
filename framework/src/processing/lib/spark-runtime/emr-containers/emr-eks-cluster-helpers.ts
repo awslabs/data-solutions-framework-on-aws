@@ -12,7 +12,7 @@ import { Construct } from 'constructs';
 import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
 import { SparkEmrContainersRuntime } from './emr-eks-cluster';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/controllers-iam-policies/iam-policy-ebs-csi-driver.json';
-import { Utils } from '../../../utils';
+import { Utils } from '../../../../utils';
 
 
 /**
@@ -123,7 +123,7 @@ function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeR
     launchTemplateName: 'ToolingNodegroup',
 
     launchTemplateData: {
-      
+
       metadataOptions: {
         httpEndpoint: 'enabled',
         httpProtocolIpv6: 'disabled',

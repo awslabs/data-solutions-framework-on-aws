@@ -32,13 +32,14 @@ import { Bucket, BucketEncryption, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
-import { vpcBootstrap } from './../../../utils/vpc-helper';
 import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners, createNamespace } from './emr-eks-cluster-helpers';
 import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
-import { Context, EMR_DEFAULT_VERSION, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
+import { vpcBootstrap } from '../../../../utils/vpc-helper';
+import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 
 /**
  * The properties for the EmrEksCluster Construct class.
