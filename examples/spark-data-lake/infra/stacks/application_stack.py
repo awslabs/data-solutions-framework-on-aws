@@ -10,17 +10,17 @@ from stacks.demo_helpers.data_load import DataLoad
 from stacks.demo_helpers.spark_job_trigger import SparkJobTrigger
 
 
-class SparkApplicationStackFactory(dsf.ApplicationStackFactory):
+class SparkApplicationStackFactory(dsf.utils.ApplicationStackFactory):
     """Implements ApplicationStackFactory from AWS DSF to create a self-mutable CICD pipeline for Spark app.
     See Spark CICD docs for more details."""
 
-    def create_stack(self, scope: Construct, stage: dsf.CICDStage) -> Stack:
+    def create_stack(self, scope: Construct, stage: dsf.utils.CICDStage) -> Stack:
         return ApplicationStack(scope, "EmrApplicationStack", stage)
 
 
 class ApplicationStack(Stack):
     def __init__(
-        self, scope: Construct, construct_id: str, stage: dsf.CICDStage=None, **kwargs
+        self, scope: Construct, construct_id: str, stage: dsf.utils.CICDStage=None, **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 

@@ -2,7 +2,6 @@ import * as cdk from 'aws-cdk-lib';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
-import { BucketUtils } from '../../index';
 
 class ExampleAnalyticsBucketNamingStack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
@@ -13,7 +12,7 @@ class ExampleAnalyticsBucketNamingStack extends cdk.Stack {
 
 /// !show
     new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-        bucketName: BucketUtils.generateUniqueBucketName(this, 'AnalyticsBucket', 'my-custom-name'),
+        bucketName: dsf.utils.BucketUtils.generateUniqueBucketName(this, 'AnalyticsBucket', 'my-custom-name'),
         encryptionKey: key
     });
 /// !hide

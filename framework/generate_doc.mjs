@@ -59,7 +59,7 @@ for (let key in snippets) {
   <TabItem value="typescript" label="TypeScript" default>
 
   \`\`\`typescript
-  ${typescript}
+${typescript}
   \`\`\`
   
   \`\`\`mdx-code-block
@@ -68,7 +68,7 @@ for (let key in snippets) {
   <TabItem value="python" label="Python">
 
   \`\`\`python
-  ${python}
+${python}
   \`\`\`
 
   </TabItem>

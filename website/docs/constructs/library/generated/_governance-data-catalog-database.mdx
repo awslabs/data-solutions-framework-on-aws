@@ -23,7 +23,7 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
+class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
         const bucket = new Bucket(this, 'DataCatalogBucket');
@@ -43,7 +43,7 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
   <TabItem value="python" label="Python">
 
   ```python
-  class ExampleDefaultDataCatalogDatabaseStack(cdk.Stack):
+class ExampleDefaultDataCatalogDatabaseStack(cdk.Stack):
     def __init__(self, scope, id):
         super().__init__(scope, id)
         bucket = Bucket(self, "DataCatalogBucket")
@@ -69,7 +69,7 @@ You can change the default configuration of the AWS Glue Crawler to match your r
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-          const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
+        const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
 
         new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
             locationBucket: bucket,
@@ -90,7 +90,7 @@ You can change the default configuration of the AWS Glue Crawler to match your r
   <TabItem value="python" label="Python">
 
   ```python
-  encryption_key = Key(self, "CrawlerLogEncryptionKey")
+encryption_key = Key(self, "CrawlerLogEncryptionKey")
 
 dsf.governance.DataCatalogDatabase(self, "DataCatalogDatabase",
     location_bucket=bucket,

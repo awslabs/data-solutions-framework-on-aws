@@ -7,8 +7,7 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
-import { TrackedConstruct } from '../../../utils';
-import { StepFunctionUtils } from '../../../utils/step-function-utils';
+import { StepFunctionUtils, TrackedConstruct } from '../../../utils';
 import { EMR_DEFAULT_VERSION } from '../emr-releases';
 
 

@@ -8,8 +8,7 @@ import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob, SparkJobProps } from './spark-job';
 import { SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps } from './spark-job-props';
-import { TrackedConstruct } from '../../../utils';
-import { StepFunctionUtils } from '../../../utils/step-function-utils';
+import { StepFunctionUtils, TrackedConstruct } from '../../../utils';
 import { SparkEmrServerlessRuntime } from '../spark-runtime';
 
 /**

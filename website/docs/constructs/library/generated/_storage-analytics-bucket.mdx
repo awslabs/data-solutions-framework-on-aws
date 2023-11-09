@@ -22,7 +22,7 @@ Amazon S3 Bucket configured for analytics.
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  class ExampleDefaultAnalyticsBucketStack extends cdk.Stack {
+class ExampleDefaultAnalyticsBucketStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
         const key = new Key(this, 'DataKey', {
@@ -42,7 +42,7 @@ Amazon S3 Bucket configured for analytics.
   <TabItem value="python" label="Python">
 
   ```python
-  class ExampleDefaultAnalyticsBucketStack(cdk.Stack):
+class ExampleDefaultAnalyticsBucketStack(cdk.Stack):
     def __init__(self, scope, id):
         super().__init__(scope, id)
         key = Key(self, "DataKey",
@@ -79,7 +79,7 @@ Or programmatically in your CDK app:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-      // Set context value for global data removal policy
+    // Set context value for global data removal policy
     this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
     const key = new Key(this, 'DataKey', {
         enableKeyRotation: true,
@@ -98,7 +98,7 @@ Or programmatically in your CDK app:
   <TabItem value="python" label="Python">
 
   ```python
-  # Set context value for global data removal policy
+# Set context value for global data removal policy
 self.node.set_context("@aws-data-solutions-framework/removeDataOnDestroy", True)key = Key(self, "DataKey",
     enable_key_rotation=True,
     removal_policy=RemovalPolicy.DESTROY
@@ -130,8 +130,8 @@ This method generates a unique name based on the provided name, the construct ID
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-    bucketName: BucketUtils.generateUniqueBucketName(this, 'AnalyticsBucket', 'my-custom-name'),
+new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+    bucketName: dsf.utils.BucketUtils.generateUniqueBucketName(this, 'AnalyticsBucket', 'my-custom-name'),
     encryptionKey: key
 });
   ```
@@ -142,8 +142,8 @@ This method generates a unique name based on the provided name, the construct ID
   <TabItem value="python" label="Python">
 
   ```python
-  dsf.storage.AnalyticsBucket(self, "AnalyticsBucket",
-    bucket_name=BucketUtils.generate_unique_bucket_name(self, "AnalyticsBucket", "my-custom-name"),
+dsf.storage.AnalyticsBucket(self, "AnalyticsBucket",
+    bucket_name=dsf.utils.BucketUtils.generate_unique_bucket_name(self, "AnalyticsBucket", "my-custom-name"),
     encryption_key=key
 )
   ```

@@ -70,7 +70,7 @@ For this example we define the PySparkApplicationPackage resource as follows:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-  new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
+new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
     applicationName: 'nightly-job-aggregation',
     entrypointPath: './../spark/src/entrypoint.py',
     dependenciesFolder: './../spark',
@@ -84,7 +84,7 @@ For this example we define the PySparkApplicationPackage resource as follows:
   <TabItem value="python" label="Python">
 
   ```python
-  dsf.processing.PySparkApplicationPackage(self, "PySparkApplicationPackage",
+dsf.processing.PySparkApplicationPackage(self, "PySparkApplicationPackage",
     application_name="nightly-job-aggregation",
     entrypoint_path="./../spark/src/entrypoint.py",
     dependencies_folder="./../spark",
@@ -130,7 +130,7 @@ The stack below leverages the resources defined above for PySpark to build the e
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-          const runtime = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntime', {
+        const runtime = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntime', {
             name: 'mySparkRuntime',
         });
 
@@ -158,7 +158,7 @@ The stack below leverages the resources defined above for PySpark to build the e
   <TabItem value="python" label="Python">
 
   ```python
-  runtime = dsf.processing.SparkEmrServerlessRuntime(self, "SparkRuntime",
+runtime = dsf.processing.SparkEmrServerlessRuntime(self, "SparkRuntime",
     name="mySparkRuntime"
 )
 

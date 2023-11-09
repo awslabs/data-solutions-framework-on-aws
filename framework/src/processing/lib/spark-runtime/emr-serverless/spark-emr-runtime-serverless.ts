@@ -8,8 +8,7 @@ import { Key, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import * as semver from 'semver';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../../utils';
-import { NetworkConfiguration, vpcBootstrap } from '../../../../utils/vpc-helper';
+import { Context, NetworkConfiguration, TrackedConstruct, TrackedConstructProps, vpcBootstrap } from '../../../../utils';
 import { EMR_DEFAULT_VERSION, EmrRuntimeVersion } from '../../emr-releases';
 
 /**

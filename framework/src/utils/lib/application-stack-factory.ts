@@ -11,7 +11,7 @@ import { CICDStage } from './application-stage';
  * @exampleMetadata fixture=imports-only
  * @example
  * interface MyApplicationStackProps extends cdk.StackProps {
- *   readonly stage: dsf.CICDStage;
+ *   readonly stage: dsf.utils.CICDStage;
  * }
  *
  * class MyApplicationStack extends cdk.Stack {
@@ -21,8 +21,8 @@ import { CICDStage } from './application-stage';
  *   }
  * }
  *
- * class MyApplicationStackFactory extends dsf.ApplicationStackFactory {
- *   createStack(scope: Construct, stage: dsf.CICDStage): cdk.Stack {
+ * class MyApplicationStackFactory extends dsf.utils.ApplicationStackFactory {
+ *   createStack(scope: Construct, stage: dsf.utils.CICDStage): cdk.Stack {
  *     return new MyApplicationStack(scope, 'MyApplication', {
  *       stage: stage
  *     } as MyApplicationStackProps);
