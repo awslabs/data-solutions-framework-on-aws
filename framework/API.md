@@ -8140,7 +8140,7 @@ new utils.Utils()
 | --- | --- |
 | <code><a href="#aws-dsf.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
 | <code><a href="#aws-dsf.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
-| <code><a href="#aws-dsf.utils.Utils.readYamlDocument">readYamlDocument</a></code> | *No description.* |
+| <code><a href="#aws-dsf.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
 | <code><a href="#aws-dsf.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
 
 ---
@@ -8189,9 +8189,13 @@ import { utils } from 'aws-dsf'
 utils.Utils.readYamlDocument(path: string)
 ```
 
+Read a YAML file from the path provided and return it.
+
 ###### `path`<sup>Required</sup> <a name="path" id="aws-dsf.utils.Utils.readYamlDocument.parameter.path"></a>
 
 - *Type:* string
+
+the path to the file.
 
 ---
 
