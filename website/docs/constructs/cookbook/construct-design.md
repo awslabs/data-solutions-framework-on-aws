@@ -22,7 +22,7 @@ Refer to these best practices when designing a new construct:
     * If the resource contains more than one resource, it should extend `Construct`. It allows to properly scope resources created within the construct (using `this` parameter as the scope) and avoid collisions in resource naming.
 
 
-* Expose all the resources by your construct so you provide a way to end-users to [customize](../customize.mdx) them. Sometimes, it's more user friendly to expose a resource directly to avoid long resources chaining. For example, in the `DataLakeStorage` construct that contains a KMS `Key` attached to the `AnalyticsBucket` part of the `DataLakeStorage`, we re-expose the key so you can access it directly via `dataLakeStorage.key` instead of `dataLakeStorage.bronze.key`.
+* Expose all the resources created by your construct so you provide a way for end-users to [customize](../customize.mdx) them. Sometimes, it's more user friendly to expose a resource directly to avoid long resources chaining. For example, in the `DataLakeStorage` construct that contains a KMS `Key` attached to the `AnalyticsBucket` part of the `DataLakeStorage`, we re-expose the key so you can access it directly via `dataLakeStorage.key` instead of `dataLakeStorage.bronze.key`.
 
 * If a Construct is creating a role, provide a props to get the role as a parameter. Some AWS customers create roles within a specific process outside of any infrastructure as code.
 
