@@ -49,7 +49,7 @@ Follow this coding style when submitting code to AWS DSF constructs:
     * Use `import { Construct } from '@aws-cdk/core'`
     * Instead of `import '@aws-cdk/core' as cdk`
         
-* Do not use Typescript code that is falling into these JSII limitations because JSII won’t be able to translate Typescript code in other languages https://aws.github.io/jsii/user-guides/lib-author/typescript-restrictions/
+* Do not use Typescript code that is falling into these JSII limitations because JSII won’t be able to translate Typescript code in other languages. See [documentation](https://aws.github.io/jsii/user-guides/lib-author/typescript-restrictions/)
 * Do not use your own `Interface` in the construct properties because they are translated in Python `Protocols` by JSII and then cannot be referenced when consuming the construct.
 * Set the defaults values for props at the beginning of the construct constructor (first lines of code) so it's easy to find and maintain.
 * Write the props interface for a Construct class in a dedicated file.
