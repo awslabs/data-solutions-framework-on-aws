@@ -53,7 +53,7 @@ Follow this coding style when submitting code to AWS DSF constructs:
 * Do not use your own `Interface` in the construct properties because they are translated in Python `Protocols` by JSII and then cannot be referenced when consuming the construct.
 * Set the defaults values for props at the beginning of the construct constructor (first lines of code) so it's easy to find and maintain.
 * Write the props interface for a Construct class in a dedicated file.
-* Resources IDs use Pascal Casing for example `BronzeAnalyticsBucket`.
+* Resources IDs use Pascal Case. For example `BronzeAnalyticsBucket`.
 * Resource IDs should contain the name of construct they use. For example the ID `BronzeAnalyticsBucket` in the `DataLakeStorage` construct contains `AnalyticsBucket` so we can easily identify which resource it is.
 * Resources IDs should not repeat the name of the construct they are part of. For example in `DataLakeStorage` construct, the ID of the bronze bucket is `BronzeBucket` not `DataLakeStorageBronzeBucket`.
 * Do not use any property value in construct IDs because it can be a reference to another resource only resolved at deploy time.
