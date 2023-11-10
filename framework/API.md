@@ -3937,7 +3937,7 @@ import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 
 const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
 
-const emrEks: dsf.SparkEmrContainersRuntime = dsf.SparkEmrContainersRuntime.getOrCreate(this, {
+const emrEks: dsf.processing.SparkEmrContainersRuntime = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
   eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
   publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
   kubectlLambdaLayer: kubectlLayer,
@@ -4046,7 +4046,7 @@ You can use the Utils class that offers method to read yaml file and load it as 
 ##### `createExecutionRole` <a name="createExecutionRole" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole"></a>
 
 ```typescript
-public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, namespace: string, name: string): Role
+public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, eksNamespace: string, name: string): Role
 ```
 
 Create and configure a new Amazon IAM Role usable as an execution role.
@@ -4077,7 +4077,7 @@ the execution policy to attach to the role.
 
 ---
 
-###### `namespace`<sup>Required</sup> <a name="namespace" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.namespace"></a>
+###### `eksNamespace`<sup>Required</sup> <a name="eksNamespace" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.eksNamespace"></a>
 
 - *Type:* string
 
