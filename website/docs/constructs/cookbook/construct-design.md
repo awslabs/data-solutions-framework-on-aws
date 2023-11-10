@@ -26,7 +26,7 @@ Refer to these best practices when designing a new construct:
 
 * If a Construct is creating a role, provide a props to get the role as a parameter. Some AWS customers create roles within a specific process outside of any infrastructure as code.
 
-* Tag resources created with, you can use an aspect:
+* Tag resources created with the following tags:
     * adsf: version
     * adsf-layer: layer
     * adsf-construct: construct
