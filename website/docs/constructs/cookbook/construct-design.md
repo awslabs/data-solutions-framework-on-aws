@@ -35,7 +35,9 @@ Refer to these best practices when designing a new construct:
 
 * Use AWS CDK interfaces (whenever it exists) as input/output of your construct instead of the AWS CDK resource. For example, use `IBucket` instead of `Bucket` as the property or public member of your construct. 
 
-* Avoid using generic `string` parameters for passing values that are  because there is no check during synthetize time.  
+* Avoid using generic `string` parameters for passing values that are attributes of an AWS resource. Because there is no check during synthetize time, it's very error prone. Prefer passing the entire object (or interface). For examples:
+  * Do not use an IAM Role ARN as a `string` property for your construct. Instead, use an `IRole` type in the properties and get the ARN from the attributes.
+  * Do not use S3 URI in the form of `s3://MYBUCKET/MYPREFIX`. Instead, use an `IBucket` type and a prefix in `string` type.
 
 * Extend the `TrackedConstruct` instead of the base CDK `Construct` to measure the number of deployments. See the [dedicated documentation](./tracked-construct.md). 
 
