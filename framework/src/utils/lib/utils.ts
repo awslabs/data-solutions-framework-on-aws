@@ -24,10 +24,10 @@ export class Utils {
     return `${name}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
   }
 
-  /*
-     * Read a YAML file from the path provided and return it
-     * @param {string} path the path to the file
-     */
+  /**
+   * Read a YAML file from the path provided and return it
+   * @param {string} path the path to the file
+   */
   public static readYamlDocument(path: string): string {
     try {
       const doc = fs.readFileSync(path, 'utf8');
