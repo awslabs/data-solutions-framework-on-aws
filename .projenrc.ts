@@ -258,7 +258,8 @@ sparkDataLakeInfraExampleApp.addTask('test:e2e', {
 });
 const synthTask = sparkDataLakeInfraExampleApp.tasks.tryFind('synth:silent');
 synthTask?.reset();
-synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
+synthTask?.prependExec(`cdk --version || npm install -g cdk@${CDK_VERSION}`);
+synthTask?.exec('cdk synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER');
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python aws_dsf` },
@@ -314,7 +315,8 @@ adsfQuickstart.addTask('test:e2e', {
 });
 const adsfQuickstartSynthTask = adsfQuickstart.tasks.tryFind('synth:silent');
 adsfQuickstartSynthTask?.reset();
-adsfQuickstartSynthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
+adsfQuickstartSynthTask?.prependExec(`cdk --version || npm install -g cdk@${CDK_VERSION}`);
+adsfQuickstartSynthTask?.exec('cdk synth -q');
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python aws_dsf` },
