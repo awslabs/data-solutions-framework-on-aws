@@ -3,6 +3,7 @@
 
 
 export * from './tracked-construct';
+export * from './tracked-construct-props';
 export * from './context';
 export * from './application-stage';
 export * from './application-stack-factory';

@@ -3,15 +3,14 @@
 
 import { Aws, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-codecommit';
-import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
+import { SparkEmrCICDPipelineProps } from './spark-emr-cicd-pipeline-props';
 import { AccessLogsBucket } from '../../../storage';
 import {
-  ApplicationStackFactory,
   ApplicationStage,
   CICDStage,
   Context,
@@ -33,67 +32,6 @@ export interface AccountInfo {
    * The region to deploy the Spark Application stack
    */
   readonly region: string;
-}
-
-/**
- * Properties for SparkEmrCICDPipeline class.
- */
-export interface SparkEmrCICDPipelineProps {
-  /**
-   * The name of the Spark application to be deployed.
-   */
-  readonly sparkApplicationName: string;
-
-  /**
-   * The application Stack to deploy in the different CDK Pipelines Stages
-   */
-  readonly applicationStackFactory: ApplicationStackFactory;
-
-  /**
-   * The path to the folder that contains the CDK Application
-   * @default - The root of the repository
-   */
-  readonly cdkApplicationPath?: string;
-
-  /**
-   * The path to the folder that contains the Spark Application
-   * @default - The root of the repository
-   */
-  readonly sparkApplicationPath?: string;
-
-  /**
-   * The EMR Spark image to use to run the unit tests
-   * @default - EMR v6.12 is used
-   */
-  readonly sparkImage?: SparkImage;
-
-  /**
-   * The path to the Shell script that contains integration tests
-   * @default - No integration tests are run
-   */
-  readonly integTestScript?: string;
-
-  /**
-   * The environment variables to create from the Application Stack and to pass to the integration tests.
-   * This is used to interact with resources created by the Application Stack from within the integration tests script.
-   * Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application Stack.
-   * @default - No environment variables
-   */
-  readonly integTestEnv?: Record<string, string>;
-
-  /**
-   * The IAM policy statements to add permissions for running the integration tests.
-   * @default - No permissions
-   */
-  readonly integTestPermissions?: PolicyStatement[];
-
-  /**
-   * The removal policy when deleting the CDK resource.
-   * If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
-   * Otherwise the removalPolicy is reverted to RETAIN.
-   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
-   */
-  readonly removalPolicy?: RemovalPolicy;
 }
 
 /**

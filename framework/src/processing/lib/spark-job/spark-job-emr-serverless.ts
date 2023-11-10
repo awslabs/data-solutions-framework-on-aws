@@ -6,8 +6,9 @@ import { PolicyStatement, Role, IRole } from 'aws-cdk-lib/aws-iam';
 import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { SparkJob, SparkJobProps } from './spark-job';
-import { SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps } from './spark-job-props';
+import { SparkJob } from './spark-job';
+import { SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps } from './spark-job-emr-serverless-props';
+import { SparkJobProps } from './spark-job-props';
 import { StepFunctionUtils, TrackedConstruct } from '../../../utils';
 import { SparkEmrServerlessRuntime } from '../spark-runtime';
 

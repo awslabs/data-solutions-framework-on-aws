@@ -3,6 +3,7 @@
 
 
 export * from './data-lake-storage';
+export * from './data-lake-storage-props';
 export * from './analytics-bucket';
 export * from './analytics-bucket-props';
 export * from './access-logs-bucket';

@@ -3963,14 +3963,14 @@ new cdk.CfnOutput(this, 'SparkJobStateMachine', {
 ```typescript
 import { processing } from 'aws-dsf'
 
-new processing.SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobApiProps | SparkEmrEksJobProps)
+new processing.SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobProps | SparkEmrEksJobApiProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrEksJobApiProps \| aws-dsf.processing.SparkEmrEksJobProps</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrEksJobProps \| aws-dsf.processing.SparkEmrEksJobApiProps</code> | *No description.* |
 
 ---
 
@@ -3988,7 +3988,7 @@ new processing.SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJo
 
 ##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props"></a>
 
-- *Type:* aws-dsf.processing.SparkEmrEksJobApiProps | aws-dsf.processing.SparkEmrEksJobProps
+- *Type:* aws-dsf.processing.SparkEmrEksJobProps | aws-dsf.processing.SparkEmrEksJobApiProps
 
 ---
 
