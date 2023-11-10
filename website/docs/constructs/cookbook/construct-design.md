@@ -9,7 +9,7 @@ AWS DSF Constructs follow the best practices detailed below. We recommend you fo
 
 ## Construct design
 
-Refer to these best practices when design a new construct:
+Refer to these best practices when designing a new construct:
 
 * Use AWS CDK L2 Constructs instead of L1 when available. Alpha constructs should not be used because there may be some breaking changes in the API.
 
