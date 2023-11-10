@@ -37,8 +37,7 @@ import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
-import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
-import { vpcBootstrap } from '../../../../utils/vpc-helper';
+import { Context, TrackedConstruct, TrackedConstructProps, Utils, vpcBootstrap } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 
 /**

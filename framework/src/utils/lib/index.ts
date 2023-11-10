@@ -9,6 +9,7 @@ export * from './application-stage';
 export * from './application-stack-factory';
 export * from './bucket-utils';
 export * from './step-function-utils';
+export * from './utils';
 export * from './vpc-helper';
 
 
