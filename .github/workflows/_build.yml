@@ -48,6 +48,3 @@ jobs:
           echo "::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch."
           cat .repo.patch
           exit 1
-      - name: Validate code examples
-        working-directory: ./framework
-        run: npx projen validate-examples

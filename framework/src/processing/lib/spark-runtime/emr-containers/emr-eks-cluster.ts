@@ -143,7 +143,7 @@ export interface SparkEmrContainersRuntimeProps {
  *
  * const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
  *
- * const emrEks: dsf.SparkEmrContainersRuntime = dsf.SparkEmrContainersRuntime.getOrCreate(this, {
+ * const emrEks: dsf.processing.SparkEmrContainersRuntime = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
  *   eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
  *   publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
  *   kubectlLambdaLayer: kubectlLayer,
@@ -500,16 +500,16 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * @param {Construct} scope of the IAM role
    * @param {string} id of the CDK resource to be created, it should be unique across the stack
    * @param {IManagedPolicy} policy the execution policy to attach to the role
-   * @param {string} namespace The namespace from which the role is going to be used. MUST be the same as the namespace of the Virtual Cluster from which the job is submitted
+   * @param {string} eksNamespace The namespace from which the role is going to be used. MUST be the same as the namespace of the Virtual Cluster from which the job is submitted
    * @param {string} name Name to use for the role, required and is used to scope the iam role
    */
-  public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, namespace: string, name: string): Role {
+  public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, eksNamespace: string, name: string): Role {
 
     const stack = Stack.of(scope);
 
     let irsaConditionkey: CfnJson = new CfnJson(scope, `${id}irsaConditionkey'`, {
       value: {
-        [`${this.eksCluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]: 'system:serviceaccount:' + namespace + ':emr-containers-sa-*-*-' + Aws.ACCOUNT_ID.toString() + '-' + SimpleBase.base36.encode(name),
+        [`${this.eksCluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]: 'system:serviceaccount:' + eksNamespace + ':emr-containers-sa-*-*-' + Aws.ACCOUNT_ID.toString() + '-' + SimpleBase.base36.encode(name),
       },
     });
 
