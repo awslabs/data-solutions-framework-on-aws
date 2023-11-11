@@ -4202,7 +4202,6 @@ the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.Bucket</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateLocation">podTemplateLocation</a></code> | <code>aws-cdk-lib.aws_s3.Location</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | *No description.* |
@@ -4254,16 +4253,6 @@ public readonly eksCluster: Cluster;
 ```
 
 - *Type:* aws-cdk-lib.aws_eks.Cluster
-
----
-
-##### `podTemplateLocation`<sup>Required</sup> <a name="podTemplateLocation" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateLocation"></a>
-
-```typescript
-public readonly podTemplateLocation: Location;
-```
-
-- *Type:* aws-cdk-lib.aws_s3.Location
 
 ---
 
