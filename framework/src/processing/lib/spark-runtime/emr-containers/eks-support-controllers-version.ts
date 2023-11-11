@@ -15,8 +15,8 @@ export const EBS_CSI_DRIVER_ADDON_VERSION: Map<KubernetesVersion, string> = new 
 //The version mapping can be taken from here
 //https://cert-manager.io/docs/releases/
 export const CERTMANAGER_HELM_CHART_VERSION: Map<KubernetesVersion, string> = new Map([
-  [KubernetesVersion.V1_24, '1.13.0'],
-  [KubernetesVersion.V1_25, '1.13.0'],
-  [KubernetesVersion.V1_26, '1.13.0'],
-  [KubernetesVersion.V1_27, '1.13.0'],
+  [KubernetesVersion.V1_24, '1.13.2'],
+  [KubernetesVersion.V1_25, '1.13.2'],
+  [KubernetesVersion.V1_26, '1.13.2'],
+  [KubernetesVersion.V1_27, '1.13.2'],
 ]);
