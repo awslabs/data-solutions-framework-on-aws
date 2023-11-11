@@ -207,10 +207,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   public readonly notebookDefaultConfig?: string;
   public readonly criticalDefaultConfig?: string;
   public readonly sharedDefaultConfig?: string;
-  public readonly podTemplateLocation: Location;
   public readonly assetBucket: Bucket;
   public readonly clusterName: string;
-
   public readonly podTemplateS3LocationCriticalDriver?: string;
   public readonly podTemplateS3LocationCriticalExecutor?: string;
   public readonly podTemplateS3LocationDriverShared?: string;
@@ -226,6 +224,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   private readonly createEmrOnEksServiceLinkedRole: boolean;
   private readonly logKmsKey: Key;
   private readonly eksSecretKmsKey: Key;
+  private readonly podTemplateLocation: Location;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -242,14 +241,16 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     let removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    this.logKmsKey = Stack.of(scope).node.tryFindChild('logKmsKey') as Key ?? new Key(scope, 'logKmsKey', {
+    this.logKmsKey = new Key(scope, 'logKmsKey', {
       enableKeyRotation: true,
       alias: 'log-vpc-key',
+      removalPolicy: removalPolicy,
     });
 
     this.eksSecretKmsKey = Stack.of(scope).node.tryFindChild('eksSecretKmsKey') as Key ?? new Key(scope, 'eksSecretKmsKey', {
       enableKeyRotation: true,
-      alias: 'eks-key',
+      alias: 'eks-secrets-key',
+      removalPolicy: removalPolicy,
     });
 
     this.clusterName = props.eksClusterName ?? SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
