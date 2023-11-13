@@ -6893,7 +6893,6 @@ public readonly kubectlLambdaLayer: ILayerVersion;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.ILayerVersion
-- *Default:* No layer is used and the default CDK layer is used
 
 Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct.
 

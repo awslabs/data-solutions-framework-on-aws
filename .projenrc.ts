@@ -130,14 +130,14 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'rosetta',
-    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
 
   bundledDeps: [
     'js-yaml',
+    '@types/js-yaml',
     'simple-base',
-    'semver',
-    '@types/js-yaml'
+    'semver'
   ],
 
   jestOptions: {

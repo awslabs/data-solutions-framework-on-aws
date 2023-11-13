@@ -88,7 +88,6 @@ export interface SparkEmrContainersRuntimeProps {
    *
    * The cdk [documentation] (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
    * contains the libraries that you should add for the right Kubernetes version
-   * @default - No layer is used and the default CDK layer is used
    */
   readonly kubectlLambdaLayer: ILayerVersion;
 
