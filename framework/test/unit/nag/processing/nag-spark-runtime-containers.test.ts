@@ -7,13 +7,13 @@
  * @group unit/best-practice/spark-runtime-containers
  */
 
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { SparkEmrContainersRuntime } from '../../../../src/processing';
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 
 const app = new App();
 const emrEksClusterStack = new Stack(app, 'nagStack');
