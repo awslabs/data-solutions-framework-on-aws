@@ -215,6 +215,7 @@ export function karpenterSetup(cluster: Cluster,
   const karpenterInterruptionQueue: Queue = new Queue(scope, 'karpenterInterruptionQueue', {
     queueName: eksClusterName,
     retentionPeriod: Duration.seconds(300),
+    enforceSSL: true,
   });
 
   karpenterInterruptionQueue.addToResourcePolicy(
