@@ -3925,52 +3925,9 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### SparkEmrContainersRuntime <a name="SparkEmrContainersRuntime" id="aws-dsf.processing.SparkEmrContainersRuntime"></a>
 
-EmrEksCluster Construct packaging all the resources and configuration required to run Amazon EMR on EKS.
+A construct to create an EKS cluster, configure it and enable it with EMR on EKS.
 
-Usage example:
-
-*Example*
-
-```typescript
-import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
-
-const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
-
-const emrEks: dsf.processing.SparkEmrContainersRuntime = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
-  eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
-  publicAccessCIDRs: ["1.1.1.1/32"], //change it with your own IP
-  kubectlLambdaLayer: kubectlLayer,
-});
-
-const policy = new ManagedPolicy(this, 'testPolicy', {
-  document: new PolicyDocument({
-    statements: [
-      new PolicyStatement({
-        resources: ['arn:aws:s3:::your-bucket/key_name'],
-        actions: ['s3:GetObject'],
-      }),
-    ],
- }),
-});
-
-const virtualCluster = emrEks.addEmrVirtualCluster(this, {
-  name: "intra-day-jobs",
-  createNamespace: true,
-  eksNamespace: "data-platform",
-});
-
-const role = emrEks.createExecutionRole(this, 'execRole', policy, 'data-platform', 'execRole');
-
-// EMR on EKS virtual cluster ID
-new cdk.CfnOutput(this, 'VirtualClusterId', { value : virtualCluster.attrId! });
-// Job config for each nodegroup
-new cdk.CfnOutput(this, "CriticalConfig", { value : emrEks.criticalDefaultConfig! });
-new cdk.CfnOutput(this, "SharedConfig", { value : emrEks.sharedDefaultConfig!});
-// Execution role arn
-new cdk.CfnOutput(this,'ExecRoleArn', { value : role.roleArn!});
-```
-
+> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime)
 
 #### Methods <a name="Methods" id="Methods"></a>
 

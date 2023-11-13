@@ -32,13 +32,13 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
 import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners, createNamespace } from './emr-eks-cluster-helpers';
+import { SparkEmrContainersRuntimeProps } from './emr-eks-cluster-props';
 import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
 import { Context, TrackedConstruct, TrackedConstructProps, Utils, vpcBootstrap } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
-import { SparkEmrContainersRuntimeProps } from './emr-eks-cluster-props';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
