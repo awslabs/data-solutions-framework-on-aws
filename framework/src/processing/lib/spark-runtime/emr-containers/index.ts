@@ -4,3 +4,4 @@
 export * from './emr-eks-cluster';
 export * from './emr-virtual-cluster';
 export * from './eks-support-controllers-version';
+export * from './emr-eks-cluster-props';
