@@ -11,6 +11,7 @@ import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-li
 import { Choice, Condition, DefinitionBody, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
+import { SparkJobProps } from './spark-job-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
@@ -219,25 +220,4 @@ export abstract class SparkJob extends TrackedConstruct {
 
     return this.emrJobLogGroup;
   }
-}
-
-
-/**
- * Properties for the SparkJob construct.
- */
-export interface SparkJobProps {
-
-  /**
-   * The removal policy when deleting the CDK resource.
-   * If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
-   * Otherwise the removalPolicy is reverted to RETAIN.
-   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
-   */
-  readonly removalPolicy?: RemovalPolicy;
-
-  /**
-   * Schedule to run the Step Functions state machine.
-   * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
-   */
-  readonly schedule?: Schedule;
 }

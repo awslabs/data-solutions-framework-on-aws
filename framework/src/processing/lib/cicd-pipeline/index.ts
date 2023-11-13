@@ -3,3 +3,4 @@
 
 
 export * from './spark-emr-cicd-pipeline';
+export * from './spark-emr-cicd-pipeline-props';

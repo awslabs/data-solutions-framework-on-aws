@@ -4,19 +4,9 @@
 import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ContextOptions } from './context';
+import { TrackedConstructProps } from './tracked-construct-props';
 import { ADSF_AWS_TAG } from '../../constants';
 
-/**
- * The properties for the TrackedConstructProps construct.
- */
-export interface TrackedConstructProps {
-  /**
-   * Unique code used to measure the number of CloudFormation deployments of this construct.
-   *
-   * *Pattern* : `^[A-Za-z0-9-_]+$`
-   */
-  readonly trackingTag: string;
-}
 
 /**
  * @internal
