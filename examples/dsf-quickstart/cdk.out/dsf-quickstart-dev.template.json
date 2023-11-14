@@ -1,0 +1,3232 @@
+{
+ "Description": " (uksb-1tupboc21) (version:0.0.0) (tag:DataLakeStorage) (uksb-1tupboc21) (version:0.0.0) (tag:DataLakeCatalog,DataCatalogDatabase,SparkEmrServerlessRuntime)",
+ "Resources": {
+  "DataLakeStorageAccessLogsBucketEF431E51": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "AccessControl": "LogDeliveryWrite",
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "accesslogs-",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       "-",
+       {
+        "Ref": "AWS::Region"
+       },
+       "-554b6797"
+      ]
+     ]
+    },
+    "OwnershipControls": {
+     "Rules": [
+      {
+       "ObjectOwnership": "ObjectWriter"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/AccessLogsBucket/Resource"
+   }
+  },
+  "DataLakeStorageAccessLogsBucketPolicy4DBAAA4C": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageAccessLogsBucketEF431E51",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageAccessLogsBucketEF431E51",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/AccessLogsBucket/Policy/Resource"
+   }
+  },
+  "DataLakeStorageDataKey0F594BB8": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::145388625860:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/DataKey/Resource"
+   }
+  },
+  "DataLakeStorageBronzeBucket40F7C776": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "DataLakeStorageDataKey0F594BB8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "bronze-",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       "-",
+       {
+        "Ref": "AWS::Region"
+       },
+       "-761fb9b3"
+      ]
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "STANDARD_IA",
+         "TransitionInDays": 90
+        },
+        {
+         "StorageClass": "GLACIER",
+         "TransitionInDays": 180
+        }
+       ]
+      },
+      {
+       "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+       },
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+     },
+     "LogFilePrefix": {
+      "Fn::Join": [
+       "",
+       [
+        "bronze-",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        "-",
+        {
+         "Ref": "AWS::Region"
+        },
+        "-761fb9b3"
+       ]
+      ]
+     }
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/BronzeBucket/Resource"
+   }
+  },
+  "DataLakeStorageBronzeBucketPolicy4F044DF1": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageBronzeBucket40F7C776"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageBronzeBucket40F7C776",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageBronzeBucket40F7C776",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/BronzeBucket/Policy/Resource"
+   }
+  },
+  "DataLakeStorageSilverBucket8F9D2BEA": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "DataLakeStorageDataKey0F594BB8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "silver-",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       "-",
+       {
+        "Ref": "AWS::Region"
+       },
+       "-19687cb1"
+      ]
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "STANDARD_IA",
+         "TransitionInDays": 180
+        }
+       ]
+      },
+      {
+       "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+       },
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+     },
+     "LogFilePrefix": {
+      "Fn::Join": [
+       "",
+       [
+        "silver-",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        "-",
+        {
+         "Ref": "AWS::Region"
+        },
+        "-19687cb1"
+       ]
+      ]
+     }
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/SilverBucket/Resource"
+   }
+  },
+  "DataLakeStorageSilverBucketPolicyF509AAD7": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageSilverBucket8F9D2BEA",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageSilverBucket8F9D2BEA",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/SilverBucket/Policy/Resource"
+   }
+  },
+  "DataLakeStorageGoldBucket728EFA0A": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "DataLakeStorageDataKey0F594BB8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "gold-",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       "-",
+       {
+        "Ref": "AWS::Region"
+       },
+       "-ce8ce228"
+      ]
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "STANDARD_IA",
+         "TransitionInDays": 180
+        }
+       ]
+      },
+      {
+       "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+       },
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "DataLakeStorageAccessLogsBucketEF431E51"
+     },
+     "LogFilePrefix": {
+      "Fn::Join": [
+       "",
+       [
+        "gold-",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        "-",
+        {
+         "Ref": "AWS::Region"
+        },
+        "-ce8ce228"
+       ]
+      ]
+     }
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/GoldBucket/Resource"
+   }
+  },
+  "DataLakeStorageGoldBucketPolicy8A3E196B": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "DataLakeStorageGoldBucket728EFA0A"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageGoldBucket728EFA0A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageGoldBucket728EFA0A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeStorage/GoldBucket/Policy/Resource"
+   }
+  },
+  "DataLakeCatalogBronzeCatalogDatabaseGlueDatabaseF5FD2934": {
+   "Type": "AWS::Glue::Database",
+   "Properties": {
+    "CatalogId": "145388625860",
+    "DatabaseInput": {
+     "LocationUri": {
+      "Fn::Join": [
+       "",
+       [
+        "s3://",
+        {
+         "Ref": "DataLakeStorageBronzeBucket40F7C776"
+        },
+        "/spark_data_lake/"
+       ]
+      ]
+     },
+     "Name": {
+      "Fn::Join": [
+       "",
+       [
+        {
+         "Fn::Select": [
+          0,
+          {
+           "Fn::Split": [
+            "-",
+            {
+             "Ref": "DataLakeStorageBronzeBucket40F7C776"
+            }
+           ]
+          }
+         ]
+        },
+        "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/GlueDatabase"
+   }
+  },
+  "DataLakeCatalogBronzeCatalogDatabaseCrawlerRole3E2DB312": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "glue.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "glue:BatchCreatePartition",
+          "glue:BatchDeletePartition",
+          "glue:BatchDeleteTable",
+          "glue:BatchDeleteTableVersion",
+          "glue:BatchGetPartition",
+          "glue:BatchUpdatePartition",
+          "glue:CreatePartition",
+          "glue:CreateTable",
+          "glue:DeletePartition",
+          "glue:DeleteTable",
+          "glue:GetDatabase",
+          "glue:GetDatabases",
+          "glue:GetPartition",
+          "glue:GetPartitions",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:UpdateDatabase",
+          "glue:UpdatePartition",
+          "glue:UpdateTable"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "arn:aws:glue:eu-west-1:145388625860:catalog",
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:glue:eu-west-1:145388625860:database/",
+             {
+              "Fn::Select": [
+               0,
+               {
+                "Fn::Split": [
+                 "-",
+                 {
+                  "Ref": "DataLakeStorageBronzeBucket40F7C776"
+                 }
+                ]
+               }
+              ]
+             },
+             "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+            ]
+           ]
+          },
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:glue:eu-west-1:145388625860:table/",
+             {
+              "Fn::Select": [
+               0,
+               {
+                "Fn::Split": [
+                 "-",
+                 {
+                  "Ref": "DataLakeStorageBronzeBucket40F7C776"
+                 }
+                ]
+               }
+              ]
+             },
+             "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221/*"
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "glue:GetSecurityConfigurations",
+          "glue:GetSecurityConfiguration"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "crawlerPermissions"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerRole/Resource"
+   }
+  },
+  "DataLakeCatalogBronzeCatalogDatabaseCrawlerRoleDefaultPolicy3149C611": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageBronzeBucket40F7C776",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageBronzeBucket40F7C776",
+             "Arn"
+            ]
+           },
+           "/spark_data_lake/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeStorageDataKey0F594BB8",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeCatalogBronzeCatalogDatabaseCrawlerLogKeyC74888B9",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:AssociateKmsKey"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*",
+        "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*:*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "DataLakeCatalogBronzeCatalogDatabaseCrawlerRoleDefaultPolicy3149C611",
+    "Roles": [
+     {
+      "Ref": "DataLakeCatalogBronzeCatalogDatabaseCrawlerRole3E2DB312"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerRole/DefaultPolicy/Resource"
+   }
+  },
+  "DataLakeCatalogBronzeCatalogDatabaseCrawlerLogKeyC74888B9": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::145388625860:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ArnEquals": {
+         "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logs.eu-west-1.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerLogKey/Resource"
+   }
+  },
+  "DataLakeCatalogBronzeCatalogDatabaseCrawlerSecConfiguration37158000": {
+   "Type": "AWS::Glue::SecurityConfiguration",
+   "Properties": {
+    "EncryptionConfiguration": {
+     "CloudWatchEncryption": {
+      "CloudWatchEncryptionMode": "SSE-KMS",
+      "KmsKeyArn": {
+       "Fn::GetAtt": [
+        "DataLakeCatalogBronzeCatalogDatabaseCrawlerLogKeyC74888B9",
+        "Arn"
+       ]
+      }
+     },
+     "S3Encryptions": [
+      {
+       "S3EncryptionMode": "DISABLED"
+      }
+     ]
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageBronzeBucket40F7C776"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake-secconfig-dsfquickstartdevdatalakecatalogbronzecatalogdatabasec955a536"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerSecConfiguration"
+   }
+  },
+  "DataLakeCatalogBronzeCatalogDatabaseDatabaseAutoCrawler0452EC18": {
+   "Type": "AWS::Glue::Crawler",
+   "Properties": {
+    "Configuration": "{\"Version\":1,\"Grouping\":{\"TableLevelConfiguration\":3}}",
+    "CrawlerSecurityConfiguration": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageBronzeBucket40F7C776"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake-secconfig-dsfquickstartdevdatalakecatalogbronzecatalogdatabasec955a536"
+      ]
+     ]
+    },
+    "DatabaseName": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageBronzeBucket40F7C776"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+      ]
+     ]
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageBronzeBucket40F7C776"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221-crawler-dsfquickstartdevDataLakeCatalogBronzeCatalogDatabaseC955A536"
+      ]
+     ]
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "DataLakeCatalogBronzeCatalogDatabaseCrawlerRole3E2DB312",
+      "Arn"
+     ]
+    },
+    "Schedule": {
+     "ScheduleExpression": "cron(1 0 * * ? *)"
+    },
+    "Tags": {
+     "data-solutions-fwk:owned": "true"
+    },
+    "Targets": {
+     "S3Targets": [
+      {
+       "Path": {
+        "Fn::Join": [
+         "",
+         [
+          "s3://",
+          {
+           "Ref": "DataLakeStorageBronzeBucket40F7C776"
+          },
+          "/spark_data_lake/"
+         ]
+        ]
+       }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/DatabaseAutoCrawler"
+   }
+  },
+  "DataLakeCatalogSilverCatalogDatabaseGlueDatabaseAACD7E92": {
+   "Type": "AWS::Glue::Database",
+   "Properties": {
+    "CatalogId": "145388625860",
+    "DatabaseInput": {
+     "LocationUri": {
+      "Fn::Join": [
+       "",
+       [
+        "s3://",
+        {
+         "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+        },
+        "/spark_data_lake/"
+       ]
+      ]
+     },
+     "Name": {
+      "Fn::Join": [
+       "",
+       [
+        {
+         "Fn::Select": [
+          0,
+          {
+           "Fn::Split": [
+            "-",
+            {
+             "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+            }
+           ]
+          }
+         ]
+        },
+        "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/GlueDatabase"
+   }
+  },
+  "DataLakeCatalogSilverCatalogDatabaseCrawlerRole1245C973": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "glue.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "glue:BatchCreatePartition",
+          "glue:BatchDeletePartition",
+          "glue:BatchDeleteTable",
+          "glue:BatchDeleteTableVersion",
+          "glue:BatchGetPartition",
+          "glue:BatchUpdatePartition",
+          "glue:CreatePartition",
+          "glue:CreateTable",
+          "glue:DeletePartition",
+          "glue:DeleteTable",
+          "glue:GetDatabase",
+          "glue:GetDatabases",
+          "glue:GetPartition",
+          "glue:GetPartitions",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:UpdateDatabase",
+          "glue:UpdatePartition",
+          "glue:UpdateTable"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "arn:aws:glue:eu-west-1:145388625860:catalog",
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:glue:eu-west-1:145388625860:database/",
+             {
+              "Fn::Select": [
+               0,
+               {
+                "Fn::Split": [
+                 "-",
+                 {
+                  "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+                 }
+                ]
+               }
+              ]
+             },
+             "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+            ]
+           ]
+          },
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:glue:eu-west-1:145388625860:table/",
+             {
+              "Fn::Select": [
+               0,
+               {
+                "Fn::Split": [
+                 "-",
+                 {
+                  "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+                 }
+                ]
+               }
+              ]
+             },
+             "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221/*"
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "glue:GetSecurityConfigurations",
+          "glue:GetSecurityConfiguration"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "crawlerPermissions"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerRole/Resource"
+   }
+  },
+  "DataLakeCatalogSilverCatalogDatabaseCrawlerRoleDefaultPolicy6DEF8C6D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageSilverBucket8F9D2BEA",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageSilverBucket8F9D2BEA",
+             "Arn"
+            ]
+           },
+           "/spark_data_lake/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeStorageDataKey0F594BB8",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeCatalogSilverCatalogDatabaseCrawlerLogKey050337AA",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:AssociateKmsKey"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*",
+        "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*:*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "DataLakeCatalogSilverCatalogDatabaseCrawlerRoleDefaultPolicy6DEF8C6D",
+    "Roles": [
+     {
+      "Ref": "DataLakeCatalogSilverCatalogDatabaseCrawlerRole1245C973"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerRole/DefaultPolicy/Resource"
+   }
+  },
+  "DataLakeCatalogSilverCatalogDatabaseCrawlerLogKey050337AA": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::145388625860:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ArnEquals": {
+         "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logs.eu-west-1.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerLogKey/Resource"
+   }
+  },
+  "DataLakeCatalogSilverCatalogDatabaseCrawlerSecConfigurationC01D0B1D": {
+   "Type": "AWS::Glue::SecurityConfiguration",
+   "Properties": {
+    "EncryptionConfiguration": {
+     "CloudWatchEncryption": {
+      "CloudWatchEncryptionMode": "SSE-KMS",
+      "KmsKeyArn": {
+       "Fn::GetAtt": [
+        "DataLakeCatalogSilverCatalogDatabaseCrawlerLogKey050337AA",
+        "Arn"
+       ]
+      }
+     },
+     "S3Encryptions": [
+      {
+       "S3EncryptionMode": "DISABLED"
+      }
+     ]
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake-secconfig-dsfquickstartdevdatalakecatalogsilvercatalogdatabase1e1ec9a3"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerSecConfiguration"
+   }
+  },
+  "DataLakeCatalogSilverCatalogDatabaseDatabaseAutoCrawler7801E083": {
+   "Type": "AWS::Glue::Crawler",
+   "Properties": {
+    "Configuration": "{\"Version\":1,\"Grouping\":{\"TableLevelConfiguration\":3}}",
+    "CrawlerSecurityConfiguration": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake-secconfig-dsfquickstartdevdatalakecatalogsilvercatalogdatabase1e1ec9a3"
+      ]
+     ]
+    },
+    "DatabaseName": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+      ]
+     ]
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221-crawler-dsfquickstartdevDataLakeCatalogSilverCatalogDatabase1E1EC9A3"
+      ]
+     ]
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "DataLakeCatalogSilverCatalogDatabaseCrawlerRole1245C973",
+      "Arn"
+     ]
+    },
+    "Schedule": {
+     "ScheduleExpression": "cron(1 0 * * ? *)"
+    },
+    "Tags": {
+     "data-solutions-fwk:owned": "true"
+    },
+    "Targets": {
+     "S3Targets": [
+      {
+       "Path": {
+        "Fn::Join": [
+         "",
+         [
+          "s3://",
+          {
+           "Ref": "DataLakeStorageSilverBucket8F9D2BEA"
+          },
+          "/spark_data_lake/"
+         ]
+        ]
+       }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/DatabaseAutoCrawler"
+   }
+  },
+  "DataLakeCatalogGoldCatalogDatabaseGlueDatabaseB8CD1CB3": {
+   "Type": "AWS::Glue::Database",
+   "Properties": {
+    "CatalogId": "145388625860",
+    "DatabaseInput": {
+     "LocationUri": {
+      "Fn::Join": [
+       "",
+       [
+        "s3://",
+        {
+         "Ref": "DataLakeStorageGoldBucket728EFA0A"
+        },
+        "/spark_data_lake/"
+       ]
+      ]
+     },
+     "Name": {
+      "Fn::Join": [
+       "",
+       [
+        {
+         "Fn::Select": [
+          0,
+          {
+           "Fn::Split": [
+            "-",
+            {
+             "Ref": "DataLakeStorageGoldBucket728EFA0A"
+            }
+           ]
+          }
+         ]
+        },
+        "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/GlueDatabase"
+   }
+  },
+  "DataLakeCatalogGoldCatalogDatabaseCrawlerRole87D4CC88": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "glue.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "glue:BatchCreatePartition",
+          "glue:BatchDeletePartition",
+          "glue:BatchDeleteTable",
+          "glue:BatchDeleteTableVersion",
+          "glue:BatchGetPartition",
+          "glue:BatchUpdatePartition",
+          "glue:CreatePartition",
+          "glue:CreateTable",
+          "glue:DeletePartition",
+          "glue:DeleteTable",
+          "glue:GetDatabase",
+          "glue:GetDatabases",
+          "glue:GetPartition",
+          "glue:GetPartitions",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:UpdateDatabase",
+          "glue:UpdatePartition",
+          "glue:UpdateTable"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "arn:aws:glue:eu-west-1:145388625860:catalog",
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:glue:eu-west-1:145388625860:database/",
+             {
+              "Fn::Select": [
+               0,
+               {
+                "Fn::Split": [
+                 "-",
+                 {
+                  "Ref": "DataLakeStorageGoldBucket728EFA0A"
+                 }
+                ]
+               }
+              ]
+             },
+             "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+            ]
+           ]
+          },
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:glue:eu-west-1:145388625860:table/",
+             {
+              "Fn::Select": [
+               0,
+               {
+                "Fn::Split": [
+                 "-",
+                 {
+                  "Ref": "DataLakeStorageGoldBucket728EFA0A"
+                 }
+                ]
+               }
+              ]
+             },
+             "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221/*"
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "glue:GetSecurityConfigurations",
+          "glue:GetSecurityConfiguration"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "crawlerPermissions"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerRole/Resource"
+   }
+  },
+  "DataLakeCatalogGoldCatalogDatabaseCrawlerRoleDefaultPolicyF1D5A759": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageGoldBucket728EFA0A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageGoldBucket728EFA0A",
+             "Arn"
+            ]
+           },
+           "/spark_data_lake/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeStorageDataKey0F594BB8",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeCatalogGoldCatalogDatabaseCrawlerLogKey3E178C00",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:AssociateKmsKey"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*",
+        "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*:*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "DataLakeCatalogGoldCatalogDatabaseCrawlerRoleDefaultPolicyF1D5A759",
+    "Roles": [
+     {
+      "Ref": "DataLakeCatalogGoldCatalogDatabaseCrawlerRole87D4CC88"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerRole/DefaultPolicy/Resource"
+   }
+  },
+  "DataLakeCatalogGoldCatalogDatabaseCrawlerLogKey3E178C00": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::145388625860:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ArnEquals": {
+         "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:eu-west-1:145388625860:log-group:/aws-glue/crawlers*"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logs.eu-west-1.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerLogKey/Resource"
+   }
+  },
+  "DataLakeCatalogGoldCatalogDatabaseCrawlerSecConfiguration2670C32E": {
+   "Type": "AWS::Glue::SecurityConfiguration",
+   "Properties": {
+    "EncryptionConfiguration": {
+     "CloudWatchEncryption": {
+      "CloudWatchEncryptionMode": "SSE-KMS",
+      "KmsKeyArn": {
+       "Fn::GetAtt": [
+        "DataLakeCatalogGoldCatalogDatabaseCrawlerLogKey3E178C00",
+        "Arn"
+       ]
+      }
+     },
+     "S3Encryptions": [
+      {
+       "S3EncryptionMode": "DISABLED"
+      }
+     ]
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageGoldBucket728EFA0A"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake-secconfig-dsfquickstartdevdatalakecataloggoldcatalogdatabasef27652c5"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerSecConfiguration"
+   }
+  },
+  "DataLakeCatalogGoldCatalogDatabaseDatabaseAutoCrawlerD6F6CBF4": {
+   "Type": "AWS::Glue::Crawler",
+   "Properties": {
+    "Configuration": "{\"Version\":1,\"Grouping\":{\"TableLevelConfiguration\":3}}",
+    "CrawlerSecurityConfiguration": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageGoldBucket728EFA0A"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake-secconfig-dsfquickstartdevdatalakecataloggoldcatalogdatabasef27652c5"
+      ]
+     ]
+    },
+    "DatabaseName": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageGoldBucket728EFA0A"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221"
+      ]
+     ]
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::Select": [
+         0,
+         {
+          "Fn::Split": [
+           "-",
+           {
+            "Ref": "DataLakeStorageGoldBucket728EFA0A"
+           }
+          ]
+         }
+        ]
+       },
+       "_spark_data_lake_dsfquickstartdevdatalakecatalog4990f221-crawler-dsfquickstartdevDataLakeCatalogGoldCatalogDatabaseF27652C5"
+      ]
+     ]
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "DataLakeCatalogGoldCatalogDatabaseCrawlerRole87D4CC88",
+      "Arn"
+     ]
+    },
+    "Schedule": {
+     "ScheduleExpression": "cron(1 0 * * ? *)"
+    },
+    "Tags": {
+     "data-solutions-fwk:owned": "true"
+    },
+    "Targets": {
+     "S3Targets": [
+      {
+       "Path": {
+        "Fn::Join": [
+         "",
+         [
+          "s3://",
+          {
+           "Ref": "DataLakeStorageGoldBucket728EFA0A"
+          },
+          "/spark_data_lake/"
+         ]
+        ]
+       }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/DatabaseAutoCrawler"
+   }
+  },
+  "SparkProcessingRuntimeSecurityGroupBC0C4A93": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group used by emr serverless application TaxiAggregation",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/SparkProcessingRuntime/SecurityGroup/Resource"
+   }
+  },
+  "logKmsKey111C43AE": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "Description": "Key used by the VPC created for EMR serverless application TaxiAggregation",
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::145388625860:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Encrypt*",
+        "kms:Decrypt*",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:Describe*"
+       ],
+       "Condition": {
+        "ArnLike": {
+         "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:eu-west-1:145388625860:*"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logs.eu-west-1.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "KeyUsage": "ENCRYPT_DECRYPT",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/logKmsKey/Resource"
+   }
+  },
+  "logKmsKeyAliasBE921212": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/flowlog-vpc-key-for-emr-application-TaxiAggregation",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "logKmsKey111C43AE",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/logKmsKey/Alias/Resource"
+   }
+  },
+  "DsfVPC964B3FEF": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/Resource"
+   }
+  },
+  "DsfVPCPublicSubnet1SubnetA5AA5859": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-west-1a",
+    "CidrBlock": "10.0.0.0/20",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet1"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet1/Subnet"
+   }
+  },
+  "DsfVPCPublicSubnet1RouteTable46FC99DC": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet1"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet1/RouteTable"
+   }
+  },
+  "DsfVPCPublicSubnet1RouteTableAssociationB2AC1C0B": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "DsfVPCPublicSubnet1RouteTable46FC99DC"
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPublicSubnet1SubnetA5AA5859"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "DsfVPCPublicSubnet1DefaultRoute2818AF78": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "DsfVPCIGW2621C2A0"
+    },
+    "RouteTableId": {
+     "Ref": "DsfVPCPublicSubnet1RouteTable46FC99DC"
+    }
+   },
+   "DependsOn": [
+    "DsfVPCVPCGWF08BEF6B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "DsfVPCPublicSubnet1EIPE1B0A41B": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet1"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet1/EIP"
+   }
+  },
+  "DsfVPCPublicSubnet1NATGateway2D10CC81": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "DsfVPCPublicSubnet1EIPE1B0A41B",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPublicSubnet1SubnetA5AA5859"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet1"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "DependsOn": [
+    "DsfVPCPublicSubnet1DefaultRoute2818AF78",
+    "DsfVPCPublicSubnet1RouteTableAssociationB2AC1C0B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet1/NATGateway"
+   }
+  },
+  "DsfVPCPublicSubnet2SubnetDD1A8D8D": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-west-1b",
+    "CidrBlock": "10.0.16.0/20",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet2"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet2/Subnet"
+   }
+  },
+  "DsfVPCPublicSubnet2RouteTable22966950": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet2"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet2/RouteTable"
+   }
+  },
+  "DsfVPCPublicSubnet2RouteTableAssociation69C70BAB": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "DsfVPCPublicSubnet2RouteTable22966950"
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPublicSubnet2SubnetDD1A8D8D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "DsfVPCPublicSubnet2DefaultRoute841C0B7C": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "DsfVPCIGW2621C2A0"
+    },
+    "RouteTableId": {
+     "Ref": "DsfVPCPublicSubnet2RouteTable22966950"
+    }
+   },
+   "DependsOn": [
+    "DsfVPCVPCGWF08BEF6B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "DsfVPCPublicSubnet2EIP4C6B4EA0": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet2"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet2/EIP"
+   }
+  },
+  "DsfVPCPublicSubnet2NATGatewayD4273E95": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "DsfVPCPublicSubnet2EIP4C6B4EA0",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPublicSubnet2SubnetDD1A8D8D"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet2"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "DependsOn": [
+    "DsfVPCPublicSubnet2DefaultRoute841C0B7C",
+    "DsfVPCPublicSubnet2RouteTableAssociation69C70BAB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet2/NATGateway"
+   }
+  },
+  "DsfVPCPublicSubnet3Subnet916305FA": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-west-1c",
+    "CidrBlock": "10.0.32.0/20",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet3"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet3/Subnet"
+   }
+  },
+  "DsfVPCPublicSubnet3RouteTableFA1AFE79": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet3"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet3/RouteTable"
+   }
+  },
+  "DsfVPCPublicSubnet3RouteTableAssociation4DB604B9": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "DsfVPCPublicSubnet3RouteTableFA1AFE79"
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPublicSubnet3Subnet916305FA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet3/RouteTableAssociation"
+   }
+  },
+  "DsfVPCPublicSubnet3DefaultRouteF46C349F": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "DsfVPCIGW2621C2A0"
+    },
+    "RouteTableId": {
+     "Ref": "DsfVPCPublicSubnet3RouteTableFA1AFE79"
+    }
+   },
+   "DependsOn": [
+    "DsfVPCVPCGWF08BEF6B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet3/DefaultRoute"
+   }
+  },
+  "DsfVPCPublicSubnet3EIP4D6B45BD": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet3"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet3/EIP"
+   }
+  },
+  "DsfVPCPublicSubnet3NATGatewayEA5A4185": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "DsfVPCPublicSubnet3EIP4D6B45BD",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPublicSubnet3Subnet916305FA"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PublicSubnet3"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "DependsOn": [
+    "DsfVPCPublicSubnet3DefaultRouteF46C349F",
+    "DsfVPCPublicSubnet3RouteTableAssociation4DB604B9"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PublicSubnet3/NATGateway"
+   }
+  },
+  "DsfVPCPrivateSubnet1SubnetA7875335": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-west-1a",
+    "CidrBlock": "10.0.48.0/22",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PrivateSubnet1"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet1/Subnet"
+   }
+  },
+  "DsfVPCPrivateSubnet1RouteTable790FEC1A": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PrivateSubnet1"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet1/RouteTable"
+   }
+  },
+  "DsfVPCPrivateSubnet1RouteTableAssociation620F8D8C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "DsfVPCPrivateSubnet1RouteTable790FEC1A"
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPrivateSubnet1SubnetA7875335"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "DsfVPCPrivateSubnet1DefaultRoute4A785CE9": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "DsfVPCPublicSubnet1NATGateway2D10CC81"
+    },
+    "RouteTableId": {
+     "Ref": "DsfVPCPrivateSubnet1RouteTable790FEC1A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "DsfVPCPrivateSubnet2Subnet68018D96": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-west-1b",
+    "CidrBlock": "10.0.52.0/22",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PrivateSubnet2"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet2/Subnet"
+   }
+  },
+  "DsfVPCPrivateSubnet2RouteTableB78F7335": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PrivateSubnet2"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet2/RouteTable"
+   }
+  },
+  "DsfVPCPrivateSubnet2RouteTableAssociationB688DEAE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "DsfVPCPrivateSubnet2RouteTableB78F7335"
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPrivateSubnet2Subnet68018D96"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "DsfVPCPrivateSubnet2DefaultRouteC4FF6D39": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "DsfVPCPublicSubnet2NATGatewayD4273E95"
+    },
+    "RouteTableId": {
+     "Ref": "DsfVPCPrivateSubnet2RouteTableB78F7335"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "DsfVPCPrivateSubnet3SubnetCDEE8A57": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-west-1c",
+    "CidrBlock": "10.0.56.0/22",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PrivateSubnet3"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet3/Subnet"
+   }
+  },
+  "DsfVPCPrivateSubnet3RouteTableCDA83CC1": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/PrivateSubnet3"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet3/RouteTable"
+   }
+  },
+  "DsfVPCPrivateSubnet3RouteTableAssociationA04500CE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "DsfVPCPrivateSubnet3RouteTableCDA83CC1"
+    },
+    "SubnetId": {
+     "Ref": "DsfVPCPrivateSubnet3SubnetCDEE8A57"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet3/RouteTableAssociation"
+   }
+  },
+  "DsfVPCPrivateSubnet3DefaultRoute405F271E": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "DsfVPCPublicSubnet3NATGatewayEA5A4185"
+    },
+    "RouteTableId": {
+     "Ref": "DsfVPCPrivateSubnet3RouteTableCDA83CC1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/PrivateSubnet3/DefaultRoute"
+   }
+  },
+  "DsfVPCIGW2621C2A0": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/IGW"
+   }
+  },
+  "DsfVPCVPCGWF08BEF6B": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "DsfVPCIGW2621C2A0"
+    },
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/VPCGW"
+   }
+  },
+  "DsfVPCEmrServerlessVpcFlowLog84347071": {
+   "Type": "AWS::EC2::FlowLog",
+   "Properties": {
+    "DeliverLogsPermissionArn": {
+     "Fn::GetAtt": [
+      "iamRoleforFlowLog625F05A1",
+      "Arn"
+     ]
+    },
+    "LogDestinationType": "cloud-watch-logs",
+    "LogGroupName": {
+     "Ref": "EmrServerlessVpcFlowLogGroupEA934B14"
+    },
+    "ResourceId": {
+     "Ref": "DsfVPC964B3FEF"
+    },
+    "ResourceType": "VPC",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "dsf-quickstart-dev/DsfVPC/EmrServerlessVpcFlowLog"
+     },
+     {
+      "Key": "use-by",
+      "Value": "emr-serverless"
+     }
+    ],
+    "TrafficType": "ALL"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/EmrServerlessVpcFlowLog/FlowLog"
+   }
+  },
+  "DsfVPCDsfVpcS3Endpoint53DB3E25": {
+   "Type": "AWS::EC2::VPCEndpoint",
+   "Properties": {
+    "RouteTableIds": [
+     {
+      "Ref": "DsfVPCPrivateSubnet1RouteTable790FEC1A"
+     },
+     {
+      "Ref": "DsfVPCPrivateSubnet2RouteTableB78F7335"
+     },
+     {
+      "Ref": "DsfVPCPrivateSubnet3RouteTableCDA83CC1"
+     },
+     {
+      "Ref": "DsfVPCPublicSubnet1RouteTable46FC99DC"
+     },
+     {
+      "Ref": "DsfVPCPublicSubnet2RouteTable22966950"
+     },
+     {
+      "Ref": "DsfVPCPublicSubnet3RouteTableFA1AFE79"
+     }
+    ],
+    "ServiceName": {
+     "Fn::Join": [
+      "",
+      [
+       "com.amazonaws.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".s3"
+      ]
+     ]
+    },
+    "VpcEndpointType": "Gateway",
+    "VpcId": {
+     "Ref": "DsfVPC964B3FEF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/DsfVPC/DsfVpcS3Endpoint/Resource"
+   }
+  },
+  "EmrServerlessVpcFlowLogGroupEA934B14": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "KmsKeyId": {
+     "Fn::GetAtt": [
+      "logKmsKey111C43AE",
+      "Arn"
+     ]
+    },
+    "LogGroupName": "/aws/emr-serverless-vpc/dsfquickstartdev",
+    "RetentionInDays": 7,
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/EmrServerlessVpcFlowLogGroup/Resource"
+   }
+  },
+  "iamRoleforFlowLog625F05A1": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/iamRoleforFlowLog/Resource"
+   }
+  },
+  "iamRoleforFlowLogDefaultPolicy3AAAA159": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "EmrServerlessVpcFlowLogGroupEA934B14",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "iam:PassRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "iamRoleforFlowLog625F05A1",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "iamRoleforFlowLogDefaultPolicy3AAAA159",
+    "Roles": [
+     {
+      "Ref": "iamRoleforFlowLog625F05A1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/iamRoleforFlowLog/DefaultPolicy/Resource"
+   }
+  },
+  "sparkserverlessapplicationTaxiAggregation": {
+   "Type": "AWS::EMRServerless::Application",
+   "Properties": {
+    "Name": "TaxiAggregation",
+    "NetworkConfiguration": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "SparkProcessingRuntimeSecurityGroupBC0C4A93",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "DsfVPCPrivateSubnet1SubnetA7875335"
+      },
+      {
+       "Ref": "DsfVPCPrivateSubnet2Subnet68018D96"
+      },
+      {
+       "Ref": "DsfVPCPrivateSubnet3SubnetCDEE8A57"
+      }
+     ]
+    },
+    "ReleaseLabel": "emr-6.12.0",
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ],
+    "Type": "Spark"
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/spark-serverless-application-TaxiAggregation"
+   }
+  },
+  "ProcessingExecRole64593486": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "emr-serverless.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "data-solutions-fwk:owned",
+      "Value": "true"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/ProcessingExecRole/Resource"
+   }
+  },
+  "ProcessingExecRoleDefaultPolicy26B3E2DE": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageGoldBucket728EFA0A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageGoldBucket728EFA0A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeStorageDataKey0F594BB8",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "DataLakeStorageSilverBucket8F9D2BEA",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "DataLakeStorageSilverBucket8F9D2BEA",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "DataLakeStorageDataKey0F594BB8",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ProcessingExecRoleDefaultPolicy26B3E2DE",
+    "Roles": [
+     {
+      "Ref": "ProcessingExecRole64593486"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/ProcessingExecRole/DefaultPolicy/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/01RwW7DIAz9lt4pW9vtsGOXdVW1aYrSqdeJUDdlIRCBaRRF+fdBSNKd/Pz8sJ/Nmr480ccFa+ySn8ulFDntjsh4STz109kN7ZKLenW8BCQxpFoK3pKZjnlPysrS7gOGSghbKZgNyQB6UkgHQ7c3hixnFkLtCNwZgW2i1UUUzjAUWoVCYlgjwfREsIp2mZaDfIh3A9No4Gtve2y1N9rV/3tH4lTzQJ7ShKQu9++OLld+qSCcUaYdwjfL47TI37mttZqL2eJQCGB3SEP4YrhnCA1rSWrEzcN744NCMB5PguhkzLboL36tQCF5l7r51EWoT3AUef87da61UDi+ntKeSF3423vxvPuE/W0qY8HcwEiwlobvqGu//bBFTzKw2hkejzvinqQtXrV62NDVij4vfq0QS+MUigpoFuMfUXgJiDgCAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "dsf-quickstart-dev/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

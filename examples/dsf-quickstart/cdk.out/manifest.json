@@ -1,0 +1,539 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "dsf-quickstart-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dsf-quickstart-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dsf-quickstart-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://145388625860/eu-west-1",
+      "properties": {
+        "templateFile": "dsf-quickstart-dev.template.json",
+        "tags": {
+          "data-solutions-fwk:owned": "true"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::145388625860:role/cdk-hnb659fds-deploy-role-145388625860-eu-west-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::145388625860:role/cdk-hnb659fds-cfn-exec-role-145388625860-eu-west-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-145388625860-eu-west-1/40bc4e5e32bda7e8b89fb83eb0a20d2b9eda81bc07a9162533dd255986726206.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dsf-quickstart-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::145388625860:role/cdk-hnb659fds-lookup-role-145388625860-eu-west-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dsf-quickstart-dev.assets"
+      ],
+      "metadata": {
+        "/dsf-quickstart-dev": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "WARNING: removalPolicy was reverted back to 'RemovalPolicy.RETAIN'.\n        If you wish to set 'removalPolicy' to 'DESTROY' you must also\n        set the global removal policy flag context variable in the 'cdk.json'\n        or 'cdk.context.json': '@data-solutions-framework-on-aws/removeDataOnDestroy: true'",
+            "trace": [
+              "Annotations.addMessage (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1392)",
+              "Annotations.addWarning (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-cdk-lib/core/lib/annotations.js:1:803)",
+              "Context.revertRemovalPolicy (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-dsf/lib/utils/lib/context.js:22:49)",
+              "new DataLakeCatalog (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-dsf/lib/governance/lib/data-lake-catalog.js:39:47)",
+              "Kernel._Kernel_create (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:10104:25)",
+              "Kernel.create (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:9775:93)",
+              "KernelHost.processRequest (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:11691:36)",
+              "KernelHost.run (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:11651:22)",
+              "Immediate._onImmediate (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:11652:46)",
+              "process.processImmediate (node:internal/timers:476:21)"
+            ]
+          },
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "data-solutions-fwk:owned",
+                "Value": "true"
+              }
+            ]
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "WARNING: removalPolicy was reverted back to 'RemovalPolicy.RETAIN'.\n        If you wish to set 'removalPolicy' to 'DESTROY' you must also\n        set the global removal policy flag context variable in the 'cdk.json'\n        or 'cdk.context.json': '@data-solutions-framework-on-aws/removeDataOnDestroy: true'",
+            "trace": [
+              "Annotations.addMessage (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1392)",
+              "Annotations.addWarning (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-cdk-lib/core/lib/annotations.js:1:803)",
+              "Context.revertRemovalPolicy (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-dsf/lib/utils/lib/context.js:22:49)",
+              "new AccessLogsBucket (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-dsf/lib/storage/lib/access-logs-bucket.js:25:47)",
+              "new DataLakeStorage (/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/jsii-kernel-DFH81A/node_modules/aws-dsf/lib/storage/lib/data-lake-storage.js:47:33)",
+              "Kernel._Kernel_create (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:10104:25)",
+              "Kernel.create (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:9775:93)",
+              "KernelHost.processRequest (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:11691:36)",
+              "KernelHost.run (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:11651:22)",
+              "Immediate._onImmediate (/private/var/folders/wz/s_1ddzw12svbpf2skmzc34t00000gr/T/tmpqgmsqior/lib/program.js:11652:46)",
+              "process.processImmediate (node:internal/timers:476:21)"
+            ]
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/AccessLogsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageAccessLogsBucketEF431E51"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/AccessLogsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageAccessLogsBucketPolicy4DBAAA4C"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/DataKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageDataKey0F594BB8"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/BronzeBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageBronzeBucket40F7C776"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/BronzeBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageBronzeBucketPolicy4F044DF1"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/SilverBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageSilverBucket8F9D2BEA"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/SilverBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageSilverBucketPolicyF509AAD7"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/GoldBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageGoldBucket728EFA0A"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeStorage/GoldBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeStorageGoldBucketPolicy8A3E196B"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/GlueDatabase": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogBronzeCatalogDatabaseGlueDatabaseF5FD2934"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogBronzeCatalogDatabaseCrawlerRole3E2DB312"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogBronzeCatalogDatabaseCrawlerRoleDefaultPolicy3149C611"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerLogKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogBronzeCatalogDatabaseCrawlerLogKeyC74888B9"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/CrawlerSecConfiguration": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogBronzeCatalogDatabaseCrawlerSecConfiguration37158000"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/BronzeCatalogDatabase/DatabaseAutoCrawler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogBronzeCatalogDatabaseDatabaseAutoCrawler0452EC18"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/GlueDatabase": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogSilverCatalogDatabaseGlueDatabaseAACD7E92"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogSilverCatalogDatabaseCrawlerRole1245C973"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogSilverCatalogDatabaseCrawlerRoleDefaultPolicy6DEF8C6D"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerLogKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogSilverCatalogDatabaseCrawlerLogKey050337AA"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/CrawlerSecConfiguration": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogSilverCatalogDatabaseCrawlerSecConfigurationC01D0B1D"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/SilverCatalogDatabase/DatabaseAutoCrawler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogSilverCatalogDatabaseDatabaseAutoCrawler7801E083"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/GlueDatabase": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogGoldCatalogDatabaseGlueDatabaseB8CD1CB3"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogGoldCatalogDatabaseCrawlerRole87D4CC88"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogGoldCatalogDatabaseCrawlerRoleDefaultPolicyF1D5A759"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerLogKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogGoldCatalogDatabaseCrawlerLogKey3E178C00"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/CrawlerSecConfiguration": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogGoldCatalogDatabaseCrawlerSecConfiguration2670C32E"
+          }
+        ],
+        "/dsf-quickstart-dev/DataLakeCatalog/GoldCatalogDatabase/DatabaseAutoCrawler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataLakeCatalogGoldCatalogDatabaseDatabaseAutoCrawlerD6F6CBF4"
+          }
+        ],
+        "/dsf-quickstart-dev/SparkProcessingRuntime/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SparkProcessingRuntimeSecurityGroupBC0C4A93"
+          }
+        ],
+        "/dsf-quickstart-dev/logKmsKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "logKmsKey111C43AE"
+          }
+        ],
+        "/dsf-quickstart-dev/logKmsKey/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "logKmsKeyAliasBE921212"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPC964B3FEF"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet1SubnetA5AA5859"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet1RouteTable46FC99DC"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet1RouteTableAssociationB2AC1C0B"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet1DefaultRoute2818AF78"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet1EIPE1B0A41B"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet1NATGateway2D10CC81"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet2SubnetDD1A8D8D"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet2RouteTable22966950"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet2RouteTableAssociation69C70BAB"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet2DefaultRoute841C0B7C"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet2EIP4C6B4EA0"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet2NATGatewayD4273E95"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet3/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet3Subnet916305FA"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet3/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet3RouteTableFA1AFE79"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet3/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet3RouteTableAssociation4DB604B9"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet3/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet3DefaultRouteF46C349F"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet3/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet3EIP4D6B45BD"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PublicSubnet3/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPublicSubnet3NATGatewayEA5A4185"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet1SubnetA7875335"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet1RouteTable790FEC1A"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet1RouteTableAssociation620F8D8C"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet1DefaultRoute4A785CE9"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet2Subnet68018D96"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet2RouteTableB78F7335"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet2RouteTableAssociationB688DEAE"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet2DefaultRouteC4FF6D39"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet3/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet3SubnetCDEE8A57"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet3/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet3RouteTableCDA83CC1"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet3/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet3RouteTableAssociationA04500CE"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/PrivateSubnet3/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCPrivateSubnet3DefaultRoute405F271E"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCIGW2621C2A0"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCVPCGWF08BEF6B"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/EmrServerlessVpcFlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCEmrServerlessVpcFlowLog84347071"
+          }
+        ],
+        "/dsf-quickstart-dev/DsfVPC/DsfVpcS3Endpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DsfVPCDsfVpcS3Endpoint53DB3E25"
+          }
+        ],
+        "/dsf-quickstart-dev/EmrServerlessVpcFlowLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrServerlessVpcFlowLogGroupEA934B14"
+          }
+        ],
+        "/dsf-quickstart-dev/iamRoleforFlowLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "iamRoleforFlowLog625F05A1"
+          }
+        ],
+        "/dsf-quickstart-dev/iamRoleforFlowLog/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "iamRoleforFlowLogDefaultPolicy3AAAA159"
+          }
+        ],
+        "/dsf-quickstart-dev/spark-serverless-application-TaxiAggregation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "sparkserverlessapplicationTaxiAggregation"
+          }
+        ],
+        "/dsf-quickstart-dev/ProcessingExecRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessingExecRole64593486"
+          }
+        ],
+        "/dsf-quickstart-dev/ProcessingExecRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessingExecRoleDefaultPolicy26B3E2DE"
+          }
+        ],
+        "/dsf-quickstart-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/dsf-quickstart-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dsf-quickstart-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dsf-quickstart-dev"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
