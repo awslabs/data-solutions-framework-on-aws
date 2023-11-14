@@ -13,7 +13,7 @@ const config = {
   tagline: 'Accelerate building your data analytics solutions with AWS Data Solutions Framework',
   url: 'https://' + organization + '.github.io',
   // baseUrl: '/', //uncomment for local dev
-  baseUrl: '/aws-data-solutions-framework/',
+  baseUrl: '/data-solutions-framework-on-aws/',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
