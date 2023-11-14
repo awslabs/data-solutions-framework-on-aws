@@ -60,12 +60,12 @@ You can specify if the bucket and objects should be deleted when the CDK resourc
 
 The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and DSF global removal policy are set to remove objects.
 
-You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
 ```json title="cdk.json"
 {
   "context": {
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }
 }
 ```
@@ -135,12 +135,12 @@ You can specify if buckets, objects and encryption keys should be deleted when t
 
 Buckets, objects and encryption keys can be destroyed when the CDK resource is destroyed only if **both** data lake removal policy and DSF on AWS global removal policy are set to remove objects.
 
-You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
 ```json title="cdk.json"
 {
   "context": {
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }
 }
 ```

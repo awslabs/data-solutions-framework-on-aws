@@ -116,7 +116,7 @@ describe('AnalyticsBucket Construct with custom configuration and DESTROY flag s
   const app = new App();
   const stack = new Stack(app, 'Stack');
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -168,7 +168,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', false);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', false);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,

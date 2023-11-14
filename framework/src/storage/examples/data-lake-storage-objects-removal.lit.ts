@@ -8,7 +8,7 @@ class ExampleDataLakeStorageObjectRemovalStack extends cdk.Stack {
     super(scope, id);
     /// !show
     // Set context value for global data removal policy
-    this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
     /// !hide
 
     /// You will also need to set removal policy for the `DataLakeStorage` construct:

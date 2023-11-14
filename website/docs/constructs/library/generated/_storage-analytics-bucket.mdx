@@ -63,12 +63,12 @@ You can specify if the bucket and objects should be deleted when the CDK resourc
 
 The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and DSF global removal policy are set to remove objects.
 
-You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
 ```json title="cdk.json"
 {
   "context": {
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }
 }
 ```
@@ -80,7 +80,7 @@ Or programmatically in your CDK app:
 
   ```typescript
     // Set context value for global data removal policy
-    this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
     const key = new Key(this, 'DataKey', {
         enableKeyRotation: true,
         removalPolicy: RemovalPolicy.DESTROY
@@ -99,7 +99,7 @@ Or programmatically in your CDK app:
 
   ```python
 # Set context value for global data removal policy
-self.node.set_context("@aws-data-solutions-framework/removeDataOnDestroy", True)key = Key(self, "DataKey",
+self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)key = Key(self, "DataKey",
     enable_key_rotation=True,
     removal_policy=RemovalPolicy.DESTROY
 )

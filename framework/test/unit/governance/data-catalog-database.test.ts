@@ -422,7 +422,7 @@ describe('DataCatalogDatabase with disabled crawler', () => {
 describe('DataCatalogDatabase with missing leading slash in the prefix and global destroy config', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
   const dbBucketName = 'sample-db';
   const dbBucket = new Bucket(stack, 'dbBucket', {
     bucketName: dbBucketName,

@@ -1,10 +1,9 @@
 # Data solutions framework on AWS
 
-![ADSF logo](../website/static/img/adsf-logo-light.png)
 
 Data solutions framework on AWS (DSF on AWS) is a framework for implementation and delivery of data solutions with built-in AWS best practices. DSF on AWS is an abstraction atop AWS services based on [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (CDK) L3 constructs, packaged as a library.
 
-➡️ **More information on our [website](https://awslabs.github.io/aws-data-solutions-framework)**
+➡️ **More information on our [website](https://awslabs.github.io/data-solutions-framework-on-aws)**
 
 # API Reference <a name="API Reference" id="api-reference"></a>
 
@@ -16,7 +15,7 @@ Amazon S3 Bucket configured with best-practices and smart defaults for storing S
 
 Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/access-logs-bucket](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/access-logs-bucket)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/access-logs-bucket](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/access-logs-bucket)
 
 *Example*
 
@@ -1162,7 +1161,7 @@ Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
 The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/analytics-bucket](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/analytics-bucket)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/analytics-bucket](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/analytics-bucket)
 
 *Example*
 
@@ -1170,7 +1169,7 @@ The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 import { Key } from 'aws-cdk-lib/aws-kms';
 
 // Set context value for global data removal policy (or set in cdk.json).
-this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const encryptionKey = new Key(this, 'DataKey', {
  removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -2621,7 +2620,7 @@ The list of CfnOutputs created by the CDK Stack.
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-catalog-database](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-catalog-database)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-catalog-database](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-catalog-database)
 
 *Example*
 
@@ -2889,7 +2888,7 @@ Creates AWS Glue Catalog Database for each storage layer.
 
 Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-lake-catalog](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-lake-catalog)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-catalog](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-catalog)
 
 *Example*
 
@@ -3116,13 +3115,13 @@ public readonly ADSF_TRACKING_CODE: string;
 
 Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-lake-storage](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-lake-storage)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-storage](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-storage)
 
 *Example*
 
 ```typescript
 // Set the context value for global data removal policy
-this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
  bronzeBucketName: 'my-bronze',
@@ -3362,7 +3361,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/pyspark-application-package](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/pyspark-application-package)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/pyspark-application-package](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/pyspark-application-package)
 
 *Example*
 
@@ -3645,7 +3644,7 @@ The prefix used to store artifacts on the artifact bucket.
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-cicd-pipeline](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-cicd-pipeline)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-cicd-pipeline](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-cicd-pipeline)
 
 *Example*
 
@@ -3930,7 +3929,7 @@ A construct to run Spark Jobs using EMR on EKS.
 
 Creates a Step Functions State Machine that orchestrates the Spark Job.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job)
 
 *Example*
 
@@ -4138,7 +4137,7 @@ A construct to run Spark Jobs using EMR Serverless.
 
 Creates a State Machine that orchestrates the Spark Job.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job)
 
 *Example*
 
@@ -4372,7 +4371,7 @@ public readonly ADSF_TRACKING_CODE: string;
 
 A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-serverless-runtime](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-serverless-runtime)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-emr-serverless-runtime](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-emr-serverless-runtime)
 
 #### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer"></a>
 
@@ -4701,11 +4700,11 @@ A base construct to run Spark Jobs.
 
 Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
 
 Available implementations:
 * {@link SparkEmrServerlessJob } for Emr Serverless implementation
-* {@link SparkEmrEksJob } for EMR On EKS implementation](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
+* {@link SparkEmrEksJob } for EMR On EKS implementation](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
 
 Available implementations:
 * {@link SparkEmrServerlessJob } for Emr Serverless implementation
@@ -5875,7 +5874,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
@@ -6073,7 +6072,7 @@ public readonly removalPolicy: RemovalPolicy;
 The removal policy when deleting the CDK resource.
 
 Resources like Amazon cloudwatch log or Amazon S3 bucket.
-If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
+If DESTROY is selected, the context value '@data-solutions-framework-on-aws/removeDataOnDestroy'
 in the 'cdk.json' or 'cdk.context.json' must be set to true.
 
 ---
@@ -6211,7 +6210,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
@@ -6280,7 +6279,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
@@ -6377,7 +6376,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
@@ -6575,7 +6574,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
@@ -6657,7 +6656,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
@@ -7062,7 +7061,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-If DESTROY is selected, context value `@aws-data-solutions-framework/removeDataOnDestroy` needs to be set to true.
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
 
 ---

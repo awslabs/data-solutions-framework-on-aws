@@ -280,7 +280,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
   const stack = new Stack(app, 'Stack');
 
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with default
   new DataLakeStorage(stack, 'DefaultDataLakeStorage', {

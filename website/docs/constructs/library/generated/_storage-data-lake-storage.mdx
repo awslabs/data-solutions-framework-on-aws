@@ -91,12 +91,12 @@ You can specify if buckets, objects and encryption keys should be deleted when t
 
 Buckets, objects and encryption keys can be destroyed when the CDK resource is destroyed only if **both** data lake removal policy and DSF on AWS global removal policy are set to remove objects.
 
-You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
 ```json title="cdk.json"
 {
   "context": {
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }
 }
 ```
@@ -108,7 +108,7 @@ Or programmatically in your CDK app:
 
   ```typescript
 // Set context value for global data removal policy
-this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
     removalPolicy: RemovalPolicy.DESTROY
 });
@@ -121,7 +121,7 @@ new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
 
   ```python
 # Set context value for global data removal policy
-self.node.set_context("@aws-data-solutions-framework/removeDataOnDestroy", True)dsf.storage.DataLakeStorage(self, "DataLakeStorage",
+self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)dsf.storage.DataLakeStorage(self, "DataLakeStorage",
     removal_policy=RemovalPolicy.DESTROY
 )
   ```

@@ -15,11 +15,11 @@ import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps } from '.
 
 /**
  * Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
- * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/data-lake-storage
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-storage
  *
  * @example
  * // Set the context value for global data removal policy
- * this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+ * this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
  *
  * new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
  *  bronzeBucketName: 'my-bronze',

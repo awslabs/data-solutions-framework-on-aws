@@ -14,7 +14,7 @@ import { DataLakeStorage } from '../../src/storage';
 jest.setTimeout(6000000);
 const testStack = new TestStack('DataLakeCatalogTestStack');
 const { stack } = testStack;
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 
 const storage = new DataLakeStorage(stack, 'ExampleDLStorage', {

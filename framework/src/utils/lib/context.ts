@@ -24,7 +24,7 @@ export class Context {
         `WARNING: removalPolicy was reverted back to 'RemovalPolicy.RETAIN'.
         If you wish to set 'removalPolicy' to 'DESTROY' you must also
         set the global removal policy flag context variable in the 'cdk.json'
-        or 'cdk.context.json': '@aws-data-solutions-framework/removeDataOnDestroy: true'`,
+        or 'cdk.context.json': '@data-solutions-framework-on-aws/removeDataOnDestroy: true'`,
       );
     }
     return removalPolicy == RemovalPolicy.DESTROY && globalRemovalPolicy ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN;
@@ -36,6 +36,6 @@ export class Context {
  * Options used in the CDK context
  */
 export enum ContextOptions {
-  DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING = '@aws-data-solutions-framework/disableConstructsDeploymentTracking',
-  REMOVE_DATA_ON_DESTROY = '@aws-data-solutions-framework/removeDataOnDestroy',
+  DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING = '@data-solutions-framework-on-aws/disableConstructsDeploymentTracking',
+  REMOVE_DATA_ON_DESTROY = '@data-solutions-framework-on-aws/removeDataOnDestroy',
 }
