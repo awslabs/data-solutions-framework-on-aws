@@ -3,4 +3,4 @@
 
 ### Features
 
-* First release candidate of AWS Data Solutions Framework
+* First release candidate of Data solutions framework on AWS

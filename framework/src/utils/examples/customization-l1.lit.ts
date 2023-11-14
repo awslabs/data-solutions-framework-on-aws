@@ -8,7 +8,7 @@ class ExampleCustomizationL1Stack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
     /// !show
-    // Create a data lake using AWS DSF L3 construct
+    // Create a data lake using DSF on AWS L3 construct
     const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
 
     // Access the CDK L1 Bucket construct exposed by the L3 construct

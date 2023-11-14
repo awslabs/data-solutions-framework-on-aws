@@ -15,12 +15,8 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container" style={{textAlign: 'center'}}>
         <div className="row">
-          <div className="col col--6">
-            <img id="logo" className="navLogo" src="img/adsf-logo-light.png" alt="Header image"/>
-          </div>
-          <div className="col col--6">
-          <img id="codeSample" className='navCodeExample' src="img/code-shadow-light.png" alt="Header image"/>
-          </div>
+
+
         </div>
         <p className='hero__subtitle'>{siteConfig.tagline}</p>
         <div className={styles.buttons}>

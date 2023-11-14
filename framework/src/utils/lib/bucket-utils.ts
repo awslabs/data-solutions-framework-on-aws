@@ -36,7 +36,7 @@ export class BucketUtils {
 
     const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id);
 
-    const secret = 'AWS Data Solutions Framework';
+    const secret = 'Data Solutions Framework on AWS';
     const hash = createHmac('sha256', secret)
       .update(components)
       .digest('hex')

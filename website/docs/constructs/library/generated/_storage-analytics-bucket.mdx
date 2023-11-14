@@ -61,7 +61,7 @@ class ExampleDefaultAnalyticsBucketStack(cdk.Stack):
 
 You can specify if the bucket and objects should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
 
-The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and AWS DSF global removal policy are set to remove objects.
+The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and DSF global removal policy are set to remove objects.
 
 You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
