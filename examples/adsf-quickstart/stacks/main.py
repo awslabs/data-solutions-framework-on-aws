@@ -19,7 +19,7 @@ class DataStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
     
-    # Use AWS DSF to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
+    # Use DSF on AWS to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
     spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
             self, "SparkProcessingRuntime", name="TaxiAggregation",
             removal_policy=RemovalPolicy.DESTROY,

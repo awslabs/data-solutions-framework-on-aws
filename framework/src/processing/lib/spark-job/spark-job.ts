@@ -18,7 +18,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils
  * A base construct to run Spark Jobs.
  *
  * Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
- * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
  *
  * Available implementations:
  * * {@link SparkEmrServerlessJob} for Emr Serverless implementation
@@ -51,7 +51,7 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * The removal policy when deleting the CDK resource.
    * Resources like Amazon cloudwatch log or Amazon S3 bucket
-   * If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
+   * If DESTROY is selected, the context value '@data-solutions-framework-on-aws/removeDataOnDestroy'
    * in the 'cdk.json' or 'cdk.context.json' must be set to true
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */

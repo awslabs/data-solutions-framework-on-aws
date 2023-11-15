@@ -11,7 +11,7 @@ from stacks.demo_helpers.spark_job_trigger import SparkJobTrigger
 
 
 class SparkApplicationStackFactory(dsf.utils.ApplicationStackFactory):
-    """Implements ApplicationStackFactory from AWS DSF to create a self-mutable CICD pipeline for Spark app.
+    """Implements ApplicationStackFactory from DSF on AWS to create a self-mutable CICD pipeline for Spark app.
     See Spark CICD docs for more details."""
 
     def create_stack(self, scope: Construct, stage: dsf.utils.CICDStage) -> Stack:
@@ -24,7 +24,7 @@ class ApplicationStack(Stack):
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Use AWS DSF to create a data lake storage and Glue data catalog database for the example data.
+        # Use DSF on AWS to create a data lake storage and Glue data catalog database for the example data.
         storage = dsf.storage.DataLakeStorage(
             self, "DataLakeStorage", removal_policy=RemovalPolicy.DESTROY
         )
@@ -50,7 +50,7 @@ class ApplicationStack(Stack):
         storage.gold_bucket.grant_read_write(processing_exec_role)
         storage.silver_bucket.grant_read(processing_exec_role)
 
-        # Use AWS DSF to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
+        # Use DSF on AWS to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
         spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
             self, "SparkProcessingRuntime", name="TaxiAggregation",
             removal_policy=RemovalPolicy.DESTROY,

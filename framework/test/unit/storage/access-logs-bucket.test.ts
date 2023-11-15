@@ -20,7 +20,7 @@ describe('AccessLogsBucket Construct with default configuration', () => {
   const stack = new Stack(app, 'Stack');
 
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with default
   new AccessLogsBucket(stack, 'DefaultAccessLogsBucket');
@@ -79,7 +79,7 @@ describe('AccessLogsBucket Construct with custom configuration', () => {
   const stack = new Stack(app, 'Stack');
 
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with custom parameters
   new AccessLogsBucket(stack, 'CustomAccessLogsBucket', {
@@ -149,7 +149,7 @@ describe('2 AccessLogsBucket Constructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-69eed7d8'),
+              Match.stringLikeRegexp('-171ba76e'),
             ],
           ],
         },
@@ -168,7 +168,7 @@ describe('2 AccessLogsBucket Constructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-0d8ce964'),
+              Match.stringLikeRegexp('-457648a0'),
             ],
           ],
         },

@@ -116,7 +116,7 @@ describe('AnalyticsBucket Construct with custom configuration and DESTROY flag s
   const app = new App();
   const stack = new Stack(app, 'Stack');
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -168,7 +168,7 @@ describe('AnalyticsBucket Construct with DESTROY flag set to false', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', false);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', false);
 
   const encryptionKey = new Key(stack, 'DataKey', {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -259,7 +259,7 @@ describe('2 AnalyticsBucket Constructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-73053f9e'),
+              Match.stringLikeRegexp('-24684b16'),
             ],
           ],
         },
@@ -278,7 +278,7 @@ describe('2 AnalyticsBucket Constructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              Match.stringLikeRegexp('-6bb27287'),
+              Match.stringLikeRegexp('-d3e6a303'),
             ],
           ],
         },

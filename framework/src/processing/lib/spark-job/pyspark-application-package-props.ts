@@ -48,7 +48,7 @@ export interface PySparkApplicationPackageProps {
   /**
    * The removal policy when deleting the CDK resource.
    * Resources like Amazon cloudwatch log or Amazon S3 bucket.
-   * If DESTROY is selected, the context value '@aws-data-solutions-framework/removeDataOnDestroy'
+   * If DESTROY is selected, the context value '@data-solutions-framework-on-aws/removeDataOnDestroy'
    * in the 'cdk.json' or 'cdk.context.json' must be set to true.
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */

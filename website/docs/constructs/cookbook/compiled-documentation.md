@@ -5,11 +5,11 @@ sidebar_label: Documentation and code examples
 
 # Documentation and code examples
 
-Constructs in AWS DSF are documented in two different places:
+Constructs in DSF on AWS are documented in two different places:
 - In the constructs themselves,
 - In a `README.md` file associated to each submodule (layer).
 
-We aim to provide accurate code examples that actually match the AWS DSF API and compile. This page explains how you should write doc and examples to achieve this.
+We aim to provide accurate code examples that actually match the DSF on AWS API and compile. This page explains how you should write doc and examples to achieve this.
 
 ## Constructs
 In the constructs themselves, there is a small description, a (basic) usage example and a link to the website. 
@@ -17,7 +17,7 @@ This documentation will be accessible in [ConstructHub](https://constructs.dev/)
 The example must be identified by the `@example` tag in the comment of the construct and must be written in typescript. 
 The code will be compiled and "transliterated" in other programming languages by `jsii` and `jsii-rosetta`, so it must compile. 
 To compile the code, rosetta will leverage _fixtures_ where you can define the imports and everything that wrap the code you want to showcase. 
-Most of the examples in AWS DSF leverage the default fixture [`default.ts-fixture`](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/rosetta/default.ts-fixture):
+Most of the examples in DSF on AWS leverage the default fixture [`default.ts-fixture`](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/rosetta/default.ts-fixture):
 
 ```ts
 import { Construct } from 'constructs';

@@ -280,7 +280,7 @@ describe('DataLakeStorage Construct with default KMS Key, DESTROY removal policy
   const stack = new Stack(app, 'Stack');
 
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with default
   new DataLakeStorage(stack, 'DefaultDataLakeStorage', {
@@ -679,7 +679,7 @@ describe('2 DataLakeStorageConstructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              '-9ab4db34',
+              '-7e87a627',
             ],
           ],
         },
@@ -698,7 +698,7 @@ describe('2 DataLakeStorageConstructs in the same stack', () => {
               { Ref: 'AWS::AccountId' },
               '-',
               { Ref: 'AWS::Region' },
-              '-d6f1dbe9',
+              '-378fc074',
             ],
           ],
         },

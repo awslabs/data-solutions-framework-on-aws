@@ -25,7 +25,7 @@ const cicdStack = new Stack(app, 'CICDStack', {
 const testStack = new TestStack('SparkCICDPipelineTestStack', app, cicdStack);
 const { stack } = testStack;
 
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 stack.node.setContext('staging', { accountId: '123456789012', region: 'eu-west-1' });
 stack.node.setContext('prod', { accountId: '123456789012', region: 'eu-west-1' });
 

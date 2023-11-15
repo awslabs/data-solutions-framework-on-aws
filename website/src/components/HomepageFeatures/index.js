@@ -10,7 +10,7 @@ const FeatureList = [
       description: (
           <div>
             Use the framework to build your data solutions instead of building cloud infrastructure from scratch.
-            AWS DSF simplifies implementation of the most common data needs. 
+            DSF on AWS simplifies implementation of the most common data needs. 
           </div>
       ),
   },
@@ -20,7 +20,7 @@ const FeatureList = [
     description: (
       <div>
           Compose data solutions using integrated building blocks via Infrastructure as Code (IaC). 
-          AWS DSF is packaged as a AWS CDK library, and is available in TypeScript (npm) and Python (PyPi). 
+          DSF on AWS is packaged as a AWS CDK library, and is available in TypeScript (npm) and Python (PyPi). 
       </div>
     ),
   },

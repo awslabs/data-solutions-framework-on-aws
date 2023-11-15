@@ -16,7 +16,7 @@ const testStack = new TestStack('PySparkApplicationPackageStack');
 const { stack } = testStack;
 
 // Set the context value for global data removal policy
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const appName = 'my-spark';
 

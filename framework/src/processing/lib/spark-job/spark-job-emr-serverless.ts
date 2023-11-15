@@ -15,7 +15,7 @@ import { SparkEmrServerlessRuntime } from '../spark-runtime';
 /**
  * A construct to run Spark Jobs using EMR Serverless.
  * Creates a State Machine that orchestrates the Spark Job.
- * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-job
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
  *
  * @example
  * import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';

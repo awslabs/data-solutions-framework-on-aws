@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 > :heavy_exclamation_mark: If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
 
-The AWS DSF library is available in Typescript or Python, select the right tab for code examples in your preferred language.
+The DSF on AWS library is available in Typescript or Python, select the right tab for code examples in your preferred language.
 
 ### Create a CDK app
 ```bash
@@ -40,7 +40,7 @@ mkdir adsf-example && cd adsf-example
   </TabItem>
 </Tabs>
 
-We can now install AWS DSF:
+We can now install DSF on AWS:
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -55,7 +55,7 @@ We can now install AWS DSF:
   <TabItem value="python" label="Python">
 
     ```bash
-    # Add AWS DSF to requirements.txt
+    # Add DSF on AWS to requirements.txt
     
     # requirements.txt:
     ...
@@ -69,7 +69,7 @@ We can now install AWS DSF:
   </TabItem>
 </Tabs>
 
-### Use AWS DSF to create a data lake storage
+### Use DSF on AWS to create a data lake storage
 
 We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-lake-storage.mdx) to create a storage layer for our data lake on AWS. When we deploy this simple AWS CDK application we will have the following resources created:
 
@@ -142,5 +142,5 @@ Now you can deploy your stack!
 cdk deploy
 ```
 
-Congrats, you created your first CDK app using AWS DSF! Go ahead and explore all available [constructs](category/constructs) and [examples](category/examples).
+Congrats, you created your first CDK app using DSF on AWS! Go ahead and explore all available [constructs](category/constructs) and [examples](category/examples).
 

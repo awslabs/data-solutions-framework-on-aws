@@ -305,7 +305,7 @@ describe('With removalPolicy.DESTROY configuration and global removal policy set
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   const appName = 'my-spark';
 

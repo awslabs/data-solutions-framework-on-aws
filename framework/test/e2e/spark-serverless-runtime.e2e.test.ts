@@ -20,7 +20,7 @@ const app = new App();
 const testStack = new TestStack('SparkServerlessTestStack', app);
 const { stack } = testStack;
 
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 // creation of the construct(s) under test
 const serverlessRuntime = new SparkEmrServerlessRuntime(stack, 'EmrApp', {

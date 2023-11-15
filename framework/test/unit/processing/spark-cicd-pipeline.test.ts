@@ -444,7 +444,7 @@ describe('With removal policy set to DESTROY and global removal policy set to tr
   stack.node.setContext('staging', { accountId: '123456789012', region: 'us-east-1' });
   stack.node.setContext('prod', { accountId: '123456789012', region: 'us-east-1' });
   // Set context value for global data removal policy
-  stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   class MyApplicationStack extends Stack {
 

@@ -9,7 +9,7 @@ The business code is a simple **PySpark** application packaged in a common Pytho
  * An `src` folder containing business code organized in Python packages (`__init__.py` files).
  * A `test` folder containing the unit tests run via `pytest .` command from the root folder of the Spark project. You can use the [EMR Vscode toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonEMR.emr-tools) to locally test the application on an EMR local runtime.
 
-The infrastructure code is an AWS CDK application using the AWS DSF library to create the required resources. It contains 2 CDK stacks:
+The infrastructure code is an AWS CDK application using the DSF on AWS library to create the required resources. It contains 2 CDK stacks:
  * An **application stack** which provisions the Data Lake, data catalog, and the Spark runtime resources via the following constructs:
    * A `DataLakeStorage` 
    * A `DataCatalogDatatabse`
@@ -60,7 +60,7 @@ python3 -m venv .venv
 source .venv/bin/activate 
 ```
 
-3. Install the AWS DSF library:
+3. Install the DSF on AWS library:
 
 ```bash
 pip install -r requirements.txt 

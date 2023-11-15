@@ -12,13 +12,13 @@ import { Context, BucketUtils } from '../../utils';
 /**
 * Amazon S3 Bucket configured with best-practices and defaults for analytics.
 * The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
-* @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/analytics-bucket
+* @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/analytics-bucket
 *
 * @example
 * import { Key } from 'aws-cdk-lib/aws-kms';
 *
 * // Set context value for global data removal policy (or set in cdk.json).
-* this.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+* this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 *
 * const encryptionKey = new Key(this, 'DataKey', {
 *  removalPolicy: cdk.RemovalPolicy.DESTROY,

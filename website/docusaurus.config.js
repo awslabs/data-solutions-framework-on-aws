@@ -5,12 +5,12 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 const projectName = 'aws-data-solutions-framework'
-const niceProjectName = 'AWS Data Solutions Framework'
+const niceProjectName = 'Data solutions framework on AWS'
 const organization = 'awslabs'
 
 const config = {
   title: niceProjectName,
-  tagline: 'Accelerate building your data analytics solutions with AWS Data Solutions Framework',
+  tagline: 'Accelerate building your data analytics solutions with Data solutions framework on AWS',
   url: 'https://' + organization + '.github.io',
   // baseUrl: '/', //uncomment for local dev
   baseUrl: '/data-solutions-framework-on-aws/',
@@ -61,7 +61,7 @@ const config = {
   themeConfig:
   {
     navbar: {
-      title: 'AWS DSF',
+      title: 'DSF on AWS',
       logo: {
         alt: niceProjectName + 'Logo',
         src: 'img/header-icon.png',

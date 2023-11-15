@@ -58,14 +58,14 @@ Amazon S3 Bucket configured for analytics.
 
 You can specify if the bucket and objects should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
 
-The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and AWS DSF global removal policy are set to remove objects.
+The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and DSF global removal policy are set to remove objects.
 
-You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
 ```json title="cdk.json"
 {
   "context": {
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }
 }
 ```
@@ -97,7 +97,7 @@ Data Lake based on medallion architecture and AWS best-practices.
 ## Overview
 
 At the high level, `DataLakeStorage` creates three [Amazon S3](https://aws.amazon.com/s3) buckets configured specifically for data lake on AWS. By default these buckets are named *Bronze*, *Silver*, and *Gold* to represent [different data layers](https://docs.aws.amazon.com/prescriptive-guidance/latest/defining-bucket-names-data-lakes/data-layer-definitions.html). You can customize bucket names according to your needs.
-`DataLakeStorage` uses [`AnalyticsBucket`](analytics-bucket) and [`AccessLogsBucket`](access-logs-bucket) constructs from AWS DSF, to create storage and access logs buckets respectively. Your data lake storage is encrypted using [AWS KMS](https://aws.amazon.com/kms/) a default customer managed key. You can also provide your own KMS Key. We provide data lifecycle management that you can customize to your needs.
+`DataLakeStorage` uses [`AnalyticsBucket`](analytics-bucket) and [`AccessLogsBucket`](access-logs-bucket) constructs from DSF on AWS, to create storage and access logs buckets respectively. Your data lake storage is encrypted using [AWS KMS](https://aws.amazon.com/kms/) a default customer managed key. You can also provide your own KMS Key. We provide data lifecycle management that you can customize to your needs.
 
 Here is the overview of `DataLakeStorage` features:
 - Medalion design with S3 buckets for Bronze, Silver, and Gold data.
@@ -133,14 +133,14 @@ This method generates a unique name based on the provided name, the construct ID
 
 You can specify if buckets, objects and encryption keys should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
 
-Buckets, objects and encryption keys can be destroyed when the CDK resource is destroyed only if **both** data lake removal policy and AWS DSF global removal policy are set to remove objects.
+Buckets, objects and encryption keys can be destroyed when the CDK resource is destroyed only if **both** data lake removal policy and DSF on AWS global removal policy are set to remove objects.
 
-You can set `@aws-data-solutions-framework/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
 ```json title="cdk.json"
 {
   "context": {
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }
 }
 ```

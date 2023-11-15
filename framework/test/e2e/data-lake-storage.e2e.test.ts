@@ -18,8 +18,8 @@ const { stack } = testStack;
 const testStack2 = new TestStack('Stack2');
 
 // Set the context value for global data removal policy
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
-testStack2.stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+testStack2.stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const dataLakeStorage = new DataLakeStorage(stack, 'DataLake1', {
   bronzeBucketName: BucketUtils.generateUniqueBucketName(stack, 'DataLake1', 'mybronze'),
