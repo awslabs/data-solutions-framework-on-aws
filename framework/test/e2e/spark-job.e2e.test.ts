@@ -162,4 +162,5 @@ it('Job on stack 2 created successfullly', async () => {
 
 afterAll(async () => {
   await testStack.destroy();
+  await testStack2.deploy();
 }, 900000);
