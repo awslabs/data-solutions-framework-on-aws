@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, Names, RemovalPolicy } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
@@ -155,6 +155,7 @@ export abstract class SparkJob extends TrackedConstruct {
       // Enable CloudWatch Logs for the state machine
       this.stateMachineLogGroup = new LogGroup(this, 'LogGroup', {
         removalPolicy: this.removalPolicy,
+        logGroupName: `/aws/vendedlogs/states/${Names.uniqueId(this)}`,
       });
 
       // StepFunctions state machine
