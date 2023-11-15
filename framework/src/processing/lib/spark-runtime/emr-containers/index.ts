@@ -2,6 +2,6 @@
 // SPDX-License-Identifier: MIT-0
 
 export * from './emr-eks-cluster';
-export * from './emr-virtual-cluster';
+export * from './emr-virtual-cluster-props';
 export * from './eks-support-controllers-version';
 export * from './emr-eks-cluster-props';

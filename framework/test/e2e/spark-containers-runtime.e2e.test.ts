@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * E2E test for SparkServerlessRunime
+ * E2E test for SparkContainersRunime
  *
  * @group e2e/spark-runtime-containers
  */

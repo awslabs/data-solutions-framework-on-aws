@@ -3,7 +3,7 @@
 
 
 /**
- * Tests Spark runtime EMR Serverless construct
+ * Tests Spark runtime EMR Containers construct
  *
  * @group unit/processing-runtime/containers/emr-containers
 */

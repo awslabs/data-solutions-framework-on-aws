@@ -33,7 +33,7 @@ import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
 import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners, createNamespace } from './emr-eks-cluster-helpers';
 import { SparkEmrContainersRuntimeProps } from './emr-eks-cluster-props';
-import { EmrVirtualClusterOptions } from './emr-virtual-cluster';
+import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
@@ -318,9 +318,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster.
    * @param {Construct} scope of the stack where virtual cluster is deployed
-   * @param {EmrVirtualClusterOptions} options the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}
+   * @param {EmrVirtualClusterProps} options the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}
    */
-  public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterOptions): CfnVirtualCluster {
+  public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterProps): CfnVirtualCluster {
     const eksNamespace = options.eksNamespace ?? 'default';
 
     let ns = undefined;
