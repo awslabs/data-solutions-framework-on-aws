@@ -3953,7 +3953,7 @@ Returns a string representation of this construct.
 ##### `addEmrVirtualCluster` <a name="addEmrVirtualCluster" id="aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster"></a>
 
 ```typescript
-public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterOptions): CfnVirtualCluster
+public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterProps): CfnVirtualCluster
 ```
 
 Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster.
@@ -3968,9 +3968,9 @@ of the stack where virtual cluster is deployed.
 
 ###### `options`<sup>Required</sup> <a name="options" id="aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.options"></a>
 
-- *Type:* aws-dsf.processing.EmrVirtualClusterOptions
+- *Type:* aws-dsf.processing.EmrVirtualClusterProps
 
-the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps }.
+the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}.
 
 ---
 
@@ -6400,29 +6400,29 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-### EmrVirtualClusterOptions <a name="EmrVirtualClusterOptions" id="aws-dsf.processing.EmrVirtualClusterOptions"></a>
+### EmrVirtualClusterProps <a name="EmrVirtualClusterProps" id="aws-dsf.processing.EmrVirtualClusterProps"></a>
 
 The properties for the EmrVirtualCluster Construct class.
 
-#### Initializer <a name="Initializer" id="aws-dsf.processing.EmrVirtualClusterOptions.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.EmrVirtualClusterProps.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-dsf'
 
-const emrVirtualClusterOptions: processing.EmrVirtualClusterOptions = { ... }
+const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.EmrVirtualClusterOptions.property.name">name</a></code> | <code>string</code> | name of the Amazon Emr virtual cluster to be created. |
-| <code><a href="#aws-dsf.processing.EmrVirtualClusterOptions.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | creates Amazon EKS namespace. |
-| <code><a href="#aws-dsf.processing.EmrVirtualClusterOptions.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | name of the Amazon Emr virtual cluster to be created. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | creates Amazon EKS namespace. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.EmrVirtualClusterOptions.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.EmrVirtualClusterProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -6434,7 +6434,7 @@ name of the Amazon Emr virtual cluster to be created.
 
 ---
 
-##### `createNamespace`<sup>Optional</sup> <a name="createNamespace" id="aws-dsf.processing.EmrVirtualClusterOptions.property.createNamespace"></a>
+##### `createNamespace`<sup>Optional</sup> <a name="createNamespace" id="aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace"></a>
 
 ```typescript
 public readonly createNamespace: boolean;
@@ -6447,7 +6447,7 @@ creates Amazon EKS namespace.
 
 ---
 
-##### `eksNamespace`<sup>Optional</sup> <a name="eksNamespace" id="aws-dsf.processing.EmrVirtualClusterOptions.property.eksNamespace"></a>
+##### `eksNamespace`<sup>Optional</sup> <a name="eksNamespace" id="aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace"></a>
 
 ```typescript
 public readonly eksNamespace: string;

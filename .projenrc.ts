@@ -71,7 +71,8 @@ const rootProject = new LernaProject({
     '__pycache__',
     '.devcontainer',
     '.venv',
-    'cdk.out'
+    'cdk.out',
+    '.DS_Store'
   ],
 
   projenrcTs: true,
