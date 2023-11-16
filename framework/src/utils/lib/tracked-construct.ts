@@ -74,7 +74,7 @@ export class TrackedConstruct extends Construct {
   }
 
   /**
-   * Retrieve ADSF package.json version
+   * Retrieve DSF package.json version
    */
   public retrieveVersion() {
     // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require
