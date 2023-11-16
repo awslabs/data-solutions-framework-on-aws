@@ -23,7 +23,7 @@ export class TrackedConstruct extends Construct {
   /**
    * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
    */
-  private static readonly trackingRegExp = new RegExp('(.+) \\(' + TrackedConstruct.DSF_TRACKING_CODE + '\\)( \\(version:([^)]*)\\))?( \\(tag:([^)]*)\\))?');
+  private static readonly trackingRegExp = new RegExp('(.*) \\(' + TrackedConstruct.DSF_TRACKING_CODE + '\\)( \\(version:([^)]*)\\))?( \\(tag:([^)]*)\\))?');
   private static readonly TRACKING_TAG_SEPARATOR = ',';
 
   /**
@@ -74,7 +74,7 @@ export class TrackedConstruct extends Construct {
   }
 
   /**
-   * Retrieve DSF package.json version
+   * Retrieve ADSF package.json version
    */
   public retrieveVersion() {
     // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require
