@@ -61,7 +61,7 @@ export class SparkEmrEksJob extends SparkJob {
     if (!this.constructJobConfig.jobConfig.Tags) {
       this.constructJobConfig.jobConfig.Tags = {};
     }
-    this.constructJobConfig.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
+    this.constructJobConfig.jobConfig.Tags[TrackedConstruct.DSF_OWNED_TAG] = 'true';
 
     const executionTimeout = props.executionTimeoutMinutes ?? 30;
     this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.constructJobConfig.schedule);

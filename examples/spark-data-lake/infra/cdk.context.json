@@ -7,5 +7,5 @@
       "account": "ACCOUNT-ID",
       "region": "REGION"
     },
-    "@aws-data-solutions-framework/removeDataOnDestroy": true
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   }

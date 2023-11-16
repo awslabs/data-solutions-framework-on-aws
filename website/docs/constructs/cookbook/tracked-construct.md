@@ -4,7 +4,7 @@ sidebar_label: Usage tracking
 ---
 
 # Tracked Constructs
-To measure the number of deployments of the ADSF constructs and get insights about usage, we use CloudFormation descriptions.
+To measure the number of deployments of the DSF constructs and get insights about usage, we use CloudFormation descriptions.
 The description must contain a tracking code (AWS internal) and a tag for each construct deployed in the stack. It must respect the following format:
 
 ```text

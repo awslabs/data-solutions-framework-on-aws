@@ -5,7 +5,7 @@ import { Stack, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ContextOptions } from './context';
 import { TrackedConstructProps } from './tracked-construct-props';
-import { ADSF_AWS_TAG } from '../../constants';
+import { DSF_AWS_TAG } from '../../constants';
 
 
 /**
@@ -15,15 +15,16 @@ import { ADSF_AWS_TAG } from '../../constants';
  */
 export class TrackedConstruct extends Construct {
 
-  static readonly ADSF_TRACKING_CODE = 'uksb-1tupboc21';
+  static readonly DSF_TRACKING_CODE = 'uksb-1tupboc21';
 
-  static readonly ADSF_OWNED_TAG = `${ADSF_AWS_TAG}:owned`;
+  static readonly DSF_OWNED_TAG = `${DSF_AWS_TAG}:owned`;
 
 
   /**
    * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
    */
-  private static readonly trackingRegExp = new RegExp('(.*) \\(' + TrackedConstruct.ADSF_TRACKING_CODE + '\\)( \\(version:([^)]*)\\))?( \\(tag:([^)]*)\\))?');
+
+  private static readonly trackingRegExp = new RegExp('(.*) \\(' + TrackedConstruct.DSF_TRACKING_CODE + '\\)( \\(version:([^)]*)\\))?( \\(tag:([^)]*)\\))?');
   private static readonly TRACKING_TAG_SEPARATOR = ',';
 
   /**
@@ -42,7 +43,7 @@ export class TrackedConstruct extends Construct {
       stack.templateOptions.description = this.updateDescription(currentDescription, props);
     }
 
-    Tags.of(scope).add(TrackedConstruct.ADSF_OWNED_TAG, 'true');
+    Tags.of(scope).add(TrackedConstruct.DSF_OWNED_TAG, 'true');
   }
 
   private updateDescription(currentDescription: string, props: TrackedConstructProps) {
@@ -52,7 +53,7 @@ export class TrackedConstruct extends Construct {
 
     const tag = props.trackingTag.split(TrackedConstruct.TRACKING_TAG_SEPARATOR).join('_'); // make sure there's no separator in the tag name
     if (fullDescription == null) {
-      return `${currentDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${version}) (tag:${tag})`;
+      return `${currentDescription} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${version}) (tag:${tag})`;
     } else {
       const description = fullDescription[1];
       const existingTags = fullDescription[5];
@@ -69,12 +70,12 @@ export class TrackedConstruct extends Construct {
         newTags = tag;
       }
 
-      return `${description} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${version}) (tag:${newTags})`;
+      return `${description} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${version}) (tag:${newTags})`;
     }
   }
 
   /**
-   * Retrieve ADSF package.json version
+   * Retrieve DSF package.json version
    */
   public retrieveVersion() {
     // We cannot import package.json as a module, because it's not at rootDir, so using direct JS require

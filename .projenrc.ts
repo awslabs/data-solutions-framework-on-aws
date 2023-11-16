@@ -8,8 +8,8 @@ const CDK_CONSTRUCTS_VERSION = '10.2.55';
 const JSII_VERSION = '~5.0.0';
 const KUBECTL_LAYER_VERSION='v27';
 
-const repositoryUrl = 'https://github.com/awslabs/aws-data-solutions-framework.git';
-const homepage = 'https://awslabs.github.io/aws-data-solutions-framework/';
+const repositoryUrl = 'https://github.com/awslabs/data-solutions-framework-on-aws.git';
+const homepage = 'https://awslabs.github.io/data-solutions-framework-on-aws/';
 const author = 'Amazon Web Services';
 const authorAddress = 'https://aws.amazon.com';
 const authorOrganization = true;
@@ -18,7 +18,7 @@ const copyrightOwner = 'Amazon.com, Inc. or its affiliates. All Rights Reserved.
 const copyrightPeriod = `2021-${new Date().getFullYear()}`;
 const defaultReleaseBranch = 'main';
 const release = true;
-const name = 'aws-data-solutions-framework';
+const name = 'data-solutions-framework-on-aws';
 const keywords= [
   'awscdk',
   'aws',
@@ -242,9 +242,9 @@ const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
 sparkDataLakeInfraExampleApp.packageTask.spawn(buildExampleTask);
 
 const adsfQuickstart = new awscdk.AwsCdkPythonApp({
-  name: 'adsf-quickstart',
+  name: 'dsf-quickstart',
   moduleName: 'stacks',
-  packageName: 'adsf-quickstart',
+  packageName: 'dsf-quickstart',
   version: '0.0.1',
   description: 'An example CDK app demonstrating the most common use cases for Data Solutions Framework on AWS',
   authorName: author,
@@ -252,7 +252,7 @@ const adsfQuickstart = new awscdk.AwsCdkPythonApp({
   license,
 
   parent: rootProject,
-  outdir: 'examples/adsf-quickstart',
+  outdir: 'examples/dsf-quickstart',
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,

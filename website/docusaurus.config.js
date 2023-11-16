@@ -4,7 +4,7 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
-const projectName = 'aws-data-solutions-framework'
+const projectName = 'data-solutions-framework-on-aws'
 const niceProjectName = 'Data solutions framework on AWS'
 const organization = 'awslabs'
 

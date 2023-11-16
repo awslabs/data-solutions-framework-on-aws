@@ -96,7 +96,7 @@ The schema below shows the resources created and the responsible of the construc
 ## Usage
 
 In this example we will show you how you can use the construct to package a PySpark application
-and submit a job to EMR Serverless leveraging ADSF `SparkEmrServerlessRuntime` and `SparkJob` constructs.
+and submit a job to EMR Serverless leveraging DSF `SparkEmrServerlessRuntime` and `SparkJob` constructs.
 
 For this example we assume we will have the folder structure as shown below. We have two folders, one containing
 the `PySpark` application called `spark` folder and a second containing the `CDK` code called `cdk`.
