@@ -23,6 +23,7 @@ export class TrackedConstruct extends Construct {
   /**
    * Format is "Description (uksb_12345abcde) (version:1.2.3) (tag:construct1,construct2)"
    */
+
   private static readonly trackingRegExp = new RegExp('(.*) \\(' + TrackedConstruct.DSF_TRACKING_CODE + '\\)( \\(version:([^)]*)\\))?( \\(tag:([^)]*)\\))?');
   private static readonly TRACKING_TAG_SEPARATOR = ',';
 
