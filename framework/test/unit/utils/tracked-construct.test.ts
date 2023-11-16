@@ -11,7 +11,7 @@ import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { ADSF_AWS_TAG } from '../../../src/constants';
+import { DSF_AWS_TAG } from '../../../src/constants';
 import { ContextOptions, TrackedConstruct, TrackedConstructProps } from '../../../src/utils';
 
 describe('TrackedConstruct tests', ()=> {
@@ -30,7 +30,7 @@ describe('TrackedConstruct tests', ()=> {
     const construct = new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${trackingTag})`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${trackingTag})`);
   });
 
   test('tracked construct add as many tags in the description as tracked constructs in the stack', () => {
@@ -49,7 +49,7 @@ describe('TrackedConstruct tests', ()=> {
     new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct2', { trackingTag: construct2Tag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${construct1Tag},${construct2Tag})`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${construct1Tag},${construct2Tag})`);
   });
 
   test('tracked construct don\'t duplicate the same construct', () => {
@@ -67,7 +67,7 @@ describe('TrackedConstruct tests', ()=> {
     new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct2', { trackingTag: construct1Tag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${construct1Tag})`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${construct1Tag})`);
   });
 
   test('tracked construct with similar but different names should be added', () => {
@@ -86,12 +86,12 @@ describe('TrackedConstruct tests', ()=> {
     new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct2', { trackingTag: constructTag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${construct1Tag},${constructTag})`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${construct1Tag},${constructTag})`);
   });
 
   test('initial description already contains tracking code and version should update', ()=> {
     // GIVEN
-    const initialStackDescription = `My Analytics stack (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:0.0.0)`;
+    const initialStackDescription = `My Analytics stack (${TrackedConstruct.DSF_TRACKING_CODE}) (version:0.0.0)`;
     const trackingTag = 'trackingTag';
 
     const testApp = new App();
@@ -103,12 +103,12 @@ describe('TrackedConstruct tests', ()=> {
     const construct = new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `My Analytics stack (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${trackingTag})`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `My Analytics stack (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:${trackingTag})`);
   });
 
   test('initial description already contains tracking code and version and tags should update', ()=> {
     // GIVEN
-    const initialStackDescription = `My Analytics stack (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:0.0.0) (tag:existingTag)`;
+    const initialStackDescription = `My Analytics stack (${TrackedConstruct.DSF_TRACKING_CODE}) (version:0.0.0) (tag:existingTag)`;
     const trackingTag = 'trackingTag';
 
     const testApp = new App();
@@ -120,7 +120,7 @@ describe('TrackedConstruct tests', ()=> {
     const construct = new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `My Analytics stack (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:existingTag,${trackingTag})`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `My Analytics stack (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:existingTag,${trackingTag})`);
   });
 
   test('tracked construct don\'t add tracking code to description if explicitly disabled', () => {
@@ -156,7 +156,7 @@ describe('TrackedConstruct tests', ()=> {
     const construct = new TrackedConstruct(exampleStack, 'MyCoreAnalyticsConstruct', { trackingTag });
 
     // THEN
-    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.ADSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:my-construct_1)`);
+    expect(exampleStack.templateOptions).toHaveProperty('description', `${initialStackDescription} (${TrackedConstruct.DSF_TRACKING_CODE}) (version:${construct.retrieveVersion()}) (tag:my-construct_1)`);
   });
 
   class TestTrackedConstruct extends TrackedConstruct {
@@ -191,7 +191,7 @@ describe('TrackedConstruct tests', ()=> {
         Properties: {
           Tags: [
             {
-              Key: `${ADSF_AWS_TAG}:owned`,
+              Key: `${DSF_AWS_TAG}:owned`,
               Value: 'true',
             },
           ],

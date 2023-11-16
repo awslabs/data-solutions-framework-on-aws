@@ -28,4 +28,4 @@ We will be using several constructs from the DSF on AWS:
 
 ## Deployment guide
 
-You can follow the [deployment guide](https://github.com/awslabs/aws-data-solutions-framework/tree/main/examples/spark-data-lake) from DSF on AWS GitHub repo to deploy the solution.
+You can follow the [deployment guide](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/examples/spark-data-lake) from DSF on AWS GitHub repo to deploy the solution.

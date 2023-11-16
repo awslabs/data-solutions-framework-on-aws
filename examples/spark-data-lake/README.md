@@ -1,6 +1,6 @@
 # Spark Data Lake example 
 
-In this example, we build a Data Lake and process aggregations from the NY taxi dataset with Spark application. This `README` is a step-by-step deployment guide. You can read more details about this example solution in the [documentation](https://awslabs.github.io/aws-data-solutions-framework/)
+In this example, we build a Data Lake and process aggregations from the NY taxi dataset with Spark application. This `README` is a step-by-step deployment guide. You can read more details about this example solution in the [documentation](https://awslabs.github.io/data-solutions-framework-on-aws/)
 
 We are using a self-contained application where developers can manage both business code (Spark code in `./spark` folder), and the infrastructure code (AWS CDK code in `./infra` folder).
 
@@ -82,7 +82,7 @@ pip install -r requirements.txt
     "account": "<PRODUCTION_ACCOUNT_ID>",
     "region": "<PRODUCTION_REGION>"
   },
-  "@aws-data-solutions-framework/removeDataOnDestroy": true
+  "@data-solutions-framework-on-aws/removeDataOnDestroy": true
 }
 ```
 

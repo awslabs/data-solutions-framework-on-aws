@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Accelerate and simplify data solutions implementation with ADSF">
+      description="Accelerate and simplify data solutions implementation with DSF">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

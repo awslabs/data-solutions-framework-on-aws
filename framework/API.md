@@ -2675,7 +2675,7 @@ new governance.DataCatalogDatabase(scope: Construct, id: string, props: DataCata
 | --- | --- |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -2711,7 +2711,7 @@ Principal to attach the database read access to.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -2857,25 +2857,25 @@ The Glue security configuration used by the Glue Crawler when created.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.governance.DataCatalogDatabase.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.governance.DataCatalogDatabase.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.governance.DataCatalogDatabase.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.governance.DataCatalogDatabase.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -2950,7 +2950,7 @@ the DataLakeCatalog properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.governance.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -2968,7 +2968,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3086,25 +3086,25 @@ The KMS Key used to encrypt the crawler logs.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.governance.DataLakeCatalog.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.governance.DataLakeCatalog.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.governance.DataLakeCatalog.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.governance.DataLakeCatalog.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -3183,7 +3183,7 @@ the DataLakeStorageProps properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.storage.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.storage.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -3201,7 +3201,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3332,25 +3332,25 @@ The S3 Bucket for Silver layer.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.storage.DataLakeStorage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.DataLakeStorage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.DataLakeStorage.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.storage.DataLakeStorage.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.storage.DataLakeStorage.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.storage.DataLakeStorage.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.storage.DataLakeStorage.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -3433,7 +3433,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -3451,7 +3451,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3602,29 +3602,9 @@ You pass this location to your Spark job.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX">ARTIFACTS_PREFIX</a></code> | <code>string</code> | The prefix used to store artifacts on the artifact bucket. |
-
----
-
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.PySparkApplicationPackage.property.ADSF_OWNED_TAG"></a>
-
-```typescript
-public readonly ADSF_OWNED_TAG: string;
-```
-
-- *Type:* string
-
----
-
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.PySparkApplicationPackage.property.ADSF_TRACKING_CODE"></a>
-
-```typescript
-public readonly ADSF_TRACKING_CODE: string;
-```
-
-- *Type:* string
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -3637,6 +3617,26 @@ public readonly ARTIFACTS_PREFIX: string;
 - *Type:* string
 
 The prefix used to store artifacts on the artifact bucket.
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.PySparkApplicationPackage.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.PySparkApplicationPackage.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -3736,7 +3736,7 @@ the SparkCICDPipelineProps properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -3754,7 +3754,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -3898,25 +3898,25 @@ The CodeBuild Step for the staging stage.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrCICDPipeline.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrCICDPipeline.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrCICDPipeline.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -3996,7 +3996,7 @@ new processing.SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJo
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrEksJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -4014,7 +4014,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4106,25 +4106,25 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrEksJob.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrEksJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrEksJob.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrEksJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -4217,7 +4217,7 @@ new processing.SparkEmrServerlessJob(scope: Construct, id: string, props: SparkE
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -4235,7 +4235,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4342,25 +4342,25 @@ Use this property to add additional IAM permissions if necessary.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrServerlessJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrServerlessJob.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrServerlessJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -4419,7 +4419,7 @@ the ID of the CDK Construct.
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -4464,7 +4464,7 @@ the role use by EMR Serverless to access resources during the job execution.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4669,25 +4669,25 @@ If no VPC is provided, one is created by default This attribute is used to expos
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
@@ -4762,7 +4762,7 @@ the SparkJobProps properties.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
@@ -4780,7 +4780,7 @@ Returns a string representation of this construct.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -4872,25 +4872,25 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkJob.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkJob.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkJob.property.ADSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
-public readonly ADSF_OWNED_TAG: string;
+public readonly DSF_OWNED_TAG: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkJob.property.ADSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
-public readonly ADSF_TRACKING_CODE: string;
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string

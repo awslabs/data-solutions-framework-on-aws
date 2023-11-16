@@ -75,7 +75,7 @@ export class SparkEmrServerlessJob extends SparkJob {
       this.constructJobConfig.jobConfig.Tags = {};
     }
 
-    this.constructJobConfig.jobConfig.Tags[TrackedConstruct.ADSF_OWNED_TAG] = 'true';
+    this.constructJobConfig.jobConfig.Tags[TrackedConstruct.DSF_OWNED_TAG] = 'true';
 
     sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
 

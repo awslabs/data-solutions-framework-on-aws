@@ -10,7 +10,7 @@ You can leverage DSF to implement your data platform in weeks rather than in mon
 - Benefit from smart defaults and built-in AWS best practices.
 - Customize or extend according to your requirements.
 
-**Get started** by exploring the [framework](./framework/) and available [examples](./examples/). Learn more from [documentation](https://awslabs.github.io/aws-data-solutions-framework/). 
+**Get started** by exploring the [framework](./framework/) and available [examples](./examples/). Learn more from [documentation](https://awslabs.github.io/data-solutions-framework-on-aws/). 
 
 ## Security
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
@@ -19,4 +19,4 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file.
 
 ## Feedback
-We'd love to hear from you! Please create [GitHub issues](https://github.com/awslabs/aws-data-solutions-framework/issues) for additional features or solutions you'd like to see.
+We'd love to hear from you! Please create [GitHub issues](https://github.com/awslabs/data-solutions-framework-on-aws/issues) for additional features or solutions you'd like to see.

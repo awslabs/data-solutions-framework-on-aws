@@ -133,7 +133,7 @@
           "exec": "lerna-projen copy-dist examples/spark-data-lake/infra/undefined dist"
         },
         {
-          "exec": "lerna-projen copy-dist examples/adsf-quickstart/undefined dist"
+          "exec": "lerna-projen copy-dist examples/dsf-quickstart/undefined dist"
         }
       ]
     },
