@@ -33,6 +33,7 @@ jspm_packages/
 dist
 __pycache__
 .devcontainer
+.venv
 !/.projenrc.js
 !/.mergify.yml
 !/.github/dependabot.yml

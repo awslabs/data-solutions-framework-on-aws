@@ -66,7 +66,8 @@ const rootProject = new LernaProject({
     '.idea',
     'dist',
     '__pycache__',
-    '.devcontainer'
+    '.devcontainer',
+    '.venv'
   ],
 
   projenrcTs: true,
