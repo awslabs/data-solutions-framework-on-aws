@@ -56,7 +56,7 @@ export interface SparkEmrContainersRuntimeProps {
    * Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size.
    * A layer needs to be passed to the Construct.
    *
-   * The cdk [documentation] (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
+   * The cdk [documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
    * contains the libraries that you should add for the right Kubernetes version
    */
   readonly kubectlLambdaLayer: ILayerVersion;
