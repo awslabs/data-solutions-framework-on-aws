@@ -14,7 +14,7 @@ The DSF on AWS library is available in Typescript or Python, select the right ta
 
 ### Create a CDK app
 ```bash
-mkdir adsf-example && cd adsf-example
+mkdir dsf-example && cd dsf-example
 ```
 
 <Tabs>
@@ -78,12 +78,12 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
   
-  In `lib/adsf-example-stack.ts`
+  In `lib/dsf-example-stack.ts`
   ```typescript
   import * as cdk from 'aws-cdk-lib';
   import { DataLakeStorage } from 'aws-dsf';
 
-  export class AdsfExampleStack extends cdk.Stack {
+  export class DsfExampleStack extends cdk.Stack {
     constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
 
@@ -109,17 +109,17 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
   </TabItem>
   <TabItem value="python" label="Python">
 
-    In `adsf_example/adsf_example_stack.py`
+    In `dsf_example/dsf_example_stack.py`
     ```python
     import aws_cdk as cdk
-    import aws_dsf as adsf
+    import aws_dsf as dsf
 
-    class AdsfExampleStack(cdk.Stack):
+    class DsfExampleStack(cdk.Stack):
 
       def __init__(self, scope: cdk.App, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        data_lake_storage = adsf.DataLakeStorage(
+        data_lake_storage = dsf.DataLakeStorage(
           self,
           bronze_name="my-bronze",
           bronze_infrequent_access_delay="90",
