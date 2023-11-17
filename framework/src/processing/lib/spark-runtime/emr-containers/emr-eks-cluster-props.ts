@@ -76,7 +76,7 @@ export interface SparkEmrContainersRuntimeProps {
    * 'kubernetes.io/role/internal-elb'='1'
    * All public subnets should have the following tag:
    * 'kubernetes.io/role/elb'='1'
-   * Cannot be combined with vpcCidr, if combined vpcCidr takes precedence.
+   * Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence.
    */
   readonly eksVpc?: IVpc;
 
