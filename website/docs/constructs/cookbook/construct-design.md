@@ -24,12 +24,7 @@ Refer to these best practices when designing a new construct:
 
 * Expose all the resources created by your construct so you provide a way for end-users to [customize](../customize.mdx) them. Sometimes, it's more user friendly to expose a resource directly to avoid long resources chaining. For example, in the `DataLakeStorage` construct that contains a KMS `Key` attached to the `AnalyticsBucket` part of the `DataLakeStorage`, we re-expose the key so you can access it directly via `dataLakeStorage.key` instead of `dataLakeStorage.bronze.key`.
 
-* If a Construct is creating a role, provide a props to get the role as a parameter. Some AWS customers create roles within a specific process outside of any infrastructure as code.
-
-* Tag resources created with the following tags:
-    * adsf: version
-    * adsf-layer: layer
-    * adsf-construct: construct
+* If a Construct is creating a role, provide a props to get the role as a parameter. Some AWS customers create roles within a specific process outside of any infrastructure as code. A code example is available 
 
 * Bucket encryption: if no business data is store in the bucket, you can use KMS_MANAGED which uses a default KMS key for the account. If the bucket will contain business data, use KMS and create a key.
 
@@ -40,6 +35,11 @@ Refer to these best practices when designing a new construct:
   * Do not use S3 URI in the form of `s3://MYBUCKET/MYPREFIX`. Instead, use an `IBucket` type and a prefix in `string` type.
 
 * Extend the `TrackedConstruct` instead of the base CDK `Construct` to measure the number of deployments. See the [dedicated documentation](./tracked-construct.md). 
+
+* Tag all resources that are created by the construct and support tagging. 
+Extending the [`TrackedConstruct`](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/utils/lib/tracked-construct.ts) will automatically add a tag to all AWS resources that are created by CDK. 
+Some constructs will create resources outside of CDK like the [`SparkEmrServerlessJob`](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-job/spark-job-emr-serverless.ts) that triggers EMR Serverless jobs from a Step Function. 
+For this kind of situation, use the resource parameters to tag it with `DSF_OWNED_TAG: true` like in this [example](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-job/spark-job-emr-serverless.ts#L78).
 
 ## Coding style
 
