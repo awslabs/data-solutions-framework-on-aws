@@ -15,10 +15,10 @@ Refer to these best practices when designing a new construct:
 
 * Resources naming should be optional and CDK should generate them when not provided. CDK ensures names uniqueness. If the name of the resource is provided as part of the constructor props, the name should be unique at least in the stack, sometimes in the AWS account or globally (like S3 bucket names) depending on the type of the resource.
 
-* Delete retention policy should be `RETAIN` by default but the possibility to `DESTROY` resources when destroying the CDK stack should be provided in the construct Props. This DESTROY parameter should only be considered (resources to be deleted) if the global guardrail is configured accordingly (global CDK parameter to be defined). The overall guard rail approach is explained in the [`DataLakeStorage`](../library/02-Storage/03-data-lake-storage.mdx#objects-removal) and code example is available [here](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/src/storage/lib/data-lake-storage.ts#L150).
+* Delete retention policy should be `RETAIN` by default but the possibility to `DESTROY` resources when destroying the CDK stack should be provided in the construct Props. This DESTROY parameter should only be considered (resources to be deleted) if the global guardrail is configured accordingly (global CDK parameter to be defined). The overall guard rail approach is explained in the [`DataLakeStorage`](../library/02-Storage/03-data-lake-storage.mdx#objects-removal) and code example is available [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/storage/lib/data-lake-storage.ts#L150).
   
 * Extend `Construct` vs L2 Resource: 
-    * If the construct you want to create contains only one resource and it’s a specific implementation/configuration, then you should go with extending the base resource. An example is the [`AnalyticsBucket`](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/src/storage/lib/analytics-bucket.ts#L33).
+    * If the construct you want to create contains only one resource and it’s a specific implementation/configuration, then you should go with extending the base resource. An example is the [`AnalyticsBucket`](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/storage/lib/analytics-bucket.ts#L33).
     * If the resource contains more than one resource, it should extend `Construct`. It allows to properly scope resources created within the construct (using `this` parameter as the scope) and avoid collisions in resource naming.
 
 
@@ -67,7 +67,7 @@ Implement unit tests by validating CloudFormation templates that are generated b
 CDK provides helpers for this approach with [fine-grained assertions](https://docs.aws.amazon.com/cdk/v2/guide/testing.html#testing_fine_grained). 
 
 * Implement one test suite for default configuration and one test suite for custom configuration. A test suite is a group of `test` clauses within a `describe` block.
-* Test one feature per `test` clause so we can easily identify what is failing. You can find an example [here](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/test/unit/processing/pyspark-application-package.test.ts)
+* Test one feature per `test` clause so we can easily identify what is failing. You can find an example [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/test/unit/processing/pyspark-application-package.test.ts)
 * Every change requires a unit test.
 
 ## Integration test
@@ -76,10 +76,10 @@ We run integration tests (also call end-to-end tests) in our AWS internal accoun
 Integration tests are provisioning constructs, then checking output values from the CDK deployment, and finally destroying the stack.
 
 Be sure to follow these recommendations when implementing end-to-end tests:
-* Create a stack using the [`TestStack`](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/test/e2e/test-stack.ts) construct.
-* Configure the deployment timeout according to the construct (see the [`DataLakeStorage`](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/test/e2e/data-lake-storage.e2e.test.ts#L14) example).
+* Create a stack using the [`TestStack`](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/test/e2e/test-stack.ts) construct.
+* Configure the deployment timeout according to the construct (see the [`DataLakeStorage`](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/test/e2e/data-lake-storage.e2e.test.ts#L14) example).
 * Test the deployment of 2 resources in the same account to validate uniqueness of names. 
-* Set the [global](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/test/e2e/data-lake-storage.e2e.test.ts#L21) AND the [construct](https://github.com/awslabs/aws-data-solutions-framework/blob/main/framework/test/e2e/data-lake-storage.e2e.test.ts#L34) removal policies to DESTROY, then check in the CloudFormation console if there is no resource skipped when the stack is deleted.
+* Set the [global](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/test/e2e/data-lake-storage.e2e.test.ts#L21) AND the [construct](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/test/e2e/data-lake-storage.e2e.test.ts#L34) removal policies to DESTROY, then check in the CloudFormation console if there is no resource skipped when the stack is deleted.
 
 ## Documentation
 
