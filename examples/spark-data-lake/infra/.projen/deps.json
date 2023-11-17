@@ -14,12 +14,12 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.94.0",
+      "version": "2.109.0",
       "type": "runtime"
     },
     {
       "name": "constructs",
-      "version": "^10.2.55",
+      "version": "^10.3.0",
       "type": "runtime"
     },
     {
