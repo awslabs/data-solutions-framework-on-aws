@@ -18,6 +18,10 @@
       "type": "build"
     },
     {
+      "name": "@types/js-yaml",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^16",
       "type": "build"
@@ -75,6 +79,10 @@
     },
     {
       "name": "jest-runner-groups",
+      "type": "build"
+    },
+    {
+      "name": "js-yaml",
       "type": "build"
     },
     {

@@ -35,6 +35,7 @@ __pycache__
 .devcontainer
 .venv
 cdk.out
+.DS_Store
 !/.projenrc.js
 !/.mergify.yml
 !/.github/dependabot.yml
