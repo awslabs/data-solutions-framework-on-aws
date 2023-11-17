@@ -111,8 +111,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       description: 'Policy used by S3 deployment cdk construct for PySparkApplicationPackage',
     });
 
-    // Create an execution role for the lambda and attach to it a policy formed from user input
-    this.assetUploadRole = new Role(this, 's3BucketDeploymentRole', {
+    // Create or use the passed `assetUploadRole` as an execution role for the lambda and attach to it a policy formed from user input
+    this.assetUploadRole = props.assetUploadRole || new Role(this, 's3BucketDeploymentRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
       managedPolicies: [this.assetUploadManagedPolicy],

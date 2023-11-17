@@ -98,7 +98,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     if (autoCrawl) {
       const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(locationPrefix);
-      const crawlerRole = new Role(this, 'CrawlerRole', {
+      const crawlerRole = props.crawlerRole || new Role(this, 'CrawlerRole', {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         inlinePolicies: {
           crawlerPermissions: new PolicyDocument({
@@ -190,19 +190,23 @@ export class DataCatalogDatabase extends TrackedConstruct {
       });
 
       const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers*`;
-      crawlerRole.addToPolicy(new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: [
-          'logs:CreateLogGroup',
-          'logs:CreateLogStream',
-          'logs:PutLogEvents',
-          'logs:AssociateKmsKey',
-        ],
-        resources: [
-          logGroup,
-          `${logGroup}:*`,
-        ],
-      }));
+
+      if (!props.crawlerRole) {
+        crawlerRole.addToPolicy(new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            'logs:CreateLogGroup',
+            'logs:CreateLogStream',
+            'logs:PutLogEvents',
+            'logs:AssociateKmsKey',
+          ],
+          resources: [
+            logGroup,
+            `${logGroup}:*`,
+          ],
+        }));
+      }
+
       this.crawlerRole = crawlerRole;
 
       this.crawlerLogEncryptionKey.addToResourcePolicy(new PolicyStatement({
