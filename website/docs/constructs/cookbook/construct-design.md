@@ -72,7 +72,7 @@ CDK provides helpers for this approach with [fine-grained assertions](https://do
 
 ## Integration test
 
-We run integration tests (also call end-to-end tests) in our AWS internal account on a regular basis or manually when a Pull Request is approved. 
+We run integration tests (also call end-to-end tests) in our AWS account on a regular basis or manually when a Pull Request is approved. 
 Integration tests are provisioning constructs, then checking output values from the CDK deployment, and finally destroying the stack.
 
 Be sure to follow these recommendations when implementing end-to-end tests:
