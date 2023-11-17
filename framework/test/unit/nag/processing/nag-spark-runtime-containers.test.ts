@@ -145,6 +145,30 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aw
   { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
 ]);
 
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider/IsCompleteHandler/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aws-cdk--aws-eks.KubectlProvider/Provider/framework-onEvent/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider/Provider/framework-onTimeout/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider/Provider/framework-isComplete/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider/Provider/framework-onEvent/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider/OnEventHandler/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime' },
+]);
+
 NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/@aws-cdk--aws-eks.KubectlProvider/Provider/framework-onEvent/ServiceRole/Resource', [
   { id: 'AwsSolutions-IAM4', reason: 'managed policy used by L2 resource' },
 ]);
