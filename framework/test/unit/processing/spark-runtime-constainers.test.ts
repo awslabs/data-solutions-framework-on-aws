@@ -149,7 +149,7 @@ test('EKS cluster should have the default Nodegroups', () => {
       MinSize: 2,
     },
     Tags: Match.objectLike({
-      'aws-data-solutions-fwk:owned': 'true',
+      'data-solutions-fwk:owned': 'true',
     }),
   });
 

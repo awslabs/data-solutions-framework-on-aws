@@ -3937,7 +3937,7 @@ A construct to create an EKS cluster, configure it and enable it with EMR on EKS
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster">addEmrVirtualCluster</a></code> | Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner">addKarpenterProvisioner</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole">createExecutionRole</a></code> | Create and configure a new Amazon IAM Role usable as an execution role. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve ADSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate">uploadPodTemplate</a></code> | Upload podTemplates to the Amazon S3 location used by the cluster. |
 
 ---
@@ -4058,7 +4058,7 @@ Name to use for the role, required and is used to scope the iam role.
 public retrieveVersion(): any
 ```
 
-Retrieve ADSF package.json version.
+Retrieve DSF package.json version.
 
 ##### `uploadPodTemplate` <a name="uploadPodTemplate" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate"></a>
 
@@ -4307,33 +4307,13 @@ public readonly sharedDefaultConfig: string;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.ADSF_OWNED_TAG">ADSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.ADSF_TRACKING_CODE">ADSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_VERSION">DEFAULT_EMR_VERSION</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_KARPENTER_VERSION">DEFAULT_KARPENTER_VERSION</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `ADSF_OWNED_TAG`<sup>Required</sup> <a name="ADSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainersRuntime.property.ADSF_OWNED_TAG"></a>
-
-```typescript
-public readonly ADSF_OWNED_TAG: string;
-```
-
-- *Type:* string
-
----
-
-##### `ADSF_TRACKING_CODE`<sup>Required</sup> <a name="ADSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainersRuntime.property.ADSF_TRACKING_CODE"></a>
-
-```typescript
-public readonly ADSF_TRACKING_CODE: string;
-```
-
-- *Type:* string
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -4381,6 +4361,26 @@ public readonly DEFAULT_KARPENTER_VERSION: string;
 
 ```typescript
 public readonly DEFAULT_VPC_CIDR: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
