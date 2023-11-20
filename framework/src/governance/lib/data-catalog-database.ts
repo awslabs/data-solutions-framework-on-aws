@@ -58,19 +58,30 @@ export class DataCatalogDatabase extends TrackedConstruct {
     };
 
     super(scope, id, trackedConstructProps);
+    const catalogType = this.determineCatalogType(props);
+
+    if (catalogType === CatalogType.INVALID) {
+      throw new Error("Data catalog type can't be determined. Please check `DataCatalogDatabase` properties.");
+    }
+
     this.dataCatalogDatabaseProps = props;
     const removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
     const hash = Utils.generateUniqueHash(this);
     this.databaseName = props.name + '_' + hash.toLowerCase();
 
-    let locationPrefix = props.locationPrefix;
+    let s3LocationUri: string|undefined, locationPrefix: string|undefined;
 
-    if (!locationPrefix.endsWith('/')) {
-      locationPrefix += '/';
+    if (catalogType === CatalogType.S3) {
+      locationPrefix = props.locationPrefix;
+
+      if (!locationPrefix!.endsWith('/')) {
+        locationPrefix += '/';
+      }
+
+      s3LocationUri = props.locationBucket!.s3UrlForObject(locationPrefix);
     }
 
-    const s3LocationUri = props.locationBucket.s3UrlForObject(locationPrefix);
     this.database = new CfnDatabase(this, 'GlueDatabase', {
       catalogId: Stack.of(this).account,
       databaseInput: {
@@ -92,8 +103,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     const currentStack = Stack.of(this);
 
     if (autoCrawl) {
-      const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(locationPrefix);
-      const crawlerRole = props.crawlerRole || new Role(this, 'CrawlerRole', {
+      this.crawlerRole = props.crawlerRole || new Role(this, 'CrawlerRole', {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         inlinePolicies: {
           crawlerPermissions: new PolicyDocument({
@@ -140,14 +150,13 @@ export class DataCatalogDatabase extends TrackedConstruct {
         },
       });
 
-      props.locationBucket.grantRead(crawlerRole, locationPrefix+'*');
 
       this.crawlerLogEncryptionKey = props.crawlerLogEncryptionKey || new Key(this, 'CrawlerLogKey', {
         enableKeyRotation: true,
         removalPolicy: removalPolicy,
       });
 
-      this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
+      this.crawlerLogEncryptionKey.grantEncryptDecrypt(this.crawlerRole);
 
       this.crawlerSecurityConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
         name: `${props.name}-${hash.toLowerCase()}-secconfig`,
@@ -164,29 +173,9 @@ export class DataCatalogDatabase extends TrackedConstruct {
         },
       });
 
-      const crawlerName = `${props.name}-${hash.toLowerCase()}-crawler`;
-      this.crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
-        role: crawlerRole.roleArn,
-        targets: {
-          s3Targets: [{
-            path: s3LocationUri,
-          }],
-        },
-        schedule: autoCrawlSchedule,
-        databaseName: this.databaseName,
-        name: crawlerName,
-        crawlerSecurityConfiguration: this.crawlerSecurityConfiguration.name,
-        configuration: JSON.stringify({
-          Version: 1.0,
-          Grouping: {
-            TableLevelConfiguration: tableLevel,
-          },
-        }),
-      });
-
       const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers*`;
 
-      crawlerRole.addToPrincipalPolicy(new PolicyStatement({
+      this.crawlerRole.addToPrincipalPolicy(new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
           'logs:CreateLogGroup',
@@ -199,8 +188,6 @@ export class DataCatalogDatabase extends TrackedConstruct {
           `${logGroup}:*`,
         ],
       }));
-
-      this.crawlerRole = crawlerRole;
 
       this.crawlerLogEncryptionKey.addToResourcePolicy(new PolicyStatement({
         effect: Effect.ALLOW,
@@ -220,6 +207,24 @@ export class DataCatalogDatabase extends TrackedConstruct {
           },
         },
       }));
+
+      const crawlerName = `${props.name}-${hash.toLowerCase()}-crawler`;
+
+      if (catalogType === CatalogType.S3) {
+        this.crawler = this.handleS3TypeCrawler(props, {
+          autoCrawlSchedule,
+          crawlerName,
+          crawlerSecurityConfigurationName: this.crawlerSecurityConfiguration.name,
+          locationPrefix: locationPrefix!,
+          s3LocationUri: s3LocationUri!,
+        });
+      } else if (catalogType === CatalogType.JDBC) {
+        this.crawler = this.handleJDBCTypeCrawler(props, {
+          autoCrawlSchedule,
+          crawlerName,
+          crawlerSecurityConfigurationName: this.crawlerSecurityConfiguration.name,
+        });
+      }
     }
   }
 
@@ -231,13 +236,18 @@ export class DataCatalogDatabase extends TrackedConstruct {
   public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult {
     const currentStack = Stack.of(this);
 
-    let locationPrefix = this.dataCatalogDatabaseProps.locationPrefix;
+    const catalogType = this.determineCatalogType(this.dataCatalogDatabaseProps);
 
-    if (!locationPrefix.endsWith('/')) {
-      locationPrefix += '/';
+    if (catalogType === CatalogType.S3) {
+      let locationPrefix = this.dataCatalogDatabaseProps.locationPrefix;
+
+      if (!locationPrefix!.endsWith('/')) {
+        locationPrefix += '/';
+      }
+
+      this.dataCatalogDatabaseProps.locationBucket!.grantRead(principal, locationPrefix+'*');
     }
 
-    this.dataCatalogDatabaseProps.locationBucket.grantRead(principal, locationPrefix+'*');
     return principal.addToPrincipalPolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
@@ -257,6 +267,11 @@ export class DataCatalogDatabase extends TrackedConstruct {
     }));
   }
 
+  /**
+   * Calculate the table depth level based on the location prefix. This is used by the crawler to determine where the table level files are located.
+   * @param locationPrefix `string`
+   * @returns `number`
+   */
   private calculateDefaultTableLevelDepth(locationPrefix: string): number {
     const baseCount = 2;
 
@@ -270,4 +285,166 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     return ctrValidToken + baseCount;
   }
+
+  /**
+   * Based on the parameters passed, it would determine type type of target the crawler would used.
+   * @param props `DataCatalogDatabaseProps`
+   * @returns `CatalogType`
+   */
+  private determineCatalogType(props: DataCatalogDatabaseProps): CatalogType {
+    if (props.locationBucket && props.locationPrefix) {
+      return CatalogType.S3;
+    } else if (props.glueConnectionName && props.jdbcSecret && props.jdbcSecretKMSKey && props.jdbcPath) {
+      return CatalogType.JDBC;
+    }
+
+    return CatalogType.INVALID;
+  }
+
+  /**
+   * Handle the creation of the crawler with S3 target and its related permissions
+   * @param props `DataCatalogDatabaseProps`
+   * @param s3Props `S3CrawlerProps`
+   * @returns `CfnCrawler`
+   */
+  private handleS3TypeCrawler(props: DataCatalogDatabaseProps, s3Props: S3CrawlerProps): CfnCrawler {
+    const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(s3Props.locationPrefix);
+    props.locationBucket!.grantRead(this.crawlerRole!, s3Props.locationPrefix+'*');
+
+    return new CfnCrawler(this, 'DatabaseAutoCrawler', {
+      role: this.crawlerRole!.roleArn,
+      targets: {
+        s3Targets: [{
+          path: s3Props.s3LocationUri,
+        }],
+      },
+      schedule: s3Props.autoCrawlSchedule,
+      databaseName: this.databaseName,
+      name: s3Props.crawlerName,
+      crawlerSecurityConfiguration: s3Props.crawlerSecurityConfigurationName,
+      configuration: JSON.stringify({
+        Version: 1.0,
+        Grouping: {
+          TableLevelConfiguration: tableLevel,
+        },
+      }),
+    });
+  }
+
+  /**
+   * Handle the creation of the crawler with JDBC target and its related permissions
+   * @param props `DataCatalogDatabaseProps`
+   * @param jdbcProps `CrawlerProps`
+   * @returns `CfnCrawler`
+   */
+  private handleJDBCTypeCrawler(props: DataCatalogDatabaseProps, jdbcProps: CrawlerProps): CfnCrawler {
+    props.jdbcSecret!.grantRead(this.crawlerRole!);
+    props.jdbcSecretKMSKey!.grantDecrypt(this.crawlerRole!);
+
+    const currentStack = Stack.of(this);
+
+    const policyConnection = this.crawlerRole!.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'glue:GetConnection',
+        'glue:GetConnections',
+      ],
+      resources: [
+        `arn:aws:glue:${currentStack.region}:${currentStack.account}:connection/${props.glueConnectionName}`,
+        `arn:aws:glue:${currentStack.region}:${currentStack.account}:catalog`,
+      ],
+    }));
+
+    const policyNetworking = this.crawlerRole!.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'ec2:DescribeVpcEndpoints',
+        'ec2:DescribeRouteTables',
+        'ec2:CreateNetworkInterface',
+        'ec2:DeleteNetworkInterface',
+        'ec2:DescribeNetworkInterfaces',
+        'ec2:DescribeSecurityGroups',
+        'ec2:DescribeSubnets',
+        'ec2:DescribeVpcAttribute',
+      ],
+      resources: [
+        '*',
+      ],
+    }));
+
+    const policyIam = this.crawlerRole!.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'iam:PassRole',
+      ],
+      resources: [
+        this.crawlerRole!.roleArn,
+      ],
+    }));
+
+    const policyTags = this.crawlerRole!.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'ec2:CreateTags',
+        'ec2:DeleteTags',
+      ],
+      resources: ['*'],
+      conditions: {
+        'ForAllValues:StringEquals': {
+          'aws:TagKeys': [
+            'aws-glue-service-resource',
+          ],
+        },
+      },
+    }));
+
+    const crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
+      role: this.crawlerRole!.roleArn,
+      targets: {
+        jdbcTargets: [
+          {
+            connectionName: props.glueConnectionName!,
+            path: props.jdbcPath,
+          },
+        ],
+      },
+      schedule: jdbcProps.autoCrawlSchedule,
+      databaseName: this.databaseName,
+      name: jdbcProps.crawlerName,
+      crawlerSecurityConfiguration: jdbcProps.crawlerSecurityConfigurationName,
+    });
+
+    crawler.node.addDependency(policyConnection.policyDependable!
+      , policyNetworking.policyDependable!
+      , policyIam.policyDependable!
+      , policyTags.policyDependable!);
+
+    return crawler;
+  }
+}
+
+/**
+ * Enum used by the method that determines the type of catalog target based on the paramters passed
+ */
+enum CatalogType {
+  S3,
+  JDBC,
+  INVALID
+}
+
+/**
+ * Internal base interface for the crawler parameters
+ */
+interface CrawlerProps {
+  crawlerName: string;
+  autoCrawlSchedule: CfnCrawler.ScheduleProperty;
+  crawlerSecurityConfigurationName: string;
+}
+
+/**
+ * Internal interface for the s3 target crawler parameters
+ */
+interface S3CrawlerProps extends CrawlerProps {
+  locationPrefix: string;
+  s3LocationUri: string;
 }

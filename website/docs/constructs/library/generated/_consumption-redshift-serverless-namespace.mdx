@@ -1,0 +1,116 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/consumption)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A [Redshift Serverless Namespace](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-workgroup-namespace.html) with secrets manager integration for admin credentials management and rotation.
+
+## Overview
+
+`RedshiftServerlessNamespace` is a [Redshift Serverless Namespace](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-workgroup-namespace.html) with the following options:
+- Attach multiple IAM roles that can be used by Redshift Serverless users to interact with other AWS services.
+- Set an [IAM role as default](https://docs.aws.amazon.com/redshift/latest/mgmt/default-iam-role.html)
+- Provide a CMK or let the construct create a new KMS Key. This key would be used to encrypt the namespace data as well as the associated admin credential secrets
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleDefaultRedshiftServerlessNamespaceStack extends Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id)
+        new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftServerlessNamespace", {
+            dbName: "database",
+            name: "example-namespace"
+        })
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleDefaultRedshiftServerlessNamespaceStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        dsf.consumption.RedshiftServerlessNamespace(self, "RedshiftServerlessNamespace",
+            db_name="database",
+            name="example-namespace"
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Attaching IAM Roles to Redshift Serverless Namespace
+
+To allow Redshift Serverless to access other AWS services on your behalf (eg. data ingestion from S3 via the COPY command, accessing data in S3 via Redshift Spectrum, exporting data from Redshift to S3 via the UNLOAD command.), the preferred method is to specify an IAM role. High-level steps are as follows:
+
+1. Create an IAM role with a trust relationship of `redshift.amazonaws.com`.
+2. Attach policy/permissions to the role to give it access to specific AWS services.
+3. Attach the role to the Redshift Serverless Namespace
+4. Run the relevant command referencing the attached IAM role via its ARN (or the `default` keyword if a default IAM role is configured)
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleRedshiftServerlessNamespaceRolesStack extends Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id)
+
+        const bucket = new Bucket(this, "ExampleBucket")
+
+        const ingestionRole = new Role(this, "IngestionRole", {
+            assumedBy: new ServicePrincipal("redshift.amazonaws.com"),
+            managedPolicies: [
+                ManagedPolicy.fromAwsManagedPolicyName("AmazonRedshiftAllCommandsFullAccess")
+            ]
+        })
+
+        bucket.grantRead(ingestionRole)
+
+        new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftServerlessNamespace", {
+            dbName: "database",
+            name: "example-namespace",
+            defaultIAMRole: ingestionRole
+        })
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleRedshiftServerlessNamespaceRolesStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        bucket = Bucket(self, "ExampleBucket")
+
+        ingestion_role = Role(self, "IngestionRole",
+            assumed_by=ServicePrincipal("redshift.amazonaws.com"),
+            managed_policies=[
+                ManagedPolicy.from_aws_managed_policy_name("AmazonRedshiftAllCommandsFullAccess")
+            ]
+        )
+
+        bucket.grant_read(ingestion_role)
+
+        dsf.consumption.RedshiftServerlessNamespace(self, "RedshiftServerlessNamespace",
+            db_name="database",
+            name="example-namespace",
+            default_iAMRole=ingestion_role
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+

@@ -1,0 +1,158 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/consumption)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A [Redshift Serverless Workgroup](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-workgroup-namespace.html) with auto creation of Namespace and VPC. 
+
+## Overview
+`RedshiftServerlessWorkgroup` is a [Redshift Serverless Workgroup](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-workgroup-namespace.html) with the following options/capabilities:
+- Custom resource to allow data access, data initialization, and bootstrapping of the database.
+- Initialize data catalog integration with auto crawling. This would allow tables in Redshift Serverless to appear in the [Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html) for the purposes of discovery and integration.
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleDefaultRedshiftServerlessWorkgroupStack extends Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id)
+        new dsf.consumption.RedshiftServerlessWorkgroup(this, "DefaultRedshiftServerlessWorkgroup", {
+            workgroupName: "default"
+        })
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleDefaultRedshiftServerlessWorkgroupStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        dsf.consumption.RedshiftServerlessWorkgroup(self, "DefaultRedshiftServerlessWorkgroup",
+            workgroup_name="default"
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Bootstrapping Redshift Serverless w/ RedshiftData Construct
+
+The `RedshiftData` construct allows custom SQLs to run against the `RedshiftServerlessWorkgroup` via the Data API. This allows users to bootstrap Redshift directly from CDK.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id)
+
+        const bucket = new Bucket(this, "ExampleDataBucket")
+
+        const ingestionRole = new Role(this, "IngestionRole", {
+            assumedBy: new ServicePrincipal("redshift.amazonaws.com"),
+            managedPolicies: [
+                ManagedPolicy.fromAwsManagedPolicyName("AmazonRedshiftAllCommandsFullAccess")
+            ]
+        })
+
+        bucket.grantRead(ingestionRole)
+
+        const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "DefaultRedshiftServerlessWorkgroup", {
+            workgroupName: "default",
+            defaultNamespaceDefaultIAMRole: ingestionRole
+        })
+
+        const dataAccess = workgroup.accessData(true)
+        const createTable = dataAccess.runCustomSQL("defaultdb",
+                "CREATE TABLE customer(customer_id varchar(50), salutation varchar(5), first_name varchar(50), last_name varchar(50), email_address varchar(100)) diststyle even", "drop table customer"
+            )
+        const ingestion = dataAccess.ingestData("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
+        ingestion.node.addDependency(createTable)
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleRedshiftServerlessWorkgroupBootstrapStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        bucket = Bucket(self, "ExampleDataBucket")
+
+        ingestion_role = Role(self, "IngestionRole",
+            assumed_by=ServicePrincipal("redshift.amazonaws.com"),
+            managed_policies=[
+                ManagedPolicy.from_aws_managed_policy_name("AmazonRedshiftAllCommandsFullAccess")
+            ]
+        )
+
+        bucket.grant_read(ingestion_role)
+
+        workgroup = dsf.consumption.RedshiftServerlessWorkgroup(self, "DefaultRedshiftServerlessWorkgroup",
+            workgroup_name="default",
+            default_namespace_default_iAMRole=ingestion_role
+        )
+
+        data_access = workgroup.access_data(True)
+        create_table = data_access.run_custom_sQL("defaultdb", "CREATE TABLE customer(customer_id varchar(50), salutation varchar(5), first_name varchar(50), last_name varchar(50), email_address varchar(100)) diststyle even", "drop table customer")
+        ingestion = data_access.ingest_data("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
+        ingestion.node.add_dependency(create_table)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Cataloging Redshift Serverless Tables
+
+To catalog the tables in your Redshift Serverless Workgroup, the following example creates a Glue Catalog database as well as a crawler to populate the database with table metadata from your Redshift Serverless Workgroup.
+
+The default value of the path that the crawler would use is `<databaseName>/public/%` which translates to all the table in the public schema. Please refer to the [crawler documentation](https://docs.aws.amazon.com/glue/latest/dg/define-crawler.html#define-crawler-choose-data-sources) for more information for JDBC data sources.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleRedshiftServerlessWorkgroupCatalogStack extends Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id)
+        const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "DefaultRedshiftServerlessWorkgroup", {
+            workgroupName: "default"
+        })
+
+        workgroup.catalogTables("example-redshift-db")
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleRedshiftServerlessWorkgroupCatalogStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        workgroup = dsf.consumption.RedshiftServerlessWorkgroup(self, "DefaultRedshiftServerlessWorkgroup",
+            workgroup_name="default"
+        )
+
+        workgroup.catalog_tables("example-redshift-db")
+  ```
+
+  </TabItem>
+</Tabs>
+

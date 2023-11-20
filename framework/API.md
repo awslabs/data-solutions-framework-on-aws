@@ -3855,6 +3855,1117 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### RedshiftData <a name="RedshiftData" id="aws-dsf.consumption.RedshiftData"></a>
+
+Creates an asynchronous custom resource that handles the execution of SQL using Redshift's Data API.
+
+If `vpc` and `vpcSubnets` are passed, this construct would also create the Redshift Data Interface VPC endpoint and configure the custom resource in the same VPC subnet.
+
+*Example*
+
+```typescript
+const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
+   workgroupName: "redshift-workgroup"
+})
+
+const rsData = workgroup.accessData()
+rsData.createDbRole("defaultdb", "engineering")
+```
+
+
+#### Initializers <a name="Initializers" id="aws-dsf.consumption.RedshiftData.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftData.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftData.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftData.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.RedshiftDataProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.consumption.RedshiftData.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.consumption.RedshiftData.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.consumption.RedshiftDataProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftData.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.assignDbRolesToIAMRole">assignDbRolesToIAMRole</a></code> | Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.createDbRole">createDbRole</a></code> | Creates a new DB role. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole">grantDbAllPrivilegesToRole</a></code> | Grants both read and write permissions on all the tables in the `schema` to the DB role. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.grantDbReadToRole">grantDbReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.grantDbSchemaToRole">grantDbSchemaToRole</a></code> | Grants access to the schema to the DB role. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Runs the `MERGE` query using simplified mode. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.runCustomSQL">runCustomSQL</a></code> | Runs a custom SQL. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.consumption.RedshiftData.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `assignDbRolesToIAMRole` <a name="assignDbRolesToIAMRole" id="aws-dsf.consumption.RedshiftData.assignDbRolesToIAMRole"></a>
+
+```typescript
+public assignDbRolesToIAMRole(dbRoles: string[], targetRole: IRole): void
+```
+
+Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag.
+
+###### `dbRoles`<sup>Required</sup> <a name="dbRoles" id="aws-dsf.consumption.RedshiftData.assignDbRolesToIAMRole.parameter.dbRoles"></a>
+
+- *Type:* string[]
+
+List of Redshift DB roles to assign to IAM role.
+
+---
+
+###### `targetRole`<sup>Required</sup> <a name="targetRole" id="aws-dsf.consumption.RedshiftData.assignDbRolesToIAMRole.parameter.targetRole"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role to assign the Redshift DB roles to.
+
+---
+
+##### `createDbRole` <a name="createDbRole" id="aws-dsf.consumption.RedshiftData.createDbRole"></a>
+
+```typescript
+public createDbRole(databaseName: string, roleName: string): CustomResource
+```
+
+Creates a new DB role.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.createDbRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-dsf.consumption.RedshiftData.createDbRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The name of the role to create.
+
+---
+
+##### `grantDbAllPrivilegesToRole` <a name="grantDbAllPrivilegesToRole" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole"></a>
+
+```typescript
+public grantDbAllPrivilegesToRole(databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants both read and write permissions on all the tables in the `schema` to the DB role.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
+##### `grantDbReadToRole` <a name="grantDbReadToRole" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole"></a>
+
+```typescript
+public grantDbReadToRole(databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants read permission on all the tables in the `schema` to the DB role.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
+##### `grantDbSchemaToRole` <a name="grantDbSchemaToRole" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole"></a>
+
+```typescript
+public grantDbSchemaToRole(databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants access to the schema to the DB role.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
+##### `ingestData` <a name="ingestData" id="aws-dsf.consumption.RedshiftData.ingestData"></a>
+
+```typescript
+public ingestData(databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string, ingestAdditionalOptions?: string, role?: IRole): CustomResource
+```
+
+Ingest data from S3 into a Redshift table.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `targetTable`<sup>Required</sup> <a name="targetTable" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.targetTable"></a>
+
+- *Type:* string
+
+The target table to load the data into.
+
+---
+
+###### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.sourceBucket"></a>
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The bucket where the source data would be coming from.
+
+---
+
+###### `sourcePrefix`<sup>Required</sup> <a name="sourcePrefix" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.sourcePrefix"></a>
+
+- *Type:* string
+
+The location inside the bucket where the data would be ingested from.
+
+---
+
+###### `ingestAdditionalOptions`<sup>Optional</sup> <a name="ingestAdditionalOptions" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.ingestAdditionalOptions"></a>
+
+- *Type:* string
+
+Optional.
+
+Additional options to pass to the `COPY` command. For example, `delimiter '|'` or `ignoreheader 1`
+
+---
+
+###### `role`<sup>Optional</sup> <a name="role" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.role"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+Optional.
+
+The IAM Role to use to access the data in S3. If not provided, it would use the default IAM role configured in the Redshift Namespace
+
+---
+
+##### `mergeToTargetTable` <a name="mergeToTargetTable" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable"></a>
+
+```typescript
+public mergeToTargetTable(databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string, targetColumnId?: string): CustomResource
+```
+
+Runs the `MERGE` query using simplified mode.
+
+This command would do an upsert into the target table.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `sourceTable`<sup>Required</sup> <a name="sourceTable" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.sourceTable"></a>
+
+- *Type:* string
+
+The source table name.
+
+Schema can also be included using the following format: `schemaName.tableName`
+
+---
+
+###### `targetTable`<sup>Required</sup> <a name="targetTable" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.targetTable"></a>
+
+- *Type:* string
+
+The target table name.
+
+Schema can also be included using the following format: `schemaName.tableName`
+
+---
+
+###### `sourceColumnId`<sup>Optional</sup> <a name="sourceColumnId" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.sourceColumnId"></a>
+
+- *Type:* string
+
+The column in the source table that's used to determine whether the rows in the `sourceTable` can be matched with rows in the `targetTable`.
+
+Default is `id`
+
+---
+
+###### `targetColumnId`<sup>Optional</sup> <a name="targetColumnId" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.targetColumnId"></a>
+
+- *Type:* string
+
+The column in the target table that's used to determine whether the rows in the `sourceTable` can be matched with rows in the `targetTable`.
+
+Default is `id`
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.consumption.RedshiftData.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+##### `runCustomSQL` <a name="runCustomSQL" id="aws-dsf.consumption.RedshiftData.runCustomSQL"></a>
+
+```typescript
+public runCustomSQL(databaseName: string, sql: string, deleteSql?: string): CustomResource
+```
+
+Runs a custom SQL.
+
+Once the custom resource finishes execution, the attribute `Data` contains an attribute `execId` which contains the Redshift Data API execution ID. You can then use this to retrieve execution results via the `GetStatementResult` API.
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.runCustomSQL.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `sql`<sup>Required</sup> <a name="sql" id="aws-dsf.consumption.RedshiftData.runCustomSQL.parameter.sql"></a>
+
+- *Type:* string
+
+The sql to run.
+
+---
+
+###### `deleteSql`<sup>Optional</sup> <a name="deleteSql" id="aws-dsf.consumption.RedshiftData.runCustomSQL.parameter.deleteSql"></a>
+
+- *Type:* string
+
+Optional.
+
+The sql to run when this resource gets deleted
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftData.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.consumption.RedshiftData.isConstruct"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+consumption.RedshiftData.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.consumption.RedshiftData.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.executionProvider">executionProvider</a></code> | <code>string</code> | Custom resource provider. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.targetArn">targetArn</a></code> | <code>string</code> | The ARN of the target cluster or workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.targetId">targetId</a></code> | <code>string</code> | The ID of the target cluster or workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.targetType">targetType</a></code> | <code>string</code> | Either provisioned or serverless. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.redshiftDataInterfaceVpcEndpoint">redshiftDataInterfaceVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.consumption.RedshiftData.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `executionProvider`<sup>Required</sup> <a name="executionProvider" id="aws-dsf.consumption.RedshiftData.property.executionProvider"></a>
+
+```typescript
+public readonly executionProvider: string;
+```
+
+- *Type:* string
+
+Custom resource provider.
+
+This references the Lambda function that sends the SQL to Redshift via Redshift's Data API
+
+---
+
+##### `taggingManagedPolicy`<sup>Required</sup> <a name="taggingManagedPolicy" id="aws-dsf.consumption.RedshiftData.property.taggingManagedPolicy"></a>
+
+```typescript
+public readonly taggingManagedPolicy: ManagedPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.ManagedPolicy
+
+The managed IAM policy allowing IAM Role to retrieve tag information.
+
+---
+
+##### `targetArn`<sup>Required</sup> <a name="targetArn" id="aws-dsf.consumption.RedshiftData.property.targetArn"></a>
+
+```typescript
+public readonly targetArn: string;
+```
+
+- *Type:* string
+
+The ARN of the target cluster or workgroup.
+
+---
+
+##### `targetId`<sup>Required</sup> <a name="targetId" id="aws-dsf.consumption.RedshiftData.property.targetId"></a>
+
+```typescript
+public readonly targetId: string;
+```
+
+- *Type:* string
+
+The ID of the target cluster or workgroup.
+
+---
+
+##### `targetType`<sup>Required</sup> <a name="targetType" id="aws-dsf.consumption.RedshiftData.property.targetType"></a>
+
+```typescript
+public readonly targetType: string;
+```
+
+- *Type:* string
+
+Either provisioned or serverless.
+
+---
+
+##### `redshiftDataInterfaceVpcEndpoint`<sup>Optional</sup> <a name="redshiftDataInterfaceVpcEndpoint" id="aws-dsf.consumption.RedshiftData.property.redshiftDataInterfaceVpcEndpoint"></a>
+
+```typescript
+public readonly redshiftDataInterfaceVpcEndpoint: InterfaceVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint
+
+The created Redshift Data API interface vpc endpoint.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.consumption.RedshiftData.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.consumption.RedshiftData.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### RedshiftServerlessNamespace <a name="RedshiftServerlessNamespace" id="aws-dsf.consumption.RedshiftServerlessNamespace"></a>
+
+Create a Redshift Serverless Namespace with the admin credentials stored in Secrets Manager.
+
+*Example*
+
+```typescript
+const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'DefaultServerlessNamespace', {
+   dbName: 'defaultdb',
+   name: 'default'
+});
+```
+
+
+#### Initializers <a name="Initializers" id="aws-dsf.consumption.RedshiftServerlessNamespace.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+new consumption.RedshiftServerlessNamespace(scope: Construct, id: string, props: RedshiftServerlessNamespaceProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.consumption.RedshiftServerlessNamespace.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftServerlessNamespace.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.consumption.RedshiftServerlessNamespace.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.consumption.RedshiftServerlessNamespaceProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.consumption.RedshiftServerlessNamespace.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.consumption.RedshiftServerlessNamespace.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.consumption.RedshiftServerlessNamespace.isConstruct"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+consumption.RedshiftServerlessNamespace.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.consumption.RedshiftServerlessNamespace.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecret">adminSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The created Secrets Manager secret containing the admin credentials. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.custom_resources.AwsCustomResource</code> | Created namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.dbName">dbName</a></code> | <code>string</code> | The name of the database. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceArn">namespaceArn</a></code> | <code>string</code> | The ARN of the created namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey">namespaceKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt its data. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the created namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.roles">roles</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.IRole}</code> | The roles attached to the namespace. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `adminSecret`<sup>Required</sup> <a name="adminSecret" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecret"></a>
+
+```typescript
+public readonly adminSecret: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+The created Secrets Manager secret containing the admin credentials.
+
+---
+
+##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource"></a>
+
+```typescript
+public readonly cfnResource: AwsCustomResource;
+```
+
+- *Type:* aws-cdk-lib.custom_resources.AwsCustomResource
+
+Created namespace.
+
+---
+
+##### `dbName`<sup>Required</sup> <a name="dbName" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.dbName"></a>
+
+```typescript
+public readonly dbName: string;
+```
+
+- *Type:* string
+
+The name of the database.
+
+---
+
+##### `namespaceArn`<sup>Required</sup> <a name="namespaceArn" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceArn"></a>
+
+```typescript
+public readonly namespaceArn: string;
+```
+
+- *Type:* string
+
+The ARN of the created namespace.
+
+---
+
+##### `namespaceId`<sup>Required</sup> <a name="namespaceId" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceId"></a>
+
+```typescript
+public readonly namespaceId: string;
+```
+
+- *Type:* string
+
+The ID of the created namespace.
+
+---
+
+##### `namespaceKey`<sup>Required</sup> <a name="namespaceKey" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey"></a>
+
+```typescript
+public readonly namespaceKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+KMS key used by the namespace to encrypt its data.
+
+---
+
+##### `namespaceName`<sup>Required</sup> <a name="namespaceName" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceName"></a>
+
+```typescript
+public readonly namespaceName: string;
+```
+
+- *Type:* string
+
+The name of the created namespace.
+
+---
+
+##### `roles`<sup>Required</sup> <a name="roles" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.roles"></a>
+
+```typescript
+public readonly roles: {[ key: string ]: IRole};
+```
+
+- *Type:* {[ key: string ]: aws-cdk-lib.aws_iam.IRole}
+
+The roles attached to the namespace.
+
+These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
+
+> [{@link https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html}]({@link https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html})
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### RedshiftServerlessWorkgroup <a name="RedshiftServerlessWorkgroup" id="aws-dsf.consumption.RedshiftServerlessWorkgroup"></a>
+
+- *Implements:* aws-cdk-lib.aws_ec2.IConnectable
+
+Create a Redshift Serverless Workgroup.
+
+A default namespace would be created if none is provided.
+
+*Example*
+
+```typescript
+const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
+   workgroupName: "redshift-workgroup"
+})
+```
+
+
+#### Initializers <a name="Initializers" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+new consumption.RedshiftServerlessWorkgroup(scope: Construct, id: string, props: RedshiftServerlessWorkgroupProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.RedshiftServerlessWorkgroupProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.consumption.RedshiftServerlessWorkgroupProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData">accessData</a></code> | Creates an instance of `RedshiftData` to send custom SQLs to the workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables">catalogTables</a></code> | Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `accessData` <a name="accessData" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData"></a>
+
+```typescript
+public accessData(createRSDataInterfaceVpcEndpoint?: boolean): RedshiftData
+```
+
+Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
+
+###### `createRSDataInterfaceVpcEndpoint`<sup>Optional</sup> <a name="createRSDataInterfaceVpcEndpoint" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createRSDataInterfaceVpcEndpoint"></a>
+
+- *Type:* boolean
+
+if set to true, create interface VPC endpoint for Redshift Data API.
+
+---
+
+##### `catalogTables` <a name="catalogTables" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables"></a>
+
+```typescript
+public catalogTables(catalogDbName: string, pathToCrawl?: string): DataCatalogDatabase
+```
+
+Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup.
+
+###### `catalogDbName`<sup>Required</sup> <a name="catalogDbName" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.catalogDbName"></a>
+
+- *Type:* string
+
+`string`.
+
+---
+
+###### `pathToCrawl`<sup>Optional</sup> <a name="pathToCrawl" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.pathToCrawl"></a>
+
+- *Type:* string
+
+`string`.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.isConstruct"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+consumption.RedshiftServerlessWorkgroup.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup</code> | The created workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.connections">connections</a></code> | <code>aws-cdk-lib.aws_ec2.Connections</code> | Connections used by Workgroup security group. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.glueConnection">glueConnection</a></code> | <code>aws-cdk-lib.aws_glue.CfnConnection</code> | The Glue connection associated with the workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The associated namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the associated namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.workgroupName">workgroupName</a></code> | <code>string</code> | The name of the created workgroup. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.cfnResource"></a>
+
+```typescript
+public readonly cfnResource: CfnWorkgroup;
+```
+
+- *Type:* aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup
+
+The created workgroup.
+
+---
+
+##### `connections`<sup>Required</sup> <a name="connections" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.connections"></a>
+
+```typescript
+public readonly connections: Connections;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.Connections
+
+Connections used by Workgroup security group.
+
+Used this to enable access from clients connecting to the workgroup
+
+---
+
+##### `glueConnection`<sup>Required</sup> <a name="glueConnection" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.glueConnection"></a>
+
+```typescript
+public readonly glueConnection: CfnConnection;
+```
+
+- *Type:* aws-cdk-lib.aws_glue.CfnConnection
+
+The Glue connection associated with the workgroup.
+
+This can be used by Glue ETL Jobs to read/write data from/to Redshift workgroup
+
+---
+
+##### `namespace`<sup>Required</sup> <a name="namespace" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespace"></a>
+
+```typescript
+public readonly namespace: RedshiftServerlessNamespace;
+```
+
+- *Type:* aws-dsf.consumption.RedshiftServerlessNamespace
+
+The associated namespace.
+
+---
+
+##### `namespaceName`<sup>Required</sup> <a name="namespaceName" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespaceName"></a>
+
+```typescript
+public readonly namespaceName: string;
+```
+
+- *Type:* string
+
+The name of the associated namespace.
+
+---
+
+##### `workgroupName`<sup>Required</sup> <a name="workgroupName" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.workgroupName"></a>
+
+```typescript
+public readonly workgroupName: string;
+```
+
+- *Type:* string
+
+The name of the created workgroup.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### S3DataCopy <a name="S3DataCopy" id="aws-dsf.utils.S3DataCopy"></a>
 
 Copy data from one S3 bucket to another.
@@ -6669,39 +7780,19 @@ const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule to run the Glue Crawler. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used for the Glue Crawler logs. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.glueConnectionName">glueConnectionName</a></code> | <code>string</code> | The connection that would be used by the crawler. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.jdbcPath">jdbcPath</a></code> | <code>string</code> | The JDBC path that would be included by the crawler. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.jdbcSecret">jdbcSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The secret associated with the JDBC connection. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey">jdbcSecretKMSKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used by the JDBC secret. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-
----
-
-##### `locationBucket`<sup>Required</sup> <a name="locationBucket" id="aws-dsf.governance.DataCatalogDatabaseProps.property.locationBucket"></a>
-
-```typescript
-public readonly locationBucket: IBucket;
-```
-
-- *Type:* aws-cdk-lib.aws_s3.IBucket
-
-S3 bucket where data is stored.
-
----
-
-##### `locationPrefix`<sup>Required</sup> <a name="locationPrefix" id="aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix"></a>
-
-```typescript
-public readonly locationPrefix: string;
-```
-
-- *Type:* string
-
-Top level location wwhere table data is stored.
 
 ---
 
@@ -6787,6 +7878,78 @@ public readonly crawlerTableLevelDepth: number;
 Directory depth where the table folders are located.
 
 This helps the Glue Crawler understand the layout of the folders in S3.
+
+---
+
+##### `glueConnectionName`<sup>Optional</sup> <a name="glueConnectionName" id="aws-dsf.governance.DataCatalogDatabaseProps.property.glueConnectionName"></a>
+
+```typescript
+public readonly glueConnectionName: string;
+```
+
+- *Type:* string
+
+The connection that would be used by the crawler.
+
+---
+
+##### `jdbcPath`<sup>Optional</sup> <a name="jdbcPath" id="aws-dsf.governance.DataCatalogDatabaseProps.property.jdbcPath"></a>
+
+```typescript
+public readonly jdbcPath: string;
+```
+
+- *Type:* string
+
+The JDBC path that would be included by the crawler.
+
+---
+
+##### `jdbcSecret`<sup>Optional</sup> <a name="jdbcSecret" id="aws-dsf.governance.DataCatalogDatabaseProps.property.jdbcSecret"></a>
+
+```typescript
+public readonly jdbcSecret: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+The secret associated with the JDBC connection.
+
+---
+
+##### `jdbcSecretKMSKey`<sup>Optional</sup> <a name="jdbcSecretKMSKey" id="aws-dsf.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey"></a>
+
+```typescript
+public readonly jdbcSecretKMSKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS key used by the JDBC secret.
+
+---
+
+##### `locationBucket`<sup>Optional</sup> <a name="locationBucket" id="aws-dsf.governance.DataCatalogDatabaseProps.property.locationBucket"></a>
+
+```typescript
+public readonly locationBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+S3 bucket where data is stored.
+
+---
+
+##### `locationPrefix`<sup>Optional</sup> <a name="locationPrefix" id="aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix"></a>
+
+```typescript
+public readonly locationPrefix: string;
+```
+
+- *Type:* string
+
+Top level location wwhere table data is stored.
 
 ---
 
@@ -7397,6 +8560,431 @@ public readonly venvArchivePath: string;
 The path of the Python virtual environment archive generated in the Docker container.
 
 This is the output path used in the `venv-pack -o` command in your Dockerfile.
+
+---
+
+### RedshiftDataProps <a name="RedshiftDataProps" id="aws-dsf.consumption.RedshiftDataProps"></a>
+
+RedshiftData properties.
+
+#### Initializer <a name="Initializer" id="aws-dsf.consumption.RedshiftDataProps.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+const redshiftDataProps: consumption.RedshiftDataProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the secret. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier">clusterIdentifier</a></code> | <code>string</code> | The provisioned Redshift cluster name. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Timeout for query execution. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when the stack is deleted. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda function would be created in. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda function would be created in. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup. |
+
+---
+
+##### `secret`<sup>Required</sup> <a name="secret" id="aws-dsf.consumption.RedshiftDataProps.property.secret"></a>
+
+```typescript
+public readonly secret: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace.
+
+---
+
+##### `secretKmsKey`<sup>Required</sup> <a name="secretKmsKey" id="aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey"></a>
+
+```typescript
+public readonly secretKmsKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used by the secret.
+
+---
+
+##### `clusterIdentifier`<sup>Optional</sup> <a name="clusterIdentifier" id="aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier"></a>
+
+```typescript
+public readonly clusterIdentifier: string;
+```
+
+- *Type:* string
+
+The provisioned Redshift cluster name.
+
+It's either this or the `workgroupId`.
+
+---
+
+##### `createInterfaceVpcEndpoint`<sup>Optional</sup> <a name="createInterfaceVpcEndpoint" id="aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint"></a>
+
+```typescript
+public readonly createInterfaceVpcEndpoint: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured.
+
+---
+
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.consumption.RedshiftDataProps.property.executionTimeout"></a>
+
+```typescript
+public readonly executionTimeout: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+- *Default:* 5mins
+
+Timeout for query execution.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.consumption.RedshiftDataProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+The removal policy when the stack is deleted.
+
+---
+
+##### `selectedSubnets`<sup>Optional</sup> <a name="selectedSubnets" id="aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets"></a>
+
+```typescript
+public readonly selectedSubnets: SelectedSubnets;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
+
+The subnets where the Custom Resource Lambda function would be created in.
+
+A Redshift Data API Interface VPC Endpoint would be created in the subnets.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.consumption.RedshiftDataProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The VPC where the Custom Resource Lambda function would be created in.
+
+A Redshift Data API Interface VPC Endpoint would be created in the VPC.
+
+---
+
+##### `workgroupId`<sup>Optional</sup> <a name="workgroupId" id="aws-dsf.consumption.RedshiftDataProps.property.workgroupId"></a>
+
+```typescript
+public readonly workgroupId: string;
+```
+
+- *Type:* string
+
+The `workgroupId` for the Redshift Serverless Workgroup.
+
+It's either this or the `clusterIdentifier`.
+
+---
+
+### RedshiftServerlessNamespaceProps <a name="RedshiftServerlessNamespaceProps" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps"></a>
+
+RedshiftServerlessNamespace properties.
+
+#### Initializer <a name="Initializer" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dbName">dbName</a></code> | <code>string</code> | The name of the primary database that would be created in the namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.name">name</a></code> | <code>string</code> | The name of the namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminUsername">adminUsername</a></code> | <code>string</code> | The admin username to be used. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM role. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM roles to be attached to the namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS key used to encrypt the data. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]</code> | Logs to be exported. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when the stack is deleted. |
+
+---
+
+##### `dbName`<sup>Required</sup> <a name="dbName" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dbName"></a>
+
+```typescript
+public readonly dbName: string;
+```
+
+- *Type:* string
+
+The name of the primary database that would be created in the namespace.
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the namespace.
+
+---
+
+##### `adminUsername`<sup>Optional</sup> <a name="adminUsername" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminUsername"></a>
+
+```typescript
+public readonly adminUsername: string;
+```
+
+- *Type:* string
+- *Default:* If none is provided, the default username is "admin"
+
+The admin username to be used.
+
+---
+
+##### `defaultIAMRole`<sup>Optional</sup> <a name="defaultIAMRole" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole"></a>
+
+```typescript
+public readonly defaultIAMRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+Default IAM role.
+
+---
+
+##### `iamRoles`<sup>Optional</sup> <a name="iamRoles" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.iamRoles"></a>
+
+```typescript
+public readonly iamRoles: IRole[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole[]
+
+List of IAM roles to be attached to the namespace.
+
+---
+
+##### `kmsKey`<sup>Optional</sup> <a name="kmsKey" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey"></a>
+
+```typescript
+public readonly kmsKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* If none is provided, a new key would be created
+
+The KMS key used to encrypt the data.
+
+---
+
+##### `logExports`<sup>Optional</sup> <a name="logExports" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports"></a>
+
+```typescript
+public readonly logExports: RedshiftServerlessNamespaceLogExport[];
+```
+
+- *Type:* aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]
+
+Logs to be exported.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+The removal policy when the stack is deleted.
+
+---
+
+### RedshiftServerlessWorkgroupProps <a name="RedshiftServerlessWorkgroupProps" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps"></a>
+
+RedshiftServerlessWorkgroup properties.
+
+#### Initializer <a name="Initializer" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.workgroupName">workgroupName</a></code> | <code>string</code> | Name of the workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | Base capacity. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceDefaultIAMRole">defaultNamespaceDefaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceIAMRoles">defaultNamespaceIAMRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The associated namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | Custom port to use when connecting to workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy associated with the workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The security groups the workgroup would be associated with in addition to the primary security group. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets the workgroup would be associated with. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The VPC the workgroup would be associated with. |
+
+---
+
+##### `workgroupName`<sup>Required</sup> <a name="workgroupName" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.workgroupName"></a>
+
+```typescript
+public readonly workgroupName: string;
+```
+
+- *Type:* string
+
+Name of the workgroup.
+
+---
+
+##### `baseCapacity`<sup>Optional</sup> <a name="baseCapacity" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity"></a>
+
+```typescript
+public readonly baseCapacity: number;
+```
+
+- *Type:* number
+- *Default:* 128
+
+Base capacity.
+
+---
+
+##### `defaultNamespaceDefaultIAMRole`<sup>Optional</sup> <a name="defaultNamespaceDefaultIAMRole" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceDefaultIAMRole"></a>
+
+```typescript
+public readonly defaultNamespaceDefaultIAMRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided.
+
+---
+
+##### `defaultNamespaceIAMRoles`<sup>Optional</sup> <a name="defaultNamespaceIAMRoles" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceIAMRoles"></a>
+
+```typescript
+public readonly defaultNamespaceIAMRoles: IRole[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole[]
+
+The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided.
+
+---
+
+##### `namespace`<sup>Optional</sup> <a name="namespace" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace"></a>
+
+```typescript
+public readonly namespace: RedshiftServerlessNamespace;
+```
+
+- *Type:* aws-dsf.consumption.RedshiftServerlessNamespace
+- *Default:* A namespace is created when none is provided
+
+The associated namespace.
+
+---
+
+##### `port`<sup>Optional</sup> <a name="port" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.port"></a>
+
+```typescript
+public readonly port: number;
+```
+
+- *Type:* number
+- *Default:* 5439
+
+Custom port to use when connecting to workgroup.
+
+Valid port ranges are 5431-5455 and 8191-8215.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+The removal policy associated with the workgroup.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: SecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SecurityGroup[]
+
+The security groups the workgroup would be associated with in addition to the primary security group.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+
+The subnets the workgroup would be associated with.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: Vpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.Vpc
+
+The VPC the workgroup would be associated with.
 
 ---
 
@@ -9425,6 +11013,35 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 ---
 
 ##### `V0_32_1` <a name="V0_32_1" id="aws-dsf.processing.KarpenterVersion.V0_32_1"></a>
+
+---
+
+
+### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport"></a>
+
+Namespace log export types.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG">USER_LOG</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG">CONNECTION_LOG</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG">USER_ACTIVITY_LOG</a></code> | *No description.* |
+
+---
+
+##### `USER_LOG` <a name="USER_LOG" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG"></a>
+
+---
+
+
+##### `CONNECTION_LOG` <a name="CONNECTION_LOG" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG"></a>
+
+---
+
+
+##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
 
 ---
 
