@@ -11,7 +11,7 @@ import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { SparkEmrContainersRuntime } from '../../../../src/processing';
 
@@ -20,8 +20,10 @@ const emrEksClusterStack = new Stack(app, 'nagStack');
 
 const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
 
+const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
 const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
-  eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
+  eksAdminRole: adminRole,
   publicAccessCIDRs: ['10.0.0.0/32'],
   kubectlLambdaLayer: kubectlLayer,
   vpcCidr: '10.0.0.0/16',
@@ -56,10 +58,9 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/ec2I
   { id: 'AwsSolutions-IAM4', reason: 'The use of Managed policies is a must for EKS nodes' },
 ]);
 
-NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/awsNodeRole/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/data-platform/awsNodeRole/Resource', [
   { id: 'AwsSolutions-IAM4', reason: 'The use of Managed policies is a must for EKS nodes' },
 ]);
-
 
 NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/data-platformCluster/KubectlHandlerRole/Resource', [
   { id: 'AwsSolutions-IAM4', reason: 'the use of a managed policy is inherited from the L2 construct' },
@@ -73,7 +74,7 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/nagS
   { id: 'AwsSolutions-IAM5', reason: 'IAM policy provided by the controller for ALB' },
 ]);
 
-NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/IamPolicyEbsCsiDriverIAMPolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/data-platform/IamPolicyEbsCsiDriverIAMPolicy/Resource', [
   { id: 'AwsSolutions-IAM5', reason: 'wild card used due resources defined at runtime, TBAC is used when possible' },
 ]);
 
@@ -180,11 +181,13 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/@aws
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(emrEksClusterStack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
+  console.log(warnings);
   expect(warnings).toHaveLength(0);
 });
 
 test('No unsuppressed Errors', () => {
   const errors = Annotations.fromStack(emrEksClusterStack).findError('*', Match.stringLikeRegexp('AwsSolutions-.*'));
+  console.log(errors);
   expect(errors).toHaveLength(0);
 });
 

@@ -8,7 +8,9 @@ import {
   Cluster,
   KubernetesVersion,
 } from 'aws-cdk-lib/aws-eks';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { ILayerVersion } from 'aws-cdk-lib/aws-lambda';
+import { KarpenterVersion } from '../../karpenter-releases';
 
 /**
  * The properties for the EmrEksCluster Construct class.
@@ -22,9 +24,9 @@ export interface SparkEmrContainersRuntimeProps {
   /**
    * Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
    * An admin role must be passed if `eksCluster` property is not set.
-   * You will use this role to grant other access to and manage EKS cluster
+   * You will use this role to manage the EKS cluster and grant other access to it.
    */
-  readonly eksAdminRoleArn: string;
+  readonly eksAdminRole?: IRole;
   /**
    * The EKS cluster to setup EMR on. The cluster needs to be created in the same CDK Stack.
    * If the EKS cluster is provided, the cluster AddOns and all the controllers (Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
@@ -51,7 +53,7 @@ export interface SparkEmrContainersRuntimeProps {
    * The version of karpenter to pass to Helm
    * @default - The [default Karpenter version]{@link DEFAULT_KARPENTER_VERSION}
    */
-  readonly karpenterVersion?: string;
+  readonly karpenterVersion?: KarpenterVersion;
   /**
    * Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size.
    * A layer needs to be passed to the Construct.

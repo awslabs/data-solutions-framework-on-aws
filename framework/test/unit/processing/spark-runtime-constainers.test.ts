@@ -12,7 +12,7 @@
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
-import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { SparkEmrContainersRuntime } from '../../../src/processing';
 
 const emrEksClusterStack = new Stack();
@@ -21,8 +21,11 @@ const emrEksClusterStackWithEmrServiceLinkedRole = new Stack();
 const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
 const kubectlLayerServiceLinkedRole = new KubectlV27Layer(emrEksClusterStackWithEmrServiceLinkedRole, 'kubectlLayer');
 
+const adminRole1 = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+const adminRole2 = Role.fromRoleArn(emrEksClusterStackWithEmrServiceLinkedRole, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
 const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
-  eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
+  eksAdminRole: adminRole1,
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: false,
   kubectlLambdaLayer: kubectlLayer,
@@ -30,7 +33,7 @@ const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, 
 });
 
 SparkEmrContainersRuntime.getOrCreate(emrEksClusterStackWithEmrServiceLinkedRole, {
-  eksAdminRoleArn: 'arn:aws:iam::123445678901:role/eks-admin',
+  eksAdminRole: adminRole2,
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: true,
   kubectlLambdaLayer: kubectlLayerServiceLinkedRole,
