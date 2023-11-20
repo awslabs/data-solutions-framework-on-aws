@@ -4157,9 +4157,10 @@ the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.Bucket</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa">csiDriverIrsa</a></code> | <code>aws-cdk-lib.aws_eks.ServiceAccount</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | *No description.* |
@@ -4193,16 +4194,6 @@ public readonly assetBucket: Bucket;
 
 ---
 
-##### `clusterName`<sup>Required</sup> <a name="clusterName" id="aws-dsf.processing.SparkEmrContainersRuntime.property.clusterName"></a>
-
-```typescript
-public readonly clusterName: string;
-```
-
-- *Type:* string
-
----
-
 ##### `eksCluster`<sup>Required</sup> <a name="eksCluster" id="aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster"></a>
 
 ```typescript
@@ -4213,6 +4204,16 @@ public readonly eksCluster: Cluster;
 
 ---
 
+##### `awsNodeRole`<sup>Optional</sup> <a name="awsNodeRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole"></a>
+
+```typescript
+public readonly awsNodeRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
 ##### `criticalDefaultConfig`<sup>Optional</sup> <a name="criticalDefaultConfig" id="aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig"></a>
 
 ```typescript
@@ -4220,6 +4221,16 @@ public readonly criticalDefaultConfig: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `csiDriverIrsa`<sup>Optional</sup> <a name="csiDriverIrsa" id="aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa"></a>
+
+```typescript
+public readonly csiDriverIrsa: ServiceAccount;
+```
+
+- *Type:* aws-cdk-lib.aws_eks.ServiceAccount
 
 ---
 
@@ -4309,8 +4320,7 @@ public readonly sharedDefaultConfig: string;
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_VERSION">DEFAULT_EMR_VERSION</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_KARPENTER_VERSION">DEFAULT_KARPENTER_VERSION</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
@@ -4337,23 +4347,13 @@ public readonly DEFAULT_EKS_VERSION: KubernetesVersion;
 
 ---
 
-##### `DEFAULT_EMR_VERSION`<sup>Required</sup> <a name="DEFAULT_EMR_VERSION" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_VERSION"></a>
+##### `DEFAULT_EMR_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EMR_EKS_VERSION" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION"></a>
 
 ```typescript
-public readonly DEFAULT_EMR_VERSION: EmrRuntimeVersion;
+public readonly DEFAULT_EMR_EKS_VERSION: EmrRuntimeVersion;
 ```
 
 - *Type:* aws-dsf.processing.EmrRuntimeVersion
-
----
-
-##### `DEFAULT_KARPENTER_VERSION`<sup>Required</sup> <a name="DEFAULT_KARPENTER_VERSION" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_KARPENTER_VERSION"></a>
-
-```typescript
-public readonly DEFAULT_KARPENTER_VERSION: string;
-```
-
-- *Type:* string
 
 ---
 
@@ -6813,33 +6813,18 @@ const sparkEmrContainersRuntimeProps: processing.SparkEmrContainersRuntimeProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRoleArn">eksAdminRoleArn</a></code> | <code>string</code> | Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Wether we need to create an EMR on EKS Service Linked Role. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | If set to true, the Construct will create default EKS nodegroups or node provisioners (based on the autoscaler mechanism used). |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster to setup EMR on. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | Name of the Amazon EKS cluster to be created. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC object where to deploy the EKS cluster VPC should have at least two private and public subnets in different Availability Zones All private subnets should have the following tags: 'for-use-with-amazon-emr-managed-policies'='true' 'kubernetes.io/role/internal-elb'='1' All public subnets should have the following tag: 'kubernetes.io/role/elb'='1' Cannot be combined with vpcCidr, if combined vpcCidr takes precedence. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>string</code> | The version of karpenter to pass to Helm. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC object where to deploy the EKS cluster VPC should have at least two private and public subnets in different Availability Zones All private subnets should have the following tags: 'for-use-with-amazon-emr-managed-policies'='true' 'kubernetes.io/role/internal-elb'='1' All public subnets should have the following tag: 'kubernetes.io/role/elb'='1' Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>aws-dsf.processing.KarpenterVersion</code> | The version of karpenter to pass to Helm. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | Kubernetes version for Amazon EKS cluster that will be created The default is changed as new version version of k8s on EKS becomes available. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR of the VPC to use with EKS. |
-
----
-
-##### `eksAdminRoleArn`<sup>Required</sup> <a name="eksAdminRoleArn" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRoleArn"></a>
-
-```typescript
-public readonly eksAdminRoleArn: string;
-```
-
-- *Type:* string
-
-Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
-
-An admin role must be passed if `eksCluster` property is not set.
-You will use this role to grant other access to and manage EKS cluster
 
 ---
 
@@ -6853,7 +6838,7 @@ public readonly kubectlLambdaLayer: ILayerVersion;
 
 Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct.
 
-The cdk [documentation] (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
+The cdk [documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
 contains the libraries that you should add for the right Kubernetes version
 
 ---
@@ -6901,6 +6886,21 @@ There are three types of nodes:
 
 ---
 
+##### `eksAdminRole`<sup>Optional</sup> <a name="eksAdminRole" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole"></a>
+
+```typescript
+public readonly eksAdminRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
+
+An admin role must be passed if `eksCluster` property is not set.
+You will use this role to manage the EKS cluster and grant other access to it.
+
+---
+
 ##### `eksCluster`<sup>Optional</sup> <a name="eksCluster" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster"></a>
 
 ```typescript
@@ -6939,17 +6939,17 @@ public readonly eksVpc: IVpc;
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
-The VPC object where to deploy the EKS cluster VPC should have at least two private and public subnets in different Availability Zones All private subnets should have the following tags: 'for-use-with-amazon-emr-managed-policies'='true' 'kubernetes.io/role/internal-elb'='1' All public subnets should have the following tag: 'kubernetes.io/role/elb'='1' Cannot be combined with vpcCidr, if combined vpcCidr takes precedence.
+The VPC object where to deploy the EKS cluster VPC should have at least two private and public subnets in different Availability Zones All private subnets should have the following tags: 'for-use-with-amazon-emr-managed-policies'='true' 'kubernetes.io/role/internal-elb'='1' All public subnets should have the following tag: 'kubernetes.io/role/elb'='1' Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence.
 
 ---
 
 ##### `karpenterVersion`<sup>Optional</sup> <a name="karpenterVersion" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion"></a>
 
 ```typescript
-public readonly karpenterVersion: string;
+public readonly karpenterVersion: KarpenterVersion;
 ```
 
-- *Type:* string
+- *Type:* aws-dsf.processing.KarpenterVersion
 - *Default:* The [default Karpenter version]{@link DEFAULT_KARPENTER_VERSION }
 
 The version of karpenter to pass to Helm.
@@ -8310,6 +8310,23 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 
 ##### `V5_32` <a name="V5_32" id="aws-dsf.processing.EmrRuntimeVersion.V5_32"></a>
+
+---
+
+
+### KarpenterVersion <a name="KarpenterVersion" id="aws-dsf.processing.KarpenterVersion"></a>
+
+Enum defining the Karpenter versions as defined [here](https://github.com/aws/karpenter/releases).
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
+
+---
+
+##### `V0_32_1` <a name="V0_32_1" id="aws-dsf.processing.KarpenterVersion.V0_32_1"></a>
 
 ---
 

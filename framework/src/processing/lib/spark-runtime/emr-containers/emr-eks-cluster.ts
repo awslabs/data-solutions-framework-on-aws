@@ -12,6 +12,7 @@ import {
   EndpointAccess,
   HelmChart,
   KubernetesVersion,
+  ServiceAccount,
 } from 'aws-cdk-lib/aws-eks';
 import { CfnVirtualCluster } from 'aws-cdk-lib/aws-emrcontainers';
 import {
@@ -20,6 +21,7 @@ import {
   Effect,
   FederatedPrincipal,
   IManagedPolicy,
+  IRole,
   ManagedPolicy,
   PolicyDocument,
   PolicyStatement,
@@ -31,14 +33,16 @@ import { Bucket, BucketEncryption, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
-import { karpenterSetup, eksClusterSetup, setDefaultKarpenterProvisioners, createNamespace } from './emr-eks-cluster-helpers';
+import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup } from './emr-eks-cluster-helpers';
 import { SparkEmrContainersRuntimeProps } from './emr-eks-cluster-props';
+import { karpenterSetup, setDefaultKarpenterProvisioners } from './emr-eks-karpenter-helpers';
 import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
 import { Context, TrackedConstruct, TrackedConstructProps, Utils, vpcBootstrap } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
+import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
@@ -46,10 +50,9 @@ import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
 
-  public static readonly DEFAULT_EMR_VERSION = EMR_DEFAULT_VERSION;
+  public static readonly DEFAULT_EMR_EKS_VERSION = EMR_DEFAULT_VERSION;
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
-  public static readonly DEFAULT_KARPENTER_VERSION = 'v0.32.1';
   public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
 
   /**
@@ -71,11 +74,14 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   }
 
   public readonly eksCluster: Cluster;
+  public readonly csiDriverIrsa?: ServiceAccount;
+  public readonly awsNodeRole?: IRole;
+
   public readonly notebookDefaultConfig?: string;
   public readonly criticalDefaultConfig?: string;
   public readonly sharedDefaultConfig?: string;
   public readonly assetBucket: Bucket;
-  public readonly clusterName: string;
+  // public readonly clusterName: string;
   public readonly podTemplateS3LocationCriticalDriver?: string;
   public readonly podTemplateS3LocationCriticalExecutor?: string;
   public readonly podTemplateS3LocationDriverShared?: string;
@@ -120,7 +126,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       removalPolicy: removalPolicy,
     });
 
-    this.clusterName = props.eksClusterName ?? SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
+    const clusterName = props.eksClusterName ?? SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
 
     //Define EKS cluster logging
     const eksClusterLogging: ClusterLoggingTypes[] = [
@@ -137,7 +143,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     //Set flag for default karpenter provisioners for Spark jobs
     this.defaultNodes = props.defaultNodes ?? true;
 
-    const karpenterVersion: string = props.karpenterVersion ?? SparkEmrContainersRuntime.DEFAULT_KARPENTER_VERSION;
+    const karpenterVersion = props.karpenterVersion ?? DEFAULT_KARPENTER_VERSION;
 
     // Create a role to be used as instance profile for nodegroups
     let ec2InstanceNodeGroupRole = new Role(scope, 'ec2InstanceNodeGroupRole', {
@@ -153,7 +159,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     //Create instance profile to be used by Managed nodegroup and karpenter
     const clusterInstanceProfile = new CfnInstanceProfile(scope, 'karpenter-instance-profile', {
       roles: [ec2InstanceNodeGroupRole.roleName],
-      instanceProfileName: `adsfNodeInstanceProfile-${this.clusterName ?? 'default'}`,
+      instanceProfileName: `adsfNodeInstanceProfile-${clusterName ?? 'default'}`,
       path: '/',
     });
 
@@ -162,11 +168,11 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
       const vpcCidr = props.vpcCidr ? props.vpcCidr : SparkEmrContainersRuntime.DEFAULT_VPC_CIDR;
 
-      let eksVpc: IVpc = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, this.clusterName, undefined).vpc;
+      let eksVpc: IVpc = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, clusterName, undefined).vpc;
 
-      this.eksCluster = new Cluster(scope, `${this.clusterName}Cluster`, {
+      this.eksCluster = new Cluster(scope, `${clusterName}Cluster`, {
         defaultCapacity: 0,
-        clusterName: this.clusterName,
+        clusterName: clusterName,
         version: props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION,
         clusterLogging: eksClusterLogging,
         kubectlLayer: props.kubectlLambdaLayer,
@@ -179,13 +185,27 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         },
       });
 
-      //Setting up the cluster with the required controller
-      eksClusterSetup(this.eksCluster, scope, props.eksAdminRoleArn, ec2InstanceNodeGroupRole, SparkEmrContainersRuntime.DEFAULT_EKS_VERSION);
+      // Add the provided Amazon IAM Role as Amazon EKS Admin
+      if (props.eksAdminRole === undefined) {
+        throw new Error('An IAM role must be passed to create an EKS cluster');
+
+      } else {
+        this.eksCluster.awsAuth.addMastersRole(props.eksAdminRole, 'AdminRole');
+      }
+
+      // Configure the EBS CSI controler
+      this.csiDriverIrsa = ebsCsiDriverSetup(this, this.eksCluster, props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION);
+
+      // Configure the AWS Node Role
+      this.awsNodeRole = awsNodeRoleSetup(this, this.eksCluster);
+
+      // Configure the tooling nodegroup for hosting tooling components
+      toolingManagedNodegroupSetup(this, this.eksCluster, ec2InstanceNodeGroupRole);
 
       //Deploy karpenter
       this.karpenterChart = karpenterSetup(
         this.eksCluster,
-        this.clusterName,
+        clusterName,
         scope,
         clusterInstanceProfile,
         ec2InstanceNodeGroupRole,
@@ -247,7 +267,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     // Configure the podTemplate location
     this.podTemplateLocation = {
       bucketName: this.assetBucket.bucketName,
-      objectKey: `${this.clusterName}/pod-template`,
+      objectKey: `${this.eksCluster.clusterName}/pod-template`,
     };
 
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
@@ -343,7 +363,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     const virtualCluster = new CfnVirtualCluster(scope, `${options.name}VirtualCluster`, {
       name: options.name,
       containerProvider: {
-        id: this.clusterName,
+        id: this.eksCluster.clusterName,
         type: 'EKS',
         info: { eksInfo: { namespace: options.eksNamespace ?? 'default' } },
       },
