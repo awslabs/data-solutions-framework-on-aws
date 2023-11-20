@@ -19,6 +19,7 @@ export interface RedshiftDataProps {
 
   /**
    * The `workgroupId` for the Redshift Serverless Workgroup to query. It must be configured if the `workgroupId` is not.
+   * @default - The `clusterIdentifier` is used
    */
   readonly workgroupId?: string;
 
@@ -34,27 +35,27 @@ export interface RedshiftDataProps {
 
   /**
    * The VPC where the Custom Resource Lambda Function would be created in.
-   * A Redshift Data API Interface VPC Endpoint would be created in the VPC.
+   * A Redshift Data API Interface VPC Endpoint is created in the VPC.
    * @default - No VPC is used. The Custom Resource runs in the Redshift service team VPC
    */
   readonly vpc?: IVpc;
 
   /**
    * The subnets where the Custom Resource Lambda Function would be created in.
-   * A Redshift Data API Interface VPC Endpoint would be created in the subnets.
+   * A Redshift Data API Interface VPC Endpoint is created in the subnets.
    */
   readonly selectedSubnets?: SelectedSubnets;
 
 
   /**
    * If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured.
-   * @default false
+   * @default - false
    */
   readonly createInterfaceVpcEndpoint?: boolean;
 
   /**
    * Timeout for query execution.
-   * @default 5mins
+   * @default - 5mins
    */
   readonly executionTimeout?: Duration;
 
