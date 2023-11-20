@@ -1,5 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+// SPDX-License-Identifier: Apache-2.0
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
@@ -29,11 +29,13 @@ export interface RedshiftServerlessNamespaceProps {
 
   /**
    * Default IAM role
+   * @default No default IAM Role would be associated with the namespace
    */
   readonly defaultIAMRole?: IRole;
 
   /**
    * List of IAM roles to be attached to the namespace
+   * @default No IAM roles would be associated with the namespace
    */
   readonly iamRoles?: IRole[];
 
@@ -45,6 +47,7 @@ export interface RedshiftServerlessNamespaceProps {
 
   /**
    * Logs to be exported
+   * @default No logs would be exported
    */
   readonly logExports?: RedshiftServerlessNamespaceLogExport[];
 
@@ -56,6 +59,7 @@ export interface RedshiftServerlessNamespaceProps {
 
   /**
    * The removal policy when the stack is deleted
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`)
    */
   readonly removalPolicy?: RemovalPolicy;
 }

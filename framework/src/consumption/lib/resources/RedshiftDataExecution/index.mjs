@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+>>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 import {RedshiftDataClient, ExecuteStatementCommand, DescribeStatementCommand} from "@aws-sdk/client-redshift-data"
 
 const targetType = process.env.TARGET_TYPE
@@ -58,6 +63,8 @@ export const isCompleteHandler = async(event) => {
     
         if (status === "FAILED") {
             throw new Error(resp.Error)
+        } else if (status === "ABORTED") {
+            throw new Error(`Query aborted: ${execId}`)
         }
     
         isComplete = (status === "FINISHED")

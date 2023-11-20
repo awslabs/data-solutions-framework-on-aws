@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+// SPDX-License-Identifier: Apache-2.0
+
 import { randomBytes } from 'crypto';
-import { Names, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ISecret, Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespaceProps } from './redshift-serverless-namespace-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
 
 /**
  * Create a Redshift Serverless Namespace with the admin credentials stored in Secrets Manager
@@ -93,9 +94,9 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     this.dbName = props.dbName;
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
     const logExports: string[] = props.logExports || [];
-    this.namespaceName = `${props.name}-${Names.uniqueResourceName(this, { maxLength: 64 - (props.name.length + 1) }).toLowerCase()}`;
+    this.namespaceName = `${props.name}-${Utils.generateUniqueHash(this)}`;
 
-    this.namespaceKey = props.kmsKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true });
+    this.namespaceKey = props.kmsKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
     const namespaceArn = `arn:aws:redshift-serverless:${this.currentStack.region}:${this.currentStack.account}:namespace/*`;
 
     this.namespaceParameters = {

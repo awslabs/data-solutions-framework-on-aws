@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+// SPDX-License-Identifier: Apache-2.0
+
 import { createHash } from 'crypto';
 import { CustomResource, Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { InterfaceVpcEndpoint, InterfaceVpcEndpointAwsService, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-// import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
-// import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { RedshiftDataProps } from './redshift-data-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
@@ -160,43 +159,6 @@ export class RedshiftData extends TrackedConstruct {
 
     props.secret.grantRead(crExecRole);
 
-    // const redshiftDataExecutionFunction = new Function(this, 'RSDataExecutionFunction', {
-    //   runtime: Runtime.NODEJS_LATEST,
-    //   role: crExecRole,
-    //   handler: 'index.onEventHandler',
-    //   code: Code.fromAsset(__dirname+'/../resources/RedshiftDataExecution/'),
-    //   environment: {
-    //     TARGET_ARN: targetArn,
-    //     TARGET_TYPE: targetType,
-    //     SECRET_NAME: props.secret.secretArn,
-    //   },
-    //   timeout: Duration.minutes(5),
-    //   vpc: props.vpc,
-    //   vpcSubnets: props.selectedSubnets,
-    //   securityGroups: this.crSecurityGroup ? [this.crSecurityGroup] : [],
-    // });
-
-    // redshiftDataExecutionFunction.applyRemovalPolicy(this.removalPolicy);
-
-    // const redshiftDataExecutionIsCompleteFunction = new Function(this, 'RSDataExecutionIsCompleteFunction', {
-    //   runtime: Runtime.NODEJS_LATEST,
-    //   role: crExecRole,
-    //   handler: 'index.isCompleteHandler',
-    //   code: Code.fromAsset(__dirname+'/../resources/RedshiftDataExecution/'),
-    //   environment: {
-    //     TARGET_ARN: targetArn,
-    //     TARGET_TYPE: targetType,
-    //     TARGET_ID: targetId,
-    //     SECRET_NAME: props.secret.secretArn,
-    //   },
-    //   timeout: Duration.minutes(5),
-    //   vpc: props.vpc,
-    //   vpcSubnets: props.selectedSubnets,
-    //   securityGroups: this.crSecurityGroup ? [this.crSecurityGroup] : [],
-    // });
-
-    // redshiftDataExecutionIsCompleteFunction.applyRemovalPolicy(this.removalPolicy);
-
     const provider = new DsfProvider(this, 'RSDSFDataExecutionProvider', {
       providerName: 'RSDSFDataExecutionProvider',
       onEventHandlerDefinition: {
@@ -247,13 +209,6 @@ export class RedshiftData extends TrackedConstruct {
     });
 
     this.taggingManagedPolicy.applyRemovalPolicy(this.removalPolicy);
-
-    // this.executionProvider = new Provider(this, 'RSDataExecutionProvider', {
-    //   onEventHandler: redshiftDataExecutionFunction,
-    //   isCompleteHandler: redshiftDataExecutionIsCompleteFunction,
-    //   queryInterval: Duration.seconds(1),
-    //   totalTimeout: props.executionTimeout || Duration.minutes(1),
-    // });
   }
 
   /**
@@ -265,7 +220,7 @@ export class RedshiftData extends TrackedConstruct {
    */
   public runCustomSQL(databaseName: string, sql: string, deleteSql?: string): CustomResource {
     const hash = createHash('sha256').update(`${databaseName}${sql}${deleteSql}`).digest('hex');
-    const uniqueId = `CustomSQL-${this.targetType}-${databaseName}-${hash}`;
+    const uniqueId = `CustomSQL-${this.targetType}-${hash}`;
 
     return new CustomResource(this, uniqueId, {
       serviceToken: this.executionProvider,
