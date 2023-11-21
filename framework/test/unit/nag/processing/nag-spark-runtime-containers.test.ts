@@ -178,6 +178,13 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/@aws
   { id: 'AwsSolutions-IAM5', reason: 'wild card used by L2 resource' },
 ]);
 
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/DataPlatform/S3BucketDeploymentRole/DefaultPolicy/Resource', [
+  { id: 'AwsSolutions-IAM5', reason: 'wild card used by L2 resource to copy data, the policy is scoped to the resource' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource', [
+  { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime provided by L2 construct' },
+]);
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(emrEksClusterStack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
