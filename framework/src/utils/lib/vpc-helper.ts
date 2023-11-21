@@ -57,7 +57,7 @@ export function vpcBootstrap(
   const publicSubnetMask = vpcMask + 4;
   const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
-  const vpc = new Vpc(scope, 'AdsfVPC', {
+  const vpc = new Vpc(scope, 'DsfVPC', {
     ipAddresses: IpAddresses.cidr(vpcCidr),
     maxAzs: 3,
     natGateways: 3,

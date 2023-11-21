@@ -4156,8 +4156,9 @@ the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.Bucket</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole">ec2InstanceNodeGroupRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.ICluster</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa">csiDriverIrsa</a></code> | <code>aws-cdk-lib.aws_eks.ServiceAccount</code> | *No description.* |
@@ -4184,23 +4185,33 @@ The tree node.
 
 ---
 
-##### `assetBucket`<sup>Required</sup> <a name="assetBucket" id="aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket"></a>
+##### `ec2InstanceNodeGroupRole`<sup>Required</sup> <a name="ec2InstanceNodeGroupRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole"></a>
 
 ```typescript
-public readonly assetBucket: Bucket;
+public readonly ec2InstanceNodeGroupRole: Role;
 ```
 
-- *Type:* aws-cdk-lib.aws_s3.Bucket
+- *Type:* aws-cdk-lib.aws_iam.Role
 
 ---
 
 ##### `eksCluster`<sup>Required</sup> <a name="eksCluster" id="aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster"></a>
 
 ```typescript
-public readonly eksCluster: Cluster;
+public readonly eksCluster: ICluster;
 ```
 
-- *Type:* aws-cdk-lib.aws_eks.Cluster
+- *Type:* aws-cdk-lib.aws_eks.ICluster
+
+---
+
+##### `assetBucket`<sup>Optional</sup> <a name="assetBucket" id="aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket"></a>
+
+```typescript
+public readonly assetBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
 
 ---
 
@@ -8087,6 +8098,7 @@ new utils.Utils()
 | <code><a href="#aws-dsf.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
 | <code><a href="#aws-dsf.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
 | <code><a href="#aws-dsf.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
+| <code><a href="#aws-dsf.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
 
 ---
 
@@ -8159,6 +8171,22 @@ Sanitize a string by removing upper case and replacing special characters except
 - *Type:* string
 
 the string to sanitize.
+
+---
+
+##### `toPascalCase` <a name="toPascalCase" id="aws-dsf.utils.Utils.toPascalCase"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.toPascalCase(text: string)
+```
+
+Convert a string to PascalCase.
+
+###### `text`<sup>Required</sup> <a name="text" id="aws-dsf.utils.Utils.toPascalCase.parameter.text"></a>
+
+- *Type:* string
 
 ---
 

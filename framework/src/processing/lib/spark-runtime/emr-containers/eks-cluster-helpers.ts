@@ -3,10 +3,10 @@
 
 import { Duration } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, InstanceType } from 'aws-cdk-lib/aws-ec2';
-import { Cluster, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion, ServiceAccount } from 'aws-cdk-lib/aws-eks';
+import { Cluster, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion, ServiceAccount, ICluster } from 'aws-cdk-lib/aws-eks';
 import { FederatedPrincipal, IRole, ManagedPolicy, Policy, PolicyDocument, Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-support-controllers-version';
+import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-controllers-version';
 import * as IamPolicyEbsCsiDriver from './resources/k8s/controllers-iam-policies/iam-policy-ebs-csi-driver.json';
 import { Utils } from '../../../../utils';
 
@@ -19,7 +19,7 @@ import { Utils } from '../../../../utils';
  * @param {KubernetesVersion} eksClusterK8sVersion the Kubernetes version of the EKS cluster
  * @return {ServiceAccount} the IAM role used by the CSI driver
  */
-export function ebsCsiDriverSetup(scope: Construct, cluster: Cluster, eksClusterK8sVersion: KubernetesVersion): ServiceAccount {
+export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksClusterK8sVersion: KubernetesVersion): ServiceAccount {
 
   const ebsCsiDriverIrsa = cluster.addServiceAccount('ebsCSIDriverRoleSA', {
     name: 'ebs-csi-controller-sa',
@@ -36,7 +36,7 @@ export function ebsCsiDriverSetup(scope: Construct, cluster: Cluster, eksCluster
 
   ebsCsiDriverPolicy.attachToRole(ebsCsiDriverIrsa.role);
 
-  const ebsCSIDriver = new CfnAddon(scope, 'ebsCsiDriver', {
+  const ebsCSIDriver = new CfnAddon(scope, 'EbsCsiDriver', {
     addonName: 'aws-ebs-csi-driver',
     clusterName: cluster.clusterName,
     serviceAccountRoleArn: ebsCsiDriverIrsa.role.roleArn,
@@ -69,19 +69,19 @@ export function ebsCsiDriverSetup(scope: Construct, cluster: Cluster, eksCluster
  * @internal
  * Configure the IAM role used by the aws-node pod following AWS best practice not to use the EC2 instance role
  * @param {Construct} scope the CDK scope to create resources in
- * @param {Cluster} cluster the EKS cluster to configure the aws-node pod in
+ * @param {ICluster} cluster the EKS cluster to configure the aws-node pod in
  * @return {IRole} the IAM role used by the aws-node pod
  */
 
-export function awsNodeRoleSetup(scope: Construct, cluster: Cluster): IRole {
+export function awsNodeRoleSetup(scope: Construct, cluster: ICluster): IRole {
 
-  const awsNodeRole: Role = new Role(scope, 'awsNodeRole', {
+  const awsNodeRole: Role = new Role(scope, 'AwsNodeRole', {
     assumedBy: new FederatedPrincipal(
       cluster.openIdConnectProvider.openIdConnectProviderArn,
       { ...[] },
       'sts:AssumeRoleWithWebIdentity',
     ),
-    roleName: `awsNodeRole-${cluster.clusterName}`,
+    description: `awsNodeRole-${cluster.clusterName}`,
     managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy')],
   });
 
@@ -153,11 +153,11 @@ export function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster
  * Create a namespace with a predefined baseline
  *  * Create namespace
  *  * Define a Network Policy
- * @param {Cluster} cluster the EKS cluster to create the namespace in
+ * @param {ICluster} cluster the EKS cluster to create the namespace in
  * @param {string} namespace the namespace to create
  * @return {KubernetesManifest} the Kubernetes manifest for the namespace
  */
-export function createNamespace (cluster: Cluster, namespace: string): KubernetesManifest {
+export function createNamespace (cluster: ICluster, namespace: string): KubernetesManifest {
 
   const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
 
@@ -207,3 +207,4 @@ export function createNamespace (cluster: Cluster, namespace: string): Kubernete
 
   return ns;
 }
+
