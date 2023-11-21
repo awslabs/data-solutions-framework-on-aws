@@ -41,7 +41,7 @@ export function vpcBootstrap(
   vpcFlowlogRemovalPolicy?: RemovalPolicy,
   eksClusterName?: string,
   emrAppName?: string,
-  vpcFlowLogRole?: Role): NetworkConfiguration {
+  vpcFlowLogRole?: IRole): NetworkConfiguration {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
   const smallestVpcCidr: number = 28;

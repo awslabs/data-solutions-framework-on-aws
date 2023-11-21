@@ -191,21 +191,19 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
       const logGroup = `arn:aws:logs:${currentStack.region}:${currentStack.account}:log-group:/aws-glue/crawlers*`;
 
-      if (!props.crawlerRole) {
-        crawlerRole.addToPolicy(new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            'logs:CreateLogGroup',
-            'logs:CreateLogStream',
-            'logs:PutLogEvents',
-            'logs:AssociateKmsKey',
-          ],
-          resources: [
-            logGroup,
-            `${logGroup}:*`,
-          ],
-        }));
-      }
+      crawlerRole.addToPrincipalPolicy(new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents',
+          'logs:AssociateKmsKey',
+        ],
+        resources: [
+          logGroup,
+          `${logGroup}:*`,
+        ],
+      }));
 
       this.crawlerRole = crawlerRole;
 

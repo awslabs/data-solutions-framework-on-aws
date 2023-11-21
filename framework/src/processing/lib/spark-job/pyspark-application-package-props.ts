@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { Role } from 'aws-cdk-lib/aws-iam';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 
 
@@ -50,7 +50,7 @@ export interface PySparkApplicationPackageProps {
    * When passed, the Lambda function would used this role as its execution role. Additional permissions would be granted to this role such as S3 Bucket permissions.
    * @default A new role would be created with least privilege permissions
    */
-  readonly assetUploadRole?: Role;
+  readonly assetUploadRole?: IRole;
 
   /**
    * The removal policy when deleting the CDK resource.

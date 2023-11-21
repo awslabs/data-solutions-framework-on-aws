@@ -3,7 +3,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
-import { Role } from 'aws-cdk-lib/aws-iam';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 
@@ -36,7 +36,7 @@ export interface DataCatalogDatabaseProps {
    * When passed, the crawler that would be created when `autoCrawl` is set to `True` would used this role. Additional permissions would be granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
    * @default A new role would be created with least privilege permissions to run the crawler
    */
-  readonly crawlerRole?: Role;
+  readonly crawlerRole?: IRole;
 
   /**
    * The schedule when the Crawler would run. Default is once a day at 00:01h.
