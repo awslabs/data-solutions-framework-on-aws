@@ -3,13 +3,13 @@
 
 import { Duration, Stack, Tags } from 'aws-cdk-lib';
 import { SubnetType, ISubnet, SecurityGroup, Port } from 'aws-cdk-lib/aws-ec2';
-import { HelmChart, Cluster } from 'aws-cdk-lib/aws-eks';
+import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
-import { SparkEmrContainersRuntime } from './emr-eks-cluster';
+import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
 import { Utils } from '../../../../utils';
 import { KarpenterVersion } from '../../karpenter-releases';
 
@@ -48,13 +48,13 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
 /**
    * @internal
    * Method to generate the Karpenter manifests from templates and targeted to the specific EKS cluster
-   * @param {string} clusterName the name of the EKS cluster to target the manifests to
+   * @param {ICluster} cluster the name of the EKS cluster to target the manifests to
    * @param {string} path the path to the manifest template
    * @param {ISubnet} subnet the subnet to target the manifests to
    * @param {IRole} nodeRole the IAM role to use for the manifests
    * @return {any} the Kubernetes manifest for Karpenter provisioned
    */
-export function karpenterManifestSetup(cluster: Cluster, path: string, subnet: ISubnet, nodeRole: IRole): any {
+export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole): any {
 
   let manifest = Utils.readYamlDocument(path);
 
@@ -81,7 +81,7 @@ export function karpenterManifestSetup(cluster: Cluster, path: string, subnet: I
    * @param {KarpenterVersion} karpenterVersion the Karpenter version to use for the provisioners
    * @return {HelmChart} the Karpenter Helm chart to install
    */
-export function karpenterSetup(cluster: Cluster,
+export function karpenterSetup(cluster: ICluster,
   clusterName: string,
   scope: Construct,
   instanceProfile: CfnInstanceProfile,
