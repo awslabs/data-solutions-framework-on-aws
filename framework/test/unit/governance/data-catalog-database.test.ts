@@ -14,6 +14,55 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { DataCatalogDatabase } from '../../../src/governance';
 
+describe('DataCatalogDatabase with passed role', () => {
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  const dbBucketName = 'sample-db';
+
+  const dbBucket = new Bucket(stack, 'dbBucket', {
+    bucketName: dbBucketName,
+  });
+
+  const locationPrefix = '/';
+  const dbName = 'sample';
+
+  const crawlerRole = new Role(stack, 'SampleCrawlerRole', {
+    assumedBy: new ServicePrincipal('glue.amazonaws.com'),
+  });
+
+  new DataCatalogDatabase(stack, 'database', {
+    locationBucket: dbBucket,
+    locationPrefix: locationPrefix,
+    name: dbName,
+    removalPolicy: RemovalPolicy.DESTROY,
+    crawlerRole,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('DataCatalogDatabase should not create crawler execution role', () => {
+    template.resourcePropertiesCountIs('AWS::IAM::Role', {
+      AssumeRolePolicyDocument: {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: {
+              Service: 'glue.amazonaws.com',
+            },
+            Action: 'sts:AssumeRole',
+          },
+        ],
+      },
+      Policies: [
+        {
+          PolicyName: 'crawlerPermissions',
+        },
+      ],
+    }, 0);
+  });
+});
+
 describe('DataCatalogDatabase with no top-level database', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');

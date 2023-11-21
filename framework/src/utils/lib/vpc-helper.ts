@@ -40,7 +40,8 @@ export function vpcBootstrap(
   logKmsKey: IKey,
   vpcFlowlogRemovalPolicy?: RemovalPolicy,
   eksClusterName?: string,
-  emrAppName?: string): NetworkConfiguration {
+  emrAppName?: string,
+  vpcFlowLogRole?: IRole): NetworkConfiguration {
 
   const vpcMask = parseInt(vpcCidr.split('/')[1]);
   const smallestVpcCidr: number = 28;
@@ -109,7 +110,7 @@ export function vpcBootstrap(
   );
 
   //Setup the VPC flow logs
-  const iamFlowLogRole = new Role(scope, 'iamRoleforFlowLog', {
+  const iamFlowLogRole = vpcFlowLogRole || new Role(scope, 'iamRoleforFlowLog', {
     assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
   });
 

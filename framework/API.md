@@ -5501,6 +5501,7 @@ const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | When passed, the crawler that would be created when `autoCrawl` is set to `True` would used this role. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
 
@@ -5582,6 +5583,21 @@ public readonly crawlerLogEncryptionKey: IKey;
 - *Default:* Create a new key if none is provided
 
 Encryption key used for Crawler logs.
+
+---
+
+##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerRole"></a>
+
+```typescript
+public readonly crawlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A new role would be created with least privilege permissions to run the crawler
+
+When passed, the crawler that would be created when `autoCrawl` is set to `True` would used this role.
+
+Additional permissions would be granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
 
 ---
 
@@ -6002,6 +6018,7 @@ const pySparkApplicationPackageProps: processing.PySparkApplicationPackageProps 
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the pyspark application. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | When passed, the Lambda function would used this role as its execution role. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
@@ -6044,6 +6061,21 @@ public readonly artifactsBucket: IBucket;
 - *Default:* A bucket is created
 
 The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored.
+
+---
+
+##### `assetUploadRole`<sup>Optional</sup> <a name="assetUploadRole" id="aws-dsf.processing.PySparkApplicationPackageProps.property.assetUploadRole"></a>
+
+```typescript
+public readonly assetUploadRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A new role would be created with least privilege permissions
+
+When passed, the Lambda function would used this role as its execution role.
+
+Additional permissions would be granted to this role such as S3 Bucket permissions.
 
 ---
 
