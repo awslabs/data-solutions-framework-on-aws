@@ -74,7 +74,7 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/nagS
   { id: 'AwsSolutions-IAM5', reason: 'IAM policy provided by the controller for ALB' },
 ]);
 
-NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/DataPlatform/IamPolicyEbsCsiDriverIAMPolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/DataPlatform/EbsCsiDriverPolicy/Resource', [
   { id: 'AwsSolutions-IAM5', reason: 'wild card used due resources defined at runtime, TBAC is used when possible' },
 ]);
 
@@ -82,7 +82,7 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/test
   { id: 'AwsSolutions-IAM5', reason: 'wild card used for test execution role' },
 ]);
 
-NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/karpenterInterruptionQueue/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/KarpenterInterruptionQueue/Resource', [
   { id: 'AwsSolutions-SQS3', reason: 'DLQ not needed, data is transient' },
 ]);
 

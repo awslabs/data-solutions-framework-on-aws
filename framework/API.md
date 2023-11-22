@@ -4162,6 +4162,9 @@ the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa">csiDriverIrsa</a></code> | <code>aws-cdk-lib.aws_eks.ServiceAccount</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterEventRules">karpenterEventRules</a></code> | <code>aws-cdk-lib.aws_events.IRule[]</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | *No description.* |
@@ -4242,6 +4245,36 @@ public readonly csiDriverIrsa: ServiceAccount;
 ```
 
 - *Type:* aws-cdk-lib.aws_eks.ServiceAccount
+
+---
+
+##### `karpenterEventRules`<sup>Optional</sup> <a name="karpenterEventRules" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterEventRules"></a>
+
+```typescript
+public readonly karpenterEventRules: IRule[];
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule[]
+
+---
+
+##### `karpenterQueue`<sup>Optional</sup> <a name="karpenterQueue" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterQueue"></a>
+
+```typescript
+public readonly karpenterQueue: IQueue;
+```
+
+- *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+---
+
+##### `karpenterSecurityGroup`<sup>Optional</sup> <a name="karpenterSecurityGroup" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup"></a>
+
+```typescript
+public readonly karpenterSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
 ---
 

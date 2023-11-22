@@ -21,7 +21,7 @@ import { Utils } from '../../../../utils';
  */
 export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksClusterK8sVersion: KubernetesVersion): ServiceAccount {
 
-  const ebsCsiDriverIrsa = cluster.addServiceAccount('ebsCSIDriverRoleSA', {
+  const ebsCsiDriverIrsa = cluster.addServiceAccount('EbsCsiDriverSa', {
     name: 'ebs-csi-controller-sa',
     namespace: 'kube-system',
   });
@@ -30,7 +30,7 @@ export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksCluste
 
   const ebsCsiDriverPolicy = new Policy(
     scope,
-    'IamPolicyEbsCsiDriverIAMPolicy',
+    'EbsCsiDriverPolicy',
     { document: ebsCsiDriverPolicyDocument },
   );
 
@@ -86,7 +86,7 @@ export function awsNodeRoleSetup(scope: Construct, cluster: ICluster): IRole {
   });
 
   // update the aws-node service account with IAM role created for it
-  new KubernetesManifest(scope, 'awsNodeServiceAccountUpdateManifest', {
+  new KubernetesManifest(scope, 'AwsNodeSaUpdateManifest', {
     cluster: cluster,
     manifest: [
       {

@@ -60,12 +60,6 @@ root
 |        |--helpers.py
 |    |--requirement.txt
 |    |--Dockerfile #contains the build instructions to package the virtual environment for PySpark
-|--cdk #contains the CDK application that deploys CDK stack with the PySparkApplicationPackage
-```
-#### PySpark Application Definition
-
-For this example we define the PySparkApplicationPackage resource as follows:
-
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -95,6 +89,12 @@ dsf.processing.PySparkApplicationPackage(self, "PySparkApplicationPackage",
   </TabItem>
 </Tabs>
 
+#### PySpark Application Definition
+
+For this example we define the PySparkApplicationPackage resource as follows:
+
+[example pyspark application](./examples/pyspark-application-package.lit.ts)
+
 ### Dockerfile definition
 
 The steps below describe how to create the `Dockerfile` so it can be used to be package `venv` by the construct
@@ -120,12 +120,6 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install .
 
 RUN mkdir /venv-package && venv-pack -o /venv-package/pyspark-env.tar.gz && chmod ugo+r /venv-package/pyspark-env.tar.gz
-```
-
-### Define a CDK stack upload PySpark application and run the job
-
-The stack below leverages the resources defined above for PySpark to build the end to end example for building and submitting a PySpark job.
-
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -182,5 +176,11 @@ dsf.processing.SparkEmrServerlessJob(self, "SparkNightlyJob",
 
   </TabItem>
 </Tabs>
+
+### Define a CDK stack upload PySpark application and run the job
+
+The stack below leverages the resources defined above for PySpark to build the end to end example for building and submitting a PySpark job.
+
+[example pyspark app on emr serverless](./examples/pyspark-application-emr-serverless.lit.ts)
 
 
