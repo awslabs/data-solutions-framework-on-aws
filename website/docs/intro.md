@@ -114,6 +114,9 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
     import aws_cdk as cdk
     import aws_dsf as dsf
 
+    from constructs import Construct
+
+
     class DsfExampleStack(cdk.Stack):
 
       def __init__(self, scope: cdk.App, construct_id: str, **kwargs) -> None:
