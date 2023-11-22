@@ -177,7 +177,7 @@ fwkProject.addTask('test:e2e', {
   exec: 'jest --passWithNoTests --updateSnapshot --group=e2e'
 });
 
-fwkProject.postCompileTask.prependExec('jsii-rosetta extract .jsii && node generate_doc.mjs');
+fwkProject.postCompileTask.prependExec('jsii-rosetta extract .jsii && node generate_doc.mjs && rm .jsii.tabl.json');
 
 fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
 
