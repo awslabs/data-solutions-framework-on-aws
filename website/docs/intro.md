@@ -123,13 +123,13 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
           self,
           bronze_name="my-bronze",
           bronze_infrequent_access_delay="90",
-          bronze_archive_delay="180"
+          bronze_archive_delay="180",
           silver_name="my-silver",
           silver_infrequent_access_delay="180",
-          silver_archive_delay="360"
+          silver_archive_delay="360",
           gold_name="my-gold",
           gold_infrequent_access_delay="180",
-          gold_archive_delay="360"
+          gold_archive_delay="360",
           removal_policy=cdk.RemovalPolicy.RETAIN,
         )
     ```
