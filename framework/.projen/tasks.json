@@ -143,7 +143,7 @@
       "description": "Runs after successful compilation",
       "steps": [
         {
-          "exec": "jsii-rosetta extract .jsii && node generate_doc.mjs && rm .jsii.tabl.json"
+          "exec": "rm .jsii.tabl.json && jsii-rosetta extract .jsii && node generate_doc.mjs"
         },
         {
           "spawn": "docgen"
