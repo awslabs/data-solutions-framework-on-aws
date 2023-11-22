@@ -87,10 +87,9 @@ export function karpenterSetup(cluster: ICluster,
   instanceProfile: CfnInstanceProfile,
   nodeRole: IRole,
   karpenterVersion?: KarpenterVersion,
-): HelmChart {
+): [HelmChart, Queue, SecurityGroup, Array<Rule> ] {
 
-  const karpenterInterruptionQueue: Queue = new Queue(scope, 'karpenterInterruptionQueue', {
-    queueName: clusterName,
+  const karpenterInterruptionQueue: Queue = new Queue(scope, 'KarpenterInterruptionQueue', {
     retentionPeriod: Duration.seconds(300),
     enforceSSL: true,
   });
@@ -103,7 +102,7 @@ export function karpenterSetup(cluster: ICluster,
     }),
   );
 
-  new Rule(scope, 'scheduledChangeRule', {
+  const scheduledChangeRule = new Rule(scope, 'ScheduledChangeRule', {
     eventPattern: {
       source: ['aws.heatlh'],
       detail: ['AWS Health Event'],
@@ -111,7 +110,7 @@ export function karpenterSetup(cluster: ICluster,
     targets: [new SqsQueue(karpenterInterruptionQueue)],
   });
 
-  new Rule(scope, 'instanceStateChangeRule', {
+  const stateChangeRule = new Rule(scope, 'InstanceStateChangeRule', {
     eventPattern: {
       source: ['aws.ec2'],
       detail: ['EC2 Instance State-change Notification'],
@@ -341,11 +340,10 @@ export function karpenterSetup(cluster: ICluster,
 
   karpenterChart.node.addDependency(karpenterAccount);
 
-  const karpenterInstancesSg = new SecurityGroup(scope, 'karpenterSg', {
+  const karpenterInstancesSg = new SecurityGroup(scope, 'KarpenterSg', {
     vpc: cluster.vpc,
     allowAllOutbound: true,
     description: 'security group for a karpenter instances',
-    securityGroupName: 'karpenterSg',
     disableInlineRules: true,
   });
 
@@ -405,5 +403,5 @@ export function karpenterSetup(cluster: ICluster,
 
   manifestApply.node.addDependency(karpenterChart);
 
-  return karpenterChart;
+  return [karpenterChart, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]] ;
 }

@@ -48,24 +48,24 @@ export class Utils {
 
   /**
    * Convert a string to PascalCase
-   * @param text 
-   * @returns 
+   * @param text
+   * @returns
    */
   public static toPascalCase(text: string): string {
 
     // Split the text into words
     const words = text.match(/[a-z]+/gi);
-  
+
     if (words) {
       // Capitalize first letter of each word
       words.forEach((word, index) => {
         words[index] = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       });
-  
+
       // Join the words back into a string
-      return words.join(''); 
+      return words.join('');
     }
-  
+
     return text;
   }
 

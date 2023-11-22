@@ -51,12 +51,6 @@ To do this, implement the `ApplicationStackFactory` and its `createStack()` meth
 The `createStack()` method needs to return a `Stack` instance within the scope passed to the factory method.
 This is used to create the application stack within the scope of the CDK Pipeline stage.
 
-The `CICDStage` parameter is automatically passed by the CDK Pipeline via the factory method and allows you to customize the behavior of the Stack based on the stage.
-For example, staging stage is used for integration tests so testing a processing job should be done via manually triggering it.
-In opposition to production stage where the processing job could be automated on a regular basis.
-
-Create your application stack using the factory pattern:
-
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -105,7 +99,7 @@ class EmrApplicationStack(cdk.Stack):
   </TabItem>
 </Tabs>
 
-Use the factory to pass your application stack to the `SparkCICDPipeline` construct:
+In opposition to production stage where the processing job could be automated on a regular basis.
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -139,6 +133,12 @@ class CICDPipelineStack(cdk.Stack):
 
   </TabItem>
 </Tabs>
+
+[example application stack factory](./examples/cicd-application-stack.lit.ts)
+
+Use the factory to pass your application stack to the `SparkCICDPipeline` construct:
+
+[example cicd pipeline stack](./examples/cicd-pipeline-stack.lit.ts)
 
 ## Unit tests
 The construct triggers the unit tests as part of the CI/CD process using the EMR docker image and a fail fast approach.
@@ -185,12 +185,6 @@ do
         sleep 10
         continue
     fi
-done
-```
-
-To use resources that are deployed by the Application Stack like the Step Functions state machine ARN in the previous example:
-1. Create a `CfnOutput` in your application stack with the value of your resource
-
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -230,11 +224,11 @@ class EmrApplicationStack(cdk.Stack):
   </TabItem>
 </Tabs>
 
-2. Pass an environment variable to the `SparkCICDPipeline` construct in the form of a key/value pair via `integTestEnv`:
- * Key is the name of the environment variable used in the script: `STEP_FUNCTION_ARN` in the script example above.
- * Value is the CloudFormation output name from the application stack: `ProcessingStateMachineArn` in the application stack example above.
- * Add permissions required to run the integration tests script. In this example, `states:StartExecution` and `states:DescribeExecution`.
 
+To use resources that are deployed by the Application Stack like the Step Functions state machine ARN in the previous example:
+1. Create a `CfnOutput` in your application stack with the value of your resource
+
+[example application stack output](./examples/cicd-application-stack-output.lit.ts)
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 

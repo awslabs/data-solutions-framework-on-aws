@@ -4,7 +4,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Aws, Stack, Tags, CfnJson } from 'aws-cdk-lib';
-import { IVpc } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
   AlbControllerVersion,
   Cluster,
@@ -16,6 +16,7 @@ import {
   ServiceAccount,
 } from 'aws-cdk-lib/aws-eks';
 import { CfnVirtualCluster } from 'aws-cdk-lib/aws-emrcontainers';
+import { IRule } from 'aws-cdk-lib/aws-events';
 import {
   CfnInstanceProfile,
   CfnServiceLinkedRole,
@@ -32,15 +33,16 @@ import {
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Bucket, BucketEncryption, IBucket, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
+import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
 import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup } from './eks-cluster-helpers';
-import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { karpenterSetup, setDefaultKarpenterProvisioners } from './eks-karpenter-helpers';
 import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
+import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { Context, TrackedConstruct, TrackedConstructProps, Utils, vpcBootstrap } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
@@ -78,6 +80,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   public readonly csiDriverIrsa?: ServiceAccount;
   public readonly awsNodeRole?: IRole;
   public readonly ec2InstanceNodeGroupRole: Role;
+  public readonly karpenterQueue?: IQueue;
+  public readonly karpenterSecurityGroup?: ISecurityGroup;
+  public readonly karpenterEventRules?: Array<IRule>;
 
   public readonly notebookDefaultConfig?: string;
   public readonly criticalDefaultConfig?: string;
@@ -150,7 +155,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
       this.eksSecretKmsKey = Stack.of(scope).node.tryFindChild('EksSecretKmsKey') as Key ?? new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
-        alias: 'eks-secrets-key',
+        description: 'eks-secrets-key',
         removalPolicy: removalPolicy,
       });
 
@@ -175,7 +180,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
       let eksVpc: IVpc = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, clusterName, undefined).vpc;
 
-      eksCluster = new Cluster(scope, `EksCluster`, {
+      eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
         clusterName: clusterName,
         version: props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION,
@@ -207,7 +212,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       toolingManagedNodegroupSetup(this, eksCluster, this.ec2InstanceNodeGroupRole);
 
       //Deploy karpenter
-      this.karpenterChart = karpenterSetup(
+      [this.karpenterChart, this.karpenterQueue, this.karpenterSecurityGroup, this.karpenterEventRules] = karpenterSetup(
         eksCluster,
         clusterName,
         scope,
@@ -411,7 +416,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    */
   public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, eksNamespace: string, name: string): Role {
 
-    let irsaConditionkey: CfnJson = new CfnJson(scope, `${id}irsaConditionkey'`, {
+    let irsaConditionkey: CfnJson = new CfnJson(scope, `${id}IrsaConditionkey'`, {
       value: {
         [`${this.eksCluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]: 'system:serviceaccount:' + eksNamespace + ':emr-containers-sa-*-*-' + Aws.ACCOUNT_ID.toString() + '-' + SimpleBase.base36.encode(name),
       },
@@ -427,7 +432,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         'sts:AssumeRoleWithWebIdentity'),
       roleName: name,
       managedPolicies: [policy],
-      inlinePolicies: this.podTemplatePolicy ? { podTemplateAccess: this.podTemplatePolicy!} : undefined,
+      inlinePolicies: this.podTemplatePolicy ? { podTemplateAccess: this.podTemplatePolicy! } : undefined,
     });
   }
 
