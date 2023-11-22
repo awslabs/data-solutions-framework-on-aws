@@ -272,7 +272,7 @@ describe('With default configuration, the construct ', () => {
     });
   });
 
-  test('should create a VPC for the EKS cluster with public and private subnets', () => {
+  test('should create a VPC for the EKS cluster', () => {
     template.hasResourceProperties('AWS::EC2::VPC', {
       CidrBlock: '10.0.0.0/16',
       EnableDnsHostnames: true,
@@ -317,7 +317,7 @@ describe('With default configuration, the construct ', () => {
       }),
     }, 1);
     template.resourcePropertiesCountIs('AWS::IAM::Policy', {
-      PolicyName: Match.stringLikeRegexp('FlowLogIamRoleDefaultPolicy.*'),
+      PolicyName: Match.stringLikeRegexp('FlowLog.*'),
     }, 1);
     template.resourcePropertiesCountIs('AWS::EC2::SecurityGroup', {
       GroupDescription: 'EKS Control Plane Security Group',

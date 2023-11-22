@@ -110,7 +110,7 @@ export function vpcBootstrap(
   );
 
   //Setup the VPC flow logs
-  const iamFlowLogRole = vpcFlowLogRole || new Role(scope, 'iamRoleforFlowLog', {
+  const iamFlowLogRole = vpcFlowLogRole || new Role(scope, 'FlowLogRole', {
     assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
   });
 
@@ -119,7 +119,7 @@ export function vpcBootstrap(
   });
 
   // Create a gateway endpoint for S3
-  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('AdsfVpcS3Endpoint', {
+  const s3GatewayVpcEndpoint: GatewayVpcEndpoint = vpc.addGatewayEndpoint('DsfS3VpcEndpoint', {
     service: GatewayVpcEndpointAwsService.S3,
   });
 
