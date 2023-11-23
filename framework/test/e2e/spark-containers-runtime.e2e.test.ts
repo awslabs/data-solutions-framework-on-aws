@@ -9,7 +9,7 @@
 
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import * as cdk from 'aws-cdk-lib';
-import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { SparkEmrContainersRuntime } from '../../src/processing';
 
@@ -24,13 +24,15 @@ const { stack } = testStack;
 stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
 
 const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
+const eksAdminRole = Role.fromRoleArn(stack, 'EksAdminRole', `arn:aws:iam::${stack.account}:role/role-name-with-path`);
 
 // creation of the construct(s) under test
 const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(stack, {
-  eksAdminRoleArn: `arn:aws:iam::${stack.account}:role/role-name-with-path`,
+  eksAdminRole,
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: false,
   kubectlLambdaLayer: kubectlLayer,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
 const s3Read = new PolicyDocument({
@@ -63,7 +65,7 @@ new cdk.CfnOutput(stack, 'execRoleArn', {
 });
 
 new cdk.CfnOutput(stack, 'eksClusterName', {
-  value: emrEksCluster.clusterName,
+  value: emrEksCluster.eksCluster.clusterName,
 });
 
 let deployResult: Record<string, string>;

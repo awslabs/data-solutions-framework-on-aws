@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Duration, Stack, Tags } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { SubnetType, ISubnet, SecurityGroup, Port } from 'aws-cdk-lib/aws-ec2';
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { Rule } from 'aws-cdk-lib/aws-events';
@@ -10,7 +10,7 @@ import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal } 
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
-import { Utils } from '../../../../utils';
+import { Context, Utils } from '../../../../utils';
 import { KarpenterVersion } from '../../karpenter-releases';
 
 /**
@@ -86,12 +86,16 @@ export function karpenterSetup(cluster: ICluster,
   scope: Construct,
   instanceProfile: CfnInstanceProfile,
   nodeRole: IRole,
+  karpenterRemovalPolicy: RemovalPolicy,
   karpenterVersion?: KarpenterVersion,
 ): [HelmChart, Queue, SecurityGroup, Array<Rule> ] {
+
+  const removalPolicy = Context.revertRemovalPolicy(scope, karpenterRemovalPolicy);
 
   const karpenterInterruptionQueue: Queue = new Queue(scope, 'KarpenterInterruptionQueue', {
     retentionPeriod: Duration.seconds(300),
     enforceSSL: true,
+    removalPolicy,
   });
 
   karpenterInterruptionQueue.addToResourcePolicy(
