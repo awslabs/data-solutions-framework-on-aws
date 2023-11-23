@@ -41,6 +41,11 @@ The code snippet below shows a usage example of the `SparkEmrServerlessRuntime` 
 
 My eks section
 
+## Usage
+
+The code snippet below shows a usage example of the `SparkEmrContainersRuntime` construct.
+
+[example usage](examples/spark-emr-runtime-containers-default.lit.ts)
 
 [//]: # (processing.spark-job)
 # Spark EMR Serverless job
