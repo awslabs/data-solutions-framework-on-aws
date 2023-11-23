@@ -3,7 +3,7 @@
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { Aws, Stack, Tags, CfnJson } from 'aws-cdk-lib';
+import { Aws, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
   AlbControllerVersion,
@@ -218,6 +218,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         scope,
         clusterInstanceProfile,
         this.ec2InstanceNodeGroupRole,
+        removalPolicy,
         karpenterVersion,
       );
 
@@ -287,7 +288,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       setDefaultKarpenterProvisioners(this, karpenterVersion, this.ec2InstanceNodeGroupRole);
 
       // Upload the default podTemplate to the Amazon S3 asset bucket
-      this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'));
+      this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'), removalPolicy);
 
       // Replace the pod template location for driver and executor with the correct Amazon S3 path in the notebook default config
       NotebookDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] =
@@ -441,13 +442,14 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * @param {string} id the unique ID of the CDK resource
    * @param {string} filePath The local path of the yaml podTemplate files to upload
    */
-  public uploadPodTemplate(id: string, filePath: string) {
+  public uploadPodTemplate(id: string, filePath: string, removalPolicy: RemovalPolicy) {
 
     new BucketDeployment(this, `${id}AssetDeployment`, {
       destinationBucket: this.assetBucket!,
       destinationKeyPrefix: this.podTemplateLocation!.objectKey,
       sources: [Source.asset(filePath)],
       role: this.assetUploadBucketRole,
+      retainOnDelete: removalPolicy === RemovalPolicy.RETAIN ? true : false,
     });
   }
 

@@ -10,7 +10,7 @@
 
 
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
-import { Stack } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { SparkEmrContainersRuntime } from '../../../src/processing';
@@ -482,7 +482,6 @@ describe('With default configuration, the construct ', () => {
     });
   });
 
-
   test('should create the execution role with provided policy, podtemplate polic and IRSA setup', () => {
     template.hasResourceProperties('AWS::IAM::Role', {
       AssumeRolePolicyDocument: Match.objectLike({
@@ -761,174 +760,130 @@ describe('With default configuration, the construct ', () => {
   });
 });
 
-// const emrEksClusterStack = new Stack();
-// const emrEksClusterStackWithEmrServiceLinkedRole = new Stack();
+describe('With DESTROY removal policy and global data removal set to TRUE, the construct ', () => {
 
-// const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
-// const kubectlLayerServiceLinkedRole = new KubectlV27Layer(emrEksClusterStackWithEmrServiceLinkedRole, 'kubectlLayer');
+  const emrEksClusterStack = new Stack();
+  // Set context value for global data removal policy
+  emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-// const adminRole1 = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
-// const adminRole2 = Role.fromRoleArn(emrEksClusterStackWithEmrServiceLinkedRole, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
 
-// const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
-//   eksAdminRole: adminRole1,
-//   publicAccessCIDRs: ['10.0.0.0/32'],
-//   createEmrOnEksServiceLinkedRole: false,
-//   kubectlLambdaLayer: kubectlLayer,
-//   vpcCidr: '10.0.0.0/16',
-// });
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
-// SparkEmrContainersRuntime.getOrCreate(emrEksClusterStackWithEmrServiceLinkedRole, {
-//   eksAdminRole: adminRole2,
-//   publicAccessCIDRs: ['10.0.0.0/32'],
-//   createEmrOnEksServiceLinkedRole: true,
-//   kubectlLambdaLayer: kubectlLayerServiceLinkedRole,
-// });
+  SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
 
-// emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
-//   name: 'test',
-// });
+  const template = Template.fromStack(emrEksClusterStack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-// emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
-//   name: 'nons',
-//   createNamespace: true,
-//   eksNamespace: 'nons',
-// });
+  test('should create a Karpenter queue with DELETE removal policy', () => {
+    template.hasResource('AWS::SQS::Queue', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
 
-// const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
-//   document: new PolicyDocument({
-//     statements: [
-//       new PolicyStatement({
-//         resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
-//         actions: ['s3:GetObject'],
-//       }),
-//     ],
-//   }),
-// });
+  test('should create a pod template Bucket with DELETE removal policy', () => {
+    template.hasResource('AWS::S3::Bucket', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
 
-// emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+  test('should create a KMS Key for VPC flow logs with DELETE removal policy', () => {
+    template.hasResource('AWS::KMS::Key', {
+      Properties: Match.objectLike({
+        Description: 'log-vpc-key',
+      }),
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
 
-// const templateEmrEksClusterStack = Template.fromStack(emrEksClusterStack);
-// const emrEksClusterServiceLinkedRole = Template.fromStack(emrEksClusterStackWithEmrServiceLinkedRole);
+  test('should create a KMS Key for EKS secrets with DELETE removal policy', () => {
+    template.hasResource('AWS::KMS::Key', {
+      Properties: Match.objectLike({
+        Description: 'eks-secrets-key',
+      }),
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
 
+  test('should create a log group for VPC flow log with DELETE removal policy', () => {
+    template.hasResource('AWS::Logs::LogGroup', {
+      Properties: Match.objectLike({
+        LogGroupName: '/aws/emr-eks-vpc-flow/data-platform',
+      }),
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
+});
 
-// test('EKS cluster created with correct version and name', () => {
-//   // THEN
-//   templateEmrEksClusterStack.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 1);
+describe('With DESTROY removal policy and global data removal unset, the construct ', () => {
 
-//   templateEmrEksClusterStack.hasResourceProperties('Custom::AWSCDK-EKS-Cluster', {
-//     Config: Match.objectLike({
-//       version: '1.27',
-//       name: 'data-platform',
-//     }),
-//   });
-// });
+  const emrEksClusterStack = new Stack();
 
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
 
-// test('Test for emr-containers service linked role when its prop is set to true', () => {
-//   // THEN
-//   emrEksClusterServiceLinkedRole.hasResourceProperties('AWS::IAM::ServiceLinkedRole', {
-//     AWSServiceName: 'emr-containers.amazonaws.com',
-//   });
-// });
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
-// test('EKS VPC should be tagged', () => {
-//   // THEN
-//   templateEmrEksClusterStack.hasResourceProperties('AWS::EC2::VPC', {
+  SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
 
-//     Tags: Match.arrayWith([
-//       Match.objectLike({
-//         Key: 'for-use-with-amazon-emr-managed-policies',
-//         Value: 'true',
-//       }),
-//     ]),
-//   });
-// });
+  const template = Template.fromStack(emrEksClusterStack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-// test('EKS is used with Custom VPC CIDR', () => {
-//   // THEN
-//   templateEmrEksClusterStack.hasResourceProperties('AWS::EC2::VPC', {
-//     CidrBlock: '10.0.0.0/16',
-//   });
-// });
+  test('should create a Karpenter queue with RETAIN removal policy', () => {
+    template.hasResource('AWS::SQS::Queue', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
 
-// test('EKS should have at least 1 private subnet with tags', () => {
-//   // THEN
-//   templateEmrEksClusterStack.hasResourceProperties('AWS::EC2::Subnet', {
-//     Tags: Match.arrayWith([
-//       Match.objectLike({
-//         Key: 'aws-cdk:subnet-type',
-//         Value: 'Private',
-//       }),
-//       Match.objectLike({
-//         Key: 'for-use-with-amazon-emr-managed-policies',
-//         Value: 'true',
-//       }),
-//     ]),
-//   });
-// });
+  test('should create a pod template Bucket with RETAIN removal policy', () => {
+    template.hasResource('AWS::S3::Bucket', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
 
-// test('EKS should have a helm chart for deploying the cert manager', () => {
-//   templateEmrEksClusterStack.hasResourceProperties('Custom::AWSCDK-EKS-HelmChart', {
-//     Chart: 'cert-manager',
-//     Repository: 'https://charts.jetstack.io',
-//     Namespace: 'cert-manager',
-//   });
-// });
+  test('should create a KMS Key for VPC flow logs with RETAIN removal policy', () => {
+    template.hasResource('AWS::KMS::Key', {
+      Properties: Match.objectLike({
+        Description: 'log-vpc-key',
+      }),
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
 
-// test('EKS should have a helm chart for deploying the AWS load balancer controller', () => {
-//   templateEmrEksClusterStack.hasResourceProperties('Custom::AWSCDK-EKS-HelmChart', {
-//     Chart: 'aws-load-balancer-controller',
-//     Repository: 'https://aws.github.io/eks-charts',
-//     Namespace: 'kube-system',
-//   });
-// });
+  test('should create a KMS Key for EKS secrets with RETAIN removal policy', () => {
+    template.hasResource('AWS::KMS::Key', {
+      Properties: Match.objectLike({
+        Description: 'eks-secrets-key',
+      }),
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
 
-// test('EKS cluster should have the default Nodegroups', () => {
-//   templateEmrEksClusterStack.resourceCountIs('AWS::EKS::Nodegroup', 1);
-
-//   templateEmrEksClusterStack.hasResourceProperties('AWS::EKS::Nodegroup', {
-//     AmiType: 'BOTTLEROCKET_x86_64',
-//     InstanceTypes: ['t3.medium'],
-//     Labels: {
-//       role: 'tooling',
-//     },
-//     ScalingConfig: {
-//       DesiredSize: 2,
-//       MaxSize: 2,
-//       MinSize: 2,
-//     },
-//     Tags: Match.objectLike({
-//       'data-solutions-fwk:owned': 'true',
-//     }),
-//   });
-
-// });
-
-// test('EMR virtual cluster should be created with proper configuration', () => {
-//   templateEmrEksClusterStack.hasResourceProperties('AWS::EMRContainers::VirtualCluster', {
-//     ContainerProvider: Match.objectLike({
-//       Type: 'EKS',
-//       Info: Match.objectLike({
-//         EksInfo: {
-//           Namespace: 'default',
-//         },
-//       }),
-//     }),
-//     Name: 'test',
-//   });
-// });
-
-// test('Execution role policy should be created with attached policy', () => {
-//   templateEmrEksClusterStack.hasResourceProperties('AWS::IAM::ManagedPolicy', {
-//     PolicyDocument: Match.objectLike({
-//       Statement: Match.arrayWith([
-//         Match.objectLike({
-//           Action: 's3:GetObject',
-//           Effect: 'Allow',
-//           Resource: 'arn:aws:s3:::aws-data-analytics-workshop',
-//         }),
-//       ]),
-//     }),
-//   });
-// });
+  test('should create a log group for VPC flow log with RETAIN removal policy', () => {
+    template.hasResource('AWS::Logs::LogGroup', {
+      Properties: Match.objectLike({
+        LogGroupName: '/aws/emr-eks-vpc-flow/data-platform',
+      }),
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
+});
