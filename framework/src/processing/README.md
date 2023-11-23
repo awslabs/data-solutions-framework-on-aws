@@ -39,7 +39,7 @@ The code snippet below shows a usage example of the `SparkEmrServerlessRuntime` 
 [//]: # (processing.spark-emr-runtime-containers)
 # Spark EMR Containers Runtime
 
-My eks section
+A construct to deploy an EKS cluster and enable it for EMR on EKS use. 
 
 ## Usage
 
