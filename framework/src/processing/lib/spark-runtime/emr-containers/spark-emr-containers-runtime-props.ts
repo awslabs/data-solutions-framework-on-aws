@@ -29,7 +29,7 @@ export interface SparkEmrContainersRuntimeProps {
   readonly eksAdminRole?: IRole;
   /**
    * The EKS cluster to setup EMR on. The cluster needs to be created in the same CDK Stack.
-   * If the EKS cluster is provided, the cluster AddOns and all the controllers (Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
+   * If the EKS cluster is provided, the cluster AddOns and all the controllers (ALB Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
    * When providing an EKS cluster, the methods for adding nodegroups can still be used. They implement the best practices for running Spark on EKS.
    * @default - An EKS Cluster is created
    */
