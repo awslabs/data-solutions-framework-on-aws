@@ -73,7 +73,7 @@ let deployResult: Record<string, string>;
 beforeAll(async() => {
   // WHEN
   deployResult = await testStack.deploy();
-}, 1800000);
+}, 6000000);
 
 it('Serverless runtime created successfully', async () => {
   // THEN
@@ -84,4 +84,4 @@ it('Serverless runtime created successfully', async () => {
 
 afterAll(async () => {
   await testStack.destroy();
-}, 1800000);
+}, 6000000);
