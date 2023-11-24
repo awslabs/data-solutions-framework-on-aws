@@ -21,7 +21,7 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkContainersTestStack', app);
 const { stack } = testStack;
 
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
 const eksAdminRole = Role.fromRoleArn(stack, 'EksAdminRole', `arn:aws:iam::${stack.account}:role/role-name-with-path`);
