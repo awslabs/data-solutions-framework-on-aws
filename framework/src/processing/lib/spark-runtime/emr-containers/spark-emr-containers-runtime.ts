@@ -203,7 +203,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         removalPolicy: removalPolicy,
       });
 
-      this.eksSecretKmsKey = Stack.of(scope).node.tryFindChild('EksSecretKmsKey') as Key ?? new Key(scope, 'EksSecretKmsKey', {
+      this.eksSecretKmsKey = new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
         description: 'eks-secrets-key',
         removalPolicy: removalPolicy,
