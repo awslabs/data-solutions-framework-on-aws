@@ -243,7 +243,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
           version: AlbControllerVersion.V2_5_1,
           policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
         },
-        placeClusterHandlerInVpc: true
+        placeClusterHandlerInVpc: true,
       });
 
       // Add the provided Amazon IAM Role as Amazon EKS Admin
