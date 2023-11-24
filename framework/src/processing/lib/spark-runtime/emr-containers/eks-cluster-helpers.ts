@@ -3,7 +3,7 @@
 
 import { Duration } from 'aws-cdk-lib';
 import { CfnLaunchTemplate, InstanceType } from 'aws-cdk-lib/aws-ec2';
-import { Cluster, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion, ServiceAccount, ICluster } from 'aws-cdk-lib/aws-eks';
+import { Cluster, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion, ICluster } from 'aws-cdk-lib/aws-eks';
 import { FederatedPrincipal, IRole, ManagedPolicy, Policy, PolicyDocument, Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './eks-controllers-version';
@@ -17,9 +17,9 @@ import { Utils } from '../../../../utils';
  * @param {Construct} scope the CDK scope to create resources in
  * @param {ICluster} cluster the EKS cluster to install the CSI driver in
  * @param {KubernetesVersion} eksClusterK8sVersion the Kubernetes version of the EKS cluster
- * @return {ServiceAccount} the IAM role used by the CSI driver
+ * @return {IRole} the IAM role used by the CSI driver
  */
-export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksClusterK8sVersion: KubernetesVersion): ServiceAccount {
+export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksClusterK8sVersion: KubernetesVersion): IRole {
 
   const ebsCsiDriverIrsa = cluster.addServiceAccount('EbsCsiDriverSa', {
     name: 'ebs-csi-controller-sa',
@@ -62,7 +62,7 @@ export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksCluste
     },
   });
 
-  return ebsCsiDriverIrsa;
+  return ebsCsiDriverIrsa.role;
 }
 
 /**

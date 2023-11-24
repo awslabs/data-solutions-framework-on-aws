@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { SubnetType, ISubnet, SecurityGroup, Port } from 'aws-cdk-lib/aws-ec2';
+import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
-import { Rule } from 'aws-cdk-lib/aws-events';
+import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
 import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Queue } from 'aws-cdk-lib/aws-sqs';
+import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
 import { Context, Utils } from '../../../../utils';
@@ -79,7 +79,7 @@ export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: 
    * @param {CfnInstanceProfile} instanceProfile the IAM instance profile to use for the Karpenter nodes
    * @param {IRole} nodeRole the IAM role to use for the Karpenter nodes
    * @param {KarpenterVersion} karpenterVersion the Karpenter version to use for the provisioners
-   * @return {HelmChart} the Karpenter Helm chart to install
+   * @return {[HelmChart, IRole, IQueue, Array<IRule>]} the Helm chart to install, the IAM Role for service account, the SQS queue and the EventBridge rules for Karpenter
    */
 export function karpenterSetup(cluster: ICluster,
   clusterName: string,
@@ -88,7 +88,7 @@ export function karpenterSetup(cluster: ICluster,
   nodeRole: IRole,
   karpenterRemovalPolicy: RemovalPolicy,
   karpenterVersion?: KarpenterVersion,
-): [HelmChart, Queue, SecurityGroup, Array<Rule> ] {
+): [HelmChart, IRole, IQueue, ISecurityGroup, Array<IRule> ] {
 
   const removalPolicy = Context.revertRemovalPolicy(scope, karpenterRemovalPolicy);
 
@@ -407,5 +407,5 @@ export function karpenterSetup(cluster: ICluster,
 
   manifestApply.node.addDependency(karpenterChart);
 
-  return [karpenterChart, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]] ;
+  return [karpenterChart, karpenterAccount.role, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]] ;
 }

@@ -64,33 +64,36 @@ export interface SparkEmrContainersRuntimeProps {
   readonly kubectlLambdaLayer: ILayerVersion;
 
   /**
-   * The CIDR of the VPC to use with EKS. If provided, a VPC with three public subnets and three private subnets is created
-   * The size of the private subnets is four time the one of the public subnet
+   * The CIDR of the VPC to use when creating the EKS cluster. If provided, a VPC with three public subnets and three private subnets is created. 
+   * The size of the private subnets is four time the one of the public subnet.
    * @default - A vpc with the following CIDR 10.0.0.0/16 will be used
    */
   readonly vpcCidr?: string;
-
   /**
-   * The VPC object where to deploy the EKS cluster
-   * VPC should have at least two private and public subnets in different Availability Zones
-   * All private subnets should have the following tags:
-   * 'for-use-with-amazon-emr-managed-policies'='true'
-   * 'kubernetes.io/role/internal-elb'='1'
-   * All public subnets should have the following tag:
-   * 'kubernetes.io/role/elb'='1'
+   * The VPC to use when creating the EKS cluster. 
+   * VPC should have at least two private and public subnets in different Availability Zones. 
+   * All private subnets should have the following tags: 
+   *  * 'for-use-with-amazon-emr-managed-policies'='true'
+   *  * 'kubernetes.io/role/internal-elb'='1'
+   * All public subnets should have the following tag: 
+   *  * 'kubernetes.io/role/elb'='1'
    * Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence.
    */
   readonly eksVpc?: IVpc;
-
   /**
-  * The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
-  */
+   * The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
+   */
   readonly publicAccessCIDRs: string[];
-
   /**
-  * Wether we need to create an EMR on EKS Service Linked Role
-  * @default - true
-  */
+   * The role used for the cluster nodes instance profile.
+   * @default - A role is created with AmazonEKSWorkerNodePolicy, AmazonEC2ContainerRegistryReadOnly,
+   * AmazonSSMManagedInstanceCore and AmazonEKS_CNI_Policy AWS managed policies
+   */
+  readonly ec2InstanceRole?: IRole;
+  /**
+   * Wether we need to create an EMR on EKS Service Linked Role
+   * @default - true
+   */
   readonly createEmrOnEksServiceLinkedRole?: boolean;
 
   /**

@@ -13,7 +13,6 @@ import {
   HelmChart,
   ICluster,
   KubernetesVersion,
-  ServiceAccount,
 } from 'aws-cdk-lib/aws-eks';
 import { CfnVirtualCluster } from 'aws-cdk-lib/aws-emrcontainers';
 import { IRule } from 'aws-cdk-lib/aws-events';
@@ -77,9 +76,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   }
 
   public readonly eksCluster: ICluster;
-  public readonly csiDriverIrsa?: ServiceAccount;
+  public readonly csiDriverIrsaRole?: IRole;
   public readonly awsNodeRole?: IRole;
-  public readonly ec2InstanceNodeGroupRole: Role;
+  public readonly ec2InstanceNodeGroupRole: IRole;
+  public readonly karpenterIrsaRole?: IRole;
   public readonly karpenterQueue?: IQueue;
   public readonly karpenterSecurityGroup?: ISecurityGroup;
   public readonly karpenterEventRules?: Array<IRule>;
@@ -123,7 +123,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     let removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     // Create a role to be used as instance profile for nodegroups
-    this.ec2InstanceNodeGroupRole = new Role(this, 'Ec2InstanceNodeGroupRole', {
+    this.ec2InstanceNodeGroupRole = props.ec2InstanceRole || new Role(this, 'Ec2InstanceNodeGroupRole', {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
     });
 
@@ -203,7 +203,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       }
 
       // Configure the EBS CSI controler
-      this.csiDriverIrsa = ebsCsiDriverSetup(this, eksCluster, props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION);
+      this.csiDriverIrsaRole = ebsCsiDriverSetup(this, eksCluster, props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION);
 
       // Configure the AWS Node Role
       this.awsNodeRole = awsNodeRoleSetup(this, eksCluster);
@@ -212,7 +212,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       toolingManagedNodegroupSetup(this, eksCluster, this.ec2InstanceNodeGroupRole);
 
       //Deploy karpenter
-      [this.karpenterChart, this.karpenterQueue, this.karpenterSecurityGroup, this.karpenterEventRules] = karpenterSetup(
+      [this.karpenterChart, this.karpenterIrsaRole, this.karpenterQueue, this.karpenterSecurityGroup, this.karpenterEventRules] = karpenterSetup(
         eksCluster,
         clusterName,
         scope,

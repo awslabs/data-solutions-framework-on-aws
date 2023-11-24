@@ -14,6 +14,7 @@ import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { SparkEmrContainersRuntime } from '../../../src/processing';
+import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 
 describe('With default configuration, the construct ', () => {
 
@@ -886,4 +887,58 @@ describe('With DESTROY removal policy and global data removal unset, the constru
       DeletionPolicy: 'Retain',
     });
   });
+});
+
+describe('With provided EKS cluster, the construct ', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const cluster = new Cluster(emrEksClusterStack, 'Cluster', {
+    clusterName: 'myName',
+    version: KubernetesVersion.V1_28,
+  })
+
+  SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksCluster: cluster,
+    eksClusterName: cluster.clusterName,
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+  console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should not create any VPC or any EKS Cluster', () => {
+    template.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 0);
+    template.resourceCountIs('AWS::EC2::VPC', 0);
+    template.resourceCountIs('AWS::EC2::Subnet', 0);
+    template.resourceCountIs('AWS::EC2::RouteTable', 0);
+    template.resourceCountIs('AWS::EC2::SubnetRouteTableAssociation', 0);
+    template.resourceCountIs('AWS::EC2::Route', 0);
+    template.resourceCountIs('AWS::EC2::EIP', 0);
+    template.resourceCountIs('AWS::EC2::NatGateway', 0);
+    template.resourceCountIs('AWS::EC2::InternetGateway', 0);
+    template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 0);
+    template.resourceCountIs('AWS::EC2::FlowLog', 0);
+    template.resourceCountIs('AWS::EC2::VPCEndpoint', 0);
+    template.resourceCountIs('AWS::Logs::LogGroup', 0);
+  });
+
+  test('should not configure the cluster with cert managed, EBS CSI driver and Karpenter', () => {
+    template.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 0);
+    template.resourceCountIs('AWS::EC2::VPC', 0);
+    template.resourceCountIs('AWS::EC2::Subnet', 0);
+    template.resourcePropertiesCountIs('Custom::AWSCDK-EKS-HelmChart', {
+      Chart: 'cert-manager',
+      Repository: 'https://charts.jetstack.io',
+      Namespace: 'cert-manager',
+    }, 0);
+  });
+
 });
