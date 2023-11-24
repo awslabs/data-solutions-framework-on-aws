@@ -75,7 +75,7 @@ beforeAll(async() => {
   deployResult = await testStack.deploy();
 }, 6000000);
 
-it('Serverless runtime created successfully', async () => {
+it('Containers runtime created successfully', async () => {
   // THEN
   expect(deployResult.virtualClusterArn).toContain('arn');
   expect(deployResult.execRoleArn).toContain('arn');
