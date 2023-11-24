@@ -12,9 +12,9 @@
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
+import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { SparkEmrContainersRuntime } from '../../../src/processing';
-import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 
 describe('With default configuration, the construct ', () => {
 
@@ -900,7 +900,7 @@ describe('With provided EKS cluster, the construct ', () => {
   const cluster = new Cluster(emrEksClusterStack, 'Cluster', {
     clusterName: 'myName',
     version: KubernetesVersion.V1_28,
-  })
+  });
 
   SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
     eksCluster: cluster,
@@ -912,32 +912,48 @@ describe('With provided EKS cluster, the construct ', () => {
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should not create any VPC or any EKS Cluster', () => {
-    template.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 0);
-    template.resourceCountIs('AWS::EC2::VPC', 0);
-    template.resourceCountIs('AWS::EC2::Subnet', 0);
-    template.resourceCountIs('AWS::EC2::RouteTable', 0);
-    template.resourceCountIs('AWS::EC2::SubnetRouteTableAssociation', 0);
-    template.resourceCountIs('AWS::EC2::Route', 0);
-    template.resourceCountIs('AWS::EC2::EIP', 0);
-    template.resourceCountIs('AWS::EC2::NatGateway', 0);
-    template.resourceCountIs('AWS::EC2::InternetGateway', 0);
-    template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 0);
+    template.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 1);
+    template.resourceCountIs('AWS::EC2::VPC', 1);
+    template.resourceCountIs('AWS::EC2::Subnet', 4);
+    template.resourceCountIs('AWS::EC2::RouteTable', 4);
+    template.resourceCountIs('AWS::EC2::SubnetRouteTableAssociation', 4);
+    template.resourceCountIs('AWS::EC2::Route', 4);
+    template.resourceCountIs('AWS::EC2::EIP', 2);
+    template.resourceCountIs('AWS::EC2::NatGateway', 2);
+    template.resourceCountIs('AWS::EC2::InternetGateway', 1);
+    template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 0);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 0);
     template.resourceCountIs('AWS::Logs::LogGroup', 0);
   });
 
   test('should not configure the cluster with cert managed, EBS CSI driver and Karpenter', () => {
-    template.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 0);
-    template.resourceCountIs('AWS::EC2::VPC', 0);
-    template.resourceCountIs('AWS::EC2::Subnet', 0);
     template.resourcePropertiesCountIs('Custom::AWSCDK-EKS-HelmChart', {
       Chart: 'cert-manager',
       Repository: 'https://charts.jetstack.io',
       Namespace: 'cert-manager',
+    }, 0);
+    template.resourcePropertiesCountIs('Custom::AWSCDK-EKS-HelmChart', {
+      Chart: 'aws-load-balancer-controller',
+      Repository: 'https://aws.github.io/eks-charts',
+      Namespace: 'kube-system',
+    }, 0);
+    template.resourcePropertiesCountIs('AWS::EKS::Addon', {
+      AddonName: 'aws-ebs-csi-driver',
+      AddonVersion: 'v1.24.1-eksbuild.1',
+      ClusterName: {
+        Ref: Match.stringLikeRegexp('EksCluster.*'),
+      },
+      ResolveConflicts: 'OVERWRITE',
+      ServiceAccountRoleArn: {
+        'Fn::GetAtt': [
+          Match.stringLikeRegexp('.*EbsCsiDriverSaRole.*'),
+          'Arn',
+        ],
+      },
     }, 0);
   });
 

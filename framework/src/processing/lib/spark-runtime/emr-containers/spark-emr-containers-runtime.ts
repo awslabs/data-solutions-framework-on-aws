@@ -11,7 +11,6 @@ import {
   ClusterLoggingTypes,
   EndpointAccess,
   HelmChart,
-  ICluster,
   KubernetesVersion,
 } from 'aws-cdk-lib/aws-eks';
 import { CfnVirtualCluster } from 'aws-cdk-lib/aws-emrcontainers';
@@ -75,26 +74,83 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     return emrEksCluster;
   }
 
-  public readonly eksCluster: ICluster;
-  public readonly csiDriverIrsaRole?: IRole;
+  /**
+   * The EKS cluster created by the construct if it is not provided
+   */
+  public readonly eksCluster: Cluster;
+  public readonly csiDriverIrsa?: IRole;
+  /**
+   * IAM Role used by IRSA for the aws-node daemonset
+   */
   public readonly awsNodeRole?: IRole;
+  /**
+   * IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers
+   * like EBS CSI driver, core dns
+   */
   public readonly ec2InstanceNodeGroupRole: IRole;
-  public readonly karpenterIrsaRole?: IRole;
+  /**
+   * SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes.
+   */
   public readonly karpenterQueue?: IQueue;
+  /**
+   * The security group used by the EC2NodeClass of the default nodes
+   */
   public readonly karpenterSecurityGroup?: ISecurityGroup;
+  /**
+   * Rules used by Karpenter to track node health, rules are defined in the cloudformation below
+   * https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml
+   */
   public readonly karpenterEventRules?: Array<IRule>;
 
+  /**
+   * The configuration override for the spark application to use with the default nodes dedicated for notebooks
+   */
   public readonly notebookDefaultConfig?: string;
+  /**
+   * The configuration override for the spark application to use with the default nodes for criticale jobs
+   */
   public readonly criticalDefaultConfig?: string;
+  /**
+   * The configuration override for the spark application to use with the default nodes for none criticale jobs
+   */
   public readonly sharedDefaultConfig?: string;
+  /**
+   * The bucket holding podtemplates referenced in the configuration override for the job
+   */
   public readonly assetBucket?: IBucket;
-  // public readonly clusterName: string;
+
+  /**
+   * The s3 location holding the driver pod tempalte for critical nodes
+   */
   public readonly podTemplateS3LocationCriticalDriver?: string;
+  /**
+   * The s3 location holding the executor pod tempalte for critical nodes
+   */
   public readonly podTemplateS3LocationCriticalExecutor?: string;
+  /**
+   * The s3 location holding the driver pod tempalte for shared nodes
+   */
   public readonly podTemplateS3LocationDriverShared?: string;
+  /**
+   * The s3 location holding the executor pod tempalte for shared nodes
+   */
   public readonly podTemplateS3LocationExecutorShared?: string;
+  /**
+   * The s3 location holding the driver pod tempalte for interactive sessions
+   */
   public readonly podTemplateS3LocationNotebookDriver?: string;
+  /**
+   * The s3 location holding the executor pod tempalte for interactive sessions
+   */
   public readonly podTemplateS3LocationNotebookExecutor?: string;
+  /**
+   * The IAM Role created for the EBS CSI controller
+   */
+  public readonly csiDriverIrsaRole?: IRole;
+  /**
+   * The IAM role created for the Karpenter controller
+   */
+  public readonly karpenterIrsaRole?: IRole;
 
 
   private readonly emrServiceRole?: CfnServiceLinkedRole;
@@ -153,7 +209,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         removalPolicy: removalPolicy,
       });
 
-      this.eksSecretKmsKey = Stack.of(scope).node.tryFindChild('EksSecretKmsKey') as Key ?? new Key(scope, 'EksSecretKmsKey', {
+      this.eksSecretKmsKey = new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
         description: 'eks-secrets-key',
         removalPolicy: removalPolicy,
@@ -193,6 +249,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
           version: AlbControllerVersion.V2_5_1,
           policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
         },
+        placeClusterHandlerInVpc: true,
       });
 
       // Add the provided Amazon IAM Role as Amazon EKS Admin

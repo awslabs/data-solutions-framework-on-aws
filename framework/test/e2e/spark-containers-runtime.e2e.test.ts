@@ -21,7 +21,7 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkContainersTestStack', app);
 const { stack } = testStack;
 
-stack.node.setContext('@aws-data-solutions-framework/removeDataOnDestroy', true);
+stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
 const eksAdminRole = Role.fromRoleArn(stack, 'EksAdminRole', `arn:aws:iam::${stack.account}:role/role-name-with-path`);
@@ -73,9 +73,9 @@ let deployResult: Record<string, string>;
 beforeAll(async() => {
   // WHEN
   deployResult = await testStack.deploy();
-}, 1800000);
+}, 6000000);
 
-it('Serverless runtime created successfully', async () => {
+it('Containers runtime created successfully', async () => {
   // THEN
   expect(deployResult.virtualClusterArn).toContain('arn');
   expect(deployResult.execRoleArn).toContain('arn');
@@ -84,4 +84,4 @@ it('Serverless runtime created successfully', async () => {
 
 afterAll(async () => {
   await testStack.destroy();
-}, 1800000);
+}, 6000000);

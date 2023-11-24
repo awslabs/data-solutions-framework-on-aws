@@ -2,6 +2,126 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-My eks section
+A construct to deploy an EKS cluster and enable it for EMR on EKS use. 
 
+## Overview
+
+The constructs creates an EKS cluster, install the necessary controllers and enable it the be used by EMR on EKS service as described in this [documentation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up-cluster-access.html). The following are the details of the components deployed.
+
+ * An EKS cluster (VPC configuration can be customized)
+ * A tooling nodegroup to run tools to run controllers
+ * Kubernetes controlers: EBS CSI Driver, Karpenter, ALB Ingress Controller, cert-manager  
+ * Optionally Default Kaprenter NodePools and EC2NodeClass as listed [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config).
+
+The construct will upload on S3 the Pod templates required to run EMR jobs on the default Kaprenter NodePools and EC2NodeClass. It will also parse and store the configuration of EMR on EKS jobs for each default nodegroup in object parameters.
+
+
+## Usage
+
+The code snippet below shows a usage example of the `SparkEmrContainersRuntime` construct.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleSparkEmrContainersStack extends cdk.Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id);
+
+        //Layer must be changed according to the Kubernetes version used
+        const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+
+        // creation of the construct(s) under test
+        const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
+            eksAdminRole: Role.fromRoleArn(this, 'EksAdminRole' , 'arn:aws:iam::12345678912:role/role-name-with-path'),
+            publicAccessCIDRs: ['10.0.0.0/32'],
+            createEmrOnEksServiceLinkedRole: true,
+            kubectlLambdaLayer: kubectlLayer,
+        });
+
+        const s3Read = new PolicyDocument({
+        statements: [new PolicyStatement({
+            actions: [
+            's3:GetObject',
+            ],
+            resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+        })],
+        });
+
+        const s3ReadPolicy = new ManagedPolicy(this, 's3ReadPolicy', {
+            document: s3Read,
+        });
+
+        const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
+            name: 'e2e',
+            createNamespace: true,
+            eksNamespace: 'e2ens',
+        });
+
+        const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolicy, 'e2ens', 's3ReadExecRole');
+
+        new cdk.CfnOutput(this, 'virtualClusterArn', {
+            value: virtualCluster.attrArn,
+        });
+
+        new cdk.CfnOutput(this, 'execRoleArn', {
+            value: execRole.roleArn,
+        });
+
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleSparkEmrContainersStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        # Layer must be changed according to the Kubernetes version used
+        kubectl_layer = KubectlV27Layer(self, "kubectlLayer")
+
+        # creation of the construct(s) under test
+        emr_eks_cluster = SparkEmrContainersRuntime.get_or_create(self,
+            eks_admin_role=Role.from_role_arn(self, "EksAdminRole", "arn:aws:iam::12345678912:role/role-name-with-path"),
+            public_access_cIDRs=["10.0.0.0/32"],
+            create_emr_on_eks_service_linked_role=True,
+            kubectl_lambda_layer=kubectl_layer
+        )
+
+        s3_read = PolicyDocument(
+            statements=[PolicyStatement(
+                actions=["s3:GetObject"
+                ],
+                resources=["arn:aws:s3:::aws-data-analytics-workshop"]
+            )]
+        )
+
+        s3_read_policy = ManagedPolicy(self, "s3ReadPolicy",
+            document=s3_read
+        )
+
+        virtual_cluster = emr_eks_cluster.add_emr_virtual_cluster(self,
+            name="e2e",
+            create_namespace=True,
+            eks_namespace="e2ens"
+        )
+
+        exec_role = emr_eks_cluster.create_execution_role(self, "ExecRole", s3_read_policy, "e2ens", "s3ReadExecRole")
+
+        cdk.CfnOutput(self, "virtualClusterArn",
+            value=virtual_cluster.attr_arn
+        )
+
+        cdk.CfnOutput(self, "execRoleArn",
+            value=exec_role.role_arn
+        )
+  ```
+
+  </TabItem>
+</Tabs>
 

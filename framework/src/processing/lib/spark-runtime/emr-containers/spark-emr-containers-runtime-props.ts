@@ -29,7 +29,7 @@ export interface SparkEmrContainersRuntimeProps {
   readonly eksAdminRole?: IRole;
   /**
    * The EKS cluster to setup EMR on. The cluster needs to be created in the same CDK Stack.
-   * If the EKS cluster is provided, the cluster AddOns and all the controllers (Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
+   * If the EKS cluster is provided, the cluster AddOns and all the controllers (ALB Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
    * When providing an EKS cluster, the methods for adding nodegroups can still be used. They implement the best practices for running Spark on EKS.
    * @default - An EKS Cluster is created
    */
@@ -64,18 +64,18 @@ export interface SparkEmrContainersRuntimeProps {
   readonly kubectlLambdaLayer: ILayerVersion;
 
   /**
-   * The CIDR of the VPC to use when creating the EKS cluster. If provided, a VPC with three public subnets and three private subnets is created. 
+   * The CIDR of the VPC to use when creating the EKS cluster. If provided, a VPC with three public subnets and three private subnets is created.
    * The size of the private subnets is four time the one of the public subnet.
    * @default - A vpc with the following CIDR 10.0.0.0/16 will be used
    */
   readonly vpcCidr?: string;
   /**
-   * The VPC to use when creating the EKS cluster. 
-   * VPC should have at least two private and public subnets in different Availability Zones. 
-   * All private subnets should have the following tags: 
+   * The VPC to use when creating the EKS cluster.
+   * VPC should have at least two private and public subnets in different Availability Zones.
+   * All private subnets should have the following tags:
    *  * 'for-use-with-amazon-emr-managed-policies'='true'
    *  * 'kubernetes.io/role/internal-elb'='1'
-   * All public subnets should have the following tag: 
+   * All public subnets should have the following tag:
    *  * 'kubernetes.io/role/elb'='1'
    * Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence.
    */
