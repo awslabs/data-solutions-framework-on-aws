@@ -2,6 +2,8 @@ import { LernaProject } from 'lerna-projen';
 import { awscdk, Task } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
 import { Transform } from "projen/lib/javascript";
+import { dirname } from 'path';
+import { globSync } from 'glob';
 
 const CDK_VERSION = '2.109.0';
 const CDK_CONSTRUCTS_VERSION = '10.3.0';
@@ -35,6 +37,7 @@ const rootProject = new LernaProject({
     'lerna-projen',
     'ts-node',
     'typescript',
+    'glob@^10.3.6'
   ],
   peerDeps: [
     '@types/node@^16',
@@ -67,12 +70,18 @@ const rootProject = new LernaProject({
     'dist',
     '__pycache__',
     '.devcontainer',
-    '.venv'
+    '.venv',
+    'cdk.out',
+    '.DS_Store'
   ],
 
   projenrcTs: true,
 
   jest: false
+});
+
+rootProject.package.addField('resolutions', {
+  'wide-align': '1.1.5',
 });
 
 const fwkProject = new awscdk.AwsCdkConstructLibrary({
@@ -122,13 +131,14 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'rosetta',
-    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
 
   bundledDeps: [
     'js-yaml',
+    '@types/js-yaml',
     'simple-base',
-    'semver',
+    'semver'
   ],
 
   jestOptions: {
@@ -177,14 +187,26 @@ fwkProject.addTask('test:e2e', {
   exec: 'jest --passWithNoTests --updateSnapshot --group=e2e'
 });
 
+/**
+ * Task copy `resources` directories from `src` to `lib`
+ * This is to package YAML files part of the dist
+ */
+
+const copyResourcesToLibTask = fwkProject.addTask('copy-resources', {
+  description: 'Copy all resources directories from src to lib',
+});
+
+for (const from of globSync('src/**/resources', { cwd: './framework/', root: '.' })) {
+  const to = dirname(from.replace('src', 'lib'));
+  const cpCommand = `rsync -avr --exclude '*.ts' --exclude '*.js' ${from} ${to}`;
+  copyResourcesToLibTask.exec(cpCommand);
+};
+
+fwkProject.compileTask.exec('npx projen copy-resources');
+
 fwkProject.postCompileTask.prependExec('rm -f .jsii.tabl.json && jsii-rosetta extract .jsii && node generate_doc.mjs');
 
 fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
-
-fwkProject.tasks.addTask('validate-examples', {
-  description: 'Validating examples using jsii-rosetta',
-  exec: 'jsii-rosetta extract --fail .jsii'
-});
 
 const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   name: 'spark-data-lake-infra-example',
@@ -232,7 +254,8 @@ sparkDataLakeInfraExampleApp.addTask('test:e2e', {
 });
 const synthTask = sparkDataLakeInfraExampleApp.tasks.tryFind('synth:silent');
 synthTask?.reset();
-synthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
+synthTask?.prependExec(`cdk --version || npm install -g cdk@${CDK_VERSION}`);
+synthTask?.exec('cdk synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER');
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python aws_dsf` },
@@ -288,7 +311,8 @@ adsfQuickstart.addTask('test:e2e', {
 });
 const adsfQuickstartSynthTask = adsfQuickstart.tasks.tryFind('synth:silent');
 adsfQuickstartSynthTask?.reset();
-adsfQuickstartSynthTask?.exec(`npx -y cdk@${CDK_VERSION} synth -q`);
+adsfQuickstartSynthTask?.prependExec(`cdk --version || npm install -g cdk@${CDK_VERSION}`);
+adsfQuickstartSynthTask?.exec('cdk synth -q');
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python aws_dsf` },

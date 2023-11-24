@@ -3923,6 +3923,578 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### SparkEmrContainersRuntime <a name="SparkEmrContainersRuntime" id="aws-dsf.processing.SparkEmrContainersRuntime"></a>
+
+A construct to create an EKS cluster, configure it and enable it with EMR on EKS.
+
+> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime)
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster">addEmrVirtualCluster</a></code> | Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner">addKarpenterProvisioner</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole">createExecutionRole</a></code> | Create and configure a new Amazon IAM Role usable as an execution role. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate">uploadPodTemplate</a></code> | Upload podTemplates to the Amazon S3 location used by the cluster. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrContainersRuntime.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addEmrVirtualCluster` <a name="addEmrVirtualCluster" id="aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster"></a>
+
+```typescript
+public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterProps): CfnVirtualCluster
+```
+
+Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+of the stack where virtual cluster is deployed.
+
+---
+
+###### `options`<sup>Required</sup> <a name="options" id="aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.options"></a>
+
+- *Type:* aws-dsf.processing.EmrVirtualClusterProps
+
+the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}.
+
+---
+
+##### `addKarpenterProvisioner` <a name="addKarpenterProvisioner" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner"></a>
+
+```typescript
+public addKarpenterProvisioner(id: string, manifest: any): any
+```
+
+Apply the provided manifest and add the CDK dependency on EKS cluster.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner.parameter.id"></a>
+
+- *Type:* string
+
+the unique ID of the CDK resource.
+
+---
+
+###### `manifest`<sup>Required</sup> <a name="manifest" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner.parameter.manifest"></a>
+
+- *Type:* any
+
+The manifest to apply.
+
+You can use the Utils class that offers method to read yaml file and load it as a manifest
+
+---
+
+##### `createExecutionRole` <a name="createExecutionRole" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole"></a>
+
+```typescript
+public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, eksNamespace: string, name: string): Role
+```
+
+Create and configure a new Amazon IAM Role usable as an execution role.
+
+This method makes the created role assumed by the Amazon EKS cluster Open ID Connect provider.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+of the IAM role.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.id"></a>
+
+- *Type:* string
+
+of the CDK resource to be created, it should be unique across the stack.
+
+---
+
+###### `policy`<sup>Required</sup> <a name="policy" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.policy"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IManagedPolicy
+
+the execution policy to attach to the role.
+
+---
+
+###### `eksNamespace`<sup>Required</sup> <a name="eksNamespace" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.eksNamespace"></a>
+
+- *Type:* string
+
+The namespace from which the role is going to be used.
+
+MUST be the same as the namespace of the Virtual Cluster from which the job is submitted
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.name"></a>
+
+- *Type:* string
+
+Name to use for the role, required and is used to scope the iam role.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrContainersRuntime.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+##### `uploadPodTemplate` <a name="uploadPodTemplate" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate"></a>
+
+```typescript
+public uploadPodTemplate(id: string, filePath: string, removalPolicy: RemovalPolicy): void
+```
+
+Upload podTemplates to the Amazon S3 location used by the cluster.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.id"></a>
+
+- *Type:* string
+
+the unique ID of the CDK resource.
+
+---
+
+###### `filePath`<sup>Required</sup> <a name="filePath" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.filePath"></a>
+
+- *Type:* string
+
+The local path of the yaml podTemplate files to upload.
+
+---
+
+###### `removalPolicy`<sup>Required</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.getOrCreate">getOrCreate</a></code> | Get an existing EmrEksCluster based on the cluster name property or create a new one only one EKS cluster can exist per stack. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrContainersRuntime.isConstruct"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+processing.SparkEmrContainersRuntime.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrContainersRuntime.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+##### `getOrCreate` <a name="getOrCreate" id="aws-dsf.processing.SparkEmrContainersRuntime.getOrCreate"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+processing.SparkEmrContainersRuntime.getOrCreate(scope: Construct, props: SparkEmrContainersRuntimeProps)
+```
+
+Get an existing EmrEksCluster based on the cluster name property or create a new one only one EKS cluster can exist per stack.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainersRuntime.getOrCreate.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the CDK scope used to search or create the cluster.
+
+---
+
+###### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrContainersRuntime.getOrCreate.parameter.props"></a>
+
+- *Type:* aws-dsf.processing.SparkEmrContainersRuntimeProps
+
+the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole">ec2InstanceNodeGroupRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers like EBS CSI driver, core dns. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster created by the construct if it is not provided. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket holding podtemplates referenced in the configuration override for the job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM Role used by IRSA for the aws-node daemonset. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for criticale jobs. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa">csiDriverIrsa</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole">csiDriverIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role created for the EBS CSI controller. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterEventRules">karpenterEventRules</a></code> | <code>aws-cdk-lib.aws_events.IRule[]</code> | Rules used by Karpenter to track node health, rules are defined in the cloudformation below https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the EC2NodeClass of the default nodes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | The s3 location holding the driver pod tempalte for critical nodes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | The s3 location holding the executor pod tempalte for critical nodes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared">podTemplateS3LocationDriverShared</a></code> | <code>string</code> | The s3 location holding the driver pod tempalte for shared nodes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared">podTemplateS3LocationExecutorShared</a></code> | <code>string</code> | The s3 location holding the executor pod tempalte for shared nodes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver">podTemplateS3LocationNotebookDriver</a></code> | <code>string</code> | The s3 location holding the driver pod tempalte for interactive sessions. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor">podTemplateS3LocationNotebookExecutor</a></code> | <code>string</code> | The s3 location holding the executor pod tempalte for interactive sessions. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig">sharedDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for none criticale jobs. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrContainersRuntime.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `ec2InstanceNodeGroupRole`<sup>Required</sup> <a name="ec2InstanceNodeGroupRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole"></a>
+
+```typescript
+public readonly ec2InstanceNodeGroupRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers like EBS CSI driver, core dns.
+
+---
+
+##### `eksCluster`<sup>Required</sup> <a name="eksCluster" id="aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster"></a>
+
+```typescript
+public readonly eksCluster: Cluster;
+```
+
+- *Type:* aws-cdk-lib.aws_eks.Cluster
+
+The EKS cluster created by the construct if it is not provided.
+
+---
+
+##### `assetBucket`<sup>Optional</sup> <a name="assetBucket" id="aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket"></a>
+
+```typescript
+public readonly assetBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The bucket holding podtemplates referenced in the configuration override for the job.
+
+---
+
+##### `awsNodeRole`<sup>Optional</sup> <a name="awsNodeRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole"></a>
+
+```typescript
+public readonly awsNodeRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+IAM Role used by IRSA for the aws-node daemonset.
+
+---
+
+##### `criticalDefaultConfig`<sup>Optional</sup> <a name="criticalDefaultConfig" id="aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig"></a>
+
+```typescript
+public readonly criticalDefaultConfig: string;
+```
+
+- *Type:* string
+
+The configuration override for the spark application to use with the default nodes for criticale jobs.
+
+---
+
+##### `csiDriverIrsa`<sup>Optional</sup> <a name="csiDriverIrsa" id="aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa"></a>
+
+```typescript
+public readonly csiDriverIrsa: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `csiDriverIrsaRole`<sup>Optional</sup> <a name="csiDriverIrsaRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole"></a>
+
+```typescript
+public readonly csiDriverIrsaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role created for the EBS CSI controller.
+
+---
+
+##### `karpenterEventRules`<sup>Optional</sup> <a name="karpenterEventRules" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterEventRules"></a>
+
+```typescript
+public readonly karpenterEventRules: IRule[];
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule[]
+
+Rules used by Karpenter to track node health, rules are defined in the cloudformation below https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml.
+
+---
+
+##### `karpenterIrsaRole`<sup>Optional</sup> <a name="karpenterIrsaRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole"></a>
+
+```typescript
+public readonly karpenterIrsaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role created for the Karpenter controller.
+
+---
+
+##### `karpenterQueue`<sup>Optional</sup> <a name="karpenterQueue" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterQueue"></a>
+
+```typescript
+public readonly karpenterQueue: IQueue;
+```
+
+- *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes.
+
+---
+
+##### `karpenterSecurityGroup`<sup>Optional</sup> <a name="karpenterSecurityGroup" id="aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup"></a>
+
+```typescript
+public readonly karpenterSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The security group used by the EC2NodeClass of the default nodes.
+
+---
+
+##### `notebookDefaultConfig`<sup>Optional</sup> <a name="notebookDefaultConfig" id="aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig"></a>
+
+```typescript
+public readonly notebookDefaultConfig: string;
+```
+
+- *Type:* string
+
+The configuration override for the spark application to use with the default nodes dedicated for notebooks.
+
+---
+
+##### `podTemplateS3LocationCriticalDriver`<sup>Optional</sup> <a name="podTemplateS3LocationCriticalDriver" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver"></a>
+
+```typescript
+public readonly podTemplateS3LocationCriticalDriver: string;
+```
+
+- *Type:* string
+
+The s3 location holding the driver pod tempalte for critical nodes.
+
+---
+
+##### `podTemplateS3LocationCriticalExecutor`<sup>Optional</sup> <a name="podTemplateS3LocationCriticalExecutor" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor"></a>
+
+```typescript
+public readonly podTemplateS3LocationCriticalExecutor: string;
+```
+
+- *Type:* string
+
+The s3 location holding the executor pod tempalte for critical nodes.
+
+---
+
+##### `podTemplateS3LocationDriverShared`<sup>Optional</sup> <a name="podTemplateS3LocationDriverShared" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared"></a>
+
+```typescript
+public readonly podTemplateS3LocationDriverShared: string;
+```
+
+- *Type:* string
+
+The s3 location holding the driver pod tempalte for shared nodes.
+
+---
+
+##### `podTemplateS3LocationExecutorShared`<sup>Optional</sup> <a name="podTemplateS3LocationExecutorShared" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared"></a>
+
+```typescript
+public readonly podTemplateS3LocationExecutorShared: string;
+```
+
+- *Type:* string
+
+The s3 location holding the executor pod tempalte for shared nodes.
+
+---
+
+##### `podTemplateS3LocationNotebookDriver`<sup>Optional</sup> <a name="podTemplateS3LocationNotebookDriver" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver"></a>
+
+```typescript
+public readonly podTemplateS3LocationNotebookDriver: string;
+```
+
+- *Type:* string
+
+The s3 location holding the driver pod tempalte for interactive sessions.
+
+---
+
+##### `podTemplateS3LocationNotebookExecutor`<sup>Optional</sup> <a name="podTemplateS3LocationNotebookExecutor" id="aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor"></a>
+
+```typescript
+public readonly podTemplateS3LocationNotebookExecutor: string;
+```
+
+- *Type:* string
+
+The s3 location holding the executor pod tempalte for interactive sessions.
+
+---
+
+##### `sharedDefaultConfig`<sup>Optional</sup> <a name="sharedDefaultConfig" id="aws-dsf.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig"></a>
+
+```typescript
+public readonly sharedDefaultConfig: string;
+```
+
+- *Type:* string
+
+The configuration override for the spark application to use with the default nodes for none criticale jobs.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DEFAULT_CLUSTER_NAME`<sup>Required</sup> <a name="DEFAULT_CLUSTER_NAME" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME"></a>
+
+```typescript
+public readonly DEFAULT_CLUSTER_NAME: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DEFAULT_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EKS_VERSION" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION"></a>
+
+```typescript
+public readonly DEFAULT_EKS_VERSION: KubernetesVersion;
+```
+
+- *Type:* aws-cdk-lib.aws_eks.KubernetesVersion
+
+---
+
+##### `DEFAULT_EMR_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EMR_EKS_VERSION" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION"></a>
+
+```typescript
+public readonly DEFAULT_EMR_EKS_VERSION: EmrRuntimeVersion;
+```
+
+- *Type:* aws-dsf.processing.EmrRuntimeVersion
+
+---
+
+##### `DEFAULT_VPC_CIDR`<sup>Required</sup> <a name="DEFAULT_VPC_CIDR" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR"></a>
+
+```typescript
+public readonly DEFAULT_VPC_CIDR: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### SparkEmrEksJob <a name="SparkEmrEksJob" id="aws-dsf.processing.SparkEmrEksJob"></a>
 
 A construct to run Spark Jobs using EMR on EKS.
@@ -5936,6 +6508,66 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
+### EmrVirtualClusterProps <a name="EmrVirtualClusterProps" id="aws-dsf.processing.EmrVirtualClusterProps"></a>
+
+The properties for the EmrVirtualCluster Construct class.
+
+#### Initializer <a name="Initializer" id="aws-dsf.processing.EmrVirtualClusterProps.Initializer"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | name of the Amazon Emr virtual cluster to be created. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | creates Amazon EKS namespace. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.EmrVirtualClusterProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+name of the Amazon Emr virtual cluster to be created.
+
+---
+
+##### `createNamespace`<sup>Optional</sup> <a name="createNamespace" id="aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace"></a>
+
+```typescript
+public readonly createNamespace: boolean;
+```
+
+- *Type:* boolean
+- *Default:* Do not create the namespace
+
+creates Amazon EKS namespace.
+
+---
+
+##### `eksNamespace`<sup>Optional</sup> <a name="eksNamespace" id="aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace"></a>
+
+```typescript
+public readonly eksNamespace: string;
+```
+
+- *Type:* string
+- *Default:* Use the default namespace
+
+name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster.
+
+---
+
 ### NetworkConfiguration <a name="NetworkConfiguration" id="aws-dsf.utils.NetworkConfiguration"></a>
 
 A network configuration created by the vpcBootstrap function.
@@ -6270,6 +6902,232 @@ public readonly sparkImage: SparkImage;
 - *Default:* EMR v6.12 is used
 
 The EMR Spark image to use to run the unit tests.
+
+---
+
+### SparkEmrContainersRuntimeProps <a name="SparkEmrContainersRuntimeProps" id="aws-dsf.processing.SparkEmrContainersRuntimeProps"></a>
+
+The properties for the EmrEksCluster Construct class.
+
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.Initializer"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+const sparkEmrContainersRuntimeProps: processing.SparkEmrContainersRuntimeProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Wether we need to create an EMR on EKS Service Linked Role. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | If set to true, the Construct will create default EKS nodegroups or node provisioners (based on the autoscaler mechanism used). |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole">ec2InstanceRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used for the cluster nodes instance profile. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster to setup EMR on. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | Name of the Amazon EKS cluster to be created. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to use when creating the EKS cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>aws-dsf.processing.KarpenterVersion</code> | The version of karpenter to pass to Helm. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | Kubernetes version for Amazon EKS cluster that will be created The default is changed as new version version of k8s on EKS becomes available. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR of the VPC to use when creating the EKS cluster. |
+
+---
+
+##### `kubectlLambdaLayer`<sup>Required</sup> <a name="kubectlLambdaLayer" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer"></a>
+
+```typescript
+public readonly kubectlLambdaLayer: ILayerVersion;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.ILayerVersion
+
+Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct.
+
+The cdk [documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
+contains the libraries that you should add for the right Kubernetes version
+
+---
+
+##### `publicAccessCIDRs`<sup>Required</sup> <a name="publicAccessCIDRs" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs"></a>
+
+```typescript
+public readonly publicAccessCIDRs: string[];
+```
+
+- *Type:* string[]
+
+The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
+
+---
+
+##### `createEmrOnEksServiceLinkedRole`<sup>Optional</sup> <a name="createEmrOnEksServiceLinkedRole" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole"></a>
+
+```typescript
+public readonly createEmrOnEksServiceLinkedRole: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Wether we need to create an EMR on EKS Service Linked Role.
+
+---
+
+##### `defaultNodes`<sup>Optional</sup> <a name="defaultNodes" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.defaultNodes"></a>
+
+```typescript
+public readonly defaultNodes: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+If set to true, the Construct will create default EKS nodegroups or node provisioners (based on the autoscaler mechanism used).
+
+There are three types of nodes:
+ * Nodes for critical jobs which use on-demand instances, high speed disks and workload isolation
+ * Nodes for shared worklaods which uses spot instances and no isolation to optimize costs
+ * Nodes for notebooks which leverage a cost optimized configuration for running EMR managed endpoints and spark drivers/executors.
+
+---
+
+##### `ec2InstanceRole`<sup>Optional</sup> <a name="ec2InstanceRole" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole"></a>
+
+```typescript
+public readonly ec2InstanceRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A role is created with AmazonEKSWorkerNodePolicy, AmazonEC2ContainerRegistryReadOnly, AmazonSSMManagedInstanceCore and AmazonEKS_CNI_Policy AWS managed policies
+
+The role used for the cluster nodes instance profile.
+
+---
+
+##### `eksAdminRole`<sup>Optional</sup> <a name="eksAdminRole" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole"></a>
+
+```typescript
+public readonly eksAdminRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
+
+An admin role must be passed if `eksCluster` property is not set.
+You will use this role to manage the EKS cluster and grant other access to it.
+
+---
+
+##### `eksCluster`<sup>Optional</sup> <a name="eksCluster" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster"></a>
+
+```typescript
+public readonly eksCluster: Cluster;
+```
+
+- *Type:* aws-cdk-lib.aws_eks.Cluster
+- *Default:* An EKS Cluster is created
+
+The EKS cluster to setup EMR on.
+
+The cluster needs to be created in the same CDK Stack.
+If the EKS cluster is provided, the cluster AddOns and all the controllers (ALB Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
+When providing an EKS cluster, the methods for adding nodegroups can still be used. They implement the best practices for running Spark on EKS.
+
+---
+
+##### `eksClusterName`<sup>Optional</sup> <a name="eksClusterName" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksClusterName"></a>
+
+```typescript
+public readonly eksClusterName: string;
+```
+
+- *Type:* string
+- *Default:* The [default cluster name]{@link DEFAULT_CLUSTER_NAME }
+
+Name of the Amazon EKS cluster to be created.
+
+---
+
+##### `eksVpc`<sup>Optional</sup> <a name="eksVpc" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksVpc"></a>
+
+```typescript
+public readonly eksVpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The VPC to use when creating the EKS cluster.
+
+VPC should have at least two private and public subnets in different Availability Zones.
+All private subnets should have the following tags:
+ * 'for-use-with-amazon-emr-managed-policies'='true'
+ * 'kubernetes.io/role/internal-elb'='1'
+All public subnets should have the following tag:
+ * 'kubernetes.io/role/elb'='1'
+Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence.
+
+---
+
+##### `karpenterVersion`<sup>Optional</sup> <a name="karpenterVersion" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion"></a>
+
+```typescript
+public readonly karpenterVersion: KarpenterVersion;
+```
+
+- *Type:* aws-dsf.processing.KarpenterVersion
+- *Default:* The [default Karpenter version]{@link DEFAULT_KARPENTER_VERSION }
+
+The version of karpenter to pass to Helm.
+
+---
+
+##### `kubernetesVersion`<sup>Optional</sup> <a name="kubernetesVersion" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion"></a>
+
+```typescript
+public readonly kubernetesVersion: KubernetesVersion;
+```
+
+- *Type:* aws-cdk-lib.aws_eks.KubernetesVersion
+- *Default:* Kubernetes version {@link DEFAULT_EKS_VERSION }
+
+Kubernetes version for Amazon EKS cluster that will be created The default is changed as new version version of k8s on EKS becomes available.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+Resources like Amazon cloudwatch log or Amazon S3 bucket
+If DESTROY is selected, context value
+
+---
+
+##### `vpcCidr`<sup>Optional</sup> <a name="vpcCidr" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.property.vpcCidr"></a>
+
+```typescript
+public readonly vpcCidr: string;
+```
+
+- *Type:* string
+- *Default:* A vpc with the following CIDR 10.0.0.0/16 will be used
+
+The CIDR of the VPC to use when creating the EKS cluster.
+
+If provided, a VPC with three public subnets and three private subnets is created.
+The size of the private subnets is four time the one of the public subnet.
 
 ---
 
@@ -7333,6 +8191,126 @@ Internal function to convert camel case properties to pascal case as required by
 
 
 
+### Utils <a name="Utils" id="aws-dsf.utils.Utils"></a>
+
+Utilities class used across the different resources.
+
+#### Initializers <a name="Initializers" id="aws-dsf.utils.Utils.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+new utils.Utils()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
+| <code><a href="#aws-dsf.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
+| <code><a href="#aws-dsf.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
+| <code><a href="#aws-dsf.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
+| <code><a href="#aws-dsf.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
+
+---
+
+##### `loadYaml` <a name="loadYaml" id="aws-dsf.utils.Utils.loadYaml"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.loadYaml(document: string)
+```
+
+Take a document stored as string and load it as YAML.
+
+###### `document`<sup>Required</sup> <a name="document" id="aws-dsf.utils.Utils.loadYaml.parameter.document"></a>
+
+- *Type:* string
+
+the document stored as string.
+
+---
+
+##### `randomize` <a name="randomize" id="aws-dsf.utils.Utils.randomize"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.randomize(name: string)
+```
+
+Create a random string to be used as a seed for IAM User password.
+
+###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.utils.Utils.randomize.parameter.name"></a>
+
+- *Type:* string
+
+the string to which to append a random string.
+
+---
+
+##### `readYamlDocument` <a name="readYamlDocument" id="aws-dsf.utils.Utils.readYamlDocument"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.readYamlDocument(path: string)
+```
+
+Read a YAML file from the path provided and return it.
+
+###### `path`<sup>Required</sup> <a name="path" id="aws-dsf.utils.Utils.readYamlDocument.parameter.path"></a>
+
+- *Type:* string
+
+the path to the file.
+
+---
+
+##### `stringSanitizer` <a name="stringSanitizer" id="aws-dsf.utils.Utils.stringSanitizer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.stringSanitizer(toSanitize: string)
+```
+
+Sanitize a string by removing upper case and replacing special characters except underscore.
+
+###### `toSanitize`<sup>Required</sup> <a name="toSanitize" id="aws-dsf.utils.Utils.stringSanitizer.parameter.toSanitize"></a>
+
+- *Type:* string
+
+the string to sanitize.
+
+---
+
+##### `toPascalCase` <a name="toPascalCase" id="aws-dsf.utils.Utils.toPascalCase"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.toPascalCase(text: string)
+```
+
+Convert a string to PascalCase.
+
+###### `text`<sup>Required</sup> <a name="text" id="aws-dsf.utils.Utils.toPascalCase.parameter.text"></a>
+
+- *Type:* string
+
+---
+
+
+
 
 ## Enums <a name="Enums" id="Enums"></a>
 
@@ -7479,6 +8457,23 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 
 ##### `V5_32` <a name="V5_32" id="aws-dsf.processing.EmrRuntimeVersion.V5_32"></a>
+
+---
+
+
+### KarpenterVersion <a name="KarpenterVersion" id="aws-dsf.processing.KarpenterVersion"></a>
+
+Enum defining the Karpenter versions as defined [here](https://github.com/aws/karpenter/releases).
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
+
+---
+
+##### `V0_32_1` <a name="V0_32_1" id="aws-dsf.processing.KarpenterVersion.V0_32_1"></a>
 
 ---
 

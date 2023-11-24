@@ -11,6 +11,7 @@
     "bump": "npx projen bump",
     "compat": "npx projen compat",
     "compile": "npx projen compile",
+    "copy-resources": "npx projen copy-resources",
     "default": "npx projen default",
     "docgen": "npx projen docgen",
     "eslint": "npx projen eslint",
@@ -27,7 +28,6 @@
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
-    "validate-examples": "npx projen validate-examples",
     "watch": "npx projen watch",
     "projen": "npx projen"
   },
@@ -72,11 +72,13 @@
   },
   "dependencies": {
     "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
+    "@types/js-yaml": "^4.0.9",
     "js-yaml": "^4.1.0",
     "semver": "^7.5.4",
     "simple-base": "^1.0.0"
   },
   "bundledDependencies": [
+    "@types/js-yaml",
     "js-yaml",
     "semver",
     "simple-base"

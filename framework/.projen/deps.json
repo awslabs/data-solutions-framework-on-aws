@@ -126,6 +126,10 @@
       "type": "build"
     },
     {
+      "name": "@types/js-yaml",
+      "type": "bundled"
+    },
+    {
       "name": "js-yaml",
       "type": "bundled"
     },
