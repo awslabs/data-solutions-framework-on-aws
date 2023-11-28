@@ -41,6 +41,17 @@ jobs:
         with:
           name: build-artifact
           path: framework/dist
+      - name: Backup examples permissions
+        working-directory: examples
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        run: getfacl -R . > permissions-backup.acl
+        continue-on-error: true
+      - name: Upload examples artifact
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          name: examples-artifact
+          path: examples
   release_github:
     name: Publish to GitHub Releases
     needs: release
@@ -57,9 +68,18 @@ jobs:
         with:
           name: build-artifact
           path: framework/dist
+      - name: Download examples artifact
+        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+        with:
+          name: examples-artifact
+          path: examples          
       - name: Restore build artifact permissions
         working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
+        continue-on-error: true
+      - name: Restore examples artifact permissions
+        working-directory: examples
+        run: setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Prepare Repository
         working-directory: framework
