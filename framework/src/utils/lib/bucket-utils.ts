@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { createHmac } from 'crypto';
 import { Aws } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { Utils } from './utils';
 
 /**
  * Utils for working with Amazon S3 buckets.
@@ -23,25 +23,6 @@ export class BucketUtils {
     if (name.length > 26) {
       throw new Error('Bucket name is too long, maximum length for bucketName is 26');
     }
-    return name + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION + '-' + BucketUtils.generateHash(scope, id);
-  }
-
-  /**
-   * Generate an 8 characters hash of the CDK scope using its path.
-   * @param scope the CDK construct scope
-   * @returns the hash
-   */
-  private static generateHash(scope: Construct, id: string): string {
-    const node = scope.node;
-
-    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id);
-
-    const secret = 'Data Solutions Framework on AWS';
-    const hash = createHmac('sha256', secret)
-      .update(components)
-      .digest('hex')
-      .slice(0, 8);
-
-    return hash;
+    return name + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION + '-' + Utils.generateScopeIdHash(scope, id);
   }
 }

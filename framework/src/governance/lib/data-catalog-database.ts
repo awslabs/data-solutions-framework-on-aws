@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Names, Stack } from 'aws-cdk-lib';
+import { Stack } from 'aws-cdk-lib';
 import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
 import { AddToPrincipalPolicyResult, Effect, IPrincipal, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { DataCatalogDatabaseProps } from './data-catalog-database-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -65,9 +65,10 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
     this.dataCatalogDatabaseProps = props;
-    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    const removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
-    this.databaseName = props.name + '_' + Names.uniqueResourceName(scope, {}).toLowerCase();
+    const hash = Utils.generateScopeHash(this);
+    this.databaseName = props.name + '_' + hash.toLowerCase();
 
     let locationPrefix = props.locationPrefix;
 
@@ -155,7 +156,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
       this.crawlerLogEncryptionKey.grantEncryptDecrypt(crawlerRole);
 
       this.crawlerSecurityConfiguration = new CfnSecurityConfiguration(this, 'CrawlerSecConfiguration', {
-        name: `${props.name}-secconfig-${Names.uniqueResourceName(this, {}).toLowerCase()}`,
+        name: `${props.name}-${hash.toLowerCase()}-secconfig`,
         encryptionConfiguration: {
           cloudWatchEncryption: {
             cloudWatchEncryptionMode: 'SSE-KMS',
@@ -169,7 +170,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
         },
       });
 
-      const crawlerName = `${this.databaseName}-crawler-${Names.uniqueResourceName(this, {})}`;
+      const crawlerName = `${props.name}-${hash.toLowerCase()}-crawler`;
       this.crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
         role: crawlerRole.roleArn,
         targets: {

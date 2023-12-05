@@ -279,7 +279,7 @@ describe('DataCatalogDatabase default construct', () => {
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':database/sample_stack',
+                    Match.stringLikeRegexp('database\/sample_.*'),
                   ],
                 ],
               },
@@ -295,7 +295,7 @@ describe('DataCatalogDatabase default construct', () => {
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':table/sample_stack/*',
+                    Match.stringLikeRegexp('table\/sample_.*\/\*'),
                   ],
                 ],
               },

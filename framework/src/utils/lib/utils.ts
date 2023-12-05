@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+
+import { createHmac } from 'crypto';
 import * as fs from 'fs';
+import { Construct } from 'constructs';
 import * as yaml from 'js-yaml';
 
 /**
@@ -69,4 +72,42 @@ export class Utils {
     return text;
   }
 
+  /**
+   * Generate an 8 character hash from a string based on HMAC algorithm
+   * @param {string} text the text to hash
+   * @return {string} the hash
+   */
+  public static generateHash(text: string): string {
+    return createHmac('sha256', 'Data Solutions Framework on AWS')
+      .update(text)
+      .digest('hex')
+      .slice(0, 8);
+  }
+
+  /**
+   * Generate an 8 characters hash of the CDK scope and ID using its path.
+   * @param {Construct} scope the CDK construct scope
+   * @param {string} id the id of the construct
+   * @returns {string} the hash
+   */
+  public static generateScopeIdHash(scope: Construct, id: string): string {
+    const node = scope.node;
+
+    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id);
+
+    return this.generateHash(components);
+  }
+
+  /**
+   * Generate an 8 characters hash of the CDK scope using its path.
+   * @param {Construct} scope the CDK construct scope
+   * @returns {string} the hash
+   */
+  public static generateScopeHash(scope: Construct): string {
+    const node = scope.node;
+
+    const components = node.scopes.slice(1).map(c => c.node.id).join('-');
+
+    return this.generateHash(components);
+  }
 }
