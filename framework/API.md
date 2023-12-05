@@ -8213,11 +8213,76 @@ new utils.Utils()
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#aws-dsf.utils.Utils.generateHash">generateHash</a></code> | Generate an 8 character hash from a string based on HMAC algorithm. |
+| <code><a href="#aws-dsf.utils.Utils.generateScopeHash">generateScopeHash</a></code> | Generate an 8 characters hash of the CDK scope using its path. |
+| <code><a href="#aws-dsf.utils.Utils.generateScopeIdHash">generateScopeIdHash</a></code> | Generate an 8 characters hash of the CDK scope and ID using its path. |
 | <code><a href="#aws-dsf.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
 | <code><a href="#aws-dsf.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
 | <code><a href="#aws-dsf.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
 | <code><a href="#aws-dsf.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
 | <code><a href="#aws-dsf.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
+
+---
+
+##### `generateHash` <a name="generateHash" id="aws-dsf.utils.Utils.generateHash"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.generateHash(text: string)
+```
+
+Generate an 8 character hash from a string based on HMAC algorithm.
+
+###### `text`<sup>Required</sup> <a name="text" id="aws-dsf.utils.Utils.generateHash.parameter.text"></a>
+
+- *Type:* string
+
+the text to hash.
+
+---
+
+##### `generateScopeHash` <a name="generateScopeHash" id="aws-dsf.utils.Utils.generateScopeHash"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.generateScopeHash(scope: Construct)
+```
+
+Generate an 8 characters hash of the CDK scope using its path.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.Utils.generateScopeHash.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the CDK construct scope.
+
+---
+
+##### `generateScopeIdHash` <a name="generateScopeIdHash" id="aws-dsf.utils.Utils.generateScopeIdHash"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.Utils.generateScopeIdHash(scope: Construct, id: string)
+```
+
+Generate an 8 characters hash of the CDK scope and ID using its path.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.Utils.generateScopeIdHash.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the CDK construct scope.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.Utils.generateScopeIdHash.parameter.id"></a>
+
+- *Type:* string
+
+the id of the construct.
 
 ---
 
