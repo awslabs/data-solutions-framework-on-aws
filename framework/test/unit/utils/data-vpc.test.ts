@@ -3,6 +3,7 @@
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { DataVpc } from '../../../src/utils';
 
 /**
@@ -82,10 +83,37 @@ describe('With default configuration, the construct ', () => {
     });
   });
 
-  test('should create a log group for VPC flow log with RETAIN removal policy', () => {
+  test('should create a log group for VPC flow log with 7 days retention andRETAIN removal policy', () => {
     template.hasResource('AWS::Logs::LogGroup', {
+      Properties: Match.objectLike({
+        RetentionInDays: 7,
+      }),
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
+    });
+  });
+});
+
+describe('With default configuration, the construct ', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const dataVpc = new DataVpc(stack, 'DataVpc', {
+    vpcCidr: '10.0.0.0/16',
+    flowLogRetention: RetentionDays.TWO_WEEKS,
+  });
+
+  dataVpc.tagVpc('test-tag', 'test-value');
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create a log group for VPC flow log with custom retention period', () => {
+    template.hasResource('AWS::Logs::LogGroup', {
+      Properties: Match.objectLike({
+        RetentionInDays: 14,
+      }),
     });
   });
 });

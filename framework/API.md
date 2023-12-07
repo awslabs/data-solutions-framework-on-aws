@@ -6831,8 +6831,9 @@ const dataVpcProps: utils.DataVpcProps = { ... }
 | --- | --- | --- |
 | <code><a href="#aws-dsf.utils.DataVpcProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR to use to create the subnets in the VPC. |
 | <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key for the VPC flow log group. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRetention">flowLogRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | The retention period to apply to VPC Flow Logs. |
 | <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role for the VPC flow log. |
-| <code><a href="#aws-dsf.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The policy to apply when the bucket is removed from this stack. |
 
 ---
 
@@ -6861,6 +6862,19 @@ The KMS key for the VPC flow log group.
 
 ---
 
+##### `flowLogRetention`<sup>Optional</sup> <a name="flowLogRetention" id="aws-dsf.utils.DataVpcProps.property.flowLogRetention"></a>
+
+```typescript
+public readonly flowLogRetention: RetentionDays;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.RetentionDays
+- *Default:* One week retention
+
+The retention period to apply to VPC Flow Logs.
+
+---
+
 ##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-dsf.utils.DataVpcProps.property.flowLogRole"></a>
 
 ```typescript
@@ -6881,10 +6895,9 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN (The bucket will be orphaned).
 
-Policy to apply when the bucket is removed from this stack.
-
-* @default - RETAIN (The bucket will be orphaned).
+The policy to apply when the bucket is removed from this stack.
 
 ---
 

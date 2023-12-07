@@ -40,6 +40,8 @@ export class DataVpc extends Construct {
 
     const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
+    const retention = props.flowLogRetention || RetentionDays.ONE_WEEK;
+
     this.flowLogKey = props.flowLogKey || new Key(this, 'FlowLogKey', {
       description: 'vpc-logs-key',
       enableKeyRotation: true,
@@ -81,7 +83,7 @@ export class DataVpc extends Construct {
     //Create VPC flow log for the VPC
     this.flowLogGroup = new LogGroup(scope, 'FLowLogGroup', {
       encryptionKey: this.flowLogKey,
-      retention: RetentionDays.ONE_WEEK,
+      retention,
       removalPolicy: removalPolicy,
     });
 
