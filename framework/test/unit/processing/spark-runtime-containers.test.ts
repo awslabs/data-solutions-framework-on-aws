@@ -290,7 +290,7 @@ describe('With default configuration, the construct ', () => {
         },
         {
           Key: 'Name',
-          Value: 'Default/DsfVpc',
+          Value: 'Default/DataPlatform/Vpc',
         },
       ]),
     });
@@ -429,7 +429,6 @@ describe('With default configuration, the construct ', () => {
 
   test('should create a KMS key for encrypting VPC flow logs', () => {
     template.hasResourceProperties('AWS::KMS::Key', {
-      Description: 'log-vpc-key',
       EnableKeyRotation: true,
       KeyPolicy: Match.objectLike({
         Statement: Match.arrayWith([
@@ -709,7 +708,7 @@ describe('With default configuration, the construct ', () => {
         },
       ]),
       VpcId: {
-        Ref: Match.stringLikeRegexp('DsfVpc.*'),
+        Ref: Match.stringLikeRegexp('DataPlatformVpc.*'),
       },
     });
 
@@ -798,7 +797,7 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
   test('should create a KMS Key for VPC flow logs with DELETE removal policy', () => {
     template.hasResource('AWS::KMS::Key', {
       Properties: Match.objectLike({
-        Description: 'log-vpc-key',
+        Description: 'vpc-logs-key',
       }),
       UpdateReplacePolicy: 'Delete',
       DeletionPolicy: 'Delete',
@@ -817,9 +816,6 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
 
   test('should create a log group for VPC flow log with DELETE removal policy', () => {
     template.hasResource('AWS::Logs::LogGroup', {
-      Properties: Match.objectLike({
-        LogGroupName: '/aws/emr-eks-vpc-flow/data-platform',
-      }),
       UpdateReplacePolicy: 'Delete',
       DeletionPolicy: 'Delete',
     });
@@ -861,7 +857,7 @@ describe('With DESTROY removal policy and global data removal unset, the constru
   test('should create a KMS Key for VPC flow logs with RETAIN removal policy', () => {
     template.hasResource('AWS::KMS::Key', {
       Properties: Match.objectLike({
-        Description: 'log-vpc-key',
+        Description: 'vpc-logs-key',
       }),
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
@@ -880,9 +876,6 @@ describe('With DESTROY removal policy and global data removal unset, the constru
 
   test('should create a log group for VPC flow log with RETAIN removal policy', () => {
     template.hasResource('AWS::Logs::LogGroup', {
-      Properties: Match.objectLike({
-        LogGroupName: '/aws/emr-eks-vpc-flow/data-platform',
-      }),
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
     });

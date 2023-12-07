@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { ISecurityGroup, IVpcEndpoint, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { IGatewayVpcEndpoint, ISecurityGroup, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { CfnApplication } from 'aws-cdk-lib/aws-emrserverless';
 import { Effect, Role, PolicyDocument, PolicyStatement, ServicePrincipal, ManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
-import { Key, KeyUsage } from 'aws-cdk-lib/aws-kms';
+import { IKey } from 'aws-cdk-lib/aws-kms';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import * as semver from 'semver';
 import { SparkEmrServerlessRuntimeProps } from './spark-emr-runtime-serverless-props';
-import { Context, NetworkConfiguration, TrackedConstruct, TrackedConstructProps, vpcBootstrap } from '../../../../utils';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../../utils';
 import { EMR_DEFAULT_VERSION, EmrRuntimeVersion } from '../../emr-releases';
 
 /**
@@ -118,6 +119,10 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
     }));
 
   }
+  /**
+   * The default CIDR for the VPC when it is created
+   */
+  private static readonly DEFAULT_CIDR = '10.0.0.0/16';
 
   /**
    * The EMR Serverless application
@@ -132,16 +137,24 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   public readonly emrApplicationSecurityGroup?: ISecurityGroup;
 
   /**
-   * If no VPC is provided, one is created by default
-   * This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3
-   * The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}
+   * The VPC used by the EKS cluster
    */
-  public readonly s3GatewayVpcEndpoint?: IVpcEndpoint;
-
+  public readonly vpc?: IVpc;
   /**
-   * The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs.
+   * The KMS Key used for the VPC flow log when the VPC is created
    */
-  public readonly networkConfiguration?: NetworkConfiguration;
+  public readonly flowLogKey?: IKey;
+  /**
+   * The IAM Role used for the VPC flow log when the VPC is created
+   */
+  public readonly flowLogRole?: IRole;
+  /**
+   * The CloudWatch Log Group for the VPC flow log when the VPC is created
+   */
+  public readonly flowLogGroup?: ILogGroup;/**
+   * The S3 VPC endpoint attached to the private subnets of the VPC when VPC is created
+   */
+  public readonly s3VpcEndpoint?: IGatewayVpcEndpoint;
 
   /**
    * @param {Construct} scope the Scope of the CDK Construct
@@ -171,24 +184,24 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
     if (!props.networkConfiguration) {
 
-      const logKmsKey: Key = new Key(scope, 'logKmsKey', {
-        enableKeyRotation: true,
-        alias: `flowlog-vpc-key-for-emr-application-${props.name}`,
-        removalPolicy: removalPolicy,
-        keyUsage: KeyUsage.ENCRYPT_DECRYPT,
-        description: `Key used by the VPC created for EMR serverless application ${props.name}`,
+      const dataVpc = new DataVpc(this, 'DataVpc', {
+        vpcCidr: SparkEmrServerlessRuntime.DEFAULT_CIDR,
+        removalPolicy,
       });
-
-      this.networkConfiguration = vpcBootstrap(scope, '10.0.0.0/16', logKmsKey, props.removalPolicy, undefined, props.name);
+      this.vpc = dataVpc.vpc;
+      this.flowLogKey = dataVpc.flowLogKey;
+      this.flowLogRole = dataVpc.flowLogRole;
+      this.flowLogGroup = dataVpc.flowLogGroup;
+      this.s3VpcEndpoint = dataVpc.s3VpcEndpoint;
 
       let privateSubnetIds: string [] = [];
 
-      this.networkConfiguration.vpc.privateSubnets.forEach( function (subnet) {
+      this.vpc.privateSubnets.forEach( function (subnet) {
         privateSubnetIds.push(subnet.subnetId);
       });
 
       this.emrApplicationSecurityGroup = new SecurityGroup(this, 'SecurityGroup', {
-        vpc: this.networkConfiguration.vpc,
+        vpc: this.vpc,
         description: `Security group used by emr serverless application ${props.name}`,
       });
 
@@ -196,8 +209,6 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
         securityGroupIds: [this.emrApplicationSecurityGroup.securityGroupId],
         subnetIds: privateSubnetIds,
       };
-
-      this.s3GatewayVpcEndpoint = this.networkConfiguration.s3GatewayVpcEndpoint;
     }
 
 
