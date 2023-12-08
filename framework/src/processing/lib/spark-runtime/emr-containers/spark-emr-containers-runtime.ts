@@ -4,7 +4,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Aws, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
-import { ISecurityGroup, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { IGatewayVpcEndpoint, ISecurityGroup, IVpc } from 'aws-cdk-lib/aws-ec2';
 import {
   AlbControllerVersion,
   Cluster,
@@ -29,6 +29,7 @@ import {
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Bucket, BucketEncryption, IBucket, Location } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
@@ -41,7 +42,7 @@ import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
 import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
-import { Context, TrackedConstruct, TrackedConstructProps, Utils, vpcBootstrap } from '../../../../utils';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 
@@ -151,14 +152,32 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * The IAM role created for the Karpenter controller
    */
   public readonly karpenterIrsaRole?: IRole;
-
+  /**
+   * The VPC used by the EKS cluster
+   */
+  public readonly vpc!: IVpc;
+  /**
+   * The KMS Key used for the VPC flow log when the VPC is created
+   */
+  public readonly flowLogKey?: IKey;
+  /**
+   * The IAM Role used for the VPC flow log when the VPC is created
+   */
+  public readonly flowLogRole?: IRole;
+  /**
+   * The S3 VPC endpoint attached to the private subnets of the VPC when VPC is created
+   */
+  public readonly s3VpcEndpoint?: IGatewayVpcEndpoint;
+  /**
+   * The CloudWatch Log Group for the VPC flow log when the VPC is created
+   */
+  public readonly flowLogGroup?: ILogGroup;
 
   private readonly emrServiceRole?: CfnServiceLinkedRole;
   private readonly assetUploadBucketRole?: IRole;
   private readonly karpenterChart?: HelmChart;
   private readonly defaultNodes?: boolean;
   private readonly createEmrOnEksServiceLinkedRole?: boolean;
-  private readonly logKmsKey?: IKey;
   private readonly eksSecretKmsKey?: IKey;
   private readonly podTemplateLocation: Location;
   private readonly podTemplatePolicy: PolicyDocument;
@@ -203,12 +222,6 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
     if (props.eksCluster == undefined) {
 
-      this.logKmsKey = new Key(scope, 'LogKmsKey', {
-        enableKeyRotation: true,
-        description: 'log-vpc-key',
-        removalPolicy: removalPolicy,
-      });
-
       this.eksSecretKmsKey = new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
         description: 'eks-secrets-key',
@@ -234,7 +247,21 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
       const vpcCidr = props.vpcCidr ? props.vpcCidr : SparkEmrContainersRuntime.DEFAULT_VPC_CIDR;
 
-      let eksVpc: IVpc = props.eksVpc ? props.eksVpc : vpcBootstrap (scope, vpcCidr, this.logKmsKey, removalPolicy, clusterName, undefined).vpc;
+      if (props.eksVpc === undefined) {
+        const dataVpc = new DataVpc(this, 'DataVpc', {
+          vpcCidr,
+          removalPolicy,
+        });
+        this.vpc = dataVpc.vpc;
+        this.flowLogKey = dataVpc.flowLogKey;
+        this.flowLogRole = dataVpc.flowLogRole;
+        this.flowLogGroup = dataVpc.flowLogGroup;
+        this.s3VpcEndpoint = dataVpc.s3VpcEndpoint;
+        // tag the VPC and subnets for Karpenter
+        dataVpc.tagVpc('karpenter.sh/discovery', clusterName);
+      } else {
+        this.vpc = props.eksVpc;
+      }
 
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
@@ -242,7 +269,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         version: props.kubernetesVersion ?? SparkEmrContainersRuntime.DEFAULT_EKS_VERSION,
         clusterLogging: eksClusterLogging,
         kubectlLayer: props.kubectlLambdaLayer,
-        vpc: eksVpc,
+        vpc: this.vpc,
         endpointAccess: EndpointAccess.PUBLIC_AND_PRIVATE,
         secretsEncryptionKey: this.eksSecretKmsKey,
         albController: {

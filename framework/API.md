@@ -3357,6 +3357,209 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### DataVpc <a name="DataVpc" id="aws-dsf.utils.DataVpc"></a>
+
+#### Initializers <a name="Initializers" id="aws-dsf.utils.DataVpc.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+new utils.DataVpc(scope: Construct, id: string, props: DataVpcProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.DataVpc.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.DataVpc.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.DataVpc.Initializer.parameter.props">props</a></code> | <code>aws-dsf.utils.DataVpcProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.DataVpc.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.DataVpc.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.utils.DataVpc.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.utils.DataVpcProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.utils.DataVpc.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.utils.DataVpc.tagVpc">tagVpc</a></code> | Tag the VPC and the subnets. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.utils.DataVpc.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `tagVpc` <a name="tagVpc" id="aws-dsf.utils.DataVpc.tagVpc"></a>
+
+```typescript
+public tagVpc(key: string, value: string): void
+```
+
+Tag the VPC and the subnets.
+
+###### `key`<sup>Required</sup> <a name="key" id="aws-dsf.utils.DataVpc.tagVpc.parameter.key"></a>
+
+- *Type:* string
+
+the tag key.
+
+---
+
+###### `value`<sup>Required</sup> <a name="value" id="aws-dsf.utils.DataVpc.tagVpc.parameter.value"></a>
+
+- *Type:* string
+
+the tag value.
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.utils.DataVpc.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.utils.DataVpc.isConstruct"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.DataVpc.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.utils.DataVpc.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.DataVpc.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.utils.DataVpc.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group created for the VPC flow logs. |
+| <code><a href="#aws-dsf.utils.DataVpc.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt VPC flow logs. |
+| <code><a href="#aws-dsf.utils.DataVpc.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to publish VPC Flow Logs. |
+| <code><a href="#aws-dsf.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint gateway. |
+| <code><a href="#aws-dsf.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The amazon VPC created. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.utils.DataVpc.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `flowLogGroup`<sup>Required</sup> <a name="flowLogGroup" id="aws-dsf.utils.DataVpc.property.flowLogGroup"></a>
+
+```typescript
+public readonly flowLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group created for the VPC flow logs.
+
+---
+
+##### `flowLogKey`<sup>Required</sup> <a name="flowLogKey" id="aws-dsf.utils.DataVpc.property.flowLogKey"></a>
+
+```typescript
+public readonly flowLogKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used to encrypt VPC flow logs.
+
+---
+
+##### `flowLogRole`<sup>Required</sup> <a name="flowLogRole" id="aws-dsf.utils.DataVpc.property.flowLogRole"></a>
+
+```typescript
+public readonly flowLogRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used to publish VPC Flow Logs.
+
+---
+
+##### `s3VpcEndpoint`<sup>Required</sup> <a name="s3VpcEndpoint" id="aws-dsf.utils.DataVpc.property.s3VpcEndpoint"></a>
+
+```typescript
+public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint
+
+The S3 VPC endpoint gateway.
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.utils.DataVpc.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The amazon VPC created.
+
+---
+
+
 ### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.processing.PySparkApplicationPackage"></a>
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
@@ -4164,11 +4367,15 @@ the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole">ec2InstanceNodeGroupRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers like EBS CSI driver, core dns. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster created by the construct if it is not provided. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC used by the EKS cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket holding podtemplates referenced in the configuration override for the job. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM Role used by IRSA for the aws-node daemonset. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for criticale jobs. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsa">csiDriverIrsa</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole">csiDriverIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role created for the EBS CSI controller. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the VPC flow log when the VPC is created. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for the VPC flow log when the VPC is created. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the VPC flow log when the VPC is created. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterEventRules">karpenterEventRules</a></code> | <code>aws-cdk-lib.aws_events.IRule[]</code> | Rules used by Karpenter to track node health, rules are defined in the cloudformation below https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
@@ -4180,6 +4387,7 @@ the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared">podTemplateS3LocationExecutorShared</a></code> | <code>string</code> | The s3 location holding the executor pod tempalte for shared nodes. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver">podTemplateS3LocationNotebookDriver</a></code> | <code>string</code> | The s3 location holding the driver pod tempalte for interactive sessions. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor">podTemplateS3LocationNotebookExecutor</a></code> | <code>string</code> | The s3 location holding the executor pod tempalte for interactive sessions. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint attached to the private subnets of the VPC when VPC is created. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig">sharedDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for none criticale jobs. |
 
 ---
@@ -4217,6 +4425,18 @@ public readonly eksCluster: Cluster;
 - *Type:* aws-cdk-lib.aws_eks.Cluster
 
 The EKS cluster created by the construct if it is not provided.
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.processing.SparkEmrContainersRuntime.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The VPC used by the EKS cluster.
 
 ---
 
@@ -4275,6 +4495,42 @@ public readonly csiDriverIrsaRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
 The IAM Role created for the EBS CSI controller.
+
+---
+
+##### `flowLogGroup`<sup>Optional</sup> <a name="flowLogGroup" id="aws-dsf.processing.SparkEmrContainersRuntime.property.flowLogGroup"></a>
+
+```typescript
+public readonly flowLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the VPC flow log when the VPC is created.
+
+---
+
+##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="aws-dsf.processing.SparkEmrContainersRuntime.property.flowLogKey"></a>
+
+```typescript
+public readonly flowLogKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used for the VPC flow log when the VPC is created.
+
+---
+
+##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-dsf.processing.SparkEmrContainersRuntime.property.flowLogRole"></a>
+
+```typescript
+public readonly flowLogRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used for the VPC flow log when the VPC is created.
 
 ---
 
@@ -4407,6 +4663,18 @@ public readonly podTemplateS3LocationNotebookExecutor: string;
 - *Type:* string
 
 The s3 location holding the executor pod tempalte for interactive sessions.
+
+---
+
+##### `s3VpcEndpoint`<sup>Optional</sup> <a name="s3VpcEndpoint" id="aws-dsf.processing.SparkEmrContainersRuntime.property.s3VpcEndpoint"></a>
+
+```typescript
+public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint
+
+The S3 VPC endpoint attached to the private subnets of the VPC when VPC is created.
 
 ---
 
@@ -5172,8 +5440,11 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-dsf.utils.NetworkConfiguration</code> | The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the VPC flow log when the VPC is created. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for the VPC flow log when the VPC is created. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the VPC flow log when the VPC is created. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC used by the EKS cluster. |
 
 ---
 
@@ -5213,27 +5484,61 @@ If no VPC is provided, one is created by default along with a security group att
 
 ---
 
-##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.networkConfiguration"></a>
+##### `flowLogGroup`<sup>Optional</sup> <a name="flowLogGroup" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.flowLogGroup"></a>
 
 ```typescript
-public readonly networkConfiguration: NetworkConfiguration;
+public readonly flowLogGroup: ILogGroup;
 ```
 
-- *Type:* aws-dsf.utils.NetworkConfiguration
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
-The EMR Serverless application network configuration including VPC, S3 interface endpoint and flow logs.
+The CloudWatch Log Group for the VPC flow log when the VPC is created.
 
 ---
 
-##### `s3GatewayVpcEndpoint`<sup>Optional</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.s3GatewayVpcEndpoint"></a>
+##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.flowLogKey"></a>
 
 ```typescript
-public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
+public readonly flowLogKey: IKey;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.IVpcEndpoint
+- *Type:* aws-cdk-lib.aws_kms.IKey
 
-If no VPC is provided, one is created by default This attribute is used to expose the Gateway Vpc Endpoint for Amazon S3 The attribute will be undefined if you provided the `networkConfiguration` through the {@link SparkEmrServerlessRuntimeProps}.
+The KMS Key used for the VPC flow log when the VPC is created.
+
+---
+
+##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.flowLogRole"></a>
+
+```typescript
+public readonly flowLogRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used for the VPC flow log when the VPC is created.
+
+---
+
+##### `s3VpcEndpoint`<sup>Optional</sup> <a name="s3VpcEndpoint" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.s3VpcEndpoint"></a>
+
+```typescript
+public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.processing.SparkEmrServerlessRuntime.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The VPC used by the EKS cluster.
 
 ---
 
@@ -6505,6 +6810,102 @@ public readonly silverBucketName: string;
 Name of the Silver bucket.
 
 Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommended).
+
+---
+
+### DataVpcProps <a name="DataVpcProps" id="aws-dsf.utils.DataVpcProps"></a>
+
+The properties for the DataVpc construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.utils.DataVpcProps.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+const dataVpcProps: utils.DataVpcProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR to use to create the subnets in the VPC. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key for the VPC flow log group. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRetention">flowLogRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | The retention period to apply to VPC Flow Logs. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role for the VPC flow log. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The policy to apply when the bucket is removed from this stack. |
+
+---
+
+##### `vpcCidr`<sup>Required</sup> <a name="vpcCidr" id="aws-dsf.utils.DataVpcProps.property.vpcCidr"></a>
+
+```typescript
+public readonly vpcCidr: string;
+```
+
+- *Type:* string
+
+The CIDR to use to create the subnets in the VPC.
+
+---
+
+##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="aws-dsf.utils.DataVpcProps.property.flowLogKey"></a>
+
+```typescript
+public readonly flowLogKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* A new KMS key is created
+
+The KMS key for the VPC flow log group.
+
+The resource policy of the key must be configured according to the AWS documentation.
+
+> [(https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)]((https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html))
+
+---
+
+##### `flowLogRetention`<sup>Optional</sup> <a name="flowLogRetention" id="aws-dsf.utils.DataVpcProps.property.flowLogRetention"></a>
+
+```typescript
+public readonly flowLogRetention: RetentionDays;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.RetentionDays
+- *Default:* One week retention
+
+The retention period to apply to VPC Flow Logs.
+
+---
+
+##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-dsf.utils.DataVpcProps.property.flowLogRole"></a>
+
+```typescript
+public readonly flowLogRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A new IAM role is created
+
+The IAM role for the VPC flow log.
+
+The role must be configured as described in the AWS VPC Flow Log documentation.
+
+> [(https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role)]((https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role))
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.utils.DataVpcProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN The resources will not be deleted.
+
+The policy to apply when the bucket is removed from this stack.
 
 ---
 

@@ -1,0 +1,148 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/utils)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Amazon VPC optimized for data platforms.
+
+## Overview
+
+`DataVpc` construct provides a standard Amazon VPC with best practices for secuity and data platforms implementations:
+- The VPC is created with public and private subnets across 3 availability zones (1 of each per AZ) and 3 NAT gateways.
+- VPC CIDR mask should be larger than 28. The CIDR is split between public and private subnets with private subnets being twice as large as public subnet. 
+- The flow logs maaged by a dedicated least-privilege IAM Role. The role can be customized.
+- The flow logs exported to an Amazon CloudWatch LogGroup encrypted with an Amazon KMS customer managed key. The KMS key can be customized.
+- A gateway VPC endpoint is created for S3 access.
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleDefaultDataVpcStack extends cdk.Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id);
+        new dsf.utils.DataVpc(this, 'MyDataVpc', {
+            vpcCidr: '10.0.0.0/16',
+        });
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleDefaultDataVpcStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        dsf.utils.DataVpc(self, "MyDataVpc",
+            vpc_cidr="10.0.0.0/16"
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+
+## VPC Flow Logs
+
+The construct logs VPC Flow logs in a Cloudwatch Log Group that is encrypted with a customer managed KMS Key. Exporting VPC Flow Logs to CloudWatch requires an IAM Role. 
+You can customize the VPC Flow Logs management with:
+- your own KMS Key. Be sure to attach the right permissions to your key. 
+Refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html) for full description.
+- your own IAM Role. Be sure to configure the proper trust policy and permissions. Refer to the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role) for full description.
+- a custom log retention policy. Default is one week.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+        const flowLogKey = Key.fromKeyArn(this, 'FlowLogKey', 'XXXXXXXXXXXXXXXXXXXXXXXX');
+
+        const flowLogRole = Role.fromRoleArn(this, 'FlowLogRole', 'XXXXXXXXXXXXXXXXXXXXXXXX');
+
+        new dsf.utils.DataVpc(this, 'MyDataVpc', {
+            vpcCidr: '10.0.0.0/16',
+            flowLogKey,
+            flowLogRole,
+            flowLogRetention: RetentionDays.TWO_WEEKS,
+        });
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+flow_log_key = Key.from_key_arn(self, "FlowLogKey", "XXXXXXXXXXXXXXXXXXXXXXXX")
+
+flow_log_role = Role.from_role_arn(self, "FlowLogRole", "XXXXXXXXXXXXXXXXXXXXXXXX")
+
+dsf.utils.DataVpc(self, "MyDataVpc",
+    vpc_cidr="10.0.0.0/16",
+    flow_log_key=flow_log_key,
+    flow_log_role=flow_log_role,
+    flow_log_retention=RetentionDays.TWO_WEEKS
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Removal policy
+
+You can specify if the Cloudwatch Log Group and the KMS encryption Key should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+
+Log group and encryption key can be destroyed when the CDK resource is destroyed only if **both** data vpc removal policy and DSF on AWS global removal policy are set to remove objects.
+
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+
+```json title="cdk.json"
+{
+  "context": {
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
+  }
+}
+```
+
+Or programmatically in your CDK app:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+        // Set context value for global data removal policy
+        this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+        new dsf.utils.DataVpc(this, 'MyDataVpc', {
+            vpcCidr: '10.0.0.0/16',
+            removalPolicy: RemovalPolicy.DESTROY
+        });
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+# Set context value for global data removal policy
+self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)
+
+dsf.utils.DataVpc(self, "MyDataVpc",
+    vpc_cidr="10.0.0.0/16",
+    removal_policy=RemovalPolicy.DESTROY
+)
+  ```
+
+  </TabItem>
+</Tabs>
+

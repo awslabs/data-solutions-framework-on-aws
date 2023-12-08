@@ -1,3 +1,53 @@
+[//]: # (utils.data-vpc)
+# DataVpc
+
+Amazon VPC optimized for data platforms.
+
+## Overview
+
+`DataVpc` construct provides a standard Amazon VPC with best practices for secuity and data platforms implementations:
+- The VPC is created with public and private subnets across 3 availability zones (1 of each per AZ) and 3 NAT gateways.
+- VPC CIDR mask should be larger than 28. The CIDR is split between public and private subnets with private subnets being twice as large as public subnet. 
+- The flow logs maaged by a dedicated least-privilege IAM Role. The role can be customized.
+- The flow logs exported to an Amazon CloudWatch LogGroup encrypted with an Amazon KMS customer managed key. The KMS key can be customized.
+- A gateway VPC endpoint is created for S3 access.
+
+## Usage
+
+[example default](./examples/data-vpc-default.lit.ts)
+
+
+## VPC Flow Logs
+
+The construct logs VPC Flow logs in a Cloudwatch Log Group that is encrypted with a customer managed KMS Key. Exporting VPC Flow Logs to CloudWatch requires an IAM Role. 
+You can customize the VPC Flow Logs management with:
+- your own KMS Key. Be sure to attach the right permissions to your key. 
+Refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html) for full description.
+- your own IAM Role. Be sure to configure the proper trust policy and permissions. Refer to the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role) for full description.
+- a custom log retention policy. Default is one week.
+
+[example custom KMS Key and IAM Role](./examples/data-vpc-flowlog.lit.ts)
+
+## Removal policy
+
+You can specify if the Cloudwatch Log Group and the KMS encryption Key should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+
+Log group and encryption key can be destroyed when the CDK resource is destroyed only if **both** data vpc removal policy and DSF on AWS global removal policy are set to remove objects.
+
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+
+```json title="cdk.json"
+{
+  "context": {
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
+  }
+}
+```
+
+Or programmatically in your CDK app:
+
+[example object removal](./examples/data-vpc-removal.lit.ts)
+
 [//]: # (utils.customization)
 # Customize DSF on AWS constructs
 

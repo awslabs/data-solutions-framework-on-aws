@@ -11,5 +11,7 @@ export * from './bucket-utils';
 export * from './step-function-utils';
 export * from './utils';
 export * from './vpc-helper';
+export * from './data-vpc';
+export * from './data-vpc-props';
 
 
