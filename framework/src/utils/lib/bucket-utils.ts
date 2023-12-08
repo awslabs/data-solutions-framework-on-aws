@@ -23,6 +23,6 @@ export class BucketUtils {
     if (name.length > 26) {
       throw new Error('Bucket name is too long, maximum length for bucketName is 26');
     }
-    return name + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION + '-' + Utils.generateScopeIdHash(scope, id);
+    return name + '-' + Aws.ACCOUNT_ID + '-' + Aws.REGION + '-' + Utils.generateUniqueHash(scope, id);
   }
 }
