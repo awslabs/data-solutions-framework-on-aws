@@ -3,6 +3,7 @@
 
 import { createHmac } from 'crypto';
 import * as fs from 'fs';
+import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as yaml from 'js-yaml';
 
@@ -85,20 +86,6 @@ export class Utils {
   }
 
   /**
-   * Generate an 8 characters hash of the CDK scope and ID using its path.
-   * @param {Construct} scope the CDK construct scope
-   * @param {string} id the id of the construct
-   * @returns {string} the hash
-   */
-  public static generateScopeIdHash(scope: Construct, id: string): string {
-    const node = scope.node;
-
-    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id);
-
-    return this.generateHash(components);
-  }
-
-  /**
    * Generate an 8 characters hash of the CDK scope using its path.
    * @param {Construct} scope the CDK construct scope
    * @returns {string} the hash
@@ -109,5 +96,23 @@ export class Utils {
     const components = node.scopes.slice(1).map(c => c.node.id).join('-');
 
     return this.generateHash(components);
+  }
+  /**
+   * Generate a unique hash of 8 characters from the CDK scope using its path and the stack name.
+   * @param scope the CDK construct scope
+   * @returns the hash
+   */
+  public static generateUniqueHash(scope: Construct, id: string): string {
+    const node = scope.node;
+    const stackName = Stack.of(scope).stackName;
+    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id, stackName);
+
+    const secret = 'Data Solutions Framework on AWS';
+    const hash = createHmac('sha256', secret)
+      .update(components)
+      .digest('hex')
+      .slice(0, 8);
+
+    return hash;
   }
 }

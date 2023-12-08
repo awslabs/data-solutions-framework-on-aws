@@ -8616,7 +8616,7 @@ new utils.Utils()
 | --- | --- |
 | <code><a href="#aws-dsf.utils.Utils.generateHash">generateHash</a></code> | Generate an 8 character hash from a string based on HMAC algorithm. |
 | <code><a href="#aws-dsf.utils.Utils.generateScopeHash">generateScopeHash</a></code> | Generate an 8 characters hash of the CDK scope using its path. |
-| <code><a href="#aws-dsf.utils.Utils.generateScopeIdHash">generateScopeIdHash</a></code> | Generate an 8 characters hash of the CDK scope and ID using its path. |
+| <code><a href="#aws-dsf.utils.Utils.generateUniqueHash">generateUniqueHash</a></code> | Generate a unique hash of 8 characters from the CDK scope using its path and the stack name. |
 | <code><a href="#aws-dsf.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
 | <code><a href="#aws-dsf.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
 | <code><a href="#aws-dsf.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
@@ -8661,17 +8661,17 @@ the CDK construct scope.
 
 ---
 
-##### `generateScopeIdHash` <a name="generateScopeIdHash" id="aws-dsf.utils.Utils.generateScopeIdHash"></a>
+##### `generateUniqueHash` <a name="generateUniqueHash" id="aws-dsf.utils.Utils.generateUniqueHash"></a>
 
 ```typescript
 import { utils } from 'aws-dsf'
 
-utils.Utils.generateScopeIdHash(scope: Construct, id: string)
+utils.Utils.generateUniqueHash(scope: Construct, id: string)
 ```
 
-Generate an 8 characters hash of the CDK scope and ID using its path.
+Generate a unique hash of 8 characters from the CDK scope using its path and the stack name.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.Utils.generateScopeIdHash.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.Utils.generateUniqueHash.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -8679,11 +8679,9 @@ the CDK construct scope.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.Utils.generateScopeIdHash.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.Utils.generateUniqueHash.parameter.id"></a>
 
 - *Type:* string
-
-the id of the construct.
 
 ---
 

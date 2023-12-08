@@ -131,29 +131,4 @@ export class DataVpc extends Construct {
     // Add tags to vpc
     Tags.of(this.vpc).add(key, value);
   }
-
-  //   if (eksClusterName) {
-
-  //     // Add tags to subnets
-  //     for (let subnet of [...vpc.publicSubnets, ...vpc.privateSubnets]) {
-  //       Tags.of(subnet).add('karpenter.sh/discovery', eksClusterName);
-  //     }
-
-  //     // Add tags to vpc
-  //     Tags.of(vpc).add('karpenter.sh/discovery', eksClusterName);
-
-  //   }
-
-  //   if (emrAppName) {
-
-  //     // Add tags to subnets
-  //     for (let subnet of [...vpc.publicSubnets, ...vpc.privateSubnets]) {
-  //       Tags.of(subnet).add('use-by', 'emr-serverless');
-  //     }
-
-  //     // Add tags to vpc
-  //     Tags.of(vpc).add('use-by', 'emr-serverless');
-
-  //   }
-  // }
 }
