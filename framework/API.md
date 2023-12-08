@@ -3482,7 +3482,7 @@ Any object.
 | <code><a href="#aws-dsf.utils.DataVpc.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group created for the VPC flow logs. |
 | <code><a href="#aws-dsf.utils.DataVpc.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt VPC flow logs. |
 | <code><a href="#aws-dsf.utils.DataVpc.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to publish VPC Flow Logs. |
-| <code><a href="#aws-dsf.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint. |
+| <code><a href="#aws-dsf.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint gateway. |
 | <code><a href="#aws-dsf.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The amazon VPC created. |
 
 ---
@@ -3543,7 +3543,7 @@ public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
 
 - *Type:* aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint
 
-The S3 VPC endpoint.
+The S3 VPC endpoint gateway.
 
 ---
 
@@ -6860,6 +6860,10 @@ public readonly flowLogKey: IKey;
 
 The KMS key for the VPC flow log group.
 
+The resource policy of the key must be configured according to the AWS documentation.
+
+> [(https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)]((https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html))
+
 ---
 
 ##### `flowLogRetention`<sup>Optional</sup> <a name="flowLogRetention" id="aws-dsf.utils.DataVpcProps.property.flowLogRetention"></a>
@@ -6886,6 +6890,10 @@ public readonly flowLogRole: IRole;
 
 The IAM role for the VPC flow log.
 
+The role must be configured as described in the AWS VPC Flow Log documentation.
+
+> [(https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role)]((https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role))
+
 ---
 
 ##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.utils.DataVpcProps.property.removalPolicy"></a>
@@ -6895,7 +6903,7 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* RETAIN (The bucket will be orphaned).
+- *Default:* RETAIN The resources will not be deleted.
 
 The policy to apply when the bucket is removed from this stack.
 

@@ -30,7 +30,7 @@ export class DataVpc extends Construct {
    */
   public readonly flowLogGroup: ILogGroup;
   /**
-   * The S3 VPC endpoint
+   * The S3 VPC endpoint gateway
    */
   public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
 
