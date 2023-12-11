@@ -52,9 +52,21 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
 
+  /**
+   *  The default EMR on EKS version
+   */
   public static readonly DEFAULT_EMR_EKS_VERSION = EMR_DEFAULT_VERSION;
+  /**
+   * The default EKS version
+   */
   public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
+  /**
+   * The default name of the EKS cluster
+   */
   public static readonly DEFAULT_CLUSTER_NAME = 'data-platform';
+  /**
+   * The default CIDR when the VPC is created
+   */
   public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
 
   /**
@@ -79,18 +91,17 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * The EKS cluster created by the construct if it is not provided
    */
   public readonly eksCluster: Cluster;
-  public readonly csiDriverIrsa?: IRole;
   /**
-   * IAM Role used by IRSA for the aws-node daemonset
+   * The IAM Role used by IRSA for the aws-node daemonset
    */
   public readonly awsNodeRole?: IRole;
   /**
-   * IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers
+   * The IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers
    * like EBS CSI driver, core dns
    */
   public readonly ec2InstanceNodeGroupRole: IRole;
   /**
-   * SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes.
+   * The SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes.
    */
   public readonly karpenterQueue?: IQueue;
   /**
@@ -98,7 +109,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    */
   public readonly karpenterSecurityGroup?: ISecurityGroup;
   /**
-   * Rules used by Karpenter to track node health, rules are defined in the cloudformation below
+   * The rules used by Karpenter to track node health, rules are defined in the cloudformation below
    * https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml
    */
   public readonly karpenterEventRules?: Array<IRule>;
@@ -121,27 +132,27 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   public readonly assetBucket?: IBucket;
 
   /**
-   * The s3 location holding the driver pod tempalte for critical nodes
+   * The S3 location holding the driver pod tempalte for critical nodes
    */
   public readonly podTemplateS3LocationCriticalDriver?: string;
   /**
-   * The s3 location holding the executor pod tempalte for critical nodes
+   * The S3 location holding the executor pod tempalte for critical nodes
    */
   public readonly podTemplateS3LocationCriticalExecutor?: string;
   /**
-   * The s3 location holding the driver pod tempalte for shared nodes
+   * The S3 location holding the driver pod tempalte for shared nodes
    */
   public readonly podTemplateS3LocationDriverShared?: string;
   /**
-   * The s3 location holding the executor pod tempalte for shared nodes
+   * The S3 location holding the executor pod tempalte for shared nodes
    */
   public readonly podTemplateS3LocationExecutorShared?: string;
   /**
-   * The s3 location holding the driver pod tempalte for interactive sessions
+   * The S3 location holding the driver pod tempalte for interactive sessions
    */
   public readonly podTemplateS3LocationNotebookDriver?: string;
   /**
-   * The s3 location holding the executor pod tempalte for interactive sessions
+   * The S3 location holding the executor pod tempalte for interactive sessions
    */
   public readonly podTemplateS3LocationNotebookExecutor?: string;
   /**
@@ -157,11 +168,11 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    */
   public readonly vpc!: IVpc;
   /**
-   * The KMS Key used for the VPC flow log when the VPC is created
+   * The KMS Key used for the VPC flow logs when the VPC is created
    */
   public readonly flowLogKey?: IKey;
   /**
-   * The IAM Role used for the VPC flow log when the VPC is created
+   * The IAM Role used for the VPC flow logs when the VPC is created
    */
   public readonly flowLogRole?: IRole;
   /**
@@ -173,12 +184,22 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    */
   public readonly flowLogGroup?: ILogGroup;
 
-  private readonly emrServiceRole?: CfnServiceLinkedRole;
-  private readonly assetUploadBucketRole?: IRole;
+  /**
+   * The Service Linked role created for EMR
+   */
+  public readonly emrServiceRole?: CfnServiceLinkedRole;
+  /**
+   * The KMS key used for storing EKS secrets
+   */
+  public readonly eksSecretKmsKey?: IKey;
+  /**
+   * The IAM role used to upload assets (pod templates) on S3
+   */
+  public readonly assetUploadBucketRole?: IRole;
+
   private readonly karpenterChart?: HelmChart;
   private readonly defaultNodes?: boolean;
   private readonly createEmrOnEksServiceLinkedRole?: boolean;
-  private readonly eksSecretKmsKey?: IKey;
   private readonly podTemplateLocation: Location;
   private readonly podTemplatePolicy: PolicyDocument;
   /**
