@@ -3,6 +3,7 @@
 
 import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Match, Annotations } from 'aws-cdk-lib/assertions';
+import { Vpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { S3DataCopy } from '../../../../src/utils';
@@ -19,25 +20,27 @@ const stack = new Stack(app, 'Stack');
 const sourceBucket = Bucket.fromBucketName(stack, 'sourceBucket', 'nyc-tlc');
 const targetBucket = Bucket.fromBucketName(stack, 'destinationBucket', 'bronze');
 
+const vpc = new Vpc(stack, 'Vpc');
+
+const securityGroup = new SecurityGroup(stack, 'SecurityGroup', {
+  vpc,
+  allowAllOutbound: true,
+});
+
 new S3DataCopy(stack, 'S3DataCopy', {
   sourceBucket,
   sourceBucketRegion: 'us-east-1',
   targetBucket,
+  vpc,
+  securityGroups: [securityGroup],
+  subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
 });
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/Policy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'The log stream name is not predictable, the ENI for VPC execution requires wildcard on network interface setup.' }],
-  true,
-);
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  'Stack/S3DataCopy/Role/DefaultPolicy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'GetObject*, List*, DeleteObject*, Abort* are provided by the grant methods on CDK L2 Bucket' }],
-  true,
+  'Stack/S3DataCopy/Provider/OnEventHandlerRole/DefaultPolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'GetObject*, List*, DeleteObject*, Abort* are provided by the grant methods from CDK L2 Bucket' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
@@ -52,13 +55,37 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/Provider/framework-onEvent',
+  'Stack/S3DataCopy/CustomResourceProvider/framework-onEvent',
   [
     { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
     { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
     { id: 'AwsSolutions-L1', reason: 'Custom Resource provider from the CDK framework' },
   ],
   true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  'Stack/S3DataCopy/Provider/VpcPolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'Inherited from DsfProvider construct' }],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  'Stack/S3DataCopy/Provider/CleanUpProvider/framework-onEvent',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'Inherited from DsfProvider construct' },
+    { id: 'AwsSolutions-IAM5', reason: 'Inherited from DsfProvider construct' },
+    { id: 'AwsSolutions-L1', reason: 'Inherited from DsfProvider construct' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  'Stack/Vpc/Resource',
+  [{ id: 'AwsSolutions-VPC7', reason: 'VPC is out of the test scope' }],
 );
 
 test('No unsuppressed Warnings', () => {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
+import { SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { TestStack } from './test-stack';
 import { S3DataCopy, Utils } from '../../src/utils';
@@ -11,7 +12,7 @@ import { S3DataCopy, Utils } from '../../src/utils';
  * @group e2e/utils/s3-data-copy
  */
 
-jest.setTimeout(6000000);
+jest.setTimeout(9000000);
 const testStack = new TestStack('S3DataCopyStack');
 const { stack } = testStack;
 
@@ -27,11 +28,16 @@ const targetBucket = new Bucket(stack, 'TargetBucket', {
   autoDeleteObjects: true,
 });
 
+const vpc = new Vpc(stack, 'Vpc');
+
 new S3DataCopy(stack, 'S3DataCopy', {
   sourceBucket,
   sourceBucketPrefix: 'trip data/',
   sourceBucketRegion: 'us-east-1',
   targetBucket,
+  removalPolicy: RemovalPolicy.DESTROY,
+  vpc,
+  subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
 });
 
 new CfnOutput(stack, 'Target', {
@@ -43,14 +49,14 @@ let deployResult: Record<string, string>;
 
 beforeAll(async() => {
   deployResult = await testStack.deploy();
-}, 900000);
+}, 9000000);
 
 test(' S3DataCopy is created', async() => {
   const regexPattern = /test-[a-z]{2}-[a-z]+-[0-9]-[0-9]{12}-[a-z0-9]{8}/;
   expect(deployResult.Target).toMatch(regexPattern);
 
-});
+} );
 
 afterAll(async () => {
   await testStack.destroy();
-}, 900000);
+}, 9000000);

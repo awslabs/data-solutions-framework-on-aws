@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { App, Stack } from 'aws-cdk-lib';
+import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { S3DataCopy } from '../../../src/utils';
@@ -29,52 +29,6 @@ describe('With default configuration, the construct ', () => {
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('should create a managed policy with least privileges', () => {
-    template.hasResourceProperties('AWS::IAM::ManagedPolicy',
-      Match.objectLike({
-        PolicyDocument: Match.objectLike({
-          Statement: [
-            {
-              Action: [
-                'logs:CreateLogGroup',
-                'logs:CreateLogStream',
-                'logs:PutLogEvents',
-              ],
-              Effect: 'Allow',
-              Resource: [
-                {
-                  'Fn::Join': Match.arrayWith([
-                    Match.arrayWith([
-                      Match.stringLikeRegexp('\:log-group\:\/aws\/lambda\/s3-data-copy\-.*'),
-                    ]),
-                  ]),
-                },
-                {
-                  'Fn::Join': Match.arrayWith([
-                    Match.arrayWith([
-                      Match.stringLikeRegexp('\:log\-group\:\/aws\/lambda\/s3\-data\-copy\-.*\:log\-stream\:\*'),
-                    ]),
-                  ]),
-                },
-              ],
-            },
-            {
-              Action: [
-                'ec2:CreateNetworkInterface',
-                'ec2:DescribeNetworkInterfaces',
-                'ec2:DeleteNetworkInterface',
-                'ec2:AssignPrivateIpAddresses',
-                'ec2:UnassignPrivateIpAddresses',
-              ],
-              Effect: 'Allow',
-              Resource: '*',
-            },
-          ],
-        }),
-      }),
-    );
-  });
-
   test('should create an IAM role for the copy', () => {
     template.hasResourceProperties('AWS::IAM::Role',
       Match.objectLike({
@@ -89,7 +43,6 @@ describe('With default configuration, the construct ', () => {
             },
           ],
         }),
-        Description: 'Role used by S3DataCopy to copy data from one S3 bucket to another',
       }),
     );
   });
@@ -99,40 +52,21 @@ describe('With default configuration, the construct ', () => {
       Match.objectLike({
         Environment: {
           Variables: {
+            AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             SOURCE_BUCKET_NAME: 'nyc-tlc',
             SOURCE_BUCKET_PREFIX: '',
             SOURCE_BUCKET_REGION: 'us-east-1',
             TARGET_BUCKET_NAME: 'bronze',
             TARGET_BUCKET_PREFIX: '',
-            // AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
           },
         },
         Handler: 'index.handler',
         Role: {
           'Fn::GetAtt': Match.arrayWith([
-            Match.stringLikeRegexp('S3DataCopyRole.*'),
+            Match.stringLikeRegexp('S3DataCopyProviderOnEventHandlerRole.*'),
           ]),
         },
         Runtime: 'nodejs20.x',
-        Timeout: 900,
-      }),
-    );
-  });
-
-  test('should set proper log retention for the custom resource', () => {
-    template.hasResourceProperties('Custom::LogRetention',
-      Match.objectLike({
-        LogGroupName: {
-          'Fn::Join': Match.arrayWith([
-            Match.arrayWith([
-              '/aws/lambda/',
-              {
-                Ref: Match.stringLikeRegexp('S3DataCopyLambda.*'),
-              },
-            ]),
-          ]),
-        },
-        RetentionInDays: 7,
       }),
     );
   });
@@ -141,7 +75,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('AWS::IAM::Policy',
       Match.objectLike({
         PolicyDocument: {
-          Statement: [
+          Statement: Match.arrayWith([
             {
               Action: [
                 's3:GetObject*',
@@ -195,8 +129,77 @@ describe('With default configuration, the construct ', () => {
                 },
               ],
             },
-          ],
+          ]),
         },
       }));
+  });
+});
+
+describe('With DESTROY removalPolicy and the global removal policy unset, the construct should', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const sourceBucket = Bucket.fromBucketName(stack, 'sourceBucket', 'nyc-tlc');
+  const targetBucket = Bucket.fromBucketName(stack, 'destinationBucket', 'bronze');
+
+  new S3DataCopy(stack, 'S3DataCopy', {
+    sourceBucket,
+    sourceBucketRegion: 'us-east-1',
+    targetBucket,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('create a custom resource with Retain policy on delete', () => {
+    template.hasResource('AWS::Logs::LogGroup',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+    template.hasResource('Custom::S3DataCopy',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+});
+
+describe('With DESTROY removalPolicy and the global removal policy set to TRUE, the construct should', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const sourceBucket = Bucket.fromBucketName(stack, 'sourceBucket', 'nyc-tlc');
+  const targetBucket = Bucket.fromBucketName(stack, 'destinationBucket', 'bronze');
+
+  new S3DataCopy(stack, 'S3DataCopy', {
+    sourceBucket,
+    sourceBucketRegion: 'us-east-1',
+    targetBucket,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('create a custom resource with Delete policy', () => {
+    template.hasResource('AWS::Logs::LogGroup',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+    template.hasResource('Custom::S3DataCopy',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
   });
 });

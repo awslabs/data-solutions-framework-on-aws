@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
+import { Aws, CfnOutput, RemovalPolicy, ResourceEnvironment } from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
@@ -19,20 +19,6 @@ import {
 } from '../../../utils';
 import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
-/**
- * The account information for deploying the Spark Application stack.
- */
-export interface AccountInfo {
-  /**
-   * The account ID to deploy the Spark Application stack
-   */
-  readonly account: string;
-
-  /**
-   * The region to deploy the Spark Application stack
-   */
-  readonly region: string;
-}
 
 /**
  * A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
@@ -268,8 +254,8 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
   /**
    * Extract PROD and STAGING account IDs and regions from the CDK context
    */
-  private getAccountFromContext(name: string): AccountInfo {
-    const account = this.node.tryGetContext(name) as AccountInfo;
+  private getAccountFromContext(name: string): ResourceEnvironment {
+    const account = this.node.tryGetContext(name) as ResourceEnvironment;
     if (!account) throw new Error(`Missing context variable ${name}`);
     return account;
   }

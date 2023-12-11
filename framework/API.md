@@ -3965,8 +3965,13 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.utils.S3DataCopy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyLambda">copyLambda</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to copy the data. |
-| <code><a href="#aws-dsf.utils.S3DataCopy.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the lambda to copy the data. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyFunction">copyFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the copy. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyLogGroup">copyLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the S3 data copy. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the copy Lambba Function. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the S3 data copy cleaning up lambda. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of EC2 Security Groups used by the Lambda Functions. |
 
 ---
 
@@ -3982,27 +3987,87 @@ The tree node.
 
 ---
 
-##### `copyLambda`<sup>Required</sup> <a name="copyLambda" id="aws-dsf.utils.S3DataCopy.property.copyLambda"></a>
+##### `copyFunction`<sup>Required</sup> <a name="copyFunction" id="aws-dsf.utils.S3DataCopy.property.copyFunction"></a>
 
 ```typescript
-public readonly copyLambda: IFunction;
+public readonly copyFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
-The Lambda function used to copy the data.
+The Lambda Function for the copy.
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.utils.S3DataCopy.property.executionRole"></a>
+##### `copyLogGroup`<sup>Required</sup> <a name="copyLogGroup" id="aws-dsf.utils.S3DataCopy.property.copyLogGroup"></a>
 
 ```typescript
-public readonly executionRole: IRole;
+public readonly copyLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the S3 data copy.
+
+---
+
+##### `copyRole`<sup>Required</sup> <a name="copyRole" id="aws-dsf.utils.S3DataCopy.property.copyRole"></a>
+
+```typescript
+public readonly copyRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
-The IAM role used by the lambda to copy the data.
+The IAM Role for the copy Lambba Function.
+
+---
+
+##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="aws-dsf.utils.S3DataCopy.property.cleanUpFunction"></a>
+
+```typescript
+public readonly cleanUpFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function for the S3 data copy cleaning up lambda.
+
+---
+
+##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="aws-dsf.utils.S3DataCopy.property.cleanUpLogGroup"></a>
+
+```typescript
+public readonly cleanUpLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the S3 data copy cleaning up lambda.
+
+---
+
+##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="aws-dsf.utils.S3DataCopy.property.cleanUpRole"></a>
+
+```typescript
+public readonly cleanUpRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the the S3 data copy cleaning up lambda.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="aws-dsf.utils.S3DataCopy.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The list of EC2 Security Groups used by the Lambda Functions.
 
 ---
 
@@ -5998,51 +6063,6 @@ public readonly DSF_TRACKING_CODE: string;
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### AccountInfo <a name="AccountInfo" id="aws-dsf.processing.AccountInfo"></a>
-
-The account information for deploying the Spark Application stack.
-
-#### Initializer <a name="Initializer" id="aws-dsf.processing.AccountInfo.Initializer"></a>
-
-```typescript
-import { processing } from 'aws-dsf'
-
-const accountInfo: processing.AccountInfo = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.processing.AccountInfo.property.account">account</a></code> | <code>string</code> | The account ID to deploy the Spark Application stack. |
-| <code><a href="#aws-dsf.processing.AccountInfo.property.region">region</a></code> | <code>string</code> | The region to deploy the Spark Application stack. |
-
----
-
-##### `account`<sup>Required</sup> <a name="account" id="aws-dsf.processing.AccountInfo.property.account"></a>
-
-```typescript
-public readonly account: string;
-```
-
-- *Type:* string
-
-The account ID to deploy the Spark Application stack.
-
----
-
-##### `region`<sup>Required</sup> <a name="region" id="aws-dsf.processing.AccountInfo.property.region"></a>
-
-```typescript
-public readonly region: string;
-```
-
-- *Type:* string
-
-The region to deploy the Spark Application stack.
-
----
-
 ### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="aws-dsf.storage.AnalyticsBucketProps"></a>
 
 Properties of the {@link AnalyticsBucket } construct.
@@ -7336,8 +7356,10 @@ const s3DataCopyProps: utils.S3DataCopyProps = { ... }
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source bucket region. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | the target bucket. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to use in the custom resource for copying data. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The policy to apply when the resource is removed from this stack. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of security groups to attach to the custom resource. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.ISubnet[]</code> | The subnets to deploy the custom resource in. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets to deploy the custom resource in. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | the target bucket prefix with a slash at the end. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the custom resource in. |
 
@@ -7392,6 +7414,32 @@ The IAM role to use in the custom resource for copying data.
 
 ---
 
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.utils.S3DataCopyProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN. The resources will not be deleted.
+
+The policy to apply when the resource is removed from this stack.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="aws-dsf.utils.S3DataCopyProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+- *Default:* If `vpc` is not supplied, no security groups are attached. Otherwise, a dedicated security group is created for each function.
+
+The list of security groups to attach to the custom resource.
+
+---
+
 ##### `sourceBucketPrefix`<sup>Optional</sup> <a name="sourceBucketPrefix" id="aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix"></a>
 
 ```typescript
@@ -7408,10 +7456,10 @@ The source bucket prefix with a slash at the end.
 ##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-dsf.utils.S3DataCopyProps.property.subnets"></a>
 
 ```typescript
-public readonly subnets: ISubnet[];
+public readonly subnets: SubnetSelection;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.ISubnet[]
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
 - *Default:* The Custom Resource is executed in VPCs owned by AWS Lambda service.
 
 The subnets to deploy the custom resource in.

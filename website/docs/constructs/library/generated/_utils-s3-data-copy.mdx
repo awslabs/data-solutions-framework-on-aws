@@ -22,20 +22,20 @@ Data copy from one bucket to another during deployment time.
 
   ```typescript
 class ExampleDefaultS3DataCopyStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
 
-        const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
-        const targetBucket = Bucket.fromBucketName(this, 'destinationBucket', 'staging-bucket');
+    const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
+    const targetBucket = Bucket.fromBucketName(this, 'destinationBucket', 'staging-bucket');
 
-        new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
-            sourceBucket,
-            sourceBucketPrefix: 'trip data/',
-            sourceBucketRegion: 'us-east-1',
-            targetBucket,
-            targetBucketPrefix: 'staging-data/',
-          });
-    }
+    new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
+      sourceBucket,
+      sourceBucketPrefix: 'trip data/',
+      sourceBucketRegion: 'us-east-1',
+      targetBucket,
+      targetBucketPrefix: 'staging-data/',
+    });
+  }
 }
   ```
   
@@ -74,18 +74,18 @@ Public subnets are not supported.
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        const vpc = Vpc.fromLookup(this, 'Vpc', { vpcName: 'my-vpc'});
-        const subnets = vpc.privateSubnets;
+    const vpc = Vpc.fromLookup(this, 'Vpc', { vpcName: 'my-vpc'});
+    const subnets = vpc.selectSubnets({subnetType: SubnetType.PRIVATE_WITH_EGRESS});
 
-        new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
-            sourceBucket,
-            sourceBucketPrefix: 'trip data/',
-            sourceBucketRegion: 'us-east-1',
-            targetBucket,
-            targetBucketPrefix: 'staging-data/',
-            vpc,
-            subnets,
-          });
+    new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
+      sourceBucket,
+      sourceBucketPrefix: 'trip data/',
+      sourceBucketRegion: 'us-east-1',
+      targetBucket,
+      targetBucketPrefix: 'staging-data/',
+      vpc,
+      subnets,
+    });
   ```
   
   ```mdx-code-block
@@ -95,7 +95,7 @@ Public subnets are not supported.
 
   ```python
 vpc = Vpc.from_lookup(self, "Vpc", vpc_name="my-vpc")
-subnets = vpc.private_subnets
+subnets = vpc.select_subnets(subnet_type=SubnetType.PRIVATE_WITH_EGRESS)
 
 dsf.utils.S3DataCopy(self, "S3DataCopy",
     source_bucket=source_bucket,
