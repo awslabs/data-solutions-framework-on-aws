@@ -3843,6 +3843,186 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### S3DataCopy <a name="S3DataCopy" id="aws-dsf.utils.S3DataCopy"></a>
+
+Copy data from one S3 bucket to another.
+
+> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/s3-data-copy](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/s3-data-copy)
+
+#### Initializers <a name="Initializers" id="aws-dsf.utils.S3DataCopy.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+new utils.S3DataCopy(scope: Construct, id: string, props: S3DataCopyProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.S3DataCopy.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.S3DataCopy.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.S3DataCopy.Initializer.parameter.props">props</a></code> | <code>aws-dsf.utils.S3DataCopyProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.S3DataCopy.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.S3DataCopy.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.utils.S3DataCopy.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.utils.S3DataCopyProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.utils.S3DataCopy.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.utils.S3DataCopy.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.utils.S3DataCopy.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.utils.S3DataCopy.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.utils.S3DataCopy.isConstruct"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+utils.S3DataCopy.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.utils.S3DataCopy.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyLambda">copyLambda</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to copy the data. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the lambda to copy the data. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.utils.S3DataCopy.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `copyLambda`<sup>Required</sup> <a name="copyLambda" id="aws-dsf.utils.S3DataCopy.property.copyLambda"></a>
+
+```typescript
+public readonly copyLambda: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function used to copy the data.
+
+---
+
+##### `copyRole`<sup>Required</sup> <a name="copyRole" id="aws-dsf.utils.S3DataCopy.property.copyRole"></a>
+
+```typescript
+public readonly copyRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used by the lambda to copy the data.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.utils.S3DataCopy.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.utils.S3DataCopy.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.processing.SparkEmrCICDPipeline"></a>
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
@@ -7190,6 +7370,134 @@ public readonly venvArchivePath: string;
 The path of the Python virtual environment archive generated in the Docker container.
 
 This is the output path used in the `venv-pack -o` command in your Dockerfile.
+
+---
+
+### S3DataCopyProps <a name="S3DataCopyProps" id="aws-dsf.utils.S3DataCopyProps"></a>
+
+Properties for S3DataCopy construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.utils.S3DataCopyProps.Initializer"></a>
+
+```typescript
+import { utils } from 'aws-dsf'
+
+const s3DataCopyProps: utils.S3DataCopyProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucket">sourceBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The source bucket. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source bucket region. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | the target bucket. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to use in the custom resource for copying data. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.ISubnet[]</code> | The subnets to deploy the custom resource in. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | the target bucket prefix with a slash at the end. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the custom resource in. |
+
+---
+
+##### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="aws-dsf.utils.S3DataCopyProps.property.sourceBucket"></a>
+
+```typescript
+public readonly sourceBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The source bucket.
+
+---
+
+##### `sourceBucketRegion`<sup>Required</sup> <a name="sourceBucketRegion" id="aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion"></a>
+
+```typescript
+public readonly sourceBucketRegion: string;
+```
+
+- *Type:* string
+
+The source bucket region.
+
+---
+
+##### `targetBucket`<sup>Required</sup> <a name="targetBucket" id="aws-dsf.utils.S3DataCopyProps.property.targetBucket"></a>
+
+```typescript
+public readonly targetBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+the target bucket.
+
+---
+
+##### `copyRole`<sup>Optional</sup> <a name="copyRole" id="aws-dsf.utils.S3DataCopyProps.property.copyRole"></a>
+
+```typescript
+public readonly copyRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A new role is created
+
+The IAM role to use in the custom resource for copying data.
+
+---
+
+##### `sourceBucketPrefix`<sup>Optional</sup> <a name="sourceBucketPrefix" id="aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix"></a>
+
+```typescript
+public readonly sourceBucketPrefix: string;
+```
+
+- *Type:* string
+- *Default:* No prefix is used
+
+The source bucket prefix with a slash at the end.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-dsf.utils.S3DataCopyProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: ISubnet[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISubnet[]
+- *Default:* The Custom Resource is executed in AWS public environment.
+
+The subnets to deploy the custom resource in.
+
+---
+
+##### `targetBucketPrefix`<sup>Optional</sup> <a name="targetBucketPrefix" id="aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix"></a>
+
+```typescript
+public readonly targetBucketPrefix: string;
+```
+
+- *Type:* string
+- *Default:* No prefix is used
+
+the target bucket prefix with a slash at the end.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.utils.S3DataCopyProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* The Custom Resource is executed in AWS public environment
+
+The VPC to deploy the custom resource in.
 
 ---
 
