@@ -31,7 +31,7 @@ export class S3DataCopy extends TrackedConstruct {
   /**
    * The IAM role used by the lambda to copy the data
    */
-  public readonly copyRole: IRole;
+  public readonly executionRole: IRole;
 
 
   constructor(scope: Construct, id: string, props: S3DataCopyProps) {
@@ -80,18 +80,18 @@ export class S3DataCopy extends TrackedConstruct {
       }),
     });
 
-    this.copyRole = props.copyRole || new Role(this, 'Role', {
+    this.executionRole = props.executionRole || new Role(this, 'Role', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       description: 'Role used by S3DataCopy to copy data from one S3 bucket to another',
     });
-    this.copyRole.addManagedPolicy(managedPolicy);
+    this.executionRole.addManagedPolicy(managedPolicy);
 
-    props.sourceBucket.grantRead(this.copyRole, `${props.sourceBucketPrefix || ''}*`);
-    props.targetBucket.grantWrite(this.copyRole, `${props.targetBucketPrefix || ''}*`);
+    props.sourceBucket.grantRead(this.executionRole, `${props.sourceBucketPrefix || ''}*`);
+    props.targetBucket.grantWrite(this.executionRole, `${props.targetBucketPrefix || ''}*`);
 
     this.copyLambda = new NodejsFunction(this, 'Lambda', {
       runtime: S3DataCopy.CR_RUNTIME,
-      role: this.copyRole,
+      role: this.executionRole,
       entry: path.join(__dirname, './resources/lambda/s3-data-copy/index.mjs'),
       timeout: Duration.minutes(15),
       environment: {
@@ -114,6 +114,7 @@ export class S3DataCopy extends TrackedConstruct {
     // Custom resource to trigger copy
     new CustomResource(this, 'CustomResource', {
       serviceToken: copyProvider.serviceToken,
+      resourceType: 'Custom::S3DataCopy',
     });
   }
 

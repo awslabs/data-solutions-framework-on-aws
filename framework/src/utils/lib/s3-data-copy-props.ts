@@ -36,15 +36,15 @@ export interface S3DataCopyProps {
      * The IAM role to use in the custom resource for copying data.
      * @default - A new role is created
      */
-  readonly copyRole?: IRole;
+  readonly executionRole?: IRole;
   /**
      * The VPC to deploy the custom resource in.
-     * @default - The Custom Resource is executed in AWS public environment
+     * @default - The Custom Resource is executed in VPCs owned by AWS Lambda service.
      */
   readonly vpc?: IVpc;
   /**
      * The subnets to deploy the custom resource in.
-     * @default - The Custom Resource is executed in AWS public environment.
+     * @default - The Custom Resource is executed in VPCs owned by AWS Lambda service.
      */
   readonly subnets?: ISubnet[];
 }

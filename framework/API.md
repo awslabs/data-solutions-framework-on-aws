@@ -3954,7 +3954,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.utils.S3DataCopy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.utils.S3DataCopy.property.copyLambda">copyLambda</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to copy the data. |
-| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the lambda to copy the data. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the lambda to copy the data. |
 
 ---
 
@@ -3982,10 +3982,10 @@ The Lambda function used to copy the data.
 
 ---
 
-##### `copyRole`<sup>Required</sup> <a name="copyRole" id="aws-dsf.utils.S3DataCopy.property.copyRole"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.utils.S3DataCopy.property.executionRole"></a>
 
 ```typescript
-public readonly copyRole: IRole;
+public readonly executionRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
@@ -7392,7 +7392,7 @@ const s3DataCopyProps: utils.S3DataCopyProps = { ... }
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucket">sourceBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The source bucket. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source bucket region. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | the target bucket. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to use in the custom resource for copying data. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to use in the custom resource for copying data. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.ISubnet[]</code> | The subnets to deploy the custom resource in. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | the target bucket prefix with a slash at the end. |
@@ -7436,10 +7436,10 @@ the target bucket.
 
 ---
 
-##### `copyRole`<sup>Optional</sup> <a name="copyRole" id="aws-dsf.utils.S3DataCopyProps.property.copyRole"></a>
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-dsf.utils.S3DataCopyProps.property.executionRole"></a>
 
 ```typescript
-public readonly copyRole: IRole;
+public readonly executionRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
@@ -7469,7 +7469,7 @@ public readonly subnets: ISubnet[];
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISubnet[]
-- *Default:* The Custom Resource is executed in AWS public environment.
+- *Default:* The Custom Resource is executed in VPCs owned by AWS Lambda service.
 
 The subnets to deploy the custom resource in.
 
@@ -7495,7 +7495,7 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
-- *Default:* The Custom Resource is executed in AWS public environment
+- *Default:* The Custom Resource is executed in VPCs owned by AWS Lambda service.
 
 The VPC to deploy the custom resource in.
 
