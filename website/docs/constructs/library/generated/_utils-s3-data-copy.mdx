@@ -1,0 +1,110 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/utils)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Data copy from one bucket to another during deployment time.
+
+## Overview
+
+`S3DataCopy` construct provides a process to copy objects from one bucket to another during CDK deployment time:
+- The copy is part of the CDK and CloudFormation deployment process. It's using a synchronous CDK Custom Resource running on AWS Lambda.
+- The Lambda function is written in Typescript and copies objects between source and target buckets.
+- The execution role used by the Lambda function is scoped to the least privileges. A custom role can be provided.
+- The Lambda can be executed in an Amazon VPC within private subnets. By default, it runs outside of any VPC.
+
+![S3 Data Copy](../../../../static/img/s3-data-copy.png)
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleDefaultS3DataCopyStack extends cdk.Stack {
+    constructor(scope: Construct, id: string) {
+        super(scope, id);
+
+        const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
+        const targetBucket = Bucket.fromBucketName(this, 'destinationBucket', 'staging-bucket');
+
+        new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
+            sourceBucket,
+            sourceBucketPrefix: 'trip data/',
+            sourceBucketRegion: 'us-east-1',
+            targetBucket,
+            targetBucketPrefix: 'staging-data/',
+          });
+    }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleDefaultS3DataCopyStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        source_bucket = Bucket.from_bucket_name(self, "sourceBucket", "nyc-tlc")
+        target_bucket = Bucket.from_bucket_name(self, "destinationBucket", "staging-bucket")
+
+        dsf.utils.S3DataCopy(self, "S3DataCopy",
+            source_bucket=source_bucket,
+            source_bucket_prefix="trip data/",
+            source_bucket_region="us-east-1",
+            target_bucket=target_bucket,
+            target_bucket_prefix="staging-data/"
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Private networks
+
+`S3DataCopy` custom resource can be run in private networks passing a VPC and a list of subnets (private subnets recommended).
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+        const vpc = Vpc.fromLookup(this, 'Vpc', { vpcName: 'my-vpc'});
+        const subnets = vpc.privateSubnets;
+
+        new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
+            sourceBucket,
+            sourceBucketPrefix: 'trip data/',
+            sourceBucketRegion: 'us-east-1',
+            targetBucket,
+            targetBucketPrefix: 'staging-data/',
+            vpc,
+            subnets,
+          });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+vpc = Vpc.from_lookup(self, "Vpc", vpc_name="my-vpc")
+subnets = vpc.private_subnets
+
+dsf.utils.S3DataCopy(self, "S3DataCopy",
+    source_bucket=source_bucket,
+    source_bucket_prefix="trip data/",
+    source_bucket_region="us-east-1",
+    target_bucket=target_bucket,
+    target_bucket_prefix="staging-data/",
+    vpc=vpc,
+    subnets=subnets
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
