@@ -67,7 +67,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
     this.dataCatalogDatabaseProps = props;
     const removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
-    const hash = Utils.generateScopeHash(this);
+    const hash = Utils.generateUniqueHash(this);
     this.databaseName = props.name + '_' + hash.toLowerCase();
 
     let locationPrefix = props.locationPrefix;
