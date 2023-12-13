@@ -99,7 +99,7 @@ export class S3DataCopy extends TrackedConstruct {
         SOURCE_BUCKET_PREFIX: props.sourceBucketPrefix || '',
         SOURCE_BUCKET_REGION: props.sourceBucketRegion,
         TARGET_BUCKET_NAME: props.targetBucket.bucketName,
-        TARGET_BUCKET_PREFIX: props.targetBucketPrefix || '',
+        TARGET_BUCKET_PREFIX: props.targetBucketPrefix || '',
       },
       vpc: props.vpc,
       vpcSubnets: props.vpc ? { subnets: props.subnets } : undefined,
