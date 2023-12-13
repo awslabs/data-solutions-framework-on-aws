@@ -4,8 +4,7 @@
 import * as path from 'path';
 import { Aws, CustomResource, Duration } from 'aws-cdk-lib';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Code, IFunction, Runtime, Function } from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
@@ -89,10 +88,11 @@ export class S3DataCopy extends TrackedConstruct {
     props.sourceBucket.grantRead(this.executionRole, `${props.sourceBucketPrefix || ''}*`);
     props.targetBucket.grantWrite(this.executionRole, `${props.targetBucketPrefix || ''}*`);
 
-    this.copyLambda = new NodejsFunction(this, 'Lambda', {
+    this.copyLambda = new Function(this, 'Lambda', {
       runtime: S3DataCopy.CR_RUNTIME,
       role: this.executionRole,
-      entry: path.join(__dirname, './resources/lambda/s3-data-copy/index.mjs'),
+      handler: 'index.handler',
+      code: Code.fromAsset(path.join(__dirname, './resources/lambda/s3-data-copy/')),
       timeout: Duration.minutes(15),
       environment: {
         SOURCE_BUCKET_NAME: props.sourceBucket.bucketName,

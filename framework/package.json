@@ -73,14 +73,12 @@
   "dependencies": {
     "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
     "@types/js-yaml": "^4.0.9",
-    "esbuild": "^0.19.9",
     "js-yaml": "^4.1.0",
     "semver": "^7.5.4",
     "simple-base": "^1.0.0"
   },
   "bundledDependencies": [
     "@types/js-yaml",
-    "esbuild",
     "js-yaml",
     "semver",
     "simple-base"

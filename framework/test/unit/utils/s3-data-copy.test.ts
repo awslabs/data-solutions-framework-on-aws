@@ -104,7 +104,7 @@ describe('With default configuration, the construct ', () => {
             SOURCE_BUCKET_REGION: 'us-east-1',
             TARGET_BUCKET_NAME: 'bronze',
             TARGET_BUCKET_PREFIX: '',
-            AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+            // AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
           },
         },
         Handler: 'index.handler',
