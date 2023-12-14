@@ -5,7 +5,8 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 
 
 /**
- * The properties for the DataVpc construct
+ * @internal
+ * The properties for the DsfProvider construct
  */
 
 export interface DsfProviderProps {
