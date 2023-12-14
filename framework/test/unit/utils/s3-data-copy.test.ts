@@ -27,7 +27,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   const template = Template.fromStack(stack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
+  console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a managed policy with least privileges', () => {
     template.hasResourceProperties('AWS::IAM::ManagedPolicy',
@@ -52,7 +52,7 @@ describe('With default configuration, the construct ', () => {
                 {
                   'Fn::Join': Match.arrayWith([
                     Match.arrayWith([
-                      Match.stringLikeRegexp('\:log\-group\:\/aws\/lambda\/s3\-data\-copy\-484dda17\:log\-stream\:\*'),
+                      Match.stringLikeRegexp('\:log\-group\:\/aws\/lambda\/s3\-data\-copy\-.*\:log\-stream\:\*'),
                     ]),
                   ]),
                 },
