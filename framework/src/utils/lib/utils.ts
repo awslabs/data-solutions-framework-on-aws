@@ -87,33 +87,16 @@ export class Utils {
   }
 
   /**
-   * Generate an 8 characters hash of the CDK scope using its path.
-   * @param {Construct} scope the CDK construct scope
-   * @returns {string} the hash
-   */
-  public static generateScopeHash(scope: Construct): string {
-    const node = scope.node;
-
-    const components = node.scopes.slice(1).map(c => c.node.id).join('-');
-
-    return this.generateHash(components);
-  }
-  /**
    * Generate a unique hash of 8 characters from the CDK scope using its path and the stack name.
    * @param scope the CDK construct scope
+   * @param id the CDK ID of the construct
    * @returns the hash
    */
-  public static generateUniqueHash(scope: Construct, id: string): string {
+  public static generateUniqueHash(scope: Construct, id?: string): string {
     const node = scope.node;
     const stackName = Stack.of(scope).stackName;
-    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id, stackName);
+    const components = node.scopes.slice(1).map(c => c.node.id).join('-').concat(id || '', stackName);
 
-    const secret = 'Data Solutions Framework on AWS';
-    const hash = createHmac('sha256', secret)
-      .update(components)
-      .digest('hex')
-      .slice(0, 8);
-
-    return hash;
+    return this.generateHash(components);
   }
 }

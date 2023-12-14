@@ -155,7 +155,7 @@ export abstract class SparkJob extends TrackedConstruct {
       // Enable CloudWatch Logs for the state machine
       this.stateMachineLogGroup = new LogGroup(this, 'LogGroup', {
         removalPolicy: this.removalPolicy,
-        logGroupName: `/aws/vendedlogs/states/${Utils.generateScopeHash(this)}`,
+        logGroupName: `/aws/vendedlogs/states/${Utils.generateUniqueHash(this)}`,
       });
 
       // StepFunctions state machine

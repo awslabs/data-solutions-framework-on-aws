@@ -7185,69 +7185,6 @@ name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster.
 
 ---
 
-### NetworkConfiguration <a name="NetworkConfiguration" id="aws-dsf.utils.NetworkConfiguration"></a>
-
-A network configuration created by the vpcBootstrap function.
-
-#### Initializer <a name="Initializer" id="aws-dsf.utils.NetworkConfiguration.Initializer"></a>
-
-```typescript
-import { utils } from 'aws-dsf'
-
-const networkConfiguration: utils.NetworkConfiguration = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.iamFlowLogRole">iamFlowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.s3GatewayVpcEndpoint">s3GatewayVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IVpcEndpoint</code> | *No description.* |
-| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
-| <code><a href="#aws-dsf.utils.NetworkConfiguration.property.vpcFlowLogLogGroup">vpcFlowLogLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-
----
-
-##### `iamFlowLogRole`<sup>Required</sup> <a name="iamFlowLogRole" id="aws-dsf.utils.NetworkConfiguration.property.iamFlowLogRole"></a>
-
-```typescript
-public readonly iamFlowLogRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
----
-
-##### `s3GatewayVpcEndpoint`<sup>Required</sup> <a name="s3GatewayVpcEndpoint" id="aws-dsf.utils.NetworkConfiguration.property.s3GatewayVpcEndpoint"></a>
-
-```typescript
-public readonly s3GatewayVpcEndpoint: IVpcEndpoint;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.IVpcEndpoint
-
----
-
-##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.utils.NetworkConfiguration.property.vpc"></a>
-
-```typescript
-public readonly vpc: IVpc;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.IVpc
-
----
-
-##### `vpcFlowLogLogGroup`<sup>Required</sup> <a name="vpcFlowLogLogGroup" id="aws-dsf.utils.NetworkConfiguration.property.vpcFlowLogLogGroup"></a>
-
-```typescript
-public readonly vpcFlowLogLogGroup: ILogGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_logs.ILogGroup
-
----
-
 ### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.processing.PySparkApplicationPackageProps"></a>
 
 Properties for the {PySparkApplicationPackage} construct.
@@ -8959,7 +8896,6 @@ new utils.Utils()
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.utils.Utils.generateHash">generateHash</a></code> | Generate an 8 character hash from a string based on HMAC algorithm. |
-| <code><a href="#aws-dsf.utils.Utils.generateScopeHash">generateScopeHash</a></code> | Generate an 8 characters hash of the CDK scope using its path. |
 | <code><a href="#aws-dsf.utils.Utils.generateUniqueHash">generateUniqueHash</a></code> | Generate a unique hash of 8 characters from the CDK scope using its path and the stack name. |
 | <code><a href="#aws-dsf.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
 | <code><a href="#aws-dsf.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
@@ -8987,30 +8923,12 @@ the text to hash.
 
 ---
 
-##### `generateScopeHash` <a name="generateScopeHash" id="aws-dsf.utils.Utils.generateScopeHash"></a>
-
-```typescript
-import { utils } from 'aws-dsf'
-
-utils.Utils.generateScopeHash(scope: Construct)
-```
-
-Generate an 8 characters hash of the CDK scope using its path.
-
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.utils.Utils.generateScopeHash.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
-the CDK construct scope.
-
----
-
 ##### `generateUniqueHash` <a name="generateUniqueHash" id="aws-dsf.utils.Utils.generateUniqueHash"></a>
 
 ```typescript
 import { utils } from 'aws-dsf'
 
-utils.Utils.generateUniqueHash(scope: Construct, id: string)
+utils.Utils.generateUniqueHash(scope: Construct, id?: string)
 ```
 
 Generate a unique hash of 8 characters from the CDK scope using its path and the stack name.
@@ -9023,9 +8941,11 @@ the CDK construct scope.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.utils.Utils.generateUniqueHash.parameter.id"></a>
+###### `id`<sup>Optional</sup> <a name="id" id="aws-dsf.utils.Utils.generateUniqueHash.parameter.id"></a>
 
 - *Type:* string
+
+the CDK ID of the construct.
 
 ---
 

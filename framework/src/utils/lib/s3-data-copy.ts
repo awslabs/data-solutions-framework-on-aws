@@ -47,7 +47,7 @@ export class S3DataCopy extends TrackedConstruct {
       throw new Error('S3DataCopy error: if VPC parameter is configured, subnets must be');
     }
 
-    const functionName = `s3-data-copy-${Utils.generateScopeHash(this)}`;
+    const functionName = `s3-data-copy-${Utils.generateUniqueHash(this)}`;
 
     const managedPolicy = new ManagedPolicy(this, 'Policy', {
       document: new PolicyDocument({
