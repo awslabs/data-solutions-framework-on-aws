@@ -138,7 +138,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'js-yaml',
     '@types/js-yaml',
     'simple-base',
-    'semver'
+    'semver',
   ],
 
   jestOptions: {
@@ -294,6 +294,7 @@ const adsfQuickstart = new awscdk.AwsCdkPythonApp({
   },
 });
 
+adsfQuickstart.addGitIgnore('cdk.context.json');
 adsfQuickstart.removeTask('deploy');
 adsfQuickstart.removeTask('destroy');
 adsfQuickstart.removeTask('diff');

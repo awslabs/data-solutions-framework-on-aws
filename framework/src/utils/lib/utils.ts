@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+
 import { createHmac } from 'crypto';
 import * as fs from 'fs';
 import { Stack } from 'aws-cdk-lib';

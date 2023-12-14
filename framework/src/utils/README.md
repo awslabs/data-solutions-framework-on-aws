@@ -1,3 +1,31 @@
+[//]: # (utils.s3-data-copy)
+# S3DataCopy
+
+Data copy from one bucket to another during deployment time.
+
+## Overview
+
+`S3DataCopy` construct provides a process to copy objects from one bucket to another during CDK deployment time:
+- The copy is part of the CDK and CloudFormation deployment process. It's using a synchronous CDK Custom Resource running on AWS Lambda.
+- The Lambda function is written in Typescript and copies objects between source and target buckets.
+- The execution role used by the Lambda function is scoped to the least privileges. A custom role can be provided.
+- The Lambda function can be executed in an Amazon VPC within private subnets. By default, it runs run inside VPCs owned by the AWS Lambda service.
+- The Lambda function is granted read access on the source bucket and write access on the destination bucket using the execution role policy. The construct doesn't grant cross account access.
+
+![S3 Data Copy](../../../website/static/img/s3-data-copy.png)
+
+## Usage
+
+[example defaults](./examples/s3-data-copy.lit.ts)
+
+## Private networks
+
+The lambda Function used by the custom resource can be deployed in a VPC by passing the VPC and a list of private subnets.
+
+Public subnets are not supported.
+
+[example vpc](./examples/s3-data-copy-vpc.lit.ts)
+
 [//]: # (utils.data-vpc)
 # DataVpc
 
