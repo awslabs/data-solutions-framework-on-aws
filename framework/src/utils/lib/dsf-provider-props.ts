@@ -16,4 +16,9 @@ export interface DsfProviderProps {
    * @default - RETAIN The resources will not be deleted.
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * The name of the custom resource provider
+   */
+  readonly providerName: string;
 }
