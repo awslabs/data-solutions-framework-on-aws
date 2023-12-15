@@ -10,9 +10,9 @@ export function createLogGroup(
     id: string, 
     removalPolicy: RemovalPolicy,
     logEncryptionKey?: Key,
-    logGroupName?: string) : ILogGroup {
+    logGroupName?: string) : LogGroup {
 
-    let logGroup: ILogGroup = new LogGroup (scope, id, {
+    let logGroup: LogGroup = new LogGroup (scope, id, {
         logGroupName: logGroupName,
         retention: RetentionDays.ONE_WEEK,
         removalPolicy: removalPolicy,
@@ -22,7 +22,7 @@ export function createLogGroup(
     return logGroup;
 }
 
-export function createLambdaExecutionRole (scope: Construct, id: string) : IRole {
+export function createLambdaExecutionRole (scope: Construct, id: string) : Role {
 
     const role = new Role (scope, id, { 
         assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
