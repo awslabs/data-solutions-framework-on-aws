@@ -272,7 +272,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       if (props.eksVpc === undefined) {
         const dataVpc = new DataVpc(this, 'DataVpc', {
           vpcCidr: vpcCidr,
-          removalPolicy: this.removalPolicy
+          removalPolicy: this.removalPolicy,
         });
         this.vpc = dataVpc.vpc;
         this.flowLogKey = dataVpc.flowLogKey;
