@@ -57,5 +57,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_TO_ASSUME }}
           aws-region: eu-west-1
+          role-duration-seconds: 7200
       - name: Run e2e tests
         run: npx projen test:e2e
