@@ -202,6 +202,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   private readonly createEmrOnEksServiceLinkedRole?: boolean;
   private readonly podTemplateLocation: Location;
   private readonly podTemplatePolicy: PolicyDocument;
+  private readonly removalPolicy: RemovalPolicy;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -216,7 +217,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    let removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     // Create a role to be used as instance profile for nodegroups
     this.ec2InstanceNodeGroupRole = props.ec2InstanceRole || new Role(this, 'Ec2InstanceNodeGroupRole', {
@@ -246,7 +247,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       this.eksSecretKmsKey = new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
         description: 'eks-secrets-key',
-        removalPolicy: removalPolicy,
+        removalPolicy: this.removalPolicy,
       });
 
       const clusterName = props.eksClusterName ?? SparkEmrContainersRuntime.DEFAULT_CLUSTER_NAME;
@@ -270,8 +271,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
       if (props.eksVpc === undefined) {
         const dataVpc = new DataVpc(this, 'DataVpc', {
-          vpcCidr,
-          removalPolicy,
+          vpcCidr: vpcCidr,
+          removalPolicy: this.removalPolicy
         });
         this.vpc = dataVpc.vpc;
         this.flowLogKey = dataVpc.flowLogKey;
@@ -323,7 +324,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         scope,
         clusterInstanceProfile,
         this.ec2InstanceNodeGroupRole,
-        removalPolicy,
+        this.removalPolicy,
         karpenterVersion,
       );
 
@@ -338,7 +339,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     this.assetBucket = new Bucket (this, 'AssetBucket', {
       encryption: BucketEncryption.KMS_MANAGED,
       enforceSSL: true,
-      removalPolicy: removalPolicy,
+      removalPolicy: this.removalPolicy,
+      autoDeleteObjects: this.removalPolicy == RemovalPolicy.DESTROY,
     });
 
     // Configure the podTemplate location
@@ -393,7 +395,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       setDefaultKarpenterProvisioners(this, karpenterVersion, this.ec2InstanceNodeGroupRole);
 
       // Upload the default podTemplate to the Amazon S3 asset bucket
-      this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'), removalPolicy);
+      this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'));
 
       // Replace the pod template location for driver and executor with the correct Amazon S3 path in the notebook default config
       NotebookDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] =
@@ -547,7 +549,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * @param {string} id the unique ID of the CDK resource
    * @param {string} filePath The local path of the yaml podTemplate files to upload
    */
-  public uploadPodTemplate(id: string, filePath: string, removalPolicy: RemovalPolicy) {
+  public uploadPodTemplate(id: string, filePath: string) {
 
     new BucketDeployment(this, `${id}AssetDeployment`, {
       destinationBucket: this.assetBucket!,
@@ -556,6 +558,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       role: this.assetUploadBucketRole,
       retainOnDelete: removalPolicy === RemovalPolicy.RETAIN ? true : false,
     });
+
   }
 
   /**
