@@ -556,7 +556,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       destinationKeyPrefix: this.podTemplateLocation!.objectKey,
       sources: [Source.asset(filePath)],
       role: this.assetUploadBucketRole,
-      retainOnDelete: removalPolicy === RemovalPolicy.RETAIN ? true : false,
+      retainOnDelete: this.removalPolicy === RemovalPolicy.RETAIN ? true : false,
     });
 
   }
