@@ -4458,7 +4458,7 @@ Retrieve DSF package.json version.
 ##### `uploadPodTemplate` <a name="uploadPodTemplate" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate"></a>
 
 ```typescript
-public uploadPodTemplate(id: string, filePath: string, removalPolicy: RemovalPolicy): void
+public uploadPodTemplate(id: string, filePath: string): void
 ```
 
 Upload podTemplates to the Amazon S3 location used by the cluster.
@@ -4476,12 +4476,6 @@ the unique ID of the CDK resource.
 - *Type:* string
 
 The local path of the yaml podTemplate files to upload.
-
----
-
-###### `removalPolicy`<sup>Required</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.removalPolicy"></a>
-
-- *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
