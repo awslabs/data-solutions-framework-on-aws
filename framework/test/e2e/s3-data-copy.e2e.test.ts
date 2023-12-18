@@ -46,7 +46,7 @@ beforeAll(async() => {
 }, 900000);
 
 test(' S3DataCopy is created', async() => {
-  expect(deployResult.Target).toContain('test-us-east-1-632368511077');
+  expect(deployResult.Target).toContain('test-eu-west-1-145388625860-e3c8c022');
 });
 
 afterAll(async () => {

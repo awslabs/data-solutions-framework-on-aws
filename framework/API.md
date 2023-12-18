@@ -307,6 +307,8 @@ The principal.
 
 Restrict the permission to a certain key pattern (default '*').
 
+Parameter type is `any` but `string` should be passed in.
+
 ---
 
 ##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-dsf.storage.AccessLogsBucket.grantPublicAccess"></a>
@@ -379,6 +381,8 @@ The principal.
 
 Restrict the permission to a certain key pattern (default '*').
 
+Parameter type is `any` but `string` should be passed in.
+
 ---
 
 ##### `grantPutAcl` <a name="grantPutAcl" id="aws-dsf.storage.AccessLogsBucket.grantPutAcl"></a>
@@ -429,6 +433,8 @@ The principal.
 - *Type:* any
 
 Restrict the permission to a certain key pattern (default '*').
+
+Parameter type is `any` but `string` should be passed in.
 
 ---
 
@@ -1464,6 +1470,8 @@ The principal.
 
 Restrict the permission to a certain key pattern (default '*').
 
+Parameter type is `any` but `string` should be passed in.
+
 ---
 
 ##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-dsf.storage.AnalyticsBucket.grantPublicAccess"></a>
@@ -1536,6 +1544,8 @@ The principal.
 
 Restrict the permission to a certain key pattern (default '*').
 
+Parameter type is `any` but `string` should be passed in.
+
 ---
 
 ##### `grantPutAcl` <a name="grantPutAcl" id="aws-dsf.storage.AnalyticsBucket.grantPutAcl"></a>
@@ -1586,6 +1596,8 @@ The principal.
 - *Type:* any
 
 Restrict the permission to a certain key pattern (default '*').
+
+Parameter type is `any` but `string` should be passed in.
 
 ---
 
@@ -4446,7 +4458,7 @@ Retrieve DSF package.json version.
 ##### `uploadPodTemplate` <a name="uploadPodTemplate" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate"></a>
 
 ```typescript
-public uploadPodTemplate(id: string, filePath: string, removalPolicy: RemovalPolicy): void
+public uploadPodTemplate(id: string, filePath: string): void
 ```
 
 Upload podTemplates to the Amazon S3 location used by the cluster.
@@ -4464,12 +4476,6 @@ the unique ID of the CDK resource.
 - *Type:* string
 
 The local path of the yaml podTemplate files to upload.
-
----
-
-###### `removalPolicy`<sup>Required</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.removalPolicy"></a>
-
-- *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 

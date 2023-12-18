@@ -80,7 +80,7 @@
       "description": "Synthesizes your cdk app into cdk.out and suppresses the template in stdout (part of \"yarn build\")",
       "steps": [
         {
-          "exec": "cdk --version || npm install -g cdk@2.109.0"
+          "exec": "cdk --version || npm install -g cdk@2.114.1"
         },
         {
           "exec": "cdk synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER"
