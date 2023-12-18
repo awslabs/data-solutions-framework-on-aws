@@ -1,7 +1,10 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
 import { RemovalPolicy } from "aws-cdk-lib";
-import { IRole, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { Key } from "aws-cdk-lib/aws-kms";
-import { ILogGroup, LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
 
 
@@ -9,12 +12,13 @@ export function createLogGroup(
     scope: Construct, 
     id: string, 
     removalPolicy: RemovalPolicy,
+    retention: RetentionDays,
     logEncryptionKey?: Key,
     logGroupName?: string) : LogGroup {
 
     let logGroup: LogGroup = new LogGroup (scope, id, {
         logGroupName: logGroupName,
-        retention: RetentionDays.ONE_WEEK,
+        retention: retention,
         removalPolicy: removalPolicy,
         encryptionKey: logEncryptionKey,
     });
@@ -30,3 +34,6 @@ export function createLambdaExecutionRole (scope: Construct, id: string) : Role 
 
     return role;
 }
+
+//Attach policy to role
+//policy passed by the user and cloudwatch write permission based on the cloudwatch created in the Provider
