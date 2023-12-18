@@ -72,7 +72,7 @@ jobs:
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
         with:
           name: examples-artifact
-          path: examples          
+          path: examples
       - name: Restore build artifact permissions
         working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
@@ -100,7 +100,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_REF: ${{ github.ref }}
         working-directory: examples
-        run: ./package-examples.sh && gh release upload "$(cat ../dist/releasetag.txt)" ../dist/examples/* --clobber
+        run: ./package-examples.sh && gh release upload "$(cat ../framework/dist/releasetag.txt)" ../dist/examples/* --clobber -R $GITHUB_REPOSITORY
   release_npm:
     name: Publish to npm
     needs: release
