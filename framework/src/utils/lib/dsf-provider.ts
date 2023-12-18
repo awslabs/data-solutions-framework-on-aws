@@ -4,7 +4,7 @@
 import { Construct } from 'constructs';
 import { DsfProviderProps } from './dsf-provider-props';
 import { Context } from './context';
-import { createLambdaExecutionRole, createLogGroup } from './dsf-provider-helpers';
+import { attachPolicyToRole, createLambdaExecutionRole, createLogGroup } from './dsf-provider-helpers';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { Runtime} from 'aws-cdk-lib/aws-lambda'; 
@@ -27,9 +27,24 @@ export class DsfProvider extends Construct {
 
     const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    const onEventHandlerLog: LogGroup = createLogGroup (scope, `${props.providerName}OnEventHandlerLog`, removalPolicy, DsfProvider.LOG_RETENTION); 
-    const onEventHandlerRole: Role = createLambdaExecutionRole (scope, `${props.providerName}OnEventHandlerRole`);
+    let onEventHandlerLog: LogGroup = createLogGroup (scope, `${props.providerName}OnEventHandlerLog`, removalPolicy, DsfProvider.LOG_RETENTION); 
+    let onEventHandlerRole: Role; 
 
+
+    if (props.onEventHandlerDefinition.IamRole) {
+      onEventHandlerRole = props.onEventHandlerDefinition.IamRole;
+    }
+    else {
+      onEventHandlerRole = createLambdaExecutionRole (scope, `${props.providerName}OnEventHandlerRole`);
+    }
+
+    attachPolicyToRole(
+      scope, 
+      'attachPolicyToRoleisCompleteHandler', 
+      onEventHandlerRole, 
+      onEventHandlerLog, 
+      props.onEventHandlerDefinition.crPolicy, 
+      props.onEventHandlerDefinition.crManagedPolicy);
 
     let onEventHandlerLambdaFunction: NodejsFunction = new NodejsFunction (scope, `${props.providerName}Function`, {
         runtime: DsfProvider.CR_RUNTIME,
@@ -47,8 +62,22 @@ export class DsfProvider extends Construct {
     
     if (props.isCompleteHandlerDefinition) {
       const isCompleteHandlerLog: LogGroup = createLogGroup (scope, `${props.providerName}isCompleteHandler`, removalPolicy, DsfProvider.LOG_RETENTION); 
-      const isCompleteHandlerRole: Role = createLambdaExecutionRole (scope, `${props.providerName}isCompleteHandler`);
+      let isCompleteHandlerRole: Role;
+      
+      if (props.isCompleteHandlerDefinition.IamRole) {
+        isCompleteHandlerRole = props.isCompleteHandlerDefinition.IamRole;
+      }
+      else {
+        isCompleteHandlerRole = createLambdaExecutionRole (scope, `${props.providerName}isCompleteHandler`);
+      }
 
+      attachPolicyToRole(
+        scope, 
+        'attachPolicyToRoleisCompleteHandler', 
+        isCompleteHandlerRole, 
+        isCompleteHandlerLog, 
+        props.isCompleteHandlerDefinition.crPolicy, 
+        props.isCompleteHandlerDefinition.crManagedPolicy);
 
       isCompleteHandlerLambdaFunction = new NodejsFunction (scope, `${props.providerName}Function`, {
           runtime: DsfProvider.CR_RUNTIME,

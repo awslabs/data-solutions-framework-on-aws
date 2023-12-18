@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT-0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { ISubnet, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { ManagedPolicy, Policy, Role } from 'aws-cdk-lib/aws-iam';
 
 
 /**
@@ -45,8 +46,9 @@ export interface DsfProviderProps {
 
 export interface HandlerDefinition {
   BundlingOption?: string;
-  IamRole?: string;
-  IamPolicy?: string;
+  IamRole?: Role;
+  crPolicy?: Policy;
+  crManagedPolicy?: ManagedPolicy;
   depsLockFilePath: string;
   /**
    * The entry function in the lambda
