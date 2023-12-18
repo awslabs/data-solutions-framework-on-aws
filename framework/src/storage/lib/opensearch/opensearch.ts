@@ -1,0 +1,404 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+
+import {
+  RemovalPolicy,
+  CustomResource,
+  Stack,
+  CfnOutput,
+  Duration,
+  Aws,
+} from 'aws-cdk-lib';
+import { AccountPrincipal, CfnServiceLinkedRole, Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Construct } from 'constructs';
+import { OpensearchProps, OpensearchNodes } from './opensearch-props';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { Domain, DomainProps, EngineVersion, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
+import { EbsDeviceVolumeType, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Key } from 'aws-cdk-lib/aws-kms';
+import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId, Provider } from 'aws-cdk-lib/custom-resources';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
+import { OpensearchProxy } from './opensearch-proxy';
+
+
+
+export class OpensearchCluster extends TrackedConstruct {
+  /**
+   * @public
+   * Get an existing OpensearchCluster based on the cluster name property or create a new one
+   * only one Opensearch cluster can exist per stack
+   * @param {Construct} scope the CDK scope used to search or create the cluster
+   * @param {OpensearchClusterProps} props the OpensearchClusterProps [properties]{@link OpensearchClusterProps} if created
+   */
+
+  public readonly domain: Domain;
+  public readonly logGroup: LogGroup;
+  public readonly vpc:IVpc;
+  private readonly apiProvider: Provider;
+  private readonly masterRole: Role;
+  private prevCr?: CustomResource;
+
+  /**
+   * The removal policy when deleting the CDK resource.
+   * Resources like Amazon cloudwatch log or Amazon S3 bucket
+   * If DESTROY is selected, the context value '@data-solutions-framework-on-aws/removeDataOnDestroy'
+   * in the 'cdk.json' or 'cdk.context.json' must be set to true
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
+  private removalPolicy: RemovalPolicy;
+  /**
+   * @public
+   * Constructs a new instance of the OpensearchCluster class
+   * @param {Construct} scope the Scope of the AWS CDK Construct
+   * @param {string} id the ID of the AWS CDK Construct
+   * @param {OpensearchClusterProps} props the OpensearchCluster [properties]{@link OpensearchClusterProps}
+   */
+
+  constructor(scope: Construct, id: string, trackingTag:string, props: OpensearchProps) {
+    const trackedConstructProps: TrackedConstructProps = {
+      trackingTag: trackingTag,
+    };
+
+    super(scope, id, trackedConstructProps);
+    
+    //get or create service-linked role, required for vpc configuration
+    try {
+      Role.fromRoleName(this, 'OpensearchSlr', 'AWSServiceRoleForAmazonOpenSearchService');
+    } catch (error) {
+      new CfnServiceLinkedRole(this, 'ServiceLinkedRole', {
+        awsServiceName: 'es.amazonaws.com',
+      });
+    }
+
+    this.removalPolicy = Context.revertRemovalPolicy(scope, RemovalPolicy.RETAIN);
+
+    this.logGroup = new LogGroup(this, 'SparkLogsCloudWatchLogGroup', {
+      logGroupName: 'opensearch-domain-logs-'+id,
+      encryptionKey: props.encryptionKmsKeyArn ? Key.fromKeyArn(this, 'OpensearchLogsCloudWatchEncryptionKey', props.encryptionKmsKeyArn) : undefined,
+      removalPolicy: this.removalPolicy,
+    });
+
+    this.logGroup.grantWrite(new ServicePrincipal('es.amazonaws.com'));
+
+    this.masterRole = new Role(this, 'AccessRole', {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [
+        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+      ],
+    });
+
+    this.masterRole.addToPolicy(
+      new PolicyStatement({
+        actions: [
+          'es:ESHttpPut',
+          'es:UpdateElasticsearchDomainConfig',
+          'ec2:CreateNetworkInterface',
+          'ec2:DescribeNetworkInterfaces',
+          'ec2:DeleteNetworkInterface',
+        ],
+        resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${props.domainName}/*`],
+      }),
+    );
+
+    this.vpc = props.vpc ?? new DataVpc(scope, 'data-vpc-opensearch', { vpcCidr: '10.0.0.0/16' }).vpc; 
+
+    const kmsKey = props.encryptionKmsKeyArn ? 
+      Key.fromKeyArn(this, 'OpensearchEncryptionKey', props.encryptionKmsKeyArn) : 
+      new Key(this,'OpensearchEncryptionKey',{ removalPolicy: this.removalPolicy, enableKeyRotation:true }); 
+    
+
+    this.masterRole.addToPolicy(
+      new PolicyStatement({
+        actions: ['kms:DescribeKey'],
+        resources: [kmsKey.keyArn],
+      })
+    );
+
+    if ( props.enableSAML && ( !props.samlAdminGroupId || !props.samlDashboardGroupId ) ){
+      throw new Error('SAML configuration requires both samlAdminGroupId and samlDashboardGroupId to be set');
+    }
+
+    const samlMetaData: SAMLOptionsProperty = {
+      idpEntityId: 'idp',
+      idpMetadataContent: `<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz">
+      <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:X509Data>
+              <ds:X509Certificate>MIIDBjCCAe6gAwIBAgIEQR9jDzANBgkqhkiG9w0BAQsFADBFMRYwFAYDVQQDDA1hbWF6b25hd3MuY29tMQ0wCwYDVQQLDARJREFTMQ8wDQYDVQQKDAZBbWF6b24xCzAJBgNVBAYTAlVTMB4XDTIzMTIxNTIxMzY1N1oXDTI4MTIxNTIxMzY1N1owRTEWMBQGA1UEAwwNYW1hem9uYXdzLmNvbTENMAsGA1UECwwESURBUzEPMA0GA1UECgwGQW1hem9uMQswCQYDVQQGEwJVUzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMTWu5ekXLhEQ/NEGLe2q7JJF+02dhdL38sUrQGME8o7o13Ri08KN/OZYo3kJDFp/+/pCIRyg2J4hoqrIck6Fh+vy3ksKH7glDsMeTm2zeamdTBEJMfXzdh4ThY03QBSQAzRLIWKTeXKMvz/lt4PyfCAHsLxTqZOjWE5g9eKPRZ2O8tAN4oGjzQEUpURycIztgouNdH17W5yHbs+jOLSAGVZHKAJ8scm3AB2ydGm9BWsCowEzm5CsgMiwktHRYHmW68S6CxaGFREdvsNWXmG6bKq+5tUbUDjCjyqqxqVFiHoOfBnkybrmwqTGvFms7g0jn4XivogP4pqq+w22tDuJj8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEApEqEiIt/xPqY7T0CLboaYtD0OE/D2DjhF79S5PvhRB3XXFgGm3ytWmhGQ/1N4LzAqcsw00X6QHVu5b3HNy+bPesek23CeV/DCbtwKtiSt2vrghiYY762Cyn5LFF8I+KTu30AQ/gWjwq/qTVrG/qmDzEYbtRMGEXg41pTND0ZrYWV+6GUvyrkvuVpzTdPMSpmaodytYn6g8KO2jShukqR5BzRlO8n3GfdqlzUvFgMSZ7BT4l5Q4Au+ub5SBn1WW/wob1KjjAvgAzmcDIQE28A8FjFr9ETBVpYNdYqxYuZzt7bUSpMAux2/zlLU1A0UTLmO71QdbZQsRbxANqqw2PKGg==</ds:X509Certificate>
+            </ds:X509Data>
+          </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
+        <md:NameIDFormat/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
+      </md:IDPSSODescriptor>
+    </md:EntityDescriptor>`,
+    masterBackendRole: props.samlAdminGroupId,
+    rolesKey: props.saml?.rolesKey,
+    subjectKey:props.saml?.subjectKey,
+    sessionTimeoutMinutes: props.saml?.sessionTimeoutMinutes ?? Duration.hours(8).toMinutes(),
+    }
+
+    const domainProps : DomainProps = { 
+      domainName: props.domainName,
+      version: props.version ?? EngineVersion.OPENSEARCH_2_9,
+      vpc:this.vpc,
+      capacity: {
+        masterNodes: props.masterNodeInstanceCount ?? 1,
+        masterNodeInstanceType: props.masterNodeInstanceType ?? OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT,
+        dataNodes: props.dataNodeInstanceCount ?? 3,
+        dataNodeInstanceType: props.dataNodeInstanceType ?? OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT,
+        warmNodes: props.warmInstanceCount ?? 0,
+        warmInstanceType: props.warmInstanceType ?? OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT,
+        multiAzWithStandbyEnabled: props.multiAzWithStandbyEnabled ?? false,
+      },
+      encryptionAtRest: {
+        enabled: true,
+        kmsKeyId: kmsKey.keyId,
+      },
+      ebs: {
+        volumeSize: props.ebsSize ?? 10,
+        volumeType: props.ebsVolumeType ?? EbsDeviceVolumeType.GENERAL_PURPOSE_SSD_GP3,
+      },
+      fineGrainedAccessControl: {
+        masterUserArn: this.masterRole.roleArn,
+        masterUserName: props.masterUserName,
+        samlAuthenticationEnabled: props.enableSAML ?? true,
+        samlAuthenticationOptions: props.saml ?? samlMetaData        
+      },
+      zoneAwareness: {
+        enabled: true,
+        availabilityZoneCount: 3,
+      },
+      nodeToNodeEncryption: true,
+      useUnsignedBasicAuth: false,
+      enforceHttps: true,
+
+      logging: {
+        slowSearchLogEnabled: true,
+        slowSearchLogGroup:this.logGroup,
+        appLogEnabled: true,
+        appLogGroup:this.logGroup,
+        slowIndexLogEnabled: true,
+        slowIndexLogGroup:this.logGroup,
+        auditLogEnabled: true,
+        auditLogGroup:this.logGroup,
+      },
+      enableAutoSoftwareUpdate: props.enableAutoSoftwareUpdate ?? false,
+      enableVersionUpgrade: props.enableVersionUpgrade ?? false,
+      removalPolicy: this.removalPolicy
+    } as DomainProps; 
+
+
+    this.domain = new Domain(this, 'Domain', domainProps as DomainProps);
+
+    this.domain.addAccessPolicies(
+      new PolicyStatement({
+        actions: ['es:*'],
+        effect: Effect.ALLOW,
+        principals: [new AccountPrincipal(Stack.of(this).account)],
+        resources: [this.domain.domainArn, `${this.domain.domainArn}/*`],
+      }),
+    );
+  
+    this.addAdminUser(props.masterUserName, props.masterUserName);
+
+    if (props.samlAdminGroupId){
+      this.addRoleMapping('all_access_'+props.samlAdminGroupId,'all_access', props.samlAdminGroupId);
+      this.addRoleMapping('security_manager_'+props.samlAdminGroupId, 'security_manager', props.samlAdminGroupId);
+    }
+
+    if (props.samlDashboardGroupId){
+      this.addRoleMapping('dashboard_'+props.samlDashboardGroupId,'opensearch_dashboards_user', props.samlDashboardGroupId);
+    }
+
+    const apiFn = new NodejsFunction(this, 'api', {
+      runtime: Runtime.NODEJS_18_X,
+      entry: 'resources/lambda/opensearch-api.ts',
+      handler: 'handler',
+      environment: {
+        REGION: Stack.of(this).region,
+        ENDPOINT: this.domain.domainEndpoint,
+      },
+      role: this.masterRole,
+      timeout: Duration.minutes(1),
+      logRetention: RetentionDays.ONE_WEEK,
+    });
+    this.apiProvider = new Provider(this, 'Provider/' + id, {
+      onEventHandler: apiFn,
+    });
+
+
+    
+    //usernames.map((username) => this.addDasboardUser(username, username));
+    //accessRoles.map((accessRole) => this.addAccessRole(accessRole.toString(), accessRole));
+
+    new AwsCustomResource(this, 'EnableInternalUserDatabaseCR', {
+      onCreate: {
+        service: 'OpenSearch',
+        action: 'updateDomainConfig',
+        parameters: {
+          DomainName: this.domain.domainName,
+          AdvancedSecurityOptions: {
+            InternalUserDatabaseEnabled: true,
+          },
+        },
+        physicalResourceId: PhysicalResourceId.of('InternalUserDatabase'),
+        outputPaths: ['DomainConfig.AdvancedSecurityOptions'],
+      },
+      policy: AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [this.domain.domainArn],
+      }),
+    });
+
+    // create proxy to get access inside VPC
+    new OpensearchProxy(scope,'OpensearchProxy',{
+      opensearchCluster: this as OpensearchCluster
+    }).node.addDependency(this.domain);
+
+  }
+
+  private apiCustomResource(id: string, path: string, body: any) {
+    const cr = new CustomResource(this, 'ApiCR/' + id, {
+      serviceToken: this.apiProvider.serviceToken,
+      properties: {
+        path,
+        body,
+      },
+    });
+    cr.node.addDependency(this.domain);
+    if (this.prevCr) cr.node.addDependency(this.prevCr);
+    this.prevCr = cr;
+  }
+
+  /**
+   * @public
+   * Add a new admin user to the cluster.
+   * This method is used to add an admin user to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} username the username
+   */
+  public addAdminUser(id: string, username: string) {
+    this.addUser(id, username, ['all_access', 'security_manager']);
+  }
+
+  /**
+   * @public
+   * Add a new dashboard user to the cluster.
+   * This method is used to add a dashboard user to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} username the username
+   */
+  public addDasboardUser(id: string, username: string) {
+    this.addUser(id, username, ['opensearch_dashboards_user']);
+  }
+
+  /**
+   * @public
+   * Add a new user to the cluster.
+   * This method is used to add a user to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} username the username
+   * @param {object} template the permissions template
+   */
+  public addUser(id: string, username: string, template: Array<string>) {
+    const secret = new Secret(this, `${username}-Secret`, {
+      generateSecretString: {
+        secretStringTemplate: JSON.stringify({ username }),
+        generateStringKey: 'password',
+      },
+    });
+    new CfnOutput(this, 'output-' + id, {
+      description: 'Secret with Username & Password for user ' + username,
+      value: secret.secretName,
+    });
+    secret.grantRead(this.masterRole);
+    this.apiCustomResource(id, '_plugins/_security/api/internalusers/' + username, {
+      passwordFieldSecretArn: secret.secretArn,
+      opendistro_security_roles: template,
+    });
+  }
+
+  /**
+   * @public
+   * Add a new access role to the cluster.
+   * This method is used to add an access role to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {aws_iam.Role} role the iam role
+   */
+  public addAccessRole(id: string, role: Role) {
+    const name = role.roleName;
+    this.domain.grantIndexReadWrite('*', role);
+    this.domain.grantPathReadWrite('*', role);
+    this.domain.grantReadWrite(role);
+
+    this.addRole('role-' + id, name, {
+      cluster_permissions: ['cluster_composite_ops', 'cluster_monitor'],
+      index_permissions: [
+        {
+          index_patterns: ['*'],
+          allowed_actions: ['crud', 'create_index', 'manage'],
+        },
+      ],
+    });
+
+    this.addRoleMapping('mapping-' + id, name, role);
+  }
+
+  /**
+   * @public
+   * Add a new role to the cluster.
+   * This method is used to add a security role to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} name the role name
+   * @param {object} template the permissions template
+   */
+  public addRole(id: string, name: string, template: object) {
+    this.apiCustomResource(id, '_plugins/_security/api/roles/' + name, template);
+  }
+
+  /**
+   * @public
+   * Add a new role mapping to the cluster.
+   * This method is used to add a role mapping to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} name the role name
+   * @param {aws_iam.Role | string } role the iam role or SAML group Id to map
+   */
+  public addRoleMapping(id: string, name: string, role: Role | string) {
+    this.apiCustomResource(id, '_plugins/_security/api/rolesmapping/' + name, {
+      backend_roles: [role instanceof Role ? role.roleArn : role ],
+    });
+  }
+
+  /**
+   * @public
+   * Add a new index to the cluster.
+   * This method is used to add an index to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} name the role name
+   * @param {object} template the permissions template
+   */
+  public addIndex(id: string, name: string, template: any) {
+    this.apiCustomResource(id, '/' + name, template);
+  }
+
+  /**
+   * @public
+   * Add a new rollup strategy to the cluster.
+   * This method is used to add a rollup strtegy to the Amazon opensearch cluster
+   * @param {string} id a unique id
+   * @param {string} name the role name
+   * @param {object} template the permissions template
+   */
+  public addRollupStrategy(id: string, name: string, template: any) {
+    this.apiCustomResource(id, '_plugins/_rollup/jobs/' + name, template);
+  }
+}
