@@ -6,7 +6,7 @@ import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cd
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
-import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal, Policy } from 'aws-cdk-lib/aws-iam';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
@@ -122,13 +122,19 @@ export function karpenterSetup(cluster: ICluster,
     targets: [new SqsQueue(karpenterInterruptionQueue)],
   });
 
-  const karpenterControllerPolicyStatementSSM: PolicyStatement = new PolicyStatement({
+  const allowSSMReadActions: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     actions: ['ssm:GetParameter', 'pricing:GetProducts'],
     resources: ['*'],
   });
 
-  const karpenterControllerPolicyStatementEC2: PolicyStatement = new PolicyStatement({
+  const allowPricingReadActions: PolicyStatement = new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: ['pricing:GetProducts'],
+    resources: ['*'],
+  });
+
+  const allowRegionalReadActions: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     actions: [
       'ec2:DescribeAvailabilityZones',
@@ -162,20 +168,6 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['ec2:RunInstances', 'ec2:CreateFleet'],
   });
 
-  const allowScopedEC2LaunchTemplateActions: PolicyStatement = new PolicyStatement({
-    effect: Effect.ALLOW,
-    resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`],
-    actions: ['ec2:CreateLaunchTemplate'],
-    conditions: {
-      StringEquals: {
-        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
-      },
-      StringLike: {
-        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
-      },
-    },
-  });
-
   const allowScopedEC2InstanceActionsWithTags: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     resources: [
@@ -190,7 +182,7 @@ export function karpenterSetup(cluster: ICluster,
         [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
       },
       StringLike: {
-        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+        'aws:RequestTag/karpenter.sh/nodepool': '*',
       },
     },
   });
@@ -204,6 +196,7 @@ export function karpenterSetup(cluster: ICluster,
       `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request/*`,
     ],
     actions: ['ec2:CreateTags'],
     conditions: {
@@ -212,27 +205,32 @@ export function karpenterSetup(cluster: ICluster,
         'ec2:CreateAction': ['RunInstances', 'CreateFleet', 'CreateLaunchTemplate'],
       },
       StringLike: {
-        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+        'aws:RequestTag/karpenter.sh/nodepool': '*',
       },
     },
   });
 
-  const allowMachineMigrationTagging: PolicyStatement = new PolicyStatement({
-    sid: 'AllowMachineMigrationTagging',
+  const allowScopedResourceTagging: PolicyStatement = new PolicyStatement({
+    sid: 'allowScopedResourceTagging',
     effect: Effect.ALLOW,
-    resources: [`arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`],
+    resources: [
+      `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`
+    ],
     actions: ['ec2:CreateTags'],
     conditions: {
-      'StringEquals': {
-        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
-        'aws:RequestTag/karpenter.sh/managed-by': `${clusterName}`,
+      StringEquals: {
+        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
+        'ec2:CreateAction': ['RunInstances', 'CreateFleet', 'CreateLaunchTemplate'],
       },
-      'StringLike': {
-        'aws:RequestTag/karpenter.sh/provisioner-name': '*',
+      StringLike: {
+        'aws:RequestTag/karpenter.sh/nodepool': '*',
       },
-      'ForAllValues:StringEquals': {
-        'aws:TagKeys': ['karpenter.sh/provisioner-name', 'karpenter.sh/managed-by'],
-      },
+      'ForAllValues:StringEquals' : {
+        "aws:TagKeys": [
+          "karpenter.sh/nodeclaim",
+          "Name"
+        ]
+      }
     },
   });
 
@@ -249,12 +247,12 @@ export function karpenterSetup(cluster: ICluster,
         [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
       },
       StringLike: {
-        'aws:ResourceTag/karpenter.sh/provisioner-name': '*',
+        'aws:ResourceTag/karpenter.sh/nodepool': '*',
       },
     },
   });
 
-  const karpenterControllerPolicyStatementIAM: PolicyStatement = new PolicyStatement({
+  const allowPassingInstanceRole: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     actions: ['iam:PassRole'],
     resources: [`${nodeRole.roleArn}`],
@@ -286,6 +284,57 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['iam:GetInstanceProfile'],
   });
 
+  const allowScopedInstanceProfileCreationActions: PolicyStatement = new PolicyStatement({
+    sid: 'AllowScopedInstanceProfileCreationActions',
+    effect: Effect.ALLOW,
+    resources: ['*'],
+    actions: ['iam:CreateInstanceProfile'],
+    conditions: {
+      StringEquals: {
+        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
+        "aws:RequestTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`
+      },
+      StringLike: {
+        "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass": "*"
+      }
+    }
+  });
+
+  const allowScopedInstanceProfileTagActions: PolicyStatement = new PolicyStatement({
+    sid: 'AllowScopedInstanceProfileTagActions',
+    effect: Effect.ALLOW,
+    resources: ['*'],
+    actions: ['iam:TagInstanceProfile'],
+    conditions: {
+      StringEquals: {
+        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: "owned",
+        "aws:ResourceTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`,
+        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: "owned",
+        "aws:RequestTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`
+      },
+      StringLike: {
+        "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass": "*",
+        "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass": "*"
+      }
+    }
+  });
+
+  const allowScopedInstanceProfileActions: PolicyStatement = new PolicyStatement({
+    sid: 'AllowScopedInstanceProfileActions',
+    effect: Effect.ALLOW,
+    resources: ['*'],
+    actions: ['iam:AddRoleToInstanceProfile', 'iam:RemoveRoleFromInstanceProfile', 'iam:DeleteInstanceProfile'],
+    conditions: {
+      StringEquals: {
+        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
+        "aws:ResourceTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`,
+      },
+      StringLike: {
+        "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass": "*"
+      }
+    }
+  });
+
 
   const karpenterNS = cluster.addManifest('karpenterNS', {
     apiVersion: 'v1',
@@ -300,18 +349,21 @@ export function karpenterSetup(cluster: ICluster,
 
   karpenterAccount.node.addDependency(karpenterNS);
 
-  karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementSSM);
-  karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementEC2);
-  karpenterAccount.addToPrincipalPolicy(karpenterControllerPolicyStatementIAM);
-  karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActions);
+  karpenterAccount.addToPrincipalPolicy(allowSSMReadActions);
   karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActionsWithTags);
-  karpenterAccount.addToPrincipalPolicy(allowScopedEC2LaunchTemplateActions);
-  karpenterAccount.addToPrincipalPolicy(allowMachineMigrationTagging);
+  karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActions);
+  karpenterAccount.addToPrincipalPolicy(allowPricingReadActions);
+  karpenterAccount.addToPrincipalPolicy(allowPassingInstanceRole);
+  karpenterAccount.addToPrincipalPolicy(allowScopedInstanceProfileCreationActions);
+  karpenterAccount.addToPrincipalPolicy(allowScopedInstanceProfileTagActions);
+  karpenterAccount.addToPrincipalPolicy(allowScopedInstanceProfileActions);
+  karpenterAccount.addToPrincipalPolicy(allowScopedResourceTagging);
   karpenterAccount.addToPrincipalPolicy(allowScopedResourceCreationTagging);
   karpenterAccount.addToPrincipalPolicy(allowScopedDeletion);
   karpenterAccount.addToPrincipalPolicy(allowInterruptionQueueActions);
   karpenterAccount.addToPrincipalPolicy(allowAPIServerEndpointDiscovery);
   karpenterAccount.addToPrincipalPolicy(allowInstanceProfileReadActions);
+  karpenterAccount.addToPrincipalPolicy(allowRegionalReadActions);
 
   //Deploy Karpenter Chart
   const karpenterChart = cluster.addHelmChart('KarpenterHelmChart', {
