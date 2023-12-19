@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { RemovalPolicy } from 'aws-cdk-lib';
-import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { Duration, RemovalPolicy } from 'aws-cdk-lib';
+import { IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, Policy, Role } from 'aws-cdk-lib/aws-iam';
+import { BundlingOptions } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 
 /**
@@ -32,20 +33,22 @@ export interface DsfProviderProps {
   /**
    * Handler definition
    */
-  readonly isCompleteHandlerDefinition: HandlerDefinition;
+  readonly isCompleteHandlerDefinition?: HandlerDefinition;
 
-  readonly vpc: IVpc;
+  readonly vpc?: IVpc;
 
-  readonly subnets: SubnetSelection;
+  readonly subnets?: SubnetSelection;
 
-  readonly queryInterval: any;
+  readonly securityGroups?: SecurityGroup [];
 
-  readonly queryTimeout: any;
-    
+  readonly queryInterval?: Duration;
+
+  readonly queryTimeout?: Duration;
+
 }
 
 export interface HandlerDefinition {
-  BundlingOption?: string;
+  bundling?: BundlingOptions;
   IamRole?: Role;
   crPolicy?: Policy;
   crManagedPolicy?: ManagedPolicy;
