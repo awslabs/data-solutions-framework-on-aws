@@ -65,17 +65,18 @@ export class MyConstruct extends TrackedConstruct {
         depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/my-cr/index.mjs'),
         bundling: {
-            minify: true,
             nodeModules: [
               '@aws-sdk/client-s3',
               '@aws-sdk/client-sts',
+              'json-validator',
             ],
             commandHooks: {
               afterBundling: () => [],
               beforeBundling: () => [
                 'npx esbuild --version'
               ],
-              beforeInstall: () => []
+              beforeInstall: () => [
+              ]
             }
           },
 
