@@ -53,7 +53,7 @@ export function attachPolicyToRole (
 
   const createLogStreamPolicy = new PolicyStatement({
     actions: ['logs:CreateLogStream'],
-    resources: [`${log.logGroupArn}:*`],
+    resources: [`${log.logGroupArn}`],
     effect: Effect.ALLOW,
   });
 

@@ -64,4 +64,14 @@ export interface HandlerDefinition {
    * construct-folder/resources/lambda/my-cr-df.ts
    */
   entryFile: string;
+  /**
+   * Key-value pairs that Lambda caches and makes available for your Lambda
+   * functions. Use environment variables to apply configuration changes, such
+   * as test and production environment configurations, without changing your
+   * Lambda function source code.
+   *
+   * @default - No environment variables.
+   */
+
+  environment?: { [key: string]: string };
 }

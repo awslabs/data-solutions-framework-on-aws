@@ -69,6 +69,7 @@ export class MyConstruct extends TrackedConstruct {
               '@aws-sdk/client-s3',
               '@aws-sdk/client-sts',
               'json-validator',
+              'qrcode'
             ],
             commandHooks: {
               afterBundling: () => [],
@@ -79,7 +80,6 @@ export class MyConstruct extends TrackedConstruct {
               ]
             }
           },
-
       },
     });
 

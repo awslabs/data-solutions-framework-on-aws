@@ -1,5 +1,7 @@
 import { S3Client, ListObjectsV2Command, CopyObjectCommand } from "@aws-sdk/client-s3"
 import path from "node:path"
+import QRCode from 'qrcode'
+
 
 export const handler = async(event) => {
     if (event.RequestType == "Create") {
@@ -12,6 +14,15 @@ export const handler = async(event) => {
         const sourceClient = new S3Client({region: sourceBucketRegion})
         const client = new S3Client()
         let nextToken = null
+
+        // With promises
+        QRCode.toDataURL('I am a pony!')
+        .then(url => {
+        console.log(url)
+        })
+        .catch(err => {
+        console.error(err)
+        })
     
         do {
             const list = await sourceClient.send(new ListObjectsV2Command({
