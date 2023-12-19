@@ -6,7 +6,7 @@ import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cd
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
-import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal, Policy } from 'aws-cdk-lib/aws-iam';
+import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
@@ -214,23 +214,23 @@ export function karpenterSetup(cluster: ICluster,
     sid: 'allowScopedResourceTagging',
     effect: Effect.ALLOW,
     resources: [
-      `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`
+      `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`,
     ],
     actions: ['ec2:CreateTags'],
     conditions: {
-      StringEquals: {
+      'StringEquals': {
         [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
         'ec2:CreateAction': ['RunInstances', 'CreateFleet', 'CreateLaunchTemplate'],
       },
-      StringLike: {
+      'StringLike': {
         'aws:RequestTag/karpenter.sh/nodepool': '*',
       },
-      'ForAllValues:StringEquals' : {
-        "aws:TagKeys": [
-          "karpenter.sh/nodeclaim",
-          "Name"
-        ]
-      }
+      'ForAllValues:StringEquals': {
+        'aws:TagKeys': [
+          'karpenter.sh/nodeclaim',
+          'Name',
+        ],
+      },
     },
   });
 
@@ -292,12 +292,12 @@ export function karpenterSetup(cluster: ICluster,
     conditions: {
       StringEquals: {
         [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
-        "aws:RequestTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`
+        'aws:RequestTag/topology.kubernetes.io/region': `${Stack.of(scope).region}`,
       },
       StringLike: {
-        "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass": "*"
-      }
-    }
+        'aws:RequestTag/karpenter.k8s.aws/ec2nodeclass': '*',
+      },
+    },
   });
 
   const allowScopedInstanceProfileTagActions: PolicyStatement = new PolicyStatement({
@@ -307,16 +307,16 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['iam:TagInstanceProfile'],
     conditions: {
       StringEquals: {
-        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: "owned",
-        "aws:ResourceTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`,
-        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: "owned",
-        "aws:RequestTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`
+        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
+        'aws:ResourceTag/topology.kubernetes.io/region': `${Stack.of(scope).region}`,
+        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
+        'aws:RequestTag/topology.kubernetes.io/region': `${Stack.of(scope).region}`,
       },
       StringLike: {
-        "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass": "*",
-        "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass": "*"
-      }
-    }
+        'aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass': '*',
+        'aws:RequestTag/karpenter.k8s.aws/ec2nodeclass': '*',
+      },
+    },
   });
 
   const allowScopedInstanceProfileActions: PolicyStatement = new PolicyStatement({
@@ -327,12 +327,12 @@ export function karpenterSetup(cluster: ICluster,
     conditions: {
       StringEquals: {
         [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
-        "aws:ResourceTag/topology.kubernetes.io/region": `${Stack.of(scope).region}`,
+        'aws:ResourceTag/topology.kubernetes.io/region': `${Stack.of(scope).region}`,
       },
       StringLike: {
-        "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass": "*"
-      }
-    }
+        'aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass': '*',
+      },
+    },
   });
 
 
