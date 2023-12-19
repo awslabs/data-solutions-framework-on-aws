@@ -66,11 +66,6 @@ export class MyConstruct extends TrackedConstruct {
         entryFile: path.join(__dirname, './resources/lambda/my-cr/index.mjs'),
         bundling: {
             minify: true,
-            externalModules: [
-              '@aws-sdk/client-s3',
-              '@aws-sdk/client-sts',
-              'aws-sdk',
-            ],
             nodeModules: [
               '@aws-sdk/client-s3',
               '@aws-sdk/client-sts',
