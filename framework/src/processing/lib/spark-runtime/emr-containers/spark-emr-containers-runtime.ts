@@ -16,7 +16,6 @@ import {
 import { CfnVirtualCluster } from 'aws-cdk-lib/aws-emrcontainers';
 import { IRule } from 'aws-cdk-lib/aws-events';
 import {
-  CfnInstanceProfile,
   CfnServiceLinkedRole,
   Effect,
   FederatedPrincipal,
@@ -230,13 +229,6 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
     this.ec2InstanceNodeGroupRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonEKS_CNI_Policy'));
 
-    //Create instance profile to be used by Managed nodegroup and karpenter
-    const clusterInstanceProfile = new CfnInstanceProfile(scope, 'KarpenterInstanceProfile', {
-      roles: [this.ec2InstanceNodeGroupRole.roleName],
-      // instanceProfileName: `adsfNodeInstanceProfile-${clusterName ?? 'default'}`,
-      path: '/',
-    });
-
     const karpenterVersion = props.karpenterVersion ?? DEFAULT_KARPENTER_VERSION;
 
     let eksCluster: Cluster;
@@ -322,7 +314,6 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         eksCluster,
         clusterName,
         scope,
-        clusterInstanceProfile,
         this.ec2InstanceNodeGroupRole,
         this.removalPolicy,
         karpenterVersion,

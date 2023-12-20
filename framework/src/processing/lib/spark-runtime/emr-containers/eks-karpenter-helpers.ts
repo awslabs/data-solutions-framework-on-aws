@@ -6,7 +6,7 @@ import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cd
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
-import { CfnInstanceProfile, IRole, PolicyStatement, Effect, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IRole, PolicyStatement, Effect, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
@@ -84,7 +84,6 @@ export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: 
 export function karpenterSetup(cluster: ICluster,
   clusterName: string,
   scope: Construct,
-  instanceProfile: CfnInstanceProfile,
   nodeRole: IRole,
   karpenterRemovalPolicy: RemovalPolicy,
   karpenterVersion?: KarpenterVersion,
@@ -175,8 +174,9 @@ export function karpenterSetup(cluster: ICluster,
       `arn:aws:ec2:${Stack.of(scope).region}:*:instance/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
     ],
-    actions: ['ec2:RunInstances', 'ec2:CreateFleet'],
+    actions: ['ec2:RunInstances', 'ec2:CreateFleet', 'ec2:CreateLaunchTemplate'],
     conditions: {
       StringEquals: {
         [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
@@ -196,7 +196,6 @@ export function karpenterSetup(cluster: ICluster,
       `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
-      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request/*`,
     ],
     actions: ['ec2:CreateTags'],
     conditions: {
@@ -219,11 +218,10 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['ec2:CreateTags'],
     conditions: {
       'StringEquals': {
-        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
-        'ec2:CreateAction': ['RunInstances', 'CreateFleet', 'CreateLaunchTemplate'],
+        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
       },
       'StringLike': {
-        'aws:RequestTag/karpenter.sh/nodepool': '*',
+        'aws:ResourceTag/karpenter.sh/nodepool': '*',
       },
       'ForAllValues:StringEquals': {
         'aws:TagKeys': [
@@ -291,7 +289,7 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['iam:CreateInstanceProfile'],
     conditions: {
       StringEquals: {
-        [`aws:ResourceTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
+        [`aws:RequestTag/kubernetes.io/cluster/${clusterName}`]: 'owned',
         'aws:RequestTag/topology.kubernetes.io/region': `${Stack.of(scope).region}`,
       },
       StringLike: {
@@ -384,7 +382,6 @@ export function karpenterSetup(cluster: ICluster,
       },
       settings: {
         aws: {
-          defaultInstanceProfile: instanceProfile.instanceProfileName,
           clusterName: clusterName,
           clusterEndpoint: cluster.clusterEndpoint,
           interruptionQueueName: karpenterInterruptionQueue.queueName,

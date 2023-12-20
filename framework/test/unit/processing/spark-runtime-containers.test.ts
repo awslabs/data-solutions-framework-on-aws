@@ -409,17 +409,6 @@ describe('With default configuration, the construct ', () => {
     });
   });
 
-  test('should create an instance profile for Karpenter', () => {
-    template.hasResourceProperties('AWS::IAM::InstanceProfile', {
-      Path: '/',
-      Roles: [
-        {
-          Ref: Match.stringLikeRegexp('.*Ec2InstanceNodeGroupRole.*'),
-        },
-      ],
-    });
-  });
-
   test('should create a KMS key for EKS secrets', () => {
     template.hasResourceProperties('AWS::KMS::Key', {
       Description: 'eks-secrets-key',

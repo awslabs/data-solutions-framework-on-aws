@@ -46,7 +46,9 @@ beforeAll(async() => {
 }, 900000);
 
 test(' S3DataCopy is created', async() => {
-  expect(deployResult.Target).toContain('test-eu-west-1-145388625860-e3c8c022');
+  const regexPattern = /test-([a-z]+-\d+)-(\d+)-([a-z0-9]+)/;
+  expect(deployResult.Target).toMatch(regexPattern);
+
 });
 
 afterAll(async () => {
