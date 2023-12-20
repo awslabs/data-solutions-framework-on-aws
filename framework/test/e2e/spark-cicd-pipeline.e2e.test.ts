@@ -4,7 +4,7 @@
 /**
  * E2E test for SparkCICDPipeline
  *
- * @group e2e/spark-cicd-pipeline
+ * @group e2e/processing/spark-cicd-pipeline
  */
 
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';

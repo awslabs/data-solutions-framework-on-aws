@@ -8,7 +8,7 @@ import { PySparkApplicationPackage } from '../../src/processing';
 
 /**
  * E2E test for PySparkApplicationPackage
- * @group e2e/pyspark-application-package
+ * @group e2e/processing/pyspark-application-package
  */
 
 jest.setTimeout(6000000);

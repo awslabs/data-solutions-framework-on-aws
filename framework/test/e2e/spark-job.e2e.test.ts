@@ -4,7 +4,7 @@
 /**
  * E2E test for SparkJob
  *
- * @group e2e/spark-job
+ * @group e2e/processing/spark-job
  */
 
 import * as cdk from 'aws-cdk-lib';

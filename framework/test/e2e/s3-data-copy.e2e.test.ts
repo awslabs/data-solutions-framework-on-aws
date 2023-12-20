@@ -8,7 +8,7 @@ import { S3DataCopy, Utils } from '../../src/utils';
 
 /**
  * E2E test for S3DataCopy
- * @group e2e/s3-data-copy
+ * @group e2e/utils/s3-data-copy
  */
 
 jest.setTimeout(6000000);

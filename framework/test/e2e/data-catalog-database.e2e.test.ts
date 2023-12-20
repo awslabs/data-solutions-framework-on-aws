@@ -10,7 +10,7 @@ import { DataCatalogDatabase } from '../../src/governance';
 
 /**
  * E2E test for DataCatalogDatabase
- * @group e2e/data-catalog-database
+ * @group e2e/governance/data-catalog-database
  */
 
 jest.setTimeout(6000000);

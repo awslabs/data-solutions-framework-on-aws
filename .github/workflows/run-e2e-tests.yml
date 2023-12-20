@@ -20,6 +20,10 @@ jobs:
     permissions:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint.
       contents: write
+    strategy:
+        matrix:
+          suite: [processing, storage, governance, utils]
+        fail-fast: false
     steps:
       - name: Checkout Repo
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
@@ -59,4 +63,4 @@ jobs:
           aws-region: eu-west-1
           role-duration-seconds: 7200
       - name: Run e2e tests
-        run: npx projen test:e2e
+        run: px jest --group=integ/${{ matrix.suite }}
