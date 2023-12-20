@@ -32,6 +32,9 @@ class TestStack implements ICloudAssemblyDirectoryProducer {
 
   public constructor(stackName: string, app?: App, stack?: Stack) {
     this.app = app ?? new App();
+
+    // Reviewed
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     this.stack = stack ?? new Stack(this.app, stackName + '-' + randomUUID().substring(0, 8).toLowerCase());
     this.stack.node.setContext(ContextOptions.DISABLE_CONSTRUCTS_DEPLOYMENT_TRACKING, true);
     this.#cli = AwsCdkCli.fromCloudAssemblyDirectoryProducer(this);
