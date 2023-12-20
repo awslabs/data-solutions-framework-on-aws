@@ -7,7 +7,8 @@
   "root": true,
   "plugins": [
     "@typescript-eslint",
-    "import"
+    "import",
+    "eslint-plugin-local-rules"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -216,6 +217,9 @@
           "method"
         ]
       }
+    ],
+    "local-rules/no-tokens-in-construct-id": [
+      "error"
     ]
   },
   "overrides": []
