@@ -63,4 +63,4 @@ jobs:
           aws-region: eu-west-1
           role-duration-seconds: 7200
       - name: Run e2e tests
-        run: npx jest --group=integ/${{ matrix.suite }}
+        run: npx jest --group=e2e/${{ matrix.suite }}
