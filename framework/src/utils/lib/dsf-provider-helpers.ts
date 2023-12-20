@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT-0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { Effect, ManagedPolicy, Policy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, IManagedPolicy, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
 
@@ -39,10 +39,10 @@ export function createLambdaExecutionRole (scope: Construct, id: string) : Role 
 export function attachPolicyToRole (
   scope: Construct,
   id: string,
-  role: Role,
-  log: LogGroup,
+  role: IRole,
+  log: ILogGroup,
   crPolicy?: Policy,
-  crManagedPolicy?: ManagedPolicy) {
+  crManagedPolicy?: IManagedPolicy) {
 
   if (
     crPolicy === undefined && crManagedPolicy === undefined ||
@@ -67,6 +67,9 @@ export function attachPolicyToRole (
   const basicExecutionRolePolicy = new Policy(scope, id, {
     statements: [createLogStreamPolicy, putLogEventsPolicy],
   });
+
+  //Handle only ManagedPolicy and drop Policy
+  //Add KMS key Encrypt action
 
   role.attachInlinePolicy(basicExecutionRolePolicy);
 

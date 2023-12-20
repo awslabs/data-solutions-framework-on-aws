@@ -3,7 +3,7 @@
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { ManagedPolicy, Policy, Role } from 'aws-cdk-lib/aws-iam';
+import { IManagedPolicy, IPolicy, IRole, ManagedPolicy, Policy, Role } from 'aws-cdk-lib/aws-iam';
 import { BundlingOptions } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 
@@ -49,9 +49,14 @@ export interface DsfProviderProps {
 
 export interface HandlerDefinition {
   bundling?: BundlingOptions;
-  IamRole?: Role;
-  crPolicy?: Policy;
-  crManagedPolicy?: ManagedPolicy;
+  IamRole?: IRole;
+  crPolicy?: IPolicy;
+  crManagedPolicy?: IManagedPolicy;
+  /**
+   * The name of the file containing the deps lockfile
+   * The file must be put in the following structure
+   * construct-folder/resources/lambda/package-lock.json
+   */
   depsLockFilePath: string;
   /**
    * The entry function in the lambda
@@ -65,10 +70,7 @@ export interface HandlerDefinition {
    */
   entryFile: string;
   /**
-   * Key-value pairs that Lambda caches and makes available for your Lambda
-   * functions. Use environment variables to apply configuration changes, such
-   * as test and production environment configurations, without changing your
-   * Lambda function source code.
+   * Key-value pairs to define environment variables to apply configuration changes.
    *
    * @default - No environment variables.
    */
