@@ -1,5 +1,5 @@
 // Put the following comment above a code line you want to exclude from this check, e.g. after review:
-// eslint-disable-next-line local-rules/no-tokens-in-construct-id1
+// eslint-disable-next-line local-rules/no-tokens-in-construct-id
 
 import type { Rule } from "eslint";
 import * as ts from "typescript";
@@ -38,7 +38,7 @@ export default {
                             if (secondArgument.value?.toString().startsWith('${TOKEN')) {
                                 context.report({
                                     node,
-                                    message: 'The ID argument of a construct contains a token, this is not allowed'
+                                    message: 'The ID argument of a construct contains a token, this is not allowed.'
                                 });
                             }
 
@@ -48,7 +48,8 @@ export default {
 
                         context.report({
                             node,
-                            message: 'An expression is used for the construct ID. it might contain tokens, please review.'
+                            message: 'An expression is used for the construct ID. it might contain tokens, please review. ' +
+                                'Suppress this finding by putting this comment above the code line: // eslint-disable-next-line local-rules/no-tokens-in-construct-id'
                         });
                     }
                 },
