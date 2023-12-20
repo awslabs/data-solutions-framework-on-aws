@@ -118,7 +118,7 @@ export function awsNodeRoleSetup(scope: Construct, cluster: ICluster): IRole {
 export function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: IRole) {
 
   const toolingLaunchTemplate: CfnLaunchTemplate = new CfnLaunchTemplate(scope, 'toolinglaunchtemplate', {
-    launchTemplateName: 'ToolingNodegroup',
+    launchTemplateName: `ToolingNodegroup-${Utils.generateUniqueHash(scope, 'toolinglaunchtemplate')}`,
 
     launchTemplateData: {
 
