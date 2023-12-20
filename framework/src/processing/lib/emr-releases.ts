@@ -6,6 +6,9 @@
  */
 
 export enum EmrRuntimeVersion {
+  V6_15 = 'emr-6.15.0',
+  V6_14 = 'emr-6.14.0',
+  V6_13 = 'emr-6.13.0',
   V6_12 = 'emr-6.12.0',
   V6_11_1 = 'emr-6.11.1',
   V6_11 = 'emr-6.11.0',

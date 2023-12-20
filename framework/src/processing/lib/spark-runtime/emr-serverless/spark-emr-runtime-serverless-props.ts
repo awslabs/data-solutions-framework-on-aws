@@ -51,6 +51,10 @@ export interface SparkEmrServerlessRuntimeProps {
    */
   readonly imageConfiguration?: IResolvable | aws_emrserverless.CfnApplication.ImageConfigurationInputProperty;
   /**
+   * The runtime and monitoring configurations to used as defaults for all of the job runs of this application.
+   */
+  readonly runtimeConfiguration?: IResolvable | aws_emrserverless.CfnApplication.ConfigurationObjectProperty[];
+  /**
    * The configuration for an application to automatically stop after a certain amount of time being idle.
    */
   readonly autoStopConfiguration?: IResolvable | aws_emrserverless.CfnApplication.AutoStopConfigurationProperty;

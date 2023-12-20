@@ -14,6 +14,30 @@ import { Match, Template } from 'aws-cdk-lib/assertions';
 import { AccountRootPrincipal, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { EmrRuntimeVersion, SparkEmrServerlessRuntime } from '../../../src/processing';
 
+describe('Create an EMR Serverless Application with runtime configuration', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const runtimeServerless = new SparkEmrServerlessRuntime(stack, 'SparkRuntimeServerlessStack', {
+    releaseLabel: EmrRuntimeVersion.V6_15,
+    name: 'spark-serverless-demo',
+    runtimeConfiguration: [{classification: "spark-defaults", properties: {"spark.driver.cores": "4"}}]
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('EMR Serverless application created with default config', () => {
+    template.hasResource('AWS::EMRServerless::Application',
+      Match.objectLike({
+        Properties: {
+          RuntimeConfiguration: [{classification: "spark-defaults", properties: {"spark.driver.cores": "4"}}],
+        },
+      }),
+    );
+  });
+})
+
 
 describe('Create an EMR Serverless Application for Spark and grant access', () => {
 
