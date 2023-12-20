@@ -515,6 +515,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    */
   public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, eksNamespace: string, name: string): Role {
 
+    // Reviewed
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     let irsaConditionkey: CfnJson = new CfnJson(scope, `${id}IrsaConditionkey'`, {
       value: {
         [`${this.eksCluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]: 'system:serviceaccount:' + eksNamespace + ':emr-containers-sa-*-*-' + Aws.ACCOUNT_ID.toString() + '-' + SimpleBase.base36.encode(name),
@@ -542,6 +544,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    */
   public uploadPodTemplate(id: string, filePath: string) {
 
+    // Reviewed
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     new BucketDeployment(this, `${id}AssetDeployment`, {
       destinationBucket: this.assetBucket!,
       destinationKeyPrefix: this.podTemplateLocation!.objectKey,

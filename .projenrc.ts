@@ -1,5 +1,5 @@
 import { LernaProject } from 'lerna-projen';
-import { awscdk, Task } from 'projen';
+import { awscdk, javascript, Task } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
 import { Transform } from "projen/lib/javascript";
 import { dirname } from 'path';
@@ -131,7 +131,9 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'jest-runner-groups',
     `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
     'rosetta',
-    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
+    `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
+    '@types/eslint',
+    'eslint-plugin-local-rules'
   ],
 
   bundledDeps: [
@@ -173,9 +175,13 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       'node_modules/',
       '*.generated.ts',
       'coverage'
-    ]
+    ],
   },
 });
+
+const eslint = javascript.Eslint.of(fwkProject)!;
+eslint.addPlugins('eslint-plugin-local-rules');
+eslint.addRules({ 'local-rules/no-tokens-in-construct-id': ["error"] });
 
 fwkProject.addPackageIgnore("!*.lit.ts");
 
@@ -186,6 +192,7 @@ fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
   exec: 'jest --passWithNoTests --updateSnapshot --group=e2e'
 });
+
 
 /**
  * Task copy `resources` directories from `src` to `lib`
