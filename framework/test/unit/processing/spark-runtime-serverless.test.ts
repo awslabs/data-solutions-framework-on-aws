@@ -22,7 +22,7 @@ describe('Create an EMR Serverless Application with runtime configuration', () =
   new SparkEmrServerlessRuntime(stack, 'SparkRuntimeServerlessStack', {
     releaseLabel: EmrRuntimeVersion.V6_15,
     name: 'spark-serverless-demo',
-    runtimeConfiguration: [{classification: "spark-defaults", properties: {"spark.driver.cores": "4"}}]
+    runtimeConfiguration: [{ classification: 'spark-defaults', properties: { 'spark.driver.cores': '4' } }],
   });
 
   const template = Template.fromStack(stack);
@@ -31,7 +31,7 @@ describe('Create an EMR Serverless Application with runtime configuration', () =
     template.hasResource('AWS::EMRServerless::Application',
       Match.objectLike({
         Properties: {
-          RuntimeConfiguration: [{Classification: "spark-defaults", Properties: {"spark.driver.cores": "4"}}],
+          RuntimeConfiguration: [{ Classification: 'spark-defaults', Properties: { 'spark.driver.cores': '4' } }],
         },
       }),
     );
