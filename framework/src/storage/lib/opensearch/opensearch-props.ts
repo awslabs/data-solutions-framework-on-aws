@@ -4,7 +4,7 @@
 import { EbsDeviceVolumeType, IVpc } from 'aws-cdk-lib/aws-ec2';
 import { SAMLOptionsProperty, EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
 import { OpensearchCluster } from './opensearch';
-
+import { RemovalPolicy } from 'aws-cdk-lib';
 
 
 /**
@@ -23,7 +23,7 @@ import { OpensearchCluster } from './opensearch';
  * @param ebsSize EBS Volume Size, default is 10
  * @param enableSAML enable SAML authentication, default is false
  * @param saml SAML options, if enableSAML is true, default IDP is AWS Identity Center.
- * @param samlAdminGroupId SAML Idp Admin GroupId as returned by {user:groups} by Idp, required if enableSAML is true 
+ * @param samlAdminGroupId SAML Idp Admin GroupId as returned by {user:groups} by Idp, required if enableSAML is true
  * @param samlDashboardGroupId SAML Idp DashboardUsers GroupId as returned by {user:groups} by Idp, required if enableSAML is true
  * @param enableAutoSoftwareUpdate Enable Auto Software Update, default is false
  * @param enableVersionUpgrade Enable Version Upgrade, default is false
@@ -43,15 +43,15 @@ export interface OpensearchProps {
   readonly multiAzWithStandbyEnabled?: boolean;
   readonly ebsVolumeType?: EbsDeviceVolumeType;
   readonly ebsSize?: number;
-  readonly enableSAML?: boolean;
-  readonly saml?: SAMLOptionsProperty;
+  readonly saml: SAMLOptionsProperty;
   readonly samlAdminGroupId?:string;
   readonly samlDashboardGroupId?:string;
   readonly enableAutoSoftwareUpdate?: boolean;
   readonly enableVersionUpgrade?: boolean;
   readonly encryptionKmsKeyArn?:string;
   readonly vpc?: IVpc;
-  readonly masterUserName:string;
+  readonly masterUserName?:string;
+  readonly removalPolicy?: RemovalPolicy;
 }
 /**
  * Configuration properties for Opensearch proxy
@@ -62,7 +62,7 @@ export interface OpensearchProps {
 
 export interface OpensearchProxyProps {
   readonly opensearchCluster: OpensearchCluster;
-  readonly localPort?: number,
+  readonly proxyPort?: number;
 }
 
 
@@ -70,7 +70,7 @@ export interface OpensearchProxyProps {
  * Default Node Instances for Opensearch cluster
  */
 export enum OpensearchNodes {
-  DATA_NODE_INSTANCE_DEFAULT = 't3.medium.search',
-  MASTER_NODE_INSTANCE_DEFAULT = 't3.medium.search',
+  DATA_NODE_INSTANCE_DEFAULT = 'm6g.xlarge.search',
+  MASTER_NODE_INSTANCE_DEFAULT = 'm6g.large.search',
   WARM_NODE_INSTANCE_DEFAULT = 'ultrawarm1.medium.search',
 }
