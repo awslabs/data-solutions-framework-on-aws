@@ -10,21 +10,21 @@ import {
   Duration,
   Aws,
 } from 'aws-cdk-lib';
-import { EbsDeviceVolumeType, IVpc, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { AccountPrincipal, CfnServiceLinkedRole, Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { EbsDeviceVolumeType, IVpc, Peer, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { AccountPrincipal, AnyPrincipal, CfnServiceLinkedRole, Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Domain, DomainProps, EngineVersion, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
-import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId, Provider } from 'aws-cdk-lib/custom-resources';
+import { /*AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId,*/ Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { OpensearchProps, OpensearchNodes } from './opensearch-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import path = require('path');
 import { OpensearchProxy } from './opensearch-proxy';
-//import { CfnGroup } from 'aws-cdk-lib/aws-identitystore';
+import { readFileSync } from 'fs';
 
 
 export class OpensearchCluster extends TrackedConstruct {
@@ -138,26 +138,17 @@ export class OpensearchCluster extends TrackedConstruct {
 
     const samlMetaData: SAMLOptionsProperty = {
       idpEntityId:  props.saml?.idpEntityId ?? '',
-      idpMetadataContent: props.saml?.idpMetadataContent ?? `<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz">
-      <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-        <md:KeyDescriptor use="signing">
-          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-            <ds:X509Data>
-              <ds:X509Certificate>MIIDBjCCAe6gAwIBAgIEQR9jDzANBgkqhkiG9w0BAQsFADBFMRYwFAYDVQQDDA1hbWF6b25hd3MuY29tMQ0wCwYDVQQLDARJREFTMQ8wDQYDVQQKDAZBbWF6b24xCzAJBgNVBAYTAlVTMB4XDTIzMTIxNTIxMzY1N1oXDTI4MTIxNTIxMzY1N1owRTEWMBQGA1UEAwwNYW1hem9uYXdzLmNvbTENMAsGA1UECwwESURBUzEPMA0GA1UECgwGQW1hem9uMQswCQYDVQQGEwJVUzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMTWu5ekXLhEQ/NEGLe2q7JJF+02dhdL38sUrQGME8o7o13Ri08KN/OZYo3kJDFp/+/pCIRyg2J4hoqrIck6Fh+vy3ksKH7glDsMeTm2zeamdTBEJMfXzdh4ThY03QBSQAzRLIWKTeXKMvz/lt4PyfCAHsLxTqZOjWE5g9eKPRZ2O8tAN4oGjzQEUpURycIztgouNdH17W5yHbs+jOLSAGVZHKAJ8scm3AB2ydGm9BWsCowEzm5CsgMiwktHRYHmW68S6CxaGFREdvsNWXmG6bKq+5tUbUDjCjyqqxqVFiHoOfBnkybrmwqTGvFms7g0jn4XivogP4pqq+w22tDuJj8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEApEqEiIt/xPqY7T0CLboaYtD0OE/D2DjhF79S5PvhRB3XXFgGm3ytWmhGQ/1N4LzAqcsw00X6QHVu5b3HNy+bPesek23CeV/DCbtwKtiSt2vrghiYY762Cyn5LFF8I+KTu30AQ/gWjwq/qTVrG/qmDzEYbtRMGEXg41pTND0ZrYWV+6GUvyrkvuVpzTdPMSpmaodytYn6g8KO2jShukqR5BzRlO8n3GfdqlzUvFgMSZ7BT4l5Q4Au+ub5SBn1WW/wob1KjjAvgAzmcDIQE28A8FjFr9ETBVpYNdYqxYuZzt7bUSpMAux2/zlLU1A0UTLmO71QdbZQsRbxANqqw2PKGg==</ds:X509Certificate>
-            </ds:X509Data>
-          </ds:KeyInfo>
-        </md:KeyDescriptor>
-        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
-        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
-        <md:NameIDFormat/>
-        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
-        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/MzE4NTM1NjE3OTczX2lucy1jYzRlN2JkOWUzNWM0NmQz"/>
-      </md:IDPSSODescriptor>
-    </md:EntityDescriptor>`,
+      idpMetadataContent: props.saml?.idpMetadataContent ?? readFileSync(path.join(__dirname,'./resources/saml-config.xml'),'utf-8'),
       rolesKey: props.saml?.rolesKey ?? 'Role',
       subjectKey: props.saml?.subjectKey ?? 'Subject',
       sessionTimeoutMinutes: props.saml?.sessionTimeoutMinutes ?? Duration.hours(8).toMinutes(),
     };
+
+    const clusterSg = new SecurityGroup(scope, 'OpensearchSecurityGroup', {
+      vpc: this.vpc,
+      allowAllOutbound: true
+    })
+    clusterSg.addIngressRule(Peer.ipv4(this.vpc.vpcCidrBlock), Port.tcp(443))
 
     const domainProps : DomainProps = {
       domainName: props.domainName,
@@ -206,11 +197,19 @@ export class OpensearchCluster extends TrackedConstruct {
       enableAutoSoftwareUpdate: props.enableAutoSoftwareUpdate ?? false,
       enableVersionUpgrade: props.enableVersionUpgrade ?? false,
       removalPolicy: this.removalPolicy,
+      securityGroups: [clusterSg],
     } as DomainProps;
 
 
     this.domain = new Domain(this, 'Domain', domainProps as DomainProps);
 
+    this.domain.addAccessPolicies(
+      new PolicyStatement({
+        actions: ['es:*'],
+        effect: Effect.ALLOW,
+        principals:[new AnyPrincipal()],
+        resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${this.domain.domainName}/*`],
+      }));
     const apiFn = new NodejsFunction(this, 'api', {
       runtime: Runtime.NODEJS_18_X,
       entry: path.join(__dirname,'resources/lambda/opensearch-api.ts'),
@@ -243,14 +242,14 @@ export class OpensearchCluster extends TrackedConstruct {
     //const masterUser = props.masterUserName ?? 'root';
     //this.addAdminUser(masterUser,masterUser);
    
-    //const samlAdminGroupId = props.samlAdminGroupId ?? 'iam-adminid'
+    const samlAdminGroupId = props.samlAdminGroupId ?? 'iam-adminid'
       /*new CfnGroup(scope,'adminGroup',{
         description: 'Opensearch Dashboards Admin Group',
         identityStoreId:props.saml.idpEntityId,
         displayName:'OpensearchDashboardsAdminGroup',
       }).attrGroupId;*/
    
-    //const samlDashboardGroupId = props.samlDashboardGroupId ?? 'iam-dashboardid'
+    const samlDashboardGroupId = props.samlDashboardGroupId ?? 'iam-dashboardid'
    
    /*new CfnGroup(scope,'dashboardGroup',{
         description: 'Opensearch Dashboards User Group',
@@ -259,16 +258,25 @@ export class OpensearchCluster extends TrackedConstruct {
       }).attrGroupId;*/
     
     //todo refactor to use new custom resource framework
-    //this.addRoleMapping('all_access_'+samlAdminGroupId, 'all_access', samlAdminGroupId);
-    //this.addRoleMapping('security_manager_'+samlAdminGroupId, 'security_manager', samlAdminGroupId);
-    //this.addRoleMapping('dashboard_'+samlDashboardGroupId, 'opensearch_dashboards_user', samlDashboardGroupId);
+    this.addRoleMapping('all_access_'+samlAdminGroupId, 'all_access', samlAdminGroupId);
+    this.addRoleMapping('security_manager_'+samlAdminGroupId, 'security_manager', samlAdminGroupId);
+    this.addRoleMapping('dashboard_'+samlDashboardGroupId, 'opensearch_dashboards_user', samlDashboardGroupId);
     
 
 
     //usernames.map((username) => this.addDasboardUser(username, username));
     //accessRoles.map((accessRole) => this.addAccessRole(accessRole.toString(), accessRole));
     
-    new AwsCustomResource(this, 'EnableInternalUserDatabaseCR', {
+
+
+    // create proxy to get access inside VPC
+    this.opensearchProxy = new OpensearchProxy(scope, 'OpensearchProxy', {
+      opensearchCluster: this as OpensearchCluster,
+      proxyPort:props.proxyPort ?? 8080,
+    });
+    this.opensearchProxy.node.addDependency(this.domain);
+
+    /*new AwsCustomResource(this, 'EnableInternalUserDatabaseCR', {
       vpc:this.vpc,
       vpcSubnets: vpcSubnetsSelection,
       installLatestAwsSdk:false,
@@ -288,14 +296,7 @@ export class OpensearchCluster extends TrackedConstruct {
         resources: [this.domain.domainArn],
       }),
     });
-
-    // create proxy to get access inside VPC
-    this.opensearchProxy = new OpensearchProxy(scope, 'OpensearchProxy', {
-      opensearchCluster: this as OpensearchCluster,
-      proxyPort:8080,
-    });
-    this.opensearchProxy.node.addDependency(this.domain);
-    
+    */
   }
 
   private apiCustomResource(id: string, path: string, body: any) {

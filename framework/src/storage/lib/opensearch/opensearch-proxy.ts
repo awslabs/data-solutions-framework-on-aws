@@ -25,7 +25,7 @@ export class OpensearchProxy extends Construct {
 
     super(scope, id);
 
-    this.proxyPort = props.proxyPort ?? 8080;
+    this.proxyPort = props.proxyPort;
     const albPort = 80; 
     const nginxConf = readFileSync(
       path.join(__dirname,'./resources/nginx.conf'),'utf-8')
@@ -36,18 +36,18 @@ export class OpensearchProxy extends Construct {
     const handle = new InitServiceRestartHandle();
     const vpc = props.opensearchCluster.vpc;
     
-    this.alb = new ApplicationLoadBalancer(this, 'LB', {
+    this.alb = new ApplicationLoadBalancer(scope, 'LB', {
       vpc,
       internetFacing: true,
     });
     
-    const ec2Sg = new SecurityGroup(this, 'ec2Sg', {
+    const ec2Sg = new SecurityGroup(scope, 'ec2Sg', {
       vpc,
       allowAllOutbound: true,
       description: 'ec2Sg',
     });
     
-    const lbSg = new SecurityGroup(this, 'lbSg', {
+    const lbSg = new SecurityGroup(scope, 'lbSg', {
       vpc,
       allowAllOutbound: true,
       description: 'lbSg',
@@ -109,6 +109,6 @@ export class OpensearchProxy extends Construct {
       minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2021,
     });
     
-    new CfnOutput(this, 'Opensearch Dashboards URL', { value: `https://${this.cfDistribution.distributionDomainName}/` });   
+    new CfnOutput(this, 'Opensearch Dashboards URL', { value: `https://${this.cfDistribution.distributionDomainName}/_dashboards` });   
   }
 }

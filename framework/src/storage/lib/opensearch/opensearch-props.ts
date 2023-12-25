@@ -52,6 +52,7 @@ export interface OpensearchProps {
   readonly vpc?: IVpc;
   readonly masterUserName?:string;
   readonly removalPolicy?: RemovalPolicy;
+  readonly proxyPort?:number;
 }
 /**
  * Configuration properties for Opensearch proxy
@@ -62,7 +63,7 @@ export interface OpensearchProps {
 
 export interface OpensearchProxyProps {
   readonly opensearchCluster: OpensearchCluster;
-  readonly proxyPort?: number;
+  readonly proxyPort: number;
 }
 
 
