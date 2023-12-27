@@ -101,7 +101,7 @@ export class OpensearchProxy extends Construct {
           defaultTtl:Duration.seconds(0),
           cookieBehavior:CacheCookieBehavior.allowList("security_authentication"),
           headerBehavior:CacheHeaderBehavior.none(),
-          queryStringBehavior:CacheQueryStringBehavior.none()
+          queryStringBehavior:CacheQueryStringBehavior.all()
         })
       },
       enableIpv6: true,
