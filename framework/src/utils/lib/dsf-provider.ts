@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Role } from 'aws-cdk-lib/aws-iam';
-import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { Effect, IRole, Policy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { Context } from './context';
-import { attachPolicyToRole, createLambdaExecutionRole, createLogGroup } from './dsf-provider-helpers';
 import { DsfProviderProps } from './dsf-provider-props';
 
 /**
@@ -20,86 +20,99 @@ export class DsfProvider extends Construct {
   private static readonly LOG_RETENTION = RetentionDays.ONE_WEEK;
 
   public readonly serviceToken: string;
+  public readonly onEventHandlerLog: ILogGroup;
+  public readonly onEventHandlerRole: IRole;
+  public readonly onEventHandlerFunction: IFunction;
+  public readonly isCompleteHandlerLog?: ILogGroup;
+  public readonly isCompleteHandlerRole?: IRole;
+  public readonly isCompleteHandlerFunction?: IFunction;
+  private readonly removalPolicy: RemovalPolicy;
+
 
   constructor(scope: Construct, id: string, props: DsfProviderProps) {
 
     super(scope, id);
 
-    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    let onEventHandlerLog: LogGroup = createLogGroup (scope, `OnEventHandlerLog`, removalPolicy, DsfProvider.LOG_RETENTION);
-    let onEventHandlerRole: Role;
+    this.onEventHandlerRole = props.onEventHandlerDefinition.iamRole || this.createLambdaExecutionRole ('OnEventHandlerRole');
+    this.onEventHandlerRole.addManagedPolicy(props.onEventHandlerDefinition.managedPolicy);
 
+    this.onEventHandlerLog = this.createLogGroup('OnEventHandlerLog', this.onEventHandlerRole);
 
-    if (props.onEventHandlerDefinition.IamRole) {
-      onEventHandlerRole = props.onEventHandlerDefinition.IamRole;
-    } else {
-      onEventHandlerRole = createLambdaExecutionRole (scope, `OnEventHandlerRole`);
-    }
-
-    attachPolicyToRole(
-      scope,
-      'attachPolicyToRoleisCompleteHandler',
-      onEventHandlerRole,
-      onEventHandlerLog,
-      props.onEventHandlerDefinition.crPolicy,
-      props.onEventHandlerDefinition.crManagedPolicy);
-
-    let onEventHandlerLambdaFunction: NodejsFunction = new NodejsFunction (scope, 'onEventHandlerLambdaFunction', {
+    this.onEventHandlerFunction = new NodejsFunction (scope, 'OnEventHandlerFunction', {
       runtime: DsfProvider.CR_RUNTIME,
       handler: props.onEventHandlerDefinition.handler,
       entry: props.onEventHandlerDefinition.entryFile,
       depsLockFilePath: props.onEventHandlerDefinition.depsLockFilePath,
-      logGroup: onEventHandlerLog,
-      role: onEventHandlerRole,
-      vpc: props.vpc,
-      vpcSubnets: props.subnets,
+      logGroup: this.onEventHandlerLog,
+      role: this.onEventHandlerRole,
       bundling: props.onEventHandlerDefinition.bundling,
     });
 
-
-    let isCompleteHandlerLambdaFunction = undefined;
-
     if (props.isCompleteHandlerDefinition) {
-      const isCompleteHandlerLog: LogGroup = createLogGroup (scope, 'isCompleteHandlerLog', removalPolicy, DsfProvider.LOG_RETENTION);
-      let isCompleteHandlerRole: Role;
+      this.isCompleteHandlerRole = props.isCompleteHandlerDefinition.iamRole || this.createLambdaExecutionRole ('isCompleteHandlerRole');
+      this.isCompleteHandlerRole.addManagedPolicy(props.isCompleteHandlerDefinition.managedPolicy);
 
-      if (props.isCompleteHandlerDefinition.IamRole) {
-        isCompleteHandlerRole = props.isCompleteHandlerDefinition.IamRole;
-      } else {
-        isCompleteHandlerRole = createLambdaExecutionRole (scope, 'isCompleteHandlerRole');
-      }
+      this.isCompleteHandlerLog = this.createLogGroup ('IsCompleteHandlerLog', this.isCompleteHandlerRole);
 
-      attachPolicyToRole(
-        scope,
-        'attachPolicyToRoleisCompleteHandler',
-        isCompleteHandlerRole,
-        isCompleteHandlerLog,
-        props.isCompleteHandlerDefinition.crPolicy,
-        props.isCompleteHandlerDefinition.crManagedPolicy);
-
-      isCompleteHandlerLambdaFunction = new NodejsFunction (scope, 'isCompleteHandlerLambdaFunction', {
+      this.isCompleteHandlerFunction = new NodejsFunction (scope, 'isCompleteHandlerLambdaFunction', {
         runtime: DsfProvider.CR_RUNTIME,
         handler: props.isCompleteHandlerDefinition.handler,
         entry: props.isCompleteHandlerDefinition.entryFile,
         depsLockFilePath: props.isCompleteHandlerDefinition.depsLockFilePath,
-        logGroup: isCompleteHandlerLog,
-        role: isCompleteHandlerRole,
-        vpc: props.vpc,
-        vpcSubnets: props.subnets,
+        logGroup: this.isCompleteHandlerLog,
+        role: this.isCompleteHandlerRole,
         bundling: props.isCompleteHandlerDefinition.bundling,
       });
     }
 
-    let customeResourceProvider = new Provider (scope, 'customeResourceProvider', {
-      onEventHandler: onEventHandlerLambdaFunction,
-      isCompleteHandler: isCompleteHandlerLambdaFunction,
+    const customResourceProvider = new Provider (scope, 'customResourceProvider', {
+      onEventHandler: this.onEventHandlerFunction,
+      isCompleteHandler: this.isCompleteHandlerFunction,
       queryInterval: props.queryInterval,
+      vpc: props.vpc,
+      vpcSubnets: props.subnets,
+      securityGroups: props.securityGroups,
       totalTimeout: props.queryTimeout,
     });
 
-    this.serviceToken = customeResourceProvider.serviceToken;
+    this.serviceToken = customResourceProvider.serviceToken;
 
   }
 
+  private createLambdaExecutionRole(id: string): Role {
+
+    return new Role (this, id, {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+    });
+  }
+
+  private createLogGroup(id: string, role: IRole) : ILogGroup {
+
+    const logGroup: LogGroup = new LogGroup (this, `${id}LogGroup`, {
+      retention: DsfProvider.LOG_RETENTION,
+      removalPolicy: this.removalPolicy,
+    });
+
+    const createLogStreamPolicy = new PolicyStatement({
+      actions: ['logs:CreateLogStream'],
+      resources: [`${logGroup.logGroupArn}`],
+      effect: Effect.ALLOW,
+    });
+
+    const putLogEventsPolicy = new PolicyStatement({
+      actions: ['logs:PutLogEvents'],
+      resources: [`${logGroup.logGroupArn}:log-stream:*`],
+      effect: Effect.ALLOW,
+    });
+
+    const basicExecutionRolePolicy = new Policy(this, `${id}Policy`, {
+      statements: [createLogStreamPolicy, putLogEventsPolicy],
+    });
+
+    role.attachInlinePolicy(basicExecutionRolePolicy);
+
+    return logGroup;
+  }
 }

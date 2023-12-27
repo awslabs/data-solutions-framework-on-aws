@@ -60,26 +60,26 @@ export class MyConstruct extends TrackedConstruct {
     let myProvider: DsfProvider = new DsfProvider(this, 'Provider', {
       providerName: 'crtest',
       onEventHandlerDefinition: {
-        crManagedPolicy: managedPolicy,
+        managedPolicy: managedPolicy,
         handler: 'index.handler',
         depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/my-cr/index.mjs'),
         bundling: {
-            nodeModules: [
-              '@aws-sdk/client-s3',
-              '@aws-sdk/client-sts',
-              'json-validator',
-              'qrcode'
+          nodeModules: [
+            '@aws-sdk/client-s3',
+            '@aws-sdk/client-sts',
+            'json-validator',
+            'qrcode',
+          ],
+          commandHooks: {
+            afterBundling: () => [],
+            beforeBundling: () => [
+              'npx esbuild --version',
             ],
-            commandHooks: {
-              afterBundling: () => [],
-              beforeBundling: () => [
-                'npx esbuild --version'
-              ],
-              beforeInstall: () => [
-              ]
-            }
+            beforeInstall: () => [
+            ],
           },
+        },
       },
     });
 
