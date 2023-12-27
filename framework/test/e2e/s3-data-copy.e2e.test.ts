@@ -8,7 +8,7 @@ import { S3DataCopy, Utils } from '../../src/utils';
 
 /**
  * E2E test for S3DataCopy
- * @group e2e/s3-data-copy
+ * @group e2e/utils/s3-data-copy
  */
 
 jest.setTimeout(6000000);
@@ -46,7 +46,7 @@ beforeAll(async() => {
 }, 900000);
 
 test(' S3DataCopy is created', async() => {
-  const regexPattern = /test-([a-z]+-\d+)-(\d+)-([a-z0-9]+)/;
+  const regexPattern = /test-[a-z]{2}-[a-z]+-[0-9]-[0-9]{12}-[a-z0-9]{8}/;
   expect(deployResult.Target).toMatch(regexPattern);
 
 });

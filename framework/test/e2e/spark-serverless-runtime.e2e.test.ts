@@ -4,7 +4,7 @@
 /**
  * E2E test for SparkServerlessRunime
  *
- * @group e2e/spark-runtime-serverless
+ * @group e2e/processing/spark-runtime-serverless
  */
 
 import { App, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';

@@ -4,7 +4,7 @@
 /**
  * E2E test for SparkContainersRunime
  *
- * @group e2e/spark-runtime-containers
+ * @group e2e/processing/spark-runtime-containers
  */
 
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
