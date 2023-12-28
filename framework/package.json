@@ -48,6 +48,7 @@
     "aws-cdk-lib": "2.114.1",
     "cdk-nag": "^2.0.0",
     "constructs": "10.3.0",
+    "esbuild": "^0.19.10",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.7",
     "eslint-import-resolver-typescript": "^3.5.5",

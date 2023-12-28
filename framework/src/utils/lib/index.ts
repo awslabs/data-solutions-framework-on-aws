@@ -15,7 +15,5 @@ export * from './data-vpc-props';
 export * from './s3-data-copy';
 export * from './s3-data-copy-props';
 export * from './cr-test';
-export * from './dsf-provider';
-export * from './dsf-provider-props';
 
 

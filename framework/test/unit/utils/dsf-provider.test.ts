@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT-0
 
 import path from 'path';
-import { App, Stack } from 'aws-cdk-lib';
+import { App, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
-import { DsfProvider } from '../../../src/utils';
+import { DsfProvider } from '../../../src/utils/lib/dsf-provider';
 
 /**
  * Tests DsfProvider construct
@@ -51,6 +51,12 @@ describe('With default configuration, the construct ', () => {
         RetentionInDays: 7,
       }),
     );
+  });
+
+  test('should set proper log retention for the custom resource', () => {
+    template.resourcePropertiesCountIs('Custom::LogRetention', {
+      RetentionInDays: 7,
+    }, 1);
   });
 
   test('should create an IAM Role assumed by Lambda and with the managed policy attached', () => {
@@ -138,6 +144,102 @@ describe('With default configuration, the construct ', () => {
       }),
     );
   });
+
+  test('should set the timeout to 30 minutes', () => {
+    template.hasResourceProperties('AWS::Lambda::Function',
+      Match.objectLike({
+        Handler: 'framework.onEvent',
+        Timeout: 900,
+      }),
+    );
+  });
+});
+
+describe('With removal policy set to DESTROY and the global removal policy parameter unset, the construct ', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const myManagedPolicy = new ManagedPolicy(stack, 'Policy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          actions: [
+            's3:*',
+          ],
+          effect: Effect.ALLOW,
+          resources: ['*'],
+        }),
+      ],
+    }),
+  });
+
+  new DsfProvider(stack, 'Provider', {
+    providerName: 'my-provider',
+    onEventHandlerDefinition: {
+      managedPolicy: myManagedPolicy,
+      handler: 'on-event.handler',
+      depsLockFilePath: path.join(__dirname, '../../resources/utils/lambda/my-cr/package-lock.json'),
+      entryFile: path.join(__dirname, '../../resources/utils/lambda/my-cr/on-event.mjs'),
+    },
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create a CloudWatch LogGroup', () => {
+    template.hasResource('AWS::Logs::LogGroup',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Retain',
+        DeletionPolicy: 'Retain',
+      }),
+    );
+  });
+});
+
+describe('With removal policy set to DESTROY and the global removal policy parameter set to TRUE, the construct ', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const myManagedPolicy = new ManagedPolicy(stack, 'Policy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          actions: [
+            's3:*',
+          ],
+          effect: Effect.ALLOW,
+          resources: ['*'],
+        }),
+      ],
+    }),
+  });
+
+  new DsfProvider(stack, 'Provider', {
+    providerName: 'my-provider',
+    onEventHandlerDefinition: {
+      managedPolicy: myManagedPolicy,
+      handler: 'on-event.handler',
+      depsLockFilePath: path.join(__dirname, '../../resources/utils/lambda/my-cr/package-lock.json'),
+      entryFile: path.join(__dirname, '../../resources/utils/lambda/my-cr/on-event.mjs'),
+    },
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create a CloudWatch LogGroup', () => {
+    template.hasResource('AWS::Logs::LogGroup',
+      Match.objectLike({
+        UpdateReplacePolicy: 'Delete',
+        DeletionPolicy: 'Delete',
+      }),
+    );
+  });
 });
 
 describe('With isComplete handler configuration configuration, the construct ', () => {
@@ -190,7 +292,7 @@ describe('With isComplete handler configuration configuration, the construct ', 
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create another CloudWatch LogGroup for isComplete lambda', () => {
     template.resourceCountIs('AWS::Logs::LogGroup', 2);
@@ -255,7 +357,7 @@ describe('With isComplete handler configuration configuration, the construct ', 
         PolicyName: Match.stringLikeRegexp('ProviderIsCompleteHandlerLogPolicy.*'),
         Roles: [
           {
-            Ref: Match.stringLikeRegexp('ProviderisCompleteHandlerRole.*'),
+            Ref: Match.stringLikeRegexp('ProviderIsCompleteHandlerRole.*'),
           },
         ],
       }),
@@ -272,7 +374,96 @@ describe('With isComplete handler configuration configuration, the construct ', 
         },
         Role: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('ProviderisCompleteHandlerRole.*'),
+            Match.stringLikeRegexp('ProviderIsCompleteHandlerRole.*'),
+            'Arn',
+          ],
+        },
+        Runtime: 'nodejs20.x',
+      }),
+    );
+  });
+});
+
+describe('With custom configuration, the construct should', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const myOnEventManagedPolicy = new ManagedPolicy(stack, 'OnEventPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          actions: [
+            's3:*',
+          ],
+          effect: Effect.ALLOW,
+          resources: ['*'],
+        }),
+      ],
+    }),
+  });
+
+  const myIsCompleteManagedPolicy = new ManagedPolicy(stack, 'IsCompletePolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          actions: [
+            's3:*',
+          ],
+          effect: Effect.ALLOW,
+          resources: ['*'],
+        }),
+      ],
+    }),
+  });
+
+  new DsfProvider(stack, 'Provider', {
+    providerName: 'my-provider',
+    onEventHandlerDefinition: {
+      managedPolicy: myOnEventManagedPolicy,
+      handler: 'on-event.handler',
+      depsLockFilePath: path.join(__dirname, '../../resources/utils/lambda/my-cr/package-lock.json'),
+      entryFile: path.join(__dirname, '../../resources/utils/lambda/my-cr/on-event.mjs'),
+    },
+    isCompleteHandlerDefinition: {
+      managedPolicy: myIsCompleteManagedPolicy,
+      handler: 'is-complete.handler',
+      depsLockFilePath: path.join(__dirname, '../../resources/utils/lambda/my-cr/package-lock.json'),
+      entryFile: path.join(__dirname, '../../resources/utils/lambda/my-cr/is-complete.mjs'),
+    },
+    queryInterval: Duration.seconds(10),
+    queryTimeout: Duration.seconds(120),
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create an isComplete check every 10 seconds', () => {
+    template.hasResourceProperties('AWS::StepFunctions::StateMachine',
+      Match.objectLike({
+        DefinitionString: {
+          'Fn::Join': Match.arrayWith([
+            Match.arrayWith([
+              Match.stringLikeRegexp('.*IntervalSeconds"\:10.*'),
+            ]),
+          ]),
+        },
+      }),
+    );
+  });
+
+  test('should create a a timeout of 2 minutes for the entire query', () => {
+    template.hasResourceProperties('AWS::Lambda::Function',
+      Match.objectLike({
+        Handler: 'is-complete.handler',
+        LoggingConfig: {
+          LogGroup: {
+            Ref: Match.stringLikeRegexp('ProviderIsCompleteHandlerLogLogGroup.*'),
+          },
+        },
+        Role: {
+          'Fn::GetAtt': [
+            Match.stringLikeRegexp('ProviderIsCompleteHandlerRole.*'),
             'Arn',
           ],
         },

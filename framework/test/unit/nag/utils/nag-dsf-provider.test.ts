@@ -6,7 +6,7 @@ import { App, Aspects, CustomResource, Stack } from 'aws-cdk-lib';
 import { Match, Annotations } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { DsfProvider } from '../../../../src/utils';
+import { DsfProvider } from '../../../../src/utils/lib/dsf-provider';
 
 /**
  * Nag Tests for DsfProvider construct
@@ -69,11 +69,52 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/customResourceProvider',
+  'Stack/CustomResourceProvider/framework-onTimeout',
   [
-    { id: 'AwsSolutions-IAM5', reason: 'Custom resource provider is an L2 CDK construct' },
-    { id: 'AwsSolutions-IAM4', reason: 'Custom resource provider is an L2 CDK construct' },
-    { id: 'AwsSolutions-L1', reason: 'Custom resource provider is an L2 CDK construct' },
+    { id: 'AwsSolutions-L1', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+    { id: 'AwsSolutions-IAM5', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+    { id: 'AwsSolutions-IAM4', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/CustomResourceProvider/framework-isComplete/Resource',
+  [
+    { id: 'AwsSolutions-L1', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+    { id: 'AwsSolutions-IAM5', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+    { id: 'AwsSolutions-IAM4', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/CustomResourceProvider/framework-onEvent/Resource',
+  [
+    { id: 'AwsSolutions-L1', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+    { id: 'AwsSolutions-IAM5', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+    { id: 'AwsSolutions-IAM4', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  'Stack/CustomResourceProvider/waiter-state-machine',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'State machine not configurable and provided by the CDK L2 construct for Custom resource provider' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  'Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'Native L2 CDK resource created by the custom resource provider framework and the retention configuration' },
+    { id: 'AwsSolutions-IAM4', reason: 'Native L2 CDK resource created by the custom resource provider framework and the retention configuration' },
   ],
   true,
 );
@@ -82,7 +123,7 @@ NagSuppressions.addResourceSuppressionsByPath(
   stack,
   'Stack/Provider/IsCompleteHandlerLogPolicy/Resource',
   [
-    { id: 'AwsSolutions-IAM5', reason: 'The log stream name is not deterministic' },
+    { id: 'AwsSolutions-IAM5', reason: 'The log stream name is not predictable' },
   ],
 );
 
@@ -90,7 +131,7 @@ NagSuppressions.addResourceSuppressionsByPath(
   stack,
   'Stack/Provider/OnEventHandlerLogPolicy/Resource',
   [
-    { id: 'AwsSolutions-IAM5', reason: 'The log stream name is not deterministic' },
+    { id: 'AwsSolutions-IAM5', reason: 'The log stream name is not predictable' },
   ],
 );
 

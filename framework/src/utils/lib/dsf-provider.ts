@@ -48,15 +48,16 @@ export class DsfProvider extends Construct {
       logGroup: this.onEventHandlerLog,
       role: this.onEventHandlerRole,
       bundling: props.onEventHandlerDefinition.bundling,
+      environment: props.onEventHandlerDefinition.environment,
     });
 
     if (props.isCompleteHandlerDefinition) {
-      this.isCompleteHandlerRole = props.isCompleteHandlerDefinition.iamRole || this.createLambdaExecutionRole ('isCompleteHandlerRole');
+      this.isCompleteHandlerRole = props.isCompleteHandlerDefinition.iamRole || this.createLambdaExecutionRole ('IsCompleteHandlerRole');
       this.isCompleteHandlerRole.addManagedPolicy(props.isCompleteHandlerDefinition.managedPolicy);
 
       this.isCompleteHandlerLog = this.createLogGroup ('IsCompleteHandlerLog', this.isCompleteHandlerRole);
 
-      this.isCompleteHandlerFunction = new NodejsFunction (scope, 'isCompleteHandlerLambdaFunction', {
+      this.isCompleteHandlerFunction = new NodejsFunction (scope, 'IsCompleteHandlerLambdaFunction', {
         runtime: DsfProvider.CR_RUNTIME,
         handler: props.isCompleteHandlerDefinition.handler,
         entry: props.isCompleteHandlerDefinition.entryFile,
@@ -64,10 +65,11 @@ export class DsfProvider extends Construct {
         logGroup: this.isCompleteHandlerLog,
         role: this.isCompleteHandlerRole,
         bundling: props.isCompleteHandlerDefinition.bundling,
+        environment: props.isCompleteHandlerDefinition.environment,
       });
     }
 
-    const customResourceProvider = new Provider (scope, 'customResourceProvider', {
+    const customResourceProvider = new Provider (scope, 'CustomResourceProvider', {
       onEventHandler: this.onEventHandlerFunction,
       isCompleteHandler: this.isCompleteHandlerFunction,
       queryInterval: props.queryInterval,
@@ -75,6 +77,7 @@ export class DsfProvider extends Construct {
       vpcSubnets: props.subnets,
       securityGroups: props.securityGroups,
       totalTimeout: props.queryTimeout,
+      logRetention: DsfProvider.LOG_RETENTION,
     });
 
     this.serviceToken = customResourceProvider.serviceToken;

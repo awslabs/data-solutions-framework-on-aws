@@ -4119,8 +4119,9 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.utils.S3DataCopy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyLambda">copyLambda</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to copy the data. |
-| <code><a href="#aws-dsf.utils.S3DataCopy.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the lambda to copy the data. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyFunction">copyFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for copying data. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyFunctionLogGroup">copyFunctionLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch LogGroup used by the Lambda function to copy data. |
+| <code><a href="#aws-dsf.utils.S3DataCopy.property.copyFunctionRole">copyFunctionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda function to copy data. |
 
 ---
 
@@ -4136,27 +4137,39 @@ The tree node.
 
 ---
 
-##### `copyLambda`<sup>Required</sup> <a name="copyLambda" id="aws-dsf.utils.S3DataCopy.property.copyLambda"></a>
+##### `copyFunction`<sup>Required</sup> <a name="copyFunction" id="aws-dsf.utils.S3DataCopy.property.copyFunction"></a>
 
 ```typescript
-public readonly copyLambda: IFunction;
+public readonly copyFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
-The Lambda function used to copy the data.
+The Lambda function for copying data.
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.utils.S3DataCopy.property.executionRole"></a>
+##### `copyFunctionLogGroup`<sup>Required</sup> <a name="copyFunctionLogGroup" id="aws-dsf.utils.S3DataCopy.property.copyFunctionLogGroup"></a>
 
 ```typescript
-public readonly executionRole: IRole;
+public readonly copyFunctionLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch LogGroup used by the Lambda function to copy data.
+
+---
+
+##### `copyFunctionRole`<sup>Required</sup> <a name="copyFunctionRole" id="aws-dsf.utils.S3DataCopy.property.copyFunctionRole"></a>
+
+```typescript
+public readonly copyFunctionRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
-The IAM role used by the lambda to copy the data.
+The IAM role used by the Lambda function to copy data.
 
 ---
 
@@ -7345,128 +7358,6 @@ name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster.
 
 ---
 
-### HandlerDefinition <a name="HandlerDefinition" id="aws-dsf.utils.HandlerDefinition"></a>
-
-#### Initializer <a name="Initializer" id="aws-dsf.utils.HandlerDefinition.Initializer"></a>
-
-```typescript
-import { utils } from 'aws-dsf'
-
-const handlerDefinition: utils.HandlerDefinition = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.depsLockFilePath">depsLockFilePath</a></code> | <code>string</code> | The name of the file containing the deps lockfile. |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.entryFile">entryFile</a></code> | <code>string</code> | The name of the file containing the lambda code. |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.handler">handler</a></code> | <code>string</code> | The entry function in the lambda. |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.managedPolicy">managedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM managed poicy to attach to the lambda function. |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.bundling">bundling</a></code> | <code>aws-cdk-lib.aws_lambda_nodejs.BundlingOptions</code> | The bundling options to use for the lambda function. |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.environment">environment</a></code> | <code>{[ key: string ]: string}</code> | Key-value pairs to define environment variables to apply configuration changes. |
-| <code><a href="#aws-dsf.utils.HandlerDefinition.property.iamRole">iamRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the lamnda function. |
-
----
-
-##### `depsLockFilePath`<sup>Required</sup> <a name="depsLockFilePath" id="aws-dsf.utils.HandlerDefinition.property.depsLockFilePath"></a>
-
-```typescript
-public readonly depsLockFilePath: string;
-```
-
-- *Type:* string
-
-The name of the file containing the deps lockfile.
-
-The file must be put in the following structure 
-construct-folder/resources/lambda/package-lock.json
-
----
-
-##### `entryFile`<sup>Required</sup> <a name="entryFile" id="aws-dsf.utils.HandlerDefinition.property.entryFile"></a>
-
-```typescript
-public readonly entryFile: string;
-```
-
-- *Type:* string
-
-The name of the file containing the lambda code.
-
-The file must be put in the following structure
-construct-folder/resources/lambda/my-cr-df.ts
-
----
-
-##### `handler`<sup>Required</sup> <a name="handler" id="aws-dsf.utils.HandlerDefinition.property.handler"></a>
-
-```typescript
-public readonly handler: string;
-```
-
-- *Type:* string
-
-The entry function in the lambda.
-
----
-
-##### `managedPolicy`<sup>Required</sup> <a name="managedPolicy" id="aws-dsf.utils.HandlerDefinition.property.managedPolicy"></a>
-
-```typescript
-public readonly managedPolicy: IManagedPolicy;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IManagedPolicy
-
-The IAM managed poicy to attach to the lambda function.
-
-The policy must grant all the permissions required to run the custom resource except logging. 
-Permissions for logging in CloudWatch Logs are already granted by the construct.
-
----
-
-##### `bundling`<sup>Optional</sup> <a name="bundling" id="aws-dsf.utils.HandlerDefinition.property.bundling"></a>
-
-```typescript
-public readonly bundling: BundlingOptions;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda_nodejs.BundlingOptions
-- *Default:* Use default bundling options from `NodejsFunction`.
-
-The bundling options to use for the lambda function.
-
-> [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs.NodejsFunction.html#bundling](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs.NodejsFunction.html#bundling)
-
----
-
-##### `environment`<sup>Optional</sup> <a name="environment" id="aws-dsf.utils.HandlerDefinition.property.environment"></a>
-
-```typescript
-public readonly environment: {[ key: string ]: string};
-```
-
-- *Type:* {[ key: string ]: string}
-- *Default:* No environment variables.
-
-Key-value pairs to define environment variables to apply configuration changes.
-
----
-
-##### `iamRole`<sup>Optional</sup> <a name="iamRole" id="aws-dsf.utils.HandlerDefinition.property.iamRole"></a>
-
-```typescript
-public readonly iamRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* A new role is created.
-
-The role used by the lamnda function.
-
----
-
 ### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.processing.PySparkApplicationPackageProps"></a>
 
 Properties for the {PySparkApplicationPackage} construct.
@@ -7612,6 +7503,7 @@ const s3DataCopyProps: utils.S3DataCopyProps = { ... }
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source bucket region. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | the target bucket. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to use in the custom resource for copying data. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The policy to apply when the resource is removed from this stack. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.ISubnet[]</code> | The subnets to deploy the custom resource in. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | the target bucket prefix with a slash at the end. |
@@ -7665,6 +7557,19 @@ public readonly executionRole: IRole;
 - *Default:* A new role is created
 
 The IAM role to use in the custom resource for copying data.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.utils.S3DataCopyProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN. The resources will not be deleted.
+
+The policy to apply when the resource is removed from this stack.
 
 ---
 

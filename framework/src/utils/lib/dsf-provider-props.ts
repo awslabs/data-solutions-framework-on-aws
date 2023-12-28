@@ -15,7 +15,7 @@ import { BundlingOptions } from 'aws-cdk-lib/aws-lambda-nodejs';
 export interface DsfProviderProps {
 
   /**
-   * The policy to apply when the bucket is removed from this stack.
+   * The policy to apply when the custom resource is removed from the stack.
    * @default - RETAIN. The resources will not be deleted.
    */
   readonly removalPolicy?: RemovalPolicy;
@@ -51,14 +51,12 @@ export interface DsfProviderProps {
   /**
    * Time between calls to the `isComplete` handler which determines if the
    * resource has been stabilized.
-   *
    * @default Duration.seconds(5)
    */
   readonly queryInterval?: Duration;
   /**
    * Total timeout for the entire custom resource operation.
    * The maximum timeout is 1 hour.
-   *
    * @default Duration.minutes(30)
    */
   readonly queryTimeout?: Duration;

@@ -133,7 +133,8 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'rosetta',
     `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     '@types/eslint',
-    'eslint-plugin-local-rules'
+    'eslint-plugin-local-rules',
+    'esbuild',
   ],
 
   bundledDeps: [

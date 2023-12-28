@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import * as cdk from 'aws-cdk-lib';
-import * as dsf from '../index';
+import { DsfProvider } from '../lib/dsf-provider';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import * as path from 'path';
 
@@ -39,7 +39,7 @@ const myIsCompleteManagedPolicy = new ManagedPolicy(stack, 'Policy2', {
 });
 
 /// !show
-const myProvider = new dsf.DsfProvider(stack, 'Provider', {
+const myProvider = new DsfProvider(stack, 'Provider', {
   providerName: 'my-provider',
   onEventHandlerDefinition: {
     managedPolicy: myOnEventManagedPolicy,
