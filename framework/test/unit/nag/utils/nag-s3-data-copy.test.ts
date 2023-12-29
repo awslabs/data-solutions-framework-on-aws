@@ -28,13 +28,6 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/Policy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'The log stream name is not predictable, the ENI for VPC execution requires wildcard on network interface setup.' }],
-  true,
-);
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
   'Stack/S3DataCopy/Provider/OnEventHandlerRole/DefaultPolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'GetObject*, List*, DeleteObject*, Abort* are provided by the grant methods from CDK L2 Bucket' }],
   true,

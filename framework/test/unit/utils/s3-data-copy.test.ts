@@ -29,28 +29,6 @@ describe('With default configuration, the construct ', () => {
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('should create a managed policy with least privileges', () => {
-    template.hasResourceProperties('AWS::IAM::ManagedPolicy',
-      Match.objectLike({
-        PolicyDocument: Match.objectLike({
-          Statement: Match.arrayWith([
-            {
-              Action: [
-                'ec2:CreateNetworkInterface',
-                'ec2:DescribeNetworkInterfaces',
-                'ec2:DeleteNetworkInterface',
-                'ec2:AssignPrivateIpAddresses',
-                'ec2:UnassignPrivateIpAddresses',
-              ],
-              Effect: 'Allow',
-              Resource: '*',
-            },
-          ]),
-        }),
-      }),
-    );
-  });
-
   test('should create an IAM role for the copy', () => {
     template.hasResourceProperties('AWS::IAM::Role',
       Match.objectLike({

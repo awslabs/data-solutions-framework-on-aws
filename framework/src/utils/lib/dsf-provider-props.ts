@@ -80,8 +80,9 @@ export interface HandlerDefinition {
    * The IAM managed poicy to attach to the lambda function.
    * The policy must grant all the permissions required to run the custom resource except logging.
    * Permissions for logging in CloudWatch Logs are already granted by the construct.
+   * @default - no policy is attached to the execution role
    */
-  readonly managedPolicy: IManagedPolicy;
+  readonly managedPolicy?: IManagedPolicy;
   /**
    * The name of the file containing the deps lockfile.
    * The file must be put in the following structure
@@ -103,4 +104,9 @@ export interface HandlerDefinition {
    * @default - No environment variables.
    */
   readonly environment?: { [key: string]: string };
+  /**
+   * The timeout for the lambda function.
+   * @default - Duration.minutes(14)
+   */
+  readonly timeout?: Duration;
 }

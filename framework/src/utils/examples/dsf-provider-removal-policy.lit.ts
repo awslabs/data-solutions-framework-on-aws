@@ -8,11 +8,11 @@ import * as path from 'path';
 import { Construct } from 'constructs';
 
 
-class ExampleBundlingDsfProviderStack extends cdk.Stack{
+class ExampleRemovalPolicyDsfProviderStack extends cdk.Stack{
   constructor(scope: Construct, id: string) {
     super(scope, id);
     
-    const myManagedPolicy = new ManagedPolicy(this, 'Policy', {
+    const myOnEventManagedPolicy = new ManagedPolicy(this, 'Policy1', {
       document: new PolicyDocument({
         statements: [
           new PolicyStatement({
@@ -25,28 +25,20 @@ class ExampleBundlingDsfProviderStack extends cdk.Stack{
         ],
       }),
     });
+    
     /// !show
+    
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+    
     const myProvider = new DsfProvider(this, 'Provider', {
       providerName: 'my-provider',
       onEventHandlerDefinition: {
-        managedPolicy: myManagedPolicy,
+        managedPolicy: myOnEventManagedPolicy,
         handler: 'on-event.handler',
         depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
-        bundling: {
-          nodeModules: [
-            '@aws-sdk/client-s3',
-          ],
-          commandHooks: {
-            afterBundling: () => [],
-            beforeBundling: () => [
-              'npx esbuild --version'
-            ],
-            beforeInstall: () => [
-            ]
-          }
-        },
       },
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
     /// !hide
     new cdk.CustomResource(this, 'CustomResource', {
@@ -58,4 +50,5 @@ class ExampleBundlingDsfProviderStack extends cdk.Stack{
 }
 
 const app = new cdk.App();
-new ExampleBundlingDsfProviderStack(app, 'ExampleBundlingDsfProviderStack');
+new ExampleRemovalPolicyDsfProviderStack(app, 'ExampleRemovalPolicyDsfProviderStack');
+

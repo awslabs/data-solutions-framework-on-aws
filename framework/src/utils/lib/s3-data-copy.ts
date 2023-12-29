@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { CustomResource } from 'aws-cdk-lib';
-import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
@@ -51,29 +51,10 @@ export class S3DataCopy extends TrackedConstruct {
       throw new Error('S3DataCopy error: if VPC parameter is configured, subnets must be');
     }
 
-    const managedPolicy = new ManagedPolicy(this, 'Policy', {
-      document: new PolicyDocument({
-        statements: [
-          new PolicyStatement({
-            actions: [
-              'ec2:CreateNetworkInterface',
-              'ec2:DescribeNetworkInterfaces',
-              'ec2:DeleteNetworkInterface',
-              'ec2:AssignPrivateIpAddresses',
-              'ec2:UnassignPrivateIpAddresses',
-            ],
-            effect: Effect.ALLOW,
-            resources: ['*'],
-          }),
-        ],
-      }),
-    });
-
     const provider = new DsfProvider(this, 'Provider', {
       providerName: 's3-data-copy',
       onEventHandlerDefinition: {
         handler: 'index.handler',
-        managedPolicy,
         depsLockFilePath: path.join(__dirname, './resources/lambda/s3-data-copy/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/s3-data-copy/index.mjs'),
         environment: {
@@ -85,7 +66,8 @@ export class S3DataCopy extends TrackedConstruct {
         },
       },
       vpc: props.vpc,
-      subnets: props.vpc ? { subnets: props.subnets } : undefined,
+      subnets: props.vpc ? props.subnets : undefined,
+      securityGroups: props.vpc ? props.securityGroups : undefined,
       removalPolicy,
     });
     this.copyFunction = provider.onEventHandlerFunction;

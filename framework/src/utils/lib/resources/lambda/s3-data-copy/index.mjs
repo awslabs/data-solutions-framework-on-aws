@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
 import { S3Client, ListObjectsV2Command, CopyObjectCommand } from "@aws-sdk/client-s3"
 import path from "node:path"
 

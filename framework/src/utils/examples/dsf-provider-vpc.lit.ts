@@ -5,10 +5,11 @@ import * as cdk from 'aws-cdk-lib';
 import { DsfProvider } from '../lib/dsf-provider';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import * as path from 'path';
+import { SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
 
-class ExampleBundlingDsfProviderStack extends cdk.Stack{
+class ExampleVpcDsfProviderStack extends cdk.Stack{
   constructor(scope: Construct, id: string) {
     super(scope, id);
     
@@ -26,6 +27,10 @@ class ExampleBundlingDsfProviderStack extends cdk.Stack{
       }),
     });
     /// !show
+
+    const vpc = Vpc.fromLookup(this, 'Vpc', { vpcName: 'my-vpc'});
+    const subnets = vpc.selectSubnets({subnetType: SubnetType.PRIVATE_WITH_EGRESS});
+
     const myProvider = new DsfProvider(this, 'Provider', {
       providerName: 'my-provider',
       onEventHandlerDefinition: {
@@ -33,22 +38,12 @@ class ExampleBundlingDsfProviderStack extends cdk.Stack{
         handler: 'on-event.handler',
         depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
-        bundling: {
-          nodeModules: [
-            '@aws-sdk/client-s3',
-          ],
-          commandHooks: {
-            afterBundling: () => [],
-            beforeBundling: () => [
-              'npx esbuild --version'
-            ],
-            beforeInstall: () => [
-            ]
-          }
-        },
       },
+      vpc,
+      subnets
     });
     /// !hide
+
     new cdk.CustomResource(this, 'CustomResource', {
       serviceToken: myProvider.serviceToken,
       resourceType: 'Custom::MyCustomResource',
@@ -58,4 +53,4 @@ class ExampleBundlingDsfProviderStack extends cdk.Stack{
 }
 
 const app = new cdk.App();
-new ExampleBundlingDsfProviderStack(app, 'ExampleBundlingDsfProviderStack');
+new ExampleVpcDsfProviderStack(app, 'ExampleVpcDsfProviderStack');

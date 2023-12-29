@@ -4,6 +4,7 @@
 import path from 'path';
 import { App, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { SecurityGroup, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { DsfProvider } from '../../../src/utils/lib/dsf-provider';
 
@@ -88,28 +89,21 @@ describe('With default configuration, the construct ', () => {
         PolicyDocument: Match.objectLike({
           Statement: [
             {
-              Action: 'logs:CreateLogStream',
-              Effect: 'Allow',
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('ProviderOnEventHandlerLogLogGroup.*'),
-                  'Arn',
-                ],
-              },
-            },
-            {
-              Action: 'logs:PutLogEvents',
+              Action: [
+                'logs:CreateLogStream',
+                'logs:PutLogEvents',
+              ],
               Effect: 'Allow',
               Resource: {
                 'Fn::Join': Match.arrayWith([
                   [
                     {
                       'Fn::GetAtt': [
-                        Match.stringLikeRegexp('ProviderOnEventHandlerLogLogGroup.*'),
+                        Match.stringLikeRegexp('ProviderOnEventHandlerLogGroup.*'),
                         'Arn',
                       ],
                     },
-                    ':log-stream:*',
+                    ':*',
                   ],
                 ]),
               },
@@ -131,7 +125,7 @@ describe('With default configuration, the construct ', () => {
         Handler: 'on-event.handler',
         LoggingConfig: {
           LogGroup: {
-            Ref: Match.stringLikeRegexp('ProviderOnEventHandlerLogLogGroup.*'),
+            Ref: Match.stringLikeRegexp('ProviderOnEventHandlerLogGroup.*'),
           },
         },
         Role: {
@@ -141,6 +135,7 @@ describe('With default configuration, the construct ', () => {
           ],
         },
         Runtime: 'nodejs20.x',
+        Timeout: 840,
       }),
     );
   });
@@ -326,28 +321,21 @@ describe('With isComplete handler configuration configuration, the construct ', 
         PolicyDocument: Match.objectLike({
           Statement: [
             {
-              Action: 'logs:CreateLogStream',
-              Effect: 'Allow',
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('ProviderIsCompleteHandlerLogLogGroup.*'),
-                  'Arn',
-                ],
-              },
-            },
-            {
-              Action: 'logs:PutLogEvents',
+              Action: [
+                'logs:CreateLogStream',
+                'logs:PutLogEvents',
+              ],
               Effect: 'Allow',
               Resource: {
                 'Fn::Join': Match.arrayWith([
                   [
                     {
                       'Fn::GetAtt': [
-                        Match.stringLikeRegexp('ProviderIsCompleteHandlerLogLogGroup.*'),
+                        Match.stringLikeRegexp('ProviderIsCompleteHandlerLogGroup.*'),
                         'Arn',
                       ],
                     },
-                    ':log-stream:*',
+                    ':*',
                   ],
                 ]),
               },
@@ -369,7 +357,7 @@ describe('With isComplete handler configuration configuration, the construct ', 
         Handler: 'is-complete.handler',
         LoggingConfig: {
           LogGroup: {
-            Ref: Match.stringLikeRegexp('ProviderIsCompleteHandlerLogLogGroup.*'),
+            Ref: Match.stringLikeRegexp('ProviderIsCompleteHandlerLogGroup.*'),
           },
         },
         Role: {
@@ -379,6 +367,7 @@ describe('With isComplete handler configuration configuration, the construct ', 
           ],
         },
         Runtime: 'nodejs20.x',
+        Timeout: 840,
       }),
     );
   });
@@ -388,6 +377,13 @@ describe('With custom configuration, the construct should', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
+
+  const vpc = new Vpc(stack, 'Vpc');
+
+  const securityGroup = new SecurityGroup(stack, 'SecurityGroup', {
+    vpc,
+    allowAllOutbound: true,
+  });
 
   const myOnEventManagedPolicy = new ManagedPolicy(stack, 'OnEventPolicy', {
     document: new PolicyDocument({
@@ -424,19 +420,46 @@ describe('With custom configuration, the construct should', () => {
       handler: 'on-event.handler',
       depsLockFilePath: path.join(__dirname, '../../resources/utils/lambda/my-cr/package-lock.json'),
       entryFile: path.join(__dirname, '../../resources/utils/lambda/my-cr/on-event.mjs'),
+      timeout: Duration.seconds(5),
     },
     isCompleteHandlerDefinition: {
       managedPolicy: myIsCompleteManagedPolicy,
       handler: 'is-complete.handler',
       depsLockFilePath: path.join(__dirname, '../../resources/utils/lambda/my-cr/package-lock.json'),
       entryFile: path.join(__dirname, '../../resources/utils/lambda/my-cr/is-complete.mjs'),
+      timeout: Duration.seconds(5),
     },
     queryInterval: Duration.seconds(10),
     queryTimeout: Duration.seconds(120),
+    vpc,
+    securityGroups: [securityGroup],
+    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
   });
 
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create a inline policy with ENI permissions', () => {
+    template.hasResourceProperties('AWS::IAM::Policy',
+      Match.objectLike({
+        PolicyDocument: Match.objectLike({
+          Statement: Match.arrayWith([
+            {
+              Action: [
+                'ec2:CreateNetworkInterface',
+                'ec2:DescribeNetworkInterfaces',
+                'ec2:DeleteNetworkInterface',
+                'ec2:AssignPrivateIpAddresses',
+                'ec2:UnassignPrivateIpAddresses',
+              ],
+              Effect: 'Allow',
+              Resource: '*',
+            },
+          ]),
+        }),
+      }),
+    );
+  });
 
   test('should create an isComplete check every 10 seconds', () => {
     template.hasResourceProperties('AWS::StepFunctions::StateMachine',
@@ -452,23 +475,30 @@ describe('With custom configuration, the construct should', () => {
     );
   });
 
-  test('should create a a timeout of 2 minutes for the entire query', () => {
-    template.hasResourceProperties('AWS::Lambda::Function',
+  test('should create customized lmabda functions for onEvent and isComplete', () => {
+    template.resourcePropertiesCountIs('AWS::Lambda::Function',
       Match.objectLike({
-        Handler: 'is-complete.handler',
-        LoggingConfig: {
-          LogGroup: {
-            Ref: Match.stringLikeRegexp('ProviderIsCompleteHandlerLogLogGroup.*'),
-          },
-        },
-        Role: {
-          'Fn::GetAtt': [
-            Match.stringLikeRegexp('ProviderIsCompleteHandlerRole.*'),
-            'Arn',
+        Runtime: 'nodejs20.x',
+        Timeout: 5,
+        VpcConfig: {
+          SecurityGroupIds: [
+            {
+              'Fn::GetAtt': [
+                Match.stringLikeRegexp('SecurityGroup.*'),
+                'GroupId',
+              ],
+            },
+          ],
+          SubnetIds: [
+            {
+              Ref: Match.stringLikeRegexp('VpcPrivateSubnet1Subnet.*'),
+            },
+            {
+              Ref: Match.stringLikeRegexp('VpcPrivateSubnet2Subnet.*'),
+            },
           ],
         },
-        Runtime: 'nodejs20.x',
-      }),
-    );
+      })
+      , 2);
   });
 });
