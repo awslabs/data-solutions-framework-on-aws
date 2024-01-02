@@ -8,7 +8,7 @@ import { BucketUtils } from '../../src/utils';
 
 /**
  * E2E test for DataLakeStorage
- * @group e2e/data-lake-storage
+ * @group e2e/storage/data-lake-storage
  */
 
 jest.setTimeout(6000000);
