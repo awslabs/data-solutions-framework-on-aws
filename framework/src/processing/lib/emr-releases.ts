@@ -6,6 +6,7 @@
  */
 
 export enum EmrRuntimeVersion {
+  V7_0 = 'emr-7.0.0',
   V6_15 = 'emr-6.15.0',
   V6_14 = 'emr-6.14.0',
   V6_13 = 'emr-6.13.0',
@@ -32,6 +33,10 @@ const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
  * The list of supported Spark images to use in the SparkCICDPipeline.
  */
 export enum SparkImage {
+  EMR_7_0 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V7_0 + ':latest',
+  EMR_6_15 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_15 + ':latest',
+  EMR_6_14 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_14 + ':latest',
+  EMR_6_13 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_13 + ':latest',
   EMR_6_12 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_12 + ':latest',
   EMR_6_11 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_11 + ':latest',
   EMR_6_10 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_10 + ':latest',
