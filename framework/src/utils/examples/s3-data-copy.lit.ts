@@ -5,20 +5,20 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 /// !show
 class ExampleDefaultS3DataCopyStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-
-        const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
-        const targetBucket = Bucket.fromBucketName(this, 'destinationBucket', 'staging-bucket');
-
-        new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
-            sourceBucket,
-            sourceBucketPrefix: 'trip data/',
-            sourceBucketRegion: 'us-east-1',
-            targetBucket,
-            targetBucketPrefix: 'staging-data/',
-          });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    
+    const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
+    const targetBucket = Bucket.fromBucketName(this, 'destinationBucket', 'staging-bucket');
+    
+    new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
+      sourceBucket,
+      sourceBucketPrefix: 'trip data/',
+      sourceBucketRegion: 'us-east-1',
+      targetBucket,
+      targetBucketPrefix: 'staging-data/',
+    });
+  }
 }
 /// !hide
 

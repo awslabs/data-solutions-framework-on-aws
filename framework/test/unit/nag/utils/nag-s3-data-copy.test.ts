@@ -28,15 +28,15 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/Policy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'The log stream name is not predictable, the ENI for VPC execution requires wildcard on network interface setup.' }],
+  'Stack/S3DataCopy/Provider/OnEventHandlerRole/DefaultPolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'GetObject*, List*, DeleteObject*, Abort* are provided by the grant methods from CDK L2 Bucket' }],
   true,
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/Role/DefaultPolicy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'GetObject*, List*, DeleteObject*, Abort* are provided by the grant methods on CDK L2 Bucket' }],
+  '/Stack/S3DataCopy/Provider/OnEventHandlerLogPolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'The log stream name is not predictable' }],
   true,
 );
 
@@ -52,7 +52,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/Provider/framework-onEvent',
+  'Stack/S3DataCopy/CustomResourceProvider/framework-onEvent',
   [
     { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
     { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
