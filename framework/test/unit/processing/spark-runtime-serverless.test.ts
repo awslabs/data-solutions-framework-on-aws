@@ -36,7 +36,7 @@ describe('Create an EMR Serverless Application with runtime configuration', () =
       }),
     );
   });
-})
+});
 
 
 describe('Create an EMR Serverless Application for Spark and grant access', () => {
