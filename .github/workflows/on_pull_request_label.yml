@@ -22,6 +22,10 @@ jobs:
       contents: write
       actions: read
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
+    strategy:
+        matrix:
+          suite: [processing, storage, governance, utils]
+        fail-fast: false
     steps:
       - name: Assign label ${{ env.LABEL_TESTING }}
         uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6.4.1
@@ -54,7 +58,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-duration-seconds: 7200
       - name: Run e2e tests
-        run: npx projen test:e2e
+        run: cd framework && npx jest --group=e2e/${{ matrix.suite }}
       - name: Assign label ${{ env.LABEL_COMPLETED }}
         if: always()
         uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6.4.1
