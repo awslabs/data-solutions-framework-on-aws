@@ -8451,6 +8451,7 @@ const sparkEmrServerlessRuntimeProps: processing.SparkEmrServerlessRuntimeProps 
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration">runtimeConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ConfigurationObjectProperty[]</code> | The runtime and monitoring configurations to used as defaults for all of the job runs of this application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
 
 ---
@@ -8589,6 +8590,18 @@ The removal policy when deleting the CDK resource.
 
 Resources like Amazon cloudwatch log or Amazon S3 bucket
 If DESTROY is selected, context value
+
+---
+
+##### `runtimeConfiguration`<sup>Optional</sup> <a name="runtimeConfiguration" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration"></a>
+
+```typescript
+public readonly runtimeConfiguration: IResolvable | ConfigurationObjectProperty[];
+```
+
+- *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.ConfigurationObjectProperty[]
+
+The runtime and monitoring configurations to used as defaults for all of the job runs of this application.
 
 ---
 
@@ -9102,6 +9115,10 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
@@ -9119,6 +9136,26 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 | <code><a href="#aws-dsf.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_0` <a name="V7_0" id="aws-dsf.processing.EmrRuntimeVersion.V7_0"></a>
+
+---
+
+
+##### `V6_15` <a name="V6_15" id="aws-dsf.processing.EmrRuntimeVersion.V6_15"></a>
+
+---
+
+
+##### `V6_14` <a name="V6_14" id="aws-dsf.processing.EmrRuntimeVersion.V6_14"></a>
+
+---
+
+
+##### `V6_13` <a name="V6_13" id="aws-dsf.processing.EmrRuntimeVersion.V6_13"></a>
+
+---
+
 
 ##### `V6_12` <a name="V6_12" id="aws-dsf.processing.EmrRuntimeVersion.V6_12"></a>
 
@@ -9220,12 +9257,36 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_7_0">EMR_7_0</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_15">EMR_6_15</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_14">EMR_6_14</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkImage.EMR_6_13">EMR_6_13</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
+
+##### `EMR_7_0` <a name="EMR_7_0" id="aws-dsf.processing.SparkImage.EMR_7_0"></a>
+
+---
+
+
+##### `EMR_6_15` <a name="EMR_6_15" id="aws-dsf.processing.SparkImage.EMR_6_15"></a>
+
+---
+
+
+##### `EMR_6_14` <a name="EMR_6_14" id="aws-dsf.processing.SparkImage.EMR_6_14"></a>
+
+---
+
+
+##### `EMR_6_13` <a name="EMR_6_13" id="aws-dsf.processing.SparkImage.EMR_6_13"></a>
+
+---
+
 
 ##### `EMR_6_12` <a name="EMR_6_12" id="aws-dsf.processing.SparkImage.EMR_6_12"></a>
 
