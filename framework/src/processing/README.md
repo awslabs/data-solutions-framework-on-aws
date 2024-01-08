@@ -48,9 +48,10 @@ The constructs creates an EKS cluster, install the necessary controllers and ena
  * An EKS cluster (VPC configuration can be customized)
  * A tooling nodegroup to run tools to run controllers
  * Kubernetes controlers: EBS CSI Driver, Karpenter, ALB Ingress Controller, cert-manager  
- * Optionally Default Kaprenter NodePools and EC2NodeClass as listed [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config).
+ * Optionally Default Kaprenter `NodePools` and `EC2NodeClass` as listed [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config).
+ * An Amazon S3 bucket to store the pod templates for the `NodePools` created above. 
 
-The construct will upload on S3 the Pod templates required to run EMR jobs on the default Kaprenter NodePools and EC2NodeClass. It will also parse and store the configuration of EMR on EKS jobs for each default nodegroup in object parameters.
+The construct uploads to an S3 buckets (created by the consturct) the Pod templates required to run EMR jobs on the default Kaprenter NodePools and EC2NodeClass. It will also parse and store the configuration of EMR on EKS jobs for each default nodegroup in object parameters.
 
 
 ## Usage
