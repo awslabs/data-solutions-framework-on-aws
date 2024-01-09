@@ -4395,7 +4395,7 @@ A construct to create an EKS cluster, configure it and enable it with EMR on EKS
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster">addEmrVirtualCluster</a></code> | Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner">addKarpenterProvisioner</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass">addKarpenterNodePoolAndNodeClass</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole">createExecutionRole</a></code> | Create and configure a new Amazon IAM Role usable as an execution role. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.uploadPodTemplate">uploadPodTemplate</a></code> | Upload podTemplates to the Amazon S3 location used by the cluster. |
@@ -4434,15 +4434,15 @@ the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}.
 
 ---
 
-##### `addKarpenterProvisioner` <a name="addKarpenterProvisioner" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner"></a>
+##### `addKarpenterNodePoolAndNodeClass` <a name="addKarpenterNodePoolAndNodeClass" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass"></a>
 
 ```typescript
-public addKarpenterProvisioner(id: string, manifest: any): any
+public addKarpenterNodePoolAndNodeClass(id: string, manifest: any): any
 ```
 
 Apply the provided manifest and add the CDK dependency on EKS cluster.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass.parameter.id"></a>
 
 - *Type:* string
 
@@ -4450,7 +4450,7 @@ the unique ID of the CDK resource.
 
 ---
 
-###### `manifest`<sup>Required</sup> <a name="manifest" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterProvisioner.parameter.manifest"></a>
+###### `manifest`<sup>Required</sup> <a name="manifest" id="aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass.parameter.manifest"></a>
 
 - *Type:* any
 

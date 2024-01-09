@@ -15,8 +15,8 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         // creation of the construct(s) under test
         const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
             eksAdminRole: Role.fromRoleArn(this, 'EksAdminRole' , 'arn:aws:iam::12345678912:role/role-name-with-path'),
-            publicAccessCIDRs: ['10.0.0.0/32'],
-            createEmrOnEksServiceLinkedRole: true,
+            publicAccessCIDRs: ['10.0.0.0/32'], // The list of public IP addresses from which the cluster can be accessible
+            createEmrOnEksServiceLinkedRole: true, //if the the service linked role already exists set this to false
             kubectlLambdaLayer: kubectlLayer,
         });
 
@@ -25,7 +25,9 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
             actions: [
             's3:GetObject',
             ],
-            resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+            resources: [
+                'arn:aws:s3:::aws-data-analytics-workshop',
+                'arn:aws:s3:::aws-data-analytics-workshop/*'],
         })],
         });
 
@@ -34,12 +36,17 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         });
 
         const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
-            name: 'e2e',
+            name: 'dailyjob',
             createNamespace: true,
-            eksNamespace: 'e2ens',
+            eksNamespace: 'dailyjobns',
         });
 
-        const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolicy, 'e2ens', 's3ReadExecRole');
+        const execRole = emrEksCluster.createExecutionRole(
+            this, 
+            'ExecRole', 
+            s3ReadPolicy, 
+            'dailyjobns', // the namespace of the virtual cluster 
+            's3ReadExecRole'); //the IAM role name
 
         new cdk.CfnOutput(this, 'virtualClusterArn', {
             value: virtualCluster.attrArn,

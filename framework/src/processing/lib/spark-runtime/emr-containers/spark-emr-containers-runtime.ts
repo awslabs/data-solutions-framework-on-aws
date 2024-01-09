@@ -565,7 +565,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * @param {any} manifest The manifest to apply.
    * You can use the Utils class that offers method to read yaml file and load it as a manifest
    */
-  public addKarpenterProvisioner(id: string, manifest: any): any {
+  public addKarpenterNodePoolAndNodeClass(id: string, manifest: any): any {
 
     let manifestApply = this.eksCluster.addManifest(id, ...manifest);
 
