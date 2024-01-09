@@ -55,6 +55,14 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'execRoleArn', {
             value: execRole.roleArn,
         });
+
+        new cdk.CfnOutput(this, 'driverPodTemplate', {
+            value: emrEksCluster.podTemplateS3LocationCriticalDriver!,
+          });
+          
+        new cdk.CfnOutput(this, 'executorPodTemplate', {
+            value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
+          });
        
     }
 }

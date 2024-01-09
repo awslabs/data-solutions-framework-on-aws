@@ -89,6 +89,14 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
             value: execRole.roleArn,
         });
 
+        new cdk.CfnOutput(this, 'driverPodTemplate', {
+            value: emrEksCluster.podTemplateS3LocationCriticalDriver!,
+          });
+
+        new cdk.CfnOutput(this, 'executorPodTemplate', {
+            value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
+          });
+
     }
 }
   ```
@@ -141,6 +149,14 @@ class ExampleSparkEmrContainersStack(cdk.Stack):
 
         cdk.CfnOutput(self, "execRoleArn",
             value=exec_role.role_arn
+        )
+
+        cdk.CfnOutput(self, "driverPodTemplate",
+            value=emr_eks_cluster.pod_template_s3_location_critical_driver
+        )
+
+        cdk.CfnOutput(self, "executorPodTemplate",
+            value=emr_eks_cluster.pod_template_s3_location_critical_executor
         )
   ```
 
