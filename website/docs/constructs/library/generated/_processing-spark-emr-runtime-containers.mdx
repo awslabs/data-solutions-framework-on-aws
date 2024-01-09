@@ -14,12 +14,12 @@ The constructs creates an EKS cluster, install the necessary controllers and ena
  * Optionally Default Kaprenter `NodePools` and `EC2NodeClass` as listed [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config).
  * An Amazon S3 bucket to store the pod templates for the `NodePools` created above.
 
-The construct can be configured by customizing the [properties](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing) that are passed to the constructor.
+The construct can be configured by customizing the [properties](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing) that are passed to the construct constructor.
 
 ### EC2 Capacity
 
-The EC2 capacity to execute the jobs is defined with [Karpenter](https://karpenter.sh/docs/getting-started/) `NodePools` and `EC2NodeClass`, these are always created by the construct, you can opt out from their creation by setting the [`default_nodes`](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing#property.defaultNodes) to `False`. The construct uploads to an S3 buckets (created by the consturct) the Pod templates required to run EMR jobs on the default Kaprenter `NodePools` and `EC2NodeClass`. It will also parse and store the configuration of EMR on EKS jobs for each default nodegroup in object parameters. The construct provides the S3 locations for the pod templates as a cloudformation.
-
+The EC2 capacity to execute the jobs is defined with [Karpenter](https://karpenter.sh/docs/getting-started/) `NodePools` and `EC2NodeClass`, these are always created by the construct, you can opt out from their creation by setting the [`default_nodes`](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing#property.defaultNodes) to `False`. To run EMR on EKS jobs on this EC2 capacity, the construct creates [Pod templates](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/pod-templates.html) and uploads them to an S3 bucket (created by the construct), the pod template are configured to refer to the default Kaprenter `NodePools` and `EC2NodeClass`. The pod templates locations are stored as class attribute and can be exposed to the user as cloudformation output, the usage example below shows how to provide these as cloudformation output. The pod templates are referenced at the time when you define your `spark configuration` that is part of your job defintion.
+ 
 ### Execution role
 
 The execution role is the IAM role that is used by job to access AWS resources, this can be for example an S3 bucket that is storing data or to which the job write the data. The construct has a method which allows the creation of an IAM role that is onboarded to be used in the EKS cluster and from the namespace where the virtual cluster is created. The method attach an IAM polic provided by the user and also add a policy to access the pod templates to use the default EC2 capacity defined above.
@@ -89,10 +89,12 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
             value: execRole.roleArn,
         });
 
+        //Driver pod template
         new cdk.CfnOutput(this, 'driverPodTemplate', {
             value: emrEksCluster.podTemplateS3LocationCriticalDriver!,
           });
 
+        //Executor pod template
         new cdk.CfnOutput(this, 'executorPodTemplate', {
             value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
           });
@@ -151,10 +153,12 @@ class ExampleSparkEmrContainersStack(cdk.Stack):
             value=exec_role.role_arn
         )
 
+        # Driver pod template
         cdk.CfnOutput(self, "driverPodTemplate",
             value=emr_eks_cluster.pod_template_s3_location_critical_driver
         )
 
+        # Executor pod template
         cdk.CfnOutput(self, "executorPodTemplate",
             value=emr_eks_cluster.pod_template_s3_location_critical_executor
         )
@@ -162,6 +166,10 @@ class ExampleSparkEmrContainersStack(cdk.Stack):
 
   </TabItem>
 </Tabs>
+
+The sceenshot below show how the cloudformation will look like once you deploy the example.
+
+![Spark EMR Containers Cloudfromation Output](../../../../static/img/emr-eks-construct-cloudformation-output.png)
 
 To run a sample job with the infratructure we deployed using SparkRuntimeContainers you can execute the following command:
 
