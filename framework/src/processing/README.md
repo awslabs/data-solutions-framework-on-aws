@@ -53,21 +53,25 @@ The constructs creates an EKS cluster, install the necessary controllers and ena
 
 The construct can be configured by customizing the [properties](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing) that are passed to the construct constructor.
 
+The construct also offers streamline the creation of EC2 capacity, Virtual Cluster and Execution roles. Below we cover how the construct    
+
 ### EC2 Capacity
 
 The EC2 capacity to execute the jobs is defined with [Karpenter](https://karpenter.sh/docs/getting-started/) `NodePools` and `EC2NodeClass`, these are always created by the construct, you can opt out from their creation by setting the [`default_nodes`](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing#property.defaultNodes) to `False`. To run EMR on EKS jobs on this EC2 capacity, the construct creates [Pod templates](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/pod-templates.html) and uploads them to an S3 bucket (created by the construct), the pod template are configured to refer to the default Kaprenter `NodePools` and `EC2NodeClass`. The pod templates locations are stored as class attribute and can be exposed to the user as cloudformation output, the usage example below shows how to provide these as cloudformation output. The pod templates are referenced at the time when you define your `spark configuration` that is part of your job defintion.
- 
+
+The construct also offers a method which allow you to define your own EC2 capacity, this method is called **AddKarpenterNodePoolAndNodeClass**. This method take a YAML file as defined in [Karpenter](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/#5-create-nodepool) and apply it to the EKS cluster. You can consult an example [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config/v0.32.1/critical-provisioner.yml). The interface of the method is defined [here](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntime?lang=python&submodule=processing#addKarpenterNodePoolAndNodeClass).
+
+
+### Isolating workloads on a shared cluster
+
+With EMR on EKS you can leverage the same EKS cluster to run Spark jobs from multiple teams leveraging namespace segragation through the EMR virtual cluster. The `SparkEMRContainersRuntime` streamline this operation of creation an EMR virtual cluster. It offers a method called **AddEmrVirtualCluster**, which enables the EKS cluster to be used by EMR on EKS, through the creation EMR on EKS virtual cluster, with the option of creating a namespace and by configuring the right Kubernetes RBAC as described [here](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up-cluster-access.html). The interface of the method is defined [here](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntime?lang=python&submodule=processing#addEmrVirtualCluster).
+
 ### Execution role
 
-The execution role is the IAM role that is used by job to access AWS resources, this can be for example an S3 bucket that is storing data or to which the job write the data. The construct has a method which allows the creation of an IAM role that is onboarded to be used in the EKS cluster and from the namespace where the virtual cluster is created. The method attach an IAM polic provided by the user and also add a policy to access the pod templates to use the default EC2 capacity defined above.
+The execution role is the IAM role that is used by job to access AWS resources, this can be for example an S3 bucket that is storing data or to which the job write the data. The construct has a method (**CreateExecutionRole**) which allows the creation of an IAM role that is onboarded to be used in the EKS cluster and from the namespace where the virtual cluster is created. The method attach an IAM policy provided by the user and also add a policy to access the pod templates to use the default EC2 capacity defined above. The interface of the method is defined [here](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntime?lang=python&submodule=processing#createExecutionRole).
+
 
 ## Usage
-
-The constructs offers multiple methods to streamline the creation of runtimes, these methods are:
-
-  * **AddEmrVirtualCluster**: Create an EMR on EKS virtual cluster in the EKS cluster, in a given namespace. The interface of the method is defined [here](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntime?lang=python&submodule=processing#addEmrVirtualCluster).
-  * **CreateExecutionRole**: Takes an IAM policy and create an IAM role that is used by the EMR on EKS job to access AWS resources, the IAM role is scoped down following [Amazon EMR on EKS recomendation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/iam-execution-role.html). The interface of the method is defined [here](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntime?lang=python&submodule=processing#createExecutionRole).
-  * **AddKarpenterNodePoolAndNodeClass**: Takes a YAML file as defined in [Karpenter](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/#5-create-nodepool) and apply it to the EKS cluster. You can consult an example [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config/v0.32.1/critical-provisioner.yml). The interface of the method is defined [here](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntime?lang=python&submodule=processing#addKarpenterNodePoolAndNodeClass).
 
 The code snippet below shows a usage example of the `SparkEmrContainersRuntime` construct.
 
@@ -77,7 +81,7 @@ The sceenshot below show how the cloudformation will look like once you deploy t
 
 ![Spark EMR Containers Cloudfromation Output](../../../website/static/img/emr-eks-construct-cloudformation-output.png)
 
-To run a sample job with the infratructure we deployed using SparkRuntimeContainers you can execute the following command:
+To run a sample job with the infratructure we deployed using SparkEmrContainerRuntime you can execute the following command:
 
 ```sh
 aws emr-containers start-job-run \
@@ -95,7 +99,7 @@ aws emr-containers start-job-run \
 
 :::warning IAM role requirements
 
-Make sure the role used for running the command above has the [IAM policy](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonemroneksemrcontainers.html#amazonemroneksemrcontainers-actions-as-permissions) `StartJobRun` to execute the job.
+Make sure the role used for running has the correct [IAM policy](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonemroneksemrcontainers.html#amazonemroneksemrcontainers-actions-as-permissions) with `StartJobRun` permission to execute the job.
 
 :::
 
