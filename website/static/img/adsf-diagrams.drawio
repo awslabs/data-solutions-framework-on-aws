@@ -1,6 +1,6 @@
-<mxfile host="drawio.corp.amazon.com" modified="2023-12-12T16:23:32.861Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0" etag="nQzEa8lc7msyzUNb25I_" version="21.7.4" type="device" pages="9">
+<mxfile host="Electron" modified="2024-01-09T12:06:35.440Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.16 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="bcfeZHdv2FrpFpdUnauY" version="22.1.16" type="device" pages="10">
   <diagram id="8QoGL5_KE23dWj9nmXSr" name="adsf-data-lake">
-    <mxGraphModel dx="2954" dy="-2146" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="954" dy="-2695" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -239,7 +239,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="i7HBYi7g8EeDxkwGBpo9" name="adsf-spark-runtime">
-    <mxGraphModel dx="2096" dy="-2035" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="104" dy="-2695" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -376,7 +376,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="M3ScbkI2Zq4LuYRVTvgw" name="adsf-spark-emr-serverless-job">
-    <mxGraphModel dx="2954" dy="-2154" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="954" dy="-2703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="TZNLnHrN1omk3S9KZOqw-0" />
         <mxCell id="TZNLnHrN1omk3S9KZOqw-1" parent="TZNLnHrN1omk3S9KZOqw-0" />
@@ -521,7 +521,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="HxQmbK6WQ98yH3QtbzUd" name="example-diagram">
-    <mxGraphModel dx="3804" dy="-2146" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1804" dy="-2695" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -930,6 +930,41 @@
         </mxCell>
         <mxCell id="kUxz1T9T6bQ-y1ehGkEb-16" value="VPC" style="sketch=0;outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc;strokeColor=#879196;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#879196;dashed=0;" vertex="1" parent="1">
           <mxGeometry x="370" y="3420" width="500" height="590" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="G5l_tDGoKbVJN71gyqfc" name="emr-eks">
+    <mxGraphModel dx="127" dy="-1733" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-1" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=none;strokeColor=#00994D;strokeWidth=2;fontSize=12;fontColor=#000000;fillColor=none;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="870" y="3100" width="530" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-2" value="SparkRuntimeContainers" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1125" y="3100" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-3" value="EMR on EKS Virtual Cluster" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#945DF2;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.emr;" vertex="1" parent="1">
+          <mxGeometry x="940" y="3133" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-4" value="CreateExecutionRole" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;spacingTop=0;spacingBottom=-23;strokeWidth=2;dashed=1;strokeColor=#919191;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="3133" width="210" height="87" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-6" value="Policy" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.policy;spacingBottom=0;spacingTop=-4;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="3161.82" width="40" height="34.36" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;targetPerimeterSpacing=2;" edge="1" parent="1" source="rKxNFiU9ToYlMf7D-cn8-9" target="rKxNFiU9ToYlMf7D-cn8-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-9" value="Execution role" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#BF0816;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.role;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="3164.9" width="50" height="28.2" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-15" value="EKS" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.eks;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="3260" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rKxNFiU9ToYlMf7D-cn8-16" value="EC2 NodeClass" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.ec2;fillColor=#F58534;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="890" y="3245" width="76.5" height="93" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
