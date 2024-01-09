@@ -51,7 +51,7 @@ The constructs creates an EKS cluster, install the necessary controllers and ena
  * Optionally Default Kaprenter `NodePools` and `EC2NodeClass` as listed [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config).
  * An Amazon S3 bucket to store the pod templates for the `NodePools` created above.
 
-The construct can be configured by customizing the [properties]((https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing)) that are passed to the constructor.
+The construct can be configured by customizing the [properties](https://constructs.dev/packages/aws-dsf/v/1.0.0-rc.5/api/SparkEmrContainersRuntimeProps?lang=python&submodule=processing) that are passed to the constructor.
 
 ### EC2 Capacity
 
