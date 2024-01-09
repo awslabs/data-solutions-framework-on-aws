@@ -503,6 +503,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     return virtualCluster;
   }
 
+  //TODO ADD METHOD
+  //GRANT JOB EXECUTION
+  //SCOPE PRINCIPAL TO ONLY A LIST OF EXECUTION ROLE
 
   /**
    * Create and configure a new Amazon IAM Role usable as an execution role.
