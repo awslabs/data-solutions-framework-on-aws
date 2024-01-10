@@ -1,10 +1,10 @@
 import * as cdk from 'aws-cdk-lib';
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
+import { Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from '../lib';
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 
-/// !show
+
 class ExampleSparkEmrContainersStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
@@ -19,55 +19,22 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
             kubectlLambdaLayer: kubectlLayer,
         });
 
-        const s3Read = new PolicyDocument({
-        statements: [new PolicyStatement({
-            actions: [
-            's3:GetObject',
-            ],
-            resources: [
-                'arn:aws:s3:::aws-data-analytics-workshop',
-                'arn:aws:s3:::aws-data-analytics-workshop/*'],
-        })],
-        });
-
-        const s3ReadPolicy = new ManagedPolicy(this, 's3ReadPolicy', {
-            document: s3Read,
-        });
-
+        /// !show
+        
         const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
             name: 'dailyjob',
             createNamespace: true,
             eksNamespace: 'dailyjobns',
         });
 
-        const execRole = emrEksCluster.createExecutionRole(
-            this, 
-            'ExecRole', 
-            s3ReadPolicy, 
-            'dailyjobns', // the namespace of the virtual cluster 
-            's3ReadExecRole'); //the IAM role name
-
         new cdk.CfnOutput(this, 'virtualClusterArn', {
             value: virtualCluster.attrArn,
         });
 
-        new cdk.CfnOutput(this, 'execRoleArn', {
-            value: execRole.roleArn,
-        });
-
-        //Driver pod template
-        new cdk.CfnOutput(this, 'driverPodTemplate', {
-            value: emrEksCluster.podTemplateS3LocationCriticalDriver!,
-          });
-
-        //Executor pod template
-        new cdk.CfnOutput(this, 'executorPodTemplate', {
-            value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
-          });
-       
+        /// !hide
     }
 }
-/// !hide
+
 
 const app = new cdk.App();
 new ExampleSparkEmrContainersStack(app, 'ExampleSparkEmrServerlessStack');
