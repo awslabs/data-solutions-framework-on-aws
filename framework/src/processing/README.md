@@ -360,7 +360,7 @@ The pod template are provided for both the Spark driver and the Spark executors 
 The pod templates locations are stored as class attribute and can be exposed via CloudFormation outputs. 
 The usage example below shows how to provide these as CloudFormation output. The pod templates are referenced in your `spark configuration` that is part of your job defintion.
 
-[example usage](./examples/spark-emr-runtime-containers-ec2-capacity.lit.ts)
+[example ec2 capacity](./examples/spark-emr-runtime-containers-ec2-capacity.lit.ts)
 
 The construct also exposes the `addKarpenterNodePoolAndNodeClass()` method to define your own EC2 capacity. This method takes a YAML file as defined in [Karpenter](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/#5-create-nodepool) and apply it to the EKS cluster. You can consult an example [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config/v0.32.1/critical-provisioner.yml).
 

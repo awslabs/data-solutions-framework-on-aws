@@ -292,8 +292,6 @@ cdk.CfnOutput(self, "executorPodTemplate",
 
 The execution role is the IAM role that is used by the Spark job to access AWS resources. For example, the job may need to access an S3 bucket that stores the source data or to which the job writes the data. The `createExecutionRole()` method simplifies the creation of an IAM role that can be used to execute a Spark job on the EKS cluster and in a specific EMR EKS virtual cluster namespace. The method attaches an IAM policy provided by the user and a policy to access the pod templates when using the default EC2 capacity.
 
-[example execution role](./examples/spark-emr-runtime-containers-execrole.lit.ts)
-
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
