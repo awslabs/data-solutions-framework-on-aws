@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { CustomResource, Duration, RemovalPolicy, ResourceEnvironment, Stack } from 'aws-cdk-lib';
-import { ISecurityGroup, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Function, Runtime, Code, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -11,7 +11,7 @@ import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { Context } from './context';
-import { DsfProviderProps } from './dsf-provider-props';
+import { DsfProviderProps, HandlerDefinition } from './dsf-provider-props';
 
 /**
  * @internal
@@ -72,6 +72,7 @@ export class DsfProvider extends Construct {
   private readonly subnets?: SubnetSelection;
   private readonly cleanUpCr?: CustomResource;
   private readonly vpcPolicy?: ManagedPolicy;
+  private readonly vpc?: IVpc;
 
 
   constructor(scope: Construct, id: string, props: DsfProviderProps) {
@@ -98,6 +99,8 @@ export class DsfProvider extends Construct {
 
     // If the Lambda is deployed within a VPC, we attached required permissions
     if (props.vpc) {
+
+      this.vpc = props.vpc;
       this.subnets = props.subnets ?? props.vpc.selectSubnets();
       this.securityGroups = props.securityGroups ?? [new SecurityGroup(this, 'LambdaSecurityGroup', {
         vpc: props.vpc,
@@ -143,20 +146,7 @@ export class DsfProvider extends Construct {
       });
     }
 
-    this.onEventHandlerFunction = new NodejsFunction (scope, 'OnEventHandlerFunction', {
-      runtime: DsfProvider.CR_RUNTIME,
-      handler: props.onEventHandlerDefinition.handler,
-      entry: props.onEventHandlerDefinition.entryFile,
-      depsLockFilePath: props.onEventHandlerDefinition.depsLockFilePath,
-      logGroup: this.onEventHandlerLogGroup,
-      role: this.onEventHandlerRole,
-      bundling: props.onEventHandlerDefinition.bundling,
-      environment: props.onEventHandlerDefinition.environment,
-      timeout: props.onEventHandlerDefinition.timeout ?? DsfProvider.FUNCTION_TIMEOUT,
-      vpc: props.vpc,
-      vpcSubnets: this.subnets,
-      securityGroups: this.securityGroups,
-    });
+    this.onEventHandlerFunction = this.createHandler('OnEventHandlerFunction', props.onEventHandlerDefinition, this.onEventHandlerLogGroup, this.onEventHandlerRole);
 
     // Dependency to schedule the ENI cleanup after lambda deletion
     if (props.vpc) {
@@ -175,20 +165,7 @@ export class DsfProvider extends Construct {
       this.isCompleteHandlerLog = this.createLogGroup ('IsCompleteHandlerLogGroup');
       this.isCompleteHandlerLog.grantWrite(this.isCompleteHandlerRole);
 
-      this.isCompleteHandlerFunction = new NodejsFunction (scope, 'IsCompleteHandlerLambdaFunction', {
-        runtime: DsfProvider.CR_RUNTIME,
-        handler: props.isCompleteHandlerDefinition.handler,
-        entry: props.isCompleteHandlerDefinition.entryFile,
-        depsLockFilePath: props.isCompleteHandlerDefinition.depsLockFilePath,
-        logGroup: this.isCompleteHandlerLog,
-        role: this.isCompleteHandlerRole,
-        bundling: props.isCompleteHandlerDefinition.bundling,
-        environment: props.isCompleteHandlerDefinition.environment,
-        timeout: props.onEventHandlerDefinition.timeout ?? DsfProvider.FUNCTION_TIMEOUT,
-        vpc: props.vpc,
-        vpcSubnets: this.subnets,
-        securityGroups: this.securityGroups,
-      });
+      this.isCompleteHandlerFunction = this.createHandler('IsCompleteHandlerFunction', props.isCompleteHandlerDefinition, this.isCompleteHandlerLog, this.isCompleteHandlerRole);
 
       if (props.vpc) {
         this.isCompleteHandlerRole.addManagedPolicy(this.vpcPolicy!);
@@ -228,6 +205,24 @@ export class DsfProvider extends Construct {
     });
 
     return logGroup;
+  }
+
+  private createHandler(id: string, props: HandlerDefinition, logGroup: ILogGroup, role: IRole): Function {
+
+    return new NodejsFunction (this, id, {
+      runtime: DsfProvider.CR_RUNTIME,
+      handler: props.handler,
+      entry: props.entryFile,
+      depsLockFilePath: props.depsLockFilePath,
+      logGroup: logGroup,
+      role: role,
+      bundling: props.bundling,
+      environment: props.environment,
+      timeout: props.timeout ?? DsfProvider.FUNCTION_TIMEOUT,
+      vpc: this.vpc,
+      vpcSubnets: this.subnets,
+      securityGroups: this.securityGroups,
+    });
   }
 
   private getVpcPermissions(): ManagedPolicy {
