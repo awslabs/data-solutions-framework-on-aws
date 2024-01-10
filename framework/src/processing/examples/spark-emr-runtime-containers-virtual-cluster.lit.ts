@@ -20,7 +20,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         });
 
         /// !show
-        
         const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
             name: 'dailyjob',
             createNamespace: true,
@@ -30,7 +29,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'virtualClusterArn', {
             value: virtualCluster.attrArn,
         });
-
         /// !hide
     }
 }

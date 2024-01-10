@@ -13,7 +13,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
 
         /// !show
-        
         const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
             eksAdminRole: Role.fromRoleArn(this, 'EksAdminRole' , 'arn:aws:iam::12345678912:role/role-name-with-path'),
             publicAccessCIDRs: ['10.0.0.0/32'], // The list of public IP addresses from which the cluster can be accessible
@@ -31,7 +30,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'executorPodTemplate', {
             value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
         });
-       
         /// !hide  
     }
 }

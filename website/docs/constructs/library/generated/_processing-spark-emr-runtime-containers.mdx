@@ -188,7 +188,6 @@ The method configures the right Kubernetes RBAC as described [here](https://docs
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-
         const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
             name: 'dailyjob',
             createNamespace: true,
@@ -233,12 +232,10 @@ The pod template are provided for both the Spark driver and the Spark executors 
 The pod templates locations are stored as class attribute and can be exposed via CloudFormation outputs. 
 The usage example below shows how to provide these as CloudFormation output. The pod templates are referenced in your `spark configuration` that is part of your job defintion.
 
-[example usage](./examples/spark-emr-runtime-containers-ec2-capacity.lit.ts)
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-
         const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
             eksAdminRole: Role.fromRoleArn(this, 'EksAdminRole' , 'arn:aws:iam::12345678912:role/role-name-with-path'),
             publicAccessCIDRs: ['10.0.0.0/32'], // The list of public IP addresses from which the cluster can be accessible
@@ -286,6 +283,7 @@ cdk.CfnOutput(self, "executorPodTemplate",
   </TabItem>
 </Tabs>
 
+The construct also exposes the `addKarpenterNodePoolAndNodeClass()` method to define your own EC2 capacity. This method takes a YAML file as defined in [Karpenter](https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/#5-create-nodepool) and apply it to the EKS cluster. You can consult an example [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/karpenter-provisioner-config/v0.32.1/critical-provisioner.yml).
 
 
 ### Execution role
@@ -296,7 +294,6 @@ The execution role is the IAM role that is used by the Spark job to access AWS r
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-
         emrEksCluster.addEmrVirtualCluster(this, {
             name: 'dailyjob',
             createNamespace: true,
