@@ -4,12 +4,11 @@ import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from '../lib';
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 
-/// !show
+
 class ExampleSparkEmrContainersStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
 
-        //Layer must be changed according to the Kubernetes version used
         const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
 
         const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
@@ -34,7 +33,8 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
             document: s3Read,
         });
 
-        const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
+        /// !show
+        emrEksCluster.addEmrVirtualCluster(this, {
             name: 'dailyjob',
             createNamespace: true,
             eksNamespace: 'dailyjobns',
@@ -43,31 +43,18 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         const execRole = emrEksCluster.createExecutionRole(
             this, 
             'ExecRole', 
-            s3ReadPolicy, 
+            s3ReadPolicy, // the IAM managed policy granting permissions required by the Spark job
             'dailyjobns', // the namespace of the virtual cluster 
-            's3ReadExecRole'); //the IAM role name
-
-        new cdk.CfnOutput(this, 'virtualClusterArn', {
-            value: virtualCluster.attrArn,
-        });
+            's3ReadExecRole' //the IAM role name
+        ); 
 
         new cdk.CfnOutput(this, 'execRoleArn', {
             value: execRole.roleArn,
         });
-
-        //Driver pod template
-        new cdk.CfnOutput(this, 'driverPodTemplate', {
-            value: emrEksCluster.podTemplateS3LocationCriticalDriver!,
-          });
-
-        //Executor pod template
-        new cdk.CfnOutput(this, 'executorPodTemplate', {
-            value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
-          });
-       
+        /// !hide
     }
 }
-/// !hide
+
 
 const app = new cdk.App();
 new ExampleSparkEmrContainersStack(app, 'ExampleSparkEmrServerlessStack');

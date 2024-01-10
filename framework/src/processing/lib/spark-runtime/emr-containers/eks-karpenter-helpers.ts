@@ -29,19 +29,19 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
 
   subnets.forEach( (subnet, index) => {
     let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole);
-    cluster.addKarpenterProvisioner(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
+    cluster.addKarpenterNodePoolAndNodeClass(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
     let sharedDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole);
-    cluster.addKarpenterProvisioner(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
+    cluster.addKarpenterNodePoolAndNodeClass(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
 
     let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet, nodeRole);
-    cluster.addKarpenterProvisioner(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
+    cluster.addKarpenterNodePoolAndNodeClass(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
 
     let notebookDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet, nodeRole);
-    cluster.addKarpenterProvisioner(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
+    cluster.addKarpenterNodePoolAndNodeClass(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
 
     let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet, nodeRole);
-    cluster.addKarpenterProvisioner(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
+    cluster.addKarpenterNodePoolAndNodeClass(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
   });
 }
 

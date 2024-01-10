@@ -503,6 +503,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     return virtualCluster;
   }
 
+  //TODO ADD METHOD
+  //GRANT JOB EXECUTION
+  //SCOPE PRINCIPAL TO ONLY A LIST OF EXECUTION ROLE
 
   /**
    * Create and configure a new Amazon IAM Role usable as an execution role.
@@ -562,7 +565,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * @param {any} manifest The manifest to apply.
    * You can use the Utils class that offers method to read yaml file and load it as a manifest
    */
-  public addKarpenterProvisioner(id: string, manifest: any): any {
+  public addKarpenterNodePoolAndNodeClass(id: string, manifest: any): any {
 
     let manifestApply = this.eksCluster.addManifest(id, ...manifest);
 
