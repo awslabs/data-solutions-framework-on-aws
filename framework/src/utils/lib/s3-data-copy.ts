@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: MIT-0
 
 import * as path from 'path';
-import { Aws, CustomResource, Duration } from 'aws-cdk-lib';
-import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Code, IFunction, Runtime, Function } from 'aws-cdk-lib/aws-lambda';
-import { RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { Provider } from 'aws-cdk-lib/custom-resources';
+import { CustomResource } from 'aws-cdk-lib';
+import { ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { IRole } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
+import { Context } from './context';
+import { DsfProvider } from './dsf-provider';
 import { S3DataCopyProps } from './s3-data-copy-props';
 import { TrackedConstruct } from './tracked-construct';
 import { TrackedConstructProps } from './tracked-construct-props';
-import { Utils } from './utils';
 
 
 /**
@@ -20,18 +21,34 @@ import { Utils } from './utils';
  */
 export class S3DataCopy extends TrackedConstruct {
 
-  private static readonly CR_RUNTIME = Runtime.NODEJS_20_X;
-  private static readonly LOG_RETENTION = RetentionDays.ONE_WEEK;
-
   /**
-   * The Lambda function used to copy the data
+   * The CloudWatch Log Group for the S3 data copy
    */
-  public readonly copyLambda: IFunction;
+  public readonly copyLogGroup: ILogGroup;
   /**
-   * The IAM role used by the lambda to copy the data
+   * The IAM Role for the copy Lambba Function
    */
-  public readonly executionRole: IRole;
-
+  public readonly copyRole: IRole;
+  /**
+   * The Lambda Function for the copy
+   */
+  public readonly copyFunction: IFunction;
+  /**
+   * The list of EC2 Security Groups used by the Lambda Functions
+   */
+  public readonly securityGroups?: ISecurityGroup[];
+  /**
+   * The CloudWatch Log Group for the S3 data copy cleaning up lambda
+   */
+  public readonly cleanUpLogGroup?: ILogGroup;
+  /**
+   * The Lambda function for the S3 data copy cleaning up lambda
+   */
+  public readonly cleanUpFunction?: IFunction;
+  /**
+   * The IAM Role for the the S3 data copy cleaning up lambda
+   */
+  public readonly cleanUpRole?: IRole;
 
   constructor(scope: Construct, id: string, props: S3DataCopyProps) {
 
@@ -40,6 +57,8 @@ export class S3DataCopy extends TrackedConstruct {
     };
     super(scope, id, trackedConstructProps);
 
+    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
     if (props.vpc === undefined && props.subnets !==undefined) {
       throw new Error('S3DataCopy error: if VPC parameter is not configured, subnets cannot be');
     }
@@ -47,74 +66,41 @@ export class S3DataCopy extends TrackedConstruct {
       throw new Error('S3DataCopy error: if VPC parameter is configured, subnets must be');
     }
 
-    const functionName = `s3-data-copy-${Utils.generateUniqueHash(this)}`;
-
-    const managedPolicy = new ManagedPolicy(this, 'Policy', {
-      document: new PolicyDocument({
-        statements: [
-          new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: [
-              'logs:CreateLogGroup',
-              'logs:CreateLogStream',
-              'logs:PutLogEvents',
-            ],
-            resources: [
-              `arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/${functionName}`,
-              `arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/${functionName}:log-stream:*`,
-            ],
-          }),
-          new PolicyStatement({
-            actions: [
-              'ec2:CreateNetworkInterface',
-              'ec2:DescribeNetworkInterfaces',
-              'ec2:DeleteNetworkInterface',
-              'ec2:AssignPrivateIpAddresses',
-              'ec2:UnassignPrivateIpAddresses',
-            ],
-            effect: Effect.ALLOW,
-            resources: ['*'],
-          }),
-        ],
-      }),
-    });
-
-    this.executionRole = props.executionRole || new Role(this, 'Role', {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      description: 'Role used by S3DataCopy to copy data from one S3 bucket to another',
-    });
-    this.executionRole.addManagedPolicy(managedPolicy);
-
-    props.sourceBucket.grantRead(this.executionRole, `${props.sourceBucketPrefix || ''}*`);
-    props.targetBucket.grantWrite(this.executionRole, `${props.targetBucketPrefix || ''}*`);
-
-    this.copyLambda = new Function(this, 'Lambda', {
-      runtime: S3DataCopy.CR_RUNTIME,
-      role: this.executionRole,
-      handler: 'index.handler',
-      code: Code.fromAsset(path.join(__dirname, './resources/lambda/s3-data-copy/')),
-      timeout: Duration.minutes(15),
-      environment: {
-        SOURCE_BUCKET_NAME: props.sourceBucket.bucketName,
-        SOURCE_BUCKET_PREFIX: props.sourceBucketPrefix || '',
-        SOURCE_BUCKET_REGION: props.sourceBucketRegion,
-        TARGET_BUCKET_NAME: props.targetBucket.bucketName,
-        TARGET_BUCKET_PREFIX: props.targetBucketPrefix || '',
+    const provider = new DsfProvider(this, 'Provider', {
+      providerName: 's3-data-copy',
+      onEventHandlerDefinition: {
+        handler: 'index.handler',
+        depsLockFilePath: path.join(__dirname, './resources/lambda/s3-data-copy/package-lock.json'),
+        entryFile: path.join(__dirname, './resources/lambda/s3-data-copy/index.mjs'),
+        environment: {
+          SOURCE_BUCKET_NAME: props.sourceBucket.bucketName,
+          SOURCE_BUCKET_PREFIX: props.sourceBucketPrefix || '',
+          SOURCE_BUCKET_REGION: props.sourceBucketRegion,
+          TARGET_BUCKET_NAME: props.targetBucket.bucketName,
+          TARGET_BUCKET_PREFIX: props.targetBucketPrefix || '',
+        },
       },
       vpc: props.vpc,
-      vpcSubnets: props.vpc ? { subnets: props.subnets } : undefined,
-      logRetention: S3DataCopy.LOG_RETENTION,
+      subnets: props.vpc ? props.subnets : undefined,
+      securityGroups: props.vpc ? props.securityGroups : undefined,
+      removalPolicy,
     });
-    // Custom resource provider
-    const copyProvider = new Provider(this, 'Provider', {
-      onEventHandler: this.copyLambda,
-      logRetention: S3DataCopy.LOG_RETENTION,
-    });
+    this.copyRole = provider.onEventHandlerRole;
+    this.copyLogGroup = provider.onEventHandlerLogGroup;
+    this.copyFunction = provider.onEventHandlerFunction;
+    this.securityGroups = provider.securityGroups;
+    this.cleanUpLogGroup = provider.cleanUpLogGroup;
+    this.cleanUpFunction = provider.cleanUpFunction;
+    this.cleanUpRole = provider.cleanUpRole;
+
+    props.sourceBucket.grantRead(this.copyRole, `${props.sourceBucketPrefix || ''}*`);
+    props.targetBucket.grantWrite(this.copyRole, `${props.targetBucketPrefix || ''}*`);
 
     // Custom resource to trigger copy
     new CustomResource(this, 'CustomResource', {
-      serviceToken: copyProvider.serviceToken,
+      serviceToken: provider.serviceToken,
       resourceType: 'Custom::S3DataCopy',
+      removalPolicy,
     });
   }
 

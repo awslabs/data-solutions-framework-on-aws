@@ -1,0 +1,336 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/utils)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs. 
+The `DsfProvider` construct handles the undifferentiated tasks for you so you can focus on the custom resource logic. 
+This construct is an opinionated implementation of the [CDK Custom Resource Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#the-custom-resource-provider-framework). 
+It creates:
+* A custom resource provider to manage the entire custom resource lifecycle
+* An onEvent Lambda function from the provided code to perform actions you need in your custom resource
+* An optional isComplete Lambda function from the provided code when using [asynchronous custom resources](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#asynchronous-providers-iscomplete)
+* CloudWatch Logs log groups for each Lambda function
+* IAM roles for each Lambda function and associated permissions
+
+:::note
+You still need to provide an IAM Managed Policy required by the actions of the Lambda functions.
+:::
+
+## Configuring handlers for the custom resource
+
+The `DsfProvider` construct requires a Lambda function handler called `onEvent` to perform the actions of the custom resource. It also supports an optional Lambda function handler called `isComplete` to regularly perform status checks for asynchronous operation triggered in the `onEvent` handler.
+
+Both Lambda functions are implemented in Typescript. 
+`esbuild` is used to package the Lambda code and is automatically installed by `Projen`. If `esbuild` is available, `docker` will be used. 
+You need to configure the path of the Lambda code (entry file) and the path of the dependency lock file (`package-lock.json`) for each handler.
+
+To generate the `package-lock.json` file, run from the Lambda code folder:
+
+```bash
+npm install --package-lock-only
+```
+
+Then you can configure the `onEvent` and `isComplete` handlers in the `DsfProvider` construct:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+import { DsfProvider } from '../lib/dsf-provider';
+
+class ExampleIsCompleteDsfProviderStack extends cdk.Stack{
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    const myProvider = new DsfProvider(this, 'Provider', {
+      providerName: 'my-provider',
+      onEventHandlerDefinition: {
+        managedPolicy: myOnEventManagedPolicy,
+        handler: 'on-event.handler',
+        depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
+        entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
+      },
+      isCompleteHandlerDefinition: {
+        managedPolicy: myIsCompleteManagedPolicy,
+        handler: 'is-complete.handler',
+        depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
+        entryFile: path.join(__dirname, './resources/lambda/my-cr/is-complete.mjs'),
+      }
+    });
+
+    new cdk.CustomResource(this, 'CustomResource', {
+      serviceToken: myProvider.serviceToken,
+      resourceType: 'Custom::MyCustomResource',
+    });
+  }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+from ...lib.dsf_provider import DsfProvider
+
+cdk.Stack):
+scope, id):
+super().__init__(scope, id)my_provider = DsfProvider(self, "Provider",
+    provider_name="my-provider",
+    on_event_handler_definition=HandlerDefinition(
+        managed_policy=my_on_event_managed_policy,
+        handler="on-event.handler",
+        deps_lock_file_path=path.join(__dirname, "./resources/lambda/my-cr/package-lock.json"),
+        entry_file=path.join(__dirname, "./resources/lambda/my-cr/on-event.mjs")
+    ),
+    is_complete_handler_definition=HandlerDefinition(
+        managed_policy=my_is_complete_managed_policy,
+        handler="is-complete.handler",
+        deps_lock_file_path=path.join(__dirname, "./resources/lambda/my-cr/package-lock.json"),
+        entry_file=path.join(__dirname, "./resources/lambda/my-cr/is-complete.mjs")
+    )
+)
+
+cdk.CustomResource(self, "CustomResource",
+    service_token=my_provider.service_token,
+    resource_type="Custom::MyCustomResource"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Packaging dependencies in the Lambda function
+
+Dependencies can be added to the Lambda handlers using the bundling options. For example, the following code adds the AWS SDK S3 client to the `onEvent` handler:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const myProvider = new DsfProvider(this, 'Provider', {
+  providerName: 'my-provider',
+  onEventHandlerDefinition: {
+    managedPolicy: myManagedPolicy,
+    handler: 'on-event.handler',
+    depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
+    entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
+    bundling: {
+      nodeModules: [
+        '@aws-sdk/client-s3',
+      ],
+      commandHooks: {
+        afterBundling: () => [],
+        beforeBundling: () => [
+          'npx esbuild --version'
+        ],
+        beforeInstall: () => [
+        ]
+      }
+    },
+  },
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+my_provider = DsfProvider(self, "Provider",
+    provider_name="my-provider",
+    on_event_handler_definition=HandlerDefinition(
+        managed_policy=my_managed_policy,
+        handler="on-event.handler",
+        deps_lock_file_path=path.join(__dirname, "./resources/lambda/my-cr/package-lock.json"),
+        entry_file=path.join(__dirname, "./resources/lambda/my-cr/on-event.mjs"),
+        bundling=cdk.aws_lambda_nodejs.BundlingOptions(
+            node_modules=["@aws-sdk/client-s3"
+            ],
+            command_hooks={
+                "after_bundling": () => [],
+                "before_bundling": () => [
+                              'npx esbuild --version'
+                            ],
+                "before_install": () => [
+                            ]
+            }
+        )
+    )
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Running the Custom Resource in VPC
+
+You can configure the `DsfProvider` to run all the Lambda functions within a VPC (for example in private subnets). It includes the Lambda handlers (`onEvent` and `isComplete`) and the Lambda functions used by the custom resource framework. The following configurations are available when running the custom resource in a VPC:
+ * The VPC where you want to run the custom resource.
+ * The subnets where you want to run the Lambda functions. Subnets are optional. If not configured, the construct uses the VPC default strategy to select subnets. 
+ * The EC2 security groups to attach to the Lambda functions. Security groups are optional. If not configured, a single security group is created for all the Lambda functions.
+
+:::danger
+The `DsfProvider` construct implements a custom process to efficiently clean up ENIs when deleting the custom resource. Without this process it can take up to one hour to delete the ENI and dependant resources. 
+This process requires the security groups to be dedicated to the custom resource. If you configure security groups, ensure they are dedicated.
+:::
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+
+    const vpc = Vpc.fromLookup(this, 'Vpc', { vpcName: 'my-vpc'});
+    const subnets = vpc.selectSubnets({subnetType: SubnetType.PRIVATE_WITH_EGRESS});
+    const securityGroup = SecurityGroup.fromSecurityGroupId(this, 'SecurityGroup', 'sg-123456');
+
+    const myProvider = new DsfProvider(this, 'Provider', {
+      providerName: 'my-provider',
+      onEventHandlerDefinition: {
+        managedPolicy: myManagedPolicy,
+        handler: 'on-event.handler',
+        depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
+        entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
+      },
+      vpc,
+      subnets,
+      // the security group should be dedicated to the custom resource
+      securityGroups: [securityGroup],
+    });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+vpc = Vpc.from_lookup(self, "Vpc", vpc_name="my-vpc")
+subnets = vpc.select_subnets(subnet_type=SubnetType.PRIVATE_WITH_EGRESS)
+security_group = SecurityGroup.from_security_group_id(self, "SecurityGroup", "sg-123456")
+
+my_provider = DsfProvider(self, "Provider",
+    provider_name="my-provider",
+    on_event_handler_definition=HandlerDefinition(
+        managed_policy=my_managed_policy,
+        handler="on-event.handler",
+        deps_lock_file_path=path.join(__dirname, "./resources/lambda/my-cr/package-lock.json"),
+        entry_file=path.join(__dirname, "./resources/lambda/my-cr/on-event.mjs")
+    ),
+    vpc=vpc,
+    subnets=subnets,
+    # the security group should be dedicated to the custom resource
+    security_groups=[security_group]
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Configuring environment variables of Lambda handlers
+
+Lambda handlers can leverage environment variables to pass values to the Lambda code. You can configure environment variables for each of the Lambda handlers:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const myProvider = new DsfProvider(this, 'Provider', {
+  providerName: 'my-provider',
+  onEventHandlerDefinition: {
+    managedPolicy: myManagedPolicy,
+    handler: 'on-event.handler',
+    depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
+    entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
+    environment: {
+      MY_ENV_VARIABLE: 'my-env-variable-value',
+    }
+  },
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+my_provider = DsfProvider(self, "Provider",
+    provider_name="my-provider",
+    on_event_handler_definition=HandlerDefinition(
+        managed_policy=my_managed_policy,
+        handler="on-event.handler",
+        deps_lock_file_path=path.join(__dirname, "./resources/lambda/my-cr/package-lock.json"),
+        entry_file=path.join(__dirname, "./resources/lambda/my-cr/on-event.mjs"),
+        environment={
+            "MY_ENV_VARIABLE": "my-env-variable-value"
+        }
+    )
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Removal policy
+
+You can specify if the Cloudwatch Log Groups should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+
+Log groups can be destroyed when the CDK resource is destroyed only if **both** `DsfProvider` removal policy and DSF on AWS global removal policy are set to remove objects.
+
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+
+```json title="cdk.json"
+{
+  "context": {
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
+  }
+}
+```
+
+Or programmatically in your CDK app:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+    const myProvider = new DsfProvider(this, 'Provider', {
+      providerName: 'my-provider',
+      onEventHandlerDefinition: {
+        managedPolicy: myOnEventManagedPolicy,
+        handler: 'on-event.handler',
+        depsLockFilePath: path.join(__dirname, './resources/lambda/my-cr/package-lock.json'),
+        entryFile: path.join(__dirname, './resources/lambda/my-cr/on-event.mjs'),
+      },
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)
+
+my_provider = DsfProvider(self, "Provider",
+    provider_name="my-provider",
+    on_event_handler_definition=HandlerDefinition(
+        managed_policy=my_on_event_managed_policy,
+        handler="on-event.handler",
+        deps_lock_file_path=path.join(__dirname, "./resources/lambda/my-cr/package-lock.json"),
+        entry_file=path.join(__dirname, "./resources/lambda/my-cr/on-event.mjs")
+    ),
+    removal_policy=cdk.RemovalPolicy.DESTROY
+)
+  ```
+
+  </TabItem>
+</Tabs>
+

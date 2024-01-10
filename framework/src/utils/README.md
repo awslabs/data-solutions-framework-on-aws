@@ -121,3 +121,84 @@ AWS CDK offers escape hatches to modify constructs that are encapsulated in DSF 
   For example, you can override CloudFormation property for setting the S3 transfer Acceleration on the gold bucket of the `DataLakeStorage`:
 
 [example customization cfn](./examples/customization-cfn.lit.ts)
+
+[//]: # (utils.custom-resources)
+# Create custom resources with the DsfProvider
+
+DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs. 
+The `DsfProvider` construct handles the undifferentiated tasks for you so you can focus on the custom resource logic. 
+This construct is an opinionated implementation of the [CDK Custom Resource Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#the-custom-resource-provider-framework). 
+It creates:
+* A custom resource provider to manage the entire custom resource lifecycle
+* An onEvent Lambda function from the provided code to perform actions you need in your custom resource
+* An optional isComplete Lambda function from the provided code when using [asynchronous custom resources](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#asynchronous-providers-iscomplete)
+* CloudWatch Logs log groups for each Lambda function
+* IAM roles for each Lambda function and associated permissions
+
+:::note
+You still need to provide an IAM Managed Policy required by the actions of the Lambda functions.
+:::
+
+## Configuring handlers for the custom resource
+
+The `DsfProvider` construct requires a Lambda function handler called `onEvent` to perform the actions of the custom resource. It also supports an optional Lambda function handler called `isComplete` to regularly perform status checks for asynchronous operation triggered in the `onEvent` handler.
+
+Both Lambda functions are implemented in Typescript. 
+`esbuild` is used to package the Lambda code and is automatically installed by `Projen`. If `esbuild` is available, `docker` will be used. 
+You need to configure the path of the Lambda code (entry file) and the path of the dependency lock file (`package-lock.json`) for each handler.
+
+To generate the `package-lock.json` file, run from the Lambda code folder:
+
+```bash
+npm install --package-lock-only
+```
+
+Then you can configure the `onEvent` and `isComplete` handlers in the `DsfProvider` construct:
+
+[example handlers](./examples/dsf-provider-is-complete.lit.ts)
+
+## Packaging dependencies in the Lambda function
+
+Dependencies can be added to the Lambda handlers using the bundling options. For example, the following code adds the AWS SDK S3 client to the `onEvent` handler:
+
+[example bundling](./examples/dsf-provider-bundling.lit.ts)
+
+## Running the Custom Resource in VPC
+
+You can configure the `DsfProvider` to run all the Lambda functions within a VPC (for example in private subnets). It includes the Lambda handlers (`onEvent` and `isComplete`) and the Lambda functions used by the custom resource framework. The following configurations are available when running the custom resource in a VPC:
+ * The VPC where you want to run the custom resource.
+ * The subnets where you want to run the Lambda functions. Subnets are optional. If not configured, the construct uses the VPC default strategy to select subnets. 
+ * The EC2 security groups to attach to the Lambda functions. Security groups are optional. If not configured, a single security group is created for all the Lambda functions.
+
+:::danger
+The `DsfProvider` construct implements a custom process to efficiently clean up ENIs when deleting the custom resource. Without this process it can take up to one hour to delete the ENI and dependant resources. 
+This process requires the security groups to be dedicated to the custom resource. If you configure security groups, ensure they are dedicated.
+:::
+
+[example vpc](./examples/dsf-provider-vpc.lit.ts)
+
+## Configuring environment variables of Lambda handlers
+
+Lambda handlers can leverage environment variables to pass values to the Lambda code. You can configure environment variables for each of the Lambda handlers:
+
+[example env](./examples/dsf-provider-env.lit.ts)
+
+## Removal policy
+
+You can specify if the Cloudwatch Log Groups should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+
+Log groups can be destroyed when the CDK resource is destroyed only if **both** `DsfProvider` removal policy and DSF on AWS global removal policy are set to remove objects.
+
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+
+```json title="cdk.json"
+{
+  "context": {
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
+  }
+}
+```
+
+Or programmatically in your CDK app:
+
+[example log group removal](./examples/dsf-provider-removal-policy.lit.ts)
