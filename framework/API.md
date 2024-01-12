@@ -6372,10 +6372,11 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN (The bucket will be orphaned).
 
 Policy to apply when the bucket is removed from this stack.
 
-* @default - RETAIN (The bucket will be orphaned).
+*
 
 ---
 
@@ -6742,10 +6743,11 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN (The bucket will be orphaned).
 
 Policy to apply when the bucket is removed from this stack.
 
-* @default - RETAIN (The bucket will be orphaned).
+*
 
 ---
 
@@ -6866,10 +6868,11 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN (The bucket will be orphaned).
 
 Policy to apply when the bucket is removed from this stack.
 
-* @default - RETAIN (The bucket will be orphaned).
+*
 
 ---
 
@@ -7947,10 +7950,9 @@ public readonly executionTimeoutMinutes: number;
 ```
 
 - *Type:* number
+- *Default:* 30
 
 Job execution timeout in minutes.
-
-@default 30
 
 ---
 
