@@ -15,7 +15,7 @@ Amazon S3 Bucket configured with best-practices and smart defaults for storing S
 
 Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/access-logs-bucket](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/access-logs-bucket)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/access-logs-bucket](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/access-logs-bucket)
 
 *Example*
 
@@ -1167,7 +1167,7 @@ Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
 The default bucket name is `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/analytics-bucket](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/analytics-bucket)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/analytics-bucket](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/analytics-bucket)
 
 *Example*
 
@@ -2632,7 +2632,7 @@ The list of CfnOutputs created by the CDK Stack.
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-catalog-database](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-catalog-database)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-catalog-database](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-catalog-database)
 
 *Example*
 
@@ -2900,7 +2900,7 @@ Creates AWS Glue Catalog Database for each storage layer.
 
 Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-catalog](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-catalog)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog)
 
 *Example*
 
@@ -3127,7 +3127,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-storage](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-storage)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage)
 
 *Example*
 
@@ -3576,7 +3576,7 @@ The amazon VPC created.
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/pyspark-application-package](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/pyspark-application-package)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/pyspark-application-package](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/pyspark-application-package)
 
 *Example*
 
@@ -3859,7 +3859,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 Copy data from one S3 bucket to another.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/s3-data-copy](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/s3-data-copy)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/s3-data-copy](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/s3-data-copy)
 
 #### Initializers <a name="Initializers" id="aws-dsf.utils.S3DataCopy.Initializer"></a>
 
@@ -4104,7 +4104,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-cicd-pipeline](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-cicd-pipeline)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-cicd-pipeline](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-cicd-pipeline)
 
 *Example*
 
@@ -4387,7 +4387,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 A construct to create an EKS cluster, configure it and enable it with EMR on EKS.
 
-> [https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime](https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime)
 
 #### Methods <a name="Methods" id="Methods"></a>
 
@@ -5056,7 +5056,7 @@ A construct to run Spark Jobs using EMR on EKS.
 
 Creates a Step Functions State Machine that orchestrates the Spark Job.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job)
 
 *Example*
 
@@ -5264,7 +5264,7 @@ A construct to run Spark Jobs using EMR Serverless.
 
 Creates a State Machine that orchestrates the Spark Job.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job)
 
 *Example*
 
@@ -5498,7 +5498,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-emr-serverless-runtime](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-emr-serverless-runtime)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime)
 
 #### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer"></a>
 
@@ -5864,11 +5864,11 @@ A base construct to run Spark Jobs.
 
 Creates an AWS Step Functions State Machine that orchestrates the Spark Job.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job
 
 Available implementations:
 * {@link SparkEmrServerlessJob } for Emr Serverless implementation
-* {@link SparkEmrEksJob } for EMR On EKS implementation](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
+* {@link SparkEmrEksJob } for EMR On EKS implementation](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job
 
 Available implementations:
 * {@link SparkEmrServerlessJob } for Emr Serverless implementation
