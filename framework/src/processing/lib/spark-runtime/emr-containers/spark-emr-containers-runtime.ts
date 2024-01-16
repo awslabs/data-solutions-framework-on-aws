@@ -47,7 +47,7 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
- * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime
 */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
 

@@ -14,7 +14,7 @@ import { EMR_DEFAULT_VERSION, EmrRuntimeVersion } from '../../emr-releases';
 
 /**
  * A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-emr-serverless-runtime
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime
 */
 export class SparkEmrServerlessRuntime extends TrackedConstruct {
 

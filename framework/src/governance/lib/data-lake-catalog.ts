@@ -11,7 +11,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
 * Creates AWS Glue Catalog Database for each storage layer. Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
-* @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-catalog
+* @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog
  *
 * @example
 * import { Key } from 'aws-cdk-lib/aws-kms';
