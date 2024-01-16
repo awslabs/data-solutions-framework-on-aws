@@ -107,6 +107,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * The security group used by the EC2NodeClass of the default nodes
    */
   public readonly karpenterSecurityGroup?: ISecurityGroup;
+
+  // eslint-disable-next-line local-rules/url-checker
   /**
    * The rules used by Karpenter to track node health, rules are defined in the cloudformation below
    * https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml

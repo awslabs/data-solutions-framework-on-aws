@@ -66,6 +66,7 @@
     "projen": "^0.72.1",
     "rosetta": "^1.1.0",
     "standard-version": "^9",
+    "sync-request-curl": "^2.1.10",
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6"
   },

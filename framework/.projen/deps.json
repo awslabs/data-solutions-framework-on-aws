@@ -130,6 +130,10 @@
       "type": "build"
     },
     {
+      "name": "sync-request-curl",
+      "type": "build"
+    },
+    {
       "name": "ts-jest",
       "type": "build"
     },
