@@ -71,7 +71,7 @@ export default {
                 }
 
                 for (const c of program.comments.filter(c => c.type == 'Block')) {
-                    const matches = c.value.toLowerCase().match(/\bhttps?:\/\/[\-a-z0-9+&@#\/%?=~_|!:,.;]*[\-a-z0-9+&@#\/%=~_|]/);
+                    const matches = c.value.match(/\bhttps?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[\-A-Za-z0-9+&@#\/%=~_|]/);
                     if (!matches || matches.length == 0) {
                         continue;
                     }

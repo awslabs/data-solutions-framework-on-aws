@@ -93,6 +93,10 @@
       "steps": [
         {
           "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools"
+        },
+        {
+          "exec": "eslint --ext .ts,.tsx --rule 'local-rules/url-checker: error' src",
+          "condition": "[ -n \"$CI\" ]"
         }
       ]
     },
@@ -215,10 +219,6 @@
         },
         {
           "spawn": "eslint"
-        },
-        {
-          "exec": "eslint --ext .ts,.tsx --rule 'local-rules/url-checker: error' src",
-          "condition": "[ -n \"$CI\" ]"
         }
       ]
     },
