@@ -1,3 +1,6 @@
+Policy
+
+
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -27,8 +30,6 @@
                 "ec2:DescribeInstances",
                 "ec2:DescribeNetworkInterfaces",
                 "ec2:DescribeTags",
-                "ec2:GetCoipPoolUsage",
-                "ec2:DescribeCoipPools",
                 "elasticloadbalancing:DescribeLoadBalancers",
                 "elasticloadbalancing:DescribeLoadBalancerAttributes",
                 "elasticloadbalancing:DescribeListeners",
@@ -45,23 +46,10 @@
         {
             "Effect": "Allow",
             "Action": [
-                "cognito-idp:DescribeUserPoolClient",
                 "acm:ListCertificates",
                 "acm:DescribeCertificate",
                 "iam:ListServerCertificates",
-                "iam:GetServerCertificate",
-                "waf-regional:GetWebACL",
-                "waf-regional:GetWebACLForResource",
-                "waf-regional:AssociateWebACL",
-                "waf-regional:DisassociateWebACL",
-                "wafv2:GetWebACL",
-                "wafv2:GetWebACLForResource",
-                "wafv2:AssociateWebACL",
-                "wafv2:DisassociateWebACL",
-                "shield:GetSubscriptionState",
-                "shield:DescribeProtection",
-                "shield:CreateProtection",
-                "shield:DeleteProtection"
+                "iam:GetServerCertificate"
             ],
             "Resource": "*"
         },
@@ -71,14 +59,24 @@
                 "ec2:AuthorizeSecurityGroupIngress",
                 "ec2:RevokeSecurityGroupIngress"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "ArnEquals": {
+                    "ec2:Vpc": "arn:aws:ec2:<REGION>:<ACCOUNT-ID>:vpc/<VPC-ID>"
+                }
+            }
         },
         {
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateSecurityGroup"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "ArnEquals": {
+                    "ec2:Vpc": "arn:aws:ec2:<REGION>:<ACCOUNT-ID>:vpc/<VPC-ID>"
+                }
+            }
         },
         {
             "Effect": "Allow",
@@ -239,3 +237,4 @@
         }
     ]
 }
+
