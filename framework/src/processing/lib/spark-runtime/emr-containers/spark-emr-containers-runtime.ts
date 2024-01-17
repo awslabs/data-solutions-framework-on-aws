@@ -321,6 +321,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow all traffic from VPC to EKS Cluster');
       });
 
+      // TODO
+      // Update the IAM policy for ALB
+
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
         clusterName: clusterName,
@@ -500,6 +503,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         groups: [''],
       },
     );
+
+    // Add the CR provider for managed endpoint
+
   }
 
   /**
@@ -619,6 +625,18 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     }
 
     return manifestApply;
+  }
+
+  /**
+   * Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Cluster .
+   * CfnOutput can be customized.
+   * @param {Construct} scope the scope of the stack where managed endpoint is deployed
+   * @param {string} id the CDK id for endpoint
+   * @param {EmrManagedEndpointOptions} options the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint
+   */
+  
+  public addManagedEndpoint(scope: Construct, id: string) {
+
   }
 }
 
