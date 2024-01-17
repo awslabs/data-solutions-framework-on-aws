@@ -260,10 +260,9 @@ sparkDataLakeInfraExampleApp.addTask('test:e2e', {
   description: 'Run end-to-end tests',
   exec: 'pytest -k e2e'
 });
-const synthTask = sparkDataLakeInfraExampleApp.tasks.tryFind('synth:silent');
-synthTask?.reset();
-synthTask?.prependExec(`cdk --version || npm install -g cdk@${CDK_VERSION}`);
-synthTask?.exec('cdk synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER');
+const synthTask = sparkDataLakeInfraExampleApp.tasks.tryFind('synth:silent')!;
+synthTask.reset();
+synthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python aws_dsf` },
@@ -318,10 +317,9 @@ adsfQuickstart.addTask('test:e2e', {
   description: 'Run end-to-end tests',
   exec: 'pytest -k e2e'
 });
-const adsfQuickstartSynthTask = adsfQuickstart.tasks.tryFind('synth:silent');
-adsfQuickstartSynthTask?.reset();
-adsfQuickstartSynthTask?.prependExec(`cdk --version || npm install -g cdk@${CDK_VERSION}`);
-adsfQuickstartSynthTask?.exec('cdk synth -q');
+const adsfQuickstartSynthTask = adsfQuickstart.tasks.tryFind('synth:silent')!;
+adsfQuickstartSynthTask.reset();
+adsfQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python aws_dsf` },
