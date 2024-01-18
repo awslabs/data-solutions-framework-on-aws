@@ -3,7 +3,7 @@ const emrcontainers = new aws.EMRContainers({region: process.env.AWS_REGION});
 const log = console;
 
 // Handler functions
-exports.onEvent = async (event) => {
+exports.handler = async (event) => {
   log.info(event);
   
   let requestType = event.RequestType.toLowerCase();

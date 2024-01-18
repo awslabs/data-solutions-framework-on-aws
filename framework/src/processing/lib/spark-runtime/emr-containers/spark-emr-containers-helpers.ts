@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
 import { Aws, RemovalPolicy } from "aws-cdk-lib";
 import { ManagedPolicy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { DsfProvider } from "../../../../utils/lib/dsf-provider";
@@ -6,16 +9,14 @@ import { IBucket } from "aws-cdk-lib/aws-s3";
 import path = require("path");
 import { SecurityGroup, SubnetType, IVpc } from "aws-cdk-lib/aws-ec2";
 
-
-
 export function interactiveSessionsProviderSetup(
     scope: Construct,
     removalPolicy: RemovalPolicy,
     vpc: IVpc,
     assetBucket?: IBucket) : string {
-
-    let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, '', {
-        vpc: vpc
+    
+    let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'interactiveEndpointCrSg', {
+        vpc
     });
 
     //The policy allowing the managed endpoint custom resource to create call the APIs for managed endpoint
@@ -63,11 +64,13 @@ export function interactiveSessionsProviderSetup(
         )
     }
 
-      //Policy to allow lambda access to cloudwatch logs
+    //Policy to allow lambda access to cloudwatch logs
     const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
         statements: lambdaPolicy,
-        description: 'Policy similar to lambda execution role but scoped down',
+        description: 'Policy for emr containers CR to create managed endpoint',
       });
+
+      console.log(path.join(__dirname, './resources/lambdas/managed-endpoint/index.js'));
 
       const provider = new DsfProvider(scope, 'Provider', {
         providerName: 'emr-containers-interactive-endpoint-provider',
@@ -76,15 +79,21 @@ export function interactiveSessionsProviderSetup(
           depsLockFilePath: path.join(__dirname, './resources/lambdas/managed-endpoint/package-lock.json'),
           entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.js'),
           managedPolicy: lambdaExecutionRolePolicy,
+          bundling: {
+            externalModules: ['aws-sdk'],
+          }
         },
         isCompleteHandlerDefinition: {
             handler: 'index.handler',
             depsLockFilePath: path.join(__dirname, './resources/lambdas/managed-endpoint/package-lock.json'),
             entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.js'),
             managedPolicy: lambdaExecutionRolePolicy,
+            bundling: {
+              externalModules: ['aws-sdk'],
+            }
           },
         vpc: vpc ? vpc: undefined,
-        subnets: vpc ? { subnetType : SubnetType.PRIVATE_WITH_EGRESS } : undefined,
+        subnets: vpc ? vpc.selectSubnets({ subnetType : SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
         securityGroups: lambdaProviderSecurityGroup ? [lambdaProviderSecurityGroup] : undefined,
         removalPolicy,
       });

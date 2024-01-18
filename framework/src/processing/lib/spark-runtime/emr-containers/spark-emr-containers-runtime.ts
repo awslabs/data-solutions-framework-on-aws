@@ -3,7 +3,7 @@
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { Aws, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
+import { Aws, Stack, Tags, CfnJson, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
 import { IGatewayVpcEndpoint, ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import {
   AlbControllerVersion,
@@ -41,10 +41,11 @@ import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
-import { SparkEmrContainersRuntimeInteractiveSessionProps, SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
+import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
+import { SparkEmrContainersRuntimeInteractiveSessionProps } from './spark-emr-containers-interactive-session-props';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
@@ -200,7 +201,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The VPC used by the EKS cluster
    */
-  public readonly vpc!: IVpc;
+  public readonly vpc: IVpc;
   /**
    * The KMS Key used for the VPC flow logs when the VPC is created
    */
@@ -270,7 +271,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     let eksCluster: Cluster;
 
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
-    if (props.eksCluster == undefined) {
+    if (props.eksCluster === undefined) {
 
       this.eksSecretKmsKey = new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
@@ -372,6 +373,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     } else {
       //Initialize with the provided EKS Cluster
       eksCluster = props.eksCluster;
+      this.vpc = eksCluster.vpc;
     }
 
     this.eksCluster = eksCluster;
@@ -506,7 +508,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       },
     );
 
-    this.interactiveSessionsProviderId = interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc!, this.assetBucket);
+    this.interactiveSessionsProviderId = interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc, this.assetBucket);
 
   }
 
@@ -634,11 +636,38 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * CfnOutput can be customized.
    * @param {Construct} scope the scope of the stack where managed endpoint is deployed
    * @param {string} id the CDK id for endpoint
-   * @param {SparkEmrContainersRuntimeInteractiveSessionProps} options the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint
+   * @param {SparkEmrContainersRuntimeInteractiveSessionProps} interactiveSessionOptions the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint
    */
   
-  public addManagedEndpoint(scope: Construct, id: string, interactiveSessionOptions: SparkEmrContainersRuntimeInteractiveSessionProps) {
+  public addInteractiveEndpoint(scope: Construct, id: string, interactiveSessionOptions: SparkEmrContainersRuntimeInteractiveSessionProps) {
 
+    if (interactiveSessionOptions.managedEndpointName.length > 64) {
+      throw new Error(`error managed endpoint name length is greater than 64 ${id}`);
+    }
+
+    if (this.notebookDefaultConfig == undefined) {
+      throw new Error('error empty configuration override is not supported on non-default nodegroups');
+    }
+
+    let jsonConfigurationOverrides: string | undefined;
+
+    jsonConfigurationOverrides = interactiveSessionOptions.configurationOverrides ? interactiveSessionOptions.configurationOverrides : this.notebookDefaultConfig;
+
+    // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
+    const cr = new CustomResource(scope, id, {
+      serviceToken: this.interactiveSessionsProviderId,
+      properties: {
+        clusterId: interactiveSessionOptions.virtualClusterId,
+        executionRoleArn: interactiveSessionOptions.executionRole.roleArn,
+        endpointName: interactiveSessionOptions.managedEndpointName,
+        releaseLabel: interactiveSessionOptions.emrOnEksVersion || SparkEmrContainersRuntime.DEFAULT_EMR_EKS_VERSION,
+        configurationOverrides: jsonConfigurationOverrides,
+      },
+      resourceType: 'Custom::EmrEksInteractiveEndpoint'
+    });
+    cr.node.addDependency(this.eksCluster);
+
+    return cr;
   }
 }
 
