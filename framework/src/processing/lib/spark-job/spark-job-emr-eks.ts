@@ -16,7 +16,7 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
 /**
  * A construct to run Spark Jobs using EMR on EKS.
  * Creates a Step Functions State Machine that orchestrates the Spark Job.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-job
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job
  *
  * @example
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';

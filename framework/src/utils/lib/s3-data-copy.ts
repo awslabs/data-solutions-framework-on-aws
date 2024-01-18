@@ -17,7 +17,7 @@ import { TrackedConstructProps } from './tracked-construct-props';
 
 /**
  * Copy data from one S3 bucket to another.
- * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/s3-data-copy
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/s3-data-copy
  */
 export class S3DataCopy extends TrackedConstruct {
 

@@ -47,7 +47,7 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
- * @see https://awslabs.github.io/aws-data-solutions-framework/docs/constructs/library/spark-emr-containers-runtime
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime
 */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
 
@@ -107,6 +107,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * The security group used by the EC2NodeClass of the default nodes
    */
   public readonly karpenterSecurityGroup?: ISecurityGroup;
+
+  // eslint-disable-next-line local-rules/url-checker
   /**
    * The rules used by Karpenter to track node health, rules are defined in the cloudformation below
    * https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml

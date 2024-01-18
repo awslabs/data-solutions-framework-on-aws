@@ -22,7 +22,7 @@ import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
 /**
  * A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/spark-cicd-pipeline
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-cicd-pipeline
  *
  * @exampleMetadata fixture=imports-only
  * @example

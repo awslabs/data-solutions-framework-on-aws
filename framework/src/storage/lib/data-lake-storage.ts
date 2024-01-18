@@ -15,7 +15,7 @@ import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps } from '.
 
 /**
  * Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/data-lake-storage
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage
  *
  * @example
  * // Set the context value for global data removal policy

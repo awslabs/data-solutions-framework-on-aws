@@ -1,11 +1,12 @@
-// Put the following comment above a code line you want to exclude from this check, e.g. after review:
-// eslint-disable-next-line local-rules/no-tokens-in-construct-id
-
-import type { Rule } from "eslint";
-import * as ts from "typescript";
+import { RuleTester, type Rule } from 'eslint';
+import * as ts from 'typescript';
+import request from 'sync-request-curl';
+import * as ESTree from 'estree';
 
 export default {
-    "no-tokens-in-construct-id": {
+    // Put the following comment above a code line you want to exclude from this check, e.g. after review:
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
+    'no-tokens-in-construct-id': {
         meta: {
             docs: {
                 description: 'Checks whether a CDK token might appear in a construct ID on instantiation',
@@ -56,4 +57,50 @@ export default {
             };
         },
     },
+    'url-checker': {
+        meta: {
+            docs: {
+                description: 'Checks the URLs in the comment-docs for accessibility'
+            },
+            schema: [],
+        },        
+        create: function (context: Rule.RuleContext) : Rule.RuleListener {
+            function checkProgramComment(program: ESTree.Program): void {
+                if (!program.comments) {
+                    return;
+                }
+
+                for (const c of program.comments.filter(c => c.type == 'Block')) {
+                    const matches = c.value.match(/\bhttps?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[\-A-Za-z0-9+&@#\/%=~_|]/);
+                    if (!matches || matches.length == 0) {
+                        continue;
+                    }
+
+                    for (const url of matches) {
+                        try {
+                            const res = request('GET', url, { headers: { 'user-agent': 'libcurl/1.0.6'} });
+                            if (res.statusCode != 200) {
+                                context.report({
+                                    loc: c.loc!,                                    
+                                    message: `Fetching the URL '${url}' resulted in HTTP ${res.statusCode}`,
+                                });
+                            }
+                        }
+                        catch (e) {
+                            context.report({
+                                loc: c.loc!,
+                                message: `Failed to check the URL '${url}': ${e}`,
+                            });
+                        }
+                    }
+                }
+            }
+
+            return {
+                Program: checkProgramComment,
+            };
+        },
+    },
 } satisfies Record<string, Rule.RuleModule>;
+
+

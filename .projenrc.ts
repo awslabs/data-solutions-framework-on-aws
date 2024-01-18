@@ -135,6 +135,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     '@types/eslint',
     'eslint-plugin-local-rules',
     'esbuild',
+    'sync-request-curl'
   ],
 
   bundledDeps: [
@@ -188,6 +189,7 @@ fwkProject.addPackageIgnore("!*.lit.ts");
 
 fwkProject.testTask.reset('jest --passWithNoTests --updateSnapshot --group=-e2e', {receiveArgs: true});
 fwkProject.testTask.spawn(new Task('eslint'));
+fwkProject.tasks.tryFind('eslint')!.exec(`eslint --ext .ts,.tsx --rule 'local-rules/url-checker: error' src`, { condition: '[ -n "$CI" ]' });
 
 fwkProject.addTask('test:e2e', {
   description: 'Run framework end-to-end tests',
