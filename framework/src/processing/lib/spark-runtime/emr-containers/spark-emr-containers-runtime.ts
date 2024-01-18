@@ -36,11 +36,12 @@ import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
 import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup } from './eks-cluster-helpers';
 import { karpenterSetup, setDefaultKarpenterProvisioners } from './eks-karpenter-helpers';
+import { interactiveSessionsProviderSetup } from './spark-emr-containers-helpers';
 import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
-import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
+import { SparkEmrContainersRuntimeInteractiveSessionProps, SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
@@ -236,6 +237,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   private readonly podTemplateLocation: Location;
   private readonly podTemplatePolicy: PolicyDocument;
   private readonly removalPolicy: RemovalPolicy;
+  private readonly interactiveSessionsProviderId: string;
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -504,7 +506,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       },
     );
 
-    // Add the CR provider for managed endpoint
+    this.interactiveSessionsProviderId = interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc!, this.assetBucket);
 
   }
 
@@ -632,10 +634,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * CfnOutput can be customized.
    * @param {Construct} scope the scope of the stack where managed endpoint is deployed
    * @param {string} id the CDK id for endpoint
-   * @param {EmrManagedEndpointOptions} options the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint
+   * @param {SparkEmrContainersRuntimeInteractiveSessionProps} options the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint
    */
   
-  public addManagedEndpoint(scope: Construct, id: string) {
+  public addManagedEndpoint(scope: Construct, id: string, interactiveSessionOptions: SparkEmrContainersRuntimeInteractiveSessionProps) {
 
   }
 }
