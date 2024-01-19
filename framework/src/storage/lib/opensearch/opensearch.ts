@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+import * as path from 'path';
 import { RemovalPolicy, CustomResource, Stack, Duration, Aws } from 'aws-cdk-lib';
 import { EbsDeviceVolumeType, IVpc, Peer, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { AnyPrincipal, CfnServiceLinkedRole, Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -11,14 +12,13 @@ import { Construct } from 'constructs';
 import { OpensearchProps, OpensearchNodes } from './opensearch-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import * as path from 'path';
 
 /**
- * A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards. 
+ * A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards.
  * Uses IAM Identity Center SAML authentication.
- * If Opensearch cluster is deployed in vpc created using DataVpc construct, 
+ * If Opensearch cluster is deployed in vpc created using DataVpc construct,
  * ClientVPNEndpoint will be provisioned automatically for secure access to Opnesearch Dashboards.
- * 
+ *
  * @example
  * class ExampleDefaultOpensearchStack extends cdk.Stack {
  *
@@ -56,7 +56,7 @@ export class OpensearchCluster extends TrackedConstruct {
 
   /**
    * @public
-   * VPC Opensearch cluster is provisioned in. 
+   * VPC Opensearch cluster is provisioned in.
    */
   public readonly vpc:IVpc | undefined;
 
@@ -80,7 +80,7 @@ export class OpensearchCluster extends TrackedConstruct {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   private removalPolicy: RemovalPolicy;
-  
+
   /**
    * Constructs a new instance of the OpensearchCluster class
    * @param {Construct} scope the Scope of the AWS CDK Construct
@@ -114,29 +114,29 @@ export class OpensearchCluster extends TrackedConstruct {
 
     this.logGroup.grantWrite(new ServicePrincipal('es.amazonaws.com'));
 
-    this.vpc = props.deployInVpc !=false ? (props.vpc ?? new DataVpc(scope, 'data-vpc-opensearch', { vpcCidr: '10.0.0.0/16',  }).vpc ) : undefined;
-    const vpcSubnetsSelection = this.vpc?.selectSubnets({onePerAz:true,subnetType:SubnetType.PRIVATE_WITH_EGRESS});
+    this.vpc = props.deployInVpc !=false ? (props.vpc ?? new DataVpc(scope, 'data-vpc-opensearch', { vpcCidr: '10.0.0.0/16' }).vpc ) : undefined;
+    const vpcSubnetsSelection = this.vpc?.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
 
     const kmsKey = props.encryptionKmsKeyArn ?
       Key.fromKeyArn(this, 'OpensearchEncryptionKey', props.encryptionKmsKeyArn) :
       new Key(this, 'OpensearchEncryptionKey', { removalPolicy: this.removalPolicy, enableKeyRotation: true });
 
-    const masterRolePolicy = new ManagedPolicy(scope,'masterRolePolicy');
+    const masterRolePolicy = new ManagedPolicy(scope, 'masterRolePolicy');
     masterRolePolicy.addStatements(
       new PolicyStatement({
         actions: [
           'es:ESHttpPut',
-          'es:UpdateElasticsearchDomainConfig'
+          'es:UpdateElasticsearchDomainConfig',
         ],
         resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${props.domainName}/*`],
       }),
       new PolicyStatement({
         actions: ['kms:DescribeKey'],
         resources: [kmsKey.keyArn],
-      })
+      }),
     );
 
-    if (this.vpc){
+    if (this.vpc) {
       masterRolePolicy.addStatements(
         new PolicyStatement({
           actions: [
@@ -148,32 +148,32 @@ export class OpensearchCluster extends TrackedConstruct {
           ],
           effect: Effect.ALLOW,
           resources: ['*'],
-        })
-      )
+        }),
+      );
     }
 
     this.masterRole = new Role(this, 'AccessRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-        masterRolePolicy
+        masterRolePolicy,
       ],
     });
 
     const samlMetaData: SAMLOptionsProperty = {
-      idpEntityId:  props.samlEntityId,
+      idpEntityId: props.samlEntityId,
       idpMetadataContent: props.samlMetadataContent,
-      rolesKey:props.samlRolesKey ?? 'Role',
-      subjectKey:props.samlSubjectKey,
-      masterBackendRole:props.samlMasterBackendRole,
+      rolesKey: props.samlRolesKey ?? 'Role',
+      subjectKey: props.samlSubjectKey,
+      masterBackendRole: props.samlMasterBackendRole,
       sessionTimeoutMinutes: props.samlSessionTimeoutMinutes ?? Duration.hours(8).toMinutes(),
     };
     let clusterSg = undefined;
-    if (this.vpc){
+    if (this.vpc) {
       clusterSg = new SecurityGroup(scope, 'OpensearchSecurityGroup', {
-        vpc:this.vpc,
-        allowAllOutbound: true
-      })
+        vpc: this.vpc,
+        allowAllOutbound: true,
+      });
       clusterSg.addIngressRule(Peer.ipv4(this.vpc.vpcCidrBlock), Port.tcp(443));
     }
 
@@ -235,7 +235,7 @@ export class OpensearchCluster extends TrackedConstruct {
       new PolicyStatement({
         actions: ['es:ESHttp*'],
         effect: Effect.ALLOW,
-        principals:[new AnyPrincipal()],
+        principals: [new AnyPrincipal()],
         resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${this.domain.domainName}/*`],
       }));
 
@@ -246,16 +246,16 @@ export class OpensearchCluster extends TrackedConstruct {
         handler: 'handler',
         depsLockFilePath: path.join(__dirname, './resources/lambda/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/opensearch-api.ts'),
-        environment:{
+        environment: {
           REGION: Stack.of(this).region,
           ENDPOINT: this.domain.domainEndpoint,
         },
       },
       vpc: this.vpc,
-      subnets:vpcSubnetsSelection
+      subnets: vpcSubnetsSelection,
     });
 
-   
+
     const samlAdminGroupId = props.samlMasterBackendRole;
 
 
@@ -266,16 +266,16 @@ export class OpensearchCluster extends TrackedConstruct {
 
   /**
    * Calls Opensearch API using custom resource.
-   * @param path  Opensearch API path 
+   * @param apiPath  Opensearch API path
    * @param body  Opensearch API request body
    */
 
-  private apiCustomResource(path: string, body: any) {
+  private apiCustomResource(apiPath: string, body: any) {
     const cr = new CustomResource(this, 'ApiCR-'+ Math.random().toFixed(8), {
-      serviceToken:  this.apiProvider.serviceToken,
+      serviceToken: this.apiProvider.serviceToken,
       resourceType: 'Custom::MyCustomResource',
       properties: {
-        path,
+        path: apiPath,
         body,
       },
     });
@@ -288,8 +288,8 @@ export class OpensearchCluster extends TrackedConstruct {
    * @public
    * Add a new role mapping to the cluster.
    * This method is used to add a role mapping to the Amazon Opensearch cluster
-   * @param {string} Opensearch role name @see https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles
-   * @param {string} IAM Identity center SAML group Id
+   * @param name Opensearch role name @see https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles
+   * @param role IAM Identity center SAML group Id
    */
   public addRoleMapping(name: string, role: string) {
     this.apiCustomResource('_plugins/_security/api/rolesmapping/' + name, {

@@ -3861,7 +3861,255 @@ The security group for Client VPN Endpoint.
 ---
 
 
+<<<<<<< HEAD
 ### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage"></a>
+=======
+### OpensearchCluster <a name="OpensearchCluster" id="aws-dsf.storage.OpensearchCluster"></a>
+
+A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards.
+
+Uses IAM Identity Center SAML authentication.
+If Opensearch cluster is deployed in vpc created using DataVpc construct, 
+ClientVPNEndpoint will be provisioned automatically for secure access to Opnesearch Dashboards.
+
+*Example*
+
+```typescript
+class ExampleDefaultOpensearchStack extends cdk.Stack {
+
+  constructor(scope: Construct, id: string , props:cdk.StackProps) {
+   super(scope, id, props);
+   const osCluster = new OpensearchCluster(this, 'MyOpensearchCluster',{
+     domainName:"mycluster2",
+     samlEntityId:'<IdpIdentityId>',
+     samlMetadataContent:'<IdpMetadataXml>'
+     samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+     deployInVpc:true,
+     removalPolicy:cdk.RemovalPolicy.DESTROY
+   } as OpensearchProps );
+   osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+   osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+ }
+}
+const app = new cdk.App();
+new ExampleDefaultOpensearchStack(app, 'ExampleDefaultDataLakeStorage', { env: {region:'us-east-1'} });
+```
+
+
+#### Initializers <a name="Initializers" id="aws-dsf.storage.OpensearchCluster.Initializer"></a>
+
+```typescript
+import { storage } from 'aws-dsf'
+
+new storage.OpensearchCluster(scope: Construct, id: string, props: OpensearchProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.Initializer.parameter.props">props</a></code> | <code>aws-dsf.storage.OpensearchProps</code> | the OpensearchCluster [properties]{@link OpensearchClusterProps }. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.OpensearchCluster.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the AWS CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.OpensearchCluster.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the AWS CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.storage.OpensearchCluster.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.storage.OpensearchProps
+
+the OpensearchCluster [properties]{@link OpensearchClusterProps }.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.addRoleMapping">addRoleMapping</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.storage.OpensearchCluster.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addRoleMapping` <a name="addRoleMapping" id="aws-dsf.storage.OpensearchCluster.addRoleMapping"></a>
+
+```typescript
+public addRoleMapping(name: string, role: string): void
+```
+
+> [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
+
+###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.storage.OpensearchCluster.addRoleMapping.parameter.name"></a>
+
+- *Type:* string
+
+Opensearch role name.
+
+---
+
+###### `role`<sup>Required</sup> <a name="role" id="aws-dsf.storage.OpensearchCluster.addRoleMapping.parameter.role"></a>
+
+- *Type:* string
+
+IAM Identity center SAML group Id.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.storage.OpensearchCluster.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.storage.OpensearchCluster.isConstruct"></a>
+
+```typescript
+import { storage } from 'aws-dsf'
+
+storage.OpensearchCluster.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.storage.OpensearchCluster.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.property.domain">domain</a></code> | <code>aws-cdk-lib.aws_opensearchservice.Domain</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.LogGroup</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.storage.OpensearchCluster.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `domain`<sup>Required</sup> <a name="domain" id="aws-dsf.storage.OpensearchCluster.property.domain"></a>
+
+```typescript
+public readonly domain: Domain;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchservice.Domain
+
+---
+
+##### `logGroup`<sup>Required</sup> <a name="logGroup" id="aws-dsf.storage.OpensearchCluster.property.logGroup"></a>
+
+```typescript
+public readonly logGroup: LogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.LogGroup
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.storage.OpensearchCluster.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchCluster.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.storage.OpensearchCluster.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.storage.OpensearchCluster.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-dsf.processing.PySparkApplicationPackage"></a>
+>>>>>>> 2770bcc (build fixes)
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
 
@@ -9503,6 +9751,7 @@ public readonly eksNamespace: string;
 - *Type:* string
 - *Default:* Use the default namespace
 
+<<<<<<< HEAD
 The name of the EKS namespace to be linked to the EMR virtual cluster.
 
 ---
@@ -9517,6 +9766,9 @@ public readonly tags: {[ key: string ]: string};
 - *Default:* none
 
 The tags assigned to the Virtual Cluster.
+=======
+name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster.
+>>>>>>> 2770bcc (build fixes)
 
 ---
 
@@ -12393,6 +12645,7 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 ---
 
 
+<<<<<<< HEAD
 ### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport"></a>
 
 Namespace log export types.
@@ -12423,6 +12676,9 @@ Namespace log export types.
 
 
 ### SparkImage <a name="SparkImage" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage"></a>
+=======
+### SparkImage <a name="SparkImage" id="aws-dsf.processing.SparkImage"></a>
+>>>>>>> 2770bcc (build fixes)
 
 The list of supported Spark images to use in the SparkCICDPipeline.
 
