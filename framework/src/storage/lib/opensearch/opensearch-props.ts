@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+import { RemovalPolicy } from 'aws-cdk-lib';
 import { EbsDeviceVolumeType, IVpc } from 'aws-cdk-lib/aws-ec2';
 import { EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
-import { RemovalPolicy } from 'aws-cdk-lib';
 
 
 /**
@@ -29,8 +29,8 @@ import { RemovalPolicy } from 'aws-cdk-lib';
  * @param enableAutoSoftwareUpdate Enable Auto Software Update, default is false
  * @param enableVersionUpgrade Enable Version Upgrade, default is false
  * @param encryptionKmsKeyArn Encryption KMS Key Arn, default is none
- * @param deployInVpc deploy Opensearch cluster in vpc, default true. Ser deployInVpc=false to create public domain endpoint. 
- * @param vpc VPC where the cluster is deployed, default new vpc is created if deployInVpc=true, @see DataVpc 
+ * @param deployInVpc deploy Opensearch cluster in vpc, default true. Ser deployInVpc=false to create public domain endpoint.
+ * @param vpc VPC where the cluster is deployed, default new vpc is created if deployInVpc=true, @see DataVpc
  * @param masterUserName Opensearch master user name for internal database
  * @param removalPolicy Removal Policy, default is retain.
 */

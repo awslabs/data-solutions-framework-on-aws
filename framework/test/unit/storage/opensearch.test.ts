@@ -3,7 +3,7 @@
 
 /**
  * Tests for Opensearch cluster construct
- * @group unit/storage/opensearch 
+ * @group unit/storage/opensearch
  */
 
 
@@ -11,7 +11,6 @@ import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 //import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { OpensearchCluster } from '../../../src/storage/index';
-
 
 
 describe('default configuration', () => {
@@ -24,11 +23,11 @@ describe('default configuration', () => {
 
   // Instantiate AccessLogsBucket Construct with default
   new OpensearchCluster(stack, 'OpensearchVpc', {
-    domainName:"mycluster2",
-    samlEntityId:'<idpTest>',
-    samlMetadataContent:`xmlContent`,
-    samlMasterBackendRole:'IdpGroupId',
-    deployInVpc:true,
+    domainName: 'mycluster2',
+    samlEntityId: '<idpTest>',
+    samlMetadataContent: 'xmlContent',
+    samlMasterBackendRole: 'IdpGroupId',
+    deployInVpc: true,
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
@@ -39,16 +38,16 @@ describe('default configuration', () => {
   });
 
   test('creates log group with tags', () => {
-  
+
     template.hasResourceProperties('AWS::Logs::LogGroup', {
       LogGroupName: 'opensearch-domain-logs-mycluster2',
       RetentionInDays: 731,
       Tags: Match.arrayWith([
         {
           Key: 'data-solutions-fwk:owned',
-          Value: 'true'  
-        }
-      ])
+          Value: 'true',
+        },
+      ]),
     });
   });
 
@@ -60,34 +59,34 @@ describe('default configuration', () => {
         DedicatedMasterType: 'm6g.large.search',
         InstanceType: 'm6g.xlarge.search',
         MultiAZWithStandbyEnabled: false,
-        ZoneAwarenessEnabled: true
+        ZoneAwarenessEnabled: true,
       },
       DomainEndpointOptions: {
         EnforceHTTPS: true,
-        TLSSecurityPolicy: 'Policy-Min-TLS-1-0-2019-07'
+        TLSSecurityPolicy: 'Policy-Min-TLS-1-0-2019-07',
       },
       DomainName: 'mycluster2',
       EBSOptions: {
         EBSEnabled: true,
         VolumeSize: 10,
-        VolumeType: 'gp3'
+        VolumeType: 'gp3',
       },
       EncryptionAtRestOptions: {
-        Enabled: true
+        Enabled: true,
       },
       EngineVersion: 'OpenSearch_2.9',
       AdvancedSecurityOptions: {
         Enabled: true,
         InternalUserDatabaseEnabled: false,
-        SAMLOptions:{
-          Enabled:true,
+        SAMLOptions: {
+          Enabled: true,
           Idp: {
-            EntityId:'<idpTest>',
-            MetadataContent:'xmlContent',
+            EntityId: '<idpTest>',
+            MetadataContent: 'xmlContent',
           },
           RolesKey: 'Role',
           SessionTimeoutMinutes: 480,
-          MasterBackendRole:'IdpGroupId', 
+          MasterBackendRole: 'IdpGroupId',
         },
       },
     });
@@ -104,11 +103,11 @@ describe('non vpc config', () => {
 
   // Instantiate AccessLogsBucket Construct with default
   new OpensearchCluster(stack, 'OpensearchPublic', {
-    domainName:"mycluster2-public",
-    samlEntityId:'<idpTest>',
-    samlMetadataContent:`xmlContent`,
-    samlMasterBackendRole:'IdpGroupId',
-    deployInVpc:false,
+    domainName: 'mycluster2-public',
+    samlEntityId: '<idpTest>',
+    samlMetadataContent: 'xmlContent',
+    samlMasterBackendRole: 'IdpGroupId',
+    deployInVpc: false,
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
@@ -125,41 +124,41 @@ describe('non vpc config', () => {
         DedicatedMasterType: 'm6g.large.search',
         InstanceType: 'm6g.xlarge.search',
         MultiAZWithStandbyEnabled: false,
-        ZoneAwarenessEnabled: true
+        ZoneAwarenessEnabled: true,
       },
       DomainEndpointOptions: {
         EnforceHTTPS: true,
-        TLSSecurityPolicy: 'Policy-Min-TLS-1-0-2019-07'
+        TLSSecurityPolicy: 'Policy-Min-TLS-1-0-2019-07',
       },
       DomainName: 'mycluster2-public',
       EBSOptions: {
         EBSEnabled: true,
         VolumeSize: 10,
-        VolumeType: 'gp3'
+        VolumeType: 'gp3',
       },
       EncryptionAtRestOptions: {
-        Enabled: true
+        Enabled: true,
       },
       EngineVersion: 'OpenSearch_2.9',
       AdvancedSecurityOptions: {
         Enabled: true,
         InternalUserDatabaseEnabled: false,
-        SAMLOptions:{
-          Enabled:true,
+        SAMLOptions: {
+          Enabled: true,
           Idp: {
-            EntityId:'<idpTest>',
-            MetadataContent:'xmlContent',
+            EntityId: '<idpTest>',
+            MetadataContent: 'xmlContent',
           },
           RolesKey: 'Role',
           SessionTimeoutMinutes: 480,
-          MasterBackendRole:'IdpGroupId', 
+          MasterBackendRole: 'IdpGroupId',
         },
       },
     });
   });
   test('should not have vpc config', () => {
     template.hasResourceProperties('AWS::OpenSearchService::Domain', {
-      VPCOptions: Match.absent()
+      VPCOptions: Match.absent(),
     });
   });
 });

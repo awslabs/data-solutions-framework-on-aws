@@ -7,4 +7,5 @@ export * from './data-lake-storage-props';
 export * from './analytics-bucket';
 export * from './analytics-bucket-props';
 export * from './access-logs-bucket';
-export * from './opensearch/index';
+export * from './opensearch/opensearch-props';
+export * from './opensearch/opensearch';
