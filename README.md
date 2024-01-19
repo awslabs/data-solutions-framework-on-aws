@@ -16,7 +16,7 @@ You can leverage DSF to implement your data platform in weeks rather than in mon
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
-This library is licensed under the MIT-0 License. See the [LICENSE](LICENSE) file.
+This library is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file.
 
 ## Feedback
 We'd love to hear from you! Please create [GitHub issues](https://github.com/awslabs/data-solutions-framework-on-aws/issues) for additional features or solutions you'd like to see.
