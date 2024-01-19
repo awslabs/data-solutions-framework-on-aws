@@ -1,5 +1,5 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: Apache-2.0
 
 FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:latest AS base
 

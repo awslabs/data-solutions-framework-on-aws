@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import os
 from aws_cdk import App, Environment
 from stacks.cicd_stack import CICDPipelineStack

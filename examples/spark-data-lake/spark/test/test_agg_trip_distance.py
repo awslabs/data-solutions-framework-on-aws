@@ -1,5 +1,5 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: Apache-2.0
 
 from src.agg_trip_distance import aggregate_trip_distance, combine_taxi_types
 from pyspark.sql import SparkSession

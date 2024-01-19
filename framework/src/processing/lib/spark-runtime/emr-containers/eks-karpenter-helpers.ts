@@ -1,5 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+// SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';

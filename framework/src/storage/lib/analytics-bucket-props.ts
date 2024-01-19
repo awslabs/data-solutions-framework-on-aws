@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { aws_iam, aws_kms, aws_s3, RemovalPolicy } from 'aws-cdk-lib';
 
 /**
