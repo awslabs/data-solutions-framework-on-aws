@@ -239,7 +239,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   private readonly podTemplateLocation: Location;
   private readonly podTemplatePolicy: PolicyDocument;
   private readonly removalPolicy: RemovalPolicy;
-  private readonly interactiveSessionsProviderId: string;
+  private readonly interactiveSessionsProviderServiceToken: string;
+
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -251,7 +252,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: SparkEmrContainersRuntime.name,
     };
-
+    
     super(scope, id, trackedConstructProps);
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
@@ -326,7 +327,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       });
 
       // TODO
-      // Update the IAM policy for ALB
+      // Update the IAM policy for ALB and make it dynamic
 
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
@@ -342,7 +343,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
           policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
         },
         placeClusterHandlerInVpc: true,
-        securityGroup: clusterSecurityGroup,
+        tags: {
+          'data-solutions-fwk:owned' : 'true',
+        }
       });
 
       // Add the provided Amazon IAM Role as Amazon EKS Admin
@@ -510,7 +513,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     );
     
     const interactiveSessionsProvider: DsfProvider = interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc, this.assetBucket);
-    this.interactiveSessionsProviderId = interactiveSessionsProvider.serviceToken;
+    this.interactiveSessionsProviderServiceToken = interactiveSessionsProvider.serviceToken;
     
 
   }
@@ -658,7 +661,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.interactiveSessionsProviderId,
+      serviceToken: this.interactiveSessionsProviderServiceToken,
       properties: {
         clusterId: interactiveSessionOptions.virtualClusterId,
         executionRoleArn: interactiveSessionOptions.executionRole.roleArn,

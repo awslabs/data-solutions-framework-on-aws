@@ -29,20 +29,20 @@ export function interactiveSessionsProviderSetup(
           resources: ['*'],
           actions: [
             'emr-containers:DeleteManagedEndpoint'],
-          // conditions: { StringEquals: { 'aws:ResourceTag/for-use-with': 'cdk-analytics-reference-architecture' } },
+          // conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
           resources: [`arn:${Aws.PARTITION}:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*`],
           actions: ['emr-containers:CreateManagedEndpoint'],
-          conditions: { StringEquals: { 'aws:ResourceTag/for-use-with': 'cdk-analytics-reference-architecture' } },
+          conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
           resources: [`arn:${Aws.PARTITION}:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*`],
           actions: ['emr-containers:TagResource'],
-          conditions: { StringEquals: { 'aws:ResourceTag/for-use-with': 'cdk-analytics-reference-architecture' } },
+          conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
-          resources: ['*'],
+          resources: [vpc.vpcArn],
           actions: [
             'ec2:CreateSecurityGroup',
             'ec2:DeleteSecurityGroup',
@@ -70,25 +70,19 @@ export function interactiveSessionsProviderSetup(
         description: 'Policy for emr containers CR to create managed endpoint',
       });
 
-      const provider = new DsfProvider(scope, 'Provider', {
+      const provider = new DsfProvider(scope, 'InteractiveSessionProvider', {
         providerName: 'emr-containers-interactive-endpoint-provider',
         onEventHandlerDefinition: {
           handler: 'index.handler',
           depsLockFilePath: path.join(__dirname, './resources/lambdas/managed-endpoint/package-lock.json'),
-          entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.js'),
+          entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.mjs'),
           managedPolicy: lambdaExecutionRolePolicy,
-          bundling: {
-            externalModules: ['aws-sdk'],
-          }
         },
         isCompleteHandlerDefinition: {
-            handler: 'index.handler',
+            handler: 'index.isComplete',
             depsLockFilePath: path.join(__dirname, './resources/lambdas/managed-endpoint/package-lock.json'),
-            entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.js'),
+            entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.mjs'),
             managedPolicy: lambdaExecutionRolePolicy,
-            bundling: {
-              externalModules: ['aws-sdk'],
-            }
           },
         vpc: vpc ? vpc: undefined,
         subnets: vpc ? vpc.selectSubnets({ subnetType : SubnetType.PRIVATE_WITH_EGRESS }) : undefined,

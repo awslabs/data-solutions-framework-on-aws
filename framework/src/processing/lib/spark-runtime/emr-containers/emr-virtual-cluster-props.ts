@@ -20,4 +20,11 @@ export interface EmrVirtualClusterProps {
    * @default - Do not create the namespace
    */
   readonly createNamespace?: boolean;
+
+  /**
+   * The tags assigned to the Virtual Cluster
+   *
+   * @default - none
+   */
+  readonly tags?: { [key: string]: string };
 }

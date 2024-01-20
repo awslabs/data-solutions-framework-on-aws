@@ -103,4 +103,11 @@ export interface SparkEmrContainersRuntimeProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * The tags assigned to the EKS cluster
+   *
+   * @default - none
+   */
+  readonly tags?: { [key: string]: string };
 }
