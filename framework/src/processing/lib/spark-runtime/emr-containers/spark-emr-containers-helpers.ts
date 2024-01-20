@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Aws, RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy } from "aws-cdk-lib";
 import { ManagedPolicy, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { DsfProvider } from "../../../../utils/lib/dsf-provider";
 import { Construct } from "constructs";
@@ -26,27 +26,22 @@ export function interactiveSessionsProviderSetup(
           actions: ['emr-containers:DescribeManagedEndpoint'],
         }),
         new PolicyStatement({
-          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*/*`],
-          actions: [
-            'emr-containers:DeleteManagedEndpoint'],
-            conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
+          resources: ['*'],
+          actions: ['emr-containers:DeleteManagedEndpoint'],
         }),
         new PolicyStatement({
-          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*`],
+          resources: ['*'],
           actions: ['emr-containers:CreateManagedEndpoint'],
-          conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
-          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*/*`],
+          resources: ['*'],
           actions: ['emr-containers:TagResource'],
-          conditions: { StringEquals: { 'aws:RequestTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
-          resources: [vpc.vpcArn],
+          resources: ['*'],
           actions: [
             'ec2:CreateSecurityGroup',
             'ec2:DeleteSecurityGroup',
-            'ec2:DescribeNetworkInterfaces',
             'ec2:AuthorizeSecurityGroupEgress',
             'ec2:AuthorizeSecurityGroupIngress',
             'ec2:RevokeSecurityGroupEgress',
