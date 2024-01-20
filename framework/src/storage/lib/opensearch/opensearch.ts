@@ -254,7 +254,7 @@ export class OpensearchCluster extends TrackedConstruct {
           nodeModules: [
             '@aws-crypto/sha256-js',
           ],
-        }
+        },
       },
       vpc: this.vpc,
       subnets: vpcSubnetsSelection,

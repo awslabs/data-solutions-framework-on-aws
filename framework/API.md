@@ -3577,7 +3577,7 @@ The amazon VPC created.
 A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards.
 
 Uses IAM Identity Center SAML authentication.
-If Opensearch cluster is deployed in vpc created using DataVpc construct, 
+If Opensearch cluster is deployed in vpc created using DataVpc construct,
 ClientVPNEndpoint will be provisioned automatically for secure access to Opnesearch Dashboards.
 
 *Example*
