@@ -46,6 +46,7 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from
 import { EMR_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 import { SparkEmrContainersRuntimeInteractiveSessionProps } from './spark-emr-containers-interactive-session-props';
+import { DsfProvider } from '../../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
@@ -507,8 +508,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         groups: [''],
       },
     );
-
-    this.interactiveSessionsProviderId = interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc, this.assetBucket);
+    
+    const interactiveSessionsProvider: DsfProvider = interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc, this.assetBucket);
+    this.interactiveSessionsProviderId = interactiveSessionsProvider.serviceToken;
+    
 
   }
 

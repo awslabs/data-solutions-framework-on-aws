@@ -13,7 +13,7 @@ export function interactiveSessionsProviderSetup(
     scope: Construct,
     removalPolicy: RemovalPolicy,
     vpc: IVpc,
-    assetBucket?: IBucket) : string {
+    assetBucket?: IBucket) : DsfProvider {
     
     let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'interactiveEndpointCrSg', {
         vpc
@@ -70,8 +70,6 @@ export function interactiveSessionsProviderSetup(
         description: 'Policy for emr containers CR to create managed endpoint',
       });
 
-      console.log(path.join(__dirname, './resources/lambdas/managed-endpoint/index.js'));
-
       const provider = new DsfProvider(scope, 'Provider', {
         providerName: 'emr-containers-interactive-endpoint-provider',
         onEventHandlerDefinition: {
@@ -98,6 +96,6 @@ export function interactiveSessionsProviderSetup(
         removalPolicy,
       });
 
-    return provider.serviceToken;
+    return provider;
     
 }
