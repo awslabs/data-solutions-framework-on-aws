@@ -250,6 +250,11 @@ export class OpensearchCluster extends TrackedConstruct {
           REGION: Stack.of(this).region,
           ENDPOINT: this.domain.domainEndpoint,
         },
+        bundling: {
+          nodeModules: [
+            '@aws-crypto/sha256-js',
+          ],
+        }
       },
       vpc: this.vpc,
       subnets: vpcSubnetsSelection,
