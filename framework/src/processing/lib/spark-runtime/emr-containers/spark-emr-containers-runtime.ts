@@ -666,8 +666,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         clusterId: interactiveSessionOptions.virtualClusterId,
         executionRoleArn: interactiveSessionOptions.executionRole.roleArn,
         endpointName: interactiveSessionOptions.managedEndpointName,
-        releaseLabel: interactiveSessionOptions.emrOnEksVersion || SparkEmrContainersRuntime.DEFAULT_EMR_EKS_VERSION,
-        configurationOverrides: jsonConfigurationOverrides,
+        releaseLabel: interactiveSessionOptions.emrOnEksVersion ?? SparkEmrContainersRuntime.DEFAULT_EMR_EKS_VERSION,
+        configurationOverrides: jsonConfigurationOverrides ?? undefined,
       },
       resourceType: 'Custom::EmrEksInteractiveEndpoint'
     });

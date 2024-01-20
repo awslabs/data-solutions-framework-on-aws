@@ -26,20 +26,20 @@ export function interactiveSessionsProviderSetup(
           actions: ['emr-containers:DescribeManagedEndpoint'],
         }),
         new PolicyStatement({
-          resources: ['*'],
+          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*/*`],
           actions: [
             'emr-containers:DeleteManagedEndpoint'],
-          // conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
+            conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
-          resources: [`arn:${Aws.PARTITION}:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*`],
+          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*/*`],
           actions: ['emr-containers:CreateManagedEndpoint'],
           conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
-          resources: [`arn:${Aws.PARTITION}:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*`],
+          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*/*`],
           actions: ['emr-containers:TagResource'],
-          conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
+          conditions: { StringEquals: { 'aws:RequestTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
           resources: [vpc.vpcArn],
