@@ -32,7 +32,7 @@ export function interactiveSessionsProviderSetup(
             conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
         new PolicyStatement({
-          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*/*`],
+          resources: [`arn:aws:emr-containers:${Aws.REGION}:${Aws.ACCOUNT_ID}:/virtualclusters/*`],
           actions: ['emr-containers:CreateManagedEndpoint'],
           conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
         }),
