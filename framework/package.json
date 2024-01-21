@@ -39,6 +39,12 @@
   "devDependencies": {
     "@aws-cdk/cli-lib-alpha": "2.114.1-alpha.0",
     "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
+    "@aws-crypto/client-node": "^4.0.0",
+    "@aws-crypto/sha256-js": "^5.2.0",
+    "@aws-sdk/client-secrets-manager": "^3.496.0",
+    "@aws-sdk/node-http-handler": "^3.374.0",
+    "@aws-sdk/protocol-http": "^3.374.0",
+    "@aws-sdk/signature-v4": "^3.374.0",
     "@jest/globals": "^29.6.4",
     "@types/eslint": "^8.44.9",
     "@types/jest": "^29.5.3",

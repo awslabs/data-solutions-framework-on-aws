@@ -135,6 +135,12 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     '@types/eslint',
     'eslint-plugin-local-rules',
     'esbuild',
+    '@aws-crypto/sha256-js',
+    '@aws-crypto/client-node',
+    '@aws-sdk/client-secrets-manager',
+    '@aws-sdk/node-http-handler',
+    '@aws-sdk/protocol-http',
+    '@aws-sdk/signature-v4',
   ],
 
   bundledDeps: [
@@ -142,6 +148,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     '@types/js-yaml',
     'simple-base',
     'semver',
+    'esbuild',
   ],
 
   jestOptions: {
@@ -163,8 +170,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       lib: [
         "ES2021"
       ],
-      target: "ES2021"
-    }
+      target: "ES2021", 
+    },
+    exclude: [
+      "src/**/lambda/*",
+    ]
   },
 
   eslintOptions: {
