@@ -1,5 +1,5 @@
 import { LernaProject } from 'lerna-projen';
-import { awscdk, javascript, Task } from 'projen';
+import { awscdk, javascript, Task, TextFile } from 'projen';
 import { DependabotScheduleInterval } from 'projen/lib/github';
 import { Transform } from "projen/lib/javascript";
 import { dirname } from 'path';
@@ -83,6 +83,24 @@ const rootProject = new LernaProject({
 rootProject.package.addField('resolutions', {
   'wide-align': '1.1.5',
 });
+
+
+const licenseEnv: {[key: string]: string} = {};
+licenseEnv["PERIOD"] = copyrightPeriod;
+licenseEnv["OWNER"] = copyrightOwner; 
+
+const licenseRewrite = rootProject.addTask('license', {
+  description: 'Overwrite LICENSE file with correct copyrightPeriod and cpyrightOwner',
+  env: licenseEnv,
+  steps: [
+    { exec: 'sed -i \'\' \'s/\\[yyyy\\]/\'\"$PERIOD\"\'/g\' LICENSE'},
+    { exec: 'sed -i \'\' \'s/\\[name of copyright owner\\]/\'\"$OWNER\"\'/g\' LICENSE'},
+    { exec: 'sed -i \'\' \'s/\\[yyyy\\]/\'\"$PERIOD\"\'/g\' framework/LICENSE'},
+    { exec: 'sed -i \'\' \'s/\\[name of copyright owner\\]/\'\"$OWNER\"\'/g\' framework/LICENSE'},
+  ]
+});
+
+rootProject.compileTask.spawn(licenseRewrite);
 
 const fwkProject = new awscdk.AwsCdkConstructLibrary({
   name: 'framework',
