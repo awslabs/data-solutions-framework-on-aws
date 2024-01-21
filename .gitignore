@@ -36,6 +36,7 @@ __pycache__
 .venv
 cdk.out
 .DS_Store
+LICENSE.bak
 !/.projenrc.js
 !/.mergify.yml
 !/.github/dependabot.yml

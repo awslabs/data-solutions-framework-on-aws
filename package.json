@@ -10,6 +10,7 @@
     "compile": "npx projen compile",
     "default": "npx projen default",
     "eject": "npx projen eject",
+    "license": "npx projen license",
     "package": "npx projen package",
     "post-compile": "npx projen post-compile",
     "pre-compile": "npx projen pre-compile",
