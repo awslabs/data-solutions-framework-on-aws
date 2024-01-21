@@ -72,7 +72,8 @@ const rootProject = new LernaProject({
     '.devcontainer',
     '.venv',
     'cdk.out',
-    '.DS_Store'
+    '.DS_Store',
+    'LICENSE.bak',
   ],
 
   projenrcTs: true,
@@ -93,10 +94,10 @@ const licenseRewrite = rootProject.addTask('license', {
   description: 'Overwrite LICENSE file with correct copyrightPeriod and cpyrightOwner',
   env: licenseEnv,
   steps: [
-    { exec: 'sed -i \'\' \'s/\\[yyyy\\]/\'\"$PERIOD\"\'/g\' LICENSE'},
-    { exec: 'sed -i \'\' \'s/\\[name of copyright owner\\]/\'\"$OWNER\"\'/g\' LICENSE'},
-    { exec: 'sed -i \'\' \'s/\\[yyyy\\]/\'\"$PERIOD\"\'/g\' framework/LICENSE'},
-    { exec: 'sed -i \'\' \'s/\\[name of copyright owner\\]/\'\"$OWNER\"\'/g\' framework/LICENSE'},
+    { exec: 'sed -i.bak \'s/\\[yyyy\\]/\'\"$PERIOD\"\'/g\' LICENSE'},
+    { exec: 'sed -i.bak \'s/\\[name of copyright owner\\]/\'\"$OWNER\"\'/g\' LICENSE'},
+    { exec: 'sed -i.bak \'s/\\[yyyy\\]/\'\"$PERIOD\"\'/g\' framework/LICENSE'},
+    { exec: 'sed -i.bak \'s/\\[name of copyright owner\\]/\'\"$OWNER\"\'/g\' framework/LICENSE'},
   ]
 });
 

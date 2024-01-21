@@ -128,16 +128,16 @@
       },
       "steps": [
         {
-          "exec": "sed -i '' 's/\\[yyyy\\]/'\"$PERIOD\"'/g' LICENSE"
+          "exec": "sed -i.bak 's/\\[yyyy\\]/'\"$PERIOD\"'/g' LICENSE"
         },
         {
-          "exec": "sed -i '' 's/\\[name of copyright owner\\]/'\"$OWNER\"'/g' LICENSE"
+          "exec": "sed -i.bak 's/\\[name of copyright owner\\]/'\"$OWNER\"'/g' LICENSE"
         },
         {
-          "exec": "sed -i '' 's/\\[yyyy\\]/'\"$PERIOD\"'/g' framework/LICENSE"
+          "exec": "sed -i.bak 's/\\[yyyy\\]/'\"$PERIOD\"'/g' framework/LICENSE"
         },
         {
-          "exec": "sed -i '' 's/\\[name of copyright owner\\]/'\"$OWNER\"'/g' framework/LICENSE"
+          "exec": "sed -i.bak 's/\\[name of copyright owner\\]/'\"$OWNER\"'/g' framework/LICENSE"
         },
         {
           "exec": "lerna run license --stream"
