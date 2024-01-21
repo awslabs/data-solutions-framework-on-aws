@@ -253,6 +253,11 @@ export class OpensearchCluster extends TrackedConstruct {
         bundling: {
           nodeModules: [
             '@aws-crypto/sha256-js',
+            '@aws-crypto/client-node',
+            '@aws-sdk/client-secrets-manager',
+            '@aws-sdk/node-http-handler',
+            '@aws-sdk/protocol-http',
+            '@aws-sdk/signature-v4',
           ],
         },
       },

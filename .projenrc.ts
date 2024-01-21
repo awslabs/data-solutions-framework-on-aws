@@ -162,6 +162,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     '@types/js-yaml',
     'simple-base',
     'semver',
+    'esbuild',
   ],
 
   jestOptions: {
@@ -183,8 +184,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       lib: [
         "ES2021"
       ],
-      target: "ES2021"
-    }
+      target: "ES2021", 
+    },
+    exclude: [
+      "src/**/lambda/*",
+    ]
   },
 
   eslintOptions: {
