@@ -187,9 +187,6 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       ],
       target: "ES2021", 
     },
-    exclude: [
-      "src/**/resources/lambda/*",
-    ]
   },
 
   excludeTypescript : [
