@@ -32,6 +32,6 @@
   ],
   "exclude": [
     "node_modules",
-    "src/**/lambda/*"
+    "src/**/resources/lambda/*"
   ]
 }
