@@ -31,7 +31,6 @@
     "test/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "src/**/resources/lambda/*"
+    "node_modules"
   ]
 }
