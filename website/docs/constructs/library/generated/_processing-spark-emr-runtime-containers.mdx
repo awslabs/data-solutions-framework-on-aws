@@ -335,3 +335,71 @@ cdk.CfnOutput(self, "execRoleArn",
   </TabItem>
 </Tabs>
 
+
+### Interactive endpoint
+
+The interactive endpoint provides the capability for interactive clients like Amazon EMR Studio or a self-hosted Jupyter notebook to connect to Amazon EMR on EKS clusters to run interactive workloads. The interactive endpoint is backed by a Jupyter Enterprise Gateway that provides the remote kernel lifecycle management capability that interactive clients need.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+        const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
+            name: 'dailyjob',
+            createNamespace: true,
+            eksNamespace: 'dailyjobns',
+        });
+
+        const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolicy, 'dailyjobns', 's3ReadExecRole');
+
+        const interactiveSession = emrEksCluster.addInteractiveEndpoint(this, 'interactiveSession', {
+           virtualClusterId: virtualCluster.attrId,
+           managedEndpointName: 'interactiveSession',
+           executionRole: execRole,
+         });
+
+        //Virtual Cluster ARN
+        new cdk.CfnOutput(this, 'virtualClusterArn', {
+            value: virtualCluster.attrArn,
+        });
+
+        //Interactive session ARN
+        new cdk.CfnOutput(this, 'interactiveSessionArn', {
+           value: interactiveSession.getAttString('arn'),
+         });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+virtual_cluster = emr_eks_cluster.add_emr_virtual_cluster(self,
+    name="dailyjob",
+    create_namespace=True,
+    eks_namespace="dailyjobns"
+)
+
+exec_role = emr_eks_cluster.create_execution_role(self, "ExecRole", s3_read_policy, "dailyjobns", "s3ReadExecRole")
+
+interactive_session = emr_eks_cluster.add_interactive_endpoint(self, "interactiveSession",
+    virtual_cluster_id=virtual_cluster.attr_id,
+    managed_endpoint_name="interactiveSession",
+    execution_role=exec_role
+)
+
+# Virtual Cluster ARN
+cdk.CfnOutput(self, "virtualClusterArn",
+    value=virtual_cluster.attr_arn
+)
+
+# Interactive session ARN
+cdk.CfnOutput(self, "interactiveSessionArn",
+    value=interactive_session.get_att_string("arn")
+)
+  ```
+
+  </TabItem>
+</Tabs>
+

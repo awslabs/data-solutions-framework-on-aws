@@ -6053,6 +6053,7 @@ const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolic
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addEmrVirtualCluster">addEmrVirtualCluster</a></code> | Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addInteractiveEndpoint">addInteractiveEndpoint</a></code> | Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Cluster . |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass">addKarpenterNodePoolAndNodeClass</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.createExecutionRole">createExecutionRole</a></code> | Create and configure a new Amazon IAM Role usable as an execution role. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
@@ -6089,6 +6090,40 @@ of the stack where virtual cluster is deployed.
 - *Type:* aws-dsf.processing.EmrVirtualClusterProps
 
 the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}.
+
+---
+
+##### `addInteractiveEndpoint` <a name="addInteractiveEndpoint" id="aws-dsf.processing.SparkEmrContainersRuntime.addInteractiveEndpoint"></a>
+
+```typescript
+public addInteractiveEndpoint(scope: Construct, id: string, interactiveSessionOptions: SparkEmrContainersRuntimeInteractiveSessionProps): CustomResource
+```
+
+Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Cluster .
+
+CfnOutput can be customized.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the stack where managed endpoint is deployed.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for endpoint.
+
+---
+
+###### `interactiveSessionOptions`<sup>Required</sup> <a name="interactiveSessionOptions" id="aws-dsf.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.interactiveSessionOptions"></a>
+
+- *Type:* aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps
+
+the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint.
 
 ---
 
@@ -8679,6 +8714,7 @@ const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | The name of the Amazon EMR Virtual Cluster to be created. |
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | The flag to create EKS namespace. |
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | The name of the EKS namespace to be linked to the EMR virtual cluster. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the Virtual Cluster. |
 
 ---
 
@@ -8716,7 +8752,7 @@ public readonly eksNamespace: string;
 - *Type:* string
 - *Default:* Use the default namespace
 
-The name of the EKS namespace to be linked to the EMR virtual cluster.
+name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster.
 
 ---
 
@@ -9592,6 +9628,92 @@ The EMR Spark image to use to run the unit tests.
 
 ---
 
+### SparkEmrContainersRuntimeInteractiveSessionProps <a name="SparkEmrContainersRuntimeInteractiveSessionProps" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps"></a>
+
+The properties for the EMR Managed Endpoint to create.
+
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.Initializer"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrContainersRuntimeInteractiveSessionProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Amazon IAM role used as the execution role, this role must provide access to all the AWS resource a user will interact with These can be S3, DynamoDB, Glue Catalog. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>string</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The Amazon EMR version to use. |
+
+---
+
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole"></a>
+
+```typescript
+public readonly executionRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The Amazon IAM role used as the execution role, this role must provide access to all the AWS resource a user will interact with These can be S3, DynamoDB, Glue Catalog.
+
+---
+
+##### `managedEndpointName`<sup>Required</sup> <a name="managedEndpointName" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName"></a>
+
+```typescript
+public readonly managedEndpointName: string;
+```
+
+- *Type:* string
+
+The name of the EMR managed endpoint.
+
+---
+
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId"></a>
+
+```typescript
+public readonly virtualClusterId: string;
+```
+
+- *Type:* string
+
+The Id of the Amazon EMR virtual cluster containing the managed endpoint.
+
+---
+
+##### `configurationOverrides`<sup>Optional</sup> <a name="configurationOverrides" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides"></a>
+
+```typescript
+public readonly configurationOverrides: string;
+```
+
+- *Type:* string
+- *Default:* Configuration related to the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR }
+
+The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint.
+
+---
+
+##### `emrOnEksVersion`<sup>Optional</sup> <a name="emrOnEksVersion" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion"></a>
+
+```typescript
+public readonly emrOnEksVersion: EmrRuntimeVersion;
+```
+
+- *Type:* aws-dsf.processing.EmrRuntimeVersion
+- *Default:* The [default Amazon EMR version]{@link EmrEksCluster.DEFAULT_EMR_VERSION }
+
+The Amazon EMR version to use.
+
+---
+
 ### SparkEmrContainerJobApiProps <a name="SparkEmrContainerJobApiProps" id="aws-dsf.processing.SparkEmrContainerJobApiProps"></a>
 
 Configuration for the EMR on EKS job.
@@ -9612,10 +9734,19 @@ const sparkEmrContainerJobApiProps: processing.SparkEmrContainerJobApiProps = { 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Wether we need to create an EMR on EKS Service Linked Role. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | If set to true, the Construct will create default EKS nodegroups or node provisioners (based on the autoscaler mechanism used). |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole">ec2InstanceRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used for the cluster nodes instance profile. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster to setup EMR on. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | Name of the Amazon EKS cluster to be created. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to use when creating the EKS cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>aws-dsf.processing.KarpenterVersion</code> | The version of karpenter to pass to Helm. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | Kubernetes version for Amazon EKS cluster that will be created The default is changed as new version version of k8s on EKS becomes available. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR of the VPC to use when creating the EKS cluster. |
 
 ---
 
@@ -9800,7 +9931,8 @@ public readonly applicationConfiguration: {[ key: string ]: any};
 
 The application configuration override for the Spark submit job run.
 
-> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+Resources like Amazon cloudwatch log or Amazon S3 bucket
+If DESTROY is selected, context value
 
 ---
 

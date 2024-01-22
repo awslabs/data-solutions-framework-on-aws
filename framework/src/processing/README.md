@@ -370,3 +370,10 @@ The construct also exposes the `addKarpenterNodePoolAndNodeClass()` method to de
 The execution role is the IAM role that is used by the Spark job to access AWS resources. For example, the job may need to access an S3 bucket that stores the source data or to which the job writes the data. The `createExecutionRole()` method simplifies the creation of an IAM role that can be used to execute a Spark job on the EKS cluster and in a specific EMR EKS virtual cluster namespace. The method attaches an IAM policy provided by the user and a policy to access the pod templates when using the default EC2 capacity.
 
 [example execution role](./examples/spark-emr-runtime-containers-execrole.lit.ts)
+
+
+### Interactive endpoint
+
+The interactive endpoint provides the capability for interactive clients like Amazon EMR Studio or a self-hosted Jupyter notebook to connect to Amazon EMR on EKS clusters to run interactive workloads. The interactive endpoint is backed by a Jupyter Enterprise Gateway that provides the remote kernel lifecycle management capability that interactive clients need.
+
+[example interactive endpoint](./examples/spark-emr-runtime-containers-interactive-endpoint.lit.ts)

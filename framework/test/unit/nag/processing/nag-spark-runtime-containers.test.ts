@@ -33,7 +33,7 @@ emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
   name: 'test',
 });
 
-emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
   name: 'nons',
   createNamespace: true,
   eksNamespace: 'nons',
@@ -50,7 +50,13 @@ const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
   }),
 });
 
-emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'interactiveSession', {
+  virtualClusterId: virtualCluster.attrId,
+  managedEndpointName: 'interactiveSession',
+  executionRole: execRole,
+});
 
 Aspects.of(emrEksClusterStack).add(new AwsSolutionsChecks());
 
@@ -185,6 +191,87 @@ NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/Data
 NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, '/nagStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource', [
   { id: 'AwsSolutions-L1', reason: 'unable to modify the runtime provided by L2 construct' },
 ]);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'LogRetention from the custom resource framework in CDK' },
+    { id: 'AwsSolutions-IAM5', reason: 'LogRetention from the custom resource framework in CDK' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/CustomResourceProvider/framework-onEvent/Resource',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-L1', reason: 'Custom Resource provider from the CDK framework' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/InteractiveSessionProvider/CleanUpProvider',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-L1', reason: 'Custom Resource provider from the CDK framework' },
+  ],
+  true,
+);
+
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/LambdaExecutionRolePolicy/Resource',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'Policy attached to the lambda handling the CR for interactive endpoint' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/InteractiveSessionProvider/VpcPolicy/Resource',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'Inherited from DsfProvider and used to clean up the ENIs' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/CustomResourceProvider/framework-isComplete',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-L1', reason: 'Custom Resource provider from the CDK framework' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/CustomResourceProvider/framework-onTimeout',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
+    { id: 'AwsSolutions-L1', reason: 'Custom Resource provider from the CDK framework' },
+  ],
+  true,
+);
+NagSuppressions.addResourceSuppressionsByPath(
+  emrEksClusterStack,
+  'nagStack/CustomResourceProvider/waiter-state-machine',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
+  ],
+  true,
+);
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(emrEksClusterStack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
