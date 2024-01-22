@@ -10,30 +10,6 @@
       "type": "build"
     },
     {
-      "name": "@aws-crypto/client-node",
-      "type": "build"
-    },
-    {
-      "name": "@aws-crypto/sha256-js",
-      "type": "build"
-    },
-    {
-      "name": "@aws-sdk/client-secrets-manager",
-      "type": "build"
-    },
-    {
-      "name": "@aws-sdk/node-http-handler",
-      "type": "build"
-    },
-    {
-      "name": "@aws-sdk/protocol-http",
-      "type": "build"
-    },
-    {
-      "name": "@aws-sdk/signature-v4",
-      "type": "build"
-    },
-    {
       "name": "@jest/globals",
       "type": "build"
     },
@@ -152,6 +128,10 @@
     },
     {
       "name": "@types/js-yaml",
+      "type": "bundled"
+    },
+    {
+      "name": "esbuild",
       "type": "bundled"
     },
     {
