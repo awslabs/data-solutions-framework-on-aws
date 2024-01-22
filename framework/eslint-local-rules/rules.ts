@@ -29,6 +29,11 @@ export default {
                     const instantiatedType = <ts.Type>typeChecker.getTypeAtLocation(typescriptNode);
                     const baseTypes = instantiatedType.getBaseTypes();
 
+                    if (instantiatedType.symbol == null) {
+                        // Non-nullable 'symbol' property contains null - no analysis possible
+                        return;
+                    }
+
                     if (instantiatedType.symbol.name == 'Construct' || baseTypes && baseTypes.some(t => t.symbol.name == 'Construct')) {
                         if (node.arguments.length <= 1) {
                             // Non-standard schema, expected at least 2 parameters
