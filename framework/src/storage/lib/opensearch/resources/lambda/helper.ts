@@ -1,8 +1,10 @@
+/* eslint-disable */
 import { Sha256 } from '@aws-crypto/sha256-js';
 import { defaultProvider } from '@aws-sdk/credential-provider-node';
 import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
 import { HttpRequest } from '@aws-sdk/protocol-http';
 import { SignatureV4 } from '@aws-sdk/signature-v4';
+/* eslint-enable */
 
 const region = process.env.REGION!;
 const endpoint = process.env.ENDPOINT!;

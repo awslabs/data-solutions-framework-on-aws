@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+/* eslint-enable */
 import { sendRequest } from './helper';
 
 const region = process.env.REGION!;
