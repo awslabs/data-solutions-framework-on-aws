@@ -24,19 +24,6 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils
  *   dependenciesFolder: '/Users/my-user/my-spark-job/app',
  *   removalPolicy: cdk.RemovalPolicy.DESTROY,
  * });
- *
- * let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
- *
- * new dsf.processing.SparkEmrServerlessJob(this, 'SparkJobServerless', {
- *   name: 'MyPySpark',
- *   applicationId: 'xxxxxxxxx',
- *   executionRoleArn: 'ROLE-ARN',
- *   executionTimeoutMinutes: 30,
- *   s3LogUri: 's3://s3-bucket/monitoring-logs',
- *   cloudWatchLogGroupName: 'my-pyspark-serverless-log',
- *   sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
- *   sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
- * } as dsf.processing.SparkEmrServerlessJobProps);
  */
 export class PySparkApplicationPackage extends TrackedConstruct {
 
@@ -47,35 +34,35 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
   /**
    * The S3 location where the entry point is saved in S3.
-   * You pass this location to your Spark job.
+   * You can pass this location to your Spark job.
    */
   public readonly entrypointS3Uri: string;
 
   /**
    * The S3 location where the archive of the Python virtual environment with all dependencies is stored.
-   * You pass this location to your Spark job.
+   * You can pass this location to your Spark job.
    */
   public readonly venvArchiveS3Uri?: string;
 
   /**
-   * The Spark config containing the configuration of virtual environment archive with all dependencies.
+   * The Spark Config containing the configuration of virtual environment archive with all dependencies.
    */
   public readonly sparkVenvConf?: string;
 
   /**
-   * The bucket storing the artifacts (entrypoint and virtual environment archive).
+   * The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive).
    */
   public readonly artifactsBucket: IBucket;
 
   /**
-   * The role used by the BucketDeployment to upload the artifacts to an s3 bucket.
-   * In case you provide your own bucket for storing the artifacts (entrypoint and virtual environment archive),
-   * you must provide s3 write access to this role to upload the artifacts.
+   * The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket.
+   * In case you provide your own S3 Bucket for storing the artifacts (entrypoint and virtual environment archive), 
+   * you must provide S3 write access to this role to upload the artifacts.
    */
   public readonly assetUploadRole: IRole;
 
   /**
-   * The IAM managed policy used by the custom resource for the assets deployment
+   * The IAM Managed Policy used by the custom resource for the assets deployment
    */
   public readonly assetUploadManagedPolicy: IManagedPolicy;
 
@@ -106,13 +93,13 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     }));
 
     // Policy to allow lambda access to cloudwatch logs
-    this.assetUploadManagedPolicy = new ManagedPolicy(this, 's3BucketDeploymentPolicy', {
+    this.assetUploadManagedPolicy = new ManagedPolicy(this, 'S3BucketDeploymentPolicy', {
       statements: s3DeploymentLambdaPolicyStatement,
       description: 'Policy used by S3 deployment cdk construct for PySparkApplicationPackage',
     });
 
     // Create or use the passed `assetUploadRole` as an execution role for the lambda and attach to it a policy formed from user input
-    this.assetUploadRole = props.assetUploadRole || new Role(this, 's3BucketDeploymentRole', {
+    this.assetUploadRole = props.assetUploadRole || new Role(this, 'S3BucketDeploymentRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
       managedPolicies: [this.assetUploadManagedPolicy],

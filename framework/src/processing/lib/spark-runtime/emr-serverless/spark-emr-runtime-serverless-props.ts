@@ -3,6 +3,7 @@
 
 import { aws_emrserverless, IResolvable, RemovalPolicy } from 'aws-cdk-lib';
 import { EmrRuntimeVersion } from '../../../../processing';
+import { Architecture } from '../../../../utils';
 
 /**
  * Properties for the {SparkRuntimeServerless} construct
@@ -73,12 +74,4 @@ export interface SparkEmrServerlessRuntimeProps {
    * @default @see EMR_DEFAULT_VERSION
    */
   readonly releaseLabel?: EmrRuntimeVersion;
-}
-
-/**
- * Enum defining the CPU architecture type of the application, either  X86_64 or ARM64.
- */
-export enum Architecture {
-  X86_64 = 'X86_64',
-  ARM64 = 'ARM64'
 }

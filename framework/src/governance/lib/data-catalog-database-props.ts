@@ -8,7 +8,7 @@ import { IKey } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 
 /**
- * The Database catalog properties
+ * Properties for the `DataCatalogDatabase` construct
  */
 export interface DataCatalogDatabaseProps {
   /**
@@ -28,37 +28,40 @@ export interface DataCatalogDatabaseProps {
 
   /**
    * When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
-   * @default True
+   * @default - True
    */
   readonly autoCrawl?: boolean;
 
   /**
-   * When passed, the crawler that would be created when `autoCrawl` is set to `True` would used this role. Additional permissions would be granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
-   * @default A new role would be created with least privilege permissions to run the crawler
+   * The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`. 
+   * Additional permissions are granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
+   * @default - When `autoCrawl` is enabled, a new role is created with least privilege permissions to run the crawler
    */
   readonly crawlerRole?: IRole;
 
   /**
-   * The schedule when the Crawler would run. Default is once a day at 00:01h.
-   * @default `cron(1 0 * * ? *)`
+   * The schedule to run the Glue Crawler. Default is once a day at 00:01h.
+   * @default - `cron(1 0 * * ? *)`
    */
   readonly autoCrawlSchedule?: CfnCrawler.ScheduleProperty;
 
   /**
-   * Encryption key used for Crawler logs
-   * @default Create a new key if none is provided
+   * KMS encryption Key used for the Glue Crawler logs
+   * @default - Create a new key if none is provided
    */
   readonly crawlerLogEncryptionKey?: IKey;
 
   /**
-   * Directory depth where the table folders are located. This helps the crawler understand the layout of the folders in S3.
-   * @default calculated based on `locationPrefix`
+   * Directory depth where the table folders are located. This helps the Glue Crawler understand the layout of the folders in S3.
+   * @default - calculated based on `locationPrefix`
    */
   readonly crawlerTableLevelDepth?: number;
 
   /**
-   * Policy to apply when the bucket is removed from this stack.
-   * * @default - RETAIN (The bucket will be orphaned).
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
 }

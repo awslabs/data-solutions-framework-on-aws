@@ -14,5 +14,6 @@ export * from './data-vpc';
 export * from './data-vpc-props';
 export * from './s3-data-copy';
 export * from './s3-data-copy-props';
+export * from './architecture';
 
 

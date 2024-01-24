@@ -21,7 +21,7 @@ import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
 
 /**
- * A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
+ * A CICD Pipeline to test and deploy a Spark application on Amazon EMR in cross-account environments using CDK Pipelines.
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-cicd-pipeline
  *
  * @exampleMetadata fixture=imports-only
@@ -126,15 +126,15 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   public readonly pipeline: CodePipeline;
   /**
-   * The CodeCommit repository created as part of the Spark CICD Pipeline
+   * The CodeCommit Repository created as part of the Spark CICD Pipeline
    */
   public readonly repository: Repository;
   /**
-   * The S3 bucket for storing the artifacts
+   * The S3 Bucket for storing the artifacts
    */
   public readonly artifactBucket: IBucket;
   /**
-   * The S3 bucket for storing access logs on the artifact bucket
+   * The S3 Bucket for storing the access logs on the artifact S3 Bucket
    */
   public readonly artifactAccessLogsBucket: IBucket;
   /**
@@ -145,6 +145,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    * The CodeBuild Step for the staging stage
    */
   public readonly integrationTestStage?: CodeBuildStep;
+  
   /**
    * Construct a new instance of the SparkCICDPipeline class.
    * @param {Construct} scope the Scope of the CDK Construct
