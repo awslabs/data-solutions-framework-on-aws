@@ -3875,24 +3875,17 @@ ClientVPNEndpoint will be provisioned automatically for secure access to Opnesea
 *Example*
 
 ```typescript
-class ExampleDefaultOpensearchStack extends cdk.Stack {
-
-  constructor(scope: Construct, id: string , props:cdk.StackProps) {
-   super(scope, id, props);
-   const osCluster = new OpensearchCluster(this, 'MyOpensearchCluster',{
+   const osCluster = new dsf.storage.OpensearchCluster(this, 'MyOpensearchCluster',{
      domainName:"mycluster2",
      samlEntityId:'<IdpIdentityId>',
-     samlMetadataContent:'<IdpMetadataXml>'
+     samlMetadataContent:'<IdpMetadataXml>',
      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
      deployInVpc:true,
      removalPolicy:cdk.RemovalPolicy.DESTROY
-   } as OpensearchProps );
+   } as dsf.storage.OpensearchProps );
+
    osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
    osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
- }
-}
-const app = new cdk.App();
-new ExampleDefaultOpensearchStack(app, 'ExampleDefaultDataLakeStorage', { env: {region:'us-east-1'} });
 ```
 
 
