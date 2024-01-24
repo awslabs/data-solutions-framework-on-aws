@@ -15,21 +15,36 @@ import { EMR_DEFAULT_VERSION, EmrRuntimeVersion } from '../../emr-releases';
 /**
  * A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime
-*/
+ *
+ * @example
+ * import { Role } from 'aws-cdk-lib/aws-iam';
+ *
+ * const serverlessRuntime = new SparkEmrServerlessRuntime(this, 'EmrApp', {
+ *   name: 'SparkRuntimeServerless',
+ * });
+ *
+ * const executionRole = serverlessRuntime.createExecution(this, 'ExecutionRole')
+ *
+ * const submitterRole = new Role (this, 'SubmitterRole', {
+ *   assumedBy: new AccountRootPrincipal(),
+ * });
+ *
+ * SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, executionRole, ['EMR-serverless-app-ID]);
+ */
 export class SparkEmrServerlessRuntime extends TrackedConstruct {
 
   /**
-     * A static method which will create an execution IAM role that can be assumed by EMR Serverless
-     * The method returns the role it creates. If no `executionRolePolicyDocument` or `iamPolicyName`
-     * The method will return a role with only a trust policy to EMR Servereless service principal.
-     * You can use this role then to grant access to any resources you control.
-     *
-     * @param scope the scope in which to create the role
-     * @param id passed to the IAM Role construct object
-     * @param executionRolePolicyDocument the inline policy document to attach to the role. These are IAM policies needed by the job.
-     * This parameter is mutually execlusive with iamPolicyName.
-     * @param iamPolicyName the IAM policy name to attach to the role, this is mutually execlusive with executionRolePolicyDocument
-     */
+   * A static method creating an execution IAM role that can be assumed by EMR Serverless
+   * The method returns the role it creates. If no `executionRolePolicyDocument` or `iamPolicyName`
+   * The method will return a role with only a trust policy to EMR Servereless service principal.
+   * You can use this role then to grant access to any resources you control.
+   *
+   * @param scope the scope in which to create the role
+   * @param id passed to the IAM Role construct object
+   * @param executionRolePolicyDocument the inline policy document to attach to the role. These are IAM policies needed by the job.
+   * This parameter is mutually execlusive with iamPolicyName.
+   * @param iamPolicyName the IAM policy name to attach to the role, this is mutually execlusive with executionRolePolicyDocument
+   */
   public static createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string): IRole {
 
     if (executionRolePolicyDocument && iamPolicyName) {
@@ -57,14 +72,14 @@ export class SparkEmrServerlessRuntime extends TrackedConstruct {
   }
 
   /**
-     * A static method which will grant an IAM Role the right to start and monitor a job.
-     * The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
-     *
-     * @param startJobRole the role that will call the start job api and which needs to have the iam:PassRole permission
-     * @param executionRoleArn the role used by EMR Serverless to access resources during the job execution
-     * @param applicationArns the EMR Serverless aplication ARN,
-     * this is used by the method to limit the EMR Serverless applications the role can submit job to.
-     */
+   * A static method granting the right to start and monitor a job to an IAM Role.
+   * The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
+   *
+   * @param startJobRole the role that will call the start job api and which needs to have the iam:PassRole permission
+   * @param executionRoleArn the role used by EMR Serverless to access resources during the job execution
+   * @param applicationArns the EMR Serverless aplication ARN,
+   * this is used by the method to limit the EMR Serverless applications the role can submit job to.
+   */
   public static grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[]) {
 
     //method to validate if IAM Role ARN is valid or if a token do not fail

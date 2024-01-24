@@ -14,7 +14,7 @@ import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps } from '.
 
 
 /**
- * Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
+ * Creates the storage layer for a data lake, composed of 3 `AnalyticsBucket` for Bronze, Silver, and Gold data.
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage
  *
  * @example
@@ -59,9 +59,9 @@ export class DataLakeStorage extends TrackedConstruct {
 
   /**
    * Construct a new instance of DataLakeStorage
-   * @param {Construct} scope the Scope of the CDK Construct
-   * @param {string} id the ID of the CDK Construct
-   * @param {DataLakeStorageProps} props the DataLakeStorageProps properties
+   * @param scope the Scope of the CDK Construct
+   * @param id the ID of the CDK Construct
+   * @param props the DataLakeStorageProps properties
    */
   constructor(scope: Construct, id: string, props?: DataLakeStorageProps) {
 

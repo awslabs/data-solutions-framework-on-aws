@@ -11,7 +11,7 @@ class ExampleSparkJobEmrEksStack extends cdk.Stack {
     constructor(scope: Construct, id: string) {
         super(scope, id);
 
-        const dailyJob = new dsf.processing.SparkEmrEksJob(this, 'SparkNightlyJob', {
+        const dailyJob = new dsf.processing.SparkEmrContainerJob(this, 'SparkNightlyJob', {
             name: 'daily_job',
             virtualClusterId: 'exampleId123',
             executionRoleArn: 'arn:aws:iam::123456789012:role/role',

@@ -21,22 +21,11 @@ import { SparkEmrServerlessRuntime } from '../spark-runtime';
  * import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
- * const myFileSystemPolicy = new PolicyDocument({
- *   statements: [new PolicyStatement({
- *     actions: [
- *       's3:GetObject',
- *     ],
- *     resources: ['*'],
- *   })],
- * });
- *
- *
- * const myExecutionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1', myFileSystemPolicy);
- * const applicationId = "APPLICATION_ID";
+ * const myExecutionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1');
  * const job = new dsf.processing.SparkEmrServerlessJob(this, 'SparkJob', {
  *   jobConfig:{
  *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
- *     "ApplicationId": applicationId,
+ *     "ApplicationId": "APPLICATION_ID",
  *     "ExecutionRoleArn": myExecutionRole.roleArn,
  *     "JobDriver": {
  *       "SparkSubmit": {
@@ -48,14 +37,11 @@ import { SparkEmrServerlessRuntime } from '../spark-runtime';
  *   }
  * } as dsf.processing.SparkEmrServerlessJobApiProps);
  *
- * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
- *   value: job.stateMachine!.stateMachineArn,
- * });
  */
 export class SparkEmrServerlessJob extends SparkJob {
 
   /**
-   * Spark Job execution role. Use this property to add additional IAM permissions if necessary.
+   * The Spark job execution role. Use this property to add additional IAM permissions if necessary.
    */
   public sparkJobExecutionRole?: IRole;
   private constructJobConfig: SparkEmrServerlessJobApiProps;

@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-
+/**
+ * Utils for working with AWS Step Functions.
+ */
 export class StepFunctionUtils {
 
   /**
-   * Internal function to convert camel case properties to pascal case as required by AWS Step Functions API
+   * Convert camel case properties to pascal case as required by AWS Step Functions API
    * @param config
    * @returns config converted to pascal case.
    */

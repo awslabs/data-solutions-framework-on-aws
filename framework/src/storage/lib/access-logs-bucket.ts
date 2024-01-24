@@ -13,9 +13,7 @@ import { BucketUtils, Context } from '../../utils';
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/access-logs-bucket
  *
  * @example
- * const bucket = new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket', {
- *  removalPolicy: cdk.RemovalPolicy.DESTROY,
- * })
+ * const bucket = new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket')
  *
  */
 export class AccessLogsBucket extends Bucket {

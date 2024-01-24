@@ -5,7 +5,7 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 import { Schedule } from 'aws-cdk-lib/aws-events';
 
 /**
- * Properties for the SparkJob construct.
+ * The properties for the `SparkJob` construct.
  */
 export interface SparkJobProps {
 
@@ -18,8 +18,8 @@ export interface SparkJobProps {
   readonly removalPolicy?: RemovalPolicy;
 
   /**
-   * Schedule to run the Step Functions state machine.
-   * @see Schedule @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]
+   * The Schedule to run the Step Functions state machine.
+   * @default - The Step Functions State Machine is not scheduled.
    */
   readonly schedule?: Schedule;
 }

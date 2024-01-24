@@ -85,7 +85,7 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
   /**
    * Tags to be added to the EMR Serverless job.
    * @default - No tags are added
-   */ 
+   */
   readonly tags?: {
     [key:string] : any;
   };
@@ -99,7 +99,7 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
 export interface SparkEmrContainerJobApiProps extends SparkJobProps {
 
   /**
-   * Job execution timeout in minutes. 
+   * Job execution timeout in minutes.
    * @default - 30 minutes
    */
   readonly executionTimeoutMinutes?: number;

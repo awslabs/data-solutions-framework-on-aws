@@ -78,7 +78,7 @@ export interface SparkEmrServerlessJobProps extends SparkJobProps {
 
   /**
    * The CloudWatch Log Group name for log publishing.
-   * @default - No logging to CloudWatch 
+   * @default - No logging to CloudWatch
    */
   readonly cloudWatchLogGroupName?: string;
 
@@ -102,7 +102,7 @@ export interface SparkEmrServerlessJobProps extends SparkJobProps {
   /**
    * Tags to be added to the EMR Serverless job.
    * @default - No tags are added
-   */ 
+   */
   readonly tags?: {[key: string]: any};
 }
 

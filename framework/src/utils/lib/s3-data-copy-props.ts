@@ -12,7 +12,7 @@ import { IBucket } from 'aws-cdk-lib/aws-s3';
 export interface S3DataCopyProps {
 
   /**
-   * The source bucket
+   * The source S3 Bucket containing the data to copy
    */
   readonly sourceBucket: IBucket;
   /**
@@ -21,20 +21,20 @@ export interface S3DataCopyProps {
    */
   readonly sourceBucketPrefix?: string;
   /**
-   * The source bucket region
+   * The source S3 Bucket region
    */
   readonly sourceBucketRegion: string;
   /**
-   * the target bucket
+   * The target S3 Bucket
    */
   readonly targetBucket: IBucket;
   /**
-   * the target bucket prefix with a slash at the end
+   * The target S3 Bucket prefix with a slash at the end
    * @default - No prefix is used
    */
   readonly targetBucketPrefix?: string;
   /**
-   * The IAM role to use in the custom resource for copying data.
+   * The IAM Role to use in the custom resource for copying data.
    * @default - A new role is created
    */
   readonly executionRole?: IRole;
@@ -55,8 +55,10 @@ export interface S3DataCopyProps {
    */
   readonly securityGroups?: ISecurityGroup [];
   /**
-   * The policy to apply when the resource is removed from this stack.
-   * @default - RETAIN. The resources will not be deleted.
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise, the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
 }

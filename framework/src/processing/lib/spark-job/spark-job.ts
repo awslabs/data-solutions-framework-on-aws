@@ -28,7 +28,7 @@ import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../.
 export abstract class SparkJob extends TrackedConstruct {
 
   /**
-   * Step Functions StateMachine created to orchestrate the Spark Job
+   * The Step Functions State Machine created to orchestrate the Spark Job
    */
   public stateMachine?: StateMachine;
 
@@ -38,22 +38,17 @@ export abstract class SparkJob extends TrackedConstruct {
   public stateMachineLogGroup?: ILogGroup;
 
   /**
-   * S3 log bucket for the Spark job logs
+   * The S3 Bucket for the Spark job logs
    */
   protected s3LogBucket?: IBucket;
 
   /**
-   * CloudWatch Logs Group for the Spark job logs
+   * The loudWatch Logs Group for the Spark job logs
    */
   protected emrJobLogGroup?: ILogGroup;
 
-
   /**
    * The removal policy when deleting the CDK resource.
-   * Resources like Amazon cloudwatch log or Amazon S3 bucket
-   * If DESTROY is selected, the context value '@data-solutions-framework-on-aws/removeDataOnDestroy'
-   * in the 'cdk.json' or 'cdk.context.json' must be set to true
-   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   private removalPolicy: RemovalPolicy;
 

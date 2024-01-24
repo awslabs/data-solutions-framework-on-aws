@@ -37,13 +37,13 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/PySparkPacker/s3BucketDeploymentRole/DefaultPolicy/Resource',
+  '/Stack/PySparkPacker/S3BucketDeploymentRole/DefaultPolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'Permissions provided by the `grantRead()` and `grantWrite()`method of the `Bucket` L2 construct' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/PySparkPacker/s3BucketDeploymentPolicy/Resource',
+  '/Stack/PySparkPacker/S3BucketDeploymentPolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'The CLoudWtach Logs Log Group used for the `BucketDeployemnt` is unknown and can\'t be tagged for scoping down' }],
 );
 

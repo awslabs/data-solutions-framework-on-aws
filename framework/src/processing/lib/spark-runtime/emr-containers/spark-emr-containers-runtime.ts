@@ -48,7 +48,37 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime
-*/
+ *
+ * @example
+ * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+ *
+ * const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+ *
+ * const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
+ *   kubectlLambdaLayer: kubectlLayer,
+ * });
+ *
+ * const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
+ *   name: 'example',
+ *   createNamespace: true,
+ *   eksNamespace: 'example',
+ * });
+ *
+ * const s3Read = new PolicyDocument({
+ *   statements: [new PolicyStatement({
+ *     actions: [
+ *       's3:GetObject',
+ *     ],
+ *     resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+ *   })],
+ * });
+ *
+ * const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
+ *   document: s3Read,
+ * });
+ *
+ * const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolicy, 'example', 's3ReadExecRole');
+ */
 export class SparkEmrContainersRuntime extends TrackedConstruct {
 
   /**

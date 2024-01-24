@@ -145,7 +145,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    * The CodeBuild Step for the staging stage
    */
   public readonly integrationTestStage?: CodeBuildStep;
-  
+
   /**
    * Construct a new instance of the SparkCICDPipeline class.
    * @param {Construct} scope the Scope of the CDK Construct

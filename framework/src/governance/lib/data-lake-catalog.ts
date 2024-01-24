@@ -10,8 +10,8 @@ import { AnalyticsBucket } from '../../storage';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
-* Creates a Data Lake Catalog on top of a `DataLakeStorage`. 
-* The Data Lake Catalog is composed of 3 `DataCatalogDatabase`, one for each storage layer. 
+* Creates a Data Lake Catalog on top of a `DataLakeStorage`.
+* The Data Lake Catalog is composed of 3 `DataCatalogDatabase`, one for each storage layer.
 * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog
  *
 * @example

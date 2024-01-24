@@ -8,7 +8,7 @@ import { ApplicationStackFactory } from './application-stack-factory';
 
 
 /**
- * The list of CICD Stages to deploy the SparkCICDStack.
+ * The list of CICD Stages used in CICD Pipelines.
  */
 export enum CICDStage {
   STAGING = 'staging',
@@ -16,11 +16,11 @@ export enum CICDStage {
 }
 
 /**
- * Properties for SparkCICDStage class.
+ * Properties for the `ApplicationStage` class.
  */
 export interface ApplicationStageProps extends StageProps {
   /**
-   * The application Stack to deploy in the different CDK Pipelines Stages
+   * The application CDK Stack Factory used to create application Stacks
    */
   readonly applicationStackFactory: ApplicationStackFactory;
 
@@ -31,7 +31,7 @@ export interface ApplicationStageProps extends StageProps {
   readonly outputsEnv?: Record<string, string>;
 
   /**
-   * The Stage to deploy the SparkCICDStack in
+   * The Stage to deploy the application CDK Stack in
    * @default - No stage is passed to the application stack
    */
   readonly stage: CICDStage;
@@ -50,9 +50,9 @@ export class ApplicationStage extends Stage {
 
   /**
    * Construct a new instance of the SparkCICDStage class.
-   * @param {Construct} scope the Scope of the CDK Construct
-   * @param {string} id the ID of the CDK Construct
-   * @param {ApplicationStageProps} props the ApplicationStage properties
+   * @param scope the Scope of the CDK Construct
+   * @param id the ID of the CDK Construct
+   * @param props the ApplicationStage properties
    */
   constructor(scope: Construct, id: string, props: ApplicationStageProps) {
     super(scope, id, props);

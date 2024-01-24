@@ -16,9 +16,9 @@ import { KarpenterVersion } from '../../karpenter-releases';
 /**
  * @internal
  * Method to add the default Karpenter provisioners for Spark workloads
- * @param {Cluster} cluster the EMR on EKS cluster to configure the Karpenter provisioners in
- * @param {KarpenterVersion} karpenterVersion the Karpenter version to use for the provisioners
- * @param {IRole} nodeRole the IAM role to use for the provisioners
+ * @param cluster the EMR on EKS cluster to configure the Karpenter provisioners in
+ * @param karpenterVersion the Karpenter version to use for the provisioners
+ * @param nodeRole the IAM role to use for the provisioners
  */
 export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRuntime, karpenterVersion: KarpenterVersion, nodeRole: IRole) {
 
@@ -48,11 +48,11 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
 /**
    * @internal
    * Method to generate the Karpenter manifests from templates and targeted to the specific EKS cluster
-   * @param {ICluster} cluster the name of the EKS cluster to target the manifests to
-   * @param {string} path the path to the manifest template
-   * @param {ISubnet} subnet the subnet to target the manifests to
-   * @param {IRole} nodeRole the IAM role to use for the manifests
-   * @return {any} the Kubernetes manifest for Karpenter provisioned
+   * @param cluster the name of the EKS cluster to target the manifests to
+   * @param path the path to the manifest template
+   * @param subnet the subnet to target the manifests to
+   * @param nodeRole the IAM role to use for the manifests
+   * @return the Kubernetes manifest for Karpenter provisioned
    */
 export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole): any {
 
@@ -74,12 +74,12 @@ export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: 
    * Create a security group to be used by nodes created with karpenter
    * Tags the subnets and VPC to be used by karpenter
    * create a tooling provisioner that will deploy in each of the AZs, one per AZ
-   * @param {Cluster} cluster the EKS cluster to configure the Karpenter provisioners in
-   * @param {string} clusterName the name of the EKS cluster to target the manifests to
-   * @param {CfnInstanceProfile} instanceProfile the IAM instance profile to use for the Karpenter nodes
-   * @param {IRole} nodeRole the IAM role to use for the Karpenter nodes
-   * @param {KarpenterVersion} karpenterVersion the Karpenter version to use for the provisioners
-   * @return {[HelmChart, IRole, IQueue, Array<IRule>]} the Helm chart to install, the IAM Role for service account, the SQS queue and the EventBridge rules for Karpenter
+   * @param cluster the EKS cluster to configure the Karpenter provisioners in
+   * @param clusterName the name of the EKS cluster to target the manifests to
+   * @param instanceProfile the IAM instance profile to use for the Karpenter nodes
+   * @param nodeRole the IAM role to use for the Karpenter nodes
+   * @param karpenterVersion the Karpenter version to use for the provisioners
+   * @return the Helm chart to install, the IAM Role for service account, the SQS queue and the EventBridge rules for Karpenter
    */
 export function karpenterSetup(cluster: ICluster,
   clusterName: string,

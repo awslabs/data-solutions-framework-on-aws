@@ -33,7 +33,7 @@ export interface DataCatalogDatabaseProps {
   readonly autoCrawl?: boolean;
 
   /**
-   * The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`. 
+   * The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`.
    * Additional permissions are granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
    * @default - When `autoCrawl` is enabled, a new role is created with least privilege permissions to run the crawler
    */

@@ -33,7 +33,7 @@ export interface PySparkApplicationPackageProps {
   readonly dependenciesFolder?: string;
 
   /**
-   * The path of the Python virtual environment archive generated in the Docker container. 
+   * The path of the Python virtual environment archive generated in the Docker container.
    * This is the output path used in the `venv-pack -o` command in your Dockerfile.
    * @default - No virtual environment archive is packaged. Only the entrypoint can be used in the Spark Job. It is required if the `dependenciesFolder` is provided.
    */

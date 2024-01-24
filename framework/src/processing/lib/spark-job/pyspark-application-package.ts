@@ -56,7 +56,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
   /**
    * The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket.
-   * In case you provide your own S3 Bucket for storing the artifacts (entrypoint and virtual environment archive), 
+   * In case you provide your own S3 Bucket for storing the artifacts (entrypoint and virtual environment archive),
    * you must provide S3 write access to this role to upload the artifacts.
    */
   public readonly assetUploadRole: IRole;
