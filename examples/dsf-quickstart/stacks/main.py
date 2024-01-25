@@ -39,7 +39,7 @@ class DataStack(Stack):
     processing_exec_role = dsf.processing.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
 
     storage.bronze_bucket.grant_read_write(processing_exec_role)
-    source_bucket.grant_read(processing_exec_role)
+    storage.silver_bucket.grant_read_write(processing_exec_role)
 
     CfnOutput(self, "EMRServerlessApplicationId", value=spark_runtime.application.attr_application_id)
     CfnOutput(self, "EMRServerlessApplicationARN", value=spark_runtime.application.attr_arn)
