@@ -14,7 +14,7 @@ The DSF on AWS library is available in Typescript or Python, select the right ta
 
 In this quick start we will show you how you can use DSF to deploy EMR Serverless, create a data lake with three stages (bronze, silver, gold), copy data to bronze, and process it to store it in the silver bucket. You can find the full quick start example [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/examples/dsf-quickstart). The sections below will take you through the steps of creating the CDK application and use it to deploy the infrastructure. 
 
-### Create a CDK app
+## Create a CDK app
 ```bash
 mkdir dsf-example && cd dsf-example
 ```
@@ -74,8 +74,6 @@ We can now install DSF on AWS:
 ### Use DSF on AWS to create a data lake storage
 
 We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-lake-storage.mdx) to create a storage layer for our data lake on AWS. When we deploy this simple AWS CDK application we will have the following resources created:
-
-![Data lake storage](../static/img/adsf-data-lake-storage.png)
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -145,6 +143,7 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
 
 ### Use DSF on AWS to copy the data
 
+We will now use [***S3DataCopy***](constructs/library/05-Utils/02-s3-data-copy.mdx)
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -190,7 +189,7 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
 
 ### Use DSF on AWS to create the EMR Serverless Application
 
-
+We will now use [***SparkEmrServerlessRuntime***](constructs/library/03-Processing/01-spark-emr-serverless-runtime.mdx)
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -230,12 +229,48 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
   </TabItem>
 </Tabs>
 
-Now you can deploy your stack!
+### Output resource Ids and ARNs
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+  
+  In `lib/dsf-example-stack.ts`
+  ```typescript
+
+  const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
+          name: 'spark-serverless-demo',
+      });
+
+
+  const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'EmrServerlessExecutionRole', s3ReadPolicyDocument);
+  
+  ```
+  
+  ```mdx-code-block
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+    In `dsf_example/dsf_example_stack.py`
+    ```python
+
+    CfnOutput(self, "EMRServerlessApplicationId", value=spark_runtime.application.attr_application_id)
+    CfnOutput(self, "EMRServerlessApplicationARN", value=spark_runtime.application.attr_arn)
+    CfnOutput(self, "EMRServelessExecutionRoleARN", value=processing_exec_role.role_arn)
+
+    ```
+    
+  </TabItem>
+</Tabs>
+
+## Deploy the CDK app
+
 ```bash
 cdk deploy
 ```
 
-Submit the processing job
+## Submit a job
+
 ```bash
 aws emr-serverless start-job-run \
     --application-id application-id \
