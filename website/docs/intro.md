@@ -87,10 +87,10 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
   import { Bucket } from 'aws-cdk-lib/aws-s3';
 
   export class DsfExampleStack extends cdk.Stack {
-    constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+    constructor(scope: cdk.Construt, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
 
-      const storage = new dsf.storage.DataLakeStorage(stack, 'MyDataLakeStorage', {
+      const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
         bronzeName: 'my-bronze',
         bronzeInfrequentAccessDelay: 90,
         bronzeArchiveDelay: 180,
@@ -101,7 +101,7 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
         goldInfrequentAccessDelay: 180,
         goldArchiveDelay: 360,
         removalPolicy: cdk.RemovalPolicy.RETAIN,
-        dataLakeKey: new Key(stack, 'MyDataLakeKey')
+        dataLakeKey: new Key(this, 'MyDataLakeKey')
       });
 
 
@@ -251,9 +251,9 @@ Last we will output the ARNs for the role and EMR serverless app, the Id of the 
   In `lib/dsf-example-stack.ts`
   ```typescript
 
-  new CfnOutput(self, "EMRServerlessApplicationId", runtimeServerless.application.attrApplicationId);
-  new CfnOutput(self, "EMRServerlessApplicationARN", runtimeServerless.application.attrArn);
-  new CfnOutput(self, "EMRServelessExecutionRoleARN", executionRole.roleArn);
+  new cdk.CfnOutput(this, "EMRServerlessApplicationId", runtimeServerless.application.attrApplicationId);
+  new cdk.CfnOutput(this, "EMRServerlessApplicationARN", runtimeServerless.application.attrArn);
+  new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", executionRole.roleArn);
   
   ```
   
