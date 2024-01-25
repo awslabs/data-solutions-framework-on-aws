@@ -20,9 +20,7 @@ Default bucket name is `accesslogs-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 *Example*
 
 ```typescript
-const bucket = new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket', {
- removalPolicy: cdk.RemovalPolicy.DESTROY,
-})
+const bucket = new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket')
 ```
 
 
@@ -2707,13 +2705,13 @@ public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult
 
 Grants read access via identity based policy to the principal.
 
-This would attach an IAM policy to the principal allowing read access to the database and all its tables.
+This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables.
 
 ###### `principal`<sup>Required</sup> <a name="principal" id="aws-dsf.governance.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
-Principal to attach the database read access to.
+Principal to attach the Glue Database read access to.
 
 ---
 
@@ -2770,11 +2768,11 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue database that's created. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue database name with the randomized suffix to prevent name collisions in the catalog. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption key used by the Crawler. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Glue crawler when created. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue Database that's created. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue Database name with the randomized suffix to prevent name collisions in the catalog. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler created when `autoCrawl` is set to `true` (default value). |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used by the Crawler. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue crawler when created. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration">crawlerSecurityConfiguration</a></code> | <code>aws-cdk-lib.aws_glue.CfnSecurityConfiguration</code> | The Glue security configuration used by the Glue Crawler when created. |
 
 ---
@@ -2799,7 +2797,7 @@ public readonly database: CfnDatabase;
 
 - *Type:* aws-cdk-lib.aws_glue.CfnDatabase
 
-The Glue database that's created.
+The Glue Database that's created.
 
 ---
 
@@ -2811,7 +2809,7 @@ public readonly databaseName: string;
 
 - *Type:* string
 
-The Glue database name with the randomized suffix to prevent name collisions in the catalog.
+The Glue Database name with the randomized suffix to prevent name collisions in the catalog.
 
 ---
 
@@ -2823,7 +2821,7 @@ public readonly crawler: CfnCrawler;
 
 - *Type:* aws-cdk-lib.aws_glue.CfnCrawler
 
-The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value).
+The Glue Crawler created when `autoCrawl` is set to `true` (default value).
 
 This property can be undefined if `autoCrawl` is set to `false`.
 
@@ -2837,7 +2835,7 @@ public readonly crawlerLogEncryptionKey: IKey;
 
 - *Type:* aws-cdk-lib.aws_kms.IKey
 
-KMS encryption key used by the Crawler.
+KMS encryption Key used by the Crawler.
 
 ---
 
@@ -2849,7 +2847,7 @@ public readonly crawlerRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
-The IAM role used by the Glue crawler when created.
+The IAM Role used by the Glue crawler when created.
 
 ---
 
@@ -2896,9 +2894,9 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### DataLakeCatalog <a name="DataLakeCatalog" id="aws-dsf.governance.DataLakeCatalog"></a>
 
-Creates AWS Glue Catalog Database for each storage layer.
+Creates a Data Lake Catalog on top of a `DataLakeStorage`.
 
-Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
+The Data Lake Catalog is composed of 3 `DataCatalogDatabase`, one for each storage layer.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog)
 
@@ -2907,7 +2905,7 @@ Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
 ```typescript
 import { Key } from 'aws-cdk-lib/aws-kms';
 
-const logEncryptionKey = new Key(this, 'LogEncryptionKey');
+const logEncryptionKey = new Key(this, 'ExampleLogKey');
 const storage = new dsf.storage.DataLakeStorage(this, "ExampleStorage");
 const dataLakeCatalog = new dsf.governance.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
   dataLakeStorage: storage,
@@ -3027,10 +3025,10 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.governance.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for Bronze bucket. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for Gold bucket. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for Silver bucket. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the crawler logs. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for the Bronze S3 Bucket. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for the Gold S3 Bucket. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code>aws-dsf.governance.DataCatalogDatabase</code> | The Glue Database for the Silver S3 Bucket. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the Glue Crawler logs. |
 
 ---
 
@@ -3054,7 +3052,7 @@ public readonly bronzeCatalogDatabase: DataCatalogDatabase;
 
 - *Type:* aws-dsf.governance.DataCatalogDatabase
 
-The Glue Database for Bronze bucket.
+The Glue Database for the Bronze S3 Bucket.
 
 ---
 
@@ -3066,7 +3064,7 @@ public readonly goldCatalogDatabase: DataCatalogDatabase;
 
 - *Type:* aws-dsf.governance.DataCatalogDatabase
 
-The Glue Database for Gold bucket.
+The Glue Database for the Gold S3 Bucket.
 
 ---
 
@@ -3078,7 +3076,7 @@ public readonly silverCatalogDatabase: DataCatalogDatabase;
 
 - *Type:* aws-dsf.governance.DataCatalogDatabase
 
-The Glue Database for Silver bucket.
+The Glue Database for the Silver S3 Bucket.
 
 ---
 
@@ -3090,7 +3088,7 @@ public readonly crawlerLogEncryptionKey: IKey;
 
 - *Type:* aws-cdk-lib.aws_kms.IKey
 
-The KMS Key used to encrypt the crawler logs.
+The KMS Key used to encrypt the Glue Crawler logs.
 
 ---
 
@@ -3125,7 +3123,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### DataLakeStorage <a name="DataLakeStorage" id="aws-dsf.storage.DataLakeStorage"></a>
 
-Creates the storage layer for a data lake, composed of 3 {@link AnalyticsBucket} for Bronze, Silver, and Gold data.
+Creates the storage layer for a data lake, composed of 3 `AnalyticsBucket` for Bronze, Silver, and Gold data.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage)
 
@@ -3371,6 +3369,21 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### DataVpc <a name="DataVpc" id="aws-dsf.utils.DataVpc"></a>
 
+Creates a VPC with best practices for securely deploying data solutions.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/data-vpc](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/data-vpc)
+
+*Example*
+
+```typescript
+const vpc = new DataVpc(this, 'DataVpc', {
+  vpcCidr: '10.0.0.0/16',
+});
+
+vpc.tagVpc('Name', 'My VPC');
+```
+
+
 #### Initializers <a name="Initializers" id="aws-dsf.utils.DataVpc.Initializer"></a>
 
 ```typescript
@@ -3587,19 +3600,6 @@ let pysparkPacker = new dsf.processing.PySparkApplicationPackage (this, 'pyspark
   dependenciesFolder: '/Users/my-user/my-spark-job/app',
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
-
-let sparkEnvConf: string = `--conf spark.archives=${pysparkPacker.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`
-
-new dsf.processing.SparkEmrServerlessJob(this, 'SparkJobServerless', {
-  name: 'MyPySpark',
-  applicationId: 'xxxxxxxxx',
-  executionRoleArn: 'ROLE-ARN',
-  executionTimeoutMinutes: 30,
-  s3LogUri: 's3://s3-bucket/monitoring-logs',
-  cloudWatchLogGroupName: 'my-pyspark-serverless-log',
-  sparkSubmitEntryPoint: `${pysparkPacker.entrypointS3Uri}`,
-  sparkSubmitParameters: `--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4 ${sparkEnvConf}`,
-} as dsf.processing.SparkEmrServerlessJobProps);
 ```
 
 
@@ -3713,11 +3713,11 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket storing the artifacts (entrypoint and virtual environment archive). |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM managed policy used by the custom resource for the assets deployment. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive). |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark config containing the configuration of virtual environment archive with all dependencies. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
 
 ---
@@ -3742,7 +3742,7 @@ public readonly artifactsBucket: IBucket;
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
-The bucket storing the artifacts (entrypoint and virtual environment archive).
+The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive).
 
 ---
 
@@ -3754,7 +3754,7 @@ public readonly assetUploadManagedPolicy: IManagedPolicy;
 
 - *Type:* aws-cdk-lib.aws_iam.IManagedPolicy
 
-The IAM managed policy used by the custom resource for the assets deployment.
+The IAM Managed Policy used by the custom resource for the assets deployment.
 
 ---
 
@@ -3766,10 +3766,10 @@ public readonly assetUploadRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
-The role used by the BucketDeployment to upload the artifacts to an s3 bucket.
+The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket.
 
-In case you provide your own bucket for storing the artifacts (entrypoint and virtual environment archive),
-you must provide s3 write access to this role to upload the artifacts.
+In case you provide your own S3 Bucket for storing the artifacts (entrypoint and virtual environment archive),
+you must provide S3 write access to this role to upload the artifacts.
 
 ---
 
@@ -3783,7 +3783,7 @@ public readonly entrypointS3Uri: string;
 
 The S3 location where the entry point is saved in S3.
 
-You pass this location to your Spark job.
+You can pass this location to your Spark job.
 
 ---
 
@@ -3795,7 +3795,7 @@ public readonly sparkVenvConf: string;
 
 - *Type:* string
 
-The Spark config containing the configuration of virtual environment archive with all dependencies.
+The Spark Config containing the configuration of virtual environment archive with all dependencies.
 
 ---
 
@@ -3809,7 +3809,7 @@ public readonly venvArchiveS3Uri: string;
 
 The S3 location where the archive of the Python virtual environment with all dependencies is stored.
 
-You pass this location to your Spark job.
+You can pass this location to your Spark job.
 
 ---
 
@@ -3860,6 +3860,29 @@ public readonly DSF_TRACKING_CODE: string;
 Copy data from one S3 bucket to another.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/s3-data-copy](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/s3-data-copy)
+
+*Example*
+
+```typescript
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+
+const sourceBucket = Bucket.fromBucketName(stack, 'SourceBucket', 'nyc-tlc');
+const bucketName = `test-${stack.region}-${stack.account}-${Utils.generateUniqueHash(stack, 'TargetBucket')}`;
+
+const targetBucket = new Bucket(stack, 'TargetBucket', {
+  bucketName,
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true,
+});
+
+new S3DataCopy(stack, 'S3DataCopy', {
+  sourceBucket,
+  sourceBucketPrefix: 'trip data/',
+  sourceBucketRegion: 'us-east-1',
+  targetBucket,
+});
+```
+
 
 #### Initializers <a name="Initializers" id="aws-dsf.utils.S3DataCopy.Initializer"></a>
 
@@ -4102,7 +4125,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-dsf.processing.SparkEmrCICDPipeline"></a>
 
-A CICD Pipeline that tests and deploys a Spark application in cross-account environments using CDK Pipelines.
+A CICD Pipeline to test and deploy a Spark application on Amazon EMR in cross-account environments using CDK Pipelines.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-cicd-pipeline](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-cicd-pipeline)
 
@@ -4261,11 +4284,11 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing access logs on the artifact bucket. |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket for storing the artifacts. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the access logs on the artifact S3 Bucket. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit repository created as part of the Spark CICD Pipeline. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit Repository created as part of the Spark CICD Pipeline. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
 
 ---
@@ -4290,7 +4313,7 @@ public readonly artifactAccessLogsBucket: IBucket;
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
-The S3 bucket for storing access logs on the artifact bucket.
+The S3 Bucket for storing the access logs on the artifact S3 Bucket.
 
 ---
 
@@ -4302,7 +4325,7 @@ public readonly artifactBucket: IBucket;
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
-The S3 bucket for storing the artifacts.
+The S3 Bucket for storing the artifacts.
 
 ---
 
@@ -4338,7 +4361,7 @@ public readonly repository: Repository;
 
 - *Type:* aws-cdk-lib.aws_codecommit.Repository
 
-The CodeCommit repository created as part of the Spark CICD Pipeline.
+The CodeCommit Repository created as part of the Spark CICD Pipeline.
 
 ---
 
@@ -4383,11 +4406,253 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### SparkEmrContainerJob <a name="SparkEmrContainerJob" id="aws-dsf.processing.SparkEmrContainerJob"></a>
+
+A construct to run Spark Jobs using EMR Container runtime (EMR on EKS).
+
+It creates a Step Functions State Machine that orchestrates the Spark Job.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job)
+
+*Example*
+
+```typescript
+import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
+
+const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
+  jobConfig:{
+    "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
+    "VirtualClusterId": "virtualClusterId",
+    "ExecutionRoleArn": "ROLE-ARN",
+    "JobDriver": {
+      "SparkSubmit": {
+          "EntryPoint": "s3://S3-BUCKET/pi.py",
+          "EntryPointArguments": [],
+          "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
+      },
+    }
+  }
+} as dsf.processing.SparkEmrEksJobApiProps);
+
+new cdk.CfnOutput(this, 'SparkJobStateMachine', {
+  value: job.stateMachine!.stateMachineArn,
+});
+```
+
+
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrContainerJob.Initializer"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+new processing.SparkEmrContainerJob(scope: Construct, id: string, props: SparkEmrContainerJobProps | SparkEmrContainerJobApiProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrContainerJobProps \| aws-dsf.processing.SparkEmrContainerJobApiProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.processing.SparkEmrContainerJobProps | aws-dsf.processing.SparkEmrContainerJobApiProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrContainerJob.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrContainerJob.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrContainerJob.isConstruct"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+processing.SparkEmrContainerJob.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrContainerJob.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrContainerJob.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrContainerJob.property.stateMachine"></a>
+
+```typescript
+public readonly stateMachine: StateMachine;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
+
+The Step Functions State Machine created to orchestrate the Spark Job.
+
+---
+
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrContainerJob.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the State Machine.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainerJob.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainerJob.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### SparkEmrContainersRuntime <a name="SparkEmrContainersRuntime" id="aws-dsf.processing.SparkEmrContainersRuntime"></a>
 
 A construct to create an EKS cluster, configure it and enable it with EMR on EKS.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-containers-runtime)
+
+*Example*
+
+```typescript
+import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+
+const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+
+const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
+  kubectlLambdaLayer: kubectlLayer,
+});
+
+const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
+  name: 'example',
+  createNamespace: true,
+  eksNamespace: 'example',
+});
+
+const s3Read = new PolicyDocument({
+  statements: [new PolicyStatement({
+    actions: [
+      's3:GetObject',
+    ],
+    resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+  })],
+});
+
+const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
+  document: s3Read,
+});
+
+const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolicy, 'example', 's3ReadExecRole');
+```
+
 
 #### Methods <a name="Methods" id="Methods"></a>
 
@@ -5050,214 +5315,6 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrEksJob <a name="SparkEmrEksJob" id="aws-dsf.processing.SparkEmrEksJob"></a>
-
-A construct to run Spark Jobs using EMR on EKS.
-
-Creates a Step Functions State Machine that orchestrates the Spark Job.
-
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job)
-
-*Example*
-
-```typescript
-import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
-
-const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
-  jobConfig:{
-    "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
-    "VirtualClusterId": "virtualClusterId",
-    "ExecutionRoleArn": "ROLE-ARN",
-    "JobDriver": {
-      "SparkSubmit": {
-          "EntryPoint": "s3://S3-BUCKET/pi.py",
-          "EntryPointArguments": [],
-          "SparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
-      },
-    }
-  }
-} as dsf.processing.SparkEmrEksJobApiProps);
-
-new cdk.CfnOutput(this, 'SparkJobStateMachine', {
-  value: job.stateMachine!.stateMachineArn,
-});
-```
-
-
-#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrEksJob.Initializer"></a>
-
-```typescript
-import { processing } from 'aws-dsf'
-
-new processing.SparkEmrEksJob(scope: Construct, id: string, props: SparkEmrEksJobProps | SparkEmrEksJobApiProps)
-```
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrEksJobProps \| aws-dsf.processing.SparkEmrEksJobApiProps</code> | *No description.* |
-
----
-
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.id"></a>
-
-- *Type:* string
-
----
-
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrEksJob.Initializer.parameter.props"></a>
-
-- *Type:* aws-dsf.processing.SparkEmrEksJobProps | aws-dsf.processing.SparkEmrEksJobApiProps
-
----
-
-#### Methods <a name="Methods" id="Methods"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-
----
-
-##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrEksJob.toString"></a>
-
-```typescript
-public toString(): string
-```
-
-Returns a string representation of this construct.
-
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrEksJob.retrieveVersion"></a>
-
-```typescript
-public retrieveVersion(): any
-```
-
-Retrieve DSF package.json version.
-
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-
----
-
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrEksJob.isConstruct"></a>
-
-```typescript
-import { processing } from 'aws-dsf'
-
-processing.SparkEmrEksJob.isConstruct(x: any)
-```
-
-Checks if `x` is a construct.
-
-Use this method instead of `instanceof` to properly detect `Construct`
-instances, even when the construct library is symlinked.
-
-Explanation: in JavaScript, multiple copies of the `constructs` library on
-disk are seen as independent, completely different libraries. As a
-consequence, the class `Construct` in each copy of the `constructs` library
-is seen as a different class, and an instance of one class will not test as
-`instanceof` the other class. `npm install` will not create installations
-like this, but users may manually symlink construct libraries together or
-use a monorepo tool: in those cases, multiple copies of the `constructs`
-library can be accidentally installed, and `instanceof` will behave
-unpredictably. It is safest to avoid using `instanceof`, and using
-this type-testing method instead.
-
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrEksJob.isConstruct.parameter.x"></a>
-
-- *Type:* any
-
-Any object.
-
----
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
-
----
-
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrEksJob.property.node"></a>
-
-```typescript
-public readonly node: Node;
-```
-
-- *Type:* constructs.Node
-
-The tree node.
-
----
-
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrEksJob.property.stateMachine"></a>
-
-```typescript
-public readonly stateMachine: StateMachine;
-```
-
-- *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
-
-Step Functions StateMachine created to orchestrate the Spark Job.
-
----
-
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrEksJob.property.stateMachineLogGroup"></a>
-
-```typescript
-public readonly stateMachineLogGroup: ILogGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_logs.ILogGroup
-
-The CloudWatch Log Group used by the State Machine.
-
----
-
-#### Constants <a name="Constants" id="Constants"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrEksJob.property.DSF_OWNED_TAG"></a>
-
-```typescript
-public readonly DSF_OWNED_TAG: string;
-```
-
-- *Type:* string
-
----
-
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrEksJob.property.DSF_TRACKING_CODE"></a>
-
-```typescript
-public readonly DSF_TRACKING_CODE: string;
-```
-
-- *Type:* string
-
----
-
 ### SparkEmrServerlessJob <a name="SparkEmrServerlessJob" id="aws-dsf.processing.SparkEmrServerlessJob"></a>
 
 A construct to run Spark Jobs using EMR Serverless.
@@ -5272,22 +5329,11 @@ Creates a State Machine that orchestrates the Spark Job.
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
-const myFileSystemPolicy = new PolicyDocument({
-  statements: [new PolicyStatement({
-    actions: [
-      's3:GetObject',
-    ],
-    resources: ['*'],
-  })],
-});
-
-
-const myExecutionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1', myFileSystemPolicy);
-const applicationId = "APPLICATION_ID";
+const myExecutionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'execRole1');
 const job = new dsf.processing.SparkEmrServerlessJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
-    "ApplicationId": applicationId,
+    "ApplicationId": "APPLICATION_ID",
     "ExecutionRoleArn": myExecutionRole.roleArn,
     "JobDriver": {
       "SparkSubmit": {
@@ -5298,10 +5344,6 @@ const job = new dsf.processing.SparkEmrServerlessJob(this, 'SparkJob', {
     }
   }
 } as dsf.processing.SparkEmrServerlessJobApiProps);
-
-new cdk.CfnOutput(this, 'SparkJobStateMachine', {
-  value: job.stateMachine!.stateMachineArn,
-});
 ```
 
 
@@ -5409,9 +5451,9 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Spark Job execution role. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Spark job execution role. |
 
 ---
 
@@ -5435,7 +5477,7 @@ public readonly stateMachine: StateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
-Step Functions StateMachine created to orchestrate the Spark Job.
+The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
@@ -5459,7 +5501,7 @@ public readonly sparkJobExecutionRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
-Spark Job execution role.
+The Spark job execution role.
 
 Use this property to add additional IAM permissions if necessary.
 
@@ -5499,6 +5541,25 @@ public readonly DSF_TRACKING_CODE: string;
 A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime)
+
+*Example*
+
+```typescript
+import { Role } from 'aws-cdk-lib/aws-iam';
+
+const serverlessRuntime = new SparkEmrServerlessRuntime(this, 'EmrApp', {
+  name: 'SparkRuntimeServerless',
+});
+
+const executionRole = serverlessRuntime.createExecution(this, 'ExecutionRole')
+
+const submitterRole = new Role (this, 'SubmitterRole', {
+  assumedBy: new AccountRootPrincipal(),
+});
+
+SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, executionRole, ['EMR-serverless-app-ID]);
+```
+
 
 #### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrServerlessRuntime.Initializer"></a>
 
@@ -5598,8 +5659,8 @@ Retrieve DSF package.json version.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method creating an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method granting the right to start and monitor a job to an IAM Role. |
 
 ---
 
@@ -5643,7 +5704,7 @@ import { processing } from 'aws-dsf'
 processing.SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
 ```
 
-A static method which will create an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates.
+A static method creating an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates.
 
 If no `executionRolePolicyDocument` or `iamPolicyName`
 The method will return a role with only a trust policy to EMR Servereless service principal.
@@ -5692,7 +5753,7 @@ import { processing } from 'aws-dsf'
 processing.SparkEmrServerlessRuntime.grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
 ```
 
-A static method which will grant an IAM Role the right to start and monitor a job.
+A static method granting the right to start and monitor a job to an IAM Role.
 
 The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
 
@@ -5991,7 +6052,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | Step Functions StateMachine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
 | <code><a href="#aws-dsf.processing.SparkJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
@@ -6016,7 +6077,7 @@ public readonly stateMachine: StateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
-Step Functions StateMachine created to orchestrate the Spark Job.
+The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
@@ -6065,7 +6126,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="aws-dsf.storage.AnalyticsBucketProps"></a>
 
-Properties of the {@link AnalyticsBucket } construct.
+Properties for the `AnalyticsBucket` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.storage.AnalyticsBucketProps.Initializer"></a>
 
@@ -6079,29 +6140,29 @@ const analyticsBucketProps: storage.AnalyticsBucketProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS key to use for bucket encryption. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS Key to use for the S3 Bucket encryption. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.accessControl">accessControl</a></code> | <code>aws-cdk-lib.aws_s3.BucketAccessControl</code> | Specifies a canned ACL that grants predefined permissions to the bucket. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the S3 Bucket is removed from the stack or when the stack is deleted. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.blockPublicAccess">blockPublicAccess</a></code> | <code>aws-cdk-lib.aws_s3.BlockPublicAccess</code> | The block public access configuration of this bucket. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.bucketKeyEnabled">bucketKeyEnabled</a></code> | <code>boolean</code> | Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | Physical name of this bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | The physical name of this S3 Bucket. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.cors">cors</a></code> | <code>aws-cdk-lib.aws_s3.CorsRule[]</code> | The CORS configuration of this bucket. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.enforceSSL">enforceSSL</a></code> | <code>boolean</code> | Enforces SSL for requests. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this bucket should send notifications to Amazon EventBridge or not. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Inteligent Tiering Configurations. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this S3 Bucket should send notifications to Amazon EventBridge or not. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Intelligent Tiering Configurations. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the S3 Bucket. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.lifecycleRules">lifecycleRules</a></code> | <code>aws-cdk-lib.aws_s3.LifecycleRule[]</code> | Rules that define how Amazon S3 manages objects during their lifetime. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.metrics">metrics</a></code> | <code>aws-cdk-lib.aws_s3.BucketMetrics[]</code> | The metrics configuration of this bucket. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role to be used by the notifications handler. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to be used by the notifications handler. |
 | <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectLockDefaultRetention">objectLockDefaultRetention</a></code> | <code>aws-cdk-lib.aws_s3.ObjectLockRetention</code> | The default retention mode and rules for S3 Object Lock. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the bucket. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the bucket. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the bucket. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Destination bucket for the server access logs. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the bucket's access logs. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this bucket should have transfer acceleration turned on or not. |
-| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this bucket should have versioning turned on or not. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the S3 Bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the S3 Bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the S3 Bucket. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket destination for the server access logs. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the S3 Bucket's access logs. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this S3 Bucket should have transfer acceleration turned on or not. |
+| <code><a href="#aws-dsf.storage.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this S3 Bucket should have versioning turned on or not. |
 
 ---
 
@@ -6114,7 +6175,7 @@ public readonly encryptionKey: IKey;
 - *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* If `encryption` is set to `KMS` and this property is undefined, a new KMS key will be created and associated with this bucket.
 
-External KMS key to use for bucket encryption.
+External KMS Key to use for the S3 Bucket encryption.
 
 The `encryption` property must be either not specified or set to `KMS` or `DSSE`.
 An error will be emitted if `encryption` is set to `UNENCRYPTED` or `S3_MANAGED`.
@@ -6141,16 +6202,11 @@ public readonly autoDeleteObjects: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false
+- *Default:* False
 
-Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted.
+Whether all objects should be automatically deleted when the S3 Bucket is removed from the stack or when the stack is deleted.
 
 Requires the `removalPolicy` to be set to `RemovalPolicy.DESTROY`.
-
-**Warning** if you have deployed a bucket with `autoDeleteObjects: true`,
-switching this to `false` in a CDK version *before* `1.126.0` will lead to
-all objects in the bucket being deleted. Be sure to update your bucket resources
-by deploying with CDK version `1.126.0` or later **before** switching this value to `false`.
 
 ---
 
@@ -6174,7 +6230,7 @@ public readonly bucketKeyEnabled: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false
+- *Default:* False
 
 Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption.
 
@@ -6195,7 +6251,7 @@ public readonly bucketName: string;
 - *Type:* string
 - *Default:* `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
 
-Physical name of this bucket.
+The physical name of this S3 Bucket.
 
 ---
 
@@ -6219,7 +6275,7 @@ public readonly enforceSSL: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false
+- *Default:* False
 
 Enforces SSL for requests.
 
@@ -6234,9 +6290,9 @@ public readonly eventBridgeEnabled: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false
+- *Default:* False
 
-Whether this bucket should send notifications to Amazon EventBridge or not.
+Whether this S3 Bucket should send notifications to Amazon EventBridge or not.
 
 ---
 
@@ -6249,7 +6305,7 @@ public readonly intelligentTieringConfigurations: IntelligentTieringConfiguratio
 - *Type:* aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]
 - *Default:* No Intelligent Tiiering Configurations.
 
-Inteligent Tiering Configurations.
+Intelligent Tiering Configurations.
 
 ---
 
@@ -6262,7 +6318,7 @@ public readonly inventories: Inventory[];
 - *Type:* aws-cdk-lib.aws_s3.Inventory[]
 - *Default:* No inventory configuration
 
-The inventory configuration of the bucket.
+The inventory configuration of the S3 Bucket.
 
 ---
 
@@ -6299,9 +6355,9 @@ public readonly notificationsHandlerRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* a new role will be created.
+- *Default:* A new IAM Role will be created.
 
-The role to be used by the notifications handler.
+The IAM Role to be used by the notifications handler.
 
 ---
 
@@ -6312,7 +6368,7 @@ public readonly objectLockDefaultRetention: ObjectLockRetention;
 ```
 
 - *Type:* aws-cdk-lib.aws_s3.ObjectLockRetention
-- *Default:* no default retention period
+- *Default:* No default retention period
 
 The default retention mode and rules for S3 Object Lock.
 
@@ -6328,12 +6384,11 @@ public readonly objectLockEnabled: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false, unless objectLockDefaultRetention is set (then, true)
+- *Default:* False, unless objectLockDefaultRetention is set (then, true)
 
-Enable object lock on the bucket.
+Enable object lock on the S3 Bucket.
 
-Enabling object lock for existing buckets is not supported. Object lock must be
-enabled when the bucket is created.
+Enabling object lock for existing buckets is not supported. Object lock must be enabled when the bucket is created.
 
 ---
 
@@ -6346,7 +6401,7 @@ public readonly objectOwnership: ObjectOwnership;
 - *Type:* aws-cdk-lib.aws_s3.ObjectOwnership
 - *Default:* No ObjectOwnership configuration, uploading account will own the object.
 
-The objectOwnership of the bucket.
+The objectOwnership of the S3 Bucket.
 
 ---
 
@@ -6357,9 +6412,9 @@ public readonly publicReadAccess: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false
+- *Default:* False
 
-Grants public read access to all objects in the bucket.
+Grants public read access to all objects in the S3 Bucket.
 
 Similar to calling `bucket.grantPublicAccess()`
 
@@ -6372,11 +6427,12 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* RETAIN (The bucket will be orphaned).
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-Policy to apply when the bucket is removed from this stack.
+The removal policy when deleting the CDK resource.
 
-*
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -6389,7 +6445,7 @@ public readonly serverAccessLogsBucket: IBucket;
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 - *Default:* If "serverAccessLogsPrefix" undefined - access logs disabled, otherwise - log to current bucket.
 
-Destination bucket for the server access logs.
+S3 Bucket destination for the server access logs.
 
 ---
 
@@ -6402,9 +6458,9 @@ public readonly serverAccessLogsPrefix: string;
 - *Type:* string
 - *Default:* No log file prefix
 
-Optional log file prefix to use for the bucket's access logs.
+Optional log file prefix to use for the S3 Bucket's access logs.
 
-If defined without "serverAccessLogsBucket", enables access logs to current bucket with this prefix.
+If defined without "serverAccessLogsBucket", enables access logs to current S3 Bucket with this prefix.
 
 ---
 
@@ -6415,9 +6471,9 @@ public readonly transferAcceleration: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false
+- *Default:* False
 
-Whether this bucket should have transfer acceleration turned on or not.
+Whether this S3 Bucket should have transfer acceleration turned on or not.
 
 ---
 
@@ -6428,15 +6484,15 @@ public readonly versioned: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* false (unless object lock is enabled, then true)
+- *Default:* False (unless object lock is enabled, then true)
 
-Whether this bucket should have versioning turned on or not.
+Whether this S3 Bucket should have versioning turned on or not.
 
 ---
 
 ### ApplicationStageProps <a name="ApplicationStageProps" id="aws-dsf.utils.ApplicationStageProps"></a>
 
-Properties for SparkCICDStage class.
+Properties for the `ApplicationStage` class.
 
 #### Initializer <a name="Initializer" id="aws-dsf.utils.ApplicationStageProps.Initializer"></a>
 
@@ -6455,8 +6511,8 @@ const applicationStageProps: utils.ApplicationStageProps = { ... }
 | <code><a href="#aws-dsf.utils.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
 | <code><a href="#aws-dsf.utils.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
 | <code><a href="#aws-dsf.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
-| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-dsf.utils.ApplicationStackFactory</code> | The application Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>aws-dsf.utils.CICDStage</code> | The Stage to deploy the SparkCICDStack in. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-dsf.utils.ApplicationStackFactory</code> | The application CDK Stack Factory used to create application Stacks. |
+| <code><a href="#aws-dsf.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>aws-dsf.utils.CICDStage</code> | The Stage to deploy the application CDK Stack in. |
 | <code><a href="#aws-dsf.utils.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
 
 ---
@@ -6569,7 +6625,7 @@ public readonly applicationStackFactory: ApplicationStackFactory;
 
 - *Type:* aws-dsf.utils.ApplicationStackFactory
 
-The application Stack to deploy in the different CDK Pipelines Stages.
+The application CDK Stack Factory used to create application Stacks.
 
 ---
 
@@ -6582,7 +6638,7 @@ public readonly stage: CICDStage;
 - *Type:* aws-dsf.utils.CICDStage
 - *Default:* No stage is passed to the application stack
 
-The Stage to deploy the SparkCICDStack in.
+The Stage to deploy the application CDK Stack in.
 
 ---
 
@@ -6601,7 +6657,7 @@ The list of values to create CfnOutputs.
 
 ### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-dsf.governance.DataCatalogDatabaseProps"></a>
 
-The Database catalog properties.
+Properties for the `DataCatalogDatabase` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.governance.DataCatalogDatabaseProps.Initializer"></a>
 
@@ -6619,11 +6675,11 @@ const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | When passed, the crawler that would be created when `autoCrawl` is set to `True` would used this role. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule to run the Glue Crawler. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used for the Glue Crawler logs. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`. |
 | <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
@@ -6687,7 +6743,7 @@ public readonly autoCrawlSchedule: ScheduleProperty;
 - *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
 - *Default:* `cron(1 0 * * ? *)`
 
-The schedule when the Crawler would run.
+The schedule to run the Glue Crawler.
 
 Default is once a day at 00:01h.
 
@@ -6702,7 +6758,7 @@ public readonly crawlerLogEncryptionKey: IKey;
 - *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* Create a new key if none is provided
 
-Encryption key used for Crawler logs.
+KMS encryption Key used for the Glue Crawler logs.
 
 ---
 
@@ -6713,11 +6769,11 @@ public readonly crawlerRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* A new role would be created with least privilege permissions to run the crawler
+- *Default:* When `autoCrawl` is enabled, a new role is created with least privilege permissions to run the crawler
 
-When passed, the crawler that would be created when `autoCrawl` is set to `True` would used this role.
+The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`.
 
-Additional permissions would be granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
+Additional permissions are granted to this role such as S3 Bucket read only permissions and KMS encrypt/decrypt on the key used by the Glue Crawler logging to CloudWatch Logs.
 
 ---
 
@@ -6732,7 +6788,7 @@ public readonly crawlerTableLevelDepth: number;
 
 Directory depth where the table folders are located.
 
-This helps the crawler understand the layout of the folders in S3.
+This helps the Glue Crawler understand the layout of the folders in S3.
 
 ---
 
@@ -6743,17 +6799,18 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* RETAIN (The bucket will be orphaned).
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-Policy to apply when the bucket is removed from this stack.
+The removal policy when deleting the CDK resource.
 
-*
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
 ### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="aws-dsf.governance.DataLakeCatalogProps"></a>
 
-Properties for the DataLakeCatalog Construct.
+Properties for the `DataLakeCatalog` Construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.governance.DataLakeCatalogProps.Initializer"></a>
 
@@ -6767,13 +6824,13 @@ const dataLakeCatalogProps: governance.DataLakeCatalogProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code>aws-dsf.storage.DataLakeStorage</code> | Location of data lake files. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Crawler would run. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used for Crawler logs. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code>aws-dsf.storage.DataLakeStorage</code> | The DataLakeStorage object to create the data catalog on. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Glue Crawler runs, if enabled. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS encryption Key used for the Glue Crawler logs. |
 | <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the database in the Glue Data Catalog. |
-| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the Glue Data Catalog Database. |
+| <code><a href="#aws-dsf.governance.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
@@ -6785,7 +6842,7 @@ public readonly dataLakeStorage: DataLakeStorage;
 
 - *Type:* aws-dsf.storage.DataLakeStorage
 
-Location of data lake files.
+The DataLakeStorage object to create the data catalog on.
 
 ---
 
@@ -6798,7 +6855,7 @@ public readonly autoCrawl: boolean;
 - *Type:* boolean
 - *Default:* True
 
-When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
+When enabled, creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
 
 ---
 
@@ -6811,7 +6868,7 @@ public readonly autoCrawlSchedule: ScheduleProperty;
 - *Type:* aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty
 - *Default:* `cron(1 0 * * ? *)`
 
-The schedule when the Crawler would run.
+The schedule when the Glue Crawler runs, if enabled.
 
 Default is once a day at 00:01h.
 
@@ -6824,9 +6881,9 @@ public readonly crawlerLogEncryptionKey: IKey;
 ```
 
 - *Type:* aws-cdk-lib.aws_kms.IKey
-- *Default:* Create a new key if none is provided
+- *Default:* Create a new KMS Key if none is provided
 
-Encryption key used for Crawler logs.
+The KMS encryption Key used for the Glue Crawler logs.
 
 ---
 
@@ -6841,7 +6898,7 @@ public readonly crawlerTableLevelDepth: number;
 
 Directory depth where the table folders are located.
 
-This helps the crawler understand the layout of the folders in S3.
+This helps the Glue Crawler understand the layout of the folders in S3.
 
 ---
 
@@ -6852,12 +6909,12 @@ public readonly databaseName: string;
 ```
 
 - *Type:* string
-- *Default:* Use the bucket name as the database name and / as the S3 location
+- *Default:* Use the bucket name as the database name and as the S3 location
 
-The suffix of the database in the Glue Data Catalog.
+The suffix of the Glue Data Catalog Database.
 
-The name of the database is composed of the bucket name and this suffix.
-The suffix is also added to the S3 location inside the data lake buckets.
+The name of the Glue Database is composed of the S3 Bucket name and this suffix.
+The suffix is also added to the S3 location inside the data lake S3 Buckets.
 
 ---
 
@@ -6868,11 +6925,12 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* RETAIN (The bucket will be orphaned).
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-Policy to apply when the bucket is removed from this stack.
+The removal policy when deleting the CDK resource.
 
-*
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -7060,7 +7118,7 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ### DataVpcProps <a name="DataVpcProps" id="aws-dsf.utils.DataVpcProps"></a>
 
-The properties for the DataVpc construct.
+The properties for the `DataVpc` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.utils.DataVpcProps.Initializer"></a>
 
@@ -7075,10 +7133,10 @@ const dataVpcProps: utils.DataVpcProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.utils.DataVpcProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR to use to create the subnets in the VPC. |
-| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key for the VPC flow log group. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used to encrypt the VPC Flow Logs in the CloudWatch Log Group. |
 | <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRetention">flowLogRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | The retention period to apply to VPC Flow Logs. |
-| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role for the VPC flow log. |
-| <code><a href="#aws-dsf.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The policy to apply when the bucket is removed from this stack. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used to send the VPC Flow Logs in CloudWatch. |
+| <code><a href="#aws-dsf.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
@@ -7103,11 +7161,11 @@ public readonly flowLogKey: IKey;
 - *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* A new KMS key is created
 
-The KMS key for the VPC flow log group.
+The KMS key used to encrypt the VPC Flow Logs in the CloudWatch Log Group.
 
 The resource policy of the key must be configured according to the AWS documentation.
 
-> [(https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)]((https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html))
+> [https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)
 
 ---
 
@@ -7133,11 +7191,11 @@ public readonly flowLogRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 - *Default:* A new IAM role is created
 
-The IAM role for the VPC flow log.
+The IAM Role used to send the VPC Flow Logs in CloudWatch.
 
 The role must be configured as described in the AWS VPC Flow Log documentation.
 
-> [(https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role)]((https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role))
+> [https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role)
 
 ---
 
@@ -7148,15 +7206,18 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* RETAIN The resources will not be deleted.
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-The policy to apply when the bucket is removed from this stack.
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
 ### EmrVirtualClusterProps <a name="EmrVirtualClusterProps" id="aws-dsf.processing.EmrVirtualClusterProps"></a>
 
-The properties for the EmrVirtualCluster Construct class.
+The properties for the `EmrVirtualCluster` Construct class.
 
 #### Initializer <a name="Initializer" id="aws-dsf.processing.EmrVirtualClusterProps.Initializer"></a>
 
@@ -7170,9 +7231,9 @@ const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | name of the Amazon Emr virtual cluster to be created. |
-| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | creates Amazon EKS namespace. |
-| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | The name of the Amazon EMR Virtual Cluster to be created. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | The flag to create EKS namespace. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | The name of the EKS namespace to be linked to the EMR virtual cluster. |
 
 ---
 
@@ -7184,7 +7245,7 @@ public readonly name: string;
 
 - *Type:* string
 
-name of the Amazon Emr virtual cluster to be created.
+The name of the Amazon EMR Virtual Cluster to be created.
 
 ---
 
@@ -7197,7 +7258,7 @@ public readonly createNamespace: boolean;
 - *Type:* boolean
 - *Default:* Do not create the namespace
 
-creates Amazon EKS namespace.
+The flag to create EKS namespace.
 
 ---
 
@@ -7210,13 +7271,13 @@ public readonly eksNamespace: string;
 - *Type:* string
 - *Default:* Use the default namespace
 
-name of the Amazon EKS namespace to be linked to the Amazon EMR virtual cluster.
+The name of the EKS namespace to be linked to the EMR virtual cluster.
 
 ---
 
 ### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-dsf.processing.PySparkApplicationPackageProps"></a>
 
-Properties for the {PySparkApplicationPackage} construct.
+Properties for the `PySparkApplicationPackage` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.processing.PySparkApplicationPackageProps.Initializer"></a>
 
@@ -7230,11 +7291,11 @@ const pySparkApplicationPackageProps: processing.PySparkApplicationPackageProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the pyspark application. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the PySpark application. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in the code base where the entrypoint is stored. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | When passed, the Lambda function would used this role as its execution role. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda function. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where `requirements.txt` or `pyproject.toml` file is stored. These files are used to install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also contain a `Dockerfile` that can [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env). |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
 
@@ -7248,9 +7309,9 @@ public readonly applicationName: string;
 
 - *Type:* string
 
-The name of the pyspark application.
+The name of the PySpark application.
 
-This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
+This name is used as a parent directory in S3 to store the entrypoint and the optional virtual environment archive
 
 ---
 
@@ -7262,7 +7323,9 @@ public readonly entrypointPath: string;
 
 - *Type:* string
 
-The source path in your code base where you have the entrypoint stored example `~/my-project/src/entrypoint.py`.
+The source path in the code base where the entrypoint is stored.
+
+example `~/my-project/src/entrypoint.py`
 
 ---
 
@@ -7273,7 +7336,7 @@ public readonly artifactsBucket: IBucket;
 ```
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
-- *Default:* A bucket is created
+- *Default:* An S3 Bucket is created
 
 The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored.
 
@@ -7286,9 +7349,9 @@ public readonly assetUploadRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* A new role would be created with least privilege permissions
+- *Default:* A new Role would be created with least privilege permissions
 
-When passed, the Lambda function would used this role as its execution role.
+The IAM Role used by the Lambda function.
 
 Additional permissions would be granted to this role such as S3 Bucket permissions.
 
@@ -7301,9 +7364,9 @@ public readonly dependenciesFolder: string;
 ```
 
 - *Type:* string
-- *Default:* No dependencies (internal or external) are packaged. Only the entrypoint can be used in the Spark Job.
+- *Default:* No dependencies (internal or external) are packaged. Only the entrypoint is used in the Spark Job.
 
-The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also have a `Dockerfile` that will [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it.
+The source directory where `requirements.txt` or `pyproject.toml` file is stored. These files are used to install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also contain a `Dockerfile` that can [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env).
 
 ---
 
@@ -7355,15 +7418,15 @@ const s3DataCopyProps: utils.S3DataCopyProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucket">sourceBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The source bucket. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source bucket region. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | the target bucket. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to use in the custom resource for copying data. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The policy to apply when the resource is removed from this stack. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucket">sourceBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The source S3 Bucket containing the data to copy. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source S3 Bucket region. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The target S3 Bucket. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to use in the custom resource for copying data. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of security groups to attach to the custom resource. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets to deploy the custom resource in. |
-| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | the target bucket prefix with a slash at the end. |
+| <code><a href="#aws-dsf.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | The target S3 Bucket prefix with a slash at the end. |
 | <code><a href="#aws-dsf.utils.S3DataCopyProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the custom resource in. |
 
 ---
@@ -7376,7 +7439,7 @@ public readonly sourceBucket: IBucket;
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
-The source bucket.
+The source S3 Bucket containing the data to copy.
 
 ---
 
@@ -7388,7 +7451,7 @@ public readonly sourceBucketRegion: string;
 
 - *Type:* string
 
-The source bucket region.
+The source S3 Bucket region.
 
 ---
 
@@ -7400,7 +7463,7 @@ public readonly targetBucket: IBucket;
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
-the target bucket.
+The target S3 Bucket.
 
 ---
 
@@ -7413,7 +7476,7 @@ public readonly executionRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 - *Default:* A new role is created
 
-The IAM role to use in the custom resource for copying data.
+The IAM Role to use in the custom resource for copying data.
 
 ---
 
@@ -7424,9 +7487,12 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* RETAIN. The resources will not be deleted.
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-The policy to apply when the resource is removed from this stack.
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -7478,7 +7544,7 @@ public readonly targetBucketPrefix: string;
 - *Type:* string
 - *Default:* No prefix is used
 
-the target bucket prefix with a slash at the end.
+The target S3 Bucket prefix with a slash at the end.
 
 ---
 
@@ -7497,7 +7563,7 @@ The VPC to deploy the custom resource in.
 
 ### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="aws-dsf.processing.SparkEmrCICDPipelineProps"></a>
 
-Properties for SparkEmrCICDPipeline class.
+Properties for the `SparkEmrCICDPipeline` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrCICDPipelineProps.Initializer"></a>
 
@@ -7511,11 +7577,11 @@ const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-dsf.utils.ApplicationStackFactory</code> | The application Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-dsf.utils.ApplicationStackFactory</code> | The application CDK Stack to deploy in the different CDK Pipelines Stages. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application Stack and to pass to the integration tests. |
-| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM policy statements to add permissions for running the integration tests. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests. |
+| <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM Policy statements to add permissions for running the integration tests. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
@@ -7531,7 +7597,7 @@ public readonly applicationStackFactory: ApplicationStackFactory;
 
 - *Type:* aws-dsf.utils.ApplicationStackFactory
 
-The application Stack to deploy in the different CDK Pipelines Stages.
+The application CDK Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
@@ -7569,10 +7635,10 @@ public readonly integTestEnv: {[ key: string ]: string};
 - *Type:* {[ key: string ]: string}
 - *Default:* No environment variables
 
-The environment variables to create from the Application Stack and to pass to the integration tests.
+The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests.
 
-This is used to interact with resources created by the Application Stack from within the integration tests script.
-Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application Stack.
+This is used to interact with resources created by the Application CDK Stack from within the integration tests script.
+Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application CDK Stack.
 
 ---
 
@@ -7585,7 +7651,7 @@ public readonly integTestPermissions: PolicyStatement[];
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement[]
 - *Default:* No permissions
 
-The IAM policy statements to add permissions for running the integration tests.
+The IAM Policy statements to add permissions for running the integration tests.
 
 ---
 
@@ -7638,15 +7704,348 @@ public readonly sparkImage: SparkImage;
 ```
 
 - *Type:* aws-dsf.processing.SparkImage
-- *Default:* EMR v6.12 is used
+- *Default:* [DEFAULT_SPARK_IMAGE](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L51)
 
 The EMR Spark image to use to run the unit tests.
 
 ---
 
+### SparkEmrContainerJobApiProps <a name="SparkEmrContainerJobApiProps" id="aws-dsf.processing.SparkEmrContainerJobApiProps"></a>
+
+Configuration for the EMR on EKS job.
+
+Use this interface when `SparkEmrContainerJobProps` doesn't give you access to the configuration parameters you need.
+
+> [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
+
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainerJobApiProps.Initializer"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+const sparkEmrContainerJobApiProps: processing.SparkEmrContainerJobApiProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.schedule"></a>
+
+```typescript
+public readonly schedule: Schedule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* The Step Functions State Machine is not scheduled.
+
+The Schedule to run the Step Functions state machine.
+
+---
+
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.jobConfig"></a>
+
+```typescript
+public readonly jobConfig: {[ key: string ]: any};
+```
+
+- *Type:* {[ key: string ]: any}
+
+EMR on EKS StartJobRun API configuration.
+
+> [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
+
+---
+
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes"></a>
+
+```typescript
+public readonly executionTimeoutMinutes: number;
+```
+
+- *Type:* number
+- *Default:* 30 minutes
+
+Job execution timeout in minutes.
+
+---
+
+### SparkEmrContainerJobProps <a name="SparkEmrContainerJobProps" id="aws-dsf.processing.SparkEmrContainerJobProps"></a>
+
+Simplified configuration for the `SparkEmrEksJob` construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainerJobProps.Initializer"></a>
+
+```typescript
+import { processing } from 'aws-dsf'
+
+const sparkEmrContainerJobProps: processing.SparkEmrContainerJobProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | The IAM execution Role ARN for the EMR on EKS job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | The execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | The EMR runtime to use. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | The Amazon S3 destination URI for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainerJobProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainerJobProps.property.schedule"></a>
+
+```typescript
+public readonly schedule: Schedule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* The Step Functions State Machine is not scheduled.
+
+The Schedule to run the Step Functions state machine.
+
+---
+
+##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionRoleArn"></a>
+
+```typescript
+public readonly executionRoleArn: string;
+```
+
+- *Type:* string
+
+The IAM execution Role ARN for the EMR on EKS job.
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrContainerJobProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The Spark job name.
+
+---
+
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint"></a>
+
+```typescript
+public readonly sparkSubmitEntryPoint: string;
+```
+
+- *Type:* string
+
+The entry point for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+
+---
+
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrContainerJobProps.property.virtualClusterId"></a>
+
+```typescript
+public readonly virtualClusterId: string;
+```
+
+- *Type:* string
+
+The EMR on EKS virtual cluster ID.
+
+---
+
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrContainerJobProps.property.applicationConfiguration"></a>
+
+```typescript
+public readonly applicationConfiguration: {[ key: string ]: any};
+```
+
+- *Type:* {[ key: string ]: any}
+- *Default:* No configuration is passed to the job.
+
+The application configuration override for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+
+---
+
+##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupName"></a>
+
+```typescript
+public readonly cloudWatchLogGroupName: string;
+```
+
+- *Type:* string
+- *Default:* CloudWatch is not used for logging
+
+The CloudWatch Log Group name for log publishing.
+
+---
+
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+
+```typescript
+public readonly cloudWatchLogGroupStreamPrefix: string;
+```
+
+- *Type:* string
+- *Default:* The application name is used as the prefix
+
+The CloudWatch Log Group stream prefix for log publishing.
+
+---
+
+##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeoutMinutes"></a>
+
+```typescript
+public readonly executionTimeoutMinutes: number;
+```
+
+- *Type:* number
+- *Default:* 30 minutes
+
+The execution timeout in minutes.
+
+---
+
+##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.processing.SparkEmrContainerJobProps.property.maxRetries"></a>
+
+```typescript
+public readonly maxRetries: number;
+```
+
+- *Type:* number
+- *Default:* No retry
+
+The maximum number of retries.
+
+---
+
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel"></a>
+
+```typescript
+public readonly releaseLabel: string;
+```
+
+- *Type:* string
+- *Default:* [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
+
+The EMR runtime to use.
+
+---
+
+##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogUri"></a>
+
+```typescript
+public readonly s3LogUri: string;
+```
+
+- *Type:* string
+- *Default:* An S3 Bucket is created
+
+The Amazon S3 destination URI for log publishing.
+
+---
+
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments"></a>
+
+```typescript
+public readonly sparkSubmitEntryPointArguments: string[];
+```
+
+- *Type:* string[]
+- *Default:* No arguments are passed to the job.
+
+The arguments for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+
+---
+
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters"></a>
+
+```typescript
+public readonly sparkSubmitParameters: string;
+```
+
+- *Type:* string
+- *Default:* No parameters are passed to the job.
+
+The parameters for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+
+---
+
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrContainerJobProps.property.tags"></a>
+
+```typescript
+public readonly tags: {[ key: string ]: any};
+```
+
+- *Type:* {[ key: string ]: any}
+- *Default:* No tags are added
+
+Tags to be added to the EMR Serverless job.
+
+---
+
 ### SparkEmrContainersRuntimeProps <a name="SparkEmrContainersRuntimeProps" id="aws-dsf.processing.SparkEmrContainersRuntimeProps"></a>
 
-The properties for the EmrEksCluster Construct class.
+The properties for the `SparkEmrContainerRuntime` Construct class.
 
 #### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersRuntimeProps.Initializer"></a>
 
@@ -7660,17 +8059,17 @@ const sparkEmrContainersRuntimeProps: processing.SparkEmrContainersRuntimeProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Wether we need to create an EMR on EKS Service Linked Role. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | If set to true, the Construct will create default EKS nodegroups or node provisioners (based on the autoscaler mechanism used). |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole">ec2InstanceRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used for the cluster nodes instance profile. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster to setup EMR on. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | Name of the Amazon EKS cluster to be created. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | The Lambda Layer with Kubectl to use for EKS Cluster setup. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed to access to your cluster’s public Kubernetes API server endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Flag to create an IAM Service Linked Role for EMR on EKS. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | The flag to create default Karpenter Node Provisioners for:  * Critical jobs which use on-demand instances, high speed disks and workload isolation  * Shared workloads which use EC2 Spot Instances and no isolation to optimize costs  * Notebooks which leverage a cost optimized configuration for running EMR managed endpoints and spark drivers/executors. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole">ec2InstanceRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the cluster nodes instance profile. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to configure in the EKS master roles. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS Cluster to setup EMR on. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | The name of the EKS cluster to create. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to use when creating the EKS cluster. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>aws-dsf.processing.KarpenterVersion</code> | The version of karpenter to pass to Helm. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | Kubernetes version for Amazon EKS cluster that will be created The default is changed as new version version of k8s on EKS becomes available. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>aws-dsf.processing.KarpenterVersion</code> | The Karpenter version to use for autoscaling nodes in the EKS Cluster. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The Kubernetes version used to create the EKS Cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR of the VPC to use when creating the EKS cluster. |
 
@@ -7684,10 +8083,13 @@ public readonly kubectlLambdaLayer: ILayerVersion;
 
 - *Type:* aws-cdk-lib.aws_lambda.ILayerVersion
 
-Starting k8s 1.22, CDK no longer bundle the kubectl layer with the code due to breaking npm package size. A layer needs to be passed to the Construct.
+The Lambda Layer with Kubectl to use for EKS Cluster setup.
 
-The cdk [documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
-contains the libraries that you should add for the right Kubernetes version
+Starting k8s 1.22, CDK no longer bundle the Kubectl layer with the code due to breaking npm package size.
+A layer needs to be passed to the Construct.
+
+The CDK [documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_eks.KubernetesVersion.html#static-v1_22)
+contains the libraries that you should add for the right Kubernetes version.
 
 ---
 
@@ -7699,7 +8101,7 @@ public readonly publicAccessCIDRs: string[];
 
 - *Type:* string[]
 
-The CIDR blocks that are allowed access to your cluster’s public Kubernetes API server endpoint.
+The CIDR blocks that are allowed to access to your cluster’s public Kubernetes API server endpoint.
 
 ---
 
@@ -7712,7 +8114,7 @@ public readonly createEmrOnEksServiceLinkedRole: boolean;
 - *Type:* boolean
 - *Default:* true
 
-Wether we need to create an EMR on EKS Service Linked Role.
+Flag to create an IAM Service Linked Role for EMR on EKS.
 
 ---
 
@@ -7725,12 +8127,7 @@ public readonly defaultNodes: boolean;
 - *Type:* boolean
 - *Default:* true
 
-If set to true, the Construct will create default EKS nodegroups or node provisioners (based on the autoscaler mechanism used).
-
-There are three types of nodes:
- * Nodes for critical jobs which use on-demand instances, high speed disks and workload isolation
- * Nodes for shared worklaods which uses spot instances and no isolation to optimize costs
- * Nodes for notebooks which leverage a cost optimized configuration for running EMR managed endpoints and spark drivers/executors.
+The flag to create default Karpenter Node Provisioners for:  * Critical jobs which use on-demand instances, high speed disks and workload isolation  * Shared workloads which use EC2 Spot Instances and no isolation to optimize costs  * Notebooks which leverage a cost optimized configuration for running EMR managed endpoints and spark drivers/executors.
 
 ---
 
@@ -7741,9 +8138,9 @@ public readonly ec2InstanceRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* A role is created with AmazonEKSWorkerNodePolicy, AmazonEC2ContainerRegistryReadOnly, AmazonSSMManagedInstanceCore and AmazonEKS_CNI_Policy AWS managed policies
+- *Default:* A role is created with AmazonEKSWorkerNodePolicy, AmazonEC2ContainerRegistryReadOnly, AmazonSSMManagedInstanceCore and AmazonEKS_CNI_Policy AWS managed policies.
 
-The role used for the cluster nodes instance profile.
+The IAM Role used for the cluster nodes instance profile.
 
 ---
 
@@ -7754,10 +8151,11 @@ public readonly eksAdminRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* An admin role must be passed if `eksCluster` property is not set.
 
-Amazon IAM Role to be added to Amazon EKS master roles that will give access to kubernetes cluster from AWS console UI.
+The IAM Role to configure in the EKS master roles.
 
-An admin role must be passed if `eksCluster` property is not set.
+It will give access to kubernetes cluster from the AWS console.
 You will use this role to manage the EKS cluster and grant other access to it.
 
 ---
@@ -7771,10 +8169,10 @@ public readonly eksCluster: Cluster;
 - *Type:* aws-cdk-lib.aws_eks.Cluster
 - *Default:* An EKS Cluster is created
 
-The EKS cluster to setup EMR on.
+The EKS Cluster to setup EMR on.
 
 The cluster needs to be created in the same CDK Stack.
-If the EKS cluster is provided, the cluster AddOns and all the controllers (ALB Ingress controller, Cluster Autoscaler or Karpenter...) need to be configured.
+If the EKS Cluster is provided, the cluster AddOns and all the controllers (ALB Ingress controller, Karpenter...) need to be configured.
 When providing an EKS cluster, the methods for adding nodegroups can still be used. They implement the best practices for running Spark on EKS.
 
 ---
@@ -7786,9 +8184,9 @@ public readonly eksClusterName: string;
 ```
 
 - *Type:* string
-- *Default:* The [default cluster name]{@link DEFAULT_CLUSTER_NAME }
+- *Default:* The [DEFAULT_CLUSTER_NAME](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/spark-runtime/emr-containers/spark-emr-containers-runtime.ts#L65)
 
-Name of the Amazon EKS cluster to be created.
+The name of the EKS cluster to create.
 
 ---
 
@@ -7799,16 +8197,17 @@ public readonly eksVpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* A new VPC is created.
 
 The VPC to use when creating the EKS cluster.
 
 VPC should have at least two private and public subnets in different Availability Zones.
-All private subnets should have the following tags:
+All private subnets must have the following tags:
  * 'for-use-with-amazon-emr-managed-policies'='true'
  * 'kubernetes.io/role/internal-elb'='1'
-All public subnets should have the following tag:
+All public subnets must have the following tag:
  * 'kubernetes.io/role/elb'='1'
-Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence.
+Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence and a new VPC is created.
 
 ---
 
@@ -7819,9 +8218,9 @@ public readonly karpenterVersion: KarpenterVersion;
 ```
 
 - *Type:* aws-dsf.processing.KarpenterVersion
-- *Default:* The [default Karpenter version]{@link DEFAULT_KARPENTER_VERSION }
+- *Default:* [DEFAULT_KARPENTER_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/karpenter-releases.ts#L11)
 
-The version of karpenter to pass to Helm.
+The Karpenter version to use for autoscaling nodes in the EKS Cluster.
 
 ---
 
@@ -7832,9 +8231,9 @@ public readonly kubernetesVersion: KubernetesVersion;
 ```
 
 - *Type:* aws-cdk-lib.aws_eks.KubernetesVersion
-- *Default:* Kubernetes version {@link DEFAULT_EKS_VERSION }
+- *Default:* [DEFAULT_EKS_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/spark-runtime/emr-containers/spark-emr-containers-runtime.ts#L61)
 
-Kubernetes version for Amazon EKS cluster that will be created The default is changed as new version version of k8s on EKS becomes available.
+The Kubernetes version used to create the EKS Cluster.
 
 ---
 
@@ -7849,8 +8248,8 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-Resources like Amazon cloudwatch log or Amazon S3 bucket
-If DESTROY is selected, context value
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -7861,7 +8260,7 @@ public readonly vpcCidr: string;
 ```
 
 - *Type:* string
-- *Default:* A vpc with the following CIDR 10.0.0.0/16 will be used
+- *Default:* The CIDR 10.0.0.0/16 is used
 
 The CIDR of the VPC to use when creating the EKS cluster.
 
@@ -7870,306 +8269,11 @@ The size of the private subnets is four time the one of the public subnet.
 
 ---
 
-### SparkEmrEksJobApiProps <a name="SparkEmrEksJobApiProps" id="aws-dsf.processing.SparkEmrEksJobApiProps"></a>
-
-Configuration for the EMR on EKS job.
-
-Use this interface when EmrOnEksSparkJobProps doesn't give you access to the configuration parameters you need.
-
-> [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
-
-#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrEksJobApiProps.Initializer"></a>
-
-```typescript
-import { processing } from 'aws-dsf'
-
-const sparkEmrEksJobApiProps: processing.SparkEmrEksJobApiProps = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS Job Configuration. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
-
----
-
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.removalPolicy"></a>
-
-```typescript
-public readonly removalPolicy: RemovalPolicy;
-```
-
-- *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
-
-The removal policy when deleting the CDK resource.
-
-If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
-Otherwise the removalPolicy is reverted to RETAIN.
-
----
-
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.schedule"></a>
-
-```typescript
-public readonly schedule: Schedule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.Schedule
-
-Schedule to run the Step Functions state machine.
-
-> [Schedule](Schedule)
-
-> [[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]]([https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html])
-
----
-
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.jobConfig"></a>
-
-```typescript
-public readonly jobConfig: {[ key: string ]: any};
-```
-
-- *Type:* {[ key: string ]: any}
-
-EMR on EKS Job Configuration.
-
-> [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
-
----
-
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrEksJobApiProps.property.executionTimeoutMinutes"></a>
-
-```typescript
-public readonly executionTimeoutMinutes: number;
-```
-
-- *Type:* number
-- *Default:* 30
-
-Job execution timeout in minutes.
-
----
-
-### SparkEmrEksJobProps <a name="SparkEmrEksJobProps" id="aws-dsf.processing.SparkEmrEksJobProps"></a>
-
-Simplified configuration for the EMR Serverless Job.
-
-> [(https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags)]((https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html#emroneks-StartJobRun-request-tags))
-
-#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrEksJobProps.Initializer"></a>
-
-```typescript
-import { processing } from 'aws-dsf'
-
-const sparkEmrEksJobProps: processing.SparkEmrEksJobProps = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrEksJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-
----
-
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrEksJobProps.property.removalPolicy"></a>
-
-```typescript
-public readonly removalPolicy: RemovalPolicy;
-```
-
-- *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
-
-The removal policy when deleting the CDK resource.
-
-If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
-Otherwise the removalPolicy is reverted to RETAIN.
-
----
-
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrEksJobProps.property.schedule"></a>
-
-```typescript
-public readonly schedule: Schedule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.Schedule
-
-Schedule to run the Step Functions state machine.
-
-> [Schedule](Schedule)
-
-> [[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]]([https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html])
-
----
-
-##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrEksJobProps.property.executionRoleArn"></a>
-
-```typescript
-public readonly executionRoleArn: string;
-```
-
-- *Type:* string
-
----
-
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrEksJobProps.property.name"></a>
-
-```typescript
-public readonly name: string;
-```
-
-- *Type:* string
-
----
-
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPoint"></a>
-
-```typescript
-public readonly sparkSubmitEntryPoint: string;
-```
-
-- *Type:* string
-
----
-
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrEksJobProps.property.virtualClusterId"></a>
-
-```typescript
-public readonly virtualClusterId: string;
-```
-
-- *Type:* string
-
----
-
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrEksJobProps.property.applicationConfiguration"></a>
-
-```typescript
-public readonly applicationConfiguration: {[ key: string ]: any};
-```
-
-- *Type:* {[ key: string ]: any}
-
----
-
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupName"></a>
-
-```typescript
-public readonly cloudWatchLogGroupName: string;
-```
-
-- *Type:* string
-
----
-
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrEksJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
-
-```typescript
-public readonly cloudWatchLogGroupStreamPrefix: string;
-```
-
-- *Type:* string
-
----
-
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrEksJobProps.property.executionTimeoutMinutes"></a>
-
-```typescript
-public readonly executionTimeoutMinutes: number;
-```
-
-- *Type:* number
-
----
-
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.processing.SparkEmrEksJobProps.property.maxRetries"></a>
-
-```typescript
-public readonly maxRetries: number;
-```
-
-- *Type:* number
-
----
-
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrEksJobProps.property.releaseLabel"></a>
-
-```typescript
-public readonly releaseLabel: string;
-```
-
-- *Type:* string
-
----
-
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.processing.SparkEmrEksJobProps.property.s3LogUri"></a>
-
-```typescript
-public readonly s3LogUri: string;
-```
-
-- *Type:* string
-
----
-
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitEntryPointArguments"></a>
-
-```typescript
-public readonly sparkSubmitEntryPointArguments: string[];
-```
-
-- *Type:* string[]
-
----
-
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrEksJobProps.property.sparkSubmitParameters"></a>
-
-```typescript
-public readonly sparkSubmitParameters: string;
-```
-
-- *Type:* string
-
----
-
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrEksJobProps.property.tags"></a>
-
-```typescript
-public readonly tags: {[ key: string ]: any};
-```
-
-- *Type:* {[ key: string ]: any}
-
----
-
 ### SparkEmrServerlessJobApiProps <a name="SparkEmrServerlessJobApiProps" id="aws-dsf.processing.SparkEmrServerlessJobApiProps"></a>
 
 Configuration for the EMR Serverless Job API.
 
-Use this interface when EmrServerlessJobProps doesn't give you access to the configuration parameters you need.
+Use this interface when `SparkEmrServerlessJobProps` doesn't give you access to the configuration parameters you need.
 
 > [[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html])
 
@@ -8186,7 +8290,7 @@ const sparkEmrServerlessJobApiProps: processing.SparkEmrServerlessJobApiProps = 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
 
 ---
@@ -8214,12 +8318,9 @@ public readonly schedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* The Step Functions State Machine is not scheduled.
 
-Schedule to run the Step Functions state machine.
-
-> [Schedule](Schedule)
-
-> [[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]]([https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html])
+The Schedule to run the Step Functions state machine.
 
 ---
 
@@ -8252,24 +8353,24 @@ const sparkEmrServerlessJobProps: processing.SparkEmrServerlessJobProps = { ... 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application ID to execute the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | The IAM execution Role ARN for the EMR Serverless job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | The Spark Job name. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | The KMS Key for encrypting logs on CloudWatch. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group Stream prefix for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | The types of logs to log in CloudWatch Log. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | The execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | Enable Spark persistent UI logs in EMR managed storage. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | The S3 URI for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | The KMS Key for encrypting logs on S3. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
 
 ---
 
@@ -8296,12 +8397,9 @@ public readonly schedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* The Step Functions State Machine is not scheduled.
 
-Schedule to run the Step Functions state machine.
-
-> [Schedule](Schedule)
-
-> [[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]]([https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html])
+The Schedule to run the Step Functions state machine.
 
 ---
 
@@ -8313,6 +8411,20 @@ public readonly applicationId: string;
 
 - *Type:* string
 
+The EMR Serverless Application ID to execute the Spark Job.
+
+---
+
+##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn"></a>
+
+```typescript
+public readonly executionRoleArn: string;
+```
+
+- *Type:* string
+
+The IAM execution Role ARN for the EMR Serverless job.
+
 ---
 
 ##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.name"></a>
@@ -8322,6 +8434,8 @@ public readonly name: string;
 ```
 
 - *Type:* string
+
+The Spark Job name.
 
 ---
 
@@ -8333,6 +8447,10 @@ public readonly sparkSubmitEntryPoint: string;
 
 - *Type:* string
 
+The entry point for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+
 ---
 
 ##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration"></a>
@@ -8342,6 +8460,11 @@ public readonly applicationConfiguration: {[ key: string ]: any};
 ```
 
 - *Type:* {[ key: string ]: any}
+- *Default:* No configuration is passed to the job.
+
+The application configuration override for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
 
 ---
 
@@ -8352,6 +8475,9 @@ public readonly cloudWatchEncryptionKeyArn: string;
 ```
 
 - *Type:* string
+- *Default:* No encryption
+
+The KMS Key for encrypting logs on CloudWatch.
 
 ---
 
@@ -8362,6 +8488,9 @@ public readonly cloudWatchLogGroupName: string;
 ```
 
 - *Type:* string
+- *Default:* No logging to CloudWatch
+
+The CloudWatch Log Group name for log publishing.
 
 ---
 
@@ -8372,6 +8501,9 @@ public readonly cloudWatchLogGroupStreamPrefix: string;
 ```
 
 - *Type:* string
+- *Default:* No prefix is used
+
+The CloudWatch Log Group Stream prefix for log publishing.
 
 ---
 
@@ -8383,15 +8515,7 @@ public readonly cloudWatchLogtypes: string;
 
 - *Type:* string
 
----
-
-##### `executionRoleArn`<sup>Optional</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn"></a>
-
-```typescript
-public readonly executionRoleArn: string;
-```
-
-- *Type:* string
+The types of logs to log in CloudWatch Log.
 
 ---
 
@@ -8402,6 +8526,9 @@ public readonly executionTimeoutMinutes: number;
 ```
 
 - *Type:* number
+- *Default:* 30 minutes
+
+The execution timeout in minutes.
 
 ---
 
@@ -8412,6 +8539,9 @@ public readonly persistentAppUi: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* true
+
+Enable Spark persistent UI logs in EMR managed storage.
 
 ---
 
@@ -8422,6 +8552,9 @@ public readonly persistentAppUIKeyArn: string;
 ```
 
 - *Type:* string
+- *Default:* Use EMR managed Key
+
+The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage.
 
 ---
 
@@ -8432,6 +8565,9 @@ public readonly s3LogUri: string;
 ```
 
 - *Type:* string
+- *Default:* No logging to S3
+
+The S3 URI for log publishing.
 
 ---
 
@@ -8442,6 +8578,9 @@ public readonly s3LogUriKeyArn: string;
 ```
 
 - *Type:* string
+- *Default:* No encryption
+
+The KMS Key for encrypting logs on S3.
 
 ---
 
@@ -8452,6 +8591,11 @@ public readonly sparkSubmitEntryPointArguments: string[];
 ```
 
 - *Type:* string[]
+- *Default:* No arguments are passed to the job.
+
+The arguments for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
 
 ---
 
@@ -8462,6 +8606,11 @@ public readonly sparkSubmitParameters: string;
 ```
 
 - *Type:* string
+- *Default:* No parameters are passed to the job.
+
+The parameters for the Spark submit job run.
+
+> [https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
 
 ---
 
@@ -8472,12 +8621,15 @@ public readonly tags: {[ key: string ]: any};
 ```
 
 - *Type:* {[ key: string ]: any}
+- *Default:* No tags are added
+
+Tags to be added to the EMR Serverless job.
 
 ---
 
 ### SparkEmrServerlessRuntimeProps <a name="SparkEmrServerlessRuntimeProps" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps"></a>
 
-Properties for the {SparkRuntimeServerless} construct.
+Properties for the `SparkEmrServerlessRuntime` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrServerlessRuntimeProps.Initializer"></a>
 
@@ -8491,18 +8643,18 @@ const sparkEmrServerlessRuntimeProps: processing.SparkEmrServerlessRuntimeProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. The name must be less than 64 characters. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code>aws-dsf.processing.Architecture</code> | The CPU architecture type of the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code>aws-dsf.utils.Architecture</code> | The CPU architecture type of the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The image configuration. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The initial capacity of the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The unique custom image configuration used for both the Spark Driver and the Spark Executor. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The pre-initialized capacity of the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration">runtimeConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ConfigurationObjectProperty[]</code> | The runtime and monitoring configurations to used as defaults for all of the job runs of this application. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The container image to use in the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The different custom image configurations used for the Spark Driver and the Spark Executor. |
 
 ---
 
@@ -8514,8 +8666,9 @@ public readonly name: string;
 
 - *Type:* string
 
-The name of the application. The name must be less than 64 characters.
+The name of the application.
 
+The name must be less than 64 characters.
 *Pattern* : `^[A-Za-z0-9._\\/#-]+$`
 
 ---
@@ -8526,7 +8679,8 @@ The name of the application. The name must be less than 64 characters.
 public readonly architecture: Architecture;
 ```
 
-- *Type:* aws-dsf.processing.Architecture
+- *Type:* aws-dsf.utils.Architecture
+- *Default:* x86_64
 
 The CPU architecture type of the application.
 
@@ -8539,6 +8693,7 @@ public readonly autoStartConfiguration: IResolvable | AutoStartConfigurationProp
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty
+- *Default:* True
 
 The configuration for an application to automatically start on job submission.
 
@@ -8551,6 +8706,7 @@ public readonly autoStopConfiguration: IResolvable | AutoStopConfigurationProper
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty
+- *Default:* The application is stopped after 15 minutes of idle time
 
 The configuration for an application to automatically stop after a certain amount of time being idle.
 
@@ -8563,8 +8719,11 @@ public readonly imageConfiguration: IResolvable | ImageConfigurationInputPropert
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty
+- *Default:* EMR base image is used for both the Spark Driver and the Spark Executor
 
-The image configuration.
+The unique custom image configuration used for both the Spark Driver and the Spark Executor.
+
+> [https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html)
 
 ---
 
@@ -8575,8 +8734,11 @@ public readonly initialCapacity: IResolvable | IResolvable | InitialCapacityConf
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]
+- *Default:* No pre-initialized capacity is used
 
-The initial capacity of the application.
+The pre-initialized capacity of the application.
+
+> [https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/pre-init-capacity.html](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/pre-init-capacity.html)
 
 ---
 
@@ -8587,6 +8749,7 @@ public readonly maximumCapacity: IResolvable | MaximumAllowedResourcesProperty;
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty
+- *Default:* Depending on the EMR version
 
 The maximum capacity of the application.
 
@@ -8618,12 +8781,11 @@ public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
 - *Type:* aws-dsf.processing.EmrRuntimeVersion
+- *Default:* [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
 
 The EMR release version associated with the application.
 
-The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
-
-> [EMR_DEFAULT_VERSION](EMR_DEFAULT_VERSION)
+The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
 
 ---
 
@@ -8638,8 +8800,8 @@ public readonly removalPolicy: RemovalPolicy;
 
 The removal policy when deleting the CDK resource.
 
-Resources like Amazon cloudwatch log or Amazon S3 bucket
-If DESTROY is selected, context value
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -8650,8 +8812,11 @@ public readonly runtimeConfiguration: IResolvable | ConfigurationObjectProperty[
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.ConfigurationObjectProperty[]
+- *Default:* No custom configuration is used
 
 The runtime and monitoring configurations to used as defaults for all of the job runs of this application.
+
+> [https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/default-configs.html](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/default-configs.html)
 
 ---
 
@@ -8662,17 +8827,17 @@ public readonly workerTypeSpecifications: IResolvable | {[ key: string ]: IResol
 ```
 
 - *Type:* aws-cdk-lib.IResolvable | {[ key: string ]: aws-cdk-lib.IResolvable | aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}
+- *Default:* EMR base image is used for both the Spark Driver and the Spark Executor
 
-The container image to use in the application.
+The different custom image configurations used for the Spark Driver and the Spark Executor.
 
-If none is provided the application will use the base Amazon EMR Serverless image for the specified EMR release.
-This is an [example](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html) of usage
+> [https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/application-custom-image.html)
 
 ---
 
 ### SparkJobProps <a name="SparkJobProps" id="aws-dsf.processing.SparkJobProps"></a>
 
-Properties for the SparkJob construct.
+The properties for the `SparkJob` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.processing.SparkJobProps.Initializer"></a>
 
@@ -8687,7 +8852,7 @@ const sparkJobProps: processing.SparkJobProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
 
 ---
 
@@ -8714,46 +8879,9 @@ public readonly schedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* The Step Functions State Machine is not scheduled.
 
-Schedule to run the Step Functions state machine.
-
-> [Schedule](Schedule)
-
-> [[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html]]([https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Schedule.html])
-
----
-
-### TrackedConstructProps <a name="TrackedConstructProps" id="aws-dsf.utils.TrackedConstructProps"></a>
-
-The properties for the TrackedConstructProps construct.
-
-#### Initializer <a name="Initializer" id="aws-dsf.utils.TrackedConstructProps.Initializer"></a>
-
-```typescript
-import { utils } from 'aws-dsf'
-
-const trackedConstructProps: utils.TrackedConstructProps = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#aws-dsf.utils.TrackedConstructProps.property.trackingTag">trackingTag</a></code> | <code>string</code> | Unique code used to measure the number of CloudFormation deployments of this construct. |
-
----
-
-##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="aws-dsf.utils.TrackedConstructProps.property.trackingTag"></a>
-
-```typescript
-public readonly trackingTag: string;
-```
-
-- *Type:* string
-
-Unique code used to measure the number of CloudFormation deployments of this construct.
-
-*Pattern* : `^[A-Za-z0-9-_]+$`
+The Schedule to run the Step Functions state machine.
 
 ---
 
@@ -8837,7 +8965,7 @@ The stage of the pipeline.
 
 ### BucketUtils <a name="BucketUtils" id="aws-dsf.utils.BucketUtils"></a>
 
-Utils for working with Amazon S3 buckets.
+Utils for working with Amazon S3 Buckets.
 
 #### Initializers <a name="Initializers" id="aws-dsf.utils.BucketUtils.Initializer"></a>
 
@@ -8902,6 +9030,8 @@ the name of the bucket.
 
 ### StepFunctionUtils <a name="StepFunctionUtils" id="aws-dsf.utils.StepFunctionUtils"></a>
 
+Utils for working with AWS Step Functions.
+
 #### Initializers <a name="Initializers" id="aws-dsf.utils.StepFunctionUtils.Initializer"></a>
 
 ```typescript
@@ -8920,7 +9050,7 @@ new utils.StepFunctionUtils()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.utils.StepFunctionUtils.camelToPascal">camelToPascal</a></code> | Internal function to convert camel case properties to pascal case as required by AWS Step Functions API. |
+| <code><a href="#aws-dsf.utils.StepFunctionUtils.camelToPascal">camelToPascal</a></code> | Convert camel case properties to pascal case as required by AWS Step Functions API. |
 
 ---
 
@@ -8932,7 +9062,7 @@ import { utils } from 'aws-dsf'
 utils.StepFunctionUtils.camelToPascal(config: {[ key: string ]: any})
 ```
 
-Internal function to convert camel case properties to pascal case as required by AWS Step Functions API.
+Convert camel case properties to pascal case as required by AWS Step Functions API.
 
 ###### `config`<sup>Required</sup> <a name="config" id="aws-dsf.utils.StepFunctionUtils.camelToPascal.parameter.config"></a>
 
@@ -9104,6 +9234,8 @@ Convert a string to PascalCase.
 
 - *Type:* string
 
+the string to convert to PascalCase.
+
 ---
 
 
@@ -9111,32 +9243,32 @@ Convert a string to PascalCase.
 
 ## Enums <a name="Enums" id="Enums"></a>
 
-### Architecture <a name="Architecture" id="aws-dsf.processing.Architecture"></a>
+### Architecture <a name="Architecture" id="aws-dsf.utils.Architecture"></a>
 
-Enum defining the CPU architecture type of the application, either  X86_64 or ARM64.
+List of supported CPU architecture, either  X86_64 or ARM64.
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.processing.Architecture.X86_64">X86_64</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.Architecture.ARM64">ARM64</a></code> | *No description.* |
+| <code><a href="#aws-dsf.utils.Architecture.X86_64">X86_64</a></code> | *No description.* |
+| <code><a href="#aws-dsf.utils.Architecture.ARM64">ARM64</a></code> | *No description.* |
 
 ---
 
-##### `X86_64` <a name="X86_64" id="aws-dsf.processing.Architecture.X86_64"></a>
+##### `X86_64` <a name="X86_64" id="aws-dsf.utils.Architecture.X86_64"></a>
 
 ---
 
 
-##### `ARM64` <a name="ARM64" id="aws-dsf.processing.Architecture.ARM64"></a>
+##### `ARM64` <a name="ARM64" id="aws-dsf.utils.Architecture.ARM64"></a>
 
 ---
 
 
 ### CICDStage <a name="CICDStage" id="aws-dsf.utils.CICDStage"></a>
 
-The list of CICD Stages to deploy the SparkCICDStack.
+The list of CICD Stages used in CICD Pipelines.
 
 #### Members <a name="Members" id="Members"></a>
 
@@ -9159,7 +9291,7 @@ The list of CICD Stages to deploy the SparkCICDStack.
 
 ### EmrRuntimeVersion <a name="EmrRuntimeVersion" id="aws-dsf.processing.EmrRuntimeVersion"></a>
 
-Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html).
+Enum defining the EMR version as defined in the [Amazon EMR documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html).
 
 #### Members <a name="Members" id="Members"></a>
 
@@ -9284,7 +9416,7 @@ Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/
 
 ### KarpenterVersion <a name="KarpenterVersion" id="aws-dsf.processing.KarpenterVersion"></a>
 
-Enum defining the Karpenter versions as defined [here](https://github.com/aws/karpenter/releases).
+The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases).
 
 #### Members <a name="Members" id="Members"></a>
 

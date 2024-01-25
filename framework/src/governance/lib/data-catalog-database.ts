@@ -24,35 +24,29 @@ import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../u
  */
 export class DataCatalogDatabase extends TrackedConstruct {
   /**
-   * The Glue Crawler that is automatically created when `autoCrawl` is set to `true` (default value). This property can be undefined if `autoCrawl` is set to `false`.
+   * The Glue Crawler created when `autoCrawl` is set to `true` (default value). This property can be undefined if `autoCrawl` is set to `false`.
    */
   readonly crawler?: CfnCrawler;
-
   /**
    * The Glue security configuration used by the Glue Crawler when created.
    */
   readonly crawlerSecurityConfiguration?: CfnSecurityConfiguration;
-
   /**
-   * The IAM role used by the Glue crawler when created.
+   * The IAM Role used by the Glue crawler when created.
    */
   readonly crawlerRole?: IRole;
-
   /**
-   * The Glue database that's created
+   * The Glue Database that's created
    */
   readonly database: CfnDatabase;
-
   /**
-   * The Glue database name with the randomized suffix to prevent name collisions in the catalog
+   * The Glue Database name with the randomized suffix to prevent name collisions in the catalog
    */
   readonly databaseName: string;
-
   /**
-   * KMS encryption key used by the Crawler
+   * KMS encryption Key used by the Crawler
    */
   readonly crawlerLogEncryptionKey?: IKey;
-
   /**
    * Caching constructor properties for internal reuse by constructor methods
    */
@@ -230,8 +224,8 @@ export class DataCatalogDatabase extends TrackedConstruct {
   }
 
   /**
-   * Grants read access via identity based policy to the principal. This would attach an IAM policy to the principal allowing read access to the database and all its tables.
-   * @param principal Principal to attach the database read access to
+   * Grants read access via identity based policy to the principal. This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables.
+   * @param principal Principal to attach the Glue Database read access to
    * @returns `AddToPrincipalPolicyResult`
    */
   public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult {

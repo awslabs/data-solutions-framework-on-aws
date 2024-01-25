@@ -6,7 +6,7 @@ import { Construct } from 'constructs';
 import { Utils } from './utils';
 
 /**
- * Utils for working with Amazon S3 buckets.
+ * Utils for working with Amazon S3 Buckets.
  */
 export class BucketUtils {
 

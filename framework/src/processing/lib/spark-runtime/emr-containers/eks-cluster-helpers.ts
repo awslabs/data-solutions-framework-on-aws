@@ -14,10 +14,10 @@ import { Utils } from '../../../../utils';
 /**
  * @internal
  * Configure the EBS CSI driver on an Amazon EKS cluster
- * @param {Construct} scope the CDK scope to create resources in
- * @param {ICluster} cluster the EKS cluster to install the CSI driver in
- * @param {KubernetesVersion} eksClusterK8sVersion the Kubernetes version of the EKS cluster
- * @return {IRole} the IAM role used by the CSI driver
+ * @param scope the CDK scope to create resources in
+ * @param cluster the EKS cluster to install the CSI driver in
+ * @param eksClusterK8sVersion the Kubernetes version of the EKS cluster
+ * @return the IAM role used by the CSI driver
  */
 export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksClusterK8sVersion: KubernetesVersion): IRole {
 
@@ -68,9 +68,9 @@ export function ebsCsiDriverSetup(scope: Construct, cluster: ICluster, eksCluste
 /**
  * @internal
  * Configure the IAM role used by the aws-node pod following AWS best practice not to use the EC2 instance role
- * @param {Construct} scope the CDK scope to create resources in
- * @param {ICluster} cluster the EKS cluster to configure the aws-node pod in
- * @return {IRole} the IAM role used by the aws-node pod
+ * @param scope the CDK scope to create resources in
+ * @param cluster the EKS cluster to configure the aws-node pod in
+ * @return the IAM role used by the aws-node pod
  */
 
 export function awsNodeRoleSetup(scope: Construct, cluster: ICluster): IRole {
@@ -111,9 +111,9 @@ export function awsNodeRoleSetup(scope: Construct, cluster: ICluster): IRole {
  * @internal
  * Method to setup a managed nodegroup to bootstrap all cluster vital componenets like
  * core dns, karpenter, ebs csi driver.
- * @param {Construct} scope the CDK scope to create the nodegroup in
- * @param {Cluster} cluster the EKS cluster to create the nodegroup in
- * @param {IRole} nodeRole the IAM role to use for the nodegroup
+ * @param scope the CDK scope to create the nodegroup in
+ * @param cluster the EKS cluster to create the nodegroup in
+ * @param nodeRole the IAM role to use for the nodegroup
  */
 export function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster, nodeRole: IRole) {
 
@@ -153,9 +153,9 @@ export function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster
  * Create a namespace with a predefined baseline
  *  * Create namespace
  *  * Define a Network Policy
- * @param {ICluster} cluster the EKS cluster to create the namespace in
- * @param {string} namespace the namespace to create
- * @return {KubernetesManifest} the Kubernetes manifest for the namespace
+ * @param cluster the EKS cluster to create the namespace in
+ * @param namespace the namespace to create
+ * @return the Kubernetes manifest for the namespace
  */
 export function createNamespace (cluster: ICluster, namespace: string): KubernetesManifest {
 

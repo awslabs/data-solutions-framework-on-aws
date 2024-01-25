@@ -15,9 +15,9 @@ import { Schedule } from 'aws-cdk-lib/aws-events';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import {
   EmrRuntimeVersion,
-  SparkEmrEksJob,
-  SparkEmrEksJobApiProps,
-  SparkEmrEksJobProps,
+  SparkEmrContainerJob,
+  SparkEmrContainerJobApiProps,
+  SparkEmrContainerJobProps,
   SparkEmrServerlessJob,
   SparkEmrServerlessJobApiProps,
   SparkEmrServerlessJobProps,
@@ -180,7 +180,7 @@ describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
   //TODO add ErmOnEks specific role
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
-  new SparkEmrEksJob(stack, 'SparkJobEmrOnEks', {
+  new SparkEmrContainerJob(stack, 'SparkJobEmrOnEks', {
     jobConfig: {
       Name: 'SparkJob',
       VirtualClusterId: 'clusterId',
@@ -201,7 +201,7 @@ describe('Create an SparkJob using EMRonEKS for Spark and grant access', () => {
         },
       },
     },
-  } as SparkEmrEksJobApiProps);
+  } as SparkEmrContainerJobApiProps);
 
 
   const template = Template.fromStack(stack, {});
@@ -248,7 +248,7 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
   const myExecutionRole = SparkEmrServerlessRuntime.createExecutionRole(stack, 'execRole1', myFileSystemPolicy);
 
 
-  new SparkEmrEksJob(stack, 'SparkJobEmrOnEksSimple', {
+  new SparkEmrContainerJob(stack, 'SparkJobEmrOnEksSimple', {
     name: 'SparkJob',
     virtualClusterId: 'clusterId',
     releaseLabel: EmrRuntimeVersion.V6_2,
@@ -257,7 +257,7 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
     cloudWatchLogGroupName: 'spark-job-log-group-emreks-simple',
     sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
     sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
-  } as SparkEmrEksJobProps);
+  } as SparkEmrContainerJobProps);
 
 
   const template = Template.fromStack(stack, {});

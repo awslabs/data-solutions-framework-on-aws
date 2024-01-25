@@ -18,6 +18,25 @@ import { TrackedConstructProps } from './tracked-construct-props';
 /**
  * Copy data from one S3 bucket to another.
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/s3-data-copy
+ *
+ * @example
+ * import { Bucket } from 'aws-cdk-lib/aws-s3';
+ *
+ * const sourceBucket = Bucket.fromBucketName(stack, 'SourceBucket', 'nyc-tlc');
+ * const bucketName = `test-${stack.region}-${stack.account}-${Utils.generateUniqueHash(stack, 'TargetBucket')}`;
+ *
+ * const targetBucket = new Bucket(stack, 'TargetBucket', {
+ *   bucketName,
+ *   removalPolicy: RemovalPolicy.DESTROY,
+ *   autoDeleteObjects: true,
+ * });
+ *
+ * new S3DataCopy(stack, 'S3DataCopy', {
+ *   sourceBucket,
+ *   sourceBucketPrefix: 'trip data/',
+ *   sourceBucketRegion: 'us-east-1',
+ *   targetBucket,
+ * });
  */
 export class S3DataCopy extends TrackedConstruct {
 

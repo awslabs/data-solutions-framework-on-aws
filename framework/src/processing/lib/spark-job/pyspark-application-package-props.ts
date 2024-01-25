@@ -7,28 +7,28 @@ import { IBucket } from 'aws-cdk-lib/aws-s3';
 
 
 /**
- * Properties for the {PySparkApplicationPackage} construct
+ * Properties for the `PySparkApplicationPackage` construct
  */
 export interface PySparkApplicationPackageProps {
 
   /**
-    * The name of the pyspark application.
-    * This name is used as a parent directory in s3 to store the entrypoint as well as virtual environment archive
+    * The name of the PySpark application.
+    * This name is used as a parent directory in S3 to store the entrypoint and the optional virtual environment archive
    */
   readonly applicationName: string;
 
   /**
-   * The source path in your code base where you have the entrypoint stored
+   * The source path in the code base where the entrypoint is stored.
    * example `~/my-project/src/entrypoint.py`
    */
   readonly entrypointPath: string;
 
   /**
-   * The source directory where you have `requirements.txt` or `pyproject.toml` that will install external AND internal Python packages.
+   * The source directory where `requirements.txt` or `pyproject.toml` file is stored. These files are used to install external AND internal Python packages.
    * If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
-   * This location must also have a `Dockerfile` that will
-   * [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env) out of it.
-   * @default - No dependencies (internal or external) are packaged. Only the entrypoint can be used in the Spark Job.
+   * This location must also contain a `Dockerfile` that can
+   * [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env).
+   * @default - No dependencies (internal or external) are packaged. Only the entrypoint is used in the Spark Job.
    */
   readonly dependenciesFolder?: string;
 
@@ -42,13 +42,13 @@ export interface PySparkApplicationPackageProps {
   /**
    * The S3 bucket where to upload the artifacts of the Spark Job
    * This is where the entry point and archive of the virtual environment will be stored
-   * @default - A bucket is created
+   * @default - An S3 Bucket is created
    */
   readonly artifactsBucket?: IBucket;
 
   /**
-   * When passed, the Lambda function would used this role as its execution role. Additional permissions would be granted to this role such as S3 Bucket permissions.
-   * @default A new role would be created with least privilege permissions
+   * The IAM Role used by the Lambda function. Additional permissions would be granted to this role such as S3 Bucket permissions.
+   * @default - A new Role would be created with least privilege permissions
    */
   readonly assetUploadRole?: IRole;
 

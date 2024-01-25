@@ -10,7 +10,18 @@ import { Construct } from 'constructs';
 import { Context } from './context';
 import { DataVpcProps } from './data-vpc-props';
 
-
+/**
+ * Creates a VPC with best practices for securely deploying data solutions.
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Utils/data-vpc
+ *
+ * @example
+ *
+ * const vpc = new DataVpc(this, 'DataVpc', {
+ *   vpcCidr: '10.0.0.0/16',
+ * });
+ *
+ * vpc.tagVpc('Name', 'My VPC');
+ */
 export class DataVpc extends Construct {
 
   /**

@@ -83,10 +83,10 @@ describe('With minimal configuration, the construct', () => {
     });
   });
 
-  test('should run the unit tests with EMR 6.12 as the default', () => {
+  test('should run the unit tests with EMR 6.15 as the default', () => {
     template.hasResourceProperties('AWS::CodeBuild::Project', {
       Source: {
-        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-on-eks/spark/emr-6.12.0:latest.*'),
+        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-on-eks/spark/emr-6.15.0:latest.*'),
       },
       Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
     });

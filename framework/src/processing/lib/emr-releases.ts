@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Enum defining the EMR version as defined [here](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-6x.html)
+ * Enum defining the EMR version as defined in the [Amazon EMR documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
  */
 
 export enum EmrRuntimeVersion {
@@ -43,9 +43,9 @@ export enum SparkImage {
   EMR_6_9 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_9 + ':latest',
 }
 
-export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V6_12;
+export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V6_15;
 
 /**
  * The default Spark image to run the unit tests
  */
-export const DEFAULT_SPARK_IMAGE: SparkImage = SparkImage.EMR_6_12;
+export const DEFAULT_SPARK_IMAGE: SparkImage = SparkImage.EMR_6_15;

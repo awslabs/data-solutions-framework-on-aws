@@ -7,7 +7,7 @@ import { ApplicationStackFactory } from '../../../utils';
 import { SparkImage } from '../emr-releases';
 
 /**
- * Properties for SparkEmrCICDPipeline class.
+ * Properties for the `SparkEmrCICDPipeline` construct.
  */
 export interface SparkEmrCICDPipelineProps {
   /**
@@ -16,7 +16,7 @@ export interface SparkEmrCICDPipelineProps {
   readonly sparkApplicationName: string;
 
   /**
-   * The application Stack to deploy in the different CDK Pipelines Stages
+   * The application CDK Stack to deploy in the different CDK Pipelines Stages
    */
   readonly applicationStackFactory: ApplicationStackFactory;
 
@@ -34,7 +34,7 @@ export interface SparkEmrCICDPipelineProps {
 
   /**
    * The EMR Spark image to use to run the unit tests
-   * @default - EMR v6.12 is used
+   * @default - [DEFAULT_SPARK_IMAGE](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L51)
    */
   readonly sparkImage?: SparkImage;
 
@@ -45,15 +45,15 @@ export interface SparkEmrCICDPipelineProps {
   readonly integTestScript?: string;
 
   /**
-   * The environment variables to create from the Application Stack and to pass to the integration tests.
-   * This is used to interact with resources created by the Application Stack from within the integration tests script.
-   * Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application Stack.
+   * The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests.
+   * This is used to interact with resources created by the Application CDK Stack from within the integration tests script.
+   * Key is the name of the environment variable to create. Value is generally a CfnOutput name from the Application CDK Stack.
    * @default - No environment variables
    */
   readonly integTestEnv?: Record<string, string>;
 
   /**
-   * The IAM policy statements to add permissions for running the integration tests.
+   * The IAM Policy statements to add permissions for running the integration tests.
    * @default - No permissions
    */
   readonly integTestPermissions?: PolicyStatement[];

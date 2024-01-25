@@ -4,58 +4,59 @@
 import { aws_iam, aws_kms, aws_s3, RemovalPolicy } from 'aws-cdk-lib';
 
 /**
- * Properties of the {@link AnalyticsBucket} construct
+ * Properties for the `AnalyticsBucket` construct
  */
 export interface AnalyticsBucketProps {
   /**
-   * Whether this bucket should have versioning turned on or not.
-   * @default false (unless object lock is enabled, then true)
+   * Whether this S3 Bucket should have versioning turned on or not.
+   * @default - False (unless object lock is enabled, then true)
    */
   readonly versioned?: boolean;
 
   /**
-   * Whether this bucket should have transfer acceleration turned on or not.
-   * @default false
+   * Whether this S3 Bucket should have transfer acceleration turned on or not.
+   * @default - False
    */
   readonly transferAcceleration?: boolean;
 
   /**
-   * Optional log file prefix to use for the bucket's access logs.
-   * If defined without "serverAccessLogsBucket", enables access logs to current bucket with this prefix.
+   * Optional log file prefix to use for the S3 Bucket's access logs.
+   * If defined without "serverAccessLogsBucket", enables access logs to current S3 Bucket with this prefix.
    * @default - No log file prefix
    */
   readonly serverAccessLogsPrefix?: string;
 
   /**
-   * Destination bucket for the server access logs.
+   * S3 Bucket destination for the server access logs.
    * @default - If "serverAccessLogsPrefix" undefined - access logs disabled, otherwise - log to current bucket.
    */
   readonly serverAccessLogsBucket?: aws_s3.IBucket;
 
   /**
-   * Policy to apply when the bucket is removed from this stack.
-   * * @default - RETAIN (The bucket will be orphaned).
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
 
   /**
-   * Grants public read access to all objects in the bucket.
+   * Grants public read access to all objects in the S3 Bucket.
    * Similar to calling `bucket.grantPublicAccess()`
-   * @default false
+   * @default - False
    */
   readonly publicReadAccess?: boolean;
 
   /**
-   * The objectOwnership of the bucket.
+   * The objectOwnership of the S3 Bucket.
    * @default - No ObjectOwnership configuration, uploading account will own the object.
    */
   readonly objectOwnership?: aws_s3.ObjectOwnership;
 
   /**
-   * Enable object lock on the bucket.
-   * Enabling object lock for existing buckets is not supported. Object lock must be
-   * enabled when the bucket is created.
-   * @default false, unless objectLockDefaultRetention is set (then, true)
+   * Enable object lock on the S3 Bucket.
+   * Enabling object lock for existing buckets is not supported. Object lock must be enabled when the bucket is created.
+   * @default - False, unless objectLockDefaultRetention is set (then, true)
    */
   readonly objectLockEnabled?: boolean;
 
@@ -63,13 +64,13 @@ export interface AnalyticsBucketProps {
    * The default retention mode and rules for S3 Object Lock.
    * Default retention can be configured after a bucket is created if the bucket already
    * has object lock enabled. Enabling object lock for existing buckets is not supported.
-   * @default no default retention period
+   * @default - No default retention period
    */
   readonly objectLockDefaultRetention?: aws_s3.ObjectLockRetention;
 
   /**
-   * The role to be used by the notifications handler.
-   * @default - a new role will be created.
+   * The IAM Role to be used by the notifications handler.
+   * @default - A new IAM Role will be created.
    */
   readonly notificationsHandlerRole?: aws_iam.IRole;
 
@@ -86,32 +87,32 @@ export interface AnalyticsBucketProps {
   readonly lifecycleRules?: Array<aws_s3.LifecycleRule>;
 
   /**
-   * The inventory configuration of the bucket.
+   * The inventory configuration of the S3 Bucket.
    * @default - No inventory configuration
    */
   readonly inventories?: Array<aws_s3.Inventory>;
 
   /**
-   * Inteligent Tiering Configurations.
-   * @default No Intelligent Tiiering Configurations.
+   * Intelligent Tiering Configurations.
+   * @default - No Intelligent Tiiering Configurations.
    */
   readonly intelligentTieringConfigurations?: Array<aws_s3.IntelligentTieringConfiguration>;
 
   /**
-   * Whether this bucket should send notifications to Amazon EventBridge or not.
-   * @default false
+   * Whether this S3 Bucket should send notifications to Amazon EventBridge or not.
+   * @default - False
    */
   readonly eventBridgeEnabled?: boolean;
 
   /**
    * Enforces SSL for requests.
    * S3.5 of the AWS Foundational Security Best Practices Regarding S3.
-   * @default false
+   * @default - False
    */
   readonly enforceSSL?: boolean;
 
   /**
-   * External KMS key to use for bucket encryption.
+   * External KMS Key to use for the S3 Bucket encryption.
    * The `encryption` property must be either not specified or set to `KMS` or `DSSE`.
    * An error will be emitted if `encryption` is set to `UNENCRYPTED` or `S3_MANAGED`.
    * @default - If `encryption` is set to `KMS` and this property is undefined,
@@ -126,7 +127,7 @@ export interface AnalyticsBucketProps {
   readonly cors?: Array<aws_s3.CorsRule>;
 
   /**
-   * Physical name of this bucket.
+   * The physical name of this S3 Bucket.
    * @default - `analytics-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUE_ID>`
    */
   readonly bucketName?: string;
@@ -140,7 +141,7 @@ export interface AnalyticsBucketProps {
    * - If enabled, S3 will use its own time-limited key instead.
    *
    * Only relevant, when Encryption is set to `BucketEncryption.KMS` or `BucketEncryption.KMS_MANAGED`.
-   * @default - false
+   * @default - False
    */
   readonly bucketKeyEnabled?: boolean;
 
@@ -152,20 +153,15 @@ export interface AnalyticsBucketProps {
   readonly blockPublicAccess?: aws_s3.BlockPublicAccess;
 
   /**
-   * Whether all objects should be automatically deleted when the bucket is removed from the stack or when the stack is deleted.
+   * Whether all objects should be automatically deleted when the S3 Bucket is removed from the stack or when the stack is deleted.
    * Requires the `removalPolicy` to be set to `RemovalPolicy.DESTROY`.
-   *
-   * **Warning** if you have deployed a bucket with `autoDeleteObjects: true`,
-   * switching this to `false` in a CDK version *before* `1.126.0` will lead to
-   * all objects in the bucket being deleted. Be sure to update your bucket resources
-   * by deploying with CDK version `1.126.0` or later **before** switching this value to `false`.
-   * @default false
+   * @default - False
    */
   readonly autoDeleteObjects?: boolean;
 
   /**
    * Specifies a canned ACL that grants predefined permissions to the bucket.
-   * @default BucketAccessControl.PRIVATE
+   * @default - BucketAccessControl.PRIVATE
    */
   readonly accessControl?: aws_s3.BucketAccessControl;
 }

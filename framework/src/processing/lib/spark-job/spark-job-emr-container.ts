@@ -7,15 +7,15 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob } from './spark-job';
-import { SparkEmrEksJobApiProps, SparkEmrEksJobProps } from './spark-job-emr-eks-props';
+import { SparkEmrContainerJobApiProps, SparkEmrContainerJobProps } from './spark-job-emr-container-props';
 import { SparkJobProps } from './spark-job-props';
 import { StepFunctionUtils, TrackedConstruct } from '../../../utils';
 import { EMR_DEFAULT_VERSION } from '../emr-releases';
 
 
 /**
- * A construct to run Spark Jobs using EMR on EKS.
- * Creates a Step Functions State Machine that orchestrates the Spark Job.
+ * A construct to run Spark Jobs using EMR Container runtime (EMR on EKS).
+ * It creates a Step Functions State Machine that orchestrates the Spark Job.
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-job
  *
  * @example
@@ -40,19 +40,19 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  *   value: job.stateMachine!.stateMachineArn,
  * });
  */
-export class SparkEmrEksJob extends SparkJob {
+export class SparkEmrContainerJob extends SparkJob {
 
-  private constructJobConfig: SparkEmrEksJobApiProps;
+  private constructJobConfig: SparkEmrContainerJobApiProps;
 
-  constructor( scope: Construct, id: string, props: SparkEmrEksJobProps | SparkEmrEksJobApiProps) {
-    super(scope, id, SparkEmrEksJob.name, props as SparkJobProps);
+  constructor( scope: Construct, id: string, props: SparkEmrContainerJobProps | SparkEmrContainerJobApiProps) {
+    super(scope, id, SparkEmrContainerJob.name, props as SparkJobProps);
 
     let sparkJobExecutionRole: IRole;
 
     if ('jobConfig' in props) {
-      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrEksJobApiProps);
+      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrContainerJobApiProps);
     } else {
-      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrEksJobProps);
+      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrContainerJobProps);
     }
 
     sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
@@ -79,7 +79,8 @@ export class SparkEmrEksJob extends SparkJob {
 
 
   /**
-   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job, it calls the [StartJobRun API](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html)
+   * Returns the props for the Step Functions CallAwsService Construct that starts the Spark job.
+   * The State Machine uses [StartJobRun API](https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html).
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
@@ -98,7 +99,7 @@ export class SparkEmrEksJob extends SparkJob {
   }
 
   /**
-   * Returns the props for the Step Functions CallAwsService Construct that checks the execution status of the Spark job
+   * Returns the props for the Step Functions CallAwsService Construct that checks the execution status of the Spark job.
    * @see CallAwsService @link[https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions_tasks.CallAwsService.html]
    * @returns CallAwsServiceProps
    */
@@ -178,10 +179,10 @@ export class SparkEmrEksJob extends SparkJob {
 
 
   /**
-   * Set defaults for the EmrOnEksSparkJobApiProps.
-   * @param props EmrOnEksSparkJobApiProps
+   * Set defaults for the SparkEmrContainerJobApiProps.
+   * @param props SparkEmrContainerJobApiProps
    */
-  private setJobApiPropsDefaults(props: SparkEmrEksJobApiProps): SparkEmrEksJobApiProps {
+  private setJobApiPropsDefaults(props: SparkEmrContainerJobApiProps): SparkEmrContainerJobApiProps {
 
     const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
@@ -196,10 +197,10 @@ export class SparkEmrEksJob extends SparkJob {
   }
 
   /**
-   * Set defaults for the EmrOnEksSparkJobProps.
-   * @param props EmrOnEksSparkJobProps
+   * Set defaults for the SparkEmrContainerJobProps.
+   * @param props SparkEmrContainerJobProps
    */
-  private setJobPropsDefaults(props: SparkEmrEksJobProps): SparkEmrEksJobApiProps {
+  private setJobPropsDefaults(props: SparkEmrContainerJobProps): SparkEmrContainerJobApiProps {
     const config = {
       jobConfig: {
         ConfigurationOverrides: {
@@ -212,7 +213,7 @@ export class SparkEmrEksJob extends SparkJob {
           SparkSubmitJobDriver: {},
         },
       },
-    } as SparkEmrEksJobApiProps;
+    } as SparkEmrContainerJobApiProps;
 
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();

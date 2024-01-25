@@ -15,8 +15,10 @@ import { BundlingOptions } from 'aws-cdk-lib/aws-lambda-nodejs';
 export interface DsfProviderProps {
 
   /**
-   * The policy to apply when the custom resource is removed from the stack.
-   * @default - RETAIN. The resources will not be deleted.
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise, the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
   /**
@@ -38,8 +40,8 @@ export interface DsfProviderProps {
    */
   readonly vpc?: IVpc;
   /**
-   * The subnet wherein to run the lambda functions.
-   * @default - the Vpc default strategy if not specified
+   * The subnets wherein to run the lambda functions.
+   * @default - the Vpc default strategy is used
    */
   readonly subnets?: SubnetSelection;
   /**
@@ -68,8 +70,8 @@ export interface HandlerDefinition {
 
   /**
    * The bundling options to use for the lambda function.
-   * @default - Use default bundling options from `NodejsFunction`.
    * @see https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs.NodejsFunction.html#bundling
+   * @default - Use default bundling options from `NodejsFunction`.
    */
   readonly bundling?: BundlingOptions;
   /**

@@ -10,13 +10,14 @@ import { AnalyticsBucket } from '../../storage';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 
 /**
-* Creates AWS Glue Catalog Database for each storage layer. Composed of 3 {@link DataCatalogDatabase} for Bronze, Silver, and Gold data.
+* Creates a Data Lake Catalog on top of a `DataLakeStorage`.
+* The Data Lake Catalog is composed of 3 `DataCatalogDatabase`, one for each storage layer.
 * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/data-lake-catalog
  *
 * @example
 * import { Key } from 'aws-cdk-lib/aws-kms';
 *
-* const logEncryptionKey = new Key(this, 'LogEncryptionKey');
+* const logEncryptionKey = new Key(this, 'ExampleLogKey');
 * const storage = new dsf.storage.DataLakeStorage(this, "ExampleStorage");
 * const dataLakeCatalog = new dsf.governance.DataLakeCatalog(this, "ExampleDataLakeCatalog", {
 *   dataLakeStorage: storage,
@@ -26,19 +27,19 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
 */
 export class DataLakeCatalog extends TrackedConstruct {
   /**
-   * The Glue Database for Bronze bucket
+   * The Glue Database for the Bronze S3 Bucket
    */
   readonly bronzeCatalogDatabase: DataCatalogDatabase;
   /**
-   * The Glue Database for Silver bucket
+   * The Glue Database for the Silver S3 Bucket
    */
   readonly silverCatalogDatabase: DataCatalogDatabase;
   /**
-   * The Glue Database for Gold bucket
+   * The Glue Database for the Gold S3 Bucket
    */
   readonly goldCatalogDatabase: DataCatalogDatabase;
   /**
-   * The KMS Key used to encrypt the crawler logs.
+   * The KMS Key used to encrypt the Glue Crawler logs.
    */
   readonly crawlerLogEncryptionKey?: IKey;
 

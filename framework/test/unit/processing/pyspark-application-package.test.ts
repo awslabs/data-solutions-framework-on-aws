@@ -130,7 +130,7 @@ describe('With minimal configuration, the construct', () => {
       Description: 'Role used by S3 deployment cdk construct for PySparkApplicationPackage',
       ManagedPolicyArns: [
         {
-          Ref: Match.stringLikeRegexp('.*s3BucketDeploymentPolicy.*'),
+          Ref: Match.stringLikeRegexp('.*S3BucketDeploymentPolicy.*'),
         },
       ],
     });
@@ -138,10 +138,10 @@ describe('With minimal configuration, the construct', () => {
 
   test('should attach read permissions to the deployment role on the asset bucket', () => {
     template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyName: Match.stringLikeRegexp('.*s3BucketDeploymentRoleDefaultPolicy.*'),
+      PolicyName: Match.stringLikeRegexp('.*S3BucketDeploymentRoleDefaultPolicy.*'),
       Roles: [
         {
-          Ref: Match.stringLikeRegexp('s3BucketDeploymentRole'),
+          Ref: Match.stringLikeRegexp('S3BucketDeploymentRole'),
         },
       ],
       PolicyDocument: Match.objectLike({
@@ -194,10 +194,10 @@ describe('With minimal configuration, the construct', () => {
 
   test('should attach read and write permissions to the deployment role on the artifact bucket', () => {
     template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyName: Match.stringLikeRegexp('.*s3BucketDeploymentRoleDefaultPolicy.*'),
+      PolicyName: Match.stringLikeRegexp('.*S3BucketDeploymentRoleDefaultPolicy.*'),
       Roles: [
         {
-          Ref: Match.stringLikeRegexp('s3BucketDeploymentRole'),
+          Ref: Match.stringLikeRegexp('S3BucketDeploymentRole'),
         },
       ],
       PolicyDocument: Match.objectLike({

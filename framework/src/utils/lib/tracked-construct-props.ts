@@ -3,7 +3,8 @@
 
 
 /**
- * The properties for the TrackedConstructProps construct.
+ * @internal
+ * The properties for the `TrackedConstruct` construct.
  */
 export interface TrackedConstructProps {
   /**
