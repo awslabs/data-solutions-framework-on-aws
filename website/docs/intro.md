@@ -12,6 +12,8 @@ import TabItem from '@theme/TabItem';
 
 The DSF on AWS library is available in Typescript or Python, select the right tab for code examples in your preferred language.
 
+In this quick start we will show you how you can use DSF to deploy EMR Serverless, create a data lake with three stages (bronze, silver, gold), copy data to bronze, and process it to store it in the silver bucket. You can find the full quick start example [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/examples/dsf-quickstart). The sections below will take you through the steps of creating the CDK application and use it to deploy the infrastructure. 
+
 ### Create a CDK app
 ```bash
 mkdir dsf-example && cd dsf-example
@@ -59,7 +61,7 @@ We can now install DSF on AWS:
     
     # requirements.txt:
     ...
-    aws_dsf==1.0.0
+    aws_dsf==1.0.0rc6
     ...
 
     # Then you can install CDK app requirements:
@@ -140,9 +142,112 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
   </TabItem>
 </Tabs>
 
+
+### Use DSF on AWS to copy the data
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+  
+  In `lib/dsf-example-stack.ts`
+  ```typescript
+
+      const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
+
+      new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
+        sourceBucket,
+        sourceBucketPrefix: 'trip data/',
+        sourceBucketRegion: 'us-east-1',
+        targetBucket,
+        targetBucketPrefix: 'staging-data/',
+      });
+
+  ```
+  
+  ```mdx-code-block
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+    In `dsf_example/dsf_example_stack.py`
+    ```python
+
+    source_bucket = Bucket.from_bucket_name(self, "sourceBucket", "nyc-tlc")
+
+      dsf.utils.S3DataCopy(
+        self,
+        "CopyData",
+        source_bucket=source_bucket,
+        source_bucket_prefix="trip data/",
+        source_bucket_region="us-east-1",
+        target_bucket=storage.bronze_bucket,
+        target_bucket_prefix="nyc-taxi-data/",
+        removal_policy=RemovalPolicy.DESTROY,
+      )
+    ```
+    
+  </TabItem>
+</Tabs>
+
+### Use DSF on AWS to create the EMR Serverless Application
+
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+  
+  In `lib/dsf-example-stack.ts`
+  ```typescript
+
+  const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
+          name: 'spark-serverless-demo',
+      });
+
+
+  const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'EmrServerlessExecutionRole', s3ReadPolicyDocument);
+  
+  ```
+  
+  ```mdx-code-block
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+    In `dsf_example/dsf_example_stack.py`
+    ```python
+
+    # Use DSF on AWS to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
+    spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
+            self, "SparkProcessingRuntime", name="TaxiAggregation",
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+
+    processing_exec_role = dsf.processing.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
+
+    storage.bronze_bucket.grant_read_write(processing_exec_role)
+    source_bucket.grant_read(processing_exec_role)
+
+    ```
+    
+  </TabItem>
+</Tabs>
+
 Now you can deploy your stack!
 ```bash
 cdk deploy
+```
+
+Submit the processing job
+```bash
+aws emr-serverless start-job-run \
+    --application-id application-id \
+    --execution-role-arn job-role-arn \
+    --name job-run-name \
+    --job-driver '{
+        "sparkSubmit": {
+          "entryPoint": "s3://DOC-EXAMPLE-BUCKET/scripts/wordcount.py",
+          "entryPointArguments": ["s3://DOC-EXAMPLE-BUCKET/emr-serverless-spark/output"],
+          "sparkSubmitParameters": "--conf spark.executor.cores=1 --conf spark.executor.memory=4g --conf spark.driver.cores=1 --conf spark.driver.memory=4g --conf spark.executor.instances=1"
+        }
+    }'
 ```
 
 Congrats, you created your first CDK app using DSF on AWS! Go ahead and explore all available [constructs](category/constructs) and [examples](category/examples).

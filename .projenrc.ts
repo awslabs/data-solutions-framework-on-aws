@@ -264,6 +264,9 @@ const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   venvOptions: {
     envdir: '.venv'
   },
+  context: {
+    '@data-solutions-framework-on-aws/removeDataOnDestroy': true,
+  }
 });
 
 sparkDataLakeInfraExampleApp.removeTask('deploy');
@@ -320,6 +323,9 @@ const adsfQuickstart = new awscdk.AwsCdkPythonApp({
   venvOptions: {
     envdir: '.venv'
   },
+  context: {
+    '@data-solutions-framework-on-aws/removeDataOnDestroy': true,
+  }
 });
 
 adsfQuickstart.addGitIgnore('cdk.context.json');
