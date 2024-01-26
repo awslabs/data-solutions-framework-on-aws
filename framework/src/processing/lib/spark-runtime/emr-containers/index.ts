@@ -5,4 +5,4 @@ export * from './spark-emr-containers-runtime';
 export * from './emr-virtual-cluster-props';
 export * from './eks-controllers-version';
 export * from './spark-emr-containers-runtime-props';
-export * from './spark-emr-containers-interactive-session-props';
+export * from './spark-emr-containers-interactive-endpoint-props';

@@ -41,7 +41,7 @@ import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
 import { interactiveSessionsProviderSetup } from './spark-emr-containers-helpers';
-import { SparkEmrContainersRuntimeInteractiveSessionProps } from './spark-emr-containers-interactive-session-props';
+import { SparkEmrContainersRuntimeInteractiveSessionProps } from './spark-emr-containers-interactive-endpoint-props';
 import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { DsfProvider } from '../../../../utils/lib/dsf-provider';
@@ -102,6 +102,48 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * The default CIDR when the VPC is created
    */
   public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
+
+
+  /**
+   * A static method granting the right to start and monitor a job to an IAM Role.
+   * The method will scope the following actions `DescribeJobRun`, `TagResource` and `ListJobRuns` to the provided virtual cluster.
+   * It will also scope `StartJobRun` as defined in the
+   * [EMR on EKS official documentation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/iam-execution-role.html)
+   *
+   * @param startJobRole the role that will call the start job api and which needs to have the iam:PassRole permission
+   * @param executionRoleArn the role used by EMR on EKS to access resources during the job execution
+   * @param virtualClusterArn the EMR Virtual Cluster ARN to which the job is submitted
+   */
+  public static grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], virtualClusterArn: string) {
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-containers:DescribeJobRun',
+        'emr-containers:ListJobRuns',
+      ],
+      resources: [virtualClusterArn],
+    }));
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-containers:StartJobRun',
+      ],
+      resources: [virtualClusterArn],
+      conditions: {
+        ArnEquals: {
+          'emr-containers:ExecutionRoleArn': executionRoleArn,
+        },
+      },
+    }));
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['emr-containers:TagResource'],
+      resources: [`${virtualClusterArn}/jobruns/*`],
+    }));
+  }
 
   /**
    * Get an existing EmrEksCluster based on the cluster name property or create a new one
@@ -565,10 +607,6 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     return virtualCluster;
   }
-
-  //TODO ADD METHOD
-  //GRANT JOB EXECUTION
-  //SCOPE PRINCIPAL TO ONLY A LIST OF EXECUTION ROLE
 
   /**
    * Create and configure a new Amazon IAM Role usable as an execution role.
