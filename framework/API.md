@@ -5811,6 +5811,7 @@ It creates a Step Functions State Machine that orchestrates the Spark Job.
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
 const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
+const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
     "VirtualClusterId": "virtualClusterId",
@@ -6316,7 +6317,7 @@ processing.SparkEmrContainersRuntime.grantStartJobExecution(startJobRole: IRole,
 A static method granting the right to start and monitor a job to an IAM Role.
 
 The method will scope the following actions `DescribeJobRun`, `TagResource` and `ListJobRuns` to the provided virtual cluster.
-It will also scope `StartJobRun` as defined in the 
+It will also scope `StartJobRun` as defined in the
 [EMR on EKS official documentation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/iam-execution-role.html)
 
 ###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.startJobRole"></a>
