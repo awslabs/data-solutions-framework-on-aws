@@ -321,7 +321,7 @@ describe('With default configuration, the construct ', () => {
       PolicyName: Match.stringLikeRegexp('FlowLog.*'),
     }, 1);
     template.resourcePropertiesCountIs('AWS::EC2::SecurityGroup', {
-      GroupDescription: 'EKS Control Plane Security Group',
+      GroupDescription: 'DSF created security group applied to ENI for EKS',
     }, 1);
   });
 

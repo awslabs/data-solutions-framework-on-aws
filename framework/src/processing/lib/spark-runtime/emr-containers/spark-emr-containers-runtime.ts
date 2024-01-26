@@ -4,7 +4,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Aws, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
-import { IGatewayVpcEndpoint, ISecurityGroup, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { IGatewayVpcEndpoint, ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import {
   AlbControllerVersion,
   Cluster,
@@ -309,6 +309,16 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         this.vpc = props.eksVpc;
       }
 
+      const clusterSecurityGroup : SecurityGroup = new SecurityGroup(this, 'clusterSecurityGroup', {
+        vpc: this.vpc,
+        description: 'DSF created security group applied to ENI for EKS',
+        allowAllOutbound: false,
+      });
+
+      props.publicAccessCIDRs.forEach(publicAccessCidr => {
+        clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow all traffic from VPC to EKS Cluster');
+      });
+
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
         clusterName: clusterName,
@@ -323,6 +333,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
           policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
         },
         placeClusterHandlerInVpc: true,
+        securityGroup: clusterSecurityGroup,
       });
 
       // Add the provided Amazon IAM Role as Amazon EKS Admin

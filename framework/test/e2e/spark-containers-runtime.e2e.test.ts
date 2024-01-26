@@ -14,7 +14,7 @@ import { TestStack } from './test-stack';
 import { SparkEmrContainersRuntime } from '../../src/processing';
 
 
-jest.setTimeout(8000000);
+jest.setTimeout(10000000);
 
 // GIVEN
 const app = new cdk.App();
@@ -73,7 +73,7 @@ let deployResult: Record<string, string>;
 beforeAll(async() => {
   // WHEN
   deployResult = await testStack.deploy();
-}, 8000000);
+}, 10000000);
 
 it('Containers runtime created successfully', async () => {
   // THEN
@@ -84,4 +84,4 @@ it('Containers runtime created successfully', async () => {
 
 afterAll(async () => {
   await testStack.destroy();
-}, 8000000);
+}, 10000000);
