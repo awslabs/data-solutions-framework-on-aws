@@ -318,7 +318,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       props.publicAccessCIDRs.forEach(publicAccessCidr => {
         clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow all traffic from VPC to EKS Cluster');
       });
-      
+
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
         clusterName: clusterName,
