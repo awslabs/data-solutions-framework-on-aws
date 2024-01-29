@@ -7,37 +7,41 @@ import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 
 /**
- * RedshiftData properties
+ * The properties for the `RedshiftData` construct
  */
 export interface RedshiftDataProps {
 
   /**
-   * The provisioned Redshift cluster name. It's either this or the `workgroupId`.
+   * The name of the Redshift provisioned to query. It must be configured if the `workgroupId` is not.
+   * @default - The `workgroupId` is used
    */
   readonly clusterIdentifier?: string;
 
   /**
-   * The `workgroupId` for the Redshift Serverless Workgroup. It's either this or the `clusterIdentifier`.
+   * The `workgroupId` for the Redshift Serverless Workgroup to query. It must be configured if the `workgroupId` is not.
    */
   readonly workgroupId?: string;
 
   /**
-   * The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace.
+   * The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace.
    */
   readonly secret: ISecret;
 
   /**
-   * The KMS Key used by the secret
+   * The KMS Key used by the Secret
    */
   readonly secretKmsKey: IKey;
 
   /**
-   * The VPC where the Custom Resource Lambda function would be created in. A Redshift Data API Interface VPC Endpoint would be created in the VPC.
+   * The VPC where the Custom Resource Lambda Function would be created in.
+   * A Redshift Data API Interface VPC Endpoint would be created in the VPC.
+   * @default - No VPC is used. The Custom Resource runs in the Redshift service team VPC
    */
   readonly vpc?: IVpc;
 
   /**
-   * The subnets where the Custom Resource Lambda function would be created in. A Redshift Data API Interface VPC Endpoint would be created in the subnets.
+   * The subnets where the Custom Resource Lambda Function would be created in.
+   * A Redshift Data API Interface VPC Endpoint would be created in the subnets.
    */
   readonly selectedSubnets?: SelectedSubnets;
 

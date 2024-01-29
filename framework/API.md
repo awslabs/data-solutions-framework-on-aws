@@ -8565,7 +8565,7 @@ This is the output path used in the `venv-pack -o` command in your Dockerfile.
 
 ### RedshiftDataProps <a name="RedshiftDataProps" id="aws-dsf.consumption.RedshiftDataProps"></a>
 
-RedshiftData properties.
+The properties for the `RedshiftData` construct.
 
 #### Initializer <a name="Initializer" id="aws-dsf.consumption.RedshiftDataProps.Initializer"></a>
 
@@ -8579,15 +8579,15 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the secret. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier">clusterIdentifier</a></code> | <code>string</code> | The provisioned Redshift cluster name. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the Secret. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier">clusterIdentifier</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Timeout for query execution. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when the stack is deleted. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda function would be created in. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda function would be created in. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
 
 ---
 
@@ -8599,7 +8599,7 @@ public readonly secret: ISecret;
 
 - *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
 
-The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace.
+The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace.
 
 ---
 
@@ -8611,7 +8611,7 @@ public readonly secretKmsKey: IKey;
 
 - *Type:* aws-cdk-lib.aws_kms.IKey
 
-The KMS Key used by the secret.
+The KMS Key used by the Secret.
 
 ---
 
@@ -8622,10 +8622,11 @@ public readonly clusterIdentifier: string;
 ```
 
 - *Type:* string
+- *Default:* The `workgroupId` is used
 
-The provisioned Redshift cluster name.
+The name of the Redshift provisioned to query.
 
-It's either this or the `workgroupId`.
+It must be configured if the `workgroupId` is not.
 
 ---
 
@@ -8675,7 +8676,7 @@ public readonly selectedSubnets: SelectedSubnets;
 
 - *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
 
-The subnets where the Custom Resource Lambda function would be created in.
+The subnets where the Custom Resource Lambda Function would be created in.
 
 A Redshift Data API Interface VPC Endpoint would be created in the subnets.
 
@@ -8688,8 +8689,9 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* No VPC is used. The Custom Resource runs in the Redshift service team VPC
 
-The VPC where the Custom Resource Lambda function would be created in.
+The VPC where the Custom Resource Lambda Function would be created in.
 
 A Redshift Data API Interface VPC Endpoint would be created in the VPC.
 
@@ -8703,9 +8705,9 @@ public readonly workgroupId: string;
 
 - *Type:* string
 
-The `workgroupId` for the Redshift Serverless Workgroup.
+The `workgroupId` for the Redshift Serverless Workgroup to query.
 
-It's either this or the `clusterIdentifier`.
+It must be configured if the `workgroupId` is not.
 
 ---
 
