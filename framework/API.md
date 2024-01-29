@@ -8565,11 +8565,7 @@ This is the output path used in the `venv-pack -o` command in your Dockerfile.
 
 ### RedshiftDataProps <a name="RedshiftDataProps" id="aws-dsf.consumption.RedshiftDataProps"></a>
 
-<<<<<<< HEAD
 The properties for the `RedshiftData` construct.
-=======
-RedshiftData properties.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 #### Initializer <a name="Initializer" id="aws-dsf.consumption.RedshiftDataProps.Initializer"></a>
 
@@ -8583,7 +8579,6 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the Secret. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier">clusterIdentifier</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
@@ -8593,17 +8588,6 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
-=======
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the secret. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier">clusterIdentifier</a></code> | <code>string</code> | The provisioned Redshift cluster name. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Timeout for query execution. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when the stack is deleted. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda function would be created in. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda function would be created in. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup. |
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 ---
 
@@ -8615,11 +8599,7 @@ public readonly secret: ISecret;
 
 - *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
 
-<<<<<<< HEAD
 The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace.
-=======
-The Secrets Manager secret containing the admin credentials for the Redshift cluster / namespace.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 ---
 
@@ -8631,11 +8611,7 @@ public readonly secretKmsKey: IKey;
 
 - *Type:* aws-cdk-lib.aws_kms.IKey
 
-<<<<<<< HEAD
 The KMS Key used by the Secret.
-=======
-The KMS Key used by the secret.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 ---
 
@@ -8646,18 +8622,11 @@ public readonly clusterIdentifier: string;
 ```
 
 - *Type:* string
-<<<<<<< HEAD
 - *Default:* The `workgroupId` is used
 
 The name of the Redshift provisioned to query.
 
 It must be configured if the `workgroupId` is not.
-=======
-
-The provisioned Redshift cluster name.
-
-It's either this or the `workgroupId`.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 ---
 
@@ -8707,11 +8676,7 @@ public readonly selectedSubnets: SelectedSubnets;
 
 - *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
 
-<<<<<<< HEAD
 The subnets where the Custom Resource Lambda Function would be created in.
-=======
-The subnets where the Custom Resource Lambda function would be created in.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 A Redshift Data API Interface VPC Endpoint would be created in the subnets.
 
@@ -8724,14 +8689,9 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
-<<<<<<< HEAD
 - *Default:* No VPC is used. The Custom Resource runs in the Redshift service team VPC
 
 The VPC where the Custom Resource Lambda Function would be created in.
-=======
-
-The VPC where the Custom Resource Lambda function would be created in.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 A Redshift Data API Interface VPC Endpoint would be created in the VPC.
 
@@ -8745,15 +8705,9 @@ public readonly workgroupId: string;
 
 - *Type:* string
 
-<<<<<<< HEAD
 The `workgroupId` for the Redshift Serverless Workgroup to query.
 
 It must be configured if the `workgroupId` is not.
-=======
-The `workgroupId` for the Redshift Serverless Workgroup.
-
-It's either this or the `clusterIdentifier`.
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 ---
 
@@ -8828,10 +8782,7 @@ public readonly defaultIAMRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-<<<<<<< HEAD
-=======
 - *Default:* No default IAM Role would be associated with the namespace
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 Default IAM role.
 
@@ -8844,10 +8795,7 @@ public readonly iamRoles: IRole[];
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole[]
-<<<<<<< HEAD
-=======
 - *Default:* No IAM roles would be associated with the namespace
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 List of IAM roles to be attached to the namespace.
 
@@ -8873,10 +8821,7 @@ public readonly logExports: RedshiftServerlessNamespaceLogExport[];
 ```
 
 - *Type:* aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]
-<<<<<<< HEAD
-=======
 - *Default:* No logs would be exported
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 Logs to be exported.
 
@@ -8889,10 +8834,7 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-<<<<<<< HEAD
-=======
 - *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`)
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 The removal policy when the stack is deleted.
 
@@ -8959,10 +8901,7 @@ public readonly defaultNamespaceDefaultIAMRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-<<<<<<< HEAD
-=======
 - *Default:* No default IAM Role would be associated with the default namespace
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided.
 
@@ -8975,10 +8914,7 @@ public readonly defaultNamespaceIAMRoles: IRole[];
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole[]
-<<<<<<< HEAD
-=======
 - *Default:* No IAM roles would be associated with the default namespace
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided.
 
@@ -9019,10 +8955,7 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-<<<<<<< HEAD
-=======
 - *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`)
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 The removal policy associated with the workgroup.
 
@@ -9047,10 +8980,7 @@ public readonly subnets: SubnetSelection;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
-<<<<<<< HEAD
-=======
 - *Default:* selects the private subnets
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 The subnets the workgroup would be associated with.
 
@@ -9063,10 +8993,7 @@ public readonly vpc: Vpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.Vpc
-<<<<<<< HEAD
-=======
 - *Default:* A VPC would automatically be created
->>>>>>> f1467c7 (Added support for Redshift Serverless and Data API access)
 
 The VPC the workgroup would be associated with.
 
