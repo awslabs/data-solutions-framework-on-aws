@@ -130,6 +130,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
       jdbcSecret: this.namespace.adminSecret,
       jdbcSecretKMSKey: this.namespace.namespaceKey,
       jdbcPath: pathToCrawl,
+      removalPolicy: this.removalPolicy,
     });
 
     catalog.node.addDependency(this.glueConnection);
