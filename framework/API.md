@@ -3376,7 +3376,7 @@ Creates a VPC with best practices for securely deploying data solutions.
 *Example*
 
 ```typescript
-const vpc = new DataVpc(this, 'DataVpc', {
+const vpc = new dsf.utils.DataVpc(this, 'DataVpc', {
   vpcCidr: '10.0.0.0/16',
 });
 
@@ -3866,16 +3866,12 @@ Copy data from one S3 bucket to another.
 ```typescript
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
-const sourceBucket = Bucket.fromBucketName(stack, 'SourceBucket', 'nyc-tlc');
-const bucketName = `test-${stack.region}-${stack.account}-${Utils.generateUniqueHash(stack, 'TargetBucket')}`;
+const sourceBucket = Bucket.fromBucketName(this, 'SourceBucket', 'nyc-tlc');
+const bucketName = `test-${this.region}-${this.account}-${dsf.utils.Utils.generateUniqueHash(this, 'TargetBucket')}`;
 
-const targetBucket = new Bucket(stack, 'TargetBucket', {
-  bucketName,
-  removalPolicy: RemovalPolicy.DESTROY,
-  autoDeleteObjects: true,
-});
+const targetBucket = new Bucket(this, 'TargetBucket');
 
-new S3DataCopy(stack, 'S3DataCopy', {
+new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
   sourceBucket,
   sourceBucketPrefix: 'trip data/',
   sourceBucketRegion: 'us-east-1',
@@ -4419,7 +4415,7 @@ It creates a Step Functions State Machine that orchestrates the Spark Job.
 ```typescript
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
-const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
+const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
     "VirtualClusterId": "virtualClusterId",
@@ -4432,7 +4428,7 @@ const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
       },
     }
   }
-} as dsf.processing.SparkEmrEksJobApiProps);
+} as dsf.processing.SparkEmrContainerJobApiProps);
 
 new cdk.CfnOutput(this, 'SparkJobStateMachine', {
   value: job.stateMachine!.stateMachineArn,
@@ -4624,14 +4620,16 @@ A construct to create an EKS cluster, configure it and enable it with EMR on EKS
 
 ```typescript
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 
 const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
 
-const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
+const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
+  publicAccessCIDRs: ['10.0.0.0/16'],
   kubectlLambdaLayer: kubectlLayer,
 });
 
-const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
+const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
   name: 'example',
   createNamespace: true,
   eksNamespace: 'example',
@@ -4646,7 +4644,7 @@ const s3Read = new PolicyDocument({
   })],
 });
 
-const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
+const s3ReadPolicy = new ManagedPolicy(this, 's3ReadPolicy', {
   document: s3Read,
 });
 
@@ -5545,19 +5543,19 @@ A construct to create a Spark EMR Serverless Application, along with methods to 
 *Example*
 
 ```typescript
-import { Role } from 'aws-cdk-lib/aws-iam';
+import { Role, AccountRootPrincipal } from 'aws-cdk-lib/aws-iam';
 
-const serverlessRuntime = new SparkEmrServerlessRuntime(this, 'EmrApp', {
+const serverlessRuntime = new dsf.processing.SparkEmrServerlessRuntime(this, 'EmrApp', {
   name: 'SparkRuntimeServerless',
 });
 
-const executionRole = serverlessRuntime.createExecution(this, 'ExecutionRole')
+const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'ExecutionRole')
 
 const submitterRole = new Role (this, 'SubmitterRole', {
   assumedBy: new AccountRootPrincipal(),
 });
 
-SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, executionRole, ['EMR-serverless-app-ID]);
+dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, [executionRole.roleArn], ['EMR-serverless-app-ID']);
 ```
 
 

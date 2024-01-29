@@ -20,12 +20,12 @@ Amazon VPC optimized for data platforms.
 
   ```typescript
 class ExampleDefaultDataVpcStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        new dsf.utils.DataVpc(this, 'MyDataVpc', {
-            vpcCidr: '10.0.0.0/16',
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+    });
+  }
 }
   ```
   
@@ -60,17 +60,17 @@ Refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudWatch/la
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        const flowLogKey = Key.fromKeyArn(this, 'FlowLogKey', 'XXXXXXXXXXXXXXXXXXXXXXXX');
+    const flowLogKey = Key.fromKeyArn(this, 'FlowLogKey', 'XXXXXXXXXXXXXXXXXXXXXXXX');
 
-        const flowLogRole = Role.fromRoleArn(this, 'FlowLogRole', 'XXXXXXXXXXXXXXXXXXXXXXXX');
+    const flowLogRole = Role.fromRoleArn(this, 'FlowLogRole', 'XXXXXXXXXXXXXXXXXXXXXXXX');
 
-        new dsf.utils.DataVpc(this, 'MyDataVpc', {
-            vpcCidr: '10.0.0.0/16',
-            flowLogKey,
-            flowLogRole,
-            flowLogRetention: RetentionDays.TWO_WEEKS,
-        });
-    }
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+      flowLogKey,
+      flowLogRole,
+      flowLogRetention: RetentionDays.TWO_WEEKS,
+    });
+  }
 }
   ```
   
@@ -117,14 +117,14 @@ Or programmatically in your CDK app:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        // Set context value for global data removal policy
-        this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+    // Set context value for global data removal policy
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-        new dsf.utils.DataVpc(this, 'MyDataVpc', {
-            vpcCidr: '10.0.0.0/16',
-            removalPolicy: RemovalPolicy.DESTROY
-        });
-    }
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+      removalPolicy: RemovalPolicy.DESTROY
+    });
+  }
 }
   ```
   

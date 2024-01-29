@@ -62,22 +62,22 @@ Create your application stack using the factory pattern:
 
   ```typescript
 export class EmrApplicationStackFactory extends dsf.utils.ApplicationStackFactory {
-    createStack(scope: Construct, stage: dsf.utils.CICDStage): cdk.Stack {
-        return new EmrApplicationStack(scope, 'EmrApplicationStack', stage);
-    }
+  createStack(scope: Construct, stage: dsf.utils.CICDStage): cdk.Stack {
+    return new EmrApplicationStack(scope, 'EmrApplicationStack', stage);
+  }
 }
 
 export class EmrApplicationStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, stage: dsf.utils.CICDStage) {
-        super(scope, id);
+  constructor(scope: Construct, id: string, stage: dsf.utils.CICDStage) {
+    super(scope, id);
 
-        // DEFINE YOUR APPLICATION STACK HERE
-        // USE STAGE PARAMETER TO CUSTOMIZE THE STACK BEHAVIOR
+    // DEFINE YOUR APPLICATION STACK HERE
+    // USE STAGE PARAMETER TO CUSTOMIZE THE STACK BEHAVIOR
 
-        if (stage == dsf.utils.CICDStage.PROD) {
-            // prod only
-        }
+    if (stage == dsf.utils.CICDStage.PROD) {
+      // prod only
     }
+  }
 }
   ```
   
@@ -112,13 +112,13 @@ Use the factory to pass your application stack to the `SparkCICDPipeline` constr
 
   ```typescript
 export class CICDPipelineStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
-            sparkApplicationName: 'SparkTest',
-            applicationStackFactory: new EmrApplicationStackFactory(),
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
+      sparkApplicationName: 'SparkTest',
+      applicationStackFactory: new EmrApplicationStackFactory(),
+    });
+  }
 }
   ```
   
@@ -196,17 +196,17 @@ To use resources that are deployed by the Application Stack like the Step Functi
 
   ```typescript
 export class EmrApplicationStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, _stage: dsf.utils.CICDStage) {
-        super(scope, id);
+  constructor(scope: Construct, id: string, _stage: dsf.utils.CICDStage) {
+    super(scope, id);
 
-        const processingStateMachine = new StateMachine(this, 'ProcessingStateMachine', {
-            // definition ...
-        });
+    const processingStateMachine = new StateMachine(this, 'ProcessingStateMachine', {
+      // definition ...
+    });
 
-        new cdk.CfnOutput(this, 'ProcessingStateMachineArn', {
-            value: processingStateMachine.stateMachineArn,
-        });
-    }
+    new cdk.CfnOutput(this, 'ProcessingStateMachineArn', {
+      value: processingStateMachine.stateMachineArn,
+    });
+  }
 }
   ```
   
@@ -240,21 +240,21 @@ class EmrApplicationStack(cdk.Stack):
 
   ```typescript
 new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
-    sparkApplicationName: 'SparkTest',
-    applicationStackFactory: new EmrApplicationStackFactory(),
-    integTestScript: 'spark/integ.sh',
-    integTestEnv: {
-        STEP_FUNCTION_ARN: 'ProcessingStateMachineArn',
-    },
-    integTestPermissions: [
-        new PolicyStatement({
-            actions: [
-                'states:StartExecution',
-                'states:DescribeExecution',
-            ],
-            resources: ['*'],
-        }),
-    ],
+  sparkApplicationName: 'SparkTest',
+  applicationStackFactory: new EmrApplicationStackFactory(),
+  integTestScript: 'spark/integ.sh',
+  integTestEnv: {
+    STEP_FUNCTION_ARN: 'ProcessingStateMachineArn',
+  },
+  integTestPermissions: [
+    new PolicyStatement({
+      actions: [
+        'states:StartExecution',
+        'states:DescribeExecution',
+      ],
+      resources: ['*'],
+    }),
+  ],
 });
   ```
   

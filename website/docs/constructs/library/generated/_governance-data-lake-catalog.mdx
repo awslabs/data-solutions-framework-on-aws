@@ -24,14 +24,14 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
 
   ```typescript
 class ExampleDefaultDataLakeCatalogStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
 
-        new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
-            dataLakeStorage: storage,
-        });
-    }
+    new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
+      dataLakeStorage: storage,
+    });
+  }
 }
   ```
   
@@ -67,17 +67,17 @@ The parameters apply to the three databases, if you need fine-grained configurat
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
+    const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
 
-        new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
-            dataLakeStorage: storage,
-            autoCrawl: true,
-            autoCrawlSchedule: {
-                scheduleExpression: 'cron(1 0 * * ? *)',
-            },
-            crawlerLogEncryptionKey: encryptionKey,
-            crawlerTableLevelDepth: 3,
-        });
+    new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
+      dataLakeStorage: storage,
+      autoCrawl: true,
+      autoCrawlSchedule: {
+        scheduleExpression: 'cron(1 0 * * ? *)',
+      },
+      crawlerLogEncryptionKey: encryptionKey,
+      crawlerTableLevelDepth: 3,
+    });
   ```
   
   ```mdx-code-block

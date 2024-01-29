@@ -23,16 +23,16 @@ Amazon S3 Bucket configured for analytics.
 
   ```typescript
 class ExampleDefaultAnalyticsBucketStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        const key = new Key(this, 'DataKey', {
-            enableKeyRotation: true
-        });
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const key = new Key(this, 'DataKey', {
+      enableKeyRotation: true
+    });
 
-        new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-            encryptionKey: key
-        });
-    }
+    new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+      encryptionKey: key
+    });
+  }
 }
   ```
   

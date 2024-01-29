@@ -24,16 +24,16 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
 
   ```typescript
 class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        const bucket = new Bucket(this, 'DataCatalogBucket');
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const bucket = new Bucket(this, 'DataCatalogBucket');
 
-        new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
-            locationBucket: bucket,
-            locationPrefix: '/databasePath',
-            name: 'example-db',
-        });
-    }
+    new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
+      locationBucket: bucket,
+      locationPrefix: '/databasePath',
+      name: 'example-db',
+    });
+  }
 }
   ```
   
@@ -69,19 +69,19 @@ You can change the default configuration of the AWS Glue Crawler to match your r
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
+    const encryptionKey = new Key(this, 'CrawlerLogEncryptionKey');
 
-        new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
-            locationBucket: bucket,
-            locationPrefix: '/databasePath',
-            name: 'example-db',
-            autoCrawl: true,
-            autoCrawlSchedule: {
-                scheduleExpression: 'cron(1 0 * * ? *)',
-            },
-            crawlerLogEncryptionKey: encryptionKey,
-            crawlerTableLevelDepth: 3,
-        });
+    new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
+      locationBucket: bucket,
+      locationPrefix: '/databasePath',
+      name: 'example-db',
+      autoCrawl: true,
+      autoCrawlSchedule: {
+        scheduleExpression: 'cron(1 0 * * ? *)',
+      },
+      crawlerLogEncryptionKey: encryptionKey,
+      crawlerTableLevelDepth: 3,
+    });
   ```
   
   ```mdx-code-block

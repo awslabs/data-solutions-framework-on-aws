@@ -22,10 +22,10 @@ Amazon S3 Bucket configured for S3 access logs storage.
 
   ```typescript
 class ExampleDefaultAccessLogsBucketStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket');
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket');
+  }
 }
   ```
   

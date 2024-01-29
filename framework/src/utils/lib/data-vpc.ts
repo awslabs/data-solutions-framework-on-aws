@@ -16,7 +16,7 @@ import { DataVpcProps } from './data-vpc-props';
  *
  * @example
  *
- * const vpc = new DataVpc(this, 'DataVpc', {
+ * const vpc = new dsf.utils.DataVpc(this, 'DataVpc', {
  *   vpcCidr: '10.0.0.0/16',
  * });
  *

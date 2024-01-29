@@ -7,12 +7,12 @@ import * as dsf from '../../index';
 
 /// !show
 class ExampleDefaultDataVpcStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        new dsf.utils.DataVpc(this, 'MyDataVpc', {
-            vpcCidr: '10.0.0.0/16',
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+    });
+  }
 }
 /// !hide
 

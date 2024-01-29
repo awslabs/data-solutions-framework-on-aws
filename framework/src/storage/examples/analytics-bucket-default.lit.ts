@@ -8,16 +8,16 @@ import * as dsf from '../../index';
 
 /// !show
 class ExampleDefaultAnalyticsBucketStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        const key = new Key(this, 'DataKey', {
-            enableKeyRotation: true
-        });
-
-        new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-            encryptionKey: key
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const key = new Key(this, 'DataKey', {
+      enableKeyRotation: true
+    });
+    
+    new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+      encryptionKey: key
+    });
+  }
 }
 /// !hide
 

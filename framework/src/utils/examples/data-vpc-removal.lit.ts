@@ -8,17 +8,17 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 
 
 class ExampleDefaultDataVpcStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-/// !show
-        // Set context value for global data removal policy
-        this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
-        
-        new dsf.utils.DataVpc(this, 'MyDataVpc', {
-            vpcCidr: '10.0.0.0/16',
-            removalPolicy: RemovalPolicy.DESTROY
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    /// !show
+    // Set context value for global data removal policy
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+    
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+      removalPolicy: RemovalPolicy.DESTROY
+    });
+  }
 }
 /// !hide
 

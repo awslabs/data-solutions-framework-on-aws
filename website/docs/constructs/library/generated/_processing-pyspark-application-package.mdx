@@ -71,10 +71,10 @@ For this example we define the PySparkApplicationPackage resource as follows:
 
   ```typescript
 new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
-    applicationName: 'nightly-job-aggregation',
-    entrypointPath: './../spark/src/entrypoint.py',
-    dependenciesFolder: './../spark',
-    venvArchivePath: '/venv-package/pyspark-env.tar.gz',
+  applicationName: 'nightly-job-aggregation',
+  entrypointPath: './../spark/src/entrypoint.py',
+  dependenciesFolder: './../spark',
+  venvArchivePath: '/venv-package/pyspark-env.tar.gz',
 });
   ```
   
@@ -130,26 +130,26 @@ The stack below leverages the resources defined above for PySpark to build the e
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        const runtime = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntime', {
-            name: 'mySparkRuntime',
-        });
+    const runtime = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntime', {
+      name: 'mySparkRuntime',
+    });
 
-        const applicationPackage = new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
-            applicationName: 'nightly-job-aggregation',
-            entrypointPath: './../spark/src/entrypoint.py',
-            dependenciesFolder: './../spark',
-            venvArchivePath: '/venv-package/pyspark-env.tar.gz',
-        });
+    const applicationPackage = new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
+      applicationName: 'nightly-job-aggregation',
+      entrypointPath: './../spark/src/entrypoint.py',
+      dependenciesFolder: './../spark',
+      venvArchivePath: '/venv-package/pyspark-env.tar.gz',
+    });
 
-        new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
-            applicationId: runtime.application.attrApplicationId,
-            name: 'nightly_job',
-            executionRoleArn: executionRole.roleArn,
-            executionTimeoutMinutes: 30,
-            s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
-            sparkSubmitEntryPoint: applicationPackage.entrypointS3Uri, // use the application package entrypoint
-            sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=2 {sparkEnvConf}',
-        });
+    new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
+      applicationId: runtime.application.attrApplicationId,
+      name: 'nightly_job',
+      executionRoleArn: executionRole.roleArn,
+      executionTimeoutMinutes: 30,
+      s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
+      sparkSubmitEntryPoint: applicationPackage.entrypointS3Uri, // use the application package entrypoint
+      sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=2 {sparkEnvConf}',
+    });
   ```
   
   ```mdx-code-block
@@ -160,9 +160,7 @@ The stack below leverages the resources defined above for PySpark to build the e
   ```python
 runtime = dsf.processing.SparkEmrServerlessRuntime(self, "SparkRuntime",
     name="mySparkRuntime"
-)
-
-application_package = dsf.processing.PySparkApplicationPackage(self, "PySparkApplicationPackage",
+)application_package = dsf.processing.PySparkApplicationPackage(self, "PySparkApplicationPackage",
     application_name="nightly-job-aggregation",
     entrypoint_path="./../spark/src/entrypoint.py",
     dependencies_folder="./../spark",
