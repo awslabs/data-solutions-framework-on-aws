@@ -11,60 +11,61 @@ import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
  */
 export interface RedshiftServerlessWorkgroupProps {
   /**
-   * Name of the workgroup
+   * The name of the Redshift Serverless Workgroup
    */
   readonly workgroupName: string;
 
   /**
-   * Base capacity
-   * @default 128
+   * The base capacity of the Redshift Serverless Workgroup in RPU
+   * @default - 128 RPU
    */
   readonly baseCapacity?: number;
 
   /**
-   * The associated namespace
-   * @default A namespace is created when none is provided
+   * The Redshift Serverless Namespace associated with the Workgroup
+   * @default - A default namespace is created
    */
   readonly namespace?: RedshiftServerlessNamespace;
 
   /**
-   * The removal policy associated with the workgroup
-   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`)
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise, the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
-
   /**
-   * The VPC the workgroup would be associated with
-   * @default A VPC would automatically be created
+   * The VPC where the Redshift Serverless Workgroup is deployed
+   * @default - A default VPC is created
    */
   readonly vpc?: Vpc;
 
   /**
-   * The subnets the workgroup would be associated with
-   * @default selects the private subnets
+   * The subnets where the Redshift Serverless Workgroup is deployed
+   * @default - selects the private subnets of the VPC
    */
   readonly subnets?: SubnetSelection;
 
   /**
-   * The security groups the workgroup would be associated with in addition to the primary security group
+   * The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group)
    */
   readonly securityGroups?: SecurityGroup[];
 
   /**
-   * Custom port to use when connecting to workgroup. Valid port ranges are 5431-5455 and 8191-8215.
-   * @default 5439
+   * The custom port to use when connecting to workgroup. Valid port ranges are 5431-5455 and 8191-8215.
+   * @default - 5439
    */
   readonly port?: number;
 
   /**
    * The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided
-   * @default No default IAM Role would be associated with the default namespace
+   * @default - No default IAM Role ise associated with the default namespace
    */
   readonly defaultNamespaceDefaultIAMRole?: IRole;
 
   /**
    * The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided
-   * @default No IAM roles would be associated with the default namespace
+   * @default - No IAM Role is associated with the default namespace
    */
   readonly defaultNamespaceIAMRoles?: IRole[];
 }

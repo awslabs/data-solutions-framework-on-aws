@@ -72,7 +72,17 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
 
         const dataAccess = workgroup.accessData(true)
         const createTable = dataAccess.runCustomSQL("defaultdb",
-                "CREATE TABLE customer(customer_id varchar(50), salutation varchar(5), first_name varchar(50), last_name varchar(50), email_address varchar(100)) diststyle even", "drop table customer"
+                `
+                CREATE TABLE customer(
+                    customer_id varchar(50),
+                    salutation varchar(5),
+                    first_name varchar(50),
+                    last_name varchar(50),
+                    email_address varchar(100)
+                )
+                diststyle even
+                `,
+                "drop table customer"
             )
         const ingestion = dataAccess.ingestData("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
         ingestion.node.addDependency(createTable)
@@ -107,7 +117,16 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack(Stack):
         )
 
         data_access = workgroup.access_data(True)
-        create_table = data_access.run_custom_sQL("defaultdb", "CREATE TABLE customer(customer_id varchar(50), salutation varchar(5), first_name varchar(50), last_name varchar(50), email_address varchar(100)) diststyle even", "drop table customer")
+        create_table = data_access.run_custom_sQL("defaultdb", """
+                            CREATE TABLE customer(
+                                customer_id varchar(50),
+                                salutation varchar(5),
+                                first_name varchar(50),
+                                last_name varchar(50),
+                                email_address varchar(100)
+                            )
+                            diststyle even
+                            """, "drop table customer")
         ingestion = data_access.ingest_data("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
         ingestion.node.add_dependency(create_table)
   ```

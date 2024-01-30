@@ -27,7 +27,17 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
 
         const dataAccess = workgroup.accessData(true)
         const createTable = dataAccess.runCustomSQL("defaultdb", 
-                "CREATE TABLE customer(customer_id varchar(50), salutation varchar(5), first_name varchar(50), last_name varchar(50), email_address varchar(100)) diststyle even", "drop table customer"
+                `
+                CREATE TABLE customer(
+                    customer_id varchar(50), 
+                    salutation varchar(5), 
+                    first_name varchar(50), 
+                    last_name varchar(50), 
+                    email_address varchar(100)
+                ) 
+                diststyle even
+                `, 
+                "drop table customer"
             )
         const ingestion = dataAccess.ingestData("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
         ingestion.node.addDependency(createTable)

@@ -18,48 +18,50 @@ export enum RedshiftServerlessNamespaceLogExport {
  */
 export interface RedshiftServerlessNamespaceProps {
   /**
-   * The name of the namespace
+   * The name of the Redshift Serverless Namespace
    */
   readonly name: string;
 
   /**
-   * The name of the primary database that would be created in the namespace
+   * The name of the primary database that would be created in the Redshift Serverless Namespace
    */
   readonly dbName: string;
 
   /**
-   * Default IAM role
-   * @default No default IAM Role would be associated with the namespace
+   * Default IAM Role associated to the Redshift Serverless Namespace
+   * @default - No default IAM Role is associated with the Redshift Serverless Namespace
    */
   readonly defaultIAMRole?: IRole;
 
   /**
-   * List of IAM roles to be attached to the namespace
-   * @default No IAM roles would be associated with the namespace
+   * List of IAM Roles attached to the Redshift Serverless Namespace
+   * @default - No IAM roles are associated with the Redshift Serverless Namespace
    */
   readonly iamRoles?: IRole[];
 
   /**
-   * The KMS key used to encrypt the data.
-   * @default If none is provided, a new key would be created
+   * The KMS Key used to encrypt the data.
+   * @default - If none is provided, a new key is created
    */
   readonly kmsKey?: Key;
 
   /**
-   * Logs to be exported
-   * @default No logs would be exported
+   * The logs to be exported
+   * @default - No logs are exported
    */
   readonly logExports?: RedshiftServerlessNamespaceLogExport[];
 
   /**
    * The admin username to be used.
-   * @default If none is provided, the default username is "admin"
+   * @default - The default username is "admin"
    */
   readonly adminUsername?: string;
 
   /**
-   * The removal policy when the stack is deleted
-   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`)
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise, the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
 }

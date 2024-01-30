@@ -39,7 +39,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
   /**
    * The roles attached to the namespace.
    * These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
-   * @see {@link https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html}
+   * @see https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html
    */
   readonly roles: Record<string, IRole>;
 

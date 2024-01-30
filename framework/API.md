@@ -4644,7 +4644,7 @@ The roles attached to the namespace.
 
 These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
 
-> [{@link https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html}]({@link https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html})
+> [https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html](https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html)
 
 ---
 
@@ -8727,14 +8727,14 @@ const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceP
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dbName">dbName</a></code> | <code>string</code> | The name of the primary database that would be created in the namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.name">name</a></code> | <code>string</code> | The name of the namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dbName">dbName</a></code> | <code>string</code> | The name of the primary database that would be created in the Redshift Serverless Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminUsername">adminUsername</a></code> | <code>string</code> | The admin username to be used. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM role. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM roles to be attached to the namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS key used to encrypt the data. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]</code> | Logs to be exported. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when the stack is deleted. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM Role associated to the Redshift Serverless Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The logs to be exported. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
@@ -8746,7 +8746,7 @@ public readonly dbName: string;
 
 - *Type:* string
 
-The name of the primary database that would be created in the namespace.
+The name of the primary database that would be created in the Redshift Serverless Namespace.
 
 ---
 
@@ -8758,7 +8758,7 @@ public readonly name: string;
 
 - *Type:* string
 
-The name of the namespace.
+The name of the Redshift Serverless Namespace.
 
 ---
 
@@ -8769,7 +8769,7 @@ public readonly adminUsername: string;
 ```
 
 - *Type:* string
-- *Default:* If none is provided, the default username is "admin"
+- *Default:* The default username is "admin"
 
 The admin username to be used.
 
@@ -8782,9 +8782,9 @@ public readonly defaultIAMRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* No default IAM Role would be associated with the namespace
+- *Default:* No default IAM Role is associated with the Redshift Serverless Namespace
 
-Default IAM role.
+Default IAM Role associated to the Redshift Serverless Namespace.
 
 ---
 
@@ -8795,9 +8795,9 @@ public readonly iamRoles: IRole[];
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole[]
-- *Default:* No IAM roles would be associated with the namespace
+- *Default:* No IAM roles are associated with the Redshift Serverless Namespace
 
-List of IAM roles to be attached to the namespace.
+List of IAM Roles attached to the Redshift Serverless Namespace.
 
 ---
 
@@ -8808,9 +8808,9 @@ public readonly kmsKey: Key;
 ```
 
 - *Type:* aws-cdk-lib.aws_kms.Key
-- *Default:* If none is provided, a new key would be created
+- *Default:* If none is provided, a new key is created
 
-The KMS key used to encrypt the data.
+The KMS Key used to encrypt the data.
 
 ---
 
@@ -8821,9 +8821,9 @@ public readonly logExports: RedshiftServerlessNamespaceLogExport[];
 ```
 
 - *Type:* aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]
-- *Default:* No logs would be exported
+- *Default:* No logs are exported
 
-Logs to be exported.
+The logs to be exported.
 
 ---
 
@@ -8834,9 +8834,12 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`)
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-The removal policy when the stack is deleted.
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -8856,16 +8859,16 @@ const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupP
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.workgroupName">workgroupName</a></code> | <code>string</code> | Name of the workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | Base capacity. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.workgroupName">workgroupName</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceDefaultIAMRole">defaultNamespaceDefaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceIAMRoles">defaultNamespaceIAMRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The associated namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | Custom port to use when connecting to workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy associated with the workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The security groups the workgroup would be associated with in addition to the primary security group. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets the workgroup would be associated with. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The VPC the workgroup would be associated with. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The Redshift Serverless Namespace associated with the Workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | The custom port to use when connecting to workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
 
 ---
 
@@ -8877,7 +8880,7 @@ public readonly workgroupName: string;
 
 - *Type:* string
 
-Name of the workgroup.
+The name of the Redshift Serverless Workgroup.
 
 ---
 
@@ -8888,9 +8891,9 @@ public readonly baseCapacity: number;
 ```
 
 - *Type:* number
-- *Default:* 128
+- *Default:* 128 RPU
 
-Base capacity.
+The base capacity of the Redshift Serverless Workgroup in RPU.
 
 ---
 
@@ -8901,7 +8904,7 @@ public readonly defaultNamespaceDefaultIAMRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* No default IAM Role would be associated with the default namespace
+- *Default:* No default IAM Role ise associated with the default namespace
 
 The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided.
 
@@ -8914,7 +8917,7 @@ public readonly defaultNamespaceIAMRoles: IRole[];
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole[]
-- *Default:* No IAM roles would be associated with the default namespace
+- *Default:* No IAM Role is associated with the default namespace
 
 The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided.
 
@@ -8927,9 +8930,9 @@ public readonly namespace: RedshiftServerlessNamespace;
 ```
 
 - *Type:* aws-dsf.consumption.RedshiftServerlessNamespace
-- *Default:* A namespace is created when none is provided
+- *Default:* A default namespace is created
 
-The associated namespace.
+The Redshift Serverless Namespace associated with the Workgroup.
 
 ---
 
@@ -8942,7 +8945,7 @@ public readonly port: number;
 - *Type:* number
 - *Default:* 5439
 
-Custom port to use when connecting to workgroup.
+The custom port to use when connecting to workgroup.
 
 Valid port ranges are 5431-5455 and 8191-8215.
 
@@ -8955,9 +8958,12 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
-- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`)
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-The removal policy associated with the workgroup.
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -8969,7 +8975,7 @@ public readonly securityGroups: SecurityGroup[];
 
 - *Type:* aws-cdk-lib.aws_ec2.SecurityGroup[]
 
-The security groups the workgroup would be associated with in addition to the primary security group.
+The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group).
 
 ---
 
@@ -8980,9 +8986,9 @@ public readonly subnets: SubnetSelection;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
-- *Default:* selects the private subnets
+- *Default:* selects the private subnets of the VPC
 
-The subnets the workgroup would be associated with.
+The subnets where the Redshift Serverless Workgroup is deployed.
 
 ---
 
@@ -8993,9 +8999,9 @@ public readonly vpc: Vpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.Vpc
-- *Default:* A VPC would automatically be created
+- *Default:* A default VPC is created
 
-The VPC the workgroup would be associated with.
+The VPC where the Redshift Serverless Workgroup is deployed.
 
 ---
 
