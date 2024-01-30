@@ -7,14 +7,14 @@ import * as dsf from '../../index';
 
 /// !show
 class ExampleDefaultDataLakeCatalogStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
-
-        new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
-            dataLakeStorage: storage,
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage');
+    
+    new dsf.governance.DataLakeCatalog(this, 'DataCatalog', {
+      dataLakeStorage: storage,
+    });
+  }
 }
 /// !hide
 

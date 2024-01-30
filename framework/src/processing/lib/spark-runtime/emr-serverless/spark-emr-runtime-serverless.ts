@@ -17,19 +17,19 @@ import { EMR_DEFAULT_VERSION, EmrRuntimeVersion } from '../../emr-releases';
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Processing/spark-emr-serverless-runtime
  *
  * @example
- * import { Role } from 'aws-cdk-lib/aws-iam';
+ * import { Role, AccountRootPrincipal } from 'aws-cdk-lib/aws-iam';
  *
- * const serverlessRuntime = new SparkEmrServerlessRuntime(this, 'EmrApp', {
+ * const serverlessRuntime = new dsf.processing.SparkEmrServerlessRuntime(this, 'EmrApp', {
  *   name: 'SparkRuntimeServerless',
  * });
  *
- * const executionRole = serverlessRuntime.createExecution(this, 'ExecutionRole')
+ * const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'ExecutionRole')
  *
  * const submitterRole = new Role (this, 'SubmitterRole', {
  *   assumedBy: new AccountRootPrincipal(),
  * });
  *
- * SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, executionRole, ['EMR-serverless-app-ID]);
+ * dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, [executionRole.roleArn], ['EMR-serverless-app-ID']);
  */
 export class SparkEmrServerlessRuntime extends TrackedConstruct {
 

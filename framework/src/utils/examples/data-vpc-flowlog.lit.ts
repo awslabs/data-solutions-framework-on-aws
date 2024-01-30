@@ -10,20 +10,20 @@ import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 
 class ExampleDefaultDataVpcStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-/// !show
-        const flowLogKey = Key.fromKeyArn(this, 'FlowLogKey', 'XXXXXXXXXXXXXXXXXXXXXXXX');
-
-        const flowLogRole = Role.fromRoleArn(this, 'FlowLogRole', 'XXXXXXXXXXXXXXXXXXXXXXXX');
-        
-        new dsf.utils.DataVpc(this, 'MyDataVpc', {
-            vpcCidr: '10.0.0.0/16',
-            flowLogKey,
-            flowLogRole,
-            flowLogRetention: RetentionDays.TWO_WEEKS,
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    /// !show
+    const flowLogKey = Key.fromKeyArn(this, 'FlowLogKey', 'XXXXXXXXXXXXXXXXXXXXXXXX');
+    
+    const flowLogRole = Role.fromRoleArn(this, 'FlowLogRole', 'XXXXXXXXXXXXXXXXXXXXXXXX');
+    
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+      flowLogKey,
+      flowLogRole,
+      flowLogRetention: RetentionDays.TWO_WEEKS,
+    });
+  }
 }
 /// !hide
 

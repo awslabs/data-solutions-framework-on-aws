@@ -8,13 +8,13 @@ import * as dsf from '../../index';
 
 /// !show
 export class CICDPipelineStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
-            sparkApplicationName: 'SparkTest',
-            applicationStackFactory: new EmrApplicationStackFactory(),
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
+      sparkApplicationName: 'SparkTest',
+      applicationStackFactory: new EmrApplicationStackFactory(),
+    });
+  }
 }
 /// !hide
 

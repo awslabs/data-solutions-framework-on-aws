@@ -22,16 +22,12 @@ import { TrackedConstructProps } from './tracked-construct-props';
  * @example
  * import { Bucket } from 'aws-cdk-lib/aws-s3';
  *
- * const sourceBucket = Bucket.fromBucketName(stack, 'SourceBucket', 'nyc-tlc');
- * const bucketName = `test-${stack.region}-${stack.account}-${Utils.generateUniqueHash(stack, 'TargetBucket')}`;
+ * const sourceBucket = Bucket.fromBucketName(this, 'SourceBucket', 'nyc-tlc');
+ * const bucketName = `test-${this.region}-${this.account}-${dsf.utils.Utils.generateUniqueHash(this, 'TargetBucket')}`;
  *
- * const targetBucket = new Bucket(stack, 'TargetBucket', {
- *   bucketName,
- *   removalPolicy: RemovalPolicy.DESTROY,
- *   autoDeleteObjects: true,
- * });
+ * const targetBucket = new Bucket(this, 'TargetBucket');
  *
- * new S3DataCopy(stack, 'S3DataCopy', {
+ * new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
  *   sourceBucket,
  *   sourceBucketPrefix: 'trip data/',
  *   sourceBucketRegion: 'us-east-1',

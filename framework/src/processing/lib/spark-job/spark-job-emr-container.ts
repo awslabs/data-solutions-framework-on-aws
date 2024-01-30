@@ -21,7 +21,7 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  * @example
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
- * const job = new dsf.processing.SparkEmrEksJob(this, 'SparkJob', {
+ * const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
  *   jobConfig:{
  *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *     "VirtualClusterId": "virtualClusterId",
@@ -34,7 +34,7 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  *       },
  *     }
  *   }
- * } as dsf.processing.SparkEmrEksJobApiProps);
+ * } as dsf.processing.SparkEmrContainerJobApiProps);
  *
  * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
  *   value: job.stateMachine!.stateMachineArn,

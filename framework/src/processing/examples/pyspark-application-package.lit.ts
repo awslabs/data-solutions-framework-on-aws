@@ -6,18 +6,18 @@ import { Construct } from 'constructs';
 import * as dsf from '../../index';
 
 class ExamplePySparkApplicationPackageStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-
-/// !show
-        new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
-            applicationName: 'nightly-job-aggregation',
-            entrypointPath: './../spark/src/entrypoint.py',
-            dependenciesFolder: './../spark',
-            venvArchivePath: '/venv-package/pyspark-env.tar.gz',
-        });
-/// !hide
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    
+    /// !show
+    new dsf.processing.PySparkApplicationPackage(this, 'PySparkApplicationPackage', {
+      applicationName: 'nightly-job-aggregation',
+      entrypointPath: './../spark/src/entrypoint.py',
+      dependenciesFolder: './../spark',
+      venvArchivePath: '/venv-package/pyspark-env.tar.gz',
+    });
+    /// !hide
+  }
 }
 
 const app = new cdk.App();

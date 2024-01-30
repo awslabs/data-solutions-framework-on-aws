@@ -8,16 +8,16 @@ import * as dsf from '../../index';
 
 /// !show
 class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id);
-        const bucket = new Bucket(this, 'DataCatalogBucket');
-
-        new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
-            locationBucket: bucket,
-            locationPrefix: '/databasePath',
-            name: 'example-db',
-        });
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const bucket = new Bucket(this, 'DataCatalogBucket');
+    
+    new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
+      locationBucket: bucket,
+      locationPrefix: '/databasePath',
+      name: 'example-db',
+    });
+  }
 }
 /// !hide
 

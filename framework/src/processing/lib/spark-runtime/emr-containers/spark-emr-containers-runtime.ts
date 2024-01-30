@@ -51,14 +51,16 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
  *
  * @example
  * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+ * import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
  *
  * const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
  *
- * const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {
+ * const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
+ *   publicAccessCIDRs: ['10.0.0.0/16'],
  *   kubectlLambdaLayer: kubectlLayer,
  * });
  *
- * const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
+ * const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
  *   name: 'example',
  *   createNamespace: true,
  *   eksNamespace: 'example',
@@ -73,7 +75,7 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
  *   })],
  * });
  *
- * const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
+ * const s3ReadPolicy = new ManagedPolicy(this, 's3ReadPolicy', {
  *   document: s3Read,
  * });
  *

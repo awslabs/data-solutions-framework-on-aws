@@ -8,16 +8,16 @@ import * as dsf from '../../index';
 
 /// !show
 export class EmrApplicationStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, _stage: dsf.utils.CICDStage) {
-        super(scope, id);
-
-        const processingStateMachine = new StateMachine(this, 'ProcessingStateMachine', {
-            // definition ...
-        });
-
-        new cdk.CfnOutput(this, 'ProcessingStateMachineArn', {
-            value: processingStateMachine.stateMachineArn,
-        });
-    }
+  constructor(scope: Construct, id: string, _stage: dsf.utils.CICDStage) {
+    super(scope, id);
+    
+    const processingStateMachine = new StateMachine(this, 'ProcessingStateMachine', {
+      // definition ...
+    });
+    
+    new cdk.CfnOutput(this, 'ProcessingStateMachineArn', {
+      value: processingStateMachine.stateMachineArn,
+    });
+  }
 }
 /// !hide
