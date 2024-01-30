@@ -3,14 +3,14 @@
 
 import { randomBytes } from 'crypto';
 import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { GatewayVpcEndpointAwsService, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { RedshiftServerlessWorkgroup } from '../../src/consumption';
 
 /**
  * E2E test for RedshiftServerlessWorkgroup
- * @group e2e/redshift-serverless
+ * @group e2e/redshift-serverless-workgroup
  */
 
 jest.setTimeout(6000000);
@@ -33,16 +33,16 @@ const vpc = new Vpc(stack, 'rs-example-network', {
   ],
   subnetConfiguration: [
     {
-      name: 'private-dwh',
-      subnetType: SubnetType.PRIVATE_ISOLATED,
+      name: "public",
+      subnetType: SubnetType.PUBLIC,
       cidrMask: 24,
     },
-  ],
-  gatewayEndpoints: {
-    S3: {
-      service: GatewayVpcEndpointAwsService.S3,
+    {
+      name: 'private-dwh',
+      subnetType: SubnetType.PRIVATE_WITH_EGRESS,
+      cidrMask: 24,
     },
-  },
+  ]
 });
 
 vpc.applyRemovalPolicy(RemovalPolicy.DESTROY);
