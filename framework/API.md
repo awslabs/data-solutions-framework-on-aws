@@ -3918,7 +3918,7 @@ new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataPr
 | <code><a href="#aws-dsf.consumption.RedshiftData.grantDbReadToRole">grantDbReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.grantDbSchemaToRole">grantDbSchemaToRole</a></code> | Grants access to the schema to the DB role. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Runs the `MERGE` query using simplified mode. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Run the `MERGE` query using simplified mode. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.runCustomSQL">runCustomSQL</a></code> | Runs a custom SQL. |
 
@@ -4142,7 +4142,7 @@ The IAM Role to use to access the data in S3. If not provided, it would use the 
 public mergeToTargetTable(databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string, targetColumnId?: string): CustomResource
 ```
 
-Runs the `MERGE` query using simplified mode.
+Run the `MERGE` query using simplified mode.
 
 This command would do an upsert into the target table.
 
@@ -4284,10 +4284,11 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.executionProvider">executionProvider</a></code> | <code>string</code> | Custom resource provider. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.targetArn">targetArn</a></code> | <code>string</code> | The ARN of the target cluster or workgroup. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.targetId">targetId</a></code> | <code>string</code> | The ID of the target cluster or workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.property.targetType">targetType</a></code> | <code>string</code> | Either provisioned or serverless. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.crSecurityGroup">crSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.interfaceVpcEndpointSG">interfaceVpcEndpointSG</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint of Redshift Data API. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.redshiftDataInterfaceVpcEndpoint">redshiftDataInterfaceVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint. |
 
 ---
@@ -4321,10 +4322,10 @@ This references the Lambda function that sends the SQL to Redshift via Redshift'
 ##### `taggingManagedPolicy`<sup>Required</sup> <a name="taggingManagedPolicy" id="aws-dsf.consumption.RedshiftData.property.taggingManagedPolicy"></a>
 
 ```typescript
-public readonly taggingManagedPolicy: ManagedPolicy;
+public readonly taggingManagedPolicy: IManagedPolicy;
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.ManagedPolicy
+- *Type:* aws-cdk-lib.aws_iam.IManagedPolicy
 
 The managed IAM policy allowing IAM Role to retrieve tag information.
 
@@ -4354,15 +4355,27 @@ The ID of the target cluster or workgroup.
 
 ---
 
-##### `targetType`<sup>Required</sup> <a name="targetType" id="aws-dsf.consumption.RedshiftData.property.targetType"></a>
+##### `crSecurityGroup`<sup>Optional</sup> <a name="crSecurityGroup" id="aws-dsf.consumption.RedshiftData.property.crSecurityGroup"></a>
 
 ```typescript
-public readonly targetType: string;
+public readonly crSecurityGroup: ISecurityGroup;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
-Either provisioned or serverless.
+The Security Group used by the Custom Resource.
+
+---
+
+##### `interfaceVpcEndpointSG`<sup>Optional</sup> <a name="interfaceVpcEndpointSG" id="aws-dsf.consumption.RedshiftData.property.interfaceVpcEndpointSG"></a>
+
+```typescript
+public readonly interfaceVpcEndpointSG: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the VPC Endpoint of Redshift Data API.
 
 ---
 
@@ -4532,7 +4545,7 @@ Any object.
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey">namespaceKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt its data. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the created namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.roles">roles</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.IRole}</code> | The roles attached to the namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.roles">roles</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.IRole}</code> | The roles attached to the namespace in the form of `{RoleArn: IRole}`. |
 
 ---
 
@@ -4640,7 +4653,7 @@ public readonly roles: {[ key: string ]: IRole};
 
 - *Type:* {[ key: string ]: aws-cdk-lib.aws_iam.IRole}
 
-The roles attached to the namespace.
+The roles attached to the namespace in the form of `{RoleArn: IRole}`.
 
 These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
 
@@ -8581,11 +8594,11 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the Secret. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier">clusterIdentifier</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Timeout for query execution. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when the stack is deleted. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
 
@@ -8615,10 +8628,10 @@ The KMS Key used by the Secret.
 
 ---
 
-##### `clusterIdentifier`<sup>Optional</sup> <a name="clusterIdentifier" id="aws-dsf.consumption.RedshiftDataProps.property.clusterIdentifier"></a>
+##### `clusterId`<sup>Optional</sup> <a name="clusterId" id="aws-dsf.consumption.RedshiftDataProps.property.clusterId"></a>
 
 ```typescript
-public readonly clusterIdentifier: string;
+public readonly clusterId: string;
 ```
 
 - *Type:* string
@@ -8639,7 +8652,7 @@ public readonly createInterfaceVpcEndpoint: boolean;
 - *Type:* boolean
 - *Default:* false
 
-If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured.
+If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets.
 
 ---
 
@@ -8652,7 +8665,7 @@ public readonly executionTimeout: Duration;
 - *Type:* aws-cdk-lib.Duration
 - *Default:* 5mins
 
-Timeout for query execution.
+The timeout for the query execution.
 
 ---
 
@@ -8663,15 +8676,19 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
 
-The removal policy when the stack is deleted.
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `selectedSubnets`<sup>Optional</sup> <a name="selectedSubnets" id="aws-dsf.consumption.RedshiftDataProps.property.selectedSubnets"></a>
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-dsf.consumption.RedshiftDataProps.property.subnets"></a>
 
 ```typescript
-public readonly selectedSubnets: SelectedSubnets;
+public readonly subnets: SelectedSubnets;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
@@ -8704,10 +8721,11 @@ public readonly workgroupId: string;
 ```
 
 - *Type:* string
+- *Default:* The `clusterId` is used
 
 The `workgroupId` for the Redshift Serverless Workgroup to query.
 
-It must be configured if the `workgroupId` is not.
+It must be configured if the `clusterId` is not.
 
 ---
 

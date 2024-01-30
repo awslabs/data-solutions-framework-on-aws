@@ -15,11 +15,11 @@ export interface RedshiftDataProps {
    * The name of the Redshift provisioned to query. It must be configured if the `workgroupId` is not.
    * @default - The `workgroupId` is used
    */
-  readonly clusterIdentifier?: string;
+  readonly clusterId?: string;
 
   /**
-   * The `workgroupId` for the Redshift Serverless Workgroup to query. It must be configured if the `workgroupId` is not.
-   * @default - The `clusterIdentifier` is used
+   * The `workgroupId` for the Redshift Serverless Workgroup to query. It must be configured if the `clusterId` is not.
+   * @default - The `clusterId` is used
    */
   readonly workgroupId?: string;
 
@@ -44,23 +44,26 @@ export interface RedshiftDataProps {
    * The subnets where the Custom Resource Lambda Function would be created in.
    * A Redshift Data API Interface VPC Endpoint is created in the subnets.
    */
-  readonly selectedSubnets?: SelectedSubnets;
+  readonly subnets?: SelectedSubnets;
 
 
   /**
-   * If set to true, this construct would also create the Redshift Data Interface VPC Endpoint in the VPC/Subnets that's configured.
+   * If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets.
    * @default - false
    */
   readonly createInterfaceVpcEndpoint?: boolean;
 
   /**
-   * Timeout for query execution.
+   * The timeout for the query execution.
    * @default - 5mins
    */
   readonly executionTimeout?: Duration;
 
   /**
-   * The removal policy when the stack is deleted
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise, the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
 }

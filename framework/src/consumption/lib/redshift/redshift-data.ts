@@ -3,8 +3,8 @@
 
 import { createHash } from 'crypto';
 import { CustomResource, Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { InterfaceVpcEndpoint, InterfaceVpcEndpointAwsService, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ISecurityGroup, InterfaceVpcEndpoint, InterfaceVpcEndpointAwsService, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { Effect, IManagedPolicy, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { RedshiftDataProps } from './redshift-data-props';
@@ -26,34 +26,38 @@ export class RedshiftData extends TrackedConstruct {
   /**
    * Custom resource provider. This references the Lambda function that sends the SQL to Redshift via Redshift's Data API
    */
-  readonly executionProvider: string;
+  public readonly executionProvider: string;
 
   /**
    * The ARN of the target cluster or workgroup
    */
-  readonly targetArn: string;
-
-  /**
-   * Either provisioned or serverless
-   */
-  readonly targetType: string;
+  public readonly targetArn: string;
 
   /**
    * The ID of the target cluster or workgroup
    */
-  readonly targetId: string;
+  public readonly targetId: string;
 
   /**
    * The managed IAM policy allowing IAM Role to retrieve tag information
    */
-  readonly taggingManagedPolicy: ManagedPolicy;
+  public readonly taggingManagedPolicy: IManagedPolicy;
 
   /**
    * The created Redshift Data API interface vpc endpoint
    */
-  readonly redshiftDataInterfaceVpcEndpoint?: InterfaceVpcEndpoint;
+  public readonly redshiftDataInterfaceVpcEndpoint?: InterfaceVpcEndpoint;
 
-  private readonly crSecurityGroup?: SecurityGroup;
+  /**
+   * The Security Group used by the Custom Resource
+   */
+  public readonly crSecurityGroup?: ISecurityGroup;
+
+  /**
+   * The Security Group used by the VPC Endpoint of Redshift Data API
+   */
+  public readonly interfaceVpcEndpointSG?: ISecurityGroup;
+
   private readonly removalPolicy: RemovalPolicy;
 
   constructor(scope: Construct, id: string, props: RedshiftDataProps) {
@@ -70,10 +74,10 @@ export class RedshiftData extends TrackedConstruct {
     let targetId: string|undefined;
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    if (props.clusterIdentifier) {
-      targetArn = `arn:aws:redshift:${currentStack.region}:${currentStack.account}:cluster:${props.clusterIdentifier}`;
+    if (props.clusterId) {
+      targetArn = `arn:aws:redshift:${currentStack.region}:${currentStack.account}:cluster:${props.clusterId}`;
       targetType = 'provisioned';
-      targetId = props.clusterIdentifier;
+      targetId = props.clusterId;
     } else if (props.workgroupId) {
       targetArn = `arn:aws:redshift-serverless:${currentStack.region}:${currentStack.account}:workgroup/${props.workgroupId}`;
       targetType = 'serverless';
@@ -83,28 +87,27 @@ export class RedshiftData extends TrackedConstruct {
     }
 
     this.targetArn = targetArn;
-    this.targetType = targetType;
     this.targetId = targetId;
 
-    if (props.vpc && props.selectedSubnets) {
-      this.crSecurityGroup = new SecurityGroup(this, 'CRSecurityGroup', {
+    if (props.vpc && props.subnets) {
+      this.crSecurityGroup = new SecurityGroup(this, 'CrSecurityGroup', {
         vpc: props.vpc,
       });
 
       this.crSecurityGroup.applyRemovalPolicy(this.removalPolicy);
 
       if (props.createInterfaceVpcEndpoint) {
-        const interfaceVpcEndpointSG = new SecurityGroup(this, 'RedshiftDataInterfaceVPCEndpointSecurityGroup', {
+        this.interfaceVpcEndpointSG = new SecurityGroup(this, 'InterfaceVpcEndpointSecurityGroup', {
           vpc: props.vpc,
         });
 
-        interfaceVpcEndpointSG.addIngressRule(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(443));
+        this.interfaceVpcEndpointSG.addIngressRule(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(443));
 
-        this.redshiftDataInterfaceVpcEndpoint = new InterfaceVpcEndpoint(this, 'RedshiftDataInterfaceVpcEndpoint', {
+        this.redshiftDataInterfaceVpcEndpoint = new InterfaceVpcEndpoint(this, 'InterfaceVpcEndpoint', {
           vpc: props.vpc,
-          subnets: props.selectedSubnets,
+          subnets: props.subnets,
           service: InterfaceVpcEndpointAwsService.REDSHIFT_DATA,
-          securityGroups: [interfaceVpcEndpointSG],
+          securityGroups: [this.interfaceVpcEndpointSG],
         });
 
         this.redshiftDataInterfaceVpcEndpoint.applyRemovalPolicy(this.removalPolicy);
@@ -113,7 +116,7 @@ export class RedshiftData extends TrackedConstruct {
       }
     }
 
-    const crExecRole = new Role(this, 'RSDataLambdaExecRole', {
+    const crExecRole = new Role(this, 'CrExecutionRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
@@ -159,8 +162,8 @@ export class RedshiftData extends TrackedConstruct {
 
     props.secret.grantRead(crExecRole);
 
-    const provider = new DsfProvider(this, 'RSDSFDataExecutionProvider', {
-      providerName: 'RSDSFDataExecutionProvider',
+    const provider = new DsfProvider(this, 'CrProvider', {
+      providerName: 'RedshiftDataProvider',
       onEventHandlerDefinition: {
         depsLockFilePath: __dirname+'/../resources/RedshiftDataExecution/package-lock.json',
         entryFile: __dirname+'/../resources/RedshiftDataExecution/index.mjs',
@@ -187,7 +190,7 @@ export class RedshiftData extends TrackedConstruct {
         },
       },
       vpc: props.vpc,
-      subnets: props.selectedSubnets,
+      subnets: props.subnets,
       securityGroups: this.crSecurityGroup ? [this.crSecurityGroup] : [],
       queryInterval: Duration.seconds(1),
       removalPolicy: this.removalPolicy,
@@ -207,8 +210,6 @@ export class RedshiftData extends TrackedConstruct {
         }),
       ],
     });
-
-    this.taggingManagedPolicy.applyRemovalPolicy(this.removalPolicy);
   }
 
   /**
@@ -220,7 +221,7 @@ export class RedshiftData extends TrackedConstruct {
    */
   public runCustomSQL(databaseName: string, sql: string, deleteSql?: string): CustomResource {
     const hash = createHash('sha256').update(`${databaseName}${sql}${deleteSql}`).digest('hex');
-    const uniqueId = `CustomSQL-${this.targetType}-${hash}`;
+    const uniqueId = `CustomSql${hash}`;
 
     return new CustomResource(this, uniqueId, {
       serviceToken: this.executionProvider,
@@ -314,7 +315,7 @@ export class RedshiftData extends TrackedConstruct {
   }
 
   /**
-   * Runs the `MERGE` query using simplified mode. This command would do an upsert into the target table.
+   * Run the `MERGE` query using simplified mode. This command would do an upsert into the target table.
    * @param databaseName The name of the database to run this command
    * @param sourceTable The source table name. Schema can also be included using the following format: `schemaName.tableName`
    * @param targetTable The target table name. Schema can also be included using the following format: `schemaName.tableName`

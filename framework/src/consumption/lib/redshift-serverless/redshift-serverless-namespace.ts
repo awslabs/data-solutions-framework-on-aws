@@ -37,7 +37,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
   readonly adminSecret: ISecret;
 
   /**
-   * The roles attached to the namespace.
+   * The roles attached to the namespace in the form of `{RoleArn: IRole}`.
    * These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
    * @see https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html
    */
@@ -113,6 +113,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
 
     const roleArns = Object.keys(this.roles);
 
+    // The IAM Policy for the custom resource to create the namespace
     const createNamespaceCrPolicyStatements = [
       new PolicyStatement({
         effect: Effect.ALLOW,
@@ -162,6 +163,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       }),
     ];
 
+    // If there are IAM Roles to configure in the namespace, we grant to the custom resource pass role for these roles
     if (roleArns && roleArns.length > 0) {
       createNamespaceCrPolicyStatements.push(new PolicyStatement({
         effect: Effect.ALLOW,

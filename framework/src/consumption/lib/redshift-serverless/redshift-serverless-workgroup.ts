@@ -183,7 +183,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
         secret: this.namespace.adminSecret,
         workgroupId: this.cfnResource.attrWorkgroupWorkgroupId,
         vpc: this.vpc,
-        selectedSubnets: this.selectedSubnets,
+        subnets: this.selectedSubnets,
         createInterfaceVpcEndpoint: createRSDataInterfaceVpcEndpoint,
         secretKmsKey: this.namespace.namespaceKey,
         removalPolicy: this.removalPolicy,
