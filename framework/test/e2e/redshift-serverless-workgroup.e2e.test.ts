@@ -33,7 +33,7 @@ const vpc = new Vpc(stack, 'rs-example-network', {
   ],
   subnetConfiguration: [
     {
-      name: "public",
+      name: 'public',
       subnetType: SubnetType.PUBLIC,
       cidrMask: 24,
     },
@@ -42,7 +42,7 @@ const vpc = new Vpc(stack, 'rs-example-network', {
       subnetType: SubnetType.PRIVATE_WITH_EGRESS,
       cidrMask: 24,
     },
-  ]
+  ],
 });
 
 vpc.applyRemovalPolicy(RemovalPolicy.DESTROY);
