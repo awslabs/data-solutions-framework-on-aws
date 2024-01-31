@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { createHash } from 'crypto';
+// import { createHash } from 'crypto';
 import { CustomResource, Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { ISecurityGroup, InterfaceVpcEndpoint, InterfaceVpcEndpointAwsService, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IManagedPolicy, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { RedshiftDataProps } from './redshift-data-props';
@@ -23,10 +25,41 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
  * rsData.createDbRole("defaultdb", "engineering")
  */
 export class RedshiftData extends TrackedConstruct {
+
   /**
-   * Custom resource provider. This references the Lambda function that sends the SQL to Redshift via Redshift's Data API
+   * The CloudWatch Log Group for the Redshift Data API submission
    */
-  public readonly executionProvider: string;
+  public readonly submitLogGroup: ILogGroup;
+  /**
+   * The Lambda Function for the Redshift Data submission
+   */
+  public readonly submitFunction: IFunction;
+  /**
+   * The IAM Role for the Redshift Data API execution
+   */
+  public readonly executionRole: IRole;
+
+  /**
+   * The CloudWatch Log Group for the Redshift Data API status checks
+   */
+  public readonly statusLogGroup: ILogGroup;
+  /**
+   * The Lambda Function for the Redshift Data API status checks
+   */
+  public readonly statusFunction: IFunction;
+
+  /**
+   * The CloudWatch Log Group for the Redshift Data cleaning up lambda
+   */
+  public readonly cleanUpLogGroup?: ILogGroup;
+  /**
+   * The Lambda function for the S3 data copy cleaning up lambda
+   */
+  public readonly cleanUpFunction?: IFunction;
+  /**
+   * The IAM Role for the the S3 data copy cleaning up lambda
+   */
+  public readonly cleanUpRole?: IRole;
 
   /**
    * The ARN of the target cluster or workgroup
@@ -44,21 +77,23 @@ export class RedshiftData extends TrackedConstruct {
   public readonly taggingManagedPolicy: IManagedPolicy;
 
   /**
-   * The created Redshift Data API interface vpc endpoint
+   * The created Redshift Data API interface vpc endpoint when deployed in a VPC
    */
-  public readonly redshiftDataInterfaceVpcEndpoint?: InterfaceVpcEndpoint;
+  public readonly vpcEndpoint?: InterfaceVpcEndpoint;
 
   /**
-   * The Security Group used by the Custom Resource
+   * The Security Group used by the Custom Resource when deployed in a VPC
    */
-  public readonly crSecurityGroup?: ISecurityGroup;
+  public readonly customResourceSecurityGroup?: ISecurityGroup;
 
   /**
-   * The Security Group used by the VPC Endpoint of Redshift Data API
+   * The Security Group used by the VPC Endpoint when deployed in a VPC
    */
-  public readonly interfaceVpcEndpointSG?: ISecurityGroup;
+  public readonly vpcEndpointSecurityGroup?: ISecurityGroup;
 
   private readonly removalPolicy: RemovalPolicy;
+  private readonly serviceToken: string;
+
 
   constructor(scope: Construct, id: string, props: RedshiftDataProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -90,33 +125,29 @@ export class RedshiftData extends TrackedConstruct {
     this.targetId = targetId;
 
     if (props.vpc && props.subnets) {
-      this.crSecurityGroup = new SecurityGroup(this, 'CrSecurityGroup', {
+      this.customResourceSecurityGroup = new SecurityGroup(this, 'CrSecurityGroup', {
         vpc: props.vpc,
       });
 
-      this.crSecurityGroup.applyRemovalPolicy(this.removalPolicy);
-
       if (props.createInterfaceVpcEndpoint) {
-        this.interfaceVpcEndpointSG = new SecurityGroup(this, 'InterfaceVpcEndpointSecurityGroup', {
+        this.vpcEndpointSecurityGroup = new SecurityGroup(this, 'InterfaceVpcEndpointSecurityGroup', {
           vpc: props.vpc,
         });
 
-        this.interfaceVpcEndpointSG.addIngressRule(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(443));
+        this.vpcEndpointSecurityGroup.addIngressRule(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(443));
 
-        this.redshiftDataInterfaceVpcEndpoint = new InterfaceVpcEndpoint(this, 'InterfaceVpcEndpoint', {
+        this.vpcEndpoint = new InterfaceVpcEndpoint(this, 'InterfaceVpcEndpoint', {
           vpc: props.vpc,
           subnets: props.subnets,
           service: InterfaceVpcEndpointAwsService.REDSHIFT_DATA,
-          securityGroups: [this.interfaceVpcEndpointSG],
+          securityGroups: [this.vpcEndpointSecurityGroup],
         });
 
-        this.redshiftDataInterfaceVpcEndpoint.applyRemovalPolicy(this.removalPolicy);
-
-        this.redshiftDataInterfaceVpcEndpoint.connections.allowFrom(this.crSecurityGroup, Port.tcp(443));
+        this.vpcEndpoint.connections.allowFrom(this.customResourceSecurityGroup, Port.tcp(443));
       }
     }
 
-    const crExecRole = new Role(this, 'CrExecutionRole', {
+    this.executionRole = new Role(this, 'ExecutionRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
@@ -143,24 +174,14 @@ export class RedshiftData extends TrackedConstruct {
               ],
               resources: ['*'],
             }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                'kms:Decrypt',
-                'kms:DescribeKey',
-              ],
-              resources: [
-                props.secretKmsKey.keyArn,
-              ],
-            }),
           ],
         }),
       },
     });
 
-    crExecRole.applyRemovalPolicy(this.removalPolicy);
+    props.secret.grantRead(this.executionRole);
 
-    props.secret.grantRead(crExecRole);
+    const timeout = props.executionTimeout || Duration.minutes(5);
 
     const provider = new DsfProvider(this, 'CrProvider', {
       providerName: 'RedshiftDataProvider',
@@ -173,15 +194,15 @@ export class RedshiftData extends TrackedConstruct {
           TARGET_TYPE: targetType,
           SECRET_NAME: props.secret.secretArn,
         },
-        iamRole: crExecRole,
-        timeout: Duration.minutes(5),
+        iamRole: this.executionRole,
+        timeout,
       },
       isCompleteHandlerDefinition: {
-        iamRole: crExecRole,
+        iamRole: this.executionRole,
         handler: 'index.isCompleteHandler',
         depsLockFilePath: __dirname+'/../resources/RedshiftDataExecution/package-lock.json',
         entryFile: __dirname+'/../resources/RedshiftDataExecution/index.mjs',
-        timeout: Duration.minutes(5),
+        timeout,
         environment: {
           TARGET_ARN: targetArn,
           TARGET_TYPE: targetType,
@@ -191,14 +212,21 @@ export class RedshiftData extends TrackedConstruct {
       },
       vpc: props.vpc,
       subnets: props.subnets,
-      securityGroups: this.crSecurityGroup ? [this.crSecurityGroup] : [],
+      securityGroups: this.customResourceSecurityGroup ? [this.customResourceSecurityGroup] : [],
       queryInterval: Duration.seconds(1),
       removalPolicy: this.removalPolicy,
     });
 
-    this.executionProvider = provider.serviceToken;
+    this.serviceToken = provider.serviceToken;
+    this.submitLogGroup = provider.onEventHandlerLogGroup;
+    this.statusLogGroup = provider.isCompleteHandlerLog!;
+    this.cleanUpLogGroup = provider.cleanUpLogGroup;
+    this.submitFunction = provider.onEventHandlerFunction;
+    this.statusFunction = provider.isCompleteHandlerFunction!;
+    this.cleanUpFunction = provider.cleanUpFunction;
+    this.cleanUpRole = provider.cleanUpRole;
 
-    this.taggingManagedPolicy = new ManagedPolicy(this, 'RedshiftTaggingManagedPolicy', {
+    this.taggingManagedPolicy = new ManagedPolicy(this, 'TaggingManagedPolicy', {
       statements: [
         new PolicyStatement({
           effect: Effect.ALLOW,
@@ -214,17 +242,18 @@ export class RedshiftData extends TrackedConstruct {
 
   /**
    * Runs a custom SQL. Once the custom resource finishes execution, the attribute `Data` contains an attribute `execId` which contains the Redshift Data API execution ID. You can then use this to retrieve execution results via the `GetStatementResult` API.
+   * @param id The CDK Construct ID
    * @param databaseName The name of the database to run this command
    * @param sql The sql to run
    * @param deleteSql Optional. The sql to run when this resource gets deleted
    * @returns `CustomResource`
    */
-  public runCustomSQL(databaseName: string, sql: string, deleteSql?: string): CustomResource {
-    const hash = createHash('sha256').update(`${databaseName}${sql}${deleteSql}`).digest('hex');
-    const uniqueId = `CustomSql${hash}`;
+  public runCustomSQL(id: string, databaseName: string, sql: string, deleteSql?: string): CustomResource {
+    // const hash = createHash('sha256').update(`${databaseName}${sql}${deleteSql}`).digest('hex');
+    // const uniqueId = `CustomSql${hash}`;
 
-    return new CustomResource(this, uniqueId, {
-      serviceToken: this.executionProvider,
+    return new CustomResource(this, id, {
+      serviceToken: this.serviceToken,
       properties: {
         sql: sql,
         deleteSql: deleteSql,
@@ -236,23 +265,25 @@ export class RedshiftData extends TrackedConstruct {
 
   /**
    * Creates a new DB role
+   * @param id The CDK Construct ID
    * @param databaseName The name of the database to run this command
    * @param roleName The name of the role to create
    * @returns `CustomResource`
    */
-  public createDbRole(databaseName: string, roleName: string): CustomResource {
-    return this.runCustomSQL(databaseName, `create role ${roleName}`, `drop role ${roleName}`);
+  public createDbRole(id: string, databaseName: string, roleName: string): CustomResource {
+    return this.runCustomSQL(id, databaseName, `create role ${roleName}`, `drop role ${roleName}`);
   }
 
   /**
    * Grants access to the schema to the DB role
+   * @param id The CDK Construct ID
    * @param databaseName The name of the database to run this command
    * @param schema The schema where the tables are located in
    * @param roleName The DB role to grant the permissions to
    * @returns `CustomResource`
    */
-  public grantDbSchemaToRole(databaseName: string, schema: string, roleName: string): CustomResource {
-    return this.runCustomSQL(databaseName, `grant usage on schema ${schema} to role ${roleName}`, `revoke usage on schema ${schema} from role ${roleName}`);
+  public grantDbSchemaToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource {
+    return this.runCustomSQL(id, databaseName, `grant usage on schema ${schema} to role ${roleName}`, `revoke usage on schema ${schema} from role ${roleName}`);
   }
 
   /**
@@ -262,19 +293,20 @@ export class RedshiftData extends TrackedConstruct {
    * @param roleName The DB role to grant the permissions to
    * @returns `CustomResource`
    */
-  public grantDbReadToRole(databaseName: string, schema: string, roleName: string): CustomResource {
-    return this.runCustomSQL(databaseName, `grant select on all tables in schema ${schema} to role ${roleName}`, `revoke select on all tables in schema ${schema} from role ${roleName}`);
+  public grantSchemaReadToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource {
+    return this.runCustomSQL(id, databaseName, `grant select on all tables in schema ${schema} to role ${roleName}`, `revoke select on all tables in schema ${schema} from role ${roleName}`);
   }
 
   /**
    * Grants both read and write permissions on all the tables in the `schema` to the DB role
+   * @param id The CDK Construct ID
    * @param databaseName The name of the database to run this command
    * @param schema The schema where the tables are located in
    * @param roleName The DB role to grant the permissions to
    * @returns `CustomResource`
    */
-  public grantDbAllPrivilegesToRole(databaseName: string, schema: string, roleName: string): CustomResource {
-    return this.runCustomSQL(databaseName, `grant all on all tables in schema ${schema} to role ${roleName}`, `revoke all on all tables in schema ${schema} from role ${roleName}`);
+  public grantDbAllPrivilegesToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource {
+    return this.runCustomSQL(id, databaseName, `grant all on all tables in schema ${schema} to role ${roleName}`, `revoke all on all tables in schema ${schema} from role ${roleName}`);
   }
 
   /**
@@ -289,6 +321,7 @@ export class RedshiftData extends TrackedConstruct {
 
   /**
    * Ingest data from S3 into a Redshift table
+   * @param id The CDK Construct ID
    * @param databaseName The name of the database to run this command
    * @param targetTable The target table to load the data into
    * @param sourceBucket The bucket where the source data would be coming from
@@ -297,7 +330,7 @@ export class RedshiftData extends TrackedConstruct {
    * @param role Optional. The IAM Role to use to access the data in S3. If not provided, it would use the default IAM role configured in the Redshift Namespace
    * @returns
    */
-  public ingestData(databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string,
+  public ingestData(id: string, databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string,
     ingestAdditionalOptions?: string, role?: IRole): CustomResource {
     let sql = `copy ${targetTable} from 's3://${sourceBucket.bucketName}/${sourcePrefix}'`;
 
@@ -311,11 +344,12 @@ export class RedshiftData extends TrackedConstruct {
       sql += ` ${ingestAdditionalOptions}`;
     }
 
-    return this.runCustomSQL(databaseName, sql);
+    return this.runCustomSQL(id, databaseName, sql);
   }
 
   /**
    * Run the `MERGE` query using simplified mode. This command would do an upsert into the target table.
+   * @param id The CDK Construct ID
    * @param databaseName The name of the database to run this command
    * @param sourceTable The source table name. Schema can also be included using the following format: `schemaName.tableName`
    * @param targetTable The target table name. Schema can also be included using the following format: `schemaName.tableName`
@@ -323,13 +357,13 @@ export class RedshiftData extends TrackedConstruct {
    * @param targetColumnId The column in the target table that's used to determine whether the rows in the `sourceTable` can be matched with rows in the `targetTable`. Default is `id`
    * @returns `CustomResource`
    */
-  public mergeToTargetTable(databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string
+  public mergeToTargetTable(id: string, databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string
     , targetColumnId?: string): CustomResource {
     const actualSourceColumnId = sourceColumnId || 'id';
     const actualTargetColumnId = targetColumnId || 'id';
 
     let sql = `merge into ${targetTable} using ${sourceTable} on ${targetTable}.${actualTargetColumnId}=${sourceTable}.${actualSourceColumnId} remove duplicates`;
 
-    return this.runCustomSQL(databaseName, sql);
+    return this.runCustomSQL(id, databaseName, sql);
   }
 }

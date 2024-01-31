@@ -45,8 +45,6 @@ const vpc = new Vpc(stack, 'rs-example-network', {
   ],
 });
 
-vpc.applyRemovalPolicy(RemovalPolicy.DESTROY);
-
 const adminIAMRole = new Role(stack, 'RSAdminRole', {
   assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
   managedPolicies: [
@@ -63,9 +61,6 @@ const adminIAMRole2 = new Role(stack, 'RSAdminRole2', {
   ],
 });
 
-adminIAMRole.applyRemovalPolicy(RemovalPolicy.DESTROY);
-adminIAMRole2.applyRemovalPolicy(RemovalPolicy.DESTROY);
-
 const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
   vpc,
   subnets: {
@@ -80,8 +75,8 @@ const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
 });
 
 const rsData = workgroup.accessData(true);
-const dbRole = rsData.createDbRole('defaultdb', 'engineering');
-const dbSchema = rsData.grantDbSchemaToRole('defaultdb', 'public', 'engineering');
+const dbRole = rsData.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
+const dbSchema = rsData.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
 dbSchema.node.addDependency(dbRole);
 
 const catalog = workgroup.catalogTables('rs-defaultdb');

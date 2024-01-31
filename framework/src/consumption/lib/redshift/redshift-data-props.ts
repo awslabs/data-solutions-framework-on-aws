@@ -3,7 +3,6 @@
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
-import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 
 /**
@@ -29,11 +28,6 @@ export interface RedshiftDataProps {
   readonly secret: ISecret;
 
   /**
-   * The KMS Key used by the Secret
-   */
-  readonly secretKmsKey: IKey;
-
-  /**
    * The VPC where the Custom Resource Lambda Function would be created in.
    * A Redshift Data API Interface VPC Endpoint is created in the VPC.
    * @default - No VPC is used. The Custom Resource runs in the Redshift service team VPC
@@ -43,9 +37,9 @@ export interface RedshiftDataProps {
   /**
    * The subnets where the Custom Resource Lambda Function would be created in.
    * A Redshift Data API Interface VPC Endpoint is created in the subnets.
+   * @default - No subnets are used. The Custom Resource runs in the Redshift service team subnets.
    */
   readonly subnets?: SelectedSubnets;
-
 
   /**
    * If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets.

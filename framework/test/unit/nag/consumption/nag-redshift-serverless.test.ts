@@ -31,7 +31,7 @@ NagSuppressions.addStackSuppressions(stack, [
   },
 ], true);
 
-NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgroup/DefaultServerlessNamespace/RSServerlessNamespace/CustomResourcePolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgroup/DefaultServerlessNamespace/Namespace/CustomResourcePolicy/Resource', [
   {
     id: 'AwsSolutions-IAM5',
     reason: 'Required because namespace ID is not yet known at the time of creation.',
@@ -41,8 +41,8 @@ NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgrou
 NagSuppressions.addResourceSuppressionsByPath(stack, [
   '/Stack/rs-example-workgroup/RS-Serverless-Catalog-69a33299/CrawlerRole/DefaultPolicy/Resource',
   '/Stack/rs-example-workgroup/RS-Serverless-Catalog-69a33299/CrawlerRole/Resource',
-  '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/RedshiftTaggingManagedPolicy/Resource',
-  '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/CrExecutionRole/Resource',
+  '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/TaggingManagedPolicy/Resource',
+  '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/ExecutionRole/Resource',
   '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/CrProvider/VpcPolicy/Resource',
   '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/CrProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
   '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/CrProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',

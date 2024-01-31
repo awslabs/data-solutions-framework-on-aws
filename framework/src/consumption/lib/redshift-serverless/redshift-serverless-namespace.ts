@@ -174,7 +174,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       }));
     }
 
-    this.cfnResource = new AwsCustomResource(this, 'RSServerlessNamespace', {
+    this.cfnResource = new AwsCustomResource(this, 'Namespace', {
       onCreate: {
         service: 'redshift-serverless',
         action: 'CreateNamespace',
@@ -204,7 +204,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
 
     this.cfnResource.node.addDependency(this.namespaceKey);
 
-    this.adminSecret = Secret.fromSecretCompleteArn(this, 'NamespaceManagedSecret', this.cfnResource.getResponseField('namespace.adminPasswordSecretArn'));
+    this.adminSecret = Secret.fromSecretCompleteArn(this, 'ManagedSecret', this.cfnResource.getResponseField('namespace.adminPasswordSecretArn'));
     this.namespaceId = this.cfnResource.getResponseField('namespace.namespaceId');
     this.namespaceArn = this.cfnResource.getResponseField('namespace.namespaceArn');
     Tags.of(this.adminSecret).add('RedshiftDataFullAccess', 'serverless');

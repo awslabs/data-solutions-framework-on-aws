@@ -185,7 +185,6 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
         vpc: this.vpc,
         subnets: this.selectedSubnets,
         createInterfaceVpcEndpoint: createRSDataInterfaceVpcEndpoint,
-        secretKmsKey: this.namespace.namespaceKey,
         removalPolicy: this.removalPolicy,
       });
 

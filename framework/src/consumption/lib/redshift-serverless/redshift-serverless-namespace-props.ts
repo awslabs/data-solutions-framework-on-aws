@@ -34,7 +34,8 @@ export interface RedshiftServerlessNamespaceProps {
   readonly defaultIAMRole?: IRole;
 
   /**
-   * List of IAM Roles attached to the Redshift Serverless Namespace
+   * List of IAM Roles attached to the Redshift Serverless Namespace.
+   * This list of Roles must also contain the `defaultIamRole`.
    * @default - No IAM roles are associated with the Redshift Serverless Namespace
    */
   readonly iamRoles?: IRole[];

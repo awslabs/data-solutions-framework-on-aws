@@ -3915,8 +3915,8 @@ new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataPr
 | <code><a href="#aws-dsf.consumption.RedshiftData.assignDbRolesToIAMRole">assignDbRolesToIAMRole</a></code> | Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.createDbRole">createDbRole</a></code> | Creates a new DB role. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole">grantDbAllPrivilegesToRole</a></code> | Grants both read and write permissions on all the tables in the `schema` to the DB role. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.grantDbReadToRole">grantDbReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.grantDbSchemaToRole">grantDbSchemaToRole</a></code> | Grants access to the schema to the DB role. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.grantSchemaReadToRole">grantSchemaReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Run the `MERGE` query using simplified mode. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
@@ -3959,10 +3959,18 @@ The IAM role to assign the Redshift DB roles to.
 ##### `createDbRole` <a name="createDbRole" id="aws-dsf.consumption.RedshiftData.createDbRole"></a>
 
 ```typescript
-public createDbRole(databaseName: string, roleName: string): CustomResource
+public createDbRole(id: string, databaseName: string, roleName: string): CustomResource
 ```
 
 Creates a new DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.createDbRole.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.createDbRole.parameter.databaseName"></a>
 
@@ -3983,10 +3991,18 @@ The name of the role to create.
 ##### `grantDbAllPrivilegesToRole` <a name="grantDbAllPrivilegesToRole" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole"></a>
 
 ```typescript
-public grantDbAllPrivilegesToRole(databaseName: string, schema: string, roleName: string): CustomResource
+public grantDbAllPrivilegesToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
 ```
 
 Grants both read and write permissions on all the tables in the `schema` to the DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.databaseName"></a>
 
@@ -4012,45 +4028,21 @@ The DB role to grant the permissions to.
 
 ---
 
-##### `grantDbReadToRole` <a name="grantDbReadToRole" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole"></a>
-
-```typescript
-public grantDbReadToRole(databaseName: string, schema: string, roleName: string): CustomResource
-```
-
-Grants read permission on all the tables in the `schema` to the DB role.
-
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole.parameter.databaseName"></a>
-
-- *Type:* string
-
-The name of the database to run this command.
-
----
-
-###### `schema`<sup>Required</sup> <a name="schema" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole.parameter.schema"></a>
-
-- *Type:* string
-
-The schema where the tables are located in.
-
----
-
-###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-dsf.consumption.RedshiftData.grantDbReadToRole.parameter.roleName"></a>
-
-- *Type:* string
-
-The DB role to grant the permissions to.
-
----
-
 ##### `grantDbSchemaToRole` <a name="grantDbSchemaToRole" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole"></a>
 
 ```typescript
-public grantDbSchemaToRole(databaseName: string, schema: string, roleName: string): CustomResource
+public grantDbSchemaToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
 ```
 
 Grants access to the schema to the DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantDbSchemaToRole.parameter.databaseName"></a>
 
@@ -4076,13 +4068,59 @@ The DB role to grant the permissions to.
 
 ---
 
+##### `grantSchemaReadToRole` <a name="grantSchemaReadToRole" id="aws-dsf.consumption.RedshiftData.grantSchemaReadToRole"></a>
+
+```typescript
+public grantSchemaReadToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants read permission on all the tables in the `schema` to the DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.grantSchemaReadToRole.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.grantSchemaReadToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="aws-dsf.consumption.RedshiftData.grantSchemaReadToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-dsf.consumption.RedshiftData.grantSchemaReadToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
 ##### `ingestData` <a name="ingestData" id="aws-dsf.consumption.RedshiftData.ingestData"></a>
 
 ```typescript
-public ingestData(databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string, ingestAdditionalOptions?: string, role?: IRole): CustomResource
+public ingestData(id: string, databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string, ingestAdditionalOptions?: string, role?: IRole): CustomResource
 ```
 
 Ingest data from S3 into a Redshift table.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.ingestData.parameter.databaseName"></a>
 
@@ -4139,12 +4177,20 @@ The IAM Role to use to access the data in S3. If not provided, it would use the 
 ##### `mergeToTargetTable` <a name="mergeToTargetTable" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable"></a>
 
 ```typescript
-public mergeToTargetTable(databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string, targetColumnId?: string): CustomResource
+public mergeToTargetTable(id: string, databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string, targetColumnId?: string): CustomResource
 ```
 
 Run the `MERGE` query using simplified mode.
 
 This command would do an upsert into the target table.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.mergeToTargetTable.parameter.databaseName"></a>
 
@@ -4205,12 +4251,20 @@ Retrieve DSF package.json version.
 ##### `runCustomSQL` <a name="runCustomSQL" id="aws-dsf.consumption.RedshiftData.runCustomSQL"></a>
 
 ```typescript
-public runCustomSQL(databaseName: string, sql: string, deleteSql?: string): CustomResource
+public runCustomSQL(id: string, databaseName: string, sql: string, deleteSql?: string): CustomResource
 ```
 
 Runs a custom SQL.
 
 Once the custom resource finishes execution, the attribute `Data` contains an attribute `execId` which contains the Redshift Data API execution ID. You can then use this to retrieve execution results via the `GetStatementResult` API.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftData.runCustomSQL.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-dsf.consumption.RedshiftData.runCustomSQL.parameter.databaseName"></a>
 
@@ -4283,13 +4337,20 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.property.executionProvider">executionProvider</a></code> | <code>string</code> | Custom resource provider. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Data API execution. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data API status checks. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API status checks. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.submitFunction">submitFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data submission. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.submitLogGroup">submitLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API submission. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.targetArn">targetArn</a></code> | <code>string</code> | The ARN of the target cluster or workgroup. |
 | <code><a href="#aws-dsf.consumption.RedshiftData.property.targetId">targetId</a></code> | <code>string</code> | The ID of the target cluster or workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.property.crSecurityGroup">crSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.property.interfaceVpcEndpointSG">interfaceVpcEndpointSG</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint of Redshift Data API. |
-| <code><a href="#aws-dsf.consumption.RedshiftData.property.redshiftDataInterfaceVpcEndpoint">redshiftDataInterfaceVpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data cleaning up lambda. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
+| <code><a href="#aws-dsf.consumption.RedshiftData.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
 
 ---
 
@@ -4305,17 +4366,63 @@ The tree node.
 
 ---
 
-##### `executionProvider`<sup>Required</sup> <a name="executionProvider" id="aws-dsf.consumption.RedshiftData.property.executionProvider"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.consumption.RedshiftData.property.executionRole"></a>
 
 ```typescript
-public readonly executionProvider: string;
+public readonly executionRole: IRole;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
-Custom resource provider.
+The IAM Role for the Redshift Data API execution.
 
-This references the Lambda function that sends the SQL to Redshift via Redshift's Data API
+---
+
+##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="aws-dsf.consumption.RedshiftData.property.statusFunction"></a>
+
+```typescript
+public readonly statusFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the Redshift Data API status checks.
+
+---
+
+##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="aws-dsf.consumption.RedshiftData.property.statusLogGroup"></a>
+
+```typescript
+public readonly statusLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the Redshift Data API status checks.
+
+---
+
+##### `submitFunction`<sup>Required</sup> <a name="submitFunction" id="aws-dsf.consumption.RedshiftData.property.submitFunction"></a>
+
+```typescript
+public readonly submitFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the Redshift Data submission.
+
+---
+
+##### `submitLogGroup`<sup>Required</sup> <a name="submitLogGroup" id="aws-dsf.consumption.RedshiftData.property.submitLogGroup"></a>
+
+```typescript
+public readonly submitLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the Redshift Data API submission.
 
 ---
 
@@ -4355,39 +4462,75 @@ The ID of the target cluster or workgroup.
 
 ---
 
-##### `crSecurityGroup`<sup>Optional</sup> <a name="crSecurityGroup" id="aws-dsf.consumption.RedshiftData.property.crSecurityGroup"></a>
+##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="aws-dsf.consumption.RedshiftData.property.cleanUpFunction"></a>
 
 ```typescript
-public readonly crSecurityGroup: ISecurityGroup;
+public readonly cleanUpFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function for the S3 data copy cleaning up lambda.
+
+---
+
+##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="aws-dsf.consumption.RedshiftData.property.cleanUpLogGroup"></a>
+
+```typescript
+public readonly cleanUpLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the Redshift Data cleaning up lambda.
+
+---
+
+##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="aws-dsf.consumption.RedshiftData.property.cleanUpRole"></a>
+
+```typescript
+public readonly cleanUpRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the the S3 data copy cleaning up lambda.
+
+---
+
+##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="aws-dsf.consumption.RedshiftData.property.customResourceSecurityGroup"></a>
+
+```typescript
+public readonly customResourceSecurityGroup: ISecurityGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
-The Security Group used by the Custom Resource.
+The Security Group used by the Custom Resource when deployed in a VPC.
 
 ---
 
-##### `interfaceVpcEndpointSG`<sup>Optional</sup> <a name="interfaceVpcEndpointSG" id="aws-dsf.consumption.RedshiftData.property.interfaceVpcEndpointSG"></a>
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="aws-dsf.consumption.RedshiftData.property.vpcEndpoint"></a>
 
 ```typescript
-public readonly interfaceVpcEndpointSG: ISecurityGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
-
-The Security Group used by the VPC Endpoint of Redshift Data API.
-
----
-
-##### `redshiftDataInterfaceVpcEndpoint`<sup>Optional</sup> <a name="redshiftDataInterfaceVpcEndpoint" id="aws-dsf.consumption.RedshiftData.property.redshiftDataInterfaceVpcEndpoint"></a>
-
-```typescript
-public readonly redshiftDataInterfaceVpcEndpoint: InterfaceVpcEndpoint;
+public readonly vpcEndpoint: InterfaceVpcEndpoint;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint
 
-The created Redshift Data API interface vpc endpoint.
+The created Redshift Data API interface vpc endpoint when deployed in a VPC.
+
+---
+
+##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="aws-dsf.consumption.RedshiftData.property.vpcEndpointSecurityGroup"></a>
+
+```typescript
+public readonly vpcEndpointSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the VPC Endpoint when deployed in a VPC.
 
 ---
 
@@ -8593,7 +8736,6 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey">secretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used by the Secret. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
@@ -8613,18 +8755,6 @@ public readonly secret: ISecret;
 - *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
 
 The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace.
-
----
-
-##### `secretKmsKey`<sup>Required</sup> <a name="secretKmsKey" id="aws-dsf.consumption.RedshiftDataProps.property.secretKmsKey"></a>
-
-```typescript
-public readonly secretKmsKey: IKey;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.IKey
-
-The KMS Key used by the Secret.
 
 ---
 
@@ -8692,10 +8822,11 @@ public readonly subnets: SelectedSubnets;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
+- *Default:* No subnets are used. The Custom Resource runs in the Redshift service team subnets.
 
 The subnets where the Custom Resource Lambda Function would be created in.
 
-A Redshift Data API Interface VPC Endpoint would be created in the subnets.
+A Redshift Data API Interface VPC Endpoint is created in the subnets.
 
 ---
 
@@ -8816,6 +8947,8 @@ public readonly iamRoles: IRole[];
 - *Default:* No IAM roles are associated with the Redshift Serverless Namespace
 
 List of IAM Roles attached to the Redshift Serverless Namespace.
+
+This list of Roles must also contain the `defaultIamRole`.
 
 ---
 

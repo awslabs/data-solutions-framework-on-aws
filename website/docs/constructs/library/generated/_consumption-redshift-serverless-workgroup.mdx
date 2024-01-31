@@ -84,7 +84,7 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
                 `,
                 "drop table customer"
             )
-        const ingestion = dataAccess.ingestData("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
+        const ingestion = dataAccess.ingestData('ExampleCopy', "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
         ingestion.node.addDependency(createTable)
     }
 }
@@ -127,7 +127,7 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack(Stack):
                             )
                             diststyle even
                             """, "drop table customer")
-        ingestion = data_access.ingest_data("defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
+        ingestion = data_access.ingest_data("ExampleCopy", "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
         ingestion.node.add_dependency(create_table)
   ```
 
