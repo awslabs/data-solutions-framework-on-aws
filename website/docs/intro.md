@@ -151,8 +151,8 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/03-Processi
   const s3ReadPolicy = new PolicyDocument({
     statements: [
       PolicyStatement.fromJson({
-        actions: ['s3:GetObject'],
-        resources: ['arn:aws:s3:::bucket_name'],
+        actions: ['s3:GetObject', 's3:ListBucket'],
+        resources: ['arn:aws:s3:::*.elasticmapreduce/*', 'arn:aws:s3:::*.elasticmapreduce'],
       }),
     ],
   });
