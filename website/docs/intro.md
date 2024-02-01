@@ -77,10 +77,11 @@ We can now install DSF on AWS:
 
 We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-lake-storage.mdx) to create a storage layer for our data lake on AWS.
 
+In `lib/dsf-example-stack.ts`
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
   
-  In `lib/dsf-example-stack.ts`
   ```typescript
   import * as cdk from 'aws-cdk-lib';
   import * as dsf from 'aws-dsf';
@@ -134,12 +135,13 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
 
 ### Create the EMR Serverless Application and execution role
 
-We will now use [***SparkEmrServerlessRuntime***](constructs/library/03-Processing/01-spark-emr-serverless-runtime.mdx). In this step we create an EMR Serverless appliction, create an execution IAM role, to which we will grant read write access for both `bronze` and `silver` buckets.  
+We will now use [***SparkEmrServerlessRuntime***]. In this step we create an EMR Serverless appliction, create an execution IAM role, to which we will grant read write access to the created S3 bucket.  
+
+In `lib/dsf-example-stack.ts`
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
   
-  In `lib/dsf-example-stack.ts`
   ```typescript
 
   // Use DSF on AWS to create Spark EMR serverless runtime
