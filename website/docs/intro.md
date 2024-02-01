@@ -146,7 +146,7 @@ In `lib/dsf-example-stack.ts`
 
     // Use DSF on AWS to create Spark EMR serverless runtime
     const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
-      name: 'spark-serverless-demo',
+      name: 'WordCount',
     });
 
     //  Define policy the execution role to read the data transformation script
@@ -179,11 +179,11 @@ In `lib/dsf-example-stack.ts`
 
     # Use DSF on AWS to create Spark EMR serverless runtime
     spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
-            self, "SparkProcessingRuntime", name="TaxiAggregation",
+            self, "SparkProcessingRuntime", name="WordCount",
             removal_policy=RemovalPolicy.DESTROY,
         )
 
-    # Define policy the execution role to read the data transformation script
+    # Define policy the execution role to read the transformation script from the S3 bucket where its stored 
     s3_read_policy = Policy(self, 'S3ReadPolicy',
           statements=[
               PolicyStatement(
