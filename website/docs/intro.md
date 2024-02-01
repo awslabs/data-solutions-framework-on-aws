@@ -90,12 +90,12 @@ In `lib/dsf-example-stack.ts`
     constructor(scope: cdk.Construt, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
 
-      new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-        encryptionKey: new Key(this, 'DataKey', {
-            enableKeyRotation: true,
-            removalPolicy: cdk.RemovalPolicy.DESTROY
-          });
-      });
+    const storage = new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+      encryptionKey: new Key(this, 'DataKey', {
+          enableKeyRotation: true,
+          removalPolicy: cdk.RemovalPolicy.DESTROY
+        }),
+    });
 
 
     }
@@ -144,20 +144,20 @@ In `lib/dsf-example-stack.ts`
   
   ```typescript
 
-  // Use DSF on AWS to create Spark EMR serverless runtime
-  const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
-          name: 'spark-serverless-demo',
-      });
+    // Use DSF on AWS to create Spark EMR serverless runtime
+    const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
+      name: 'spark-serverless-demo',
+    });
 
-  //  Define policy the execution role to read the data transformation script
-  const s3ReadPolicy = new PolicyDocument({
-    statements: [
-      PolicyStatement.fromJson({
-        actions: ['s3:GetObject', 's3:ListBucket'],
-        resources: ['arn:aws:s3:::*.elasticmapreduce/*', 'arn:aws:s3:::*.elasticmapreduce'],
-      }),
-    ],
-  });
+    //  Define policy the execution role to read the data transformation script
+    const s3ReadPolicy = new Policy(this, 's3ReadPolicy' , {
+        statements: [
+            new PolicyStatement({
+              actions: ['s3:GetObject', 's3:ListBucket'],
+              resources: ['arn:aws:s3:::*.elasticmapreduce/*', 'arn:aws:s3:::*.elasticmapreduce'],
+            }),
+        ],
+    });
 
   // Use DSF on AWS to create Spark EMR serverless runtime
   const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'ProcessingExecRole');
@@ -217,10 +217,10 @@ Last we will output the ARNs for the role and EMR serverless app, the Id of the 
   In `lib/dsf-example-stack.ts`
   ```typescript
 
-  new cdk.CfnOutput(this, "EMRServerlessApplicationId", runtimeServerless.application.attrApplicationId);
-  new cdk.CfnOutput(this, "EMRServerlessApplicationARN", runtimeServerless.application.attrArn);
-  new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", executionRole.roleArn);
-  new cdk.CfnOutput(this, "BucketURI", `s3://${}`);
+  new cdk.CfnOutput(this, "EMRServerlessApplicationId", { value : runtimeServerless.application.attrApplicationId });
+  new cdk.CfnOutput(this, "EMRServerlessApplicationARN", { value : runtimeServerless.application.attrArn });
+  new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", { value : executionRole.roleArn });
+  new cdk.CfnOutput(this, "BucketURI", { value : `s3://${storage.bucketName}` });
   
   ```
   
