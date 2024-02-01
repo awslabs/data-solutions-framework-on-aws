@@ -4,8 +4,9 @@ import {
   DescribeJobRunCommand,
   DeleteManagedEndpointCommand } from "@aws-sdk/client-emr-containers";
 
+const region = 'eu-west-1';
 
-const client = new EMRContainersClient()
+const client = new EMRContainersClient( { region });
 
 // Handler functions
 exports.handler = async (event) => {

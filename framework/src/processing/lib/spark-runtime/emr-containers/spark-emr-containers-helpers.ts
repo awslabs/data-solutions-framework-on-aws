@@ -23,19 +23,7 @@ export function interactiveSessionsProviderSetup(
   const lambdaPolicy = [
     new PolicyStatement({
       resources: ['*'],
-      actions: ['emr-containers:DescribeManagedEndpoint'],
-    }),
-    new PolicyStatement({
-      resources: ['*'],
-      actions: ['emr-containers:DeleteManagedEndpoint'],
-    }),
-    new PolicyStatement({
-      resources: ['*'],
-      actions: ['emr-containers:CreateManagedEndpoint'],
-    }),
-    new PolicyStatement({
-      resources: ['*'],
-      actions: ['emr-containers:TagResource'],
+      actions: ['emr-containers:*'],
     }),
     new PolicyStatement({
       resources: ['*'],

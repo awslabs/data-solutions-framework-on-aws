@@ -695,10 +695,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       throw new Error('error empty configuration override is not supported on non-default nodegroups');
     }
 
-    let jsonConfigurationOverrides: string | undefined;
+    //let jsonConfigurationOverrides: string | undefined;
 
-    jsonConfigurationOverrides =
-      interactiveSessionOptions.configurationOverrides ? interactiveSessionOptions.configurationOverrides : this.notebookDefaultConfig;
+    //jsonConfigurationOverrides =
+    //  interactiveSessionOptions.configurationOverrides ? interactiveSessionOptions.configurationOverrides : this.notebookDefaultConfig;
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
@@ -707,8 +707,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         clusterId: interactiveSessionOptions.virtualClusterId,
         executionRoleArn: interactiveSessionOptions.executionRole.roleArn,
         endpointName: interactiveSessionOptions.managedEndpointName,
-        releaseLabel: interactiveSessionOptions.emrOnEksVersion ?? SparkEmrContainersRuntime.DEFAULT_EMR_EKS_VERSION + ':latest',
-        configurationOverrides: jsonConfigurationOverrides ?? undefined,
+        releaseLabel: interactiveSessionOptions.emrOnEksVersion ?? SparkEmrContainersRuntime.DEFAULT_EMR_EKS_VERSION + '-latest',
+        configurationOverrides: undefined,
       },
       resourceType: 'Custom::EmrEksInteractiveEndpoint',
     });
