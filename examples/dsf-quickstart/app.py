@@ -12,6 +12,7 @@ dev_env = Environment(
 )
 
 app = App()
-DataStack(app, "dsf-quickstart-dev", env=dev_env)
+
+DataStack(app, "dsf-quickstart-dev", env=dev_env);
 
 app.synth()

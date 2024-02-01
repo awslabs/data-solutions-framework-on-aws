@@ -1,5 +1,8 @@
 {
   "app": "python app.py",
+  "context": {
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
+  },
   "output": "cdk.out",
   "watch": {
     "include": [

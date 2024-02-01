@@ -16,9 +16,9 @@ def template():
 
 
 def test_buckets_found(template):
-    template.resource_count_is("AWS::S3::Bucket", 4)
+    template.resource_count_is("AWS::S3::Bucket", 1)
     template.resource_count_is("AWS::EMRServerless::Application", 1)
 
 def test_e2e_quickstart(template):
-    template.resource_count_is("AWS::S3::Bucket", 4)
+    template.resource_count_is("AWS::S3::Bucket", 1)
     template.resource_count_is("AWS::EMRServerless::Application", 1)
