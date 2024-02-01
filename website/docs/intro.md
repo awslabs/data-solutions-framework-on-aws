@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 The DSF on AWS library is available in Typescript or Python, select the right tab for code examples in your preferred language.
 
-In this quickstart we will show you how you can use DSF to deploy EMR Serverless, create a data lake with three stages (bronze, silver, gold), copy data to bronze, and process it to store it in the silver bucket. You can find the full quick start example [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/examples/dsf-quickstart). The example uses `NY Taxi Trip data`, in which we will update the timestamp column and write the data to the S3 bucket that make up the silver stage.
+In this quickstart we will show you how you can use DSF to deploy EMR Serverless, deploy an S3 configured with AWS best practices, execute a Spark application for word counts and store the result in the created S3 bucket. You can find the full quick start example [here](https://github.com/awslabs/data-solutions-framework-on-aws/tree/main/examples/dsf-quickstart).
 
 The sections below will take you through the steps of creating the CDK application and use it to deploy the infrastructure. 
 
@@ -84,24 +84,16 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
   ```typescript
   import * as cdk from 'aws-cdk-lib';
   import * as dsf from 'aws-dsf';
-  import { Bucket } from 'aws-cdk-lib/aws-s3';
 
   export class DsfExampleStack extends cdk.Stack {
     constructor(scope: cdk.Construt, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
 
-      const storage = new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
-        bronzeName: 'my-bronze',
-        bronzeInfrequentAccessDelay: 90,
-        bronzeArchiveDelay: 180,
-        silverName: 'my-silver',
-        silverInfrequentAccessDelay: 180,
-        silverArchiveDelay: 360,
-        goldName: 'my-gold',
-        goldInfrequentAccessDelay: 180,
-        goldArchiveDelay: 360,
-        removalPolicy: cdk.RemovalPolicy.RETAIN,
-        dataLakeKey: new Key(this, 'MyDataLakeKey')
+      new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+        encryptionKey: new Key(this, 'DataKey', {
+            enableKeyRotation: true,
+            removalPolicy: cdk.RemovalPolicy.DESTROY
+          });
       });
 
 
@@ -127,66 +119,14 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
      def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        data_lake_storage = dsf.DataLakeStorage(
-          self,
-          bronze_name="my-bronze",
-          bronze_infrequent_access_delay="90",
-          bronze_archive_delay="180",
-          silver_name="my-silver",
-          silver_infrequent_access_delay="180",
-          silver_archive_delay="360",
-          gold_name="my-gold",
-          gold_infrequent_access_delay="180",
-          gold_archive_delay="360",
-          removal_policy=cdk.RemovalPolicy.RETAIN,
+        storage = dsf.storage.AnalyticsBucket(
+            self, "DataLakeStorage", 
+            removal_policy=RemovalPolicy.DESTROY,
+            encryption_key= Key(self, "StorageEncryptionKey",
+                removal_policy=RemovalPolicy.DESTROY,
+                enable_key_rotation=True
+            )
         )
-    ```
-    
-  </TabItem>
-</Tabs>
-
-
-### Copy data to Data lake
-
-We will now use [***S3DataCopy***](constructs/library/05-Utils/02-s3-data-copy.mdx). The `S3DataCopy` is a utility which allow a user to copy data from one S3 bucket to another. In this example we copy the data about the `NY Taxi Trip data` to the bronze bucket.
-
-<Tabs>
-  <TabItem value="typescript" label="TypeScript" default>
-  
-  In `lib/dsf-example-stack.ts`
-  ```typescript
-
-      const sourceBucket = Bucket.fromBucketName(this, 'sourceBucket', 'nyc-tlc');
-
-      new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
-        sourceBucket,
-        sourceBucketPrefix: 'trip data/',
-        sourceBucketRegion: 'us-east-1',
-        storage.bronzeBucket,
-        targetBucketPrefix: 'staging-data/',
-      });
-
-  ```
-  
-  ```mdx-code-block
-  </TabItem>
-  <TabItem value="python" label="Python">
-
-    In `dsf_example/dsf_example_stack.py`
-    ```python
-
-    source_bucket = Bucket.from_bucket_name(self, "sourceBucket", "nyc-tlc")
-
-      dsf.utils.S3DataCopy(
-        self,
-        "CopyData",
-        source_bucket=source_bucket,
-        source_bucket_prefix="trip data/",
-        source_bucket_region="us-east-1",
-        target_bucket=storage.bronze_bucket,
-        target_bucket_prefix="nyc-taxi-data/",
-        removal_policy=RemovalPolicy.DESTROY,
-      )
     ```
     
   </TabItem>
@@ -202,15 +142,29 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/03-Processi
   In `lib/dsf-example-stack.ts`
   ```typescript
 
+  // Use DSF on AWS to create Spark EMR serverless runtime
   const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
           name: 'spark-serverless-demo',
       });
 
+  //  Define policy the execution role to read the data transformation script
+  const s3ReadPolicy = new PolicyDocument({
+    statements: [
+      PolicyStatement.fromJson({
+        actions: ['s3:GetObject'],
+        resources: ['arn:aws:s3:::bucket_name'],
+      }),
+    ],
+  });
 
+  // Use DSF on AWS to create Spark EMR serverless runtime
   const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'ProcessingExecRole');
+  
+  // Provide access for the execution role to read the data transformation script
+  executionRole.attachInlinePolicy(s3ReadPolicy);
 
-  storage.bronzeBucket.grantReadWrite(executionRole);
-  storage.silverBucket.grantReadWrite(executionRole);
+  // Provide access for the execution role to write data to the created bucket
+  storage.grantReadWrite(executionRole);
 
   ```
   
@@ -227,14 +181,24 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/03-Processi
             removal_policy=RemovalPolicy.DESTROY,
         )
 
+    # Define policy the execution role to read the data transformation script
+    s3_read_policy = Policy(self, 'S3ReadPolicy',
+          statements=[
+              PolicyStatement(
+                  actions = ["s3:GetObject", "s3:ListBucket"],
+                  resources = ["arn:aws:s3:::*.elasticmapreduce/*", "arn:aws:s3:::*.elasticmapreduce"]
+              )
+          ]
+      )
+
     # Use DSF on AWS to create Spark EMR serverless runtime
     processing_exec_role = dsf.processing.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
 
-    # Provide access for the execution role to read from the bronze
-    storage.bronze_bucket.grant_read_write(processing_exec_role)
-    
-    # Provide access for the execution role to write data to silver
-    storage.silver_bucket.grant_read_write(processing_exec_role)
+    # Provide access for the execution role to read the data transformation script
+    processing_exec_role.attach_inline_policy(s3_read_policy)
+
+    # Provide access for the execution role to write data to the created bucket
+    storage.grant_read_write(processing_exec_role)
 
     ```
     
@@ -254,6 +218,7 @@ Last we will output the ARNs for the role and EMR serverless app, the Id of the 
   new cdk.CfnOutput(this, "EMRServerlessApplicationId", runtimeServerless.application.attrApplicationId);
   new cdk.CfnOutput(this, "EMRServerlessApplicationARN", runtimeServerless.application.attrArn);
   new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", executionRole.roleArn);
+  new cdk.CfnOutput(this, "BucketURI", `s3://${}`);
   
   ```
   
@@ -267,7 +232,7 @@ Last we will output the ARNs for the role and EMR serverless app, the Id of the 
     CfnOutput(self, "EMRServerlessApplicationId", value=spark_runtime.application.attr_application_id)
     CfnOutput(self, "EMRServerlessApplicationARN", value=spark_runtime.application.attr_arn)
     CfnOutput(self, "EMRServelessExecutionRoleARN", value=processing_exec_role.role_arn)
-
+    CfnOutput(self, "BucketURI", value=f"s3://{storage.bucket_name}")
     ```
     
   </TabItem>
@@ -283,14 +248,15 @@ cdk deploy
 
 ```bash
 aws emr-serverless start-job-run \
-    --application-id application-id \
-    --execution-role-arn job-role-arn \
-    --name job-run-name \
-    --job-driver '{
+  --application-id EMRServerlessApplicationId \
+  --execution-role-arn EMRServelessExecutionRoleARN \
+  --job-driver '{
         "sparkSubmit": {
-          "entryPoint": "s3://DOC-EXAMPLE-BUCKET/scripts/wordcount.py",
-          "entryPointArguments": ["s3://DOC-EXAMPLE-BUCKET/emr-serverless-spark/output"],
-          "sparkSubmitParameters": "--conf spark.executor.cores=1 --conf spark.executor.memory=4g --conf spark.driver.cores=1 --conf spark.driver.memory=4g --conf spark.executor.instances=1"
+            "entryPoint": "s3://us-east-1.elasticmapreduce/emr-containers/samples/wordcount/scripts/wordcount.py",
+            "entryPointArguments": [
+          "s3://BucketURI/wordcount_output/"
+        ],
+            "sparkSubmitParameters": "--conf spark.executor.cores=1 --conf spark.executor.memory=4g --conf spark.driver.cores=1 --conf spark.driver.memory=4g --conf spark.executor.instances=1 --conf spark.hadoop.hive.metastore.client.factory.class=com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
         }
     }'
 ```
