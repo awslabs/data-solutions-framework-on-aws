@@ -24,8 +24,6 @@ class ApplicationStack(Stack):
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        self.node.set_context('@data-solutions-framework-on-aws/removeDataOnDestroy', True);
-
         # Use DSF on AWS to create a data lake storage and Glue data catalog database for the example data.
         storage = dsf.storage.DataLakeStorage(
             self, "DataLakeStorage", removal_policy=RemovalPolicy.DESTROY
