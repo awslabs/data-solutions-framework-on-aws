@@ -1051,14 +1051,13 @@ describe('Test for grant job execution', () => {
               {
                 Action: 'emr-containers:StartJobRun',
                 Effect: 'Allow',
-              }
+              },
             ),
           ]),
         }),
         Roles: ['StartJobRole'],
       }));
   });
-
 
 
 });
