@@ -11610,7 +11610,7 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 ### KarpenterVersion <a name="KarpenterVersion" id="aws-dsf.processing.KarpenterVersion"></a>
 
-The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases).
+The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 is supported.
 
 #### Members <a name="Members" id="Members"></a>
 

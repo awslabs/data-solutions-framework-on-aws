@@ -28,8 +28,9 @@ export function interactiveSessionsProviderSetup(
     new PolicyStatement({
       resources: [`arn:${Stack.of(scope).partition}:emr-containers:${Stack.of(scope).region}:${Stack.of(scope).account}:/virtualclusters/*/endpoints/*`],
       actions: [
-        'emr-containers:DeleteManagedEndpoint'],
-        conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
+        'emr-containers:DeleteManagedEndpoint',
+      ],
+      conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
     }),
     new PolicyStatement({
       resources: [`arn:${Stack.of(scope).partition}:emr-containers:${Stack.of(scope).region}:${Stack.of(scope).account}:/virtualclusters/*`],
