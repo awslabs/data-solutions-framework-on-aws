@@ -47,6 +47,12 @@ export interface RedshiftServerlessNamespaceProps {
   readonly kmsKey?: Key;
 
   /**
+   * The KMS Key used by the managed admin password secret
+   * @default - If none is provided, a new key is created
+   */
+  readonly managedAdminPasswordKmsKey?: Key;
+
+  /**
    * The logs to be exported
    * @default - No logs are exported
    */

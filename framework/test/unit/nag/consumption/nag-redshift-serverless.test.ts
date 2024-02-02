@@ -31,7 +31,7 @@ NagSuppressions.addStackSuppressions(stack, [
   },
 ], true);
 
-NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgroup/DefaultServerlessNamespace/Namespace/CustomResourcePolicy/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgroup/DefaultServerlessNamespace/NamespaceManagementRole/Resource', [
   {
     id: 'AwsSolutions-IAM5',
     reason: 'Required because namespace ID is not yet known at the time of creation.',
@@ -59,8 +59,17 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
   '/Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource',
   '/Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource',
   '/Stack/rs-example-workgroup/RSServerlessDataAPI-28749e97e334da36d01364100b50caa08ac6091cd4e228237738ea104fb921fb/CustomResourceProvider/waiter-state-machine/Role/DefaultPolicy/Resource',
-  '/Stack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource',
-  '/Stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-onEvent/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-isComplete/ServiceRole/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-onTimeout/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-onTimeout/ServiceRole/DefaultPolicy/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/waiter-state-machine/Role/DefaultPolicy/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-isComplete/ServiceRole/DefaultPolicy/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-isComplete/ServiceRole/DefaultPolicy/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-isComplete/Resource',
+  '/Stack/rs-example-workgroup/DefaultServerlessNamespace/CustomResourceProvider/framework-onTimeout/ServiceRole/Resource',
 ], [
   {
     id: 'AwsSolutions-IAM4',

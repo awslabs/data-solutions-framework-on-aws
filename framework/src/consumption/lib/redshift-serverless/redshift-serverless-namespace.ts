@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { randomBytes } from 'crypto';
-import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { Effect, IRole, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Effect, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ISecret, Secret } from 'aws-cdk-lib/aws-secretsmanager';
-import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespaceProps } from './redshift-serverless-namespace-props';
 import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * Create a Redshift Serverless Namespace with the admin credentials stored in Secrets Manager
@@ -21,10 +20,11 @@ import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../.
  * });
  */
 export class RedshiftServerlessNamespace extends TrackedConstruct {
+
   /**
-   * Created namespace
+   * The custom resource that creates the Namespace
    */
-  readonly cfnResource: AwsCustomResource;
+  readonly cfnResource: CustomResource;
 
   /**
    * The name of the created namespace
@@ -47,6 +47,11 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
    * KMS key used by the namespace to encrypt its data
    */
   readonly namespaceKey: Key;
+
+  /**
+   * KMS key used by the managed admin secret for the namespace
+   */
+  readonly managedAdminPasswordKey: Key;
 
   /**
    * The name of the database
@@ -95,20 +100,22 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
     const logExports: string[] = props.logExports || [];
     this.namespaceName = `${props.name}-${Utils.generateUniqueHash(this)}`;
-
-    this.namespaceKey = props.kmsKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
+    const defaultNamespaceKey = new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
+    this.namespaceKey = props.kmsKey ?? defaultNamespaceKey;
+    this.managedAdminPasswordKey = props.managedAdminPasswordKmsKey ?? new Key(this, 'DefaultManagedAdminPasswordKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
     const namespaceArn = `arn:aws:redshift-serverless:${this.currentStack.region}:${this.currentStack.account}:namespace/*`;
-
+    const indexParameterName = `updateNamespace-idx-${Utils.generateUniqueHash(this)}`;
     this.namespaceParameters = {
       namespaceName: this.namespaceName,
-      adminPasswordSecretKmsKeyId: this.namespaceKey.keyId,
-      adminUsername: `admin-${randomBytes(4).toString('hex')}`,
+      managedAdminPasswordKeyId: this.managedAdminPasswordKey.keyId,
+      adminUsername: 'admin',
       dbName: props.dbName,
       defaultIamRoleArn: props.defaultIAMRole ? props.defaultIAMRole.roleArn : undefined,
       iamRoles: this.roles ? Object.keys(this.roles) : undefined,
       kmsKeyId: this.namespaceKey.keyId,
       manageAdminPassword: true,
       logExports,
+      indexParameterName,
     };
 
     const roleArns = Object.keys(this.roles);
@@ -118,7 +125,19 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
+          'ssm:GetParameter',
+          'ssm:PutParameter',
+          'ssm:DeleteParameter',
+        ],
+        resources: [
+          `arn:aws:ssm:${this.currentStack.region}:${this.currentStack.account}:parameter/${indexParameterName}`,
+        ],
+      }),
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
           'redshift-serverless:CreateNamespace',
+          'redshift-serverless:GetNamespace',
           'redshift-serverless:UpdateNamespace',
           'redshift-serverless:DeleteNamespace',
         ],
@@ -159,7 +178,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
           'kms:DescribeKey',
           'kms:CreateGrant',
         ],
-        resources: [this.namespaceKey.keyArn],
+        resources: [defaultNamespaceKey.keyArn, this.namespaceKey.keyArn, this.managedAdminPasswordKey.keyArn],
       }),
     ];
 
@@ -174,39 +193,46 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       }));
     }
 
-    this.cfnResource = new AwsCustomResource(this, 'Namespace', {
-      onCreate: {
-        service: 'redshift-serverless',
-        action: 'CreateNamespace',
-        parameters: this.namespaceParameters,
-        physicalResourceId: PhysicalResourceId.of(`RS-${this.currentStack.region}-${this.currentStack.account}-${this.namespaceName}`),
+    const namespaceCrRole = new Role(this, 'NamespaceManagementRole', {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      inlinePolicies: {
+        PrimaryPermissions: new PolicyDocument({
+          statements: createNamespaceCrPolicyStatements,
+        }),
       },
-      onUpdate: {
-        service: 'redshift-serverless',
-        action: 'UpdateNamespace',
-        parameters: {
-          namespaceName: this.namespaceName,
-          defaultIamRoleArn: props.defaultIAMRole ? props.defaultIAMRole.roleArn : undefined,
-          iamRoles: this.roles ? roleArns : undefined,
-        },
+    });
+
+    const provider = new DsfProvider(this, 'RedshiftServerlessNamespaceProvider', {
+      providerName: 'RedshiftServerlessNamespace',
+      onEventHandlerDefinition: {
+        depsLockFilePath: __dirname+'/../resources/RedshiftServerlessNamespace/package-lock.json',
+        entryFile: __dirname+'/../resources/RedshiftServerlessNamespace/index.mjs',
+        handler: 'index.handler',
+        iamRole: namespaceCrRole,
+        timeout: Duration.minutes(5),
       },
-      onDelete: {
-        service: 'redshift-serverless',
-        action: 'DeleteNamespace',
-        parameters: {
-          namespaceName: this.namespaceName,
-        },
+      isCompleteHandlerDefinition: {
+        depsLockFilePath: __dirname+'/../resources/RedshiftServerlessNamespace/package-lock.json',
+        entryFile: __dirname+'/../resources/RedshiftServerlessNamespace/index.mjs',
+        handler: 'index.isCompleteHandler',
+        iamRole: namespaceCrRole,
+        timeout: Duration.minutes(5),
       },
-      policy: AwsCustomResourcePolicy.fromStatements(createNamespaceCrPolicyStatements),
-      installLatestAwsSdk: true,
+      queryInterval: Duration.seconds(1),
+      queryTimeout: Duration.minutes(5),
       removalPolicy: this.removalPolicy,
     });
 
-    this.cfnResource.node.addDependency(this.namespaceKey);
+    this.cfnResource = new CustomResource(this, 'RedshiftServerlessNamespaceCustomResource', {
+      serviceToken: provider.serviceToken,
+      properties: this.namespaceParameters,
+    });
 
-    this.adminSecret = Secret.fromSecretCompleteArn(this, 'ManagedSecret', this.cfnResource.getResponseField('namespace.adminPasswordSecretArn'));
-    this.namespaceId = this.cfnResource.getResponseField('namespace.namespaceId');
-    this.namespaceArn = this.cfnResource.getResponseField('namespace.namespaceArn');
-    Tags.of(this.adminSecret).add('RedshiftDataFullAccess', 'serverless');
+    this.cfnResource.node.addDependency(this.namespaceKey);
+    this.cfnResource.node.addDependency(this.managedAdminPasswordKey);
+
+    this.adminSecret = Secret.fromSecretCompleteArn(this, 'NamespaceManagedSecret', this.cfnResource.getAttString('adminPasswordSecretArn'));
+    this.namespaceId = this.cfnResource.getAttString('namespaceId');
+    this.namespaceArn = this.cfnResource.getAttString('namespaceArn');
   }
 }

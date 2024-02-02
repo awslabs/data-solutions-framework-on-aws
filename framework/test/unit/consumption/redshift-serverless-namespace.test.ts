@@ -53,24 +53,8 @@ describe('Default creation', () => {
   });
 
   test('Create namespace via Custom Resource', () => {
-    template.hasResourceProperties('Custom::AWS', {
-      Create: {
-        'Fn::Join': [
-          '',
-          Match.arrayWith([
-            Match.stringLikeRegexp('.+?"service":"redshift-serverless","action":"CreateNamespace".+'),
-          ]),
-        ],
-      },
-      Update: {
-        'Fn::Join': [
-          '',
-          Match.arrayWith([
-            Match.stringLikeRegexp('.+?"service":"redshift-serverless","action":"UpdateNamespace".+'),
-          ]),
-        ],
-      },
-      Delete: Match.stringLikeRegexp('.+?"service":"redshift-serverless","action":"DeleteNamespace".+'),
+    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+      namespaceName: Match.stringLikeRegexp('^defaultnamespace\-.+'),
     });
   });
   // test('Should create secret containing admin credentials', () => {

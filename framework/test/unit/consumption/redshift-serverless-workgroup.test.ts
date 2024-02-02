@@ -23,16 +23,9 @@ describe('Create Workgroup with a default namespace and VPC', () => {
 
   const template = Template.fromStack(stack);
 
-  test('Has default namespace created', () => {
-    template.hasResourceProperties('Custom::AWS', {
-      Create: {
-        'Fn::Join': [
-          '',
-          Match.arrayWith([
-            Match.stringLikeRegexp('.+?"service":"redshift-serverless","action":"CreateNamespace","parameters":{"namespaceName":"default.+?".+'),
-          ]),
-        ],
-      },
+  test('Create namespace via Custom Resource', () => {
+    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+      namespaceName: Match.stringLikeRegexp('^default\-.+'),
     });
   });
 
@@ -109,16 +102,9 @@ describe('Create Workgroup with a default namespace and non-default VPC', () => 
 
   const template = Template.fromStack(stack);
 
-  test('Has default namespace created', () => {
-    template.hasResourceProperties('Custom::AWS', {
-      Create: {
-        'Fn::Join': [
-          '',
-          Match.arrayWith([
-            Match.stringLikeRegexp('.+?"service":"redshift-serverless","action":"CreateNamespace","parameters":{"namespaceName":"default.+?".+'),
-          ]),
-        ],
-      },
+  test('Create namespace via Custom Resource', () => {
+    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+      namespaceName: Match.stringLikeRegexp('^default\-.+'),
     });
   });
 

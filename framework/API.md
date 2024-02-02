@@ -4682,8 +4682,9 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecret">adminSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The created Secrets Manager secret containing the admin credentials. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.custom_resources.AwsCustomResource</code> | Created namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource that creates the Namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.dbName">dbName</a></code> | <code>string</code> | The name of the database. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.managedAdminPasswordKey">managedAdminPasswordKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the managed admin secret for the namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceArn">namespaceArn</a></code> | <code>string</code> | The ARN of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey">namespaceKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt its data. |
@@ -4719,12 +4720,12 @@ The created Secrets Manager secret containing the admin credentials.
 ##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource"></a>
 
 ```typescript
-public readonly cfnResource: AwsCustomResource;
+public readonly cfnResource: CustomResource;
 ```
 
-- *Type:* aws-cdk-lib.custom_resources.AwsCustomResource
+- *Type:* aws-cdk-lib.CustomResource
 
-Created namespace.
+The custom resource that creates the Namespace.
 
 ---
 
@@ -4737,6 +4738,18 @@ public readonly dbName: string;
 - *Type:* string
 
 The name of the database.
+
+---
+
+##### `managedAdminPasswordKey`<sup>Required</sup> <a name="managedAdminPasswordKey" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.managedAdminPasswordKey"></a>
+
+```typescript
+public readonly managedAdminPasswordKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+KMS key used by the managed admin secret for the namespace.
 
 ---
 
@@ -8883,6 +8896,7 @@ const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceP
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The logs to be exported. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.managedAdminPasswordKmsKey">managedAdminPasswordKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used by the managed admin password secret. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
@@ -8975,6 +8989,19 @@ public readonly logExports: RedshiftServerlessNamespaceLogExport[];
 - *Default:* No logs are exported
 
 The logs to be exported.
+
+---
+
+##### `managedAdminPasswordKmsKey`<sup>Optional</sup> <a name="managedAdminPasswordKmsKey" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.managedAdminPasswordKmsKey"></a>
+
+```typescript
+public readonly managedAdminPasswordKmsKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* If none is provided, a new key is created
+
+The KMS Key used by the managed admin password secret.
 
 ---
 
