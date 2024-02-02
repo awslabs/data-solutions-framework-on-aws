@@ -415,4 +415,4 @@ The Grant Job Execution allow you to provide an IAM role the rights to start the
 }
 ```
 
-[example interactive endpoint](./examples/spark-emr-runtime-containers-grant-execution.lit.ts)
+[example grant job execution](./examples/spark-emr-runtime-containers-grant-execution.lit.ts)
