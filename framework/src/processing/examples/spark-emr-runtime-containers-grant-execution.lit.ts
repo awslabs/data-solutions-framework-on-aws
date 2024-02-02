@@ -58,12 +58,10 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
          });
 
         /// !show
-
         //IAM role that is used to start the execution and monitor its state
         const startJobRole: IRole = Role.fromRoleName(this, 'StartJobRole', 'StartJobRole'); 
 
         SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
-
         /// !hide
     }
 }

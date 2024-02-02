@@ -380,6 +380,39 @@ The interactive endpoint provides the capability for interactive clients like Am
 
 ### Grant Job Execution
 
-The Grant Job Execution allow you to provide an IAM role the rights to start the execution of a job and monitor it in a given virtual cluster.
+The Grant Job Execution allow you to provide an IAM role the rights to start the execution of a job and monitor it in a given virtual cluster. The policy attached will be as follow.
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Action": [
+				"emr-containers:DescribeJobRun",
+				"emr-containers:ListJobRuns"
+			],
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm",
+			"Effect": "Allow"
+		},
+		{
+			"Condition": {
+				"ArnEquals": {
+					"emr-containers:ExecutionRoleArn": [
+						"arn:aws:iam::ACCOUNT-ID:role/s3ReadExecRole"
+					]
+				}
+			},
+			"Action": "emr-containers:StartJobRun",
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm",
+			"Effect": "Allow"
+		},
+		{
+			"Action": "emr-containers:TagResource",
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm/jobruns/*",
+			"Effect": "Allow"
+		}
+	]
+}
+```
 
 [example interactive endpoint](./examples/spark-emr-runtime-containers-grant-execution.lit.ts)
