@@ -32,7 +32,7 @@ export const onEventHandler =  async (event) => {
 
     case 'Delete':
       console.info(event.RequestType);
-      physicalResourceId =  await onDelete(event);
+      physicalResourceId =  (await onDelete(event)).PhysicalResourceId;
       return { 
         PhysicalResourceId : physicalResourceId,
       };
