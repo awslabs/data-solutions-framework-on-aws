@@ -1,7 +1,7 @@
 import { 
   EMRContainersClient, 
   CreateManagedEndpointCommand, 
-  DescribeJobRunCommand,
+  DescribeManagedEndpointCommand,
   DeleteManagedEndpointCommand } from "@aws-sdk/client-emr-containers";
 
 const region = 'eu-west-1';
@@ -9,18 +9,34 @@ const region = 'eu-west-1';
 const client = new EMRContainersClient( { region });
 
 // Handler functions
-exports.handler = async (event) => {
+export const onEventHandler =  async (event) => {
 
+  console.info('======Recieved for Event=======');
   console.info(event);
+
+  let physicalResourceId
 
   switch (event.RequestType) {
     case 'Create':
     case 'Update':
-      await onCreate(event);
-      break;
+      console.info(event.RequestType);
+      physicalResourceId = (await onCreate(event)).PhysicalResourceId;
+
+      console.info( {
+        PhysicalResourceId : physicalResourceId,
+      });
+
+      return {
+        PhysicalResourceId : physicalResourceId,
+      };
+
     case 'Delete':
-      await onDelete(event);
-      break;
+      console.info(event.RequestType);
+      physicalResourceId =  await onDelete(event);
+      return { 
+        PhysicalResourceId : physicalResourceId,
+      };
+
     default:
       throw new Error(`invalid request type: ${event.RequestType}`);
   }
@@ -33,24 +49,30 @@ const onCreate = async (event) => {
     virtualClusterId: event.ResourceProperties.clusterId,
     type: 'JUPYTER_ENTERPRISE_GATEWAY',
     releaseLabel: event.ResourceProperties.releaseLabel, 
-    executionRoleArn: event.ResourceProperties.roleArn,
+    executionRoleArn: event.ResourceProperties.executionRoleArn,
     tags: {
       'data-solutions-fwk:owned' : 'true'
     }
   });
 
-
   let response = await client.send(command);
 
   console.info(response);
 
+  console.info(response.id);
+
+  const physicalResourceId = response.id
+
   return { 
-    PhysicalResourceId: response.id
+    PhysicalResourceId : physicalResourceId,
   };
 
 }
 
 const onDelete = async (event) => {
+
+  console.info('======Recieved for delete=======');
+  console.info(event);
 
   const command = new DeleteManagedEndpointCommand({
     virtualClusterId: event.ResourceProperties.clusterId,
@@ -60,14 +82,16 @@ const onDelete = async (event) => {
   let response = await client.send(command);
 
   console.info(response);
+  console.info(response.id);
 
   return {
-    PhysicalResourceId: response.id
+    PhysicalResourceId: event.PhysicalResourceId,
   };
 
 }
 
-exports.isComplete = async (event) => {
+export const isCompleteHandler = async (event) => {
+  console.info('isCompleteHandler Invocation');
   console.info(event);
 
   let requestType = event.RequestType.toLowerCase();
@@ -82,7 +106,7 @@ exports.isComplete = async (event) => {
 
   const endpointId = event.PhysicalResourceId;
 
-  const command = new DescribeJobRunCommand({
+  const command = new DescribeManagedEndpointCommand({
     id: endpointId,
     virtualClusterId: event.ResourceProperties.clusterId
   });
@@ -108,13 +132,13 @@ exports.isComplete = async (event) => {
 
   if(state === 'ACTIVE_CREATEUPDATE') {
     const data = {
-      securityGroup: response.endpoint.securityGroup,
+      securityGroup : response.endpoint.securityGroup,
       id: response.endpoint.id,
       arn: response.endpoint.arn
     };
 
     console.info({ IsComplete: true, Data: data });
-    return { IsComplete: true, Data: data };
+    return { IsComplete : true, Data: data };
   } else if(state === 'TERMINATED_DELETE') {
     return { IsComplete: true };
   } else if(state === 'TERMINATED_CREATEUPDATE' || state === 'TERMINATED_WITH_ERRORS_CREATEUPDATE' || state === 'TERMINATED_WITH_ERRORS_DELETE' || state === 'TERMINATING_CREATEUPDATE') {

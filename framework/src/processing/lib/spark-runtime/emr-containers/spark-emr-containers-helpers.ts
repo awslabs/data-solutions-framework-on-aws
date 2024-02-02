@@ -56,13 +56,13 @@ export function interactiveSessionsProviderSetup(
   const provider = new DsfProvider(scope, 'InteractiveSessionProvider', {
     providerName: 'emr-containers-interactive-endpoint-provider',
     onEventHandlerDefinition: {
-      handler: 'index.handler',
+      handler: 'index.onEventHandler',
       depsLockFilePath: path.join(__dirname, './resources/lambdas/managed-endpoint/package-lock.json'),
       entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
     },
     isCompleteHandlerDefinition: {
-      handler: 'index.isComplete',
+      handler: 'index.isCompleteHandler',
       depsLockFilePath: path.join(__dirname, './resources/lambdas/managed-endpoint/package-lock.json'),
       entryFile: path.join(__dirname, './resources/lambdas/managed-endpoint/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
