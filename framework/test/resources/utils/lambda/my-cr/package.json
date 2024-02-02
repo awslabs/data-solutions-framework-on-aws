@@ -1,18 +1,7 @@
 {
-  "name": "my-cr",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.476.0",
     "@aws-sdk/client-sts": "^3.476.0",
-    "aws-sdk": "^2.1521.0",
-    "json-validator": "^0.0.34",
-    "qrcode": "^1.5.3"
+    "aws-sdk": "^2.1521.0"
   }
 }
