@@ -6708,7 +6708,7 @@ The configuration override for the spark application to use with the default nod
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | The default name of the EKS cluster. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The default EKS version. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The default EMR on EKS version. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-dsf.processing.EmrContainersRuntimeVersion</code> | The default EMR on EKS version. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | The default CIDR when the VPC is created. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
@@ -6742,10 +6742,10 @@ The default EKS version.
 ##### `DEFAULT_EMR_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EMR_EKS_VERSION" id="aws-dsf.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION"></a>
 
 ```typescript
-public readonly DEFAULT_EMR_EKS_VERSION: EmrRuntimeVersion;
+public readonly DEFAULT_EMR_EKS_VERSION: EmrContainersRuntimeVersion;
 ```
 
-- *Type:* aws-dsf.processing.EmrRuntimeVersion
+- *Type:* aws-dsf.processing.EmrContainersRuntimeVersion
 
 The default EMR on EKS version.
 
@@ -10034,7 +10034,7 @@ const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrConta
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>string</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The Amazon EMR version to use. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-dsf.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
 
 ---
 
@@ -10090,10 +10090,10 @@ The JSON configuration overrides for Amazon EMR on EKS configuration attached to
 ##### `emrOnEksVersion`<sup>Optional</sup> <a name="emrOnEksVersion" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion"></a>
 
 ```typescript
-public readonly emrOnEksVersion: EmrRuntimeVersion;
+public readonly emrOnEksVersion: EmrContainersRuntimeVersion;
 ```
 
-- *Type:* aws-dsf.processing.EmrRuntimeVersion
+- *Type:* aws-dsf.processing.EmrContainersRuntimeVersion
 - *Default:* The [default Amazon EMR version]{@link EmrEksCluster.DEFAULT_EMR_VERSION }
 
 The Amazon EMR version to use.
@@ -11356,6 +11356,129 @@ The list of CICD Stages used in CICD Pipelines.
 
 
 ##### `PROD` <a name="PROD" id="aws-dsf.utils.CICDStage.PROD"></a>
+
+---
+
+
+### EmrContainersRuntimeVersion <a name="EmrContainersRuntimeVersion" id="aws-dsf.processing.EmrContainersRuntimeVersion"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
+
+---
+
+##### `V7_0` <a name="V7_0" id="aws-dsf.processing.EmrContainersRuntimeVersion.V7_0"></a>
+
+---
+
+
+##### `V6_15` <a name="V6_15" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_15"></a>
+
+---
+
+
+##### `V6_14` <a name="V6_14" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_14"></a>
+
+---
+
+
+##### `V6_13` <a name="V6_13" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_13"></a>
+
+---
+
+
+##### `V6_12` <a name="V6_12" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_12"></a>
+
+---
+
+
+##### `V6_11_1` <a name="V6_11_1" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_11_1"></a>
+
+---
+
+
+##### `V6_11` <a name="V6_11" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_11"></a>
+
+---
+
+
+##### `V6_10_1` <a name="V6_10_1" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_10_1"></a>
+
+---
+
+
+##### `V6_10` <a name="V6_10" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_10"></a>
+
+---
+
+
+##### `V6_9` <a name="V6_9" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_9"></a>
+
+---
+
+
+##### `V6_8` <a name="V6_8" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_8"></a>
+
+---
+
+
+##### `V6_7` <a name="V6_7" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_7"></a>
+
+---
+
+
+##### `V6_6` <a name="V6_6" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_6"></a>
+
+---
+
+
+##### `V6_5` <a name="V6_5" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_5"></a>
+
+---
+
+
+##### `V6_4` <a name="V6_4" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_4"></a>
+
+---
+
+
+##### `V6_3` <a name="V6_3" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_3"></a>
+
+---
+
+
+##### `V6_2` <a name="V6_2" id="aws-dsf.processing.EmrContainersRuntimeVersion.V6_2"></a>
+
+---
+
+
+##### `V5_33` <a name="V5_33" id="aws-dsf.processing.EmrContainersRuntimeVersion.V5_33"></a>
+
+---
+
+
+##### `V5_32` <a name="V5_32" id="aws-dsf.processing.EmrContainersRuntimeVersion.V5_32"></a>
 
 ---
 

@@ -14,7 +14,7 @@ import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
-import { EmrRuntimeVersion, SparkEmrContainersRuntime } from '../../../src/processing';
+import { EmrContainersRuntimeVersion, SparkEmrContainersRuntime } from '../../../src/processing';
 
 describe('With default configuration, the construct ', () => {
 
@@ -988,7 +988,7 @@ describe('Test for interactive endpoint', () => {
     managedEndpointName: 'test7',
     executionRole: execRole,
     virtualClusterId: virtualCluster.attrId,
-    emrOnEksVersion: EmrRuntimeVersion.V7_0,
+    emrOnEksVersion: EmrContainersRuntimeVersion.V7_0,
   });
 
   const template = Template.fromStack(emrEksClusterStack);
@@ -1002,7 +1002,7 @@ describe('Test for interactive endpoint', () => {
   test('should create an interactive endpoint with provided name and provided emr runtime', () => {
     template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
       endpointName: 'test7',
-      releaseLabel: 'emr-7.0.0',
+      releaseLabel: 'emr-7.0.0-latest',
     });
   });
 });

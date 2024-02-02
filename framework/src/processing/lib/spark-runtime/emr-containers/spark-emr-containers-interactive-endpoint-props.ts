@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { IRole } from 'aws-cdk-lib/aws-iam';
-import { EmrRuntimeVersion } from '../../emr-releases';
+import { EmrContainersRuntimeVersion } from '../../emr-releases';
 
 /**
 * The properties for the EMR Managed Endpoint to create.
@@ -25,7 +25,7 @@ export interface SparkEmrContainersRuntimeInteractiveSessionProps {
      * The Amazon EMR version to use
      * @default - The [default Amazon EMR version]{@link EmrEksCluster.DEFAULT_EMR_VERSION}
      */
-  readonly emrOnEksVersion?: EmrRuntimeVersion;
+  readonly emrOnEksVersion?: EmrContainersRuntimeVersion;
   /**
      * The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint
      * @default - Configuration related to the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR}
