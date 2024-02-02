@@ -100,8 +100,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
     const logExports: string[] = props.logExports || [];
     this.namespaceName = `${props.name}-${Utils.generateUniqueHash(this)}`;
-    const defaultNamespaceKey = new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
-    this.namespaceKey = props.kmsKey ?? defaultNamespaceKey;
+    this.namespaceKey = props.kmsKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
     this.managedAdminPasswordKey = props.managedAdminPasswordKmsKey ?? new Key(this, 'DefaultManagedAdminPasswordKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
     const namespaceArn = `arn:aws:redshift-serverless:${this.currentStack.region}:${this.currentStack.account}:namespace/*`;
     const indexParameterName = `updateNamespace-idx-${Utils.generateUniqueHash(this)}`;
@@ -178,7 +177,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
           'kms:DescribeKey',
           'kms:CreateGrant',
         ],
-        resources: [defaultNamespaceKey.keyArn, this.namespaceKey.keyArn, this.managedAdminPasswordKey.keyArn],
+        resources: [this.namespaceKey.keyArn, this.managedAdminPasswordKey.keyArn],
       }),
     ];
 
