@@ -181,7 +181,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for executing the custom SQL', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -193,7 +193,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for granting usage on schema to role', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -206,7 +206,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for executing creating the role', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -219,7 +219,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for granting read access to all tables', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -232,7 +232,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for granting al privilege to a role', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -245,7 +245,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for copy data', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -267,7 +267,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   test('should create custom resource for merge', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -328,7 +328,7 @@ describe('With custom configuration, the construct ', () => {
   dataApi.mergeToTargetTable('TestMerge', 'dev', 'testsourcetable', 'testtargettable', 'test_source_column', 'test_target_column');
 
   const template = Template.fromStack(redshiftDataStack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create an IAM Role for the custom resource execution with Redshift Data API permissions', () => {
     template.hasResourceProperties('AWS::IAM::Role', {
@@ -459,7 +459,7 @@ describe('With custom configuration, the construct ', () => {
   });
 
   test('should create custom resource for executing the custom SQL', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -472,7 +472,7 @@ describe('With custom configuration, the construct ', () => {
   });
 
   test('should create custom resource for copy data', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -501,7 +501,7 @@ describe('With custom configuration, the construct ', () => {
   });
 
   test('should create custom resource for merge', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
           Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
@@ -512,4 +512,96 @@ describe('With custom configuration, the construct ', () => {
     });
   });
 
+  test('should create resources with RETAIN policy when global removal policy is unset', () => {
+    template.allResources('AWS::Logs::LogGroup', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+
+    template.allResources('Custom::RedshiftDataSql', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
+});
+
+describe('With global removal policy set and the construct removal policy to DESTROY', () => {
+
+  const redshiftDataStack = new Stack();
+
+  // Set context value for global data removal policy
+  redshiftDataStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const vpc = new Vpc(redshiftDataStack, 'Vpc');
+
+  const adminSecret = new Secret(redshiftDataStack, 'Secret', {
+    secretObjectValue: {
+      username: SecretValue.unsafePlainText('admin'),
+      password: SecretValue.unsafePlainText('Test1234'),
+    },
+  });
+
+  const cfnNamespace = new CfnNamespace(redshiftDataStack, 'TestCfnNamespace', {
+    namespaceName: 'test',
+    adminUsername: 'admin',
+    adminUserPassword: 'Test1234',
+  });
+  const cfnWorkgroup = new CfnWorkgroup(redshiftDataStack, 'TestCfnWorkgroup', {
+    workgroupName: 'test',
+    namespaceName: cfnNamespace.attrNamespaceNamespaceName,
+    subnetIds: vpc.selectSubnets().subnetIds,
+    securityGroupIds: [vpc.vpcDefaultSecurityGroup],
+  });
+
+  const dataApi = new RedshiftData(redshiftDataStack, 'RedshiftData', {
+    workgroupId: cfnWorkgroup.attrWorkgroupWorkgroupId,
+    secret: adminSecret,
+    vpc,
+    subnets: vpc.selectSubnets(),
+    createInterfaceVpcEndpoint: true,
+    executionTimeout: Duration.seconds(600),
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const testRole = new Role(redshiftDataStack, 'TestRole', {
+    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+  });
+
+  dataApi.runCustomSQL('TestCustom', 'dev', 'create schema testschema');
+
+  dataApi.createDbRole('TestRole', 'dev', 'testrole');
+
+  dataApi.grantDbSchemaToRole('TestRoleGrantTest', 'dev', 'test', 'testrole');
+
+  dataApi.grantSchemaReadToRole('TestRoleGrantRead', 'dev', 'testschema', 'testrole');
+
+  dataApi.assignDbRolesToIAMRole(['testrole'], testRole);
+
+  dataApi.grantDbAllPrivilegesToRole('TestRoleGrantAll', 'dev', 'testschema', 'testrole');
+
+  const sourceBucket = new Bucket(redshiftDataStack, 'SourceBucket');
+
+  dataApi.ingestData('TestCopy', 'dev', 'testtable', sourceBucket, '');
+
+  dataApi.mergeToTargetTable('TestMerge', 'dev', 'testsourcetable', 'testtargettable');
+
+  const template = Template.fromStack(redshiftDataStack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create resources with RETAIN policy when global removal policy is unset', () => {
+    template.allResources('AWS::Logs::LogGroup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::RedshiftDataSql', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::LambdaEniCleanup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
 });

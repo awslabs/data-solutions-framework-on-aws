@@ -31,7 +31,7 @@ NagSuppressions.addStackSuppressions(stack, [
   },
 ], true);
 
-NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgroup/DefaultServerlessNamespace/NamespaceManagementRole/Resource', [
+NagSuppressions.addResourceSuppressionsByPath(stack, '/Stack/rs-example-workgroup/DefaultServerlessNamespace/ManagementRole/Resource', [
   {
     id: 'AwsSolutions-IAM5',
     reason: 'Required because namespace ID is not yet known at the time of creation.',

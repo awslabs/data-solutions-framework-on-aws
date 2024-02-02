@@ -192,7 +192,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       }));
     }
 
-    const namespaceCrRole = new Role(this, 'NamespaceManagementRole', {
+    const namespaceCrRole = new Role(this, 'ManagementRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       inlinePolicies: {
         PrimaryPermissions: new PolicyDocument({
@@ -201,7 +201,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       },
     });
 
-    const provider = new DsfProvider(this, 'RedshiftServerlessNamespaceProvider', {
+    const provider = new DsfProvider(this, 'Provider', {
       providerName: 'RedshiftServerlessNamespace',
       onEventHandlerDefinition: {
         depsLockFilePath: __dirname+'/../resources/RedshiftServerlessNamespace/package-lock.json',
@@ -222,7 +222,8 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
 
-    this.cfnResource = new CustomResource(this, 'RedshiftServerlessNamespaceCustomResource', {
+    this.cfnResource = new CustomResource(this, 'CustomResource', {
+      resourceType: 'Custom::RedshiftServerlessNamespace',
       serviceToken: provider.serviceToken,
       properties: this.namespaceParameters,
     });
@@ -230,7 +231,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     this.cfnResource.node.addDependency(this.namespaceKey);
     this.cfnResource.node.addDependency(this.managedAdminPasswordKey);
 
-    this.adminSecret = Secret.fromSecretCompleteArn(this, 'NamespaceManagedSecret', this.cfnResource.getAttString('adminPasswordSecretArn'));
+    this.adminSecret = Secret.fromSecretCompleteArn(this, 'ManagedSecret', this.cfnResource.getAttString('adminPasswordSecretArn'));
     this.namespaceId = this.cfnResource.getAttString('namespaceId');
     this.namespaceArn = this.cfnResource.getAttString('namespaceArn');
   }

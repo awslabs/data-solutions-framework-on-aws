@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { App, Stack } from 'aws-cdk-lib';
+import { Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { RedshiftServerlessNamespace, RedshiftServerlessNamespaceLogExport } from '../../../src/consumption';
@@ -12,11 +12,11 @@ import { RedshiftServerlessNamespace, RedshiftServerlessNamespaceLogExport } fro
  *
  * @group unit/consumption/redshift-serverless-namespace
  */
-describe('Default creation', () => {
-  const app = new App();
-  const stack = new Stack(app, 'Stack');
+describe('With default configuration, the construct', () => {
 
-  const adminIAMRole = new Role(stack, 'RSAdminRole', {
+  const stack = new Stack();
+
+  const adminIAMRole = new Role(stack, 'AdminRole', {
     assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
     managedPolicies: [
       ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
@@ -24,7 +24,7 @@ describe('Default creation', () => {
     ],
   });
 
-  const adminIAMRole2 = new Role(stack, 'RSAdminRole2', {
+  const adminIAMRole2 = new Role(stack, 'AdminRole2', {
     assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
     managedPolicies: [
       ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
@@ -53,7 +53,7 @@ describe('Default creation', () => {
   });
 
   test('Create namespace via Custom Resource', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftServerlessNamespace', {
       namespaceName: Match.stringLikeRegexp('^defaultnamespace\-.+'),
     });
   });

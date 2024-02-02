@@ -28,6 +28,5 @@ class ExampleRedshiftServerlessNamespaceRolesStack extends Stack {
     }
 }
 /// !hide
-
 const app = new App()
 new ExampleRedshiftServerlessNamespaceRolesStack(app, "ExampleRedshiftServerlessNamespaceRolesStack")

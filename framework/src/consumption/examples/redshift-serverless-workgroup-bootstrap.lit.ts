@@ -44,6 +44,5 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
     }
 }
 /// !hide
-
 const app = new App()
 new ExampleRedshiftServerlessWorkgroupBootstrapStack(app, "ExampleRedshiftServerlessWorkgroupBootstrapStack")

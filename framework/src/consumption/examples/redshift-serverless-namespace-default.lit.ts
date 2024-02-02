@@ -13,6 +13,5 @@ class ExampleDefaultRedshiftServerlessNamespaceStack extends Stack {
     }
 }
 /// !hide
-
 const app = new App()
 new ExampleDefaultRedshiftServerlessNamespaceStack(app, "ExampleDefaultRedshiftServerlessNamespaceStack")

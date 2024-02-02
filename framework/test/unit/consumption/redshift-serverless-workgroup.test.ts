@@ -4,8 +4,6 @@
 import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { RedshiftServerlessWorkgroup } from '../../../src/consumption';
 
 /**
@@ -24,7 +22,7 @@ describe('Create Workgroup with a default namespace and VPC', () => {
   const template = Template.fromStack(stack);
 
   test('Create namespace via Custom Resource', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftServerlessNamespace', {
       namespaceName: Match.stringLikeRegexp('^default\-.+'),
     });
   });
@@ -69,18 +67,6 @@ describe('Create Workgroup with a default namespace and non-default VPC', () => 
     ],
   });
 
-  const bucket = new Bucket(stack, 'ExampleBucket', {
-    bucketName: 'examplebucket',
-  });
-
-  const adminIAMRole = new Role(stack, 'RSAdminRole', {
-    assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
-    managedPolicies: [
-      ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
-      ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
-    ],
-  });
-
   const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
     vpc,
     subnets: {
@@ -89,21 +75,14 @@ describe('Create Workgroup with a default namespace and non-default VPC', () => 
     workgroupName: 'dsf-rs-test',
   });
 
-  const accessData = workgroup.accessData();
-  accessData.createDbRole('defaultdb', 'engineering');
-  accessData.grantDbSchemaToRole('defaultdb', 'public', 'engineering');
-  accessData.grantDbReadToRole('defaultdb', 'public', 'engineering');
-  accessData.assignDbRolesToIAMRole(['engineering'], adminIAMRole);
-
-  accessData.ingestData('defaultdb', 'exampletable', bucket, 'exampletable/', 'csv ignoreheader 1');
-  accessData.mergeToTargetTable('defaultdb', 'exampletable', 'targettable');
+  workgroup.accessData();
 
   workgroup.catalogTables('rs-defaultdb');
 
   const template = Template.fromStack(stack);
 
   test('Create namespace via Custom Resource', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
+    template.hasResourceProperties('Custom::RedshiftServerlessNamespace', {
       namespaceName: Match.stringLikeRegexp('^default\-.+'),
     });
   });
@@ -151,51 +130,6 @@ describe('Create Workgroup with a default namespace and non-default VPC', () => 
         },
         ConnectionType: Match.exact('JDBC'),
       },
-    });
-  });
-
-  test('Has creation of DB resources', () => {
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
-      sql: Match.exact('create role engineering'),
-      deleteSql: Match.exact('drop role engineering'),
-      databaseName: Match.exact('defaultdb'),
-    });
-
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
-      sql: Match.exact('grant usage on schema public to role engineering'),
-      deleteSql: Match.exact('revoke usage on schema public from role engineering'),
-      databaseName: Match.exact('defaultdb'),
-    });
-
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
-      sql: Match.exact('grant select on all tables in schema public to role engineering'),
-      deleteSql: Match.exact('revoke select on all tables in schema public from role engineering'),
-      databaseName: Match.exact('defaultdb'),
-    });
-
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
-      sql: {
-        'Fn::Join': Match.arrayEquals([
-          Match.exact(''),
-          Match.arrayEquals([
-            "copy exampletable from \'s3://",
-            { Ref: Match.stringLikeRegexp('^ExampleBucket.+') },
-            "/exampletable/\' iam_role default csv ignoreheader 1",
-          ]),
-        ]),
-      },
-      databaseName: Match.exact('defaultdb'),
-    });
-
-    template.hasResourceProperties('AWS::CloudFormation::CustomResource', {
-      sql: Match.exact('merge into targettable using exampletable on targettable.id=exampletable.id remove duplicates'),
-      databaseName: Match.exact('defaultdb'),
-    });
-
-    template.hasResourceProperties('AWS::IAM::Role', {
-      Tags: Match.arrayWith([
-        { Key: Match.exact('RedshiftDbRoles'), Value: Match.exact('engineering') },
-      ]),
     });
   });
 

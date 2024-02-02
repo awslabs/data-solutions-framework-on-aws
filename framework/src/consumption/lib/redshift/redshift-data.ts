@@ -253,6 +253,7 @@ export class RedshiftData extends TrackedConstruct {
     // const uniqueId = `CustomSql${hash}`;
 
     return new CustomResource(this, id, {
+      resourceType: 'Custom::RedshiftDataSql',
       serviceToken: this.serviceToken,
       properties: {
         sql: sql,
