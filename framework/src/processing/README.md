@@ -377,3 +377,9 @@ The execution role is the IAM role that is used by the Spark job to access AWS r
 The interactive endpoint provides the capability for interactive clients like Amazon EMR Studio or a self-hosted Jupyter notebook to connect to Amazon EMR on EKS clusters to run interactive workloads. The interactive endpoint is backed by a Jupyter Enterprise Gateway that provides the remote kernel lifecycle management capability that interactive clients need.
 
 [example interactive endpoint](./examples/spark-emr-runtime-containers-interactive-endpoint.lit.ts)
+
+### Grant Job Execution
+
+The Grant Job Execution allow you to provide an IAM role the rights to start the execution of a job and monitor it in a given virtual cluster.
+
+[example interactive endpoint](./examples/spark-emr-runtime-containers-grant-execution.lit.ts)

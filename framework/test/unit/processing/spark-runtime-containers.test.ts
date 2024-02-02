@@ -13,7 +13,7 @@ import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
+import { IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { EmrContainersRuntimeVersion, SparkEmrContainersRuntime } from '../../../src/processing';
 
 describe('With default configuration, the construct ', () => {
@@ -54,7 +54,6 @@ describe('With default configuration, the construct ', () => {
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create an EKS cluster with correct version', () => {
     template.hasResourceProperties('Custom::AWSCDK-EKS-Cluster', {
@@ -773,7 +772,6 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a Karpenter queue with DELETE removal policy', () => {
     template.hasResource('AWS::SQS::Queue', {
@@ -833,7 +831,6 @@ describe('With DESTROY removal policy and global data removal unset, the constru
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a Karpenter queue with RETAIN removal policy', () => {
     template.hasResource('AWS::SQS::Queue', {
@@ -1005,4 +1002,63 @@ describe('Test for interactive endpoint', () => {
       releaseLabel: 'emr-7.0.0-latest',
     });
   });
+});
+
+
+describe('Test for grant job execution', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  const startJobRole: IRole = Role.fromRoleName(emrEksClusterStack, 'StartJobRole', 'StartJobRole');
+
+  SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('should have a role with a policy to start a job in emr on eks', () => {
+    template.hasResourceProperties('AWS::IAM::Policy',
+      Match.objectLike({
+        PolicyDocument: Match.objectLike({
+          Statement: Match.arrayWith([
+            Match.objectLike(
+              {
+                Action: 'emr-containers:StartJobRun',
+                Effect: 'Allow',
+              }
+            ),
+          ]),
+        }),
+        Roles: ['StartJobRole'],
+      }));
+  });
+
+
+
 });

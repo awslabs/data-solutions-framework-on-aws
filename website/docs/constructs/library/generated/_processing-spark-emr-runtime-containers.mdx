@@ -403,3 +403,34 @@ cdk.CfnOutput(self, "interactiveSessionArn",
   </TabItem>
 </Tabs>
 
+### Grant Job Execution
+
+The Grant Job Execution allow you to provide an IAM role the rights to start the execution of a job and monitor it in a given virtual cluster.
+
+[example interactive endpoint](./examples/spark-emr-runtime-containers-grant-execution.lit.ts)
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+
+        //IAM role that is used to start the execution and monitor its state
+        const startJobRole: IRole = Role.fromRoleName(this, 'StartJobRole', 'StartJobRole');
+
+        SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+# IAM role that is used to start the execution and monitor its state
+start_job_role = Role.from_role_name(self, "StartJobRole", "StartJobRole")
+
+SparkEmrContainersRuntime.grant_start_job_execution(start_job_role, [exec_role.role_arn], virtual_cluster.attr_arn)
+  ```
+
+  </TabItem>
+</Tabs>
+
