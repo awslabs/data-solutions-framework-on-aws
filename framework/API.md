@@ -8854,7 +8854,7 @@ public readonly vpc: IVpc;
 
 The VPC where the Custom Resource Lambda Function would be created in.
 
-A Redshift Data API Interface VPC Endpoint would be created in the VPC.
+A Redshift Data API Interface VPC Endpoint is created in the VPC.
 
 ---
 
