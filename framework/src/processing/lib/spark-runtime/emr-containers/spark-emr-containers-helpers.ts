@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import * as path from 'path';
-import { RemovalPolicy } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
@@ -23,7 +23,23 @@ export function interactiveSessionsProviderSetup(
   const lambdaPolicy = [
     new PolicyStatement({
       resources: ['*'],
-      actions: ['emr-containers:*'],
+      actions: ['emr-containers:DescribeManagedEndpoint'],
+    }),
+    new PolicyStatement({
+      resources: [`arn:${Stack.of(scope).partition}:emr-containers:${Stack.of(scope).region}:${Stack.of(scope).account}:/virtualclusters/*/endpoints/*`],
+      actions: [
+        'emr-containers:DeleteManagedEndpoint'],
+        conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
+    }),
+    new PolicyStatement({
+      resources: [`arn:${Stack.of(scope).partition}:emr-containers:${Stack.of(scope).region}:${Stack.of(scope).account}:/virtualclusters/*`],
+      actions: ['emr-containers:CreateManagedEndpoint'],
+      conditions: { StringEquals: { 'aws:ResourceTag/data-solutions-fwk:owned': 'true' } },
+    }),
+    new PolicyStatement({
+      resources: [`arn:${Stack.of(scope).partition}:emr-containers:${Stack.of(scope).region}:${Stack.of(scope).account}:/virtualclusters/*/endpoints/*`],
+      actions: ['emr-containers:TagResource'],
+      conditions: { StringEquals: { 'aws:RequestTag/data-solutions-fwk:owned': 'true' } },
     }),
     new PolicyStatement({
       resources: ['*'],
