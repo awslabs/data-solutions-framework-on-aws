@@ -1,6 +1,3 @@
-Policy
-
-
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -59,24 +56,14 @@ Policy
                 "ec2:AuthorizeSecurityGroupIngress",
                 "ec2:RevokeSecurityGroupIngress"
             ],
-            "Resource": "*",
-            "Condition": {
-                "ArnEquals": {
-                    "ec2:Vpc": "arn:aws:ec2:<REGION>:<ACCOUNT-ID>:vpc/<VPC-ID>"
-                }
-            }
+            "Resource": "*"
         },
         {
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateSecurityGroup"
             ],
-            "Resource": "*",
-            "Condition": {
-                "ArnEquals": {
-                    "ec2:Vpc": "arn:aws:ec2:<REGION>:<ACCOUNT-ID>:vpc/<VPC-ID>"
-                }
-            }
+            "Resource": "*"
         },
         {
             "Effect": "Allow",

@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Duration } from 'aws-cdk-lib';
-import { CfnLaunchTemplate, InstanceType } from 'aws-cdk-lib/aws-ec2';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { Duration, Stack } from 'aws-cdk-lib';
+import { CfnLaunchTemplate, IVpc, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import { Cluster, KubernetesManifest, CfnAddon, NodegroupOptions, NodegroupAmiType, KubernetesVersion, ICluster } from 'aws-cdk-lib/aws-eks';
 import { FederatedPrincipal, IRole, ManagedPolicy, Policy, PolicyDocument, Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -10,6 +12,36 @@ import { CERTMANAGER_HELM_CHART_VERSION, EBS_CSI_DRIVER_ADDON_VERSION } from './
 import * as IamPolicyEbsCsiDriver from './resources/k8s/controllers-iam-policies/iam-policy-ebs-csi-driver.json';
 import { Utils } from '../../../../utils';
 
+
+
+/**
+ * @internal
+ * Take the path of the ALB IAM policy and modify it with VPC ARN 
+ * @param scope the CDK scope to create resources in
+ * @param filepath the path containing the IAM policy definition in JSON
+ * @param vpc the VPC of the EKS cluster
+ * @return a json object containing the IAM policy
+ */
+export function setupAlbControllerIamPolicy(scope: Construct, filepath: string, vpc: IVpc) : any { 
+
+  let policyFile = readFileSync(join(__dirname, filepath), 'utf8');
+
+  let policy = JSON.parse(policyFile);
+  
+  policy.Statement[3].Resource = [
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ]
+
+  policy.Statement[7].Resource = [
+      `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ]
+
+  policy.Statement[4].Resource = [ 
+    vpc.vpcArn,
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ] ;
+
+  return policy;
+}
 
 /**
  * @internal

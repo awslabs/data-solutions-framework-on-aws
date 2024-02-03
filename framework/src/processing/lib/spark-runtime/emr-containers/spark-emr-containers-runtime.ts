@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Aws, Stack, Tags, CfnJson, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
 import { IGatewayVpcEndpoint, ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
@@ -34,7 +33,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
-import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup } from './eks-cluster-helpers';
+import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup, setupAlbControllerIamPolicy } from './eks-cluster-helpers';
 import { karpenterSetup, setDefaultKarpenterProvisioners } from './eks-karpenter-helpers';
 import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
@@ -366,11 +365,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       });
 
       props.publicAccessCIDRs.forEach(publicAccessCidr => {
-        clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow all traffic from VPC to EKS Cluster');
+        clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow traffic from the public IP CIDR range provided by user');
       });
 
-      // TODO
-      // Update the IAM policy for ALB and make it dynamic
+      const iamPolicyAlbController: any = setupAlbControllerIamPolicy (scope, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json', this.vpc);
 
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
@@ -383,7 +381,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         secretsEncryptionKey: this.eksSecretKmsKey,
         albController: {
           version: AlbControllerVersion.V2_5_1,
-          policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
+          policy: iamPolicyAlbController,
         },
         placeClusterHandlerInVpc: true,
         tags: {

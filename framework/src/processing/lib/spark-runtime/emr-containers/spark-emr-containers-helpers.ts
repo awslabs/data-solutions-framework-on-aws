@@ -43,15 +43,24 @@ export function interactiveSessionsProviderSetup(
       conditions: { StringEquals: { 'aws:RequestTag/data-solutions-fwk:owned': 'true' } },
     }),
     new PolicyStatement({
-      resources: ['*'],
+      resources: [
+        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
+        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`],
       actions: [
-        'ec2:CreateSecurityGroup',
         'ec2:DeleteSecurityGroup',
         'ec2:AuthorizeSecurityGroupEgress',
         'ec2:AuthorizeSecurityGroupIngress',
         'ec2:RevokeSecurityGroupEgress',
         'ec2:RevokeSecurityGroupIngress',
       ],
+    }),
+    new PolicyStatement({
+      resources: [ 
+        vpc.vpcArn,
+        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ],
+      actions: [
+        'ec2:CreateSecurityGroup',
+      ]
     }),
   ];
 
