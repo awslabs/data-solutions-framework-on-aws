@@ -3,6 +3,7 @@
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 
 /**
@@ -26,6 +27,12 @@ export interface RedshiftDataProps {
    * The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace.
    */
   readonly secret: ISecret;
+
+  /**
+   * The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace.
+   * @default - no secret key is used
+   */
+  readonly secretKey?: IKey;
 
   /**
    * The VPC where the Custom Resource Lambda Function would be created in.

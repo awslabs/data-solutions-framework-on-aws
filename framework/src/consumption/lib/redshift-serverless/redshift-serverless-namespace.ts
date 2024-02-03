@@ -3,7 +3,7 @@
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Effect, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ISecret, Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespaceProps } from './redshift-serverless-namespace-props';
@@ -37,6 +37,11 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
   readonly adminSecret: ISecret;
 
   /**
+   * The KMS Key used to encrypt the admin credentials secret
+   */
+  readonly adminSecretKey: IKey;
+
+  /**
    * The roles attached to the namespace in the form of `{RoleArn: IRole}`.
    * These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
    * @see https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html
@@ -47,11 +52,6 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
    * KMS key used by the namespace to encrypt its data
    */
   readonly namespaceKey: Key;
-
-  /**
-   * KMS key used by the managed admin secret for the namespace
-   */
-  readonly managedAdminPasswordKey: Key;
 
   /**
    * The name of the database
@@ -101,12 +101,12 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     const logExports: string[] = props.logExports || [];
     this.namespaceName = `${props.name}-${Utils.generateUniqueHash(this)}`;
     this.namespaceKey = props.kmsKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
-    this.managedAdminPasswordKey = props.managedAdminPasswordKmsKey ?? new Key(this, 'DefaultManagedAdminPasswordKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
+    this.adminSecretKey = props.managedAdminPasswordKmsKey ?? new Key(this, 'DefaultManagedAdminPasswordKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
     const namespaceArn = `arn:aws:redshift-serverless:${this.currentStack.region}:${this.currentStack.account}:namespace/*`;
     const indexParameterName = `updateNamespace-idx-${Utils.generateUniqueHash(this)}`;
     this.namespaceParameters = {
       namespaceName: this.namespaceName,
-      managedAdminPasswordKeyId: this.managedAdminPasswordKey.keyId,
+      managedAdminPasswordKeyId: this.adminSecretKey.keyId,
       adminUsername: 'admin',
       dbName: props.dbName,
       defaultIamRoleArn: props.defaultIAMRole ? props.defaultIAMRole.roleArn : undefined,
@@ -177,7 +177,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
           'kms:DescribeKey',
           'kms:CreateGrant',
         ],
-        resources: [this.namespaceKey.keyArn, this.managedAdminPasswordKey.keyArn],
+        resources: [this.namespaceKey.keyArn, this.adminSecretKey.keyArn],
       }),
     ];
 
@@ -229,7 +229,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     });
 
     this.cfnResource.node.addDependency(this.namespaceKey);
-    this.cfnResource.node.addDependency(this.managedAdminPasswordKey);
+    this.cfnResource.node.addDependency(this.adminSecretKey);
 
     this.adminSecret = Secret.fromSecretCompleteArn(this, 'ManagedSecret', this.cfnResource.getAttString('adminPasswordSecretArn'));
     this.namespaceId = this.cfnResource.getAttString('namespaceId');

@@ -178,7 +178,7 @@ export class RedshiftData extends TrackedConstruct {
         }),
       },
     });
-
+    if (props.secretKey) props.secretKey.grantDecrypt(this.executionRole);
     props.secret.grantRead(this.executionRole);
 
     const timeout = props.executionTimeout || Duration.minutes(5);

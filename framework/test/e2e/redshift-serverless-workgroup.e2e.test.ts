@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { randomBytes } from 'crypto';
 import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -15,14 +14,11 @@ import { RedshiftServerlessWorkgroup } from '../../src/consumption';
 
 jest.setTimeout(6000000);
 const app = new App();
-// eslint-disable-next-line local-rules/no-tokens-in-construct-id
-const stack = new Stack(app, `RedshiftServerlessWorkgroupTestStack-${randomBytes(3).toString('hex').toLowerCase()}`, {
-  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-});
+const stack = new Stack(app, 'RedshiftServerlessWorkgroupTestStack');
 const testStack = new TestStack('RedshiftServerlessWorkgroupTestStack', app, stack);
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-const vpc = new Vpc(stack, 'rs-example-network', {
+const vpc = new Vpc(stack, 'TestVpc', {
   ipAddresses: IpAddresses.cidr('10.0.0.0/16'),
   enableDnsHostnames: true,
   enableDnsSupport: true,
@@ -45,7 +41,7 @@ const vpc = new Vpc(stack, 'rs-example-network', {
   ],
 });
 
-const adminIAMRole = new Role(stack, 'RSAdminRole', {
+const adminIAMRole = new Role(stack, 'RedshiftAdminRole', {
   assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
   managedPolicies: [
     ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
@@ -53,7 +49,7 @@ const adminIAMRole = new Role(stack, 'RSAdminRole', {
   ],
 });
 
-const adminIAMRole2 = new Role(stack, 'RSAdminRole2', {
+const adminIAMRole2 = new Role(stack, 'RedshiftAdminRole2', {
   assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
   managedPolicies: [
     ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
@@ -70,6 +66,7 @@ const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
   removalPolicy: RemovalPolicy.DESTROY,
   defaultNamespaceDefaultIAMRole: adminIAMRole,
   defaultNamespaceIAMRoles: [
+    adminIAMRole,
     adminIAMRole2,
   ],
 });
@@ -79,7 +76,7 @@ const dbRole = rsData.createDbRole('EngineeringRole', 'defaultdb', 'engineering'
 const dbSchema = rsData.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
 dbSchema.node.addDependency(dbRole);
 
-const catalog = workgroup.catalogTables('rs-defaultdb');
+const catalog = workgroup.catalogTables('rs_defaultdb');
 
 new CfnOutput(stack, 'DefaultNamespaceName', {
   value: workgroup.namespace.namespaceName,
@@ -122,5 +119,5 @@ test('Catalog database and crawler should be created', async() => {
 
 
 afterAll(async () => {
-  await testStack.destroy();
+  //await testStack.destroy();
 }, 3600000);

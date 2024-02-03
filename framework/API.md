@@ -4682,9 +4682,9 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecret">adminSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The created Secrets Manager secret containing the admin credentials. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials secret. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource that creates the Namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.dbName">dbName</a></code> | <code>string</code> | The name of the database. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.managedAdminPasswordKey">managedAdminPasswordKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the managed admin secret for the namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceArn">namespaceArn</a></code> | <code>string</code> | The ARN of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey">namespaceKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt its data. |
@@ -4717,6 +4717,18 @@ The created Secrets Manager secret containing the admin credentials.
 
 ---
 
+##### `adminSecretKey`<sup>Required</sup> <a name="adminSecretKey" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecretKey"></a>
+
+```typescript
+public readonly adminSecretKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used to encrypt the admin credentials secret.
+
+---
+
 ##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource"></a>
 
 ```typescript
@@ -4738,18 +4750,6 @@ public readonly dbName: string;
 - *Type:* string
 
 The name of the database.
-
----
-
-##### `managedAdminPasswordKey`<sup>Required</sup> <a name="managedAdminPasswordKey" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.managedAdminPasswordKey"></a>
-
-```typescript
-public readonly managedAdminPasswordKey: Key;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.Key
-
-KMS key used by the managed admin secret for the namespace.
 
 ---
 
@@ -8753,6 +8753,7 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#aws-dsf.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
@@ -8825,6 +8826,19 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise, the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `secretKey`<sup>Optional</sup> <a name="secretKey" id="aws-dsf.consumption.RedshiftDataProps.property.secretKey"></a>
+
+```typescript
+public readonly secretKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* no secret key is used
+
+The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace.
 
 ---
 

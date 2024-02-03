@@ -181,6 +181,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
       const idHash = createHash('sha256').update(`FromWorkgroup-${this.workgroupName}-${this.namespaceName}`).digest('hex');
       this.redshiftData = new RedshiftData(this, `RSServerlessDataAPI-${idHash}`, {
         secret: this.namespace.adminSecret,
+        secretKey: this.namespace.adminSecretKey,
         workgroupId: this.cfnResource.attrWorkgroupWorkgroupId,
         vpc: this.vpc,
         subnets: this.selectedSubnets,
