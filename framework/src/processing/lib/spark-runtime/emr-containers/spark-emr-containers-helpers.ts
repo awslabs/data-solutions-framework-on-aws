@@ -45,7 +45,8 @@ export function interactiveSessionsProviderSetup(
     new PolicyStatement({
       resources: [
         `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
-        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`],
+        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`,
+      ],
       actions: [
         'ec2:DeleteSecurityGroup',
         'ec2:AuthorizeSecurityGroupEgress',
@@ -55,12 +56,13 @@ export function interactiveSessionsProviderSetup(
       ],
     }),
     new PolicyStatement({
-      resources: [ 
+      resources: [
         vpc.vpcArn,
-        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ],
+        `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`,
+      ],
       actions: [
         'ec2:CreateSecurityGroup',
-      ]
+      ],
     }),
   ];
 

@@ -10033,7 +10033,7 @@ const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrConta
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Amazon IAM role used as the execution role, this role must provide access to all the AWS resource a user will interact with These can be S3, DynamoDB, Glue Catalog. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>string</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-dsf.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
 
 ---
@@ -10077,10 +10077,10 @@ The Id of the Amazon EMR virtual cluster containing the managed endpoint.
 ##### `configurationOverrides`<sup>Optional</sup> <a name="configurationOverrides" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides"></a>
 
 ```typescript
-public readonly configurationOverrides: string;
+public readonly configurationOverrides: any;
 ```
 
-- *Type:* string
+- *Type:* any
 - *Default:* Configuration related to the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR }
 
 The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint.

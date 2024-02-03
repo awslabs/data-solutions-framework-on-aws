@@ -13,32 +13,34 @@ import * as IamPolicyEbsCsiDriver from './resources/k8s/controllers-iam-policies
 import { Utils } from '../../../../utils';
 
 
-
 /**
  * @internal
- * Take the path of the ALB IAM policy and modify it with VPC ARN 
+ * Take the path of the ALB IAM policy and modify it with VPC ARN
  * @param scope the CDK scope to create resources in
  * @param filepath the path containing the IAM policy definition in JSON
  * @param vpc the VPC of the EKS cluster
  * @return a json object containing the IAM policy
  */
-export function setupAlbControllerIamPolicy(scope: Construct, filepath: string, vpc: IVpc) : any { 
+export function setupAlbControllerIamPolicy(scope: Construct, filepath: string, vpc: IVpc) : any {
 
   let policyFile = readFileSync(join(__dirname, filepath), 'utf8');
 
   let policy = JSON.parse(policyFile);
-  
+
   policy.Statement[3].Resource = [
     `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
-    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ]
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`,
+  ];
 
   policy.Statement[7].Resource = [
-      `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
-      `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ]
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group-rule/*`,
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`,
+  ];
 
-  policy.Statement[4].Resource = [ 
+  policy.Statement[4].Resource = [
     vpc.vpcArn,
-    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*` ] ;
+    `arn:aws:ec2:${Stack.of(scope).region}:${Stack.of(scope).account}:security-group/*`,
+  ] ;
 
   return policy;
 }
