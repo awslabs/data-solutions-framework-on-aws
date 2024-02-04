@@ -6366,7 +6366,7 @@ the EMR Virtual Cluster ARN to which the job is submitted.
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the EC2NodeClass of the default nodes. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>any</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for critical nodes. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for critical nodes. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared">podTemplateS3LocationDriverShared</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for shared nodes. |
@@ -6597,10 +6597,10 @@ The security group used by the EC2NodeClass of the default nodes.
 ##### `notebookDefaultConfig`<sup>Optional</sup> <a name="notebookDefaultConfig" id="aws-dsf.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig"></a>
 
 ```typescript
-public readonly notebookDefaultConfig: string;
+public readonly notebookDefaultConfig: any;
 ```
 
-- *Type:* string
+- *Type:* any
 
 The configuration override for the spark application to use with the default nodes dedicated for notebooks.
 

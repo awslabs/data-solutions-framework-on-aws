@@ -993,6 +993,11 @@ describe('Test for interactive endpoint', () => {
   test('should create an interactive endpoint with provided name', () => {
     template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
       endpointName: 'test',
+      configurationOverrides: Match.objectLike({
+        applicationConfiguration: [{}],
+        monitoringConfiguration: {},
+        default: {},
+      }),
     });
   });
 
@@ -1002,6 +1007,55 @@ describe('Test for interactive endpoint', () => {
       releaseLabel: 'emr-7.0.0-latest',
     });
   });
+});
+
+describe('Test for interactive endpoint without default karpenter nodepool', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    defaultNodes: false,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('should create an interactive endpoint with provided name and no configOverride', () => {
+    template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
+      endpointName: 'test',
+      configurationOverrides: Match.absent()
+    });
+  });
+
 });
 
 

@@ -195,7 +195,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The configuration override for the spark application to use with the default nodes dedicated for notebooks
    */
-  public readonly notebookDefaultConfig?: string;
+  public readonly notebookDefaultConfig?: any;
   /**
    * The configuration override for the spark application to use with the default nodes for criticale jobs
    */
@@ -298,6 +298,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     super(scope, id, trackedConstructProps);
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
+    //Initialise notebookDefaultcongig to undefined
+    this.notebookDefaultConfig = undefined;
 
     // Create a role to be used as instance profile for nodegroups
     this.ec2InstanceNodeGroupRole = props.ec2InstanceRole || new Role(this, 'Ec2InstanceNodeGroupRole', {
@@ -690,11 +693,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       throw new Error(`error managed endpoint name length is greater than 64 ${id}`);
     }
 
-    if (this.notebookDefaultConfig == undefined) {
-      throw new Error('error empty configuration override is not supported on non-default nodegroups');
-    }
-
-    let jsonConfigurationOverrides: string | undefined;
+    let jsonConfigurationOverrides: any | undefined;
 
     jsonConfigurationOverrides =
      interactiveSessionOptions.configurationOverrides ? interactiveSessionOptions.configurationOverrides : this.notebookDefaultConfig;
