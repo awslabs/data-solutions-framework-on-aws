@@ -1052,7 +1052,7 @@ describe('Test for interactive endpoint without default karpenter nodepool', () 
   test('should create an interactive endpoint with provided name and no configOverride', () => {
     template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
       endpointName: 'test',
-      configurationOverrides: Match.absent()
+      configurationOverrides: Match.absent(),
     });
   });
 
