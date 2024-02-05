@@ -444,7 +444,7 @@ The Grant Job Execution allow you to provide an IAM role the rights to start the
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-        //IAM role that is used to start the execution and monitor its state
+        // IAM role that is used to start the execution and monitor its state
         const startJobRole: IRole = Role.fromRoleName(this, 'StartJobRole', 'StartJobRole');
 
         SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
