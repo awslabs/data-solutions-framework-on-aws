@@ -31,7 +31,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
           const s3ReadPolicy = new ManagedPolicy(this, 's3ReadPolicy', {
             document: s3Read,
           });
-
         /// !show
         const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
             name: 'dailyjob',
@@ -56,7 +55,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'interactiveSessionArn', {
            value: interactiveSession.getAttString('arn'),
          });
-
         /// !hide
     }
 }

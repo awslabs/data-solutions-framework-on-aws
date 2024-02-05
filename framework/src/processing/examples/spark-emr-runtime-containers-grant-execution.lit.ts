@@ -46,7 +46,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
            managedEndpointName: 'interactiveSession',
            executionRole: execRole,
          });
-
         //Virtual Cluster ARN
         new cdk.CfnOutput(this, 'virtualClusterArn', {
             value: virtualCluster.attrArn,
@@ -56,9 +55,8 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'interactiveSessionArn', {
            value: interactiveSession.getAttString('arn'),
          });
-
         /// !show
-        //IAM role that is used to start the execution and monitor its state
+        // IAM role that is used to start the execution and monitor its state
         const startJobRole: IRole = Role.fromRoleName(this, 'StartJobRole', 'StartJobRole'); 
 
         SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
