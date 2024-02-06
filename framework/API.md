@@ -3864,12 +3864,18 @@ If `vpc` and `vpcSubnets` are passed, this construct would also create the Redsh
 *Example*
 
 ```typescript
-const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
-   workgroupName: "redshift-workgroup"
-})
+const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'RedshiftNamespace', {
+   name: "default",
+   dbName: 'defaultdb',
+});
 
-const rsData = workgroup.accessData()
-rsData.createDbRole("defaultdb", "engineering")
+const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
+   name: "redshift-workgroup",
+   namespace: namespace,
+});
+
+const rsData = workgroup.accessData('DataApi');
+rsData.createDbRole("EngineeringRole", "defaultdb", "engineering");
 ```
 
 
@@ -4683,13 +4689,19 @@ Any object.
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecret">adminSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The created Secrets Manager secret containing the admin credentials. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials secret. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource that creates the Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Serverless creation. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the Redshift Serverless creation. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Serverless creation. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.customResource">customResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource that creates the Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt the data. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.dbName">dbName</a></code> | <code>string</code> | The name of the database. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceArn">namespaceArn</a></code> | <code>string</code> | The ARN of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey">namespaceKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt its data. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the created namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.roles">roles</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.IRole}</code> | The roles attached to the namespace in the form of `{RoleArn: IRole}`. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the creation status check. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the creation status check. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespace.property.statusRole">statusRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the creation status check. |
 
 ---
 
@@ -4729,15 +4741,63 @@ The KMS Key used to encrypt the admin credentials secret.
 
 ---
 
-##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.cfnResource"></a>
+##### `createFunction`<sup>Required</sup> <a name="createFunction" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.createFunction"></a>
 
 ```typescript
-public readonly cfnResource: CustomResource;
+public readonly createFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the Redshift Serverless creation.
+
+---
+
+##### `createLogGroup`<sup>Required</sup> <a name="createLogGroup" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.createLogGroup"></a>
+
+```typescript
+public readonly createLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Logs Log Group for the Redshift Serverless creation.
+
+---
+
+##### `createRole`<sup>Required</sup> <a name="createRole" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.createRole"></a>
+
+```typescript
+public readonly createRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the Redshift Serverless creation.
+
+---
+
+##### `customResource`<sup>Required</sup> <a name="customResource" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.customResource"></a>
+
+```typescript
+public readonly customResource: CustomResource;
 ```
 
 - *Type:* aws-cdk-lib.CustomResource
 
 The custom resource that creates the Namespace.
+
+---
+
+##### `dataKey`<sup>Required</sup> <a name="dataKey" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.dataKey"></a>
+
+```typescript
+public readonly dataKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+KMS key used by the namespace to encrypt the data.
 
 ---
 
@@ -4777,18 +4837,6 @@ The ID of the created namespace.
 
 ---
 
-##### `namespaceKey`<sup>Required</sup> <a name="namespaceKey" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceKey"></a>
-
-```typescript
-public readonly namespaceKey: Key;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.Key
-
-KMS key used by the namespace to encrypt its data.
-
----
-
 ##### `namespaceName`<sup>Required</sup> <a name="namespaceName" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.namespaceName"></a>
 
 ```typescript
@@ -4814,6 +4862,42 @@ The roles attached to the namespace in the form of `{RoleArn: IRole}`.
 These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
 
 > [https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html](https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html)
+
+---
+
+##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.statusFunction"></a>
+
+```typescript
+public readonly statusFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the creation status check.
+
+---
+
+##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.statusLogGroup"></a>
+
+```typescript
+public readonly statusLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Logs Log Group for the creation status check.
+
+---
+
+##### `statusRole`<sup>Required</sup> <a name="statusRole" id="aws-dsf.consumption.RedshiftServerlessNamespace.property.statusRole"></a>
+
+```typescript
+public readonly statusRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the creation status check.
 
 ---
 
@@ -4858,8 +4942,12 @@ A default namespace would be created if none is provided.
 
 ```typescript
 const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
-   workgroupName: "redshift-workgroup"
-})
+   name: "example-workgroup",
+   namespace: new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftNamespace", {
+     name: 'example-namespace',
+     dbName: 'defaultdb',
+   })
+});
 ```
 
 
@@ -4919,12 +5007,18 @@ Returns a string representation of this construct.
 ##### `accessData` <a name="accessData" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData"></a>
 
 ```typescript
-public accessData(createRSDataInterfaceVpcEndpoint?: boolean): RedshiftData
+public accessData(id: string, createVpcEndpoint?: boolean): RedshiftData
 ```
 
 Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
 
-###### `createRSDataInterfaceVpcEndpoint`<sup>Optional</sup> <a name="createRSDataInterfaceVpcEndpoint" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createRSDataInterfaceVpcEndpoint"></a>
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `createVpcEndpoint`<sup>Optional</sup> <a name="createVpcEndpoint" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createVpcEndpoint"></a>
 
 - *Type:* boolean
 
@@ -4935,16 +5029,24 @@ if set to true, create interface VPC endpoint for Redshift Data API.
 ##### `catalogTables` <a name="catalogTables" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables"></a>
 
 ```typescript
-public catalogTables(catalogDbName: string, pathToCrawl?: string): DataCatalogDatabase
+public catalogTables(id: string, catalogDbName: string, pathToCrawl?: string): DataCatalogDatabase
 ```
 
 Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup.
+
+###### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.id"></a>
+
+- *Type:* string
+
+The CDK ID of the resource.
+
+---
 
 ###### `catalogDbName`<sup>Required</sup> <a name="catalogDbName" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.catalogDbName"></a>
 
 - *Type:* string
 
-`string`.
+The name of the Glue Database to create.
 
 ---
 
@@ -4952,7 +5054,7 @@ Creates a new Glue data catalog database with a crawler using JDBC target type t
 
 - *Type:* string
 
-`string`.
+The path of Redshift tables to crawl.
 
 ---
 
@@ -5009,12 +5111,13 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup</code> | The created workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup</code> | The created Redshift Serverless Workgroup. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.connections">connections</a></code> | <code>aws-cdk-lib.aws_ec2.Connections</code> | Connections used by Workgroup security group. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.glueConnection">glueConnection</a></code> | <code>aws-cdk-lib.aws_glue.CfnConnection</code> | The Glue connection associated with the workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The associated namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the associated namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.workgroupName">workgroupName</a></code> | <code>string</code> | The name of the created workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.glueConnection">glueConnection</a></code> | <code>aws-cdk-lib.aws_glue.CfnConnection</code> | The Glue Connection associated with the workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The associated Redshift Serverless Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup">primarySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The primary EC2 Security Group associated with the Redshift Serverless Workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroup.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
 
 ---
 
@@ -5038,7 +5141,7 @@ public readonly cfnResource: CfnWorkgroup;
 
 - *Type:* aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup
 
-The created workgroup.
+The created Redshift Serverless Workgroup.
 
 ---
 
@@ -5064,7 +5167,7 @@ public readonly glueConnection: CfnConnection;
 
 - *Type:* aws-cdk-lib.aws_glue.CfnConnection
 
-The Glue connection associated with the workgroup.
+The Glue Connection associated with the workgroup.
 
 This can be used by Glue ETL Jobs to read/write data from/to Redshift workgroup
 
@@ -5078,31 +5181,43 @@ public readonly namespace: RedshiftServerlessNamespace;
 
 - *Type:* aws-dsf.consumption.RedshiftServerlessNamespace
 
-The associated namespace.
+The associated Redshift Serverless Namespace.
 
 ---
 
-##### `namespaceName`<sup>Required</sup> <a name="namespaceName" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.namespaceName"></a>
+##### `primarySecurityGroup`<sup>Required</sup> <a name="primarySecurityGroup" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup"></a>
 
 ```typescript
-public readonly namespaceName: string;
+public readonly primarySecurityGroup: ISecurityGroup;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
-The name of the associated namespace.
+The primary EC2 Security Group associated with the Redshift Serverless Workgroup.
 
 ---
 
-##### `workgroupName`<sup>Required</sup> <a name="workgroupName" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.workgroupName"></a>
+##### `selectedSubnets`<sup>Required</sup> <a name="selectedSubnets" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.selectedSubnets"></a>
 
 ```typescript
-public readonly workgroupName: string;
+public readonly selectedSubnets: SelectedSubnets;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
 
-The name of the created workgroup.
+The subnets where the Redshift Serverless Workgroup is deployed.
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-dsf.consumption.RedshiftServerlessWorkgroup.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The VPC where the Redshift Serverless Workgroup is deployed.
 
 ---
 
@@ -8905,12 +9020,12 @@ const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceP
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dbName">dbName</a></code> | <code>string</code> | The name of the primary database that would be created in the Redshift Serverless Namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Namespace. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used by the managed Secrets Manager Secret storing admin credentials. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminUsername">adminUsername</a></code> | <code>string</code> | The admin username to be used. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM Role associated to the Redshift Serverless Namespace. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The logs to be exported. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.managedAdminPasswordKmsKey">managedAdminPasswordKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used by the managed admin password secret. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The type of logs to be exported. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
@@ -8939,6 +9054,19 @@ The name of the Redshift Serverless Namespace.
 
 ---
 
+##### `adminSecretKey`<sup>Optional</sup> <a name="adminSecretKey" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminSecretKey"></a>
+
+```typescript
+public readonly adminSecretKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A new KMS Key is created
+
+The KMS Key used by the managed Secrets Manager Secret storing admin credentials.
+
+---
+
 ##### `adminUsername`<sup>Optional</sup> <a name="adminUsername" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.adminUsername"></a>
 
 ```typescript
@@ -8949,6 +9077,19 @@ public readonly adminUsername: string;
 - *Default:* The default username is "admin"
 
 The admin username to be used.
+
+---
+
+##### `dataKey`<sup>Optional</sup> <a name="dataKey" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.dataKey"></a>
+
+```typescript
+public readonly dataKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A new KMS Key is created
+
+The KMS Key used to encrypt the data.
 
 ---
 
@@ -8980,19 +9121,6 @@ This list of Roles must also contain the `defaultIamRole`.
 
 ---
 
-##### `kmsKey`<sup>Optional</sup> <a name="kmsKey" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.kmsKey"></a>
-
-```typescript
-public readonly kmsKey: Key;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.Key
-- *Default:* If none is provided, a new key is created
-
-The KMS Key used to encrypt the data.
-
----
-
 ##### `logExports`<sup>Optional</sup> <a name="logExports" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.logExports"></a>
 
 ```typescript
@@ -9002,20 +9130,7 @@ public readonly logExports: RedshiftServerlessNamespaceLogExport[];
 - *Type:* aws-dsf.consumption.RedshiftServerlessNamespaceLogExport[]
 - *Default:* No logs are exported
 
-The logs to be exported.
-
----
-
-##### `managedAdminPasswordKmsKey`<sup>Optional</sup> <a name="managedAdminPasswordKmsKey" id="aws-dsf.consumption.RedshiftServerlessNamespaceProps.property.managedAdminPasswordKmsKey"></a>
-
-```typescript
-public readonly managedAdminPasswordKmsKey: Key;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.Key
-- *Default:* If none is provided, a new key is created
-
-The KMS Key used by the managed admin password secret.
+The type of logs to be exported.
 
 ---
 
@@ -9051,28 +9166,38 @@ const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupP
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.workgroupName">workgroupName</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceDefaultIAMRole">defaultNamespaceDefaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceIAMRoles">defaultNamespaceIAMRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>aws-dsf.consumption.RedshiftServerlessNamespace</code> | The Redshift Serverless Namespace associated with the Workgroup. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups">extraSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | The custom port to use when connecting to workgroup. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
 | <code><a href="#aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
 
 ---
 
-##### `workgroupName`<sup>Required</sup> <a name="workgroupName" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.workgroupName"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.name"></a>
 
 ```typescript
-public readonly workgroupName: string;
+public readonly name: string;
 ```
 
 - *Type:* string
 
 The name of the Redshift Serverless Workgroup.
+
+---
+
+##### `namespace`<sup>Required</sup> <a name="namespace" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace"></a>
+
+```typescript
+public readonly namespace: RedshiftServerlessNamespace;
+```
+
+- *Type:* aws-dsf.consumption.RedshiftServerlessNamespace
+
+The Redshift Serverless Namespace associated with the Workgroup.
 
 ---
 
@@ -9089,42 +9214,16 @@ The base capacity of the Redshift Serverless Workgroup in RPU.
 
 ---
 
-##### `defaultNamespaceDefaultIAMRole`<sup>Optional</sup> <a name="defaultNamespaceDefaultIAMRole" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceDefaultIAMRole"></a>
+##### `extraSecurityGroups`<sup>Optional</sup> <a name="extraSecurityGroups" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups"></a>
 
 ```typescript
-public readonly defaultNamespaceDefaultIAMRole: IRole;
+public readonly extraSecurityGroups: SecurityGroup[];
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* No default IAM Role ise associated with the default namespace
+- *Type:* aws-cdk-lib.aws_ec2.SecurityGroup[]
+- *Default:* No extra security groups are used
 
-The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided.
-
----
-
-##### `defaultNamespaceIAMRoles`<sup>Optional</sup> <a name="defaultNamespaceIAMRoles" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.defaultNamespaceIAMRoles"></a>
-
-```typescript
-public readonly defaultNamespaceIAMRoles: IRole[];
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole[]
-- *Default:* No IAM Role is associated with the default namespace
-
-The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided.
-
----
-
-##### `namespace`<sup>Optional</sup> <a name="namespace" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.namespace"></a>
-
-```typescript
-public readonly namespace: RedshiftServerlessNamespace;
-```
-
-- *Type:* aws-dsf.consumption.RedshiftServerlessNamespace
-- *Default:* A default namespace is created
-
-The Redshift Serverless Namespace associated with the Workgroup.
+The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group).
 
 ---
 
@@ -9159,18 +9258,6 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.securityGroups"></a>
-
-```typescript
-public readonly securityGroups: SecurityGroup[];
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.SecurityGroup[]
-
-The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group).
-
----
-
 ##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-dsf.consumption.RedshiftServerlessWorkgroupProps.property.subnets"></a>
 
 ```typescript
@@ -9178,7 +9265,7 @@ public readonly subnets: SubnetSelection;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
-- *Default:* selects the private subnets of the VPC
+- *Default:* Use the private subnets of the VPC
 
 The subnets where the Redshift Serverless Workgroup is deployed.
 

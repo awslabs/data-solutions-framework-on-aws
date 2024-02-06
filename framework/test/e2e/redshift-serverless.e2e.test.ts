@@ -5,11 +5,11 @@ import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { RedshiftServerlessWorkgroup } from '../../src/consumption';
+import { RedshiftServerlessNamespace, RedshiftServerlessWorkgroup } from '../../src/consumption';
 
 /**
  * E2E test for RedshiftServerlessWorkgroup
- * @group e2e/redshift-serverless-workgroup
+ * @group e2e/redshift-serverless
  */
 
 jest.setTimeout(6000000);
@@ -41,7 +41,7 @@ const vpc = new Vpc(stack, 'TestVpc', {
   ],
 });
 
-const adminIAMRole = new Role(stack, 'RedshiftAdminRole', {
+const adminIamRole = new Role(stack, 'RedshiftAdminRole', {
   assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
   managedPolicies: [
     ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
@@ -49,12 +49,20 @@ const adminIAMRole = new Role(stack, 'RedshiftAdminRole', {
   ],
 });
 
-const adminIAMRole2 = new Role(stack, 'RedshiftAdminRole2', {
+const adminIamRole2 = new Role(stack, 'RedshiftAdminRole2', {
   assumedBy: new ServicePrincipal('redshift.amazonaws.com'),
   managedPolicies: [
     ManagedPolicy.fromAwsManagedPolicyName('AmazonRedshiftAllCommandsFullAccess'),
     ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
   ],
+});
+
+const namespace = new RedshiftServerlessNamespace(stack, 'TestNamespace', {
+  name: 'e2e-namespace',
+  dbName: 'defaultdb',
+  defaultIAMRole: adminIamRole,
+  iamRoles: [adminIamRole, adminIamRole2],
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
@@ -62,21 +70,22 @@ const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
   subnets: {
     subnetGroupName: 'private-dwh',
   },
-  workgroupName: 'dsf-rs-test',
+  name: 'dsf-rs-test',
+  namespace,
   removalPolicy: RemovalPolicy.DESTROY,
-  defaultNamespaceDefaultIAMRole: adminIAMRole,
-  defaultNamespaceIAMRoles: [
-    adminIAMRole,
-    adminIAMRole2,
-  ],
 });
 
-const rsData = workgroup.accessData(true);
-const dbRole = rsData.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
-const dbSchema = rsData.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
-dbSchema.node.addDependency(dbRole);
+const dataApi = workgroup.accessData('DataApi', true);
+const schema = dataApi.runCustomSQL('TestCustom', 'defaultdb', 'create schema testschema');
+const dbRole = dataApi.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
+const dbSchema = dataApi.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'testschema', 'engineering');
+const readSchema = dataApi.grantSchemaReadToRole('EngineeringGrantRead', 'defaultdb', 'public', 'engineering');
 
-const catalog = workgroup.catalogTables('rs_defaultdb');
+dbSchema.node.addDependency(dbRole);
+dbSchema.node.addDependency(schema);
+readSchema.node.addDependency(dbRole);
+
+const catalog = workgroup.catalogTables('RedshiftCatalog', 'rs_defaultdb', 'defaultdb/public/%');
 
 new CfnOutput(stack, 'DefaultNamespaceName', {
   value: workgroup.namespace.namespaceName,
@@ -119,5 +128,5 @@ test('Catalog database and crawler should be created', async() => {
 
 
 afterAll(async () => {
-  //await testStack.destroy();
+  await testStack.destroy();
 }, 3600000);

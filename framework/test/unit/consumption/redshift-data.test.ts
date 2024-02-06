@@ -525,7 +525,7 @@ describe('With custom configuration, the construct ', () => {
   });
 });
 
-describe('With global removal policy set and the construct removal policy to DESTROY', () => {
+describe('With global removal policy set and the construct removal policy to DESTROY, the construct should', () => {
 
   const redshiftDataStack = new Stack();
 
@@ -588,7 +588,7 @@ describe('With global removal policy set and the construct removal policy to DES
   const template = Template.fromStack(redshiftDataStack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('should create resources with RETAIN policy when global removal policy is unset', () => {
+  test(' create resources with Delete policy', () => {
     template.allResources('AWS::Logs::LogGroup', {
       UpdateReplacePolicy: 'Delete',
       DeletionPolicy: 'Delete',

@@ -4,6 +4,8 @@
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Effect, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { ISecret, Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespaceProps } from './redshift-serverless-namespace-props';
@@ -24,52 +26,67 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
   /**
    * The custom resource that creates the Namespace
    */
-  readonly cfnResource: CustomResource;
-
+  readonly customResource: CustomResource;
+  /**
+   * The CloudWatch Logs Log Group for the Redshift Serverless creation
+   */
+  readonly createLogGroup: ILogGroup;
+  /**
+   * The Lambda Function for the Redshift Serverless creation
+   */
+  readonly createFunction: IFunction;
+  /**
+   * The IAM Role for the Redshift Serverless creation
+   */
+  readonly createRole: IRole;
+  /**
+   * The CloudWatch Logs Log Group for the creation status check
+   */
+  readonly statusLogGroup: ILogGroup;
+  /**
+   * The Lambda Function for the creation status check
+   */
+  readonly statusFunction: IFunction;
+  /**
+   * The IAM Role for the creation status check
+   */
+  readonly statusRole: IRole;
   /**
    * The name of the created namespace
    */
   readonly namespaceName: string;
-
   /**
    * The created Secrets Manager secret containing the admin credentials
    */
   readonly adminSecret: ISecret;
-
   /**
    * The KMS Key used to encrypt the admin credentials secret
    */
   readonly adminSecretKey: IKey;
-
   /**
    * The roles attached to the namespace in the form of `{RoleArn: IRole}`.
    * These roles are used to access other AWS services for ingestion, federated query, and data catalog access.
    * @see https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-authentication-access-control.html
    */
   readonly roles: Record<string, IRole>;
-
   /**
-   * KMS key used by the namespace to encrypt its data
+   * KMS key used by the namespace to encrypt the data
    */
-  readonly namespaceKey: Key;
-
+  readonly dataKey: Key;
   /**
    * The name of the database
    */
   readonly dbName: string;
-
   /**
    * The ARN of the created namespace
    */
   readonly namespaceArn: string;
-
   /**
    * The ID of the created namespace
    */
   readonly namespaceId: string;
 
   private readonly removalPolicy: RemovalPolicy;
-
   /**
    * Used for convenient access to Stack related information such as region and account id.
    */
@@ -100,8 +117,8 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
     const logExports: string[] = props.logExports || [];
     this.namespaceName = `${props.name}-${Utils.generateUniqueHash(this)}`;
-    this.namespaceKey = props.kmsKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
-    this.adminSecretKey = props.managedAdminPasswordKmsKey ?? new Key(this, 'DefaultManagedAdminPasswordKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
+    this.dataKey = props.dataKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
+    this.adminSecretKey = props.adminSecretKey ?? new Key(this, 'DefaultManagedAdminPasswordKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });
     const namespaceArn = `arn:aws:redshift-serverless:${this.currentStack.region}:${this.currentStack.account}:namespace/*`;
     const indexParameterName = `updateNamespace-idx-${Utils.generateUniqueHash(this)}`;
     this.namespaceParameters = {
@@ -111,7 +128,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       dbName: props.dbName,
       defaultIamRoleArn: props.defaultIAMRole ? props.defaultIAMRole.roleArn : undefined,
       iamRoles: this.roles ? Object.keys(this.roles) : undefined,
-      kmsKeyId: this.namespaceKey.keyId,
+      kmsKeyId: this.dataKey.keyId,
       manageAdminPassword: true,
       logExports,
       indexParameterName,
@@ -177,7 +194,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
           'kms:DescribeKey',
           'kms:CreateGrant',
         ],
-        resources: [this.namespaceKey.keyArn, this.adminSecretKey.keyArn],
+        resources: [this.dataKey.keyArn, this.adminSecretKey.keyArn],
       }),
     ];
 
@@ -222,17 +239,25 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
 
-    this.cfnResource = new CustomResource(this, 'CustomResource', {
+    this.createLogGroup = provider.onEventHandlerLogGroup;
+    this.createFunction = provider.onEventHandlerFunction;
+    this.createRole = provider.onEventHandlerRole;
+    this.statusLogGroup = provider.isCompleteHandlerLog!;
+    this.statusFunction = provider.isCompleteHandlerFunction!;
+    this.statusRole = provider.isCompleteHandlerRole!;
+
+    this.customResource = new CustomResource(this, 'CustomResource', {
       resourceType: 'Custom::RedshiftServerlessNamespace',
       serviceToken: provider.serviceToken,
       properties: this.namespaceParameters,
+      removalPolicy: this.removalPolicy,
     });
 
-    this.cfnResource.node.addDependency(this.namespaceKey);
-    this.cfnResource.node.addDependency(this.adminSecretKey);
+    this.customResource.node.addDependency(this.dataKey);
+    this.customResource.node.addDependency(this.adminSecretKey);
 
-    this.adminSecret = Secret.fromSecretCompleteArn(this, 'ManagedSecret', this.cfnResource.getAttString('adminPasswordSecretArn'));
-    this.namespaceId = this.cfnResource.getAttString('namespaceId');
-    this.namespaceArn = this.cfnResource.getAttString('namespaceArn');
+    this.adminSecret = Secret.fromSecretCompleteArn(this, 'ManagedSecret', this.customResource.getAttString('adminPasswordSecretArn'));
+    this.namespaceId = this.customResource.getAttString('namespaceId');
+    this.namespaceArn = this.customResource.getAttString('namespaceArn');
   }
 }

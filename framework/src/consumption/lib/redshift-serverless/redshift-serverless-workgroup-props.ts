@@ -3,7 +3,6 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetSelection, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { IRole } from 'aws-cdk-lib/aws-iam';
 import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
 
 /**
@@ -13,7 +12,7 @@ export interface RedshiftServerlessWorkgroupProps {
   /**
    * The name of the Redshift Serverless Workgroup
    */
-  readonly workgroupName: string;
+  readonly name: string;
 
   /**
    * The base capacity of the Redshift Serverless Workgroup in RPU
@@ -23,9 +22,8 @@ export interface RedshiftServerlessWorkgroupProps {
 
   /**
    * The Redshift Serverless Namespace associated with the Workgroup
-   * @default - A default namespace is created
    */
-  readonly namespace?: RedshiftServerlessNamespace;
+  readonly namespace: RedshiftServerlessNamespace;
 
   /**
    * The removal policy when deleting the CDK resource.
@@ -42,30 +40,19 @@ export interface RedshiftServerlessWorkgroupProps {
 
   /**
    * The subnets where the Redshift Serverless Workgroup is deployed
-   * @default - selects the private subnets of the VPC
+   * @default - Use the private subnets of the VPC
    */
   readonly subnets?: SubnetSelection;
 
   /**
-   * The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group)
+   * The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group).
+   * @default - No extra security groups are used
    */
-  readonly securityGroups?: SecurityGroup[];
+  readonly extraSecurityGroups?: SecurityGroup[];
 
   /**
    * The custom port to use when connecting to workgroup. Valid port ranges are 5431-5455 and 8191-8215.
    * @default - 5439
    */
   readonly port?: number;
-
-  /**
-   * The default IAM role that is associated with the default namespace that's automatically created when no namespace is provided
-   * @default - No default IAM Role ise associated with the default namespace
-   */
-  readonly defaultNamespaceDefaultIAMRole?: IRole;
-
-  /**
-   * The IAM roles that is associated with the default namespace that's automatically created when no namespace is provided
-   * @default - No IAM Role is associated with the default namespace
-   */
-  readonly defaultNamespaceIAMRoles?: IRole[];
 }

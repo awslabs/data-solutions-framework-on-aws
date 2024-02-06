@@ -17,12 +17,18 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
  * Creates an asynchronous custom resource that handles the execution of SQL using Redshift's Data API. If `vpc` and `vpcSubnets` are passed, this construct would also create the Redshift Data Interface VPC endpoint and configure the custom resource in the same VPC subnet.
  *
  * @example
- * const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
- *    workgroupName: "redshift-workgroup"
- * })
+ * const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'RedshiftNamespace', {
+ *    name: "default",
+ *    dbName: 'defaultdb',
+ * });
  *
- * const rsData = workgroup.accessData()
- * rsData.createDbRole("defaultdb", "engineering")
+ * const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
+ *    name: "redshift-workgroup",
+ *    namespace: namespace,
+ * });
+ *
+ * const rsData = workgroup.accessData('DataApi');
+ * rsData.createDbRole("EngineeringRole", "defaultdb", "engineering");
  */
 export class RedshiftData extends TrackedConstruct {
 

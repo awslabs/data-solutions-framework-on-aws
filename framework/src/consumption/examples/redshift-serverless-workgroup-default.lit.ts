@@ -4,12 +4,19 @@ import * as dsf from '../../index';
 
 /// !show
 class ExampleDefaultRedshiftServerlessWorkgroupStack extends Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id)
-        new dsf.consumption.RedshiftServerlessWorkgroup(this, "DefaultRedshiftServerlessWorkgroup", {
-            workgroupName: "default"
-        })
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id)
+    
+    const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'DefaultRedshiftServerlessNamespace', {
+      name: "default",
+      dbName: 'defaultdb',
+    })
+    
+    new dsf.consumption.RedshiftServerlessWorkgroup(this, "DefaultRedshiftServerlessWorkgroup", {
+      name: "default",
+      namespace: namespace,
+    })
+  }
 }
 /// !hide
 const app = new App()

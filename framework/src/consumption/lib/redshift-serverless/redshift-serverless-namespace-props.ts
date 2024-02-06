@@ -42,18 +42,12 @@ export interface RedshiftServerlessNamespaceProps {
 
   /**
    * The KMS Key used to encrypt the data.
-   * @default - If none is provided, a new key is created
+   * @default - A new KMS Key is created
    */
-  readonly kmsKey?: Key;
+  readonly dataKey?: Key;
 
   /**
-   * The KMS Key used by the managed admin password secret
-   * @default - If none is provided, a new key is created
-   */
-  readonly managedAdminPasswordKmsKey?: Key;
-
-  /**
-   * The logs to be exported
+   * The type of logs to be exported.
    * @default - No logs are exported
    */
   readonly logExports?: RedshiftServerlessNamespaceLogExport[];
@@ -63,6 +57,12 @@ export interface RedshiftServerlessNamespaceProps {
    * @default - The default username is "admin"
    */
   readonly adminUsername?: string;
+
+  /**
+   * The KMS Key used by the managed Secrets Manager Secret storing admin credentials.
+   * @default - A new KMS Key is created
+   */
+  readonly adminSecretKey?: Key;
 
   /**
    * The removal policy when deleting the CDK resource.

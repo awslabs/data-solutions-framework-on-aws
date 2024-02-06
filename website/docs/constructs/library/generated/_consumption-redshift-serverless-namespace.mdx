@@ -7,9 +7,10 @@ A [Redshift Serverless Namespace](https://docs.aws.amazon.com/redshift/latest/mg
 ## Overview
 
 `RedshiftServerlessNamespace` is a [Redshift Serverless Namespace](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-workgroup-namespace.html) with the following options:
+- Encrypt data with a customer managed KMS Key.
+- Create Redshift superuser credentials managed by Redshift service: stored in Secrets Manager, encrypted with a KMS Key, and with automatic rotation.
 - Attach multiple IAM roles that can be used by Redshift Serverless users to interact with other AWS services.
 - Set an [IAM role as default](https://docs.aws.amazon.com/redshift/latest/mgmt/default-iam-role.html)
-- Provide a CMK or let the construct create a new KMS Key. This key would be used to encrypt the namespace data as well as the associated admin credential secrets
 
 ## Usage
 
@@ -18,13 +19,13 @@ A [Redshift Serverless Namespace](https://docs.aws.amazon.com/redshift/latest/mg
 
   ```typescript
 class ExampleDefaultRedshiftServerlessNamespaceStack extends Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id)
-        new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftServerlessNamespace", {
-            dbName: "database",
-            name: "example-namespace"
-        })
-    }
+  constructor(scope: Construct, id: string) {
+    super(scope, id)
+    new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftServerlessNamespace", {
+      dbName: "database",
+      name: "example-namespace"
+    })
+  }
 }
   ```
   
@@ -52,34 +53,34 @@ To allow Redshift Serverless to access other AWS services on your behalf (eg. da
 
 1. Create an IAM role with a trust relationship of `redshift.amazonaws.com`.
 2. Attach policy/permissions to the role to give it access to specific AWS services.
-3. Attach the role to the Redshift Serverless Namespace
-4. Run the relevant command referencing the attached IAM role via its ARN (or the `default` keyword if a default IAM role is configured)
+3. Configure the role when creating the Redshift Serverless Namespace
+4. Run the relevant SQL command referencing the attached IAM role via its ARN (or the `default` keyword if a default IAM role is configured)
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
 class ExampleRedshiftServerlessNamespaceRolesStack extends Stack {
-    constructor(scope: Construct, id: string) {
-        super(scope, id)
+  constructor(scope: Construct, id: string) {
+    super(scope, id)
 
-        const bucket = new Bucket(this, "ExampleBucket")
+    const bucket = new Bucket(this, "ExampleBucket")
 
-        const ingestionRole = new Role(this, "IngestionRole", {
-            assumedBy: new ServicePrincipal("redshift.amazonaws.com"),
-            managedPolicies: [
-                ManagedPolicy.fromAwsManagedPolicyName("AmazonRedshiftAllCommandsFullAccess")
-            ]
-        })
+    const ingestionRole = new Role(this, "IngestionRole", {
+      assumedBy: new ServicePrincipal("redshift.amazonaws.com"),
+      managedPolicies: [
+        ManagedPolicy.fromAwsManagedPolicyName("AmazonRedshiftAllCommandsFullAccess")
+      ]
+    })
 
-        bucket.grantRead(ingestionRole)
+    bucket.grantRead(ingestionRole)
 
-        new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftServerlessNamespace", {
-            dbName: "database",
-            name: "example-namespace",
-            defaultIAMRole: ingestionRole
-        })
-    }
+    new dsf.consumption.RedshiftServerlessNamespace(this, "RedshiftServerlessNamespace", {
+      dbName: "database",
+      name: "example-namespace",
+      defaultIAMRole: ingestionRole
+    })
+  }
 }
   ```
   
