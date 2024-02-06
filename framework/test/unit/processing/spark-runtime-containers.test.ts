@@ -1115,3 +1115,122 @@ describe('Test for grant job execution', () => {
 
 
 });
+
+
+describe('Remove resource when deletion protection is disable and set removal is set to destroy', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('create resources with Delete policy', () => {
+    template.allResources('AWS::Logs::LogGroup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::EmrEksInteractiveEndpoint', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::LambdaEniCleanup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
+
+});
+
+describe('Retain resource when deletion protection is enable and set removal is set to retain', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.RETAIN,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('create resources with Retain policy', () => {
+
+    template.allResources('Custom::EmrEksInteractiveEndpoint', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+
+    template.allResources('Custom::LambdaEniCleanup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
+
+});

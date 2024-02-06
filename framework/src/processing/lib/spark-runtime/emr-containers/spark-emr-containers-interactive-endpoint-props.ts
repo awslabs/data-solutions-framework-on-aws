@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
+import { RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { EmrContainersRuntimeVersion } from '../../emr-releases';
 
@@ -31,4 +32,12 @@ export interface SparkEmrContainersRuntimeInteractiveSessionProps {
    * @default - Configuration related to the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR}
    */
   readonly configurationOverrides?: any;
+
+  /**
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
+  readonly removalPolicy?: RemovalPolicy;
 }

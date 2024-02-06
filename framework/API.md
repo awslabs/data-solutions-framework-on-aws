@@ -8753,6 +8753,7 @@ const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | The name of the Amazon EMR Virtual Cluster to be created. |
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | The flag to create EKS namespace. |
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | The name of the EKS namespace to be linked to the EMR virtual cluster. |
+| <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.EmrVirtualClusterProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the Virtual Cluster. |
 
 ---
@@ -8792,6 +8793,22 @@ public readonly eksNamespace: string;
 - *Default:* Use the default namespace
 
 The name of the EKS namespace to be linked to the EMR virtual cluster.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.EmrVirtualClusterProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
@@ -10034,6 +10051,7 @@ const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrConta
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-dsf.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
@@ -10096,6 +10114,22 @@ public readonly emrOnEksVersion: EmrContainersRuntimeVersion;
 - *Default:* The [default Amazon EMR version]{@link EmrEksCluster.DEFAULT_EMR_VERSION }
 
 The Amazon EMR version to use.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
