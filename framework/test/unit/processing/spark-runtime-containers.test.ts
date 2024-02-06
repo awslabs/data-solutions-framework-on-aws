@@ -1216,7 +1216,6 @@ describe('Retain resource when removal is set to retain', () => {
     managedEndpointName: 'test',
     executionRole: execRole,
     virtualClusterId: virtualCluster.attrId,
-    removalPolicy: RemovalPolicy.RETAIN,
   });
 
   const template = Template.fromStack(emrEksClusterStack);

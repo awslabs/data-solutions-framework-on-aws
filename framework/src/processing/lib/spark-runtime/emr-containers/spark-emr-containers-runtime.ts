@@ -709,7 +709,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         configurationOverrides: jsonConfigurationOverrides,
       },
       resourceType: 'Custom::EmrEksInteractiveEndpoint',
-      removalPolicy: interactiveSessionOptions.removalPolicy,
+      removalPolicy: this.removalPolicy,
     });
     cr.node.addDependency(this.eksCluster);
 

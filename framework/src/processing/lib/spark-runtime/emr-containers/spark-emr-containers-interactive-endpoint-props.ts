@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+// SPDX-License-Identifier: Apache-2.0
 
-import { RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { EmrContainersRuntimeVersion } from '../../emr-releases';
 
@@ -33,9 +32,4 @@ export interface SparkEmrContainersRuntimeInteractiveSessionProps {
    */
   readonly configurationOverrides?: any;
 
-  /**
-   * The removal policy when deleting the CDK resource.
-   * @default - The resources are not deleted (`RemovalPolicy.DESTROY`).
-   */
-  readonly removalPolicy?: RemovalPolicy;
 }
