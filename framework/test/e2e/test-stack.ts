@@ -55,6 +55,7 @@ class TestStack implements ICloudAssemblyDirectoryProducer {
       stacks: [this.stack.stackName],
       requireApproval: RequireApproval.NEVER,
       outputsFile: outputFilePath,
+      rollback: false,
     });
 
     return JSON.parse(await readFile(outputFilePath, 'utf-8'))[

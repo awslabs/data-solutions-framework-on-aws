@@ -5,3 +5,4 @@ export * as storage from './storage';
 export * as governance from './governance';
 export * as processing from './processing';
 export * as utils from './utils';
+export * as consumption from './consumption';

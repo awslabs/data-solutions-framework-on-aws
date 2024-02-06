@@ -6,6 +6,7 @@ import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
+import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 
 /**
  * Properties for the `DataCatalogDatabase` construct
@@ -19,12 +20,32 @@ export interface DataCatalogDatabaseProps {
   /**
    * S3 bucket where data is stored
    */
-  readonly locationBucket: IBucket;
+  readonly locationBucket?: IBucket;
 
   /**
    * Top level location wwhere table data is stored.
    */
-  readonly locationPrefix: string;
+  readonly locationPrefix?: string;
+
+  /**
+   * The connection that would be used by the crawler
+   */
+  readonly glueConnectionName?: string;
+
+  /**
+   * The secret associated with the JDBC connection
+   */
+  readonly jdbcSecret?: ISecret;
+
+  /**
+   * The KMS key used by the JDBC secret
+   */
+  readonly jdbcSecretKMSKey?: IKey;
+
+  /**
+   * The JDBC path that would be included by the crawler
+   */
+  readonly jdbcPath?: string;
 
   /**
    * When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter.
