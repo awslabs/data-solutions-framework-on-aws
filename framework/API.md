@@ -6662,7 +6662,7 @@ The method will scope the following actions `DescribeJobRun`, `TagResource` and 
 It will also scope `StartJobRun` as defined in the
 [EMR on EKS official documentation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/iam-execution-role.html)
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-dsf.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -6670,7 +6670,7 @@ the role that will call the start job api and which needs to have the iam:PassRo
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string[]
 
@@ -6678,7 +6678,7 @@ the role used by EMR on EKS to access resources during the job execution.
 
 ---
 
-###### `virtualClusterArn`<sup>Required</sup> <a name="virtualClusterArn" id="aws-dsf.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.virtualClusterArn"></a>
+###### `virtualClusterArn`<sup>Required</sup> <a name="virtualClusterArn" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.virtualClusterArn"></a>
 
 - *Type:* string
 
@@ -6708,7 +6708,7 @@ the EMR Virtual Cluster ARN to which the job is submitted.
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the EC2NodeClass of the default nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>any</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for critical nodes. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for critical nodes. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared">podTemplateS3LocationDriverShared</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for shared nodes. |
@@ -7050,7 +7050,7 @@ The configuration override for the spark application to use with the default nod
 | --- | --- | --- |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | The default name of the EKS cluster. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The default EKS version. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-data-solutions-framework.processing.EmrRuntimeVersion</code> | The default EMR on EKS version. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The default EMR on EKS version. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | The default CIDR when the VPC is created. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
@@ -7087,7 +7087,7 @@ The default EKS version.
 public readonly DEFAULT_EMR_EKS_VERSION: EmrContainersRuntimeVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.EmrRuntimeVersion
+- *Type:* aws-data-solutions-framework.processing.EmrContainersRuntimeVersion
 
 The default EMR on EKS version.
 
@@ -10737,7 +10737,7 @@ The properties for the EMR Managed Endpoint to create.
 #### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-dsf'
+import { processing } from 'aws-data-solutions-framework'
 
 const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrContainersRuntimeInteractiveSessionProps = { ... }
 ```
@@ -10750,7 +10750,7 @@ const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrConta
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-dsf.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
 
 ---
 
@@ -10809,7 +10809,7 @@ The JSON configuration overrides for Amazon EMR on EKS configuration attached to
 public readonly emrOnEksVersion: EmrContainersRuntimeVersion;
 ```
 
-- *Type:* aws-dsf.processing.EmrContainersRuntimeVersion
+- *Type:* aws-data-solutions-framework.processing.EmrContainersRuntimeVersion
 - *Default:* The [default Amazon EMR version]{@link EmrEksCluster.DEFAULT_EMR_VERSION }
 
 The Amazon EMR version to use.
@@ -12153,31 +12153,31 @@ The list of CICD Stages used in CICD Pipelines.
 ---
 
 
-### EmrContainersRuntimeVersion <a name="EmrContainersRuntimeVersion" id="aws-dsf.processing.EmrContainersRuntimeVersion"></a>
+### EmrContainersRuntimeVersion <a name="EmrContainersRuntimeVersion" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
-| <code><a href="#aws-dsf.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
 
