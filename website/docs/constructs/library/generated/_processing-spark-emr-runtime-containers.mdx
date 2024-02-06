@@ -335,3 +335,133 @@ cdk.CfnOutput(self, "execRoleArn",
   </TabItem>
 </Tabs>
 
+
+### Interactive endpoint
+
+The interactive endpoint provides the capability for interactive clients like Amazon EMR Studio or a self-hosted Jupyter notebook to connect to Amazon EMR on EKS clusters to run interactive workloads. The interactive endpoint is backed by a Jupyter Enterprise Gateway that provides the remote kernel lifecycle management capability that interactive clients need.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+        const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
+            name: 'dailyjob',
+            createNamespace: true,
+            eksNamespace: 'dailyjobns',
+        });
+
+        const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolicy, 'dailyjobns', 's3ReadExecRole');
+
+        const interactiveSession = emrEksCluster.addInteractiveEndpoint(this, 'interactiveSession', {
+           virtualClusterId: virtualCluster.attrId,
+           managedEndpointName: 'interactiveSession',
+           executionRole: execRole,
+         });
+
+        //Virtual Cluster ARN
+        new cdk.CfnOutput(this, 'virtualClusterArn', {
+            value: virtualCluster.attrArn,
+        });
+
+        //Interactive session ARN
+        new cdk.CfnOutput(this, 'interactiveSessionArn', {
+           value: interactiveSession.getAttString('arn'),
+         });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+virtual_cluster = emr_eks_cluster.add_emr_virtual_cluster(self,
+    name="dailyjob",
+    create_namespace=True,
+    eks_namespace="dailyjobns"
+)
+
+exec_role = emr_eks_cluster.create_execution_role(self, "ExecRole", s3_read_policy, "dailyjobns", "s3ReadExecRole")
+
+interactive_session = emr_eks_cluster.add_interactive_endpoint(self, "interactiveSession",
+    virtual_cluster_id=virtual_cluster.attr_id,
+    managed_endpoint_name="interactiveSession",
+    execution_role=exec_role
+)
+
+# Virtual Cluster ARN
+cdk.CfnOutput(self, "virtualClusterArn",
+    value=virtual_cluster.attr_arn
+)
+
+# Interactive session ARN
+cdk.CfnOutput(self, "interactiveSessionArn",
+    value=interactive_session.get_att_string("arn")
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+### Grant Job Execution
+
+The Grant Job Execution allow you to provide an IAM role the rights to start the execution of a job and monitor it in a given virtual cluster. The policy attached will be as follow.
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Action": [
+				"emr-containers:DescribeJobRun",
+				"emr-containers:ListJobRuns"
+			],
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm",
+			"Effect": "Allow"
+		},
+		{
+			"Condition": {
+				"ArnEquals": {
+					"emr-containers:ExecutionRoleArn": [
+						"arn:aws:iam::ACCOUNT-ID:role/s3ReadExecRole"
+					]
+				}
+			},
+			"Action": "emr-containers:StartJobRun",
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm",
+			"Effect": "Allow"
+		},
+		{
+			"Action": "emr-containers:TagResource",
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm/jobruns/*",
+			"Effect": "Allow"
+		}
+	]
+}
+```
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+        // IAM role that is used to start the execution and monitor its state
+        const startJobRole: IRole = Role.fromRoleName(this, 'StartJobRole', 'StartJobRole');
+
+        SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+# IAM role that is used to start the execution and monitor its state
+start_job_role = Role.from_role_name(self, "StartJobRole", "StartJobRole")
+
+SparkEmrContainersRuntime.grant_start_job_execution(start_job_role, [exec_role.role_arn], virtual_cluster.attr_arn)
+  ```
+
+  </TabItem>
+</Tabs>
+

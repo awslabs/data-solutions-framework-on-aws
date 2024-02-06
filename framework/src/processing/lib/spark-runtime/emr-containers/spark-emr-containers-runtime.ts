@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { readFileSync } from 'fs';
 import { join } from 'path';
-import { Aws, Stack, Tags, CfnJson, RemovalPolicy } from 'aws-cdk-lib';
+import { Aws, Stack, Tags, CfnJson, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
 import { IGatewayVpcEndpoint, ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import {
   AlbControllerVersion,
@@ -34,15 +33,18 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import * as SimpleBase from 'simple-base';
-import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup } from './eks-cluster-helpers';
+import { createNamespace, ebsCsiDriverSetup, awsNodeRoleSetup, toolingManagedNodegroupSetup, setupAlbControllerIamPolicy } from './eks-cluster-helpers';
 import { karpenterSetup, setDefaultKarpenterProvisioners } from './eks-karpenter-helpers';
 import { EmrVirtualClusterProps } from './emr-virtual-cluster-props';
 import * as CriticalDefaultConfig from './resources/k8s/emr-eks-config/critical.json';
 import * as NotebookDefaultConfig from './resources/k8s/emr-eks-config/notebook-pod-template-ready.json';
 import * as SharedDefaultConfig from './resources/k8s/emr-eks-config/shared.json';
+import { interactiveSessionsProviderSetup } from './spark-emr-containers-helpers';
+import { SparkEmrContainersRuntimeInteractiveSessionProps } from './spark-emr-containers-interactive-endpoint-props';
 import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
-import { EMR_DEFAULT_VERSION } from '../../emr-releases';
+import { DsfProvider } from '../../../../utils/lib/dsf-provider';
+import { EMR_CONTAINERS_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 
 /**
@@ -86,7 +88,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    *  The default EMR on EKS version
    */
-  public static readonly DEFAULT_EMR_EKS_VERSION = EMR_DEFAULT_VERSION;
+  public static readonly DEFAULT_EMR_EKS_VERSION = EMR_CONTAINERS_DEFAULT_VERSION;
+
   /**
    * The default EKS version
    */
@@ -99,6 +102,48 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
    * The default CIDR when the VPC is created
    */
   public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
+
+
+  /**
+   * A static method granting the right to start and monitor a job to an IAM Role.
+   * The method will scope the following actions `DescribeJobRun`, `TagResource` and `ListJobRuns` to the provided virtual cluster.
+   * It will also scope `StartJobRun` as defined in the
+   * [EMR on EKS official documentation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/iam-execution-role.html)
+   *
+   * @param startJobRole the role that will call the start job api and which needs to have the iam:PassRole permission
+   * @param executionRoleArn the role used by EMR on EKS to access resources during the job execution
+   * @param virtualClusterArn the EMR Virtual Cluster ARN to which the job is submitted
+   */
+  public static grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], virtualClusterArn: string) {
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-containers:DescribeJobRun',
+        'emr-containers:ListJobRuns',
+      ],
+      resources: [virtualClusterArn],
+    }));
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'emr-containers:StartJobRun',
+      ],
+      resources: [virtualClusterArn],
+      conditions: {
+        ArnEquals: {
+          'emr-containers:ExecutionRoleArn': executionRoleArn,
+        },
+      },
+    }));
+
+    startJobRole.addToPrincipalPolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['emr-containers:TagResource'],
+      resources: [`${virtualClusterArn}/jobruns/*`],
+    }));
+  }
 
   /**
    * Get an existing EmrEksCluster based on the cluster name property or create a new one
@@ -150,7 +195,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The configuration override for the spark application to use with the default nodes dedicated for notebooks
    */
-  public readonly notebookDefaultConfig?: string;
+  public readonly notebookDefaultConfig?: any;
   /**
    * The configuration override for the spark application to use with the default nodes for criticale jobs
    */
@@ -199,7 +244,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The VPC used by the EKS cluster
    */
-  public readonly vpc!: IVpc;
+  public readonly vpc: IVpc;
   /**
    * The KMS Key used for the VPC flow logs when the VPC is created
    */
@@ -236,6 +281,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   private readonly podTemplateLocation: Location;
   private readonly podTemplatePolicy: PolicyDocument;
   private readonly removalPolicy: RemovalPolicy;
+  private readonly interactiveSessionsProviderServiceToken: string;
+
   /**
    * Constructs a new instance of the EmrEksCluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
@@ -251,6 +298,9 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     super(scope, id, trackedConstructProps);
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
+    //Initialise notebookDefaultcongig to undefined
+    this.notebookDefaultConfig = undefined;
 
     // Create a role to be used as instance profile for nodegroups
     this.ec2InstanceNodeGroupRole = props.ec2InstanceRole || new Role(this, 'Ec2InstanceNodeGroupRole', {
@@ -268,7 +318,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     let eksCluster: Cluster;
 
     // create an Amazon EKS CLuster with default parameters if not provided in the properties
-    if (props.eksCluster == undefined) {
+    if (props.eksCluster === undefined) {
 
       this.eksSecretKmsKey = new Key(scope, 'EksSecretKmsKey', {
         enableKeyRotation: true,
@@ -318,8 +368,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       });
 
       props.publicAccessCIDRs.forEach(publicAccessCidr => {
-        clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow all traffic from VPC to EKS Cluster');
+        clusterSecurityGroup.addIngressRule(Peer.ipv4(publicAccessCidr), Port.allTcp(), 'Allow traffic from the public IP CIDR range provided by user');
       });
+
+      const iamPolicyAlbController: any = setupAlbControllerIamPolicy (scope, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json', this.vpc);
 
       eksCluster = new Cluster(scope, 'EksCluster', {
         defaultCapacity: 0,
@@ -332,10 +384,12 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         secretsEncryptionKey: this.eksSecretKmsKey,
         albController: {
           version: AlbControllerVersion.V2_5_1,
-          policy: JSON.parse(readFileSync(join(__dirname, 'resources/k8s/controllers-iam-policies/alb/iam-policy-alb-v2.5.json'), 'utf8')),
+          policy: iamPolicyAlbController,
         },
         placeClusterHandlerInVpc: true,
-        securityGroup: clusterSecurityGroup,
+        tags: {
+          'data-solutions-fwk:owned': 'true',
+        },
       });
 
       // Add the provided Amazon IAM Role as Amazon EKS Admin
@@ -367,6 +421,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     } else {
       //Initialize with the provided EKS Cluster
       eksCluster = props.eksCluster;
+      this.vpc = eksCluster.vpc;
     }
 
     this.eksCluster = eksCluster;
@@ -500,6 +555,13 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
         groups: [''],
       },
     );
+
+    const interactiveSessionsProvider: DsfProvider =
+      interactiveSessionsProviderSetup(scope, this.removalPolicy, this.vpc, this.assetBucket);
+
+    this.interactiveSessionsProviderServiceToken = interactiveSessionsProvider.serviceToken;
+
+
   }
 
   /**
@@ -547,10 +609,6 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     return virtualCluster;
   }
-
-  //TODO ADD METHOD
-  //GRANT JOB EXECUTION
-  //SCOPE PRINCIPAL TO ONLY A LIST OF EXECUTION ROLE
 
   /**
    * Create and configure a new Amazon IAM Role usable as an execution role.
@@ -619,6 +677,43 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     }
 
     return manifestApply;
+  }
+
+  /**
+   * Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Cluster .
+   * CfnOutput can be customized.
+   * @param {Construct} scope the scope of the stack where managed endpoint is deployed
+   * @param {string} id the CDK id for endpoint
+   * @param {SparkEmrContainersRuntimeInteractiveSessionProps} interactiveSessionOptions the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint
+   */
+
+  public addInteractiveEndpoint(scope: Construct, id: string, interactiveSessionOptions: SparkEmrContainersRuntimeInteractiveSessionProps) {
+
+    if (interactiveSessionOptions.managedEndpointName.length > 64) {
+      throw new Error(`error managed endpoint name length is greater than 64 ${id}`);
+    }
+
+    let jsonConfigurationOverrides: any | undefined;
+
+    jsonConfigurationOverrides =
+     interactiveSessionOptions.configurationOverrides ? interactiveSessionOptions.configurationOverrides : this.notebookDefaultConfig;
+
+    // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
+    const cr = new CustomResource(scope, id, {
+      serviceToken: this.interactiveSessionsProviderServiceToken,
+      properties: {
+        clusterId: interactiveSessionOptions.virtualClusterId,
+        executionRoleArn: interactiveSessionOptions.executionRole.roleArn,
+        endpointName: interactiveSessionOptions.managedEndpointName,
+        releaseLabel: interactiveSessionOptions.emrOnEksVersion ?? SparkEmrContainersRuntime.DEFAULT_EMR_EKS_VERSION,
+        configurationOverrides: jsonConfigurationOverrides,
+      },
+      resourceType: 'Custom::EmrEksInteractiveEndpoint',
+      removalPolicy: this.removalPolicy,
+    });
+    cr.node.addDependency(this.eksCluster);
+
+    return cr;
   }
 }
 

@@ -370,3 +370,49 @@ The construct also exposes the `addKarpenterNodePoolAndNodeClass()` method to de
 The execution role is the IAM role that is used by the Spark job to access AWS resources. For example, the job may need to access an S3 bucket that stores the source data or to which the job writes the data. The `createExecutionRole()` method simplifies the creation of an IAM role that can be used to execute a Spark job on the EKS cluster and in a specific EMR EKS virtual cluster namespace. The method attaches an IAM policy provided by the user and a policy to access the pod templates when using the default EC2 capacity.
 
 [example execution role](./examples/spark-emr-runtime-containers-execrole.lit.ts)
+
+
+### Interactive endpoint
+
+The interactive endpoint provides the capability for interactive clients like Amazon EMR Studio or a self-hosted Jupyter notebook to connect to Amazon EMR on EKS clusters to run interactive workloads. The interactive endpoint is backed by a Jupyter Enterprise Gateway that provides the remote kernel lifecycle management capability that interactive clients need.
+
+[example interactive endpoint](./examples/spark-emr-runtime-containers-interactive-endpoint.lit.ts)
+
+### Grant Job Execution
+
+The Grant Job Execution allow you to provide an IAM role the rights to start the execution of a job and monitor it in a given virtual cluster. The policy attached will be as follow.
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Action": [
+				"emr-containers:DescribeJobRun",
+				"emr-containers:ListJobRuns"
+			],
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm",
+			"Effect": "Allow"
+		},
+		{
+			"Condition": {
+				"ArnEquals": {
+					"emr-containers:ExecutionRoleArn": [
+						"arn:aws:iam::ACCOUNT-ID:role/s3ReadExecRole"
+					]
+				}
+			},
+			"Action": "emr-containers:StartJobRun",
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm",
+			"Effect": "Allow"
+		},
+		{
+			"Action": "emr-containers:TagResource",
+			"Resource": "arn:aws:emr-containers:REGION:ACCOUNT-ID:/virtualclusters/aaabbccmmm/jobruns/*",
+			"Effect": "Allow"
+		}
+	]
+}
+```
+
+[example grant job execution](./examples/spark-emr-runtime-containers-grant-execution.lit.ts)

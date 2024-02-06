@@ -13,6 +13,7 @@ export const EBS_CSI_DRIVER_ADDON_VERSION: Map<KubernetesVersion, string> = new 
   [KubernetesVersion.V1_25, 'v1.24.1-eksbuild.1'],
   [KubernetesVersion.V1_26, 'v1.24.1-eksbuild.1'],
   [KubernetesVersion.V1_27, 'v1.24.1-eksbuild.1'],
+  [KubernetesVersion.V1_28, 'v1.24.1-eksbuild.1'],
 ]);
 
 /**
@@ -25,4 +26,5 @@ export const CERTMANAGER_HELM_CHART_VERSION: Map<KubernetesVersion, string> = ne
   [KubernetesVersion.V1_25, '1.13.2'],
   [KubernetesVersion.V1_26, '1.13.2'],
   [KubernetesVersion.V1_27, '1.13.2'],
+  [KubernetesVersion.V1_28, '1.13.2'],
 ]);

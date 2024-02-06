@@ -94,6 +94,10 @@ export class S3DataCopy extends TrackedConstruct {
           TARGET_BUCKET_NAME: props.targetBucket.bucketName,
           TARGET_BUCKET_PREFIX: props.targetBucketPrefix || '',
         },
+        bundling: {
+          externalModules: ['aws-sdk'],
+          nodeModules: ['@aws-sdk/client-s3'],
+        },
       },
       vpc: props.vpc,
       subnets: props.vpc ? props.subnets : undefined,

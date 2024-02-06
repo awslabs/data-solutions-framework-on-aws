@@ -27,6 +27,28 @@ export enum EmrRuntimeVersion {
   V5_32 = 'emr-5.32.0',
 }
 
+export enum EmrContainersRuntimeVersion {
+  V7_0 = 'emr-7.0.0-latest',
+  V6_15 = 'emr-6.15.0-latest',
+  V6_14 = 'emr-6.14.0-latest',
+  V6_13 = 'emr-6.13.0-latest',
+  V6_12 = 'emr-6.12.0-latest',
+  V6_11_1 = 'emr-6.11.1-latest',
+  V6_11 = 'emr-6.11.0-latest',
+  V6_10_1 = 'emr-6.10.1-latest',
+  V6_10 = 'emr-6.10.0-latest',
+  V6_9 = 'emr-6.9.0-latest',
+  V6_8 = 'emr-6.8.0-latest',
+  V6_7 = 'emr-6.7.0-latest',
+  V6_6 = 'emr-6.6.0-latest',
+  V6_5 = 'emr-6.5.0-latest',
+  V6_4 = 'emr-6.4.0-latest',
+  V6_3 = 'emr-6.3.0-latest',
+  V6_2 = 'emr-6.2.0-latest',
+  V5_33 = 'emr-5.33.0-latest',
+  V5_32 = 'emr-5.32.0-latest',
+}
+
 const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
 
 /**
@@ -44,6 +66,7 @@ export enum SparkImage {
 }
 
 export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V6_15;
+export const EMR_CONTAINERS_DEFAULT_VERSION: EmrContainersRuntimeVersion = EmrContainersRuntimeVersion.V6_15;
 
 /**
  * The default Spark image to run the unit tests

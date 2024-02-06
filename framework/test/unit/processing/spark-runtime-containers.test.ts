@@ -13,8 +13,8 @@ import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
-import { SparkEmrContainersRuntime } from '../../../src/processing';
+import { IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
+import { EmrContainersRuntimeVersion, SparkEmrContainersRuntime } from '../../../src/processing';
 
 describe('With default configuration, the construct ', () => {
 
@@ -30,7 +30,7 @@ describe('With default configuration, the construct ', () => {
     kubectlLambdaLayer: kubectlLayer,
   });
 
-  emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
     name: 'test',
   });
 
@@ -45,10 +45,15 @@ describe('With default configuration, the construct ', () => {
     }),
   });
 
-  emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create an EKS cluster with correct version', () => {
     template.hasResourceProperties('Custom::AWSCDK-EKS-Cluster', {
@@ -305,7 +310,7 @@ describe('With default configuration, the construct ', () => {
     template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 1);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 1);
-    template.resourceCountIs('AWS::Logs::LogGroup', 1);
+    template.resourceCountIs('AWS::Logs::LogGroup', 4);
     template.resourcePropertiesCountIs('AWS::IAM::Role', {
       AssumeRolePolicyDocument: Match.objectLike({
         Statement: [
@@ -767,7 +772,6 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a Karpenter queue with DELETE removal policy', () => {
     template.hasResource('AWS::SQS::Queue', {
@@ -827,7 +831,6 @@ describe('With DESTROY removal policy and global data removal unset, the constru
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a Karpenter queue with RETAIN removal policy', () => {
     template.hasResource('AWS::SQS::Queue', {
@@ -894,7 +897,6 @@ describe('With provided EKS cluster, the construct ', () => {
   });
 
   const template = Template.fromStack(emrEksClusterStack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should not create any VPC or any EKS Cluster', () => {
     template.resourceCountIs('Custom::AWSCDK-EKS-Cluster', 1);
@@ -909,7 +911,7 @@ describe('With provided EKS cluster, the construct ', () => {
     template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 0);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 0);
-    template.resourceCountIs('AWS::Logs::LogGroup', 0);
+    template.resourceCountIs('AWS::Logs::LogGroup', 3);
   });
 
   test('should not configure the cluster with cert managed, EBS CSI driver and Karpenter', () => {
@@ -937,6 +939,293 @@ describe('With provided EKS cluster, the construct ', () => {
         ],
       },
     }, 0);
+  });
+
+});
+
+
+describe('Test for interactive endpoint', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpointEMRV7', {
+    managedEndpointName: 'test7',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+    emrOnEksVersion: EmrContainersRuntimeVersion.V7_0,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('should create an interactive endpoint with provided name', () => {
+    template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
+      endpointName: 'test',
+      configurationOverrides: Match.objectLike({
+        applicationConfiguration: [{}],
+        monitoringConfiguration: {},
+        default: {},
+      }),
+    });
+  });
+
+  test('should create an interactive endpoint with provided name and provided emr runtime', () => {
+    template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
+      endpointName: 'test7',
+      releaseLabel: 'emr-7.0.0-latest',
+    });
+  });
+});
+
+describe('Test for interactive endpoint without default karpenter nodepool', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    defaultNodes: false,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('should create an interactive endpoint with provided name and no configOverride', () => {
+    template.hasResourceProperties('Custom::EmrEksInteractiveEndpoint', {
+      endpointName: 'test',
+      configurationOverrides: Match.absent(),
+    });
+  });
+
+});
+
+
+describe('Test for grant job execution', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  const startJobRole: IRole = Role.fromRoleName(emrEksClusterStack, 'StartJobRole', 'StartJobRole');
+
+  SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('should have a role with a policy to start a job in emr on eks', () => {
+    template.hasResourceProperties('AWS::IAM::Policy',
+      Match.objectLike({
+        PolicyDocument: Match.objectLike({
+          Statement: Match.arrayWith([
+            Match.objectLike(
+              {
+                Action: 'emr-containers:StartJobRun',
+                Effect: 'Allow',
+              },
+            ),
+          ]),
+        }),
+        Roles: ['StartJobRole'],
+      }));
+  });
+
+
+});
+
+
+describe('Remove resource when deletion protection is disable and set removal is set to destroy', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('create resources with Delete policy', () => {
+    template.allResources('AWS::Logs::LogGroup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::EmrEksInteractiveEndpoint', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::LambdaEniCleanup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+  });
+
+});
+
+describe('Retain resource when removal is set to retain', () => {
+
+  const emrEksClusterStack = new Stack();
+
+  emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+
+  const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
+
+  const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
+    eksAdminRole: adminRole,
+    publicAccessCIDRs: ['10.0.0.0/32'],
+    kubectlLambdaLayer: kubectlLayer,
+    removalPolicy: RemovalPolicy.RETAIN,
+  });
+
+  const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
+    name: 'test',
+  });
+
+  const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
+    document: new PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          actions: ['s3:GetObject'],
+        }),
+      ],
+    }),
+  });
+
+  const execRole = emrEksCluster.createExecutionRole(emrEksClusterStack, 'test', policy, 'nons', 'myExecRole');
+
+  emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'AddInteractiveEndpoint', {
+    managedEndpointName: 'test',
+    executionRole: execRole,
+    virtualClusterId: virtualCluster.attrId,
+  });
+
+  const template = Template.fromStack(emrEksClusterStack);
+
+  test('create resources with Retain policy', () => {
+
+    template.allResources('Custom::EmrEksInteractiveEndpoint', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
   });
 
 });

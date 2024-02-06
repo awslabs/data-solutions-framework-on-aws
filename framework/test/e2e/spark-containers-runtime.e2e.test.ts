@@ -56,6 +56,12 @@ const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
 
 const execRole = emrEksCluster.createExecutionRole(stack, 'ExecRole', s3ReadPolicy, 'e2ens', 's3ReadExecRole');
 
+const interactiveEndpoint = emrEksCluster.addInteractiveEndpoint(stack, 'addInteractiveEndpoint4', {
+  virtualClusterId: virtualCluster.attrId,
+  managedEndpointName: 'e2e',
+  executionRole: execRole,
+});
+
 new cdk.CfnOutput(stack, 'virtualClusterArn', {
   value: virtualCluster.attrArn,
 });
@@ -66,6 +72,10 @@ new cdk.CfnOutput(stack, 'execRoleArn', {
 
 new cdk.CfnOutput(stack, 'eksClusterName', {
   value: emrEksCluster.eksCluster.clusterName,
+});
+
+new cdk.CfnOutput(stack, 'interactiveEndpointArn', {
+  value: interactiveEndpoint.getAttString('arn'),
 });
 
 let deployResult: Record<string, string>;
@@ -80,6 +90,7 @@ it('Containers runtime created successfully', async () => {
   expect(deployResult.virtualClusterArn).toContain('arn');
   expect(deployResult.execRoleArn).toContain('arn');
   expect(deployResult.eksClusterName).toBe('data-platform');
+  expect(deployResult.interactiveEndpointArn).toContain('arn');
 });
 
 afterAll(async () => {
