@@ -24,7 +24,7 @@
     },
     {
       "name": "pytest",
-      "version": "6.2.1",
+      "version": "7.4.3",
       "type": "test"
     }
   ],

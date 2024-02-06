@@ -29,7 +29,7 @@ for (let key in snippets) {
     const typescript = snippet.translations.$.source;
     const python = snippet.translations.python.source;
 
-    const submodule = snippet.location.api.moduleFqn.replace('aws-dsf.', '');
+    const submodule = snippet.location.api.moduleFqn.replace('aws-data-solutions-framework.', '');
     if (previousSubmodule !== submodule) {
         previousSubmodule = submodule;
         previousStart = 0;

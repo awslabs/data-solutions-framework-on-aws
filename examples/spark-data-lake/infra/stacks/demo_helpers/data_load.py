@@ -7,7 +7,7 @@ from aws_cdk import aws_lambda as _lambda
 from aws_cdk.custom_resources import Provider
 from constructs import Construct
 
-import aws_dsf as dsf
+import aws_data_solutions_framework as dsf
 
 
 class DataLoad(Construct):

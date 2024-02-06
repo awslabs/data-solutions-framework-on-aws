@@ -37,9 +37,8 @@ __pycache__
 cdk.out
 .DS_Store
 LICENSE.bak
-!/.projenrc.js
 !/.mergify.yml
 !/.github/dependabot.yml
-!/.npmrc
 .jsii.tabl.json
 !/lerna.json
+!/.projenrc.js

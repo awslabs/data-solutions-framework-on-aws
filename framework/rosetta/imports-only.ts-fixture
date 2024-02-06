@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
-import * as dsf from 'aws-dsf';
+import * as dsf from 'aws-data-solutions-framework';
 
 /// here

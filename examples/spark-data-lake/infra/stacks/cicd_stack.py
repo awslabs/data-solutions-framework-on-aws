@@ -7,7 +7,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-import aws_dsf as dsf
+import aws_data_solutions_framework as dsf
 from stacks.application_stack import SparkApplicationStackFactory
 
 

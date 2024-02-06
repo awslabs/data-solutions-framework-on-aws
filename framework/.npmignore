@@ -21,3 +21,4 @@ tsconfig.tsbuildinfo
 /.eslintrc.json
 !.jsii
 !*.lit.ts
+/.gitattributes

@@ -50,7 +50,7 @@ We can now install DSF on AWS:
   
 
   ```bash
-  npm i aws-dsf --save
+  npm i aws-data-solutions-framework --save
   ```
   
   ```mdx-code-block
@@ -62,7 +62,7 @@ We can now install DSF on AWS:
     
     # requirements.txt:
     ...
-    aws_dsf==1.0.0rc6
+    aws_data_solutions_framework
     ...
 
     # Then you can install CDK app requirements:
@@ -85,7 +85,7 @@ In `lib/dsf-example-stack.ts`
 
   ```typescript
   import * as cdk from 'aws-cdk-lib';
-  import * as dsf from 'aws-dsf';
+  import * as dsf from 'aws-data-solutions-framework';
 
   export class DsfExampleStack extends cdk.Stack {
     constructor(scope: cdk.Construt, id: string, props?: cdk.StackProps) {
@@ -106,7 +106,7 @@ In `lib/dsf-example-stack.ts`
 
     In `dsf_example/dsf_example_stack.py`
     ```python
-    import aws_dsf as dsf
+    import aws_data_solutions_framework as dsf
     from aws_cdk.aws_s3 import Bucket
     from aws_cdk import Stack, RemovalPolicy, CfnOutput
 

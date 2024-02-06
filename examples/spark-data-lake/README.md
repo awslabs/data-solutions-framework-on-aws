@@ -44,12 +44,12 @@ cd <MY_LOCAL_PATH>
 git init
 ```
 
-2. Modify the `./infra/requirements.txt` to add the `aws_dsf` library as a dependency:
+2. Modify the `./infra/requirements.txt` to add the `aws_data_solutions_framework` library as a dependency:
 
 ```
 aws-cdk-lib==2.94.0
 constructs>=10.2.55, <11.0.0
-aws_dsf==1.0.0-rc2
+aws_data_solutions_framework
 ```
 
 2. From the `./infra` folder, create Python3 virtual environment and activate it:

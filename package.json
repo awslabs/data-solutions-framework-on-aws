@@ -26,12 +26,13 @@
   },
   "devDependencies": {
     "@types/node": "16.0.0",
+    "constructs": "^10.0.0",
     "glob": "^10.3.6",
-    "lerna": "^7.1.5",
-    "lerna-projen": "^0.1.200",
-    "projen": "^0.72.20",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "lerna": "^8.1.2",
+    "lerna-projen": "^0.1.337",
+    "projen": "^0.79.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "@types/node": "^16"

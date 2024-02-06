@@ -1,5 +1,5 @@
 {
-  "name": "aws-dsf",
+  "name": "aws-data-solutions-framework",
   "description": "L3 CDK Constructs used to build data solutions with AWS",
   "repository": {
     "type": "git",
@@ -38,47 +38,45 @@
   },
   "devDependencies": {
     "@aws-cdk/cli-lib-alpha": "2.114.1-alpha.0",
-    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
-    "@jest/globals": "^29.6.4",
-    "@types/eslint": "^8.44.9",
-    "@types/jest": "^29.5.3",
-    "@types/node": "^16",
+    "@aws-cdk/lambda-layer-kubectl-v27": "^2.1.0",
+    "@jest/globals": "^29.7.0",
+    "@types/eslint": "^8.56.2",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^6",
     "@typescript-eslint/parser": "^6",
     "aws-cdk-lib": "2.114.1",
     "cdk-nag": "^2.0.0",
     "constructs": "10.3.0",
-    "esbuild": "^0.19.10",
+    "esbuild": "^0.20.0",
     "eslint": "^8",
-    "eslint-import-resolver-node": "^0.3.9",
-    "eslint-import-resolver-typescript": "^3.5.5",
-    "eslint-plugin-import": "^2.28.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-local-rules": "^2.0.1",
-    "jest": "^29.6.2",
+    "jest": "^29.7.0",
     "jest-junit": "^15",
     "jest-runner-groups": "^2.2.0",
     "jsii": "~5.3.0",
-    "jsii-diff": "^1.86.1",
-    "jsii-docgen": "^9.1.2",
-    "jsii-pacmak": "^1.86.1",
+    "jsii-diff": "^1.94.0",
+    "jsii-docgen": "^10.3.15",
+    "jsii-pacmak": "^1.94.0",
     "jsii-rosetta": "~5.3.0",
-    "npm-check-updates": "^16",
-    "projen": "^0.72.1",
+    "projen": "^0.79.7",
     "rosetta": "^1.1.0",
     "standard-version": "^9",
-    "sync-request-curl": "^2.1.10",
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.1.6"
+    "sync-request-curl": "^2.2.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "aws-cdk-lib": "^2.114.1",
     "constructs": "^10.3.0"
   },
   "dependencies": {
-    "@aws-cdk/lambda-layer-kubectl-v27": "^2.0.0",
+    "@aws-cdk/lambda-layer-kubectl-v27": "^2.1.0",
     "@types/js-yaml": "^4.0.9",
     "js-yaml": "^4.1.0",
-    "semver": "^7.5.4",
+    "semver": "^7.6.0",
     "simple-base": "^1.0.0"
   },
   "bundledDependencies": [
@@ -103,6 +101,12 @@
   "jest": {
     "runner": "groups",
     "transform": {
+      "^.+\\.[t]sx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.dev.json"
+        }
+      ],
       "^.+\\.ts?$": [
         "ts-jest",
         {
@@ -144,8 +148,7 @@
           "outputDirectory": "test-reports"
         }
       ]
-    ],
-    "preset": "ts-jest"
+    ]
   },
   "types": "lib/index.d.ts",
   "stability": "stable",
@@ -153,8 +156,8 @@
     "outdir": "dist",
     "targets": {
       "python": {
-        "distName": "aws_dsf",
-        "module": "aws_dsf"
+        "distName": "aws_data_solutions_framework",
+        "module": "aws_data_solutions_framework"
       }
     },
     "tsc": {

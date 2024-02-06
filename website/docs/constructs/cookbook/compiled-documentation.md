@@ -22,7 +22,7 @@ Most of the examples in DSF on AWS leverage the default fixture [`default.ts-fix
 ```ts
 import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
-import * as dsf from 'aws-dsf';
+import * as dsf from 'aws-data-solutions-framework';
 
 class MyStack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
