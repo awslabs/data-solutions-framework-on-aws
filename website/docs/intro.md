@@ -73,16 +73,14 @@ We can now install DSF on AWS:
 </Tabs>
 ```
 
-### Create a data lake storage
+### Create an analytics bucket
 
-We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-lake-storage.mdx) to create a storage layer for our data lake on AWS.
+We will now use [***AnalyticsBucket***](constructs/library/02-Storage/02-analytics-bucket.mdx) to create a storage layer for our data lake on AWS.
 
-```mdx-code-block
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
-
-In `lib/dsf-example-stack.ts`
-
+  
+  In `lib/dsf-example-stack.ts`
   ```typescript
   import * as cdk from 'aws-cdk-lib';
   import * as dsf from 'aws-data-solutions-framework';
@@ -139,12 +137,15 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/
 ```mdx-code-block
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
-```
 
   In `lib/dsf-example-stack.ts`
-  
+ 
   ```typescript
 
+  // Use DSF on AWS to create Spark EMR serverless runtime
+  const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
+    name: 'WordCount',
+  });
   // Use DSF on AWS to create Spark EMR serverless runtime
   const runtimeServerless = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntimeServerless', {
     name: 'WordCount',
@@ -152,12 +153,12 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/
 
   //  Define policy the execution role to read the data transformation script
   const s3ReadPolicy = new Policy(this, 's3ReadPolicy' , {
-    statements: [
-        new PolicyStatement({
-          actions: ['s3:GetObject', 's3:ListBucket'],
-          resources: ['arn:aws:s3:::*.elasticmapreduce/*', 'arn:aws:s3:::*.elasticmapreduce'],
-        }),
-    ],
+      statements: [
+          new PolicyStatement({
+            actions: ['s3:GetObject', 's3:ListBucket'],
+            resources: ['arn:aws:s3:::*.elasticmapreduce/*', 'arn:aws:s3:::*.elasticmapreduce'],
+          }),
+      ],
   });
 
   // Use DSF on AWS to create Spark EMR serverless runtime
@@ -210,9 +211,12 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/
 ```
 
 ### Output resource IDs and ARNs
+### Output resource IDs and ARNs
 
 Last we will output the ARNs for the role and EMR serverless app, the ID of the EMR serverless application. These will be passed to the AWS cli when executing `StartJobRun` command.
 ```mdx-code-block
+Last we will output the ARNs for the role and EMR serverless app, the ID of the EMR serverless application. These will be passed to the AWS CLI when executing `StartJobRun` command.
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 ```
