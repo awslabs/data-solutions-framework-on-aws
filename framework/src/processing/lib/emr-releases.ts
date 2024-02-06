@@ -66,7 +66,7 @@ export enum SparkImage {
 }
 
 export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V6_15;
-export const EMR_CONTAINETS_DEFAULT_VERSION: EmrContainersRuntimeVersion = EmrContainersRuntimeVersion.V6_15;
+export const EMR_CONTAINERS_DEFAULT_VERSION: EmrContainersRuntimeVersion = EmrContainersRuntimeVersion.V6_15;
 
 /**
  * The default Spark image to run the unit tests

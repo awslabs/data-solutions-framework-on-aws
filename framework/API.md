@@ -5811,7 +5811,6 @@ It creates a Step Functions State Machine that orchestrates the Spark Job.
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
 const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
-const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
     "VirtualClusterId": "virtualClusterId",

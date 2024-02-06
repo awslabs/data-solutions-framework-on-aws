@@ -44,7 +44,7 @@ import { SparkEmrContainersRuntimeInteractiveSessionProps } from './spark-emr-co
 import { SparkEmrContainersRuntimeProps } from './spark-emr-containers-runtime-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { DsfProvider } from '../../../../utils/lib/dsf-provider';
-import { EMR_CONTAINETS_DEFAULT_VERSION } from '../../emr-releases';
+import { EMR_CONTAINERS_DEFAULT_VERSION } from '../../emr-releases';
 import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
 
 /**
@@ -88,7 +88,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    *  The default EMR on EKS version
    */
-  public static readonly DEFAULT_EMR_EKS_VERSION = EMR_CONTAINETS_DEFAULT_VERSION;
+  public static readonly DEFAULT_EMR_EKS_VERSION = EMR_CONTAINERS_DEFAULT_VERSION;
 
   /**
    * The default EKS version
