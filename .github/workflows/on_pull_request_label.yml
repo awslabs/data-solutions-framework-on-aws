@@ -42,7 +42,7 @@ jobs:
       id-token: write # needed to interact with GitHub's OIDC Token endpoint
     strategy:
         matrix:
-          suite: [processing, storage, governance, utils]
+          suite: [processing, storage, governance, utils, consumption]
         fail-fast: false
     steps:
       - name: Checkout
