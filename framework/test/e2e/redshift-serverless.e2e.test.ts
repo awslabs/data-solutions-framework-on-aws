@@ -9,7 +9,7 @@ import { RedshiftServerlessNamespace, RedshiftServerlessWorkgroup } from '../../
 
 /**
  * E2E test for RedshiftServerlessWorkgroup
- * @group e2e/redshift-serverless
+ * @group e2e/consumption/redshift-serverless
  */
 
 jest.setTimeout(6000000);
