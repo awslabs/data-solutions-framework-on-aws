@@ -1178,7 +1178,7 @@ describe('Remove resource when deletion protection is disable and set removal is
 
 });
 
-describe('Retain resource when deletion protection is enable and set removal is set to retain', () => {
+describe('Retain resource when removal is set to retain', () => {
 
   const emrEksClusterStack = new Stack();
 
@@ -1216,6 +1216,7 @@ describe('Retain resource when deletion protection is enable and set removal is 
     managedEndpointName: 'test',
     executionRole: execRole,
     virtualClusterId: virtualCluster.attrId,
+    removalPolicy: RemovalPolicy.RETAIN,
   });
 
   const template = Template.fromStack(emrEksClusterStack);
@@ -1225,11 +1226,6 @@ describe('Retain resource when deletion protection is enable and set removal is 
     template.allResources('Custom::EmrEksInteractiveEndpoint', {
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
-    });
-
-    template.allResources('Custom::LambdaEniCleanup', {
-      UpdateReplacePolicy: 'Delete',
-      DeletionPolicy: 'Delete',
     });
   });
 
