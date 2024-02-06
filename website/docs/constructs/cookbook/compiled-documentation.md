@@ -78,3 +78,45 @@ The generated files should be committed and pushed to Git. `npx projen build` wi
 The generated files are read-only and should not be edited manually. Instead, update the `README.md` file in the corresponding submodule.
 
 :::
+
+### Troubleshooting issues
+
+It can happen that the documentation is not generated properly, for examples with examples not included in the doc, or shifted to another part.
+
+In this case make sure to remove the `.jsii.tabl.json` file and regenerate the doc.
+
+Also make sure there is no new line after a `/// !show` tag or before a `/// !hide` tag in your lit.ts files.
+
+:x: The following example is incorrect:
+
+```ts
+/// !show
+
+const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
+    name: 'dailyjob',
+    createNamespace: true,
+    eksNamespace: 'dailyjobns',
+});
+
+new cdk.CfnOutput(this, 'virtualClusterArn', {
+    value: virtualCluster.attrArn,
+});
+
+/// !hide
+```
+
+:white_check_mark: The following one is correct:
+
+```ts
+/// !show
+const virtualCluster = emrEksCluster.addEmrVirtualCluster(this, {
+    name: 'dailyjob',
+    createNamespace: true,
+    eksNamespace: 'dailyjobns',
+});
+
+new cdk.CfnOutput(this, 'virtualClusterArn', {
+    value: virtualCluster.attrArn,
+});
+/// !hide
+```
