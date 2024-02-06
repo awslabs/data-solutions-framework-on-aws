@@ -58,6 +58,6 @@ The `RedshitData` construct provides the following helpers for bootstrapping Red
 
 Redshift tables and databases can also be automatically catalog in Glue Data Catalog using an helper method. This method creates a Glue Catalog database as well as a crawler to populate the database with table metadata from your Redshift database.
 
-The default value of the path that the crawler would use is `<databaseName>/public/%` which translates to all the table in the public schema. Please refer to the [crawler documentation](https://docs.aws.amazon.com/glue/latest/dg/define-crawler.html#define-crawler-choose-data-sources) for more information for JDBC data sources.
+The default value of the path that the crawler would use is `<databaseName>/public/%` which translates to all the tables in the public schema. Please refer to the [crawler documentation](https://docs.aws.amazon.com/glue/latest/dg/define-crawler.html#define-crawler-choose-data-sources) for more information for JDBC data sources.
 
 [example catalog](./examples/redshift-serverless-workgroup-catalog.lit.ts)
