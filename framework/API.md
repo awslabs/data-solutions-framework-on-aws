@@ -9745,7 +9745,298 @@ public readonly eksNamespace: string;
 - *Default:* Use the default namespace
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 The name of the EKS namespace to be linked to the EMR virtual cluster.
+=======
+The name of the EKS namespace to be linked to the EMR virtual cluster.
+
+---
+
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.EmrVirtualClusterProps.property.tags"></a>
+
+```typescript
+public readonly tags: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+- *Default:* none
+
+The tags assigned to the Virtual Cluster.
+
+---
+
+### OpensearchProps <a name="OpensearchProps" id="aws-dsf.storage.OpensearchProps"></a>
+
+Simplified configuration for the Opensearch Cluster.
+
+> [DataVpc *](DataVpc *)
+
+#### Initializer <a name="Initializer" id="aws-dsf.storage.OpensearchProps.Initializer"></a>
+
+```typescript
+import { storage } from 'aws-dsf'
+
+const opensearchProps: storage.OpensearchProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.deployInVpc">deployInVpc</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.domainName">domainName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlEntityId">samlEntityId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.dataNodeInstanceCount">dataNodeInstanceCount</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.dataNodeInstanceType">dataNodeInstanceType</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.ebsSize">ebsSize</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.ebsVolumeType">ebsVolumeType</a></code> | <code>aws-cdk-lib.aws_ec2.EbsDeviceVolumeType</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.enableAutoSoftwareUpdate">enableAutoSoftwareUpdate</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.enableVersionUpgrade">enableVersionUpgrade</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.encryptionKmsKeyArn">encryptionKmsKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.masterNodeInstanceCount">masterNodeInstanceCount</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.masterNodeInstanceType">masterNodeInstanceType</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.multiAzWithStandbyEnabled">multiAzWithStandbyEnabled</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlRolesKey">samlRolesKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlSessionTimeoutMinutes">samlSessionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | *No description.* |
+
+---
+
+##### `deployInVpc`<sup>Required</sup> <a name="deployInVpc" id="aws-dsf.storage.OpensearchProps.property.deployInVpc"></a>
+
+```typescript
+public readonly deployInVpc: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+##### `domainName`<sup>Required</sup> <a name="domainName" id="aws-dsf.storage.OpensearchProps.property.domainName"></a>
+
+```typescript
+public readonly domainName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `samlEntityId`<sup>Required</sup> <a name="samlEntityId" id="aws-dsf.storage.OpensearchProps.property.samlEntityId"></a>
+
+```typescript
+public readonly samlEntityId: string;
+```
+
+- *Type:* string
+
+---
+
+##### `samlMasterBackendRole`<sup>Required</sup> <a name="samlMasterBackendRole" id="aws-dsf.storage.OpensearchProps.property.samlMasterBackendRole"></a>
+
+```typescript
+public readonly samlMasterBackendRole: string;
+```
+
+- *Type:* string
+
+---
+
+##### `samlMetadataContent`<sup>Required</sup> <a name="samlMetadataContent" id="aws-dsf.storage.OpensearchProps.property.samlMetadataContent"></a>
+
+```typescript
+public readonly samlMetadataContent: string;
+```
+
+- *Type:* string
+
+---
+
+##### `dataNodeInstanceCount`<sup>Optional</sup> <a name="dataNodeInstanceCount" id="aws-dsf.storage.OpensearchProps.property.dataNodeInstanceCount"></a>
+
+```typescript
+public readonly dataNodeInstanceCount: number;
+```
+
+- *Type:* number
+
+---
+
+##### `dataNodeInstanceType`<sup>Optional</sup> <a name="dataNodeInstanceType" id="aws-dsf.storage.OpensearchProps.property.dataNodeInstanceType"></a>
+
+```typescript
+public readonly dataNodeInstanceType: string;
+```
+
+- *Type:* string
+
+---
+
+##### `ebsSize`<sup>Optional</sup> <a name="ebsSize" id="aws-dsf.storage.OpensearchProps.property.ebsSize"></a>
+
+```typescript
+public readonly ebsSize: number;
+```
+
+- *Type:* number
+
+---
+
+##### `ebsVolumeType`<sup>Optional</sup> <a name="ebsVolumeType" id="aws-dsf.storage.OpensearchProps.property.ebsVolumeType"></a>
+
+```typescript
+public readonly ebsVolumeType: EbsDeviceVolumeType;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.EbsDeviceVolumeType
+
+---
+
+##### `enableAutoSoftwareUpdate`<sup>Optional</sup> <a name="enableAutoSoftwareUpdate" id="aws-dsf.storage.OpensearchProps.property.enableAutoSoftwareUpdate"></a>
+
+```typescript
+public readonly enableAutoSoftwareUpdate: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+##### `enableVersionUpgrade`<sup>Optional</sup> <a name="enableVersionUpgrade" id="aws-dsf.storage.OpensearchProps.property.enableVersionUpgrade"></a>
+
+```typescript
+public readonly enableVersionUpgrade: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+##### `encryptionKmsKeyArn`<sup>Optional</sup> <a name="encryptionKmsKeyArn" id="aws-dsf.storage.OpensearchProps.property.encryptionKmsKeyArn"></a>
+
+```typescript
+public readonly encryptionKmsKeyArn: string;
+```
+
+- *Type:* string
+
+---
+
+##### `masterNodeInstanceCount`<sup>Optional</sup> <a name="masterNodeInstanceCount" id="aws-dsf.storage.OpensearchProps.property.masterNodeInstanceCount"></a>
+
+```typescript
+public readonly masterNodeInstanceCount: number;
+```
+
+- *Type:* number
+
+---
+
+##### `masterNodeInstanceType`<sup>Optional</sup> <a name="masterNodeInstanceType" id="aws-dsf.storage.OpensearchProps.property.masterNodeInstanceType"></a>
+
+```typescript
+public readonly masterNodeInstanceType: string;
+```
+
+- *Type:* string
+
+---
+
+##### `multiAzWithStandbyEnabled`<sup>Optional</sup> <a name="multiAzWithStandbyEnabled" id="aws-dsf.storage.OpensearchProps.property.multiAzWithStandbyEnabled"></a>
+
+```typescript
+public readonly multiAzWithStandbyEnabled: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.storage.OpensearchProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+##### `samlRolesKey`<sup>Optional</sup> <a name="samlRolesKey" id="aws-dsf.storage.OpensearchProps.property.samlRolesKey"></a>
+
+```typescript
+public readonly samlRolesKey: string;
+```
+
+- *Type:* string
+
+---
+
+##### `samlSessionTimeoutMinutes`<sup>Optional</sup> <a name="samlSessionTimeoutMinutes" id="aws-dsf.storage.OpensearchProps.property.samlSessionTimeoutMinutes"></a>
+
+```typescript
+public readonly samlSessionTimeoutMinutes: number;
+```
+
+- *Type:* number
+
+---
+
+##### `samlSubjectKey`<sup>Optional</sup> <a name="samlSubjectKey" id="aws-dsf.storage.OpensearchProps.property.samlSubjectKey"></a>
+
+```typescript
+public readonly samlSubjectKey: string;
+```
+
+- *Type:* string
+
+---
+
+##### `version`<sup>Optional</sup> <a name="version" id="aws-dsf.storage.OpensearchProps.property.version"></a>
+
+```typescript
+public readonly version: EngineVersion;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchservice.EngineVersion
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.storage.OpensearchProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `warmInstanceCount`<sup>Optional</sup> <a name="warmInstanceCount" id="aws-dsf.storage.OpensearchProps.property.warmInstanceCount"></a>
+
+```typescript
+public readonly warmInstanceCount: number;
+```
+
+- *Type:* number
+
+---
+
+##### `warmInstanceType`<sup>Optional</sup> <a name="warmInstanceType" id="aws-dsf.storage.OpensearchProps.property.warmInstanceType"></a>
+
+```typescript
+public readonly warmInstanceType: number;
+```
+
+- *Type:* number
+>>>>>>> e18f3d3 (build after rebase)
 
 ---
 
@@ -12639,7 +12930,40 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport"></a>
+=======
+### OpensearchNodes <a name="OpensearchNodes" id="aws-dsf.storage.OpensearchNodes"></a>
+
+Default Node Instances for Opensearch cluster.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.storage.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT">DATA_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT">MASTER_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#aws-dsf.storage.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT">WARM_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+
+---
+
+##### `DATA_NODE_INSTANCE_DEFAULT` <a name="DATA_NODE_INSTANCE_DEFAULT" id="aws-dsf.storage.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+##### `MASTER_NODE_INSTANCE_DEFAULT` <a name="MASTER_NODE_INSTANCE_DEFAULT" id="aws-dsf.storage.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="aws-dsf.storage.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport"></a>
+>>>>>>> e18f3d3 (build after rebase)
 
 Namespace log export types.
 
@@ -12647,6 +12971,7 @@ Namespace log export types.
 
 | **Name** | **Description** |
 | --- | --- |
+<<<<<<< HEAD
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG">USER_LOG</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG">CONNECTION_LOG</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG">USER_ACTIVITY_LOG</a></code> | *No description.* |
@@ -12654,22 +12979,42 @@ Namespace log export types.
 ---
 
 ##### `USER_LOG` <a name="USER_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG"></a>
+=======
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG">USER_LOG</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG">CONNECTION_LOG</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG">USER_ACTIVITY_LOG</a></code> | *No description.* |
+
+---
+
+##### `USER_LOG` <a name="USER_LOG" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG"></a>
+>>>>>>> e18f3d3 (build after rebase)
 
 ---
 
 
+<<<<<<< HEAD
 ##### `CONNECTION_LOG` <a name="CONNECTION_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG"></a>
+=======
+##### `CONNECTION_LOG` <a name="CONNECTION_LOG" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG"></a>
+>>>>>>> e18f3d3 (build after rebase)
 
 ---
 
 
+<<<<<<< HEAD
 ##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
+=======
+##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="aws-dsf.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
+>>>>>>> e18f3d3 (build after rebase)
 
 ---
 
 
+<<<<<<< HEAD
 ### SparkImage <a name="SparkImage" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage"></a>
 =======
+=======
+>>>>>>> e18f3d3 (build after rebase)
 ### SparkImage <a name="SparkImage" id="aws-dsf.processing.SparkImage"></a>
 >>>>>>> 2770bcc (build fixes)
 
