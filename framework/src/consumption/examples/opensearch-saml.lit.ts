@@ -1,7 +1,9 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { OpensearchProps } from '../lib/opensearch/opensearch-props';
-import { OpensearchCluster } from '../lib/opensearch/opensearch';
+import * as dsf from '../../index';
+ 
+
+
 
 class ExampleDefaultOpensearchStack extends cdk.Stack {
 
@@ -9,14 +11,14 @@ class ExampleDefaultOpensearchStack extends cdk.Stack {
 
         super(scope, id, props);
 /// !show
-        const osCluster = new OpensearchCluster(scope, 'MyOpensearchCluster',{
+        const osCluster = new dsf.consumption.OpensearchCluster(scope, 'MyOpensearchCluster',{
             domainName:"mycluster3",
             samlEntityId:'<IdpIdentityId>',
             samlMetadataContent:'<IdpMetadataXml>',
             samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
             deployInVpc:true,
             removalPolicy:cdk.RemovalPolicy.DESTROY
-        } as OpensearchProps);
+        } as dsf.consumption.OpensearchProps);
         osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
         osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
 /// !hide

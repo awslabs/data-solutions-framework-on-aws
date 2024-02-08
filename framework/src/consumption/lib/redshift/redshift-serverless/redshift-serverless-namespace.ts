@@ -9,8 +9,8 @@ import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { ISecret, Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespaceProps } from './redshift-serverless-namespace-props';
-import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
+import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
+import { DsfProvider } from '../../../../utils/lib/dsf-provider';
 
 /**
  * Create a Redshift Serverless Namespace with the admin credentials stored in Secrets Manager

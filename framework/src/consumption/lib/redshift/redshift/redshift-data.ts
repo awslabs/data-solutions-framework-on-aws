@@ -10,8 +10,8 @@ import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { RedshiftDataProps } from './redshift-data-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../../utils';
+import { DsfProvider } from '../../../../utils/lib/dsf-provider';
 
 /**
  * Creates an asynchronous custom resource that handles the execution of SQL using Redshift's Data API. If `vpc` and `vpcSubnets` are passed, this construct would also create the Redshift Data Interface VPC endpoint and configure the custom resource in the same VPC subnet.

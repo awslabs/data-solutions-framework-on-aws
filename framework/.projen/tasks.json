@@ -70,13 +70,13 @@
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/utils/examples/resources lib/utils/examples"
         },
         {
-          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/storage/lib/opensearch/resources lib/storage/lib/opensearch"
-        },
-        {
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/processing/lib/spark-runtime/emr-containers/resources lib/processing/lib/spark-runtime/emr-containers"
         },
         {
-          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/resources lib/consumption/lib"
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/redshift/resources lib/consumption/lib/redshift"
+        },
+        {
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/opensearch/resources lib/consumption/lib/opensearch"
         }
       ]
     },

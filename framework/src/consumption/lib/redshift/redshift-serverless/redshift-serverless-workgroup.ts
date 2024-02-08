@@ -8,8 +8,8 @@ import { CfnWorkgroup } from 'aws-cdk-lib/aws-redshiftserverless';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
 import { RedshiftServerlessWorkgroupProps } from './redshift-serverless-workgroup-props';
-import { DataCatalogDatabase } from '../../../governance';
-import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
+import { DataCatalogDatabase } from '../../../../governance';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { RedshiftData } from '../redshift/redshift-data';
 
 
