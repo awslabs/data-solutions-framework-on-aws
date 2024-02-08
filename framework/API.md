@@ -3862,9 +3862,13 @@ The security group for Client VPN Endpoint.
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage"></a>
 =======
 ### OpensearchCluster <a name="OpensearchCluster" id="aws-dsf.storage.OpensearchCluster"></a>
+=======
+### OpensearchCluster <a name="OpensearchCluster" id="aws-dsf.consumption.OpensearchCluster"></a>
+>>>>>>> 0581751 (lint and fix tests)
 
 A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards.
 
@@ -3889,23 +3893,23 @@ ClientVPNEndpoint will be provisioned automatically for secure access to Opnesea
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.storage.OpensearchCluster.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.consumption.OpensearchCluster.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-dsf'
+import { consumption } from 'aws-dsf'
 
-new storage.OpensearchCluster(scope: Construct, id: string, props: OpensearchProps)
+new consumption.OpensearchCluster(scope: Construct, id: string, props: OpensearchProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.Initializer.parameter.props">props</a></code> | <code>aws-dsf.storage.OpensearchProps</code> | the OpensearchCluster [properties]{@link OpensearchClusterProps }. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.OpensearchProps</code> | the OpensearchCluster [properties]{@link OpensearchClusterProps }. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.storage.OpensearchCluster.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.consumption.OpensearchCluster.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3913,7 +3917,7 @@ the Scope of the AWS CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.storage.OpensearchCluster.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.OpensearchCluster.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3921,9 +3925,9 @@ the ID of the AWS CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.storage.OpensearchCluster.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.consumption.OpensearchCluster.Initializer.parameter.props"></a>
 
-- *Type:* aws-dsf.storage.OpensearchProps
+- *Type:* aws-dsf.consumption.OpensearchProps
 
 the OpensearchCluster [properties]{@link OpensearchClusterProps }.
 
@@ -3933,13 +3937,13 @@ the OpensearchCluster [properties]{@link OpensearchClusterProps }.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.addRoleMapping">addRoleMapping</a></code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.addRoleMapping">addRoleMapping</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.storage.OpensearchCluster.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.consumption.OpensearchCluster.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3947,7 +3951,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `addRoleMapping` <a name="addRoleMapping" id="aws-dsf.storage.OpensearchCluster.addRoleMapping"></a>
+##### `addRoleMapping` <a name="addRoleMapping" id="aws-dsf.consumption.OpensearchCluster.addRoleMapping"></a>
 
 ```typescript
 public addRoleMapping(name: string, role: string): void
@@ -3955,7 +3959,7 @@ public addRoleMapping(name: string, role: string): void
 
 > [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
 
-###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.storage.OpensearchCluster.addRoleMapping.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="aws-dsf.consumption.OpensearchCluster.addRoleMapping.parameter.name"></a>
 
 - *Type:* string
 
@@ -3963,7 +3967,7 @@ Opensearch role name.
 
 ---
 
-###### `role`<sup>Required</sup> <a name="role" id="aws-dsf.storage.OpensearchCluster.addRoleMapping.parameter.role"></a>
+###### `role`<sup>Required</sup> <a name="role" id="aws-dsf.consumption.OpensearchCluster.addRoleMapping.parameter.role"></a>
 
 - *Type:* string
 
@@ -3971,7 +3975,7 @@ IAM Identity center SAML group Id.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.storage.OpensearchCluster.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.consumption.OpensearchCluster.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3983,16 +3987,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.storage.OpensearchCluster.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.consumption.OpensearchCluster.isConstruct"></a>
 
 ```typescript
-import { storage } from 'aws-dsf'
+import { consumption } from 'aws-dsf'
 
-storage.OpensearchCluster.isConstruct(x: any)
+consumption.OpensearchCluster.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4011,7 +4015,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.storage.OpensearchCluster.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.consumption.OpensearchCluster.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4023,14 +4027,14 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.property.domain">domain</a></code> | <code>aws-cdk-lib.aws_opensearchservice.Domain</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.LogGroup</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.domain">domain</a></code> | <code>aws-cdk-lib.aws_opensearchservice.Domain</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.LogGroup</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.storage.OpensearchCluster.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.consumption.OpensearchCluster.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4042,7 +4046,7 @@ The tree node.
 
 ---
 
-##### `domain`<sup>Required</sup> <a name="domain" id="aws-dsf.storage.OpensearchCluster.property.domain"></a>
+##### `domain`<sup>Required</sup> <a name="domain" id="aws-dsf.consumption.OpensearchCluster.property.domain"></a>
 
 ```typescript
 public readonly domain: Domain;
@@ -4052,7 +4056,7 @@ public readonly domain: Domain;
 
 ---
 
-##### `logGroup`<sup>Required</sup> <a name="logGroup" id="aws-dsf.storage.OpensearchCluster.property.logGroup"></a>
+##### `logGroup`<sup>Required</sup> <a name="logGroup" id="aws-dsf.consumption.OpensearchCluster.property.logGroup"></a>
 
 ```typescript
 public readonly logGroup: LogGroup;
@@ -4062,7 +4066,7 @@ public readonly logGroup: LogGroup;
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.storage.OpensearchCluster.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.consumption.OpensearchCluster.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -4076,12 +4080,12 @@ public readonly vpc: IVpc;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchCluster.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.storage.OpensearchCluster.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.consumption.OpensearchCluster.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4091,7 +4095,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.storage.OpensearchCluster.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.consumption.OpensearchCluster.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -9765,51 +9769,51 @@ The tags assigned to the Virtual Cluster.
 
 ---
 
-### OpensearchProps <a name="OpensearchProps" id="aws-dsf.storage.OpensearchProps"></a>
+### OpensearchProps <a name="OpensearchProps" id="aws-dsf.consumption.OpensearchProps"></a>
 
 Simplified configuration for the Opensearch Cluster.
 
 > [DataVpc *](DataVpc *)
 
-#### Initializer <a name="Initializer" id="aws-dsf.storage.OpensearchProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.consumption.OpensearchProps.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-dsf'
+import { consumption } from 'aws-dsf'
 
-const opensearchProps: storage.OpensearchProps = { ... }
+const opensearchProps: consumption.OpensearchProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.deployInVpc">deployInVpc</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.domainName">domainName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlEntityId">samlEntityId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.dataNodeInstanceCount">dataNodeInstanceCount</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.dataNodeInstanceType">dataNodeInstanceType</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.ebsSize">ebsSize</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.ebsVolumeType">ebsVolumeType</a></code> | <code>aws-cdk-lib.aws_ec2.EbsDeviceVolumeType</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.enableAutoSoftwareUpdate">enableAutoSoftwareUpdate</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.enableVersionUpgrade">enableVersionUpgrade</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.encryptionKmsKeyArn">encryptionKmsKeyArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.masterNodeInstanceCount">masterNodeInstanceCount</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.masterNodeInstanceType">masterNodeInstanceType</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.multiAzWithStandbyEnabled">multiAzWithStandbyEnabled</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlRolesKey">samlRolesKey</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlSessionTimeoutMinutes">samlSessionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.deployInVpc">deployInVpc</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.domainName">domainName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.samlEntityId">samlEntityId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.dataNodeInstanceCount">dataNodeInstanceCount</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.dataNodeInstanceType">dataNodeInstanceType</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.ebsSize">ebsSize</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.ebsVolumeType">ebsVolumeType</a></code> | <code>aws-cdk-lib.aws_ec2.EbsDeviceVolumeType</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.enableAutoSoftwareUpdate">enableAutoSoftwareUpdate</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.enableVersionUpgrade">enableVersionUpgrade</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.encryptionKmsKeyArn">encryptionKmsKeyArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.masterNodeInstanceCount">masterNodeInstanceCount</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.masterNodeInstanceType">masterNodeInstanceType</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.multiAzWithStandbyEnabled">multiAzWithStandbyEnabled</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.samlRolesKey">samlRolesKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.samlSessionTimeoutMinutes">samlSessionTimeoutMinutes</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | *No description.* |
 
 ---
 
-##### `deployInVpc`<sup>Required</sup> <a name="deployInVpc" id="aws-dsf.storage.OpensearchProps.property.deployInVpc"></a>
+##### `deployInVpc`<sup>Required</sup> <a name="deployInVpc" id="aws-dsf.consumption.OpensearchProps.property.deployInVpc"></a>
 
 ```typescript
 public readonly deployInVpc: boolean;
@@ -9819,7 +9823,7 @@ public readonly deployInVpc: boolean;
 
 ---
 
-##### `domainName`<sup>Required</sup> <a name="domainName" id="aws-dsf.storage.OpensearchProps.property.domainName"></a>
+##### `domainName`<sup>Required</sup> <a name="domainName" id="aws-dsf.consumption.OpensearchProps.property.domainName"></a>
 
 ```typescript
 public readonly domainName: string;
@@ -9829,7 +9833,7 @@ public readonly domainName: string;
 
 ---
 
-##### `samlEntityId`<sup>Required</sup> <a name="samlEntityId" id="aws-dsf.storage.OpensearchProps.property.samlEntityId"></a>
+##### `samlEntityId`<sup>Required</sup> <a name="samlEntityId" id="aws-dsf.consumption.OpensearchProps.property.samlEntityId"></a>
 
 ```typescript
 public readonly samlEntityId: string;
@@ -9839,7 +9843,7 @@ public readonly samlEntityId: string;
 
 ---
 
-##### `samlMasterBackendRole`<sup>Required</sup> <a name="samlMasterBackendRole" id="aws-dsf.storage.OpensearchProps.property.samlMasterBackendRole"></a>
+##### `samlMasterBackendRole`<sup>Required</sup> <a name="samlMasterBackendRole" id="aws-dsf.consumption.OpensearchProps.property.samlMasterBackendRole"></a>
 
 ```typescript
 public readonly samlMasterBackendRole: string;
@@ -9849,7 +9853,7 @@ public readonly samlMasterBackendRole: string;
 
 ---
 
-##### `samlMetadataContent`<sup>Required</sup> <a name="samlMetadataContent" id="aws-dsf.storage.OpensearchProps.property.samlMetadataContent"></a>
+##### `samlMetadataContent`<sup>Required</sup> <a name="samlMetadataContent" id="aws-dsf.consumption.OpensearchProps.property.samlMetadataContent"></a>
 
 ```typescript
 public readonly samlMetadataContent: string;
@@ -9859,7 +9863,7 @@ public readonly samlMetadataContent: string;
 
 ---
 
-##### `dataNodeInstanceCount`<sup>Optional</sup> <a name="dataNodeInstanceCount" id="aws-dsf.storage.OpensearchProps.property.dataNodeInstanceCount"></a>
+##### `dataNodeInstanceCount`<sup>Optional</sup> <a name="dataNodeInstanceCount" id="aws-dsf.consumption.OpensearchProps.property.dataNodeInstanceCount"></a>
 
 ```typescript
 public readonly dataNodeInstanceCount: number;
@@ -9869,7 +9873,7 @@ public readonly dataNodeInstanceCount: number;
 
 ---
 
-##### `dataNodeInstanceType`<sup>Optional</sup> <a name="dataNodeInstanceType" id="aws-dsf.storage.OpensearchProps.property.dataNodeInstanceType"></a>
+##### `dataNodeInstanceType`<sup>Optional</sup> <a name="dataNodeInstanceType" id="aws-dsf.consumption.OpensearchProps.property.dataNodeInstanceType"></a>
 
 ```typescript
 public readonly dataNodeInstanceType: string;
@@ -9879,7 +9883,7 @@ public readonly dataNodeInstanceType: string;
 
 ---
 
-##### `ebsSize`<sup>Optional</sup> <a name="ebsSize" id="aws-dsf.storage.OpensearchProps.property.ebsSize"></a>
+##### `ebsSize`<sup>Optional</sup> <a name="ebsSize" id="aws-dsf.consumption.OpensearchProps.property.ebsSize"></a>
 
 ```typescript
 public readonly ebsSize: number;
@@ -9889,7 +9893,7 @@ public readonly ebsSize: number;
 
 ---
 
-##### `ebsVolumeType`<sup>Optional</sup> <a name="ebsVolumeType" id="aws-dsf.storage.OpensearchProps.property.ebsVolumeType"></a>
+##### `ebsVolumeType`<sup>Optional</sup> <a name="ebsVolumeType" id="aws-dsf.consumption.OpensearchProps.property.ebsVolumeType"></a>
 
 ```typescript
 public readonly ebsVolumeType: EbsDeviceVolumeType;
@@ -9899,7 +9903,7 @@ public readonly ebsVolumeType: EbsDeviceVolumeType;
 
 ---
 
-##### `enableAutoSoftwareUpdate`<sup>Optional</sup> <a name="enableAutoSoftwareUpdate" id="aws-dsf.storage.OpensearchProps.property.enableAutoSoftwareUpdate"></a>
+##### `enableAutoSoftwareUpdate`<sup>Optional</sup> <a name="enableAutoSoftwareUpdate" id="aws-dsf.consumption.OpensearchProps.property.enableAutoSoftwareUpdate"></a>
 
 ```typescript
 public readonly enableAutoSoftwareUpdate: boolean;
@@ -9909,7 +9913,7 @@ public readonly enableAutoSoftwareUpdate: boolean;
 
 ---
 
-##### `enableVersionUpgrade`<sup>Optional</sup> <a name="enableVersionUpgrade" id="aws-dsf.storage.OpensearchProps.property.enableVersionUpgrade"></a>
+##### `enableVersionUpgrade`<sup>Optional</sup> <a name="enableVersionUpgrade" id="aws-dsf.consumption.OpensearchProps.property.enableVersionUpgrade"></a>
 
 ```typescript
 public readonly enableVersionUpgrade: boolean;
@@ -9919,7 +9923,7 @@ public readonly enableVersionUpgrade: boolean;
 
 ---
 
-##### `encryptionKmsKeyArn`<sup>Optional</sup> <a name="encryptionKmsKeyArn" id="aws-dsf.storage.OpensearchProps.property.encryptionKmsKeyArn"></a>
+##### `encryptionKmsKeyArn`<sup>Optional</sup> <a name="encryptionKmsKeyArn" id="aws-dsf.consumption.OpensearchProps.property.encryptionKmsKeyArn"></a>
 
 ```typescript
 public readonly encryptionKmsKeyArn: string;
@@ -9929,7 +9933,7 @@ public readonly encryptionKmsKeyArn: string;
 
 ---
 
-##### `masterNodeInstanceCount`<sup>Optional</sup> <a name="masterNodeInstanceCount" id="aws-dsf.storage.OpensearchProps.property.masterNodeInstanceCount"></a>
+##### `masterNodeInstanceCount`<sup>Optional</sup> <a name="masterNodeInstanceCount" id="aws-dsf.consumption.OpensearchProps.property.masterNodeInstanceCount"></a>
 
 ```typescript
 public readonly masterNodeInstanceCount: number;
@@ -9939,7 +9943,7 @@ public readonly masterNodeInstanceCount: number;
 
 ---
 
-##### `masterNodeInstanceType`<sup>Optional</sup> <a name="masterNodeInstanceType" id="aws-dsf.storage.OpensearchProps.property.masterNodeInstanceType"></a>
+##### `masterNodeInstanceType`<sup>Optional</sup> <a name="masterNodeInstanceType" id="aws-dsf.consumption.OpensearchProps.property.masterNodeInstanceType"></a>
 
 ```typescript
 public readonly masterNodeInstanceType: string;
@@ -9949,7 +9953,7 @@ public readonly masterNodeInstanceType: string;
 
 ---
 
-##### `multiAzWithStandbyEnabled`<sup>Optional</sup> <a name="multiAzWithStandbyEnabled" id="aws-dsf.storage.OpensearchProps.property.multiAzWithStandbyEnabled"></a>
+##### `multiAzWithStandbyEnabled`<sup>Optional</sup> <a name="multiAzWithStandbyEnabled" id="aws-dsf.consumption.OpensearchProps.property.multiAzWithStandbyEnabled"></a>
 
 ```typescript
 public readonly multiAzWithStandbyEnabled: boolean;
@@ -9959,7 +9963,7 @@ public readonly multiAzWithStandbyEnabled: boolean;
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.storage.OpensearchProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.consumption.OpensearchProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9969,7 +9973,7 @@ public readonly removalPolicy: RemovalPolicy;
 
 ---
 
-##### `samlRolesKey`<sup>Optional</sup> <a name="samlRolesKey" id="aws-dsf.storage.OpensearchProps.property.samlRolesKey"></a>
+##### `samlRolesKey`<sup>Optional</sup> <a name="samlRolesKey" id="aws-dsf.consumption.OpensearchProps.property.samlRolesKey"></a>
 
 ```typescript
 public readonly samlRolesKey: string;
@@ -9979,7 +9983,7 @@ public readonly samlRolesKey: string;
 
 ---
 
-##### `samlSessionTimeoutMinutes`<sup>Optional</sup> <a name="samlSessionTimeoutMinutes" id="aws-dsf.storage.OpensearchProps.property.samlSessionTimeoutMinutes"></a>
+##### `samlSessionTimeoutMinutes`<sup>Optional</sup> <a name="samlSessionTimeoutMinutes" id="aws-dsf.consumption.OpensearchProps.property.samlSessionTimeoutMinutes"></a>
 
 ```typescript
 public readonly samlSessionTimeoutMinutes: number;
@@ -9989,7 +9993,7 @@ public readonly samlSessionTimeoutMinutes: number;
 
 ---
 
-##### `samlSubjectKey`<sup>Optional</sup> <a name="samlSubjectKey" id="aws-dsf.storage.OpensearchProps.property.samlSubjectKey"></a>
+##### `samlSubjectKey`<sup>Optional</sup> <a name="samlSubjectKey" id="aws-dsf.consumption.OpensearchProps.property.samlSubjectKey"></a>
 
 ```typescript
 public readonly samlSubjectKey: string;
@@ -9999,7 +10003,7 @@ public readonly samlSubjectKey: string;
 
 ---
 
-##### `version`<sup>Optional</sup> <a name="version" id="aws-dsf.storage.OpensearchProps.property.version"></a>
+##### `version`<sup>Optional</sup> <a name="version" id="aws-dsf.consumption.OpensearchProps.property.version"></a>
 
 ```typescript
 public readonly version: EngineVersion;
@@ -10009,7 +10013,7 @@ public readonly version: EngineVersion;
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.storage.OpensearchProps.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-dsf.consumption.OpensearchProps.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -10019,7 +10023,7 @@ public readonly vpc: IVpc;
 
 ---
 
-##### `warmInstanceCount`<sup>Optional</sup> <a name="warmInstanceCount" id="aws-dsf.storage.OpensearchProps.property.warmInstanceCount"></a>
+##### `warmInstanceCount`<sup>Optional</sup> <a name="warmInstanceCount" id="aws-dsf.consumption.OpensearchProps.property.warmInstanceCount"></a>
 
 ```typescript
 public readonly warmInstanceCount: number;
@@ -10029,7 +10033,7 @@ public readonly warmInstanceCount: number;
 
 ---
 
-##### `warmInstanceType`<sup>Optional</sup> <a name="warmInstanceType" id="aws-dsf.storage.OpensearchProps.property.warmInstanceType"></a>
+##### `warmInstanceType`<sup>Optional</sup> <a name="warmInstanceType" id="aws-dsf.consumption.OpensearchProps.property.warmInstanceType"></a>
 
 ```typescript
 public readonly warmInstanceType: number;
@@ -12931,9 +12935,13 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport"></a>
 =======
 ### OpensearchNodes <a name="OpensearchNodes" id="aws-dsf.storage.OpensearchNodes"></a>
+=======
+### OpensearchNodes <a name="OpensearchNodes" id="aws-dsf.consumption.OpensearchNodes"></a>
+>>>>>>> 0581751 (lint and fix tests)
 
 Default Node Instances for Opensearch cluster.
 
@@ -12941,23 +12949,23 @@ Default Node Instances for Opensearch cluster.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.storage.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT">DATA_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT">MASTER_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
-| <code><a href="#aws-dsf.storage.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT">WARM_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT">DATA_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT">MASTER_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT">WARM_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
 
 ---
 
-##### `DATA_NODE_INSTANCE_DEFAULT` <a name="DATA_NODE_INSTANCE_DEFAULT" id="aws-dsf.storage.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT"></a>
-
----
-
-
-##### `MASTER_NODE_INSTANCE_DEFAULT` <a name="MASTER_NODE_INSTANCE_DEFAULT" id="aws-dsf.storage.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT"></a>
+##### `DATA_NODE_INSTANCE_DEFAULT` <a name="DATA_NODE_INSTANCE_DEFAULT" id="aws-dsf.consumption.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT"></a>
 
 ---
 
 
-##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="aws-dsf.storage.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
+##### `MASTER_NODE_INSTANCE_DEFAULT` <a name="MASTER_NODE_INSTANCE_DEFAULT" id="aws-dsf.consumption.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="aws-dsf.consumption.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
 
 ---
 

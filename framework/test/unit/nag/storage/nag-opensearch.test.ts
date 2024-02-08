@@ -11,7 +11,9 @@
 import { App, Aspects, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { OpensearchCluster } from '../../../../src/storage/index';
+import { OpensearchCluster }from '../../../../src/consumption';
+
+
 
 const app = new App();
 const stack = new Stack(app, 'Stack');

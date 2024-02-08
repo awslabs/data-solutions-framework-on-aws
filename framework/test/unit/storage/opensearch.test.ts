@@ -9,8 +9,7 @@
 
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-//import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { OpensearchCluster } from '../../../src/storage/index';
+import { OpensearchCluster }from '../../../src/consumption';
 
 
 describe('default configuration', () => {
