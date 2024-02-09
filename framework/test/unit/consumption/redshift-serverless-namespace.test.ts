@@ -343,3 +343,23 @@ describe('With global removal policy set to DELETE, the construct ', () => {
     });
   });
 });
+
+describe('With final snapshot configuration, the construct ', () => {
+  const stack = new Stack();
+
+  new RedshiftServerlessNamespace(stack, 'DefaultNamespace', {
+    dbName: 'defaultdb',
+    name: 'defaultnamespace',
+    finalSnapshotName: 'defaultnamespace-snapshot',
+    finalSnapshotRetentionPeriod: 10,
+  });
+
+  const template = Template.fromStack(stack);
+
+  test('should create resource with final snapshot configuration in place', () => {
+    template.hasResourceProperties('Custom::RedshiftServerlessNamespace', {
+      finalSnapshotName: Match.exact('defaultnamespace-snapshot'),
+      finalSnapshotRetentionPeriod: Match.exact(10),
+    });
+  });
+});

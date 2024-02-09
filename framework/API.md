@@ -10522,6 +10522,8 @@ const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceP
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminUsername">adminUsername</a></code> | <code>string</code> | The admin username to be used. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM Role associated to the Redshift Serverless Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.finalSnapshotName">finalSnapshotName</a></code> | <code>string</code> | If provided, final snapshot would be taken with the name provided. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.finalSnapshotRetentionPeriod">finalSnapshotRetentionPeriod</a></code> | <code>number</code> | The number of days the final snapshot would be retained. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The type of logs to be exported. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
@@ -10601,6 +10603,34 @@ public readonly defaultIAMRole: IRole;
 - *Default:* No default IAM Role is associated with the Redshift Serverless Namespace
 
 Default IAM Role associated to the Redshift Serverless Namespace.
+
+---
+
+##### `finalSnapshotName`<sup>Optional</sup> <a name="finalSnapshotName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.finalSnapshotName"></a>
+
+```typescript
+public readonly finalSnapshotName: string;
+```
+
+- *Type:* string
+- *Default:* No final snapshot would be taken
+
+If provided, final snapshot would be taken with the name provided.
+
+---
+
+##### `finalSnapshotRetentionPeriod`<sup>Optional</sup> <a name="finalSnapshotRetentionPeriod" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.finalSnapshotRetentionPeriod"></a>
+
+```typescript
+public readonly finalSnapshotRetentionPeriod: number;
+```
+
+- *Type:* number
+- *Default:* Indefinite final snapshot retention
+
+The number of days the final snapshot would be retained.
+
+Must be between 1-3653 days.
 
 ---
 
