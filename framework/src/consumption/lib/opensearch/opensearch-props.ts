@@ -8,7 +8,7 @@ import { EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
 
 /**
  * Simplified configuration for the Opensearch Cluster.
- * @param domainName OpensearchCluster domain name
+ * @param domainName OpenSearchCluster domain name
  * @param version OpenSearch version, default is OpenSearch_2.9
  * @param dataNodeInstanceType Data node instance type, default is OpenssearchNodes.DATA_NODE_INSTANCE_DEFAULT
  * @param dataNodeInstanceCount Data node instance count, default is equal to the number of AZs for vpc domain, 2 for public domain.
@@ -29,9 +29,9 @@ import { EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
  * @param enableAutoSoftwareUpdate Enable Auto Software Update, default is false
  * @param enableVersionUpgrade Enable Version Upgrade, default is false
  * @param encryptionKmsKeyArn Encryption KMS Key Arn, default is none
- * @param deployInVpc deploy Opensearch cluster in vpc, default true. Ser deployInVpc=false to create public domain endpoint.
+ * @param deployInVpc deploy OpenSearch cluster in vpc, default true. Ser deployInVpc=false to create public domain endpoint.
  * @param vpc VPC where the cluster is deployed, default new vpc is created if deployInVpc=true, @see DataVpc
- * @param masterUserName Opensearch master user name for internal database
+ * @param masterUserName OpenSearch master user name for internal database
  * @param removalPolicy Removal Policy, default is retain.
 */
 export interface OpensearchProps {

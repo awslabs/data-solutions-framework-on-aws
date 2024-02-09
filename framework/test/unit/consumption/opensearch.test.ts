@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 /**
- * Tests for Opensearch cluster construct
+ * Tests for OpenSearch cluster construct
  * @group unit/storage/opensearch
  */
 
@@ -32,7 +32,7 @@ describe('default configuration', () => {
 
   const template = Template.fromStack(stack);
 
-  test('should have opensearch domain', () => {
+  test('should have OpenSearch domain', () => {
     template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
   });
 

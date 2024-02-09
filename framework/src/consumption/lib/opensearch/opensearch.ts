@@ -14,21 +14,21 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../..
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
- * A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards.
+ * A construct to provision Amazon Openssearch Cluster and OpenSearch Dashboards.
  * Uses IAM Identity Center SAML authentication.
- * If Opensearch cluster is deployed in vpc created using DataVpc construct,
+ * If OpenSearch cluster is deployed in vpc created using DataVpc construct,
  * ClientVPNEndpoint will be provisioned automatically for secure access to Opnesearch Dashboards.
  *
  * @example
  *
- *    const osCluster = new dsf.storage.OpensearchCluster(this, 'MyOpensearchCluster',{
+ *    const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
  *      domainName:"mycluster2",
  *      samlEntityId:'<IdpIdentityId>',
  *      samlMetadataContent:'<IdpMetadataXml>',
  *      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
  *      deployInVpc:true,
  *      removalPolicy:cdk.RemovalPolicy.DESTROY
- *    } as dsf.storage.OpensearchProps );
+ *    } as dsf.consumption.OpensearchProps );
  *
  *    osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
  *    osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
@@ -40,31 +40,31 @@ export class OpensearchCluster extends TrackedConstruct {
 
   /**
    * @public
-   * OpensearchCluster domain
+   * OpenSearchCluster domain
    */
   public readonly domain: Domain;
 
   /**
    * @public
-   * Cloudwatch log group to store Opensearch cluster logs
+   * Cloudwatch log group to store OpenSearch cluster logs
    */
   public readonly logGroup: LogGroup;
 
   /**
    * @public
-   * VPC Opensearch cluster is provisioned in.
+   * VPC OpenSearch cluster is provisioned in.
    */
   public readonly vpc:IVpc | undefined;
 
   /**
-   * CDK Custom resource provider for calling Opensearch APIs
+   * CDK Custom resource provider for calling OpenSearch APIs
    */
   private readonly apiProvider: DsfProvider;
 
   /**
-   * IAM Role used to provision and configure Opensearch domain
+   * IAM Role used to provision and configure OpenSearch domain
    */
-  private readonly masterRole: Role;
+  public readonly masterRole: Role;
 
   private prevCr?: CustomResource;
 
@@ -78,10 +78,10 @@ export class OpensearchCluster extends TrackedConstruct {
   private removalPolicy: RemovalPolicy;
 
   /**
-   * Constructs a new instance of the OpensearchCluster class
+   * Constructs a new instance of the OpenSearchCluster class
    * @param {Construct} scope the Scope of the AWS CDK Construct
    * @param {string} id the ID of the AWS CDK Construct
-   * @param {OpensearchClusterProps} props the OpensearchCluster [properties]{@link OpensearchClusterProps}
+   * @param {OpensearchClusterProps} props the OpenSearchCluster [properties]{@link OpensearchClusterProps}
    */
 
   constructor(scope: Construct, id: string, props: OpensearchProps) {

@@ -135,23 +135,23 @@ You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `f
 }
 ```
 [//]: # (consumption.opensearch)
-# Opensearch
+# OpenSearch
 
-Amazon Opensearch construct supporting SAML integration using IAM Identity Center. 
+Amazon OpenSearch construct supporting SAML integration using IAM Identity Center. 
 
 ## Overview
 
-The construct follows best practises for Amazon Opensearch deployment, provisioning opensearch domain in VPC and using SAML-authentication plugin to access Opensearch Dashboards. 
-By default VPC also creates VPN client endpoint with SAML-authentication to allow secure access to the dashboards. Optionally, you can also provide your own VPC or choose to deploy internet-facing Opensearch domain by setting `deployInVpc=false` in construct parameters.
+The construct follows best practises for Amazon OpenSearch deployment, provisioning OpenSearch domain in VPC and using SAML-authentication plugin to access OpenSearch Dashboards. 
+By default VPC also creates VPN client endpoint with SAML-authentication to allow secure access to the dashboards. Optionally, you can also provide your own VPC or choose to deploy internet-facing OpenSearch domain by setting `deployInVpc=false` in construct parameters.
 
 SAML-authentication can work with any SAML2.0-compatible provider like Okta. If you use AWS IAM Identity center please check the section below for details. The construct require at least admin role to be provided as parameters. 
 
-For mapping additional IdP roles to opensearch dashboard roles, you can use `addRoleMapping` method. 
+For mapping additional IdP roles to OpenSearch dashboard roles, you can use `addRoleMapping` method. 
 
 ## Confgiure IAM Identity center
 
 You need to have IAM Identity center enabled in the same region you plan to deploy your solution. 
-To configure SAML integration with opensearch you will need to create a custom SAML 2.0 Application and have at least one user group created and attached to the application.
+To configure SAML integration with OpenSearch you will need to create a custom SAML 2.0 Application and have at least one user group created and attached to the application.
 Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/role-based-access-control-in-amazon-opensearch-service-via-saml-integration-with-aws-iam-identity-center/) to set up IAM Identity center SAML application.
 
 ## Usage

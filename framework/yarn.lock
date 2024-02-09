@@ -1316,6 +1316,7 @@
   version "0.19.12"
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.19.12.tgz#c57c8afbb4054a3ab8317591a0b7320360b444ae"
   integrity sha512-T1QyPSDCyMXaO3pzBkF96E8xMkiRYbUEZADd29SyPGabqxMViNoii+NcK7eWJAEoU6RZyEm5lVSIjTmcdoB9HA==
+
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@eslint-community/eslint-utils/-/eslint-utils-4.4.0.tgz#a23514e8fb9af1269d5f7788aa556798d61c6b59"
@@ -1646,6 +1647,7 @@
     semver "^7.5.4"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@jsii/spec@1.94.0", "@jsii/spec@^1.94.0":
 =======
 "@jsii/check-node@1.93.0":
@@ -1665,6 +1667,9 @@
 
 "@jsii/spec@^1.93.0":
 >>>>>>> 68bc9f5 (update lock after build)
+=======
+"@jsii/spec@1.94.0", "@jsii/spec@^1.89.0", "@jsii/spec@^1.94.0":
+>>>>>>> efec905 (fix: moved unit tests to consumption. added e2e, implemented changes)
   version "1.94.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.94.0.tgz#a4584179cd83e50110169a3f5ec1b6ab4ad362f4"
   integrity sha512-ur1aUMPsdZgflUIZC4feyJzrkGYzvtiIJxRowkSxr7Ip/sLCKvi61dvImWtJY9ZhEAl7Kiq7I/R32WVyxW0JrQ==
@@ -6340,8 +6345,8 @@ jsii-rosetta@~5.3.0:
   integrity sha512-p00zNkx1yicyAyWGWnpIXutryqx3Q1Hko3yPWrhOsSEqy/WiKGAKme87S/EZVnpz0TAse/mX4OymlBCqDXagJw==
 >>>>>>> 68bc9f5 (update lock after build)
   dependencies:
-    "@jsii/check-node" "1.94.0"
-    "@jsii/spec" "^1.94.0"
+    "@jsii/check-node" "1.93.0"
+    "@jsii/spec" "^1.93.0"
     "@xmldom/xmldom" "^0.8.10"
     chalk "^4"
     commonmark "^0.31.0"
@@ -6384,8 +6389,8 @@ jsii@~5.3.0:
   integrity sha512-M+kAUKJiLXXJXKYmBB0Q2n1aGoeNHyzMCLAx7402JqXSLxH4JGh6kOf4EH3U3LmQKzv2kxOHMRCg3Ssh82KtrQ==
 >>>>>>> 68bc9f5 (update lock after build)
   dependencies:
-    "@jsii/check-node" "1.94.0"
-    "@jsii/spec" "^1.94.0"
+    "@jsii/check-node" "1.93.0"
+    "@jsii/spec" "^1.93.0"
     case "^1.6.3"
     chalk "^4"
     downlevel-dts "^0.11.0"

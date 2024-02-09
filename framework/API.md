@@ -3870,23 +3870,23 @@ The security group for Client VPN Endpoint.
 ### OpensearchCluster <a name="OpensearchCluster" id="aws-dsf.consumption.OpensearchCluster"></a>
 >>>>>>> 0581751 (lint and fix tests)
 
-A construct to provision Amazon Openssearch Cluster and Opensearch Dashboards.
+A construct to provision Amazon Openssearch Cluster and OpenSearch Dashboards.
 
 Uses IAM Identity Center SAML authentication.
-If Opensearch cluster is deployed in vpc created using DataVpc construct,
+If OpenSearch cluster is deployed in vpc created using DataVpc construct,
 ClientVPNEndpoint will be provisioned automatically for secure access to Opnesearch Dashboards.
 
 *Example*
 
 ```typescript
-   const osCluster = new dsf.storage.OpensearchCluster(this, 'MyOpensearchCluster',{
+   const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
      domainName:"mycluster2",
      samlEntityId:'<IdpIdentityId>',
      samlMetadataContent:'<IdpMetadataXml>',
      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
      deployInVpc:true,
      removalPolicy:cdk.RemovalPolicy.DESTROY
-   } as dsf.storage.OpensearchProps );
+   } as dsf.consumption.OpensearchProps );
 
    osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
    osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
@@ -3905,7 +3905,7 @@ new consumption.OpensearchCluster(scope: Construct, id: string, props: Opensearc
 | --- | --- | --- |
 | <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
 | <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
-| <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.OpensearchProps</code> | the OpensearchCluster [properties]{@link OpensearchClusterProps }. |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.OpensearchProps</code> | the OpenSearchCluster [properties]{@link OpensearchClusterProps }. |
 
 ---
 
@@ -3929,7 +3929,7 @@ the ID of the AWS CDK Construct.
 
 - *Type:* aws-dsf.consumption.OpensearchProps
 
-the OpensearchCluster [properties]{@link OpensearchClusterProps }.
+the OpenSearchCluster [properties]{@link OpensearchClusterProps }.
 
 ---
 
@@ -4030,6 +4030,7 @@ Any object.
 | <code><a href="#aws-dsf.consumption.OpensearchCluster.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-dsf.consumption.OpensearchCluster.property.domain">domain</a></code> | <code>aws-cdk-lib.aws_opensearchservice.Domain</code> | *No description.* |
 | <code><a href="#aws-dsf.consumption.OpensearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.LogGroup</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.OpensearchCluster.property.masterRole">masterRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | IAM Role used to provision and configure OpenSearch domain. |
 | <code><a href="#aws-dsf.consumption.OpensearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 
 ---
@@ -4063,6 +4064,18 @@ public readonly logGroup: LogGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_logs.LogGroup
+
+---
+
+##### `masterRole`<sup>Required</sup> <a name="masterRole" id="aws-dsf.consumption.OpensearchCluster.property.masterRole"></a>
+
+```typescript
+public readonly masterRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+IAM Role used to provision and configure OpenSearch domain.
 
 ---
 

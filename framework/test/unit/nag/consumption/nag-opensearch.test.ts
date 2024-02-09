@@ -3,7 +3,7 @@
 
 
 /**
- * Tests Opensearch cluster construct
+ * Tests OpenSearch cluster construct
  *
  * @group unit/nag/storage/opensearch
  */
