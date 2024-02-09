@@ -138,7 +138,7 @@ jobs:
         env:
           NPM_DIST_TAG: latest
           NPM_REGISTRY: registry.npmjs.org
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.DSF_NPM_TOKEN }}
         run: npx -p publib@latest publib-npm
   release_pypi:
     name: Publish to PyPI
@@ -178,6 +178,6 @@ jobs:
       - name: Release
         working-directory: framework
         env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.DSF_TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.DSF_TWINE_PASSWORD }}
         run: npx -p publib@latest publib-pypi
