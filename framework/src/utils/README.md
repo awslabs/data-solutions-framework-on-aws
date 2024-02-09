@@ -29,11 +29,11 @@ Public subnets are not supported.
 [//]: # (utils.data-vpc)
 # DataVpc
 
-Amazon VPC optimized for data environments.
+Amazon VPC optimized for data solutions.
 
 ## Overview
 
-`DataVpc` construct provides a standard Amazon VPC with best practices for security and data environments implementations:
+`DataVpc` construct provides a standard Amazon VPC with best practices for security and data solutions implementations:
 - The VPC is created with public and private subnets across 3 availability zones (1 of each per AZ) and 3 NAT gateways.
 - VPC CIDR mask should be larger than 28. The CIDR is split between public and private subnets with private subnets being twice as large as public subnet. 
 - The flow logs maaged by a dedicated least-privilege IAM Role. The role can be customized.
