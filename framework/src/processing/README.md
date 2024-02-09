@@ -36,9 +36,7 @@ The code snippet below shows a usage example of the `SparkEmrServerlessRuntime` 
 [example usage](examples/spark-emr-runtime-serverless-default.lit.ts)
 
 
-
-
-[//]: # (processing.spark-job)
+[//]: # (processing.spark-emr-serverless-job)
 # Spark EMR Serverless job
 
 An [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html) Spark job orchestrated through AWS Step Functions state machine.
@@ -56,6 +54,9 @@ The example stack below shows how to use `EmrServerlessSparkJob` construct. The 
 [example usage spark job on emr serverless](./examples/spark-job-emr-serverless.lit.ts)
 
 
+## Using the EMR Serverless `StartJobRun` parameters
+
+The `SparkEmrServerlessJobProps` interface provides a simple abstraction to create an EMR Serverless Job. For deeper control on the job configuration, you can also use the `SparkEmrServerlessJobApiProps` inteface which provide the same interface as the [StartJobRun API](https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html) from EMR Serverless.
 
 
 [//]: # (processing.pyspark-application-package)

@@ -107,11 +107,12 @@ Or programmatically in your CDK app:
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-// Set context value for global data removal policy
-this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
-new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
-    removalPolicy: RemovalPolicy.DESTROY
-});
+    // Set context value for global data removal policy
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+    new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
+        removalPolicy: RemovalPolicy.DESTROY
+    });
   ```
   
   ```mdx-code-block
@@ -121,7 +122,9 @@ new dsf.storage.DataLakeStorage(this, 'DataLakeStorage', {
 
   ```python
 # Set context value for global data removal policy
-self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)dsf.storage.DataLakeStorage(self, "DataLakeStorage",
+self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)
+
+dsf.storage.DataLakeStorage(self, "DataLakeStorage",
     removal_policy=RemovalPolicy.DESTROY
 )
   ```

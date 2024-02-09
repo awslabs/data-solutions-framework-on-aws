@@ -1,0 +1,65 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/processing)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+An [Amazon EMR Serverless](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/getting-started.html) Spark job orchestrated through AWS Step Functions state machine.
+
+## Overview
+
+The construct creates an AWS Step Functions state machine that is used to submit a Spark job and orchestrate the lifecycle of the job. The construct leverages the [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) to submit the jobs. The state machine can take a cron expression to trigger the job at a given interval. The schema below shows the state machine:
+
+![Spark EMR Serverless Job](../../../../static/img/adsf-spark-emr-serverless-job.png)
+
+## Usage
+
+The example stack below shows how to use `EmrServerlessSparkJob` construct. The stack also contains a `SparkEmrServerlessRuntime` to show how to create an EMR Serverless Application and pass it as an argument to the `Spark job` and use it as a runtime for the job.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'PiJob', {
+      applicationId: runtime.application.attrApplicationId,
+      name: 'PiCalculation',
+      executionRoleArn: executionRole.roleArn,
+      sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
+    });
+
+    new CfnOutput(this, 'job-state-machine', {
+      value: nightJob.stateMachine!.stateMachineArn,
+    });
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+cdk.Stack):
+scope, id):
+super().__init__(scope, id)night_job = dsf.processing.SparkEmrServerlessJob(self, "PiJob",
+    application_id=runtime.application.attr_application_id,
+    name="PiCalculation",
+    execution_role_arn=execution_role.role_arn,
+    spark_submit_entry_point="local:///usr/lib/spark/examples/src/main/python/pi.py"
+)
+
+CfnOutput(self, "job-state-machine",
+    value=night_job.state_machine.state_machine_arn
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+
+## Using the EMR Serverless `StartJobRun` parameters
+
+The `SparkEmrServerlessJobProps` interface provides a simple abstraction to create an EMR Serverless Job. For deeper control on the job configuration, you can also use the `SparkEmrServerlessJobApiProps` inteface which provide the same interface as the [StartJobRun API](https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html) from EMR Serverless.
+
+

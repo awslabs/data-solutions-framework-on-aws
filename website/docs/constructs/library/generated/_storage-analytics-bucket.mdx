@@ -10,11 +10,12 @@ Amazon S3 Bucket configured for analytics.
 - The bucket name is in the form of `<BUCKET_NAME>-<CDK_ID>-<AWS_ACCOUNT_ID>-<AWS_REGION>-<UNIQUEID>`
 - Server side bucket encryption managed by KMS customer key. You need to provide a [KMS Key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
 - SSL communication enforcement.
-- Access logged to an S3 bucket within a prefix matching the bucket name (via the [`AccessLogsBucket`](access-logs-bucket)).
+- Access logged to an S3 bucket within a prefix matching the bucket name. By default, store logs in itself.
 - All public access blocked.
 - Two-step protection for bucket and objects deletion.
 
 `AnalyticsBucket` extends the Amazon [S3 `Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html) CDK Construct. For custom requirements that are not covered, use the [`Bucket`](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_s3/Bucket.html#bucket) construct directly.
+
 
 ## Usage
 
@@ -59,59 +60,12 @@ class ExampleDefaultAnalyticsBucketStack(cdk.Stack):
 
 ## Objects removal
 
-You can specify if the bucket and objects should be deleted when the CDK resource is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+You can specify if the bucket and objects should be deleted when the CDK resource is destroyed using `removalPolicy`. Refer to the [DataLakeStorage documentation](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/data-lake-storage#objects-removal)
 
-The bucket and objects can be destroyed when the CDK resource is destroyed only if **both** the removal policy parameter of the construct and DSF global removal policy are set to remove objects.
-
-You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
-
-```json title="cdk.json"
-{
-  "context": {
-    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
-  }
-}
-```
-
-Or programmatically in your CDK app:
-
-<Tabs>
-  <TabItem value="typescript" label="TypeScript" default>
-
-  ```typescript
-    // Set context value for global data removal policy
-    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
-    const key = new Key(this, 'DataKey', {
-        enableKeyRotation: true,
-        removalPolicy: RemovalPolicy.DESTROY
-    });
-
-    new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-        encryptionKey: key,
-        removalPolicy: RemovalPolicy.DESTROY
-    });
-  ```
-  
-  ```mdx-code-block
-  
-  </TabItem>
-  <TabItem value="python" label="Python">
-
-  ```python
-# Set context value for global data removal policy
-self.node.set_context("@data-solutions-framework-on-aws/removeDataOnDestroy", True)key = Key(self, "DataKey",
-    enable_key_rotation=True,
-    removal_policy=RemovalPolicy.DESTROY
-)
-
-dsf.storage.AnalyticsBucket(self, "AnalyticsBucket",
-    encryption_key=key,
-    removal_policy=RemovalPolicy.DESTROY
-)
-  ```
-
-  </TabItem>
-</Tabs>
+:::warning
+If no access logs bucket is configure, the `AnalyticsBucket` stores its access logs in itself. 
+This prevents from properly deleting the resources when the `removalPolicy` is set to `DESTROY` because it creates an edge case where the deletion of the S3 Objects recreates Objects corresponding the access logs. The S3 Bucket is then never empty and the deletion of the Bucket fails.
+:::
 
 ## Bucket Naming
 
