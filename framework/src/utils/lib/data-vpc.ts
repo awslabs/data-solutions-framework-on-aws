@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Stack, Tags } from 'aws-cdk-lib';
-import { FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint, IVpc, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Effect, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ClientVpnEndpoint, ClientVpnUserBasedAuthentication, FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint, IVpc, IpAddresses, SubnetType, TransportProtocol, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Effect, IRole, PolicyStatement, Role, SamlMetadataDocument, SamlProvider, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
@@ -44,6 +44,18 @@ export class DataVpc extends Construct {
    * The S3 VPC endpoint gateway
    */
   public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
+  /**
+   * The Client VPN Endpoint
+   */
+  public readonly clientVpnEndpoint: ClientVpnEndpoint | undefined;
+  /**
+   * The SAML Provider for Client VPN Endpoint
+   */
+  public readonly samlProvider: SamlProvider | undefined;
+  /**
+   * The log group for Client VPN Endpoint
+   */
+  public readonly vpnLogGroup: LogGroup | undefined;
 
   constructor(scope: Construct, id: string, props: DataVpcProps) {
 
@@ -127,6 +139,36 @@ export class DataVpc extends Construct {
     this.s3VpcEndpoint= this.vpc.addGatewayEndpoint('S3VpcEndpoint', {
       service: GatewayVpcEndpointAwsService.S3,
     });
+
+    if (props.vpnEndpointCertificateArn){
+
+      this.vpnLogGroup = new LogGroup(scope, 'vpnLogGroup', {
+        encryptionKey: this.flowLogKey,
+        retention,
+        removalPolicy: removalPolicy,
+      });
+      this.vpnLogGroup.grantWrite(new ServicePrincipal('ec2.amazonaws.com'));
+
+      this.samlProvider = new SamlProvider(scope, 'SamlProviderVpnEndpoint', {
+        metadataDocument: SamlMetadataDocument.fromXml(props.vpnEndpointSamlMetadata!),
+      });
+
+      this.clientVpnEndpoint = this.vpc.addClientVpnEndpoint('Endpoint', {
+        cidr: this.vpc.publicSubnets[0].ipv4CidrBlock,
+        serverCertificateArn: props.vpnEndpointCertificateArn,
+        userBasedAuthentication: ClientVpnUserBasedAuthentication.federated(this.samlProvider),
+        authorizeAllUsersToVpcCidr: true,
+        dnsServers:[this.vpc.vpcCidrBlock.replace(/^(\d+)\.(\d+)\.(\d+)\.\d+\/\d+$/,"$1.$2.$3.2")],
+        splitTunnel: true,
+        logging:true,
+        logGroup:this.vpnLogGroup,
+        transportProtocol: TransportProtocol.TCP,
+        vpcSubnets: this.vpc.selectSubnets({ subnets:[this.vpc.publicSubnets[0]]}),
+      });
+
+      this.clientVpnEndpoint.applyRemovalPolicy(removalPolicy);
+    }
+        
   }
 
   /**

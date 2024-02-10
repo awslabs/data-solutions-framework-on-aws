@@ -41,4 +41,15 @@ export interface DataVpcProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+  /** 
+   * ClientVpnEndpoint server certificate ARN, if specified client vpn endpoint will be added to the vpc.
+   * @default - None.
+   */
+  readonly vpnEndpointCertificateArn?: string;
+  /**
+   * ClientVpnEndpoint SAML2.0 XML metadata configuration, required if client vpn endpoint is needed
+   * @default - None.
+   */
+  readonly vpnEndpointSamlMetadata?: string;
+
 }
