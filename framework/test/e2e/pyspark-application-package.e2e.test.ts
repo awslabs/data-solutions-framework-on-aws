@@ -31,12 +31,12 @@ const pysparkApp = new PySparkApplicationPackage (stack, 'PySparkPacker', {
 let deployResult: Record<string, string>;
 
 new CfnOutput(stack, 'PySparkAppEntrypointS3Uri', {
-  value: pysparkApp.entrypointS3Uri,
+  value: pysparkApp.entrypointUri,
   exportName: 'PySparkAppEntrypointS3Uri',
 });
 
 new CfnOutput(stack, 'PySparkVenvArchiveS3Uri', {
-  value: pysparkApp.venvArchiveS3Uri || 'no_venv',
+  value: pysparkApp.venvArchiveUri || 'no_venv',
   exportName: 'PySparkVenvArchiveS3Uri',
 });
 
