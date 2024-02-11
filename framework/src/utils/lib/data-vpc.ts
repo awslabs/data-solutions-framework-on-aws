@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Stack, Tags } from 'aws-cdk-lib';
-import { ClientVpnEndpoint, ClientVpnUserBasedAuthentication, FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint, IVpc, IpAddresses, SubnetType, TransportProtocol, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { ClientVpnEndpoint, ClientVpnUserBasedAuthentication, FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint, IVpc, IpAddresses, Peer, Port, SecurityGroup, SubnetType, TransportProtocol, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IRole, PolicyStatement, Role, SamlMetadataDocument, SamlProvider, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
@@ -51,11 +51,17 @@ export class DataVpc extends Construct {
   /**
    * The SAML Provider for Client VPN Endpoint
    */
-  public readonly samlProvider: SamlProvider | undefined;
+  public readonly vpnSamlProvider: SamlProvider | undefined;
   /**
    * The log group for Client VPN Endpoint
    */
   public readonly vpnLogGroup: LogGroup | undefined;
+  /**
+   * The security group for Client VPN Endpoint
+   */
+  public readonly vpnSecurityGroup: SecurityGroup | undefined;
+
+
 
   constructor(scope: Construct, id: string, props: DataVpcProps) {
 
@@ -142,6 +148,13 @@ export class DataVpc extends Construct {
 
     if (props.vpnEndpointCertificateArn){
 
+      this.vpnSecurityGroup = new SecurityGroup(scope, 'vpnSecurityGroup', {
+        vpc: this.vpc,
+        allowAllOutbound: true,
+      });
+      this.vpnSecurityGroup.addIngressRule(Peer.ipv4(props.vpcCidr), Port.tcp(443));
+      this.vpnSecurityGroup.applyRemovalPolicy(removalPolicy);
+
       this.vpnLogGroup = new LogGroup(scope, 'vpnLogGroup', {
         encryptionKey: this.flowLogKey,
         retention,
@@ -149,21 +162,22 @@ export class DataVpc extends Construct {
       });
       this.vpnLogGroup.grantWrite(new ServicePrincipal('ec2.amazonaws.com'));
 
-      this.samlProvider = new SamlProvider(scope, 'SamlProviderVpnEndpoint', {
+      this.vpnSamlProvider = new SamlProvider(scope, 'SamlProviderVpnEndpoint', {
         metadataDocument: SamlMetadataDocument.fromXml(props.vpnEndpointSamlMetadata!),
       });
 
       this.clientVpnEndpoint = this.vpc.addClientVpnEndpoint('Endpoint', {
         cidr: this.vpc.publicSubnets[0].ipv4CidrBlock,
         serverCertificateArn: props.vpnEndpointCertificateArn,
-        userBasedAuthentication: ClientVpnUserBasedAuthentication.federated(this.samlProvider),
+        userBasedAuthentication: ClientVpnUserBasedAuthentication.federated(this.vpnSamlProvider),
         authorizeAllUsersToVpcCidr: true,
-        dnsServers:[this.vpc.vpcCidrBlock.replace(/^(\d+)\.(\d+)\.(\d+)\.\d+\/\d+$/,"$1.$2.$3.2")],
+        dnsServers:[props.vpcCidr.replace(/^(\d+)\.(\d+)\.(\d+)\.\d+\/\d+$/,"$1.$2.$3.2")],
         splitTunnel: true,
         logging:true,
         logGroup:this.vpnLogGroup,
         transportProtocol: TransportProtocol.TCP,
-        vpcSubnets: this.vpc.selectSubnets({ subnets:[this.vpc.publicSubnets[0]]}),
+        securityGroups: [this.vpnSecurityGroup],
+        vpcSubnets: this.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS })
       });
 
       this.clientVpnEndpoint.applyRemovalPolicy(removalPolicy);
