@@ -5,6 +5,7 @@ import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
@@ -36,10 +37,11 @@ class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
     new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
       applicationId: runtime.application.attrApplicationId,
       name: 'nightly_job',
-      executionRoleArn: executionRole.roleArn,
-      executionTimeoutMinutes: 30,
-      s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
-      sparkSubmitEntryPoint: applicationPackage.entrypointS3Uri, // use the application package entrypoint
+      executionRole: executionRole,
+      executionTimeout: cdk.Duration.minutes(15),
+      s3LogBucket: Bucket.fromBucketArn(this, 'LogBucket', 'emr-job-logs-EXAMPLE'),
+      s3LogPrefix: 'logs',
+      sparkSubmitEntryPoint: applicationPackage.entrypointUri, // use the application package entrypoint
       sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=2 {sparkEnvConf}',
     });
     /// !hide

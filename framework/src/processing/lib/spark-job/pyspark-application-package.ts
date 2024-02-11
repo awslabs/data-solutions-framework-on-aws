@@ -33,16 +33,16 @@ export class PySparkApplicationPackage extends TrackedConstruct {
   public static readonly ARTIFACTS_PREFIX = 'emr-artifacts';
 
   /**
-   * The S3 location where the entry point is saved in S3.
+   * The location (generally it's an S3 URI) where the entry point is saved.
    * You can pass this location to your Spark job.
    */
-  public readonly entrypointS3Uri: string;
+  public readonly entrypointUri: string;
 
   /**
-   * The S3 location where the archive of the Python virtual environment with all dependencies is stored.
+   * The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored.
    * You can pass this location to your Spark job.
    */
-  public readonly venvArchiveS3Uri?: string;
+  public readonly venvArchiveUri?: string;
 
   /**
    * The Spark Config containing the configuration of virtual environment archive with all dependencies.
@@ -165,7 +165,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
         });
 
-        this.venvArchiveS3Uri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${venvArchiveFileName}`);
+        this.venvArchiveUri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${venvArchiveFileName}`);
       }
     }
 
@@ -202,10 +202,10 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
     });
 
-    this.entrypointS3Uri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${entrypointFileName}`);
+    this.entrypointUri = emrAppArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${entrypointFileName}`);
 
     this.artifactsBucket = artifactsBucket;
-    this.sparkVenvConf = `--conf spark.archives=${this.venvArchiveS3Uri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`;
+    this.sparkVenvConf = `--conf spark.archives=${this.venvArchiveUri} --conf spark.emr-serverless.driverEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python --conf spark.emr-serverless.driverEnv.PYSPARK_PYTHON=./environment/bin/python --conf spark.emr-serverless.executorEnv.PYSPARK_PYTHON=./environment/bin/python`;
 
   }
 }

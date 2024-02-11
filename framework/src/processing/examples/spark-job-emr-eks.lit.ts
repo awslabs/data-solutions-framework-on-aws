@@ -5,6 +5,8 @@ import * as cdk from 'aws-cdk-lib';
 import { CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as dsf from '../../index';
+import { Role } from 'aws-cdk-lib/aws-iam';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 /// !show
 class ExampleSparkJobEmrEksStack extends cdk.Stack {
@@ -14,9 +16,10 @@ class ExampleSparkJobEmrEksStack extends cdk.Stack {
     const dailyJob = new dsf.processing.SparkEmrContainerJob(this, 'SparkNightlyJob', {
       name: 'daily_job',
       virtualClusterId: 'exampleId123',
-      executionRoleArn: 'arn:aws:iam::123456789012:role/role',
-      executionTimeoutMinutes: 30,
-      s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
+      executionRole: Role.fromRoleArn(this, 'ExecutionRole', 'arn:aws:iam::123456789012:role/role'),
+      executionTimeout: cdk.Duration.minutes(15),
+      s3LogBucket: Bucket.fromBucketName(this, 'LogBucket', 'emr-job-logs-EXAMPLE'), 
+      s3LogPrefix: 'logs',
       sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
       sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
     });

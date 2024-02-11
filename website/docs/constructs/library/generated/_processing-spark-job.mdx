@@ -39,9 +39,10 @@ class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
     const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
       applicationId: runtime.application.attrApplicationId,
       name: 'nightly_job',
-      executionRoleArn: executionRole.roleArn,
-      executionTimeoutMinutes: 30,
-      s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
+      executionRole: executionRole,
+      executionTimeout: cdk.Duration.minutes(15),
+      s3LogBucket: Bucket.fromBucketName(this, 'LogBucket', 'emr-job-logs-EXAMPLE'),
+      s3LogPrefix: 'logs',
       sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
       sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
     });
@@ -80,9 +81,10 @@ class ExampleSparkJobEmrServerlessStack(cdk.Stack):
         night_job = dsf.processing.SparkEmrServerlessJob(self, "SparkNightlyJob",
             application_id=runtime.application.attr_application_id,
             name="nightly_job",
-            execution_role_arn=execution_role.role_arn,
-            execution_timeout_minutes=30,
-            s3_log_uri="s3://emr-job-logs-EXAMPLE/logs",
+            execution_role=execution_role,
+            execution_timeout=cdk.Duration.minutes(15),
+            s3_log_bucket=Bucket.from_bucket_name(self, "LogBucket", "emr-job-logs-EXAMPLE"),
+            s3_log_prefix="logs",
             spark_submit_entry_point="local:///usr/lib/spark/examples/src/main/python/pi.py",
             spark_submit_parameters="--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"
         )

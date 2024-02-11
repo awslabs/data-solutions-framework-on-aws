@@ -13,6 +13,8 @@ import { Stack, App, Duration } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { Schedule } from 'aws-cdk-lib/aws-events';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { LogGroup } from 'aws-cdk-lib/aws-logs';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import {
   EmrRuntimeVersion,
   SparkEmrContainerJob,
@@ -120,10 +122,11 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
   new SparkEmrServerlessJob(stack, 'SparkJobServerless', {
     name: 'SparkSimpleProps',
     applicationId: '00fcn9hll0rv1j09',
-    executionRoleArn: myExecutionRole.roleArn,
-    executionTimeoutMinutes: 30,
-    s3LogUri: 's3://s3-bucket/monitoring-logs',
-    cloudWatchLogGroupName: 'spark-serverless-log',
+    executionRole: myExecutionRole,
+    executionTimeout: Duration.minutes(15),
+    s3LogBucket: Bucket.fromBucketName(stack, 'LogBucket', 's3-bucket'),
+    s3LogPrefix: 'monitoring-logs',
+    cloudWatchLogGroup: LogGroup.fromLogGroupName(stack, 'LogGroup', 'spark-serverless-log'),
     sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
     sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
     schedule: Schedule.rate(Duration.hours(1)),
@@ -150,11 +153,11 @@ describe('Create an SparkJob using EMR Serverless Application for Spark using si
           [
             '{"StartAt":"EmrStartJobTask","States":{"EmrStartJobTask":{"Next":"Wait","Type":"Task","ResultSelector":{"JobRunId.$":"$.JobRunId"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrserverless:startJobRun","Parameters":{"ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"},"CloudWatchLoggingConfiguration":{"Enabled":true,"LogGroupName":"spark-serverless-log"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"Name":"SparkSimpleProps","ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":30,"ExecutionRoleArn":"',
+            ':states:::aws-sdk:emrserverless:startJobRun","Parameters":{"ConfigurationOverrides":{"MonitoringConfiguration":{"S3MonitoringConfiguration":{"LogUri":"s3://s3-bucket/monitoring-logs"},"CloudWatchLoggingConfiguration":{"Enabled":true,"LogGroupName":"spark-serverless-log"}}},"JobDriver":{"SparkSubmit":{"EntryPoint":"s3://s3-bucket/pi.py","SparkSubmitParameters":"--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4"}},"Name":"SparkSimpleProps","ClientToken.$":"States.UUID()","ExecutionTimeoutMinutes":15,"ExecutionRoleArn":"',
             { 'Fn::GetAtt': ['execRole1F3395738', 'Arn'] },
             '","ApplicationId":"00fcn9hll0rv1j09","Tags":{"data-solutions-fwk:owned":"true"}}},"Wait":{"Type":"Wait","Seconds":60,"Next":"EmrMonitorJobTask"},"EmrMonitorJobTask":{"Next":"JobSucceededOrFailed","Type":"Task","ResultPath":"$.JobRunState","ResultSelector":{"State.$":"$.JobRun.State","StateDetails.$":"$.JobRun.StateDetails"},"Resource":"arn:',
             { Ref: 'AWS::Partition' },
-            ':states:::aws-sdk:emrserverless:getJobRun","Parameters":{"ApplicationId":"00fcn9hll0rv1j09","JobRunId.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"SUCCESS","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRServerlessJobFailed"}},"TimeoutSeconds":2100}',
+            ':states:::aws-sdk:emrserverless:getJobRun","Parameters":{"ApplicationId":"00fcn9hll0rv1j09","JobRunId.$":"$.JobRunId"}},"JobSucceededOrFailed":{"Type":"Choice","Choices":[{"Variable":"$.JobRunState.State","StringEquals":"SUCCESS","Next":"JobSucceeded"},{"Variable":"$.JobRunState.State","StringEquals":"FAILED","Next":"JobFailed"},{"Variable":"$.JobRunState.State","StringEquals":"CANCELLED","Next":"JobFailed"}],"Default":"Wait"},"JobSucceeded":{"Type":"Succeed"},"JobFailed":{"Type":"Fail","Error":"$.JobRunState.StateDetails","Cause":"EMRServerlessJobFailed"}},"TimeoutSeconds":1200}',
           ],
         ],
       },
@@ -252,9 +255,10 @@ describe('Create an SparkJob using EMR on EKS using simplified credentials', () 
     name: 'SparkJob',
     virtualClusterId: 'clusterId',
     releaseLabel: EmrRuntimeVersion.V6_2,
-    executionRoleArn: myExecutionRole.roleArn,
-    s3LogUri: 's3://s3-bucket/monitoring-logs',
-    cloudWatchLogGroupName: 'spark-job-log-group-emreks-simple',
+    executionRole: myExecutionRole,
+    s3LogBucket: Bucket.fromBucketName(stack, 'Loggroup', 's3-bucket'),
+    s3LogPrefix: 'monitoring-logs',
+    cloudWatchLogGroup: LogGroup.fromLogGroupName(stack, 'LogGroup', 'spark-job-log-group-emreks-simple'),
     sparkSubmitEntryPoint: 's3://s3-bucket/pi.py',
     sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
   } as SparkEmrContainerJobProps);

@@ -63,8 +63,8 @@ export class SparkEmrContainerJob extends SparkJob {
     }
     this.constructJobConfig.jobConfig.Tags[TrackedConstruct.DSF_OWNED_TAG] = 'true';
 
-    const executionTimeout = props.executionTimeoutMinutes ?? 30;
-    this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.constructJobConfig.schedule);
+    const executionTimeout = props.executionTimeout ?? Duration.minutes(30);
+    this.stateMachine = this.createStateMachine(executionTimeout, this.constructJobConfig.schedule);
 
     this.s3LogBucket?.grantReadWrite(sparkJobExecutionRole);
     this.emrJobLogGroup?.grantRead(sparkJobExecutionRole);
@@ -218,7 +218,7 @@ export class SparkEmrContainerJob extends SparkJob {
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.VirtualClusterId = props.virtualClusterId;
-    config.jobConfig.ExecutionRoleArn=props.executionRoleArn;
+    config.jobConfig.ExecutionRoleArn=props.executionRole.roleArn;
     config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPoint = props.sparkSubmitEntryPoint;
 
     if (props.sparkSubmitEntryPointArguments) {
@@ -234,17 +234,13 @@ export class SparkEmrContainerJob extends SparkJob {
 
     config.jobConfig.RetryPolicyConfiguration!.MaxAttempts = props.maxRetries ?? 0;
 
-    if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/) && !props.s3LogUri.match(/^Token\[([0-9]+)\]$/)) {
-      throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
-    }
-
     config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.S3MonitoringConfiguration!.LogUri =
-    this.createS3LogBucket(props.s3LogUri);
+    this.createS3LogBucket(props.s3LogBucket, props.s3LogPrefix);
 
-    if (props.cloudWatchLogGroupName) {
-      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroupName);
+    if (props.cloudWatchLogGroup) {
+      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroup.logGroupName);
       config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.CloudWatchMonitoringConfiguration! = {
-        LogGroupName: props.cloudWatchLogGroupName,
+        LogGroupName: props.cloudWatchLogGroup.logGroupName,
         LogStreamNamePrefix: props.cloudWatchLogGroupStreamPrefix ?? props.name,
       };
     }

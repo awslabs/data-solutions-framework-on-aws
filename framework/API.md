@@ -3960,9 +3960,9 @@ Any object.
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive). |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | The location (generally it's an S3 URI) where the entry point is saved. |
 | <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
+| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveUri">venvArchiveUri</a></code> | <code>string</code> | The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored. |
 
 ---
 
@@ -4017,15 +4017,15 @@ you must provide S3 write access to this role to upload the artifacts.
 
 ---
 
-##### `entrypointS3Uri`<sup>Required</sup> <a name="entrypointS3Uri" id="aws-dsf.processing.PySparkApplicationPackage.property.entrypointS3Uri"></a>
+##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="aws-dsf.processing.PySparkApplicationPackage.property.entrypointUri"></a>
 
 ```typescript
-public readonly entrypointS3Uri: string;
+public readonly entrypointUri: string;
 ```
 
 - *Type:* string
 
-The S3 location where the entry point is saved in S3.
+The location (generally it's an S3 URI) where the entry point is saved.
 
 You can pass this location to your Spark job.
 
@@ -4043,15 +4043,15 @@ The Spark Config containing the configuration of virtual environment archive wit
 
 ---
 
-##### `venvArchiveS3Uri`<sup>Optional</sup> <a name="venvArchiveS3Uri" id="aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
+##### `venvArchiveUri`<sup>Optional</sup> <a name="venvArchiveUri" id="aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveUri"></a>
 
 ```typescript
-public readonly venvArchiveS3Uri: string;
+public readonly venvArchiveUri: string;
 ```
 
 - *Type:* string
 
-The S3 location where the archive of the Python virtual environment with all dependencies is stored.
+The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored.
 
 You can pass this location to your Spark job.
 
@@ -10179,7 +10179,7 @@ const sparkEmrContainerJobApiProps: processing.SparkEmrContainerJobApiProps = { 
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
 
 ---
 
@@ -10226,16 +10226,16 @@ EMR on EKS StartJobRun API configuration.
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeout"></a>
 
 ```typescript
-public readonly executionTimeoutMinutes: number;
+public readonly executionTimeout: Duration;
 ```
 
-- *Type:* number
+- *Type:* aws-cdk-lib.Duration
 - *Default:* 30 minutes
 
-Job execution timeout in minutes.
+Job execution timeout.
 
 ---
 
@@ -10257,17 +10257,18 @@ const sparkEmrContainerJobProps: processing.SparkEmrContainerJobProps = { ... }
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | The IAM execution Role ARN for the EMR on EKS job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | The execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | The EMR runtime to use. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | The Amazon S3 destination URI for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
 | <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
@@ -10303,13 +10304,13 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionRoleArn"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionRole"></a>
 
 ```typescript
-public readonly executionRoleArn: string;
+public readonly executionRole: IRole;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
 The IAM execution Role ARN for the EMR on EKS job.
 
@@ -10368,13 +10369,13 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupName"></a>
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
-public readonly cloudWatchLogGroupName: string;
+public readonly cloudWatchLogGroup: ILogGroup;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
 - *Default:* CloudWatch is not used for logging
 
 The CloudWatch Log Group name for log publishing.
@@ -10394,16 +10395,16 @@ The CloudWatch Log Group stream prefix for log publishing.
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeout"></a>
 
 ```typescript
-public readonly executionTimeoutMinutes: number;
+public readonly executionTimeout: Duration;
 ```
 
-- *Type:* number
+- *Type:* aws-cdk-lib.Duration
 - *Default:* 30 minutes
 
-The execution timeout in minutes.
+The execution timeout.
 
 ---
 
@@ -10423,26 +10424,41 @@ The maximum number of retries.
 ##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel"></a>
 
 ```typescript
-public readonly releaseLabel: string;
+public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
-- *Type:* string
+- *Type:* aws-dsf.processing.EmrRuntimeVersion
 - *Default:* [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
 
-The EMR runtime to use.
+The EMR release version associated with the application.
+
+The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
 
 ---
 
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogUri"></a>
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogBucket"></a>
 
 ```typescript
-public readonly s3LogUri: string;
+public readonly s3LogBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+- *Default:* No logging to S3
+
+The S3 Bucket for log publishing.
+
+---
+
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogPrefix"></a>
+
+```typescript
+public readonly s3LogPrefix: string;
 ```
 
 - *Type:* string
-- *Default:* An S3 Bucket is created
+- *Default:* No logging to S3
 
-The Amazon S3 destination URI for log publishing.
+The S3 Bucket prefix for log publishing.
 
 ---
 
@@ -10900,20 +10916,21 @@ const sparkEmrServerlessJobProps: processing.SparkEmrServerlessJobProps = { ... 
 | --- | --- | --- |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application ID to execute the Spark Job. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | The IAM execution Role ARN for the EMR Serverless job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application to execute the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role for the EMR Serverless job. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | The Spark Job name. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | The KMS Key for encrypting logs on CloudWatch. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey">cloudWatchEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on CloudWatch. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group Stream prefix for log publishing. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | The types of logs to log in CloudWatch Log. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | The execution timeout in minutes. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | Enable Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | The S3 URI for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | The KMS Key for encrypting logs on S3. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey">persistentAppUIKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey">s3LogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on S3. |
+| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
 | <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
@@ -10957,19 +10974,19 @@ public readonly applicationId: string;
 
 - *Type:* string
 
-The EMR Serverless Application ID to execute the Spark Job.
+The EMR Serverless Application to execute the Spark Job.
 
 ---
 
-##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRoleArn"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRole"></a>
 
 ```typescript
-public readonly executionRoleArn: string;
+public readonly executionRole: IRole;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
-The IAM execution Role ARN for the EMR Serverless job.
+The IAM execution Role for the EMR Serverless job.
 
 ---
 
@@ -11014,26 +11031,26 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-##### `cloudWatchEncryptionKeyArn`<sup>Optional</sup> <a name="cloudWatchEncryptionKeyArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn"></a>
+##### `cloudWatchEncryptionKey`<sup>Optional</sup> <a name="cloudWatchEncryptionKey" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey"></a>
 
 ```typescript
-public readonly cloudWatchEncryptionKeyArn: string;
+public readonly cloudWatchEncryptionKey: IKey;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* No encryption
 
 The KMS Key for encrypting logs on CloudWatch.
 
 ---
 
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName"></a>
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
-public readonly cloudWatchLogGroupName: string;
+public readonly cloudWatchLogGroup: ILogGroup;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
 - *Default:* No logging to CloudWatch
 
 The CloudWatch Log Group name for log publishing.
@@ -11065,16 +11082,16 @@ The types of logs to log in CloudWatch Log.
 
 ---
 
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeout"></a>
 
 ```typescript
-public readonly executionTimeoutMinutes: number;
+public readonly executionTimeout: Duration;
 ```
 
-- *Type:* number
+- *Type:* aws-cdk-lib.Duration
 - *Default:* 30 minutes
 
-The execution timeout in minutes.
+The execution timeout.
 
 ---
 
@@ -11091,42 +11108,55 @@ Enable Spark persistent UI logs in EMR managed storage.
 
 ---
 
-##### `persistentAppUIKeyArn`<sup>Optional</sup> <a name="persistentAppUIKeyArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn"></a>
+##### `persistentAppUIKey`<sup>Optional</sup> <a name="persistentAppUIKey" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey"></a>
 
 ```typescript
-public readonly persistentAppUIKeyArn: string;
+public readonly persistentAppUIKey: IKey;
 ```
 
-- *Type:* string
+- *Type:* aws-cdk-lib.aws_kms.IKey
 - *Default:* Use EMR managed Key
 
 The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage.
 
 ---
 
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUri"></a>
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogBucket"></a>
 
 ```typescript
-public readonly s3LogUri: string;
+public readonly s3LogBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+- *Default:* No logging to S3
+
+The S3 Bucket for log publishing.
+
+---
+
+##### `s3LogEncryptionKey`<sup>Optional</sup> <a name="s3LogEncryptionKey" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey"></a>
+
+```typescript
+public readonly s3LogEncryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* No encryption
+
+The KMS Key for encrypting logs on S3.
+
+---
+
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogPrefix"></a>
+
+```typescript
+public readonly s3LogPrefix: string;
 ```
 
 - *Type:* string
 - *Default:* No logging to S3
 
-The S3 URI for log publishing.
-
----
-
-##### `s3LogUriKeyArn`<sup>Optional</sup> <a name="s3LogUriKeyArn" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn"></a>
-
-```typescript
-public readonly s3LogUriKeyArn: string;
-```
-
-- *Type:* string
-- *Default:* No encryption
-
-The KMS Key for encrypting logs on S3.
+The S3 Bucket prefix for log publishing.
 
 ---
 

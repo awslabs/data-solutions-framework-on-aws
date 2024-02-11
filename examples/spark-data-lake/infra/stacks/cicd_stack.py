@@ -22,4 +22,5 @@ class CICDPipelineStack(Stack):
             application_stack_factory=SparkApplicationStackFactory(),
             cdk_application_path="infra",
             spark_application_path="spark",
+            removal_policy=RemovalPolicy.DESTROY,
         )
