@@ -196,9 +196,21 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
         ],
         resources: [this.dataKey.keyArn, this.adminSecretKey.keyArn],
       }),
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: [
+          'iam:CreateServiceLinkedRole',
+        ],
+        resources: [`arn:aws:iam::${Stack.of(this).account}:role/aws-service-role/redshift.amazonaws.com/AWSServiceRoleForRedshift`],
+        conditions: {
+          StringEquals: {
+            'iam:AWSServiceName': 'redshift.amazonaws.com',
+          },
+        },
+      }),
     ];
 
-    // If there are IAM Roles to configure in the namespace, we grant to the custom resource pass role for these roles
+    // If there are IAM Roles to configure in the namespace, we grant pass role for these roles to the custom resource
     if (roleArns && roleArns.length > 0) {
       createNamespaceCrPolicyStatements.push(new PolicyStatement({
         effect: Effect.ALLOW,

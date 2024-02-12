@@ -161,6 +161,26 @@ describe('With default configuration, the construct', () => {
                   },
                 ],
               },
+              {
+                Action: 'iam:CreateServiceLinkedRole',
+                Condition: {
+                  StringEquals: {
+                    'iam:AWSServiceName': 'redshift.amazonaws.com',
+                  },
+                },
+                Effect: 'Allow',
+                Resource: {
+                  'Fn::Join': Match.arrayWith([
+                    [
+                      'arn:aws:iam::',
+                      {
+                        Ref: 'AWS::AccountId',
+                      },
+                      ':role/aws-service-role/redshift.amazonaws.com/AWSServiceRoleForRedshift',
+                    ],
+                  ]),
+                },
+              },
             ],
           }),
           PolicyName: 'PrimaryPermissions',
