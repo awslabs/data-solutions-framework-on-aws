@@ -233,6 +233,7 @@ export class AthenaWorkGroup extends TrackedConstruct {
       resultLocationPrefix += '/';
     }
     this.resultBucket.grantReadWrite(principal, resultLocationPrefix);
+    this.resultsEncryptionKey.grantEncryptDecrypt(principal);
 
     principal.addToPrincipalPolicy(new PolicyStatement({
       effect: Effect.ALLOW,

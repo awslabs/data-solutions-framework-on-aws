@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+// SPDX-License-Identifier: Apache-2.0
 
-import { Duration, IResolvable, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
@@ -21,7 +21,7 @@ export interface AthenaWorkgroupProps {
    * The option to delete a workgroup and its contents even if the workgroup contains any named queries.
    * @default - Workgroup is retained.
    */
-  readonly recursiveDeleteOption?: boolean | IResolvable;
+  readonly recursiveDeleteOption?: boolean;
 
   /**
    * The state of the Workgroup.
@@ -95,10 +95,10 @@ export interface AthenaWorkgroupProps {
   readonly bytesScannedCutoffPerQuery?: number;
 
   /**
-   * Encryption key used to encrypt query results. Has to be provided if Result bucket is provided
+   * Encryption key used to encrypt query results. Has to be provided if Result bucket is provided.
+   * User needs to grant access to it for AthenaWorkGroup's executionRole (if Spark engine) or for
+   * principals that were granted to run queries using AthenaWorkGroup's grantRunQueries.
    * @default - The key is created if Result Bucket is not provided.
    */
   readonly resultsEncryptionKey?: IKey;
 }
-
-
