@@ -83,16 +83,12 @@ new cdk.CfnOutput(stack, 'virtualClusterArn', {
   value: virtualCluster.attrArn,
 });
 
-new cdk.CfnOutput(stack, 'execRoleArn', {
-  value: execRole.roleArn,
-});
-
-new cdk.CfnOutput(stack, 'eksClusterName', {
-  value: emrEksCluster.eksCluster.clusterName,
-});
-
 new cdk.CfnOutput(stack, 'interactiveEndpointArn', {
   value: interactiveEndpoint.getAttString('arn'),
+});
+
+new cdk.CfnOutput(stack, 'SparkJobStateMachineSimple', {
+  value: job.stateMachine!.stateMachineArn,
 });
 
 let deployResult: Record<string, string>;
@@ -105,8 +101,7 @@ beforeAll(async() => {
 it('Containers runtime created successfully', async () => {
   // THEN
   expect(deployResult.virtualClusterArn).toContain('arn');
-  expect(deployResult.execRoleArn).toContain('arn');
-  expect(deployResult.eksClusterName).toBe('data-platform');
+  expect(deployResult.SparkJobStateMachineSimple).toContain('arn:aws:states:');
   expect(deployResult.interactiveEndpointArn).toContain('arn');
 });
 
