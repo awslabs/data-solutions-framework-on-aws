@@ -3,7 +3,6 @@ import { Construct } from 'constructs';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import * as dsf from '../../index';
 
-/// !show
 class ExampleGrantAthenaWorkGroupStack extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id)
@@ -11,15 +10,15 @@ class ExampleGrantAthenaWorkGroupStack extends Stack {
     const athenaExampleRole = new Role(this, 'AthenaWgExampleRole', {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com')
     })
-
+    /// !show
     const athenaWg = new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupGrant', {
       name: 'athena-grant',
       resultLocationPrefix: 'athena-results/',
     })
 
     athenaWg.grantRunQueries(athenaExampleRole)
+    /// !hide
   }
 }
-/// !hide
 const app = new App()
 new ExampleGrantAthenaWorkGroupStack(app, 'ExampleGrantAthenaWorkGroupStack')

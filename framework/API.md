@@ -2630,8 +2630,6 @@ The list of CfnOutputs created by the CDK Stack.
 
 An Amazon Athena Workgroup configured with default result bucket.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Consumption/athena-workgroup](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Consumption/athena-workgroup)
-
 *Example*
 
 ```typescript
