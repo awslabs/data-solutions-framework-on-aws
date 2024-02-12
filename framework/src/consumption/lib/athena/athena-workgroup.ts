@@ -18,13 +18,13 @@ import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps, Utils } 
 
 /**
  * An Amazon Athena Workgroup configured with default result bucket.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Consumption/athena-workgroup
  *
  * @example
- * new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupExample, {
- *     name: 'dsf-example-athena-wg',
- *     resultLocationPrefix: 'dsf-athena-result'
- * });
+ * new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
+ *    name: 'athena-default',
+ *    resultLocationPrefix: 'athena-default-results/'
+ *  })
  */
 export class AthenaWorkGroup extends TrackedConstruct {
   /**
@@ -223,7 +223,7 @@ export class AthenaWorkGroup extends TrackedConstruct {
 
   /**
    * Grants running queries access to Principal.
-   * @param principal Principal to attach read access to Athena Workgroup
+   * @param principal Principal to attach query access to Athena Workgroup.
    */
   public grantRunQueries(principal: IPrincipal) {
     const currentStack = Stack.of(this);

@@ -2630,15 +2630,15 @@ The list of CfnOutputs created by the CDK Stack.
 
 An Amazon Athena Workgroup configured with default result bucket.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library)
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Consumption/athena-workgroup](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Consumption/athena-workgroup)
 
 *Example*
 
 ```typescript
-new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupExample, {
-    name: 'dsf-example-athena-wg',
-    resultLocationPrefix: 'dsf-athena-result'
-});
+new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
+   name: 'athena-default',
+   resultLocationPrefix: 'athena-default-results/'
+ })
 ```
 
 
@@ -2706,7 +2706,7 @@ Grants running queries access to Principal.
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
-Principal to attach read access to Athena Workgroup.
+Principal to attach query access to Athena Workgroup.
 
 ---
 
@@ -8391,7 +8391,7 @@ const athenaWorkgroupProps: consumption.AthenaWorkgroupProps = { ... }
 | <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.engineVersion">engineVersion</a></code> | <code>aws-dsf.consumption.EngineVersion</code> | The engine version on which the query runs. |
 | <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
 | <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled">publishCloudWatchMetricsEnabled</a></code> | <code>boolean</code> | Indicates that the Amazon CloudWatch metrics are enabled for the workgroup. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean \| aws-cdk-lib.IResolvable</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
 | <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled">requesterPaysEnabled</a></code> | <code>boolean</code> | Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. |
 | <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Amazon S3 Bucket where query results are stored. |
@@ -8493,10 +8493,10 @@ Indicates that the Amazon CloudWatch metrics are enabled for the workgroup.
 ##### `recursiveDeleteOption`<sup>Optional</sup> <a name="recursiveDeleteOption" id="aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption"></a>
 
 ```typescript
-public readonly recursiveDeleteOption: boolean | IResolvable;
+public readonly recursiveDeleteOption: boolean;
 ```
 
-- *Type:* boolean | aws-cdk-lib.IResolvable
+- *Type:* boolean
 - *Default:* Workgroup is retained.
 
 The option to delete a workgroup and its contents even if the workgroup contains any named queries.
@@ -8569,7 +8569,9 @@ public readonly resultsEncryptionKey: IKey;
 
 Encryption key used to encrypt query results.
 
-Has to be provided if Result bucket is provided
+Has to be provided if Result bucket is provided.
+User needs to grant access to it for AthenaWorkGroup's executionRole (if Spark engine) or for
+principals that were granted to run queries using AthenaWorkGroup's grantRunQueries.
 
 ---
 

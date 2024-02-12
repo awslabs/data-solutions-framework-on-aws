@@ -403,7 +403,6 @@ describe('AthenaWorkGroup with user provided key', () => {
   });
 
   const template = Template.fromStack(stack);
-  console.log(template);
 
   test('should have configuration with provided bucket and key', () => {
     template.hasResourceProperties('AWS::Athena::WorkGroup', {
