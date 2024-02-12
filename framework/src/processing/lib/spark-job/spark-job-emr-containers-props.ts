@@ -11,7 +11,7 @@ import { EmrRuntimeVersion } from '../emr-releases';
 /**
  * Simplified configuration for the `SparkEmrEksJob` construct.
  */
-export interface SparkEmrContainerJobProps extends SparkJobProps {
+export interface SparkEmrContainersJobProps extends SparkJobProps {
 
   /**
    * The Spark job name.
@@ -107,7 +107,7 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
  * Use this interface when `SparkEmrContainerJobProps` doesn't give you access to the configuration parameters you need.
  * @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
  */
-export interface SparkEmrContainerJobApiProps extends SparkJobProps {
+export interface SparkEmrContainersJobApiProps extends SparkJobProps {
 
   /**
    * Job execution timeout.

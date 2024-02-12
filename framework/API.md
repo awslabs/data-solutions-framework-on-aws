@@ -6041,7 +6041,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrContainerJob <a name="SparkEmrContainerJob" id="aws-dsf.processing.SparkEmrContainerJob"></a>
+### SparkEmrContainersJob <a name="SparkEmrContainersJob" id="aws-dsf.processing.SparkEmrContainersJob"></a>
 
 A construct to run Spark Jobs using EMR Container runtime (EMR on EKS).
 
@@ -6054,7 +6054,7 @@ It creates a Step Functions State Machine that orchestrates the Spark Job.
 ```typescript
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 
-const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
+const job = new dsf.processing.SparkEmrContainersJob(this, 'SparkJob', {
   jobConfig:{
     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
     "VirtualClusterId": "virtualClusterId",
@@ -6067,7 +6067,7 @@ const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
       },
     }
   }
-} as dsf.processing.SparkEmrContainerJobApiProps);
+} as dsf.processing.SparkEmrContainersJobApiProps);
 
 new cdk.CfnOutput(this, 'SparkJobStateMachine', {
   value: job.stateMachine!.stateMachineArn,
@@ -6075,37 +6075,37 @@ new cdk.CfnOutput(this, 'SparkJobStateMachine', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrContainerJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrContainersJob.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-dsf'
 
-new processing.SparkEmrContainerJob(scope: Construct, id: string, props: SparkEmrContainerJobProps | SparkEmrContainerJobApiProps)
+new processing.SparkEmrContainersJob(scope: Construct, id: string, props: SparkEmrContainersJobProps | SparkEmrContainersJobApiProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrContainerJobProps \| aws-dsf.processing.SparkEmrContainerJobApiProps</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrContainersJobProps \| aws-dsf.processing.SparkEmrContainersJobApiProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrContainerJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.props"></a>
 
-- *Type:* aws-dsf.processing.SparkEmrContainerJobProps | aws-dsf.processing.SparkEmrContainerJobApiProps
+- *Type:* aws-dsf.processing.SparkEmrContainersJobProps | aws-dsf.processing.SparkEmrContainersJobApiProps
 
 ---
 
@@ -6113,12 +6113,12 @@ new processing.SparkEmrContainerJob(scope: Construct, id: string, props: SparkEm
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrContainerJob.toString"></a>
+##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrContainersJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -6126,7 +6126,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrContainerJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrContainersJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -6138,16 +6138,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrContainerJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrContainersJob.isConstruct"></a>
 
 ```typescript
 import { processing } from 'aws-dsf'
 
-processing.SparkEmrContainerJob.isConstruct(x: any)
+processing.SparkEmrContainersJob.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -6166,7 +6166,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrContainerJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrContainersJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -6178,13 +6178,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrContainerJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrContainersJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -6196,7 +6196,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrContainerJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrContainersJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -6208,7 +6208,7 @@ The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrContainerJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrContainersJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -6224,12 +6224,12 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainerJob.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -6239,7 +6239,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainerJob.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -10156,7 +10156,7 @@ The EMR Spark image to use to run the unit tests.
 
 ---
 
-### SparkEmrContainerJobApiProps <a name="SparkEmrContainerJobApiProps" id="aws-dsf.processing.SparkEmrContainerJobApiProps"></a>
+### SparkEmrContainersJobApiProps <a name="SparkEmrContainersJobApiProps" id="aws-dsf.processing.SparkEmrContainersJobApiProps"></a>
 
 Configuration for the EMR on EKS job.
 
@@ -10164,26 +10164,26 @@ Use this interface when `SparkEmrContainerJobProps` doesn't give you access to t
 
 > [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainerJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersJobApiProps.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-dsf'
 
-const sparkEmrContainerJobApiProps: processing.SparkEmrContainerJobApiProps = { ... }
+const sparkEmrContainersJobApiProps: processing.SparkEmrContainersJobApiProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10199,7 +10199,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10212,7 +10212,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -10226,7 +10226,7 @@ EMR on EKS StartJobRun API configuration.
 
 ---
 
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainerJobApiProps.property.executionTimeout"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -10239,43 +10239,43 @@ Job execution timeout.
 
 ---
 
-### SparkEmrContainerJobProps <a name="SparkEmrContainerJobProps" id="aws-dsf.processing.SparkEmrContainerJobProps"></a>
+### SparkEmrContainersJobProps <a name="SparkEmrContainersJobProps" id="aws-dsf.processing.SparkEmrContainersJobProps"></a>
 
 Simplified configuration for the `SparkEmrEksJob` construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainerJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersJobProps.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-dsf'
 
-const sparkEmrContainerJobProps: processing.SparkEmrContainerJobProps = { ... }
+const sparkEmrContainersJobProps: processing.SparkEmrContainersJobProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainerJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
+| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainerJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10291,7 +10291,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainerJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainersJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10304,7 +10304,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionRole"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrContainersJobProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -10316,7 +10316,7 @@ The IAM execution Role ARN for the EMR on EKS job.
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrContainerJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrContainersJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -10328,7 +10328,7 @@ The Spark job name.
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -10342,7 +10342,7 @@ The entry point for the Spark submit job run.
 
 ---
 
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrContainerJobProps.property.virtualClusterId"></a>
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrContainersJobProps.property.virtualClusterId"></a>
 
 ```typescript
 public readonly virtualClusterId: string;
@@ -10354,7 +10354,7 @@ The EMR on EKS virtual cluster ID.
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrContainerJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrContainersJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -10369,7 +10369,7 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroup"></a>
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
 public readonly cloudWatchLogGroup: ILogGroup;
@@ -10382,7 +10382,7 @@ The CloudWatch Log Group name for log publishing.
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -10395,7 +10395,7 @@ The CloudWatch Log Group stream prefix for log publishing.
 
 ---
 
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainerJobProps.property.executionTimeout"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainersJobProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -10408,7 +10408,7 @@ The execution timeout.
 
 ---
 
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.processing.SparkEmrContainerJobProps.property.maxRetries"></a>
+##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.processing.SparkEmrContainersJobProps.property.maxRetries"></a>
 
 ```typescript
 public readonly maxRetries: number;
@@ -10421,7 +10421,7 @@ The maximum number of retries.
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrContainerJobProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrContainersJobProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: EmrRuntimeVersion;
@@ -10436,7 +10436,7 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogBucket"></a>
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogBucket"></a>
 
 ```typescript
 public readonly s3LogBucket: IBucket;
@@ -10449,7 +10449,7 @@ The S3 Bucket for log publishing.
 
 ---
 
-##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-dsf.processing.SparkEmrContainerJobProps.property.s3LogPrefix"></a>
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogPrefix"></a>
 
 ```typescript
 public readonly s3LogPrefix: string;
@@ -10462,7 +10462,7 @@ The S3 Bucket prefix for log publishing.
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string[];
@@ -10477,7 +10477,7 @@ The arguments for the Spark submit job run.
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -10492,7 +10492,7 @@ The parameters for the Spark submit job run.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrContainerJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrContainersJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};

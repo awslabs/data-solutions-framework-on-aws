@@ -4,14 +4,16 @@
 /**
  * E2E test for SparkContainersRunime
  *
- * @group e2e/processing/spark-runtime-containers
+ * @group e2e/processing/spark-emr-containers
  */
 
 import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { TestStack } from './test-stack';
-import { SparkEmrContainersRuntime } from '../../src/processing';
+import { SparkEmrContainersJob, SparkEmrContainersRuntime } from '../../src/processing';
 
 
 jest.setTimeout(10000000);
@@ -49,17 +51,32 @@ const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
 });
 
 const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
-  name: 'e2e',
+  name: 'e2etest',
   createNamespace: true,
-  eksNamespace: 'e2ens',
+  eksNamespace: 'e2etestns',
 });
 
 const execRole = emrEksCluster.createExecutionRole(stack, 'ExecRole', s3ReadPolicy, 'e2ens', 's3ReadExecRole');
+
+const logBucket = new Bucket(stack, 'Bucket', {
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  autoDeleteObjects: true,
+});
 
 const interactiveEndpoint = emrEksCluster.addInteractiveEndpoint(stack, 'addInteractiveEndpoint4', {
   virtualClusterId: virtualCluster.attrId,
   managedEndpointName: 'e2e',
   executionRole: execRole,
+});
+
+const job = new SparkEmrContainersJob(stack, 'Job', {
+  name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
+  executionRole: execRole,
+  virtualClusterId: virtualCluster.attrId,
+  s3LogBucket: logBucket,
+  s3LogPrefix: 'monitoring-logs',
+  sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
+  sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
 });
 
 new cdk.CfnOutput(stack, 'virtualClusterArn', {

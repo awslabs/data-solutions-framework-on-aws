@@ -7,7 +7,7 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob } from './spark-job';
-import { SparkEmrContainerJobApiProps, SparkEmrContainerJobProps } from './spark-job-emr-container-props';
+import { SparkEmrContainersJobApiProps, SparkEmrContainersJobProps } from './spark-job-emr-containers-props';
 import { SparkJobProps } from './spark-job-props';
 import { StepFunctionUtils, TrackedConstruct } from '../../../utils';
 import { EMR_DEFAULT_VERSION } from '../emr-releases';
@@ -21,7 +21,7 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  * @example
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
- * const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
+ * const job = new dsf.processing.SparkEmrContainersJob(this, 'SparkJob', {
  *   jobConfig:{
  *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *     "VirtualClusterId": "virtualClusterId",
@@ -34,25 +34,25 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  *       },
  *     }
  *   }
- * } as dsf.processing.SparkEmrContainerJobApiProps);
+ * } as dsf.processing.SparkEmrContainersJobApiProps);
  *
  * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
  *   value: job.stateMachine!.stateMachineArn,
  * });
  */
-export class SparkEmrContainerJob extends SparkJob {
+export class SparkEmrContainersJob extends SparkJob {
 
-  private constructJobConfig: SparkEmrContainerJobApiProps;
+  private constructJobConfig: SparkEmrContainersJobApiProps;
 
-  constructor( scope: Construct, id: string, props: SparkEmrContainerJobProps | SparkEmrContainerJobApiProps) {
-    super(scope, id, SparkEmrContainerJob.name, props as SparkJobProps);
+  constructor( scope: Construct, id: string, props: SparkEmrContainersJobProps | SparkEmrContainersJobApiProps) {
+    super(scope, id, SparkEmrContainersJob.name, props as SparkJobProps);
 
     let sparkJobExecutionRole: IRole;
 
     if ('jobConfig' in props) {
-      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrContainerJobApiProps);
+      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrContainersJobApiProps);
     } else {
-      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrContainerJobProps);
+      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrContainersJobProps);
     }
 
     sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
@@ -182,7 +182,7 @@ export class SparkEmrContainerJob extends SparkJob {
    * Set defaults for the SparkEmrContainerJobApiProps.
    * @param props SparkEmrContainerJobApiProps
    */
-  private setJobApiPropsDefaults(props: SparkEmrContainerJobApiProps): SparkEmrContainerJobApiProps {
+  private setJobApiPropsDefaults(props: SparkEmrContainersJobApiProps): SparkEmrContainersJobApiProps {
 
     const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
@@ -200,7 +200,7 @@ export class SparkEmrContainerJob extends SparkJob {
    * Set defaults for the SparkEmrContainerJobProps.
    * @param props SparkEmrContainerJobProps
    */
-  private setJobPropsDefaults(props: SparkEmrContainerJobProps): SparkEmrContainerJobApiProps {
+  private setJobPropsDefaults(props: SparkEmrContainersJobProps): SparkEmrContainersJobApiProps {
     const config = {
       jobConfig: {
         ConfigurationOverrides: {
@@ -213,7 +213,7 @@ export class SparkEmrContainerJob extends SparkJob {
           SparkSubmitJobDriver: {},
         },
       },
-    } as SparkEmrContainerJobApiProps;
+    } as SparkEmrContainersJobApiProps;
 
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();

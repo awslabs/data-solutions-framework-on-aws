@@ -5,7 +5,7 @@
 /**
  * Tests Spark runtime EMR Containers construct
  *
- * @group unit/processing-runtime/containers/emr-containers
+ * @group unit/processing/runtime/emr-containers
 */
 
 

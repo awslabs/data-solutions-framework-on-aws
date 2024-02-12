@@ -63,7 +63,7 @@ export class SparkEmrServerlessJob extends SparkJob {
 
     this.constructJobConfig.jobConfig.Tags[TrackedConstruct.DSF_OWNED_TAG] = 'true';
 
-    sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
+    sparkJobExecutionRole = Role.fromRoleArn(this, `SparkJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
 
 
     this.stateMachine = this.createStateMachine(
