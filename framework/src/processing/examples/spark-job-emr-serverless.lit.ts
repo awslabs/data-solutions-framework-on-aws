@@ -11,6 +11,8 @@ import * as dsf from '../../index';
 class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
+
+    /// !hide
     const runtime = new dsf.processing.SparkEmrServerlessRuntime(this, 'SparkRuntime', {
       name: 'mySparkRuntime',
     });
@@ -25,23 +27,20 @@ class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
     });
     
     const executionRole = dsf.processing.SparkEmrServerlessRuntime.createExecutionRole(this, 'EmrServerlessExecutionRole', s3ReadPolicy);
-    
-    const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'SparkNightlyJob', {
+    /// !show
+    const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'PiJob', {
       applicationId: runtime.application.attrApplicationId,
-      name: 'nightly_job',
+      name: 'PiCalculation',
       executionRoleArn: executionRole.roleArn,
-      executionTimeoutMinutes: 30,
-      s3LogUri: 's3://emr-job-logs-EXAMPLE/logs',
       sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
-      sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
     });
     
     new CfnOutput(this, 'job-state-machine', {
       value: nightJob.stateMachine!.stateMachineArn,
     });
+    /// !hide
   }
 }
-/// !hide
 
 const app = new cdk.App();
 new ExampleSparkJobEmrServerlessStack(app, 'ExampleSparkJobEmrServerlessStack');

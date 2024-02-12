@@ -5,7 +5,7 @@ sidebar_label: Introduction
 
 # Data solutions framework on AWS 
 
-DSF on AWS is an open-source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions that address the most common data analytics requirements. 
+DSF on AWS is an open source framework that simplifies implementation and delivery of integrated, customizable, and ready-to-deploy solutions to address the most common data analytics requirements. 
 
 ![DSF on AWS Overview](../../static/img/aws-dsf-overview.png)
 
