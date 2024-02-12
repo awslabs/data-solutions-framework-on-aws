@@ -2626,6 +2626,250 @@ The list of CfnOutputs created by the CDK Stack.
 ---
 
 
+### AthenaWorkGroup <a name="AthenaWorkGroup" id="aws-dsf.consumption.AthenaWorkGroup"></a>
+
+An Amazon Athena Workgroup configured with default result bucket.
+
+*Example*
+
+```typescript
+new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
+   name: 'athena-default',
+   resultLocationPrefix: 'athena-default-results/'
+ })
+```
+
+
+#### Initializers <a name="Initializers" id="aws-dsf.consumption.AthenaWorkGroup.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+new consumption.AthenaWorkGroup(scope: Construct, id: string, props: AthenaWorkgroupProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.AthenaWorkgroupProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.props"></a>
+
+- *Type:* aws-dsf.consumption.AthenaWorkgroupProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.grantRunQueries">grantRunQueries</a></code> | Grants running queries access to Principal. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="aws-dsf.consumption.AthenaWorkGroup.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `grantRunQueries` <a name="grantRunQueries" id="aws-dsf.consumption.AthenaWorkGroup.grantRunQueries"></a>
+
+```typescript
+public grantRunQueries(principal: IPrincipal): void
+```
+
+Grants running queries access to Principal.
+
+###### `principal`<sup>Required</sup> <a name="principal" id="aws-dsf.consumption.AthenaWorkGroup.grantRunQueries.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+Principal to attach query access to Athena Workgroup.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.consumption.AthenaWorkGroup.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="aws-dsf.consumption.AthenaWorkGroup.isConstruct"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+consumption.AthenaWorkGroup.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.consumption.AthenaWorkGroup.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket used for query results. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key to encrypt the query results. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.workGroup">workGroup</a></code> | <code>aws-cdk-lib.aws_athena.CfnWorkGroup</code> | Athena Workgroup that is created. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.workGroupName">workGroupName</a></code> | <code>string</code> | WorkGroup name with the randomized suffix. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.consumption.AthenaWorkGroup.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `resultBucket`<sup>Required</sup> <a name="resultBucket" id="aws-dsf.consumption.AthenaWorkGroup.property.resultBucket"></a>
+
+```typescript
+public readonly resultBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+S3 Bucket used for query results.
+
+---
+
+##### `resultsEncryptionKey`<sup>Required</sup> <a name="resultsEncryptionKey" id="aws-dsf.consumption.AthenaWorkGroup.property.resultsEncryptionKey"></a>
+
+```typescript
+public readonly resultsEncryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+KMS Key to encrypt the query results.
+
+---
+
+##### `workGroup`<sup>Required</sup> <a name="workGroup" id="aws-dsf.consumption.AthenaWorkGroup.property.workGroup"></a>
+
+```typescript
+public readonly workGroup: CfnWorkGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_athena.CfnWorkGroup
+
+Athena Workgroup that is created.
+
+---
+
+##### `workGroupName`<sup>Required</sup> <a name="workGroupName" id="aws-dsf.consumption.AthenaWorkGroup.property.workGroupName"></a>
+
+```typescript
+public readonly workGroupName: string;
+```
+
+- *Type:* string
+
+WorkGroup name with the randomized suffix.
+
+---
+
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-dsf.consumption.AthenaWorkGroup.property.executionRole"></a>
+
+```typescript
+public readonly executionRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+Role used to access user resources in an Athena for Apache Spark session.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="aws-dsf.governance.DataCatalogDatabase"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -8122,6 +8366,238 @@ The list of values to create CfnOutputs.
 
 ---
 
+### AthenaWorkgroupProps <a name="AthenaWorkgroupProps" id="aws-dsf.consumption.AthenaWorkgroupProps"></a>
+
+Properties for the AthenaWorkgroup Construct.
+
+#### Initializer <a name="Initializer" id="aws-dsf.consumption.AthenaWorkgroupProps.Initializer"></a>
+
+```typescript
+import { consumption } from 'aws-dsf'
+
+const athenaWorkgroupProps: consumption.AthenaWorkgroupProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.name">name</a></code> | <code>string</code> | Name of the Workgroup. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultLocationPrefix">resultLocationPrefix</a></code> | <code>string</code> | Specifies the location in Amazon S3 where query results are stored. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery">bytesScannedCutoffPerQuery</a></code> | <code>number</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration">enforceWorkGroupConfiguration</a></code> | <code>boolean</code> | If set to "true", the settings for the workgroup override client-side settings. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.engineVersion">engineVersion</a></code> | <code>aws-dsf.consumption.EngineVersion</code> | The engine version on which the query runs. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled">publishCloudWatchMetricsEnabled</a></code> | <code>boolean</code> | Indicates that the Amazon CloudWatch metrics are enabled for the workgroup. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled">requesterPaysEnabled</a></code> | <code>boolean</code> | Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Amazon S3 Bucket where query results are stored. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucketName">resultBucketName</a></code> | <code>string</code> | Name for the S3 Bucket in case it should be created. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used to encrypt query results. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod">resultsRetentionPeriod</a></code> | <code>aws-cdk-lib.Duration</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
+| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.state">state</a></code> | <code>aws-dsf.consumption.State</code> | The state of the Workgroup. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.consumption.AthenaWorkgroupProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+Name of the Workgroup.
+
+---
+
+##### `resultLocationPrefix`<sup>Required</sup> <a name="resultLocationPrefix" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultLocationPrefix"></a>
+
+```typescript
+public readonly resultLocationPrefix: string;
+```
+
+- *Type:* string
+
+Specifies the location in Amazon S3 where query results are stored.
+
+---
+
+##### `bytesScannedCutoffPerQuery`<sup>Optional</sup> <a name="bytesScannedCutoffPerQuery" id="aws-dsf.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery"></a>
+
+```typescript
+public readonly bytesScannedCutoffPerQuery: number;
+```
+
+- *Type:* number
+
+Indicates the number of days after creation when objects are deleted from the Result bucket.
+
+---
+
+##### `enforceWorkGroupConfiguration`<sup>Optional</sup> <a name="enforceWorkGroupConfiguration" id="aws-dsf.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration"></a>
+
+```typescript
+public readonly enforceWorkGroupConfiguration: boolean;
+```
+
+- *Type:* boolean
+- *Default:* True.
+
+If set to "true", the settings for the workgroup override client-side settings.
+
+---
+
+##### `engineVersion`<sup>Optional</sup> <a name="engineVersion" id="aws-dsf.consumption.AthenaWorkgroupProps.property.engineVersion"></a>
+
+```typescript
+public readonly engineVersion: EngineVersion;
+```
+
+- *Type:* aws-dsf.consumption.EngineVersion
+- *Default:* AUTO.
+
+The engine version on which the query runs.
+
+---
+
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-dsf.consumption.AthenaWorkgroupProps.property.executionRole"></a>
+
+```typescript
+public readonly executionRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* The role is created if PySpark engine version is selected and no role is provided.
+
+Role used to access user resources in an Athena for Apache Spark session.
+
+---
+
+##### `publishCloudWatchMetricsEnabled`<sup>Optional</sup> <a name="publishCloudWatchMetricsEnabled" id="aws-dsf.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled"></a>
+
+```typescript
+public readonly publishCloudWatchMetricsEnabled: boolean;
+```
+
+- *Type:* boolean
+- *Default:* True.
+
+Indicates that the Amazon CloudWatch metrics are enabled for the workgroup.
+
+---
+
+##### `recursiveDeleteOption`<sup>Optional</sup> <a name="recursiveDeleteOption" id="aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption"></a>
+
+```typescript
+public readonly recursiveDeleteOption: boolean;
+```
+
+- *Type:* boolean
+- *Default:* Workgroup is retained.
+
+The option to delete a workgroup and its contents even if the workgroup contains any named queries.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.consumption.AthenaWorkgroupProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `requesterPaysEnabled`<sup>Optional</sup> <a name="requesterPaysEnabled" id="aws-dsf.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled"></a>
+
+```typescript
+public readonly requesterPaysEnabled: boolean;
+```
+
+- *Type:* boolean
+- *Default:* False.
+
+Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries.
+
+---
+
+##### `resultBucket`<sup>Optional</sup> <a name="resultBucket" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucket"></a>
+
+```typescript
+public readonly resultBucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+- *Default:* Create a new bucket with SSE encryption using AnalyticsBucket if not provided.
+
+Amazon S3 Bucket where query results are stored.
+
+---
+
+##### `resultBucketName`<sup>Optional</sup> <a name="resultBucketName" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucketName"></a>
+
+```typescript
+public readonly resultBucketName: string;
+```
+
+- *Type:* string
+- *Default:* Name will be provided.
+
+Name for the S3 Bucket in case it should be created.
+
+---
+
+##### `resultsEncryptionKey`<sup>Optional</sup> <a name="resultsEncryptionKey" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey"></a>
+
+```typescript
+public readonly resultsEncryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* The key is created if Result Bucket is not provided.
+
+Encryption key used to encrypt query results.
+
+Has to be provided if Result bucket is provided.
+User needs to grant access to it for AthenaWorkGroup's executionRole (if Spark engine) or for
+principals that were granted to run queries using AthenaWorkGroup's grantRunQueries.
+
+---
+
+##### `resultsRetentionPeriod`<sup>Optional</sup> <a name="resultsRetentionPeriod" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod"></a>
+
+```typescript
+public readonly resultsRetentionPeriod: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+
+Indicates the number of days after creation when objects are deleted from the Result bucket.
+
+---
+
+##### `state`<sup>Optional</sup> <a name="state" id="aws-dsf.consumption.AthenaWorkgroupProps.property.state"></a>
+
+```typescript
+public readonly state: State;
+```
+
+- *Type:* aws-dsf.consumption.State
+- *Default:* ENABLED.
+
+The state of the Workgroup.
+
+---
+
 ### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-dsf.governance.DataCatalogDatabaseProps"></a>
 
 Properties for the `DataCatalogDatabase` construct.
@@ -11607,6 +12083,33 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 ---
 
 
+### EngineVersion <a name="EngineVersion" id="aws-dsf.consumption.EngineVersion"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.EngineVersion.AUTO">AUTO</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.EngineVersion.ATHENA_V3">ATHENA_V3</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.EngineVersion.PYSPARK_V3">PYSPARK_V3</a></code> | *No description.* |
+
+---
+
+##### `AUTO` <a name="AUTO" id="aws-dsf.consumption.EngineVersion.AUTO"></a>
+
+---
+
+
+##### `ATHENA_V3` <a name="ATHENA_V3" id="aws-dsf.consumption.EngineVersion.ATHENA_V3"></a>
+
+---
+
+
+##### `PYSPARK_V3` <a name="PYSPARK_V3" id="aws-dsf.consumption.EngineVersion.PYSPARK_V3"></a>
+
+---
+
+
 ### KarpenterVersion <a name="KarpenterVersion" id="aws-dsf.processing.KarpenterVersion"></a>
 
 The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 is supported.
@@ -11708,6 +12211,27 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 
 ##### `EMR_6_9` <a name="EMR_6_9" id="aws-dsf.processing.SparkImage.EMR_6_9"></a>
+
+---
+
+
+### State <a name="State" id="aws-dsf.consumption.State"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#aws-dsf.consumption.State.ENABLED">ENABLED</a></code> | *No description.* |
+| <code><a href="#aws-dsf.consumption.State.DISABLED">DISABLED</a></code> | *No description.* |
+
+---
+
+##### `ENABLED` <a name="ENABLED" id="aws-dsf.consumption.State.ENABLED"></a>
+
+---
+
+
+##### `DISABLED` <a name="DISABLED" id="aws-dsf.consumption.State.DISABLED"></a>
 
 ---
 

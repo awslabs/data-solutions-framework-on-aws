@@ -3,3 +3,4 @@
 
 export * from './redshift-serverless';
 export * from './redshift';
+export * from './athena';

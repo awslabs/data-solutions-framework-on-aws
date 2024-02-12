@@ -1,0 +1,190 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/consumption)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+An [Amazon Athena workgroup](https://docs.aws.amazon.com/athena/latest/ug/manage-queries-control-costs-with-workgroups.html) with provided configuration.
+
+`AthenaWorkGroup` provides Athena workgroup configuration with best-practices:
+- Amazon S3 bucket for query results, based on [`AnalyticsBucket`](../storage/README.md#AnalyticsBucket).
+- Query results are encrypted using AWS KMS Key.
+- Execution Role for the PySpark query engine.
+- A grant method to allow principals to run queries.
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
+  name: 'athena-default',
+  resultLocationPrefix: 'athena-default-results/'
+})
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.consumption.AthenaWorkGroup(self, "AthenaWorkGroupDefault",
+    name="athena-default",
+    result_location_prefix="athena-default-results/"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## User provided S3 bucket for query results
+
+You can provide your own S3 bucket for query results. If you do so, you are required to provide a KMS Key that will be used to encrypt query results.
+
+:::caution Results encryption
+If you provide your own S3 bucket, you also need to provide KMS encryption key to encrypt query results. You also need to 
+grant access to this key for AthenaWorkGroup's executionRole (if Spark engine is used), or for principals that were granted to run
+queries using AthenaWorkGroup's `grantRunQueries` method.
+:::caution
+
+You can also decide to provide your KMS Key to encrypt query results with S3 bucket that is provided by the construct (i.e. if you are not providing your own S3 bucket).
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
+  name: 'athena-user-bucket',
+  resultBucket: userResultsBucket,
+  resultsEncryptionKey: userDataKey,
+  resultLocationPrefix: 'athena-wg-results/'
+})
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.consumption.AthenaWorkGroup(self, "AthenaWorkGroupDefault",
+    name="athena-user-bucket",
+    result_bucket=user_results_bucket,
+    results_encryption_key=user_data_key,
+    result_location_prefix="athena-wg-results/"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Apache Spark (PySpark) Engine version
+
+You can choose Athena query engine from the available options:
+- [Athena engine version 3](https://docs.aws.amazon.com/athena/latest/ug/engine-versions-reference-0003.html)
+- [PySpark engine version 3](https://docs.aws.amazon.com/athena/latest/ug/notebooks-spark.html)
+
+The `default` is set to `AUTO` which will choose Athena engine version 3. 
+
+If you wish to change query engine to PySpark, you will also be able to access the `executionRole` IAM Role that will be created for you if you don't provide it. 
+You can access the execution role via `executionRole` property.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+    const sparkEngineVersion = dsf.consumption.EngineVersion.PYSPARK_V3
+
+    new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupSpark', {
+      name: 'athena-spark',
+      engineVersion: sparkEngineVersion,
+      resultLocationPrefix: 'athena-wg-results/'
+    })
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+spark_engine_version = dsf.consumption.EngineVersion.PYSPARK_V3
+
+dsf.consumption.AthenaWorkGroup(self, "AthenaWorkGroupSpark",
+    name="athena-spark",
+    engine_version=spark_engine_version,
+    result_location_prefix="athena-wg-results/"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Construct properties
+
+You can leverage different properties to customize your Athena workgroup. For example, you can use `resultsRetentionPeriod` to specify the retention period for your query results. You can provide your KMS Key for encryption even if you use provided results bucket. You can explore other properties available in `AthenaWorkGroupProps`.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupProperties', {
+  name: 'athena-properties',
+  bytesScannedCutoffPerQuery: 104857600,
+  resultLocationPrefix: 'athena-results/',
+  resultsEncryptionKey: userDataKey,
+  resultsRetentionPeriod: Duration.days(1),
+})
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.consumption.AthenaWorkGroup(self, "AthenaWorkGroupProperties",
+    name="athena-properties",
+    bytes_scanned_cutoff_per_query=104857600,
+    result_location_prefix="athena-results/",
+    results_encryption_key=user_data_key,
+    results_retention_period=Duration.days(1)
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Grant permission to run queries
+
+We provide `grantRunQueries` method to grant permission to principals to run queries using the workgroup.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+    const athenaWg = new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupGrant', {
+      name: 'athena-grant',
+      resultLocationPrefix: 'athena-results/',
+    })
+
+    athenaWg.grantRunQueries(athenaExampleRole)
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+athena_wg = dsf.consumption.AthenaWorkGroup(self, "AthenaWorkGroupGrant",
+    name="athena-grant",
+    result_location_prefix="athena-results/"
+)
+
+athena_wg.grant_run_queries(athena_example_role)
+  ```
+
+  </TabItem>
+</Tabs>
+
