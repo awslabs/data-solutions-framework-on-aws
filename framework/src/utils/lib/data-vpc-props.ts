@@ -5,6 +5,7 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { DataVpcClientVpnEndpointProps } from './client-vpn-endpoint-props';
 
 /**
  * The properties for the `DataVpc` construct
@@ -42,14 +43,8 @@ export interface DataVpcProps {
    */
   readonly removalPolicy?: RemovalPolicy;
   /** 
-   * ClientVpnEndpoint server certificate ARN, if specified client vpn endpoint will be added to the vpc.
-   * @default - None.
+   * ClientVpnEndpoint propertioes. Required if client vpn endpoint is needed
+   * @default None
    */
-  readonly vpnEndpointCertificateArn?: string;
-  /**
-   * ClientVpnEndpoint SAML2.0 XML metadata configuration, required if client vpn endpoint is needed
-   * @default - None.
-   */
-  readonly vpnEndpointSamlMetadata?: string;
-
+  readonly clientVpnEndpointProps?: DataVpcClientVpnEndpointProps;
 }
