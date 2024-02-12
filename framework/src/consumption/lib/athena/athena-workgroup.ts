@@ -18,7 +18,6 @@ import { BucketUtils, Context, TrackedConstruct, TrackedConstructProps, Utils } 
 
 /**
  * An Amazon Athena Workgroup configured with default result bucket.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Consumption/athena-workgroup
  *
  * @example
  * new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
