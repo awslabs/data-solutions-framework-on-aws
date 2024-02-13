@@ -5,6 +5,7 @@ import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Match, Annotations } from 'aws-cdk-lib/assertions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { CreateServiceLinkedRole } from '../../../../src/utils';
+import { ServiceLinkedRoleService } from '../../../../src/utils/lib/service-linked-role-service';
 
 /**
  * Nag Tests Tracked Construct
@@ -14,13 +15,13 @@ import { CreateServiceLinkedRole } from '../../../../src/utils';
 const app = new App();
 const stack = new Stack(app, 'Stack');
 const slr = new CreateServiceLinkedRole(stack, 'CreateSLR');
-slr.create('redshift.amazonaws.com');
+slr.create(ServiceLinkedRoleService.REDSHIFT);
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressions(slr, [
   {
     id: 'AwsSolutions-IAM5',
-    reason: 'Required to provide flexibility when creating service linked role',
+    reason: 'Wildcard part of the provider framework in CDK',
   },
   {
     id: 'AwsSolutions-IAM4',

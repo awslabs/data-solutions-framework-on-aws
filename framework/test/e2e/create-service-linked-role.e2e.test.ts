@@ -5,6 +5,7 @@ import { CfnOutput } from 'aws-cdk-lib';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { CreateServiceLinkedRole } from '../../src/utils';
+import { ServiceLinkedRoleService } from '../../src/utils/lib/service-linked-role-service';
 
 /**
  * E2E test for CreateServiceLinkedRole
@@ -15,12 +16,13 @@ import { CreateServiceLinkedRole } from '../../src/utils';
 jest.setTimeout(9000000);
 const testStack = new TestStack('CreateServiceLinkedRoleStack');
 const { stack } = testStack;
-const roleNameToCheck = 'AWSServiceRoleForRedshift';
+const slrService = ServiceLinkedRoleService.REDSHIFT;
+const roleNameToCheck = slrService.roleName;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const slr = new CreateServiceLinkedRole(stack, 'CreateSLR');
-const createResource = slr.create('redshift.amazonaws.com');
+const createResource = slr.create(slrService);
 
 const createdRole = Role.fromRoleName(stack, 'CreatedSLRRole', roleNameToCheck);
 createdRole.node.addDependency(createResource);

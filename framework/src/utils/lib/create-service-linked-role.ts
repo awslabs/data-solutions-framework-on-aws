@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CustomResource, Duration } from 'aws-cdk-lib';
-import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { CustomResource, Duration, Stack } from 'aws-cdk-lib';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { Context } from './context';
 import { CreateServiceLinkedRoleProps } from './create-service-linked-role-props';
 import { DsfProvider } from './dsf-provider';
+import { ServiceLinkedRoleService } from './service-linked-role-service';
 
 /**
  * @internal
@@ -19,32 +20,19 @@ import { DsfProvider } from './dsf-provider';
 export class CreateServiceLinkedRole extends Construct {
 
   private readonly serviceToken: string;
+  private readonly providerRole: Role;
 
   constructor(scope: Construct, id: string, props?: CreateServiceLinkedRoleProps) {
     super(scope, id);
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
-    const providerRole = new Role(this, 'CreateServiceLinkedRoleProviderRole', {
+    this.providerRole = new Role(this, 'CreateServiceLinkedRoleProviderRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      inlinePolicies: {
-        iamPermissions: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                'iam:CreateServiceLinkedRole',
-                'iam:DeleteServiceLinkedRole',
-              ],
-              resources: ['*'],
-            }),
-          ],
-        }),
-      },
     });
 
     const provider = new DsfProvider(this, 'CreateServiceLinkedRoleProvider', {
       providerName: 'CreateServiceLinkedRoleProvider',
       onEventHandlerDefinition: {
-        iamRole: providerRole,
+        iamRole: this.providerRole,
         depsLockFilePath: __dirname+'/resources/lambda/create-service-linked-role/package-lock.json',
         entryFile: __dirname+'/resources/lambda/create-service-linked-role/index.mjs',
         handler: 'index.handler',
@@ -58,14 +46,16 @@ export class CreateServiceLinkedRole extends Construct {
 
   /**
      * Creates the service linked role associated to the provided AWS service
-     * @param awsServiceName The AWS service to create the service linked role for
+     * @param slrService See `ServiceLinkedRoleService` for supported service constant
      * @returns `CustomResource` that manages  the creation of the Service Linked Role
      */
-  public create(awsServiceName: string): CustomResource {
-    return new CustomResource(this, `CreateSLR-${awsServiceName}`, {
+  public create(slrService: ServiceLinkedRoleService): CustomResource {
+    this.providerRole.addToPrincipalPolicy(slrService.getCreateServiceLinkedRolePolicy(Stack.of(this).account));
+
+    return new CustomResource(this, `CreateSLR-${slrService.roleName}`, {
       serviceToken: this.serviceToken,
       properties: {
-        serviceName: awsServiceName,
+        serviceName: slrService.serviceName,
       },
     });
   }
