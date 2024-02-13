@@ -1,4 +1,4 @@
-name: release
+name: pypi-release-test
 on:
   workflow_dispatch: {}
 jobs:
