@@ -42,7 +42,7 @@
     "@jest/globals": "^29.7.0",
     "@types/eslint": "^8.56.2",
     "@types/jest": "^29.5.12",
-    "@types/node": "^16",
+    "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^6",
     "@typescript-eslint/parser": "^6",
     "aws-cdk-lib": "2.114.1",
@@ -50,7 +50,6 @@
     "constructs": "10.3.0",
     "esbuild": "^0.20.0",
     "eslint": "^8",
-    "eslint-import-resolver-node": "^0.3.9",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-local-rules": "^2.0.1",
@@ -62,7 +61,6 @@
     "jsii-docgen": "^10.3.15",
     "jsii-pacmak": "^1.94.0",
     "jsii-rosetta": "~5.3.0",
-    "npm-check-updates": "^16",
     "projen": "^0.79.7",
     "rosetta": "^1.1.0",
     "standard-version": "^9",
@@ -103,6 +101,12 @@
   "jest": {
     "runner": "groups",
     "transform": {
+      "^.+\\.[t]sx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.dev.json"
+        }
+      ],
       "^.+\\.ts?$": [
         "ts-jest",
         {
@@ -144,8 +148,7 @@
           "outputDirectory": "test-reports"
         }
       ]
-    ],
-    "preset": "ts-jest"
+    ]
   },
   "types": "lib/index.d.ts",
   "stability": "stable",
