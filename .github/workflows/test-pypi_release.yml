@@ -1,0 +1,96 @@
+name: release
+on:
+  workflow_dispatch: {}
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      latest_commit: ${{ steps.git_remote.outputs.latest_commit }}
+    env:
+      CI: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
+        with:
+          fetch-depth: 0
+      - name: Set git identity
+        run: |-
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+      - name: Setup Node.js
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn install --check-files --frozen-lockfile
+      - name: release
+        run: npx projen release
+      - name: Check for new commits
+        id: git_remote
+        run: echo "latest_commit=$(git ls-remote origin -h ${{ github.ref }} | cut -f1)" >> $GITHUB_OUTPUT
+      - name: Backup artifact permissions
+        working-directory: framework
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        run: cd dist && getfacl -R . > permissions-backup.acl
+        continue-on-error: true
+      - name: Upload artifact
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          name: build-artifact
+          path: framework/dist
+      - name: Backup examples permissions
+        working-directory: examples
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        run: getfacl -R . > permissions-backup.acl
+        continue-on-error: true
+      - name: Upload examples artifact
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          name: examples-artifact
+          path: examples
+  release_pypi:
+    name: Publish to PyPI
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    if: needs.release.outputs.latest_commit == github.sha
+    steps:
+      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
+        with:
+          node-version: 18
+      - uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236 #4.7.1
+        with:
+          python-version: 3.x
+      - name: Download build artifacts
+        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+        with:
+          name: build-artifact
+          path: framework/dist
+      - name: Restore build artifact permissions
+        working-directory: framework
+        run: cd dist && setfacl --restore=permissions-backup.acl
+        continue-on-error: true
+      - name: Prepare Repository
+        working-directory: framework
+        run: mv dist .repo
+      - name: Install Dependencies
+        working-directory: framework
+        run: cd .repo && yarn install --check-files --frozen-lockfile
+      - name: Create python artifact
+        working-directory: framework
+        run: cd .repo && npx projen package:python
+      - name: Collect python Artifact
+        working-directory: framework
+        run: mv .repo/dist dist
+      - name: Release
+        working-directory: framework
+        uses: pypa/gh-action-pypi-publish@2f6f737ca5f74c637829c0f5c3acd0e29ea5e8bf #v1.8.11
+        with:
+            repository-url: https://test.pypi.org/legacy/
+    
