@@ -4,6 +4,11 @@
 /**
  * Simplified configuration for the `SparkEmrServerlessJob` construct.
  */
+import { Duration } from 'aws-cdk-lib';
+import { IRole } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
+import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { SparkJobProps } from './spark-job-props';
 
 export interface SparkEmrServerlessJobProps extends SparkJobProps {
@@ -14,14 +19,14 @@ export interface SparkEmrServerlessJobProps extends SparkJobProps {
   readonly name: string;
 
   /**
-   * The EMR Serverless Application ID to execute the Spark Job.
+   * The EMR Serverless Application to execute the Spark Job.
    */
   readonly applicationId: string;
 
   /**
-   * The IAM execution Role ARN for the EMR Serverless job.
+   * The IAM execution Role for the EMR Serverless job.
    */
-  readonly executionRoleArn: string;
+  readonly executionRole: IRole;
 
   /**
    * The entry point for the Spark submit job run. @see https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html
@@ -47,10 +52,10 @@ export interface SparkEmrServerlessJobProps extends SparkJobProps {
   readonly applicationConfiguration?: { [key: string]: any };
 
   /**
-   * The execution timeout in minutes.
+   * The execution timeout.
    * @default - 30 minutes
    */
-  readonly executionTimeoutMinutes?: number;
+  readonly executionTimeout?: Duration;
 
   /**
    * Enable Spark persistent UI logs in EMR managed storage.
@@ -62,31 +67,36 @@ export interface SparkEmrServerlessJobProps extends SparkJobProps {
    * The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage.
    * @default - Use EMR managed Key
    */
-  readonly persistentAppUIKeyArn?: string;
+  readonly persistentAppUIKey?: IKey;
 
   /**
-   * The S3 URI for log publishing.
+   * The S3 Bucket for log publishing.
    * @default - No logging to S3
    */
-  readonly s3LogUri?: string;
+  readonly s3LogBucket?: IBucket;
+  /**
+   * The S3 Bucket prefix for log publishing.
+   * @default - No logging to S3
+   */
+  readonly s3LogPrefix?: string;
 
   /**
    * The KMS Key for encrypting logs on S3.
    * @default - No encryption
    */
-  readonly s3LogUriKeyArn?: string;
+  readonly s3LogEncryptionKey?: IKey;
 
   /**
    * The CloudWatch Log Group name for log publishing.
    * @default - No logging to CloudWatch
    */
-  readonly cloudWatchLogGroupName?: string;
+  readonly cloudWatchLogGroup?: ILogGroup;
 
   /**
    * The KMS Key for encrypting logs on CloudWatch.
    * @default - No encryption
    */
-  readonly cloudWatchEncryptionKeyArn?: string;
+  readonly cloudWatchEncryptionKey?: IKey;
 
   /**
    * The CloudWatch Log Group Stream prefix for log publishing.

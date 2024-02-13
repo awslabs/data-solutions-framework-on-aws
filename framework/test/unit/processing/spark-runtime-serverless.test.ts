@@ -5,7 +5,7 @@
 /**
  * Tests Spark runtime EMR Serverless construct
  *
- * @group unit/processing-runtime/serverless/emr-serverless
+ * @group unit/processing/runtime/emr-serverless
 */
 
 

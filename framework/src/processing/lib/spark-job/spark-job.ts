@@ -5,7 +5,7 @@ import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { IRole } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { BlockPublicAccess, Bucket, IBucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Choice, Condition, DefinitionBody, Fail, FailProps, LogLevel, StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
@@ -123,7 +123,7 @@ export abstract class SparkJob extends TrackedConstruct {
    * @param schedule Schedule to run the state machine. @default no schedule
    * @returns StateMachine
    */
-  protected createStateMachine(jobTimeout?: Duration, schedule? : Schedule): StateMachine {
+  protected createStateMachine(jobTimeout: Duration, schedule? : Schedule): StateMachine {
 
     if (!this.stateMachine) {
 
@@ -179,24 +179,25 @@ export abstract class SparkJob extends TrackedConstruct {
   /**
    * Creates or import an S3 bucket to store the logs of the Spark job.
    * The bucket is created with SSE encryption (KMS managed or provided by user).
-   * @param s3LogUri S3 path to store the logs of the Spark job. Example: s3://<bucket-name>/
-   * @param encryptionKeyArn KMS Key ARN for encryption. @default - Master KMS key of the account.
+   * @param s3LogBucket The S3 Bucket to store the logs of the Spark job. @default - A new bucket is created
+   * @param s3LogPrefix The prefix to store logs in the Log Bucket. @default - No prefix is used
+   * @param encryptionKey The KMS Key for encryption. @default - Master KMS key of the account
    * @returns string S3 path to store the logs.
    */
-  protected createS3LogBucket(s3LogUri?:string, encryptionKeyArn?:string): string {
+  protected createS3LogBucket(s3LogBucket?:IBucket, s3LogPrefix?: string, encryptionKey?: IKey): string {
 
     if (!this.s3LogBucket) {
-      this.s3LogBucket = s3LogUri ? Bucket.fromBucketName(this, 'SparkLogsBucket', s3LogUri.match(/s3:\/\/([^\/]+)/)![1]) : new Bucket(this, 'SparkLogsBucket', {
+      this.s3LogBucket = s3LogBucket ?? new Bucket(this, 'SparkLogsBucket', {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         enforceSSL: true,
         removalPolicy: this.removalPolicy,
         autoDeleteObjects: this.removalPolicy == RemovalPolicy.DESTROY,
-        encryptionKey: encryptionKeyArn ? Key.fromKeyArn(this, 'SparkLogsBucketEncryptionKey', encryptionKeyArn) : undefined,
-        encryption: encryptionKeyArn ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
+        encryptionKey: encryptionKey,
+        encryption: encryptionKey ? BucketEncryption.KMS : BucketEncryption.KMS_MANAGED,
       });
     }
 
-    return s3LogUri ? s3LogUri : `s3://${this.s3LogBucket.bucketName}/`;
+    return `s3://${this.s3LogBucket.bucketName}/${s3LogPrefix}`;
   }
 
   /**

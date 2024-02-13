@@ -1,12 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { Duration } from 'aws-cdk-lib';
+import { IRole } from 'aws-cdk-lib/aws-iam';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
+import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { SparkJobProps } from './spark-job-props';
+import { EmrRuntimeVersion } from '../emr-releases';
 
 /**
  * Simplified configuration for the `SparkEmrEksJob` construct.
  */
-export interface SparkEmrContainerJobProps extends SparkJobProps {
+export interface SparkEmrContainersJobProps extends SparkJobProps {
 
   /**
    * The Spark job name.
@@ -19,15 +24,16 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
   readonly virtualClusterId: string;
 
   /**
-   * The EMR runtime to use.
-   * @default - [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
+   * The EMR release version associated with the application.
+   * The EMR release can be found in this [documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
+   * @default [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
    */
-  readonly releaseLabel?: string;
+  readonly releaseLabel?: EmrRuntimeVersion;
 
   /**
    * The IAM execution Role ARN for the EMR on EKS job.
    */
-  readonly executionRoleArn: string;
+  readonly executionRole: IRole;
 
   /**
    * The entry point for the Spark submit job run. @see https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html
@@ -53,10 +59,10 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
   readonly applicationConfiguration?:{[key: string] : any};
 
   /**
-   * The execution timeout in minutes.
+   * The execution timeout.
    * @default - 30 minutes
    */
-  readonly executionTimeoutMinutes?: number;
+  readonly executionTimeout?: Duration;
 
   /**
    * The maximum number of retries.
@@ -65,16 +71,21 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
   readonly maxRetries?: number;
 
   /**
-   * The Amazon S3 destination URI for log publishing.
-   * @default - An S3 Bucket is created
+   * The S3 Bucket for log publishing.
+   * @default - No logging to S3
    */
-  readonly s3LogUri?: string;
+  readonly s3LogBucket?: IBucket;
+  /**
+   * The S3 Bucket prefix for log publishing.
+   * @default - No logging to S3
+   */
+  readonly s3LogPrefix?: string;
 
   /**
    * The CloudWatch Log Group name for log publishing.
    * @default - CloudWatch is not used for logging
    */
-  readonly cloudWatchLogGroupName?: string;
+  readonly cloudWatchLogGroup?: ILogGroup;
 
   /**
    * The CloudWatch Log Group stream prefix for log publishing.
@@ -96,13 +107,13 @@ export interface SparkEmrContainerJobProps extends SparkJobProps {
  * Use this interface when `SparkEmrContainerJobProps` doesn't give you access to the configuration parameters you need.
  * @link[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]
  */
-export interface SparkEmrContainerJobApiProps extends SparkJobProps {
+export interface SparkEmrContainersJobApiProps extends SparkJobProps {
 
   /**
-   * Job execution timeout in minutes.
+   * Job execution timeout.
    * @default - 30 minutes
    */
-  readonly executionTimeoutMinutes?: number;
+  readonly executionTimeout?: Duration;
 
   /**
    * EMR on EKS StartJobRun API configuration

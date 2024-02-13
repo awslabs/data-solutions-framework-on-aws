@@ -7,7 +7,7 @@ import { FailProps, JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsServiceProps } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { SparkJob } from './spark-job';
-import { SparkEmrContainerJobApiProps, SparkEmrContainerJobProps } from './spark-job-emr-container-props';
+import { SparkEmrContainersJobApiProps, SparkEmrContainersJobProps } from './spark-job-emr-containers-props';
 import { SparkJobProps } from './spark-job-props';
 import { StepFunctionUtils, TrackedConstruct } from '../../../utils';
 import { EMR_DEFAULT_VERSION } from '../emr-releases';
@@ -21,7 +21,7 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  * @example
  * import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
  *
- * const job = new dsf.processing.SparkEmrContainerJob(this, 'SparkJob', {
+ * const job = new dsf.processing.SparkEmrContainersJob(this, 'SparkJob', {
  *   jobConfig:{
  *     "Name": JsonPath.format('ge_profile-{}', JsonPath.uuid()),
  *     "VirtualClusterId": "virtualClusterId",
@@ -34,25 +34,25 @@ import { EMR_DEFAULT_VERSION } from '../emr-releases';
  *       },
  *     }
  *   }
- * } as dsf.processing.SparkEmrContainerJobApiProps);
+ * } as dsf.processing.SparkEmrContainersJobApiProps);
  *
  * new cdk.CfnOutput(this, 'SparkJobStateMachine', {
  *   value: job.stateMachine!.stateMachineArn,
  * });
  */
-export class SparkEmrContainerJob extends SparkJob {
+export class SparkEmrContainersJob extends SparkJob {
 
-  private constructJobConfig: SparkEmrContainerJobApiProps;
+  private constructJobConfig: SparkEmrContainersJobApiProps;
 
-  constructor( scope: Construct, id: string, props: SparkEmrContainerJobProps | SparkEmrContainerJobApiProps) {
-    super(scope, id, SparkEmrContainerJob.name, props as SparkJobProps);
+  constructor( scope: Construct, id: string, props: SparkEmrContainersJobProps | SparkEmrContainersJobApiProps) {
+    super(scope, id, SparkEmrContainersJob.name, props as SparkJobProps);
 
     let sparkJobExecutionRole: IRole;
 
     if ('jobConfig' in props) {
-      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrContainerJobApiProps);
+      this.constructJobConfig = this.setJobApiPropsDefaults(props as SparkEmrContainersJobApiProps);
     } else {
-      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrContainerJobProps);
+      this.constructJobConfig = this.setJobPropsDefaults(props as SparkEmrContainersJobProps);
     }
 
     sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
@@ -63,8 +63,8 @@ export class SparkEmrContainerJob extends SparkJob {
     }
     this.constructJobConfig.jobConfig.Tags[TrackedConstruct.DSF_OWNED_TAG] = 'true';
 
-    const executionTimeout = props.executionTimeoutMinutes ?? 30;
-    this.stateMachine = this.createStateMachine(Duration.minutes(executionTimeout), this.constructJobConfig.schedule);
+    const executionTimeout = props.executionTimeout ?? Duration.minutes(30);
+    this.stateMachine = this.createStateMachine(executionTimeout, this.constructJobConfig.schedule);
 
     this.s3LogBucket?.grantReadWrite(sparkJobExecutionRole);
     this.emrJobLogGroup?.grantRead(sparkJobExecutionRole);
@@ -182,7 +182,7 @@ export class SparkEmrContainerJob extends SparkJob {
    * Set defaults for the SparkEmrContainerJobApiProps.
    * @param props SparkEmrContainerJobApiProps
    */
-  private setJobApiPropsDefaults(props: SparkEmrContainerJobApiProps): SparkEmrContainerJobApiProps {
+  private setJobApiPropsDefaults(props: SparkEmrContainersJobApiProps): SparkEmrContainersJobApiProps {
 
     const propsPascalCase = StepFunctionUtils.camelToPascal(props.jobConfig);
     //Set defaults
@@ -200,7 +200,7 @@ export class SparkEmrContainerJob extends SparkJob {
    * Set defaults for the SparkEmrContainerJobProps.
    * @param props SparkEmrContainerJobProps
    */
-  private setJobPropsDefaults(props: SparkEmrContainerJobProps): SparkEmrContainerJobApiProps {
+  private setJobPropsDefaults(props: SparkEmrContainersJobProps): SparkEmrContainersJobApiProps {
     const config = {
       jobConfig: {
         ConfigurationOverrides: {
@@ -213,12 +213,12 @@ export class SparkEmrContainerJob extends SparkJob {
           SparkSubmitJobDriver: {},
         },
       },
-    } as SparkEmrContainerJobApiProps;
+    } as SparkEmrContainersJobApiProps;
 
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();
     config.jobConfig.VirtualClusterId = props.virtualClusterId;
-    config.jobConfig.ExecutionRoleArn=props.executionRoleArn;
+    config.jobConfig.ExecutionRoleArn=props.executionRole.roleArn;
     config.jobConfig.JobDriver.SparkSubmitJobDriver!.EntryPoint = props.sparkSubmitEntryPoint;
 
     if (props.sparkSubmitEntryPointArguments) {
@@ -234,17 +234,13 @@ export class SparkEmrContainerJob extends SparkJob {
 
     config.jobConfig.RetryPolicyConfiguration!.MaxAttempts = props.maxRetries ?? 0;
 
-    if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/) && !props.s3LogUri.match(/^Token\[([0-9]+)\]$/)) {
-      throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
-    }
-
     config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.S3MonitoringConfiguration!.LogUri =
-    this.createS3LogBucket(props.s3LogUri);
+    this.createS3LogBucket(props.s3LogBucket, props.s3LogPrefix);
 
-    if (props.cloudWatchLogGroupName) {
-      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroupName);
+    if (props.cloudWatchLogGroup) {
+      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroup.logGroupName);
       config.jobConfig.ConfigurationOverrides.MonitoringConfiguration!.CloudWatchMonitoringConfiguration! = {
-        LogGroupName: props.cloudWatchLogGroupName,
+        LogGroupName: props.cloudWatchLogGroup.logGroupName,
         LogStreamNamePrefix: props.cloudWatchLogGroupStreamPrefix ?? props.name,
       };
     }

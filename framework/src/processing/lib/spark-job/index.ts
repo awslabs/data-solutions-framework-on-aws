@@ -5,8 +5,8 @@ export * from './pyspark-application-package-props';
 export * from './pyspark-application-package';
 export * from './spark-job-emr-serverless-props';
 export * from './spark-job';
-export * from './spark-job-emr-container';
-export * from './spark-job-emr-container-props';
+export * from './spark-job-emr-containers';
+export * from './spark-job-emr-containers-props';
 export * from './spark-job-emr-serverless';
 export * from './spark-job-props';
 

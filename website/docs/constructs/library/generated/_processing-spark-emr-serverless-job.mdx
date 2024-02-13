@@ -25,7 +25,10 @@ class ExampleSparkJobEmrServerlessStack extends cdk.Stack {
     const nightJob = new dsf.processing.SparkEmrServerlessJob(this, 'PiJob', {
       applicationId: runtime.application.attrApplicationId,
       name: 'PiCalculation',
-      executionRoleArn: executionRole.roleArn,
+      executionRole: executionRole,
+      executionTimeout: cdk.Duration.minutes(15),
+      s3LogBucket: Bucket.fromBucketName(this, 'LogBucket', 'emr-job-logs-EXAMPLE'),
+      s3LogPrefix: 'logs',
       sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
     });
 
@@ -45,7 +48,10 @@ scope, id):
 super().__init__(scope, id)night_job = dsf.processing.SparkEmrServerlessJob(self, "PiJob",
     application_id=runtime.application.attr_application_id,
     name="PiCalculation",
-    execution_role_arn=execution_role.role_arn,
+    execution_role=execution_role,
+    execution_timeout=cdk.Duration.minutes(15),
+    s3_log_bucket=Bucket.from_bucket_name(self, "LogBucket", "emr-job-logs-EXAMPLE"),
+    s3_log_prefix="logs",
     spark_submit_entry_point="local:///usr/lib/spark/examples/src/main/python/pi.py"
 )
 

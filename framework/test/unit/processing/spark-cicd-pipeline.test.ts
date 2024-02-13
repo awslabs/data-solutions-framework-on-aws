@@ -5,7 +5,7 @@
 /**
 * Tests SparkCICDPipeline construct
 *
-* @group unit/spark-cicd
+* @group unit/processing/spark-cicd
 */
 
 import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';

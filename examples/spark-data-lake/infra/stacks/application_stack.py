@@ -77,9 +77,10 @@ class ApplicationStack(Stack):
             dsf.processing.SparkEmrServerlessJobProps(
                 name=f"taxi-agg-job-{Names.unique_resource_name(self)}",
                 application_id=spark_runtime.application.attr_application_id,
-                execution_role_arn=processing_exec_role.role_arn,
-                spark_submit_entry_point=spark_app.entrypoint_s3_uri,
+                execution_role=processing_exec_role,
+                spark_submit_entry_point=spark_app.entrypoint_uri,
                 spark_submit_parameters=params,
+                removal_policy=RemovalPolicy.DESTROY,
             )
         )
 

@@ -63,7 +63,7 @@ export class SparkEmrServerlessJob extends SparkJob {
 
     this.constructJobConfig.jobConfig.Tags[TrackedConstruct.DSF_OWNED_TAG] = 'true';
 
-    sparkJobExecutionRole = Role.fromRoleArn(this, `spakrJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
+    sparkJobExecutionRole = Role.fromRoleArn(this, `SparkJobRole-${id}`, this.constructJobConfig.jobConfig.ExecutionRoleArn);
 
 
     this.stateMachine = this.createStateMachine(
@@ -216,8 +216,8 @@ export class SparkEmrServerlessJob extends SparkJob {
 
     config.jobConfig.Name = props.name;
     config.jobConfig.ClientToken = JsonPath.uuid();
-    config.jobConfig.ExecutionTimeoutMinutes = props.executionTimeoutMinutes ?? 30;
-    config.jobConfig.ExecutionRoleArn=props.executionRoleArn;
+    config.jobConfig.ExecutionTimeoutMinutes = props.executionTimeout ? props.executionTimeout.toMinutes() : Duration.minutes(30).toMinutes();
+    config.jobConfig.ExecutionRoleArn=props.executionRole.roleArn;
     config.jobConfig.ApplicationId = props.applicationId;
     config.jobConfig.JobDriver.SparkSubmit.EntryPoint = props.sparkSubmitEntryPoint;
 
@@ -232,24 +232,20 @@ export class SparkEmrServerlessJob extends SparkJob {
       config.jobConfig.ConfigurationOverrides.ApplicationConfiguration = StepFunctionUtils.camelToPascal(props.applicationConfiguration);
     }
 
-    if (props.s3LogUri && !props.s3LogUri.match(/^s3:\/\/([^\/]+)/)) {
-      throw new Error(`Invalid S3 URI: ${props.s3LogUri}`);
-    }
-
     config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.S3MonitoringConfiguration!.LogUri =
-    this.createS3LogBucket(props.s3LogUri, props.s3LogUriKeyArn);
+    this.createS3LogBucket(props.s3LogBucket, props.s3LogPrefix, props.s3LogEncryptionKey);
 
-    if ( props.s3LogUriKeyArn ) {
-      config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.S3MonitoringConfiguration!.EncryptionKeyArn = props.s3LogUriKeyArn;
+    if ( props.s3LogEncryptionKey ) {
+      config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.S3MonitoringConfiguration!.EncryptionKeyArn = props.s3LogEncryptionKey.keyArn;
     }
 
 
-    if (props.cloudWatchLogGroupName) {
-      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroupName, props.cloudWatchEncryptionKeyArn);
+    if (props.cloudWatchLogGroup) {
+      this.createCloudWatchLogsLogGroup(props.cloudWatchLogGroup.logGroupName, props.cloudWatchEncryptionKey?.keyArn);
       config.jobConfig.ConfigurationOverrides.MonitoringConfiguration.CloudWatchLoggingConfiguration = {
         Enabled: true,
-        EncryptionKeyArn: props.cloudWatchEncryptionKeyArn,
-        LogGroupName: props.cloudWatchLogGroupName ?? props.name,
+        EncryptionKeyArn: props.cloudWatchEncryptionKey?.keyArn,
+        LogGroupName: props.cloudWatchLogGroup.logGroupName ?? props.name,
         LogStreamNamePrefix: props.cloudWatchLogGroupStreamPrefix,
       };
     }

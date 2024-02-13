@@ -4,11 +4,12 @@
 /**
  * E2E test for SparkJob
  *
- * @group e2e/processing/spark-job
+ * @group e2e/processing/spark-emr-serverless
  */
 
 import * as cdk from 'aws-cdk-lib';
 import { PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { TestStack } from './test-stack';
 import { SparkEmrServerlessJob, SparkEmrServerlessJobApiProps, SparkEmrServerlessJobProps, SparkEmrServerlessRuntime } from '../../src/processing';
@@ -20,7 +21,7 @@ const app = new cdk.App();
 const testStack = new TestStack('SparkJobTestStack', app);
 const { stack } = testStack;
 
-const testStack2 = new TestStack('SparkJobTestStack1', app);
+const testStack2 = new TestStack('SparkJobTestStack2', app);
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 testStack2.stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
@@ -29,6 +30,11 @@ testStack2.stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnD
 const emrApp = new SparkEmrServerlessRuntime(stack, 'emrApp', {
   name: 'my-test-app',
   removalPolicy: cdk.RemovalPolicy.DESTROY,
+});
+
+const bucket = new Bucket(stack, 'Bucket', {
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  autoDeleteObjects: true,
 });
 
 const myFileSystemPolicy = new PolicyDocument({
@@ -120,9 +126,10 @@ const jobSimple = new SparkEmrServerlessJob(stack, 'SparkJobSimple', {
   name: JsonPath.format('test-spark-job-{}', JsonPath.uuid()),
   applicationId: emrApp.application.attrApplicationId,
   clientToken: JsonPath.uuid(),
-  executionRoleArn: myExecutionRole1.roleArn,
-  executionTimeoutMinutes: 30,
-  s3LogUri: 's3://log-bucker-dummy/monitoring-logs',
+  executionRole: myExecutionRole1,
+  executionTimeout: cdk.Duration.minutes(29),
+  s3LogBucket: bucket,
+  s3LogPrefix: 'monitoring-logs',
   sparkSubmitEntryPoint: 'local:///usr/lib/spark/examples/src/main/python/pi.py',
   sparkSubmitParameters: '--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=2G --conf spark.executor.cores=4',
   removalPolicy: cdk.RemovalPolicy.DESTROY,
