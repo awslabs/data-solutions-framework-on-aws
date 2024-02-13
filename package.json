@@ -26,7 +26,6 @@
   },
   "devDependencies": {
     "@types/node": "16.0.0",
-    "constructs": "^10.0.0",
     "glob": "^10.3.6",
     "lerna": "^8.1.2",
     "lerna-projen": "^0.1.337",

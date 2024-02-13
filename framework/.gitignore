@@ -29,11 +29,13 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
+!/.projenrc.js
 /test-reports/
 junit.xml
 /coverage/
 /dist/changelog.md
 /dist/version.txt
+!/.npmrc
 !/test/
 !/tsconfig.dev.json
 !/src/

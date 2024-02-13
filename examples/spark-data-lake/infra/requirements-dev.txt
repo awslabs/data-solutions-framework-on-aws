@@ -2,4 +2,3 @@
 aws-cdk.lambda-layer-kubectl-v27
 black
 pytest
-pytest==7.4.3

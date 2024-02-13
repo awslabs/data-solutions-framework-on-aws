@@ -2619,8 +2619,7 @@ The list of CfnOutputs created by the CDK Stack.
 ---
 
 
-<<<<<<< HEAD
-### AthenaWorkGroup <a name="AthenaWorkGroup" id="aws-dsf.consumption.AthenaWorkGroup"></a>
+### AthenaWorkGroup <a name="AthenaWorkGroup" id="aws-data-solutions-framework.consumption.AthenaWorkGroup"></a>
 
 An Amazon Athena Workgroup configured with default result bucket.
 
@@ -2634,37 +2633,37 @@ new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-dsf.consumption.AthenaWorkGroup.Initializer"></a>
+#### Initializers <a name="Initializers" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-dsf'
+import { consumption } from 'aws-data-solutions-framework'
 
 new consumption.AthenaWorkGroup(scope: Construct, id: string, props: AthenaWorkgroupProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.props">props</a></code> | <code>aws-dsf.consumption.AthenaWorkgroupProps</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.consumption.AthenaWorkgroupProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.consumption.AthenaWorkGroup.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.props"></a>
 
-- *Type:* aws-dsf.consumption.AthenaWorkgroupProps
+- *Type:* aws-data-solutions-framework.consumption.AthenaWorkgroupProps
 
 ---
 
@@ -2672,13 +2671,13 @@ new consumption.AthenaWorkGroup(scope: Construct, id: string, props: AthenaWorkg
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.grantRunQueries">grantRunQueries</a></code> | Grants running queries access to Principal. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries">grantRunQueries</a></code> | Grants running queries access to Principal. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.consumption.AthenaWorkGroup.toString"></a>
+##### `toString` <a name="toString" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2686,7 +2685,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantRunQueries` <a name="grantRunQueries" id="aws-dsf.consumption.AthenaWorkGroup.grantRunQueries"></a>
+##### `grantRunQueries` <a name="grantRunQueries" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries"></a>
 
 ```typescript
 public grantRunQueries(principal: IPrincipal): void
@@ -2694,7 +2693,7 @@ public grantRunQueries(principal: IPrincipal): void
 
 Grants running queries access to Principal.
 
-###### `principal`<sup>Required</sup> <a name="principal" id="aws-dsf.consumption.AthenaWorkGroup.grantRunQueries.parameter.principal"></a>
+###### `principal`<sup>Required</sup> <a name="principal" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries.parameter.principal"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
@@ -2702,7 +2701,7 @@ Principal to attach query access to Athena Workgroup.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.consumption.AthenaWorkGroup.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -2714,14 +2713,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.consumption.AthenaWorkGroup.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct"></a>
 
 ```typescript
-import { consumption } from 'aws-dsf'
+import { consumption } from 'aws-data-solutions-framework'
 
 consumption.AthenaWorkGroup.isConstruct(x: any)
 ```
@@ -2742,7 +2741,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.consumption.AthenaWorkGroup.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2754,16 +2753,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket used for query results. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key to encrypt the query results. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.workGroup">workGroup</a></code> | <code>aws-cdk-lib.aws_athena.CfnWorkGroup</code> | Athena Workgroup that is created. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.workGroupName">workGroupName</a></code> | <code>string</code> | WorkGroup name with the randomized suffix. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket used for query results. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key to encrypt the query results. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroup">workGroup</a></code> | <code>aws-cdk-lib.aws_athena.CfnWorkGroup</code> | Athena Workgroup that is created. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroupName">workGroupName</a></code> | <code>string</code> | WorkGroup name with the randomized suffix. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.consumption.AthenaWorkGroup.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2775,7 +2774,7 @@ The tree node.
 
 ---
 
-##### `resultBucket`<sup>Required</sup> <a name="resultBucket" id="aws-dsf.consumption.AthenaWorkGroup.property.resultBucket"></a>
+##### `resultBucket`<sup>Required</sup> <a name="resultBucket" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultBucket"></a>
 
 ```typescript
 public readonly resultBucket: IBucket;
@@ -2787,7 +2786,7 @@ S3 Bucket used for query results.
 
 ---
 
-##### `resultsEncryptionKey`<sup>Required</sup> <a name="resultsEncryptionKey" id="aws-dsf.consumption.AthenaWorkGroup.property.resultsEncryptionKey"></a>
+##### `resultsEncryptionKey`<sup>Required</sup> <a name="resultsEncryptionKey" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultsEncryptionKey"></a>
 
 ```typescript
 public readonly resultsEncryptionKey: IKey;
@@ -2799,7 +2798,7 @@ KMS Key to encrypt the query results.
 
 ---
 
-##### `workGroup`<sup>Required</sup> <a name="workGroup" id="aws-dsf.consumption.AthenaWorkGroup.property.workGroup"></a>
+##### `workGroup`<sup>Required</sup> <a name="workGroup" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroup"></a>
 
 ```typescript
 public readonly workGroup: CfnWorkGroup;
@@ -2811,7 +2810,7 @@ Athena Workgroup that is created.
 
 ---
 
-##### `workGroupName`<sup>Required</sup> <a name="workGroupName" id="aws-dsf.consumption.AthenaWorkGroup.property.workGroupName"></a>
+##### `workGroupName`<sup>Required</sup> <a name="workGroupName" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroupName"></a>
 
 ```typescript
 public readonly workGroupName: string;
@@ -2823,7 +2822,7 @@ WorkGroup name with the randomized suffix.
 
 ---
 
-##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-dsf.consumption.AthenaWorkGroup.property.executionRole"></a>
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -2839,12 +2838,12 @@ Role used to access user resources in an Athena for Apache Spark session.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -2854,7 +2853,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -2864,10 +2863,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DataCatalogDatabase <a name="DataCatalogDatabase" id="aws-dsf.governance.DataCatalogDatabase"></a>
-=======
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="aws-data-solutions-framework.governance.DataCatalogDatabase"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
@@ -3953,23 +3949,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive). |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | The location (generally it's an S3 URI) where the entry point is saved. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
-| <code><a href="#aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveUri">venvArchiveUri</a></code> | <code>string</code> | The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored. |
-=======
 | <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive). |
 | <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
 | <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointS3Uri">entrypointS3Uri</a></code> | <code>string</code> | The S3 location where the entry point is saved in S3. |
+| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | The location (generally it's an S3 URI) where the entry point is saved. |
 | <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveS3Uri">venvArchiveS3Uri</a></code> | <code>string</code> | The S3 location where the archive of the Python virtual environment with all dependencies is stored. |
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri">venvArchiveUri</a></code> | <code>string</code> | The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored. |
 
 ---
 
@@ -4024,11 +4010,7 @@ you must provide S3 write access to this role to upload the artifacts.
 
 ---
 
-<<<<<<< HEAD
-##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="aws-dsf.processing.PySparkApplicationPackage.property.entrypointUri"></a>
-=======
-##### `entrypointS3Uri`<sup>Required</sup> <a name="entrypointS3Uri" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointS3Uri"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri"></a>
 
 ```typescript
 public readonly entrypointUri: string;
@@ -4054,11 +4036,7 @@ The Spark Config containing the configuration of virtual environment archive wit
 
 ---
 
-<<<<<<< HEAD
-##### `venvArchiveUri`<sup>Optional</sup> <a name="venvArchiveUri" id="aws-dsf.processing.PySparkApplicationPackage.property.venvArchiveUri"></a>
-=======
-##### `venvArchiveS3Uri`<sup>Optional</sup> <a name="venvArchiveS3Uri" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveS3Uri"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `venvArchiveUri`<sup>Optional</sup> <a name="venvArchiveUri" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri"></a>
 
 ```typescript
 public readonly venvArchiveUri: string;
@@ -6056,11 +6034,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-<<<<<<< HEAD
-### SparkEmrContainersJob <a name="SparkEmrContainersJob" id="aws-dsf.processing.SparkEmrContainersJob"></a>
-=======
-### SparkEmrContainerJob <a name="SparkEmrContainerJob" id="aws-data-solutions-framework.processing.SparkEmrContainerJob"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+### SparkEmrContainersJob <a name="SparkEmrContainersJob" id="aws-data-solutions-framework.processing.SparkEmrContainersJob"></a>
 
 A construct to run Spark Jobs using EMR Container runtime (EMR on EKS).
 
@@ -6094,11 +6068,7 @@ new cdk.CfnOutput(this, 'SparkJobStateMachine', {
 ```
 
 
-<<<<<<< HEAD
-#### Initializers <a name="Initializers" id="aws-dsf.processing.SparkEmrContainersJob.Initializer"></a>
-=======
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-data-solutions-framework'
@@ -6108,47 +6078,27 @@ new processing.SparkEmrContainersJob(scope: Construct, id: string, props: SparkE
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.props">props</a></code> | <code>aws-dsf.processing.SparkEmrContainersJobProps \| aws-dsf.processing.SparkEmrContainersJobApiProps</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkEmrContainersJobProps \| aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.scope"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkEmrContainerJobProps \| aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps</code> | *No description.* |
-
----
-
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer.parameter.scope"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-<<<<<<< HEAD
-##### `id`<sup>Required</sup> <a name="id" id="aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.id"></a>
-=======
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer.parameter.id"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-<<<<<<< HEAD
-##### `props`<sup>Required</sup> <a name="props" id="aws-dsf.processing.SparkEmrContainersJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.props"></a>
 
-- *Type:* aws-dsf.processing.SparkEmrContainersJobProps | aws-dsf.processing.SparkEmrContainersJobApiProps
-=======
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.Initializer.parameter.props"></a>
-
-- *Type:* aws-data-solutions-framework.processing.SparkEmrContainerJobProps | aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+- *Type:* aws-data-solutions-framework.processing.SparkEmrContainersJobProps | aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps
 
 ---
 
@@ -6156,21 +6106,12 @@ new processing.SparkEmrContainersJob(scope: Construct, id: string, props: SparkE
 
 | **Name** | **Description** |
 | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-dsf.processing.SparkEmrContainersJob.toString"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-
----
-
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.toString"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -6178,11 +6119,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-<<<<<<< HEAD
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-dsf.processing.SparkEmrContainersJob.retrieveVersion"></a>
-=======
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.retrieveVersion"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -6194,19 +6131,11 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-dsf.processing.SparkEmrContainersJob.isConstruct"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-
----
-
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.isConstruct"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct"></a>
 
 ```typescript
 import { processing } from 'aws-data-solutions-framework'
@@ -6230,11 +6159,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-<<<<<<< HEAD
-###### `x`<sup>Required</sup> <a name="x" id="aws-dsf.processing.SparkEmrContainersJob.isConstruct.parameter.x"></a>
-=======
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.isConstruct.parameter.x"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -6246,23 +6171,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-dsf.processing.SparkEmrContainersJob.property.node"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
-
----
-
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.property.node"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -6274,11 +6189,7 @@ The tree node.
 
 ---
 
-<<<<<<< HEAD
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-dsf.processing.SparkEmrContainersJob.property.stateMachine"></a>
-=======
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.property.stateMachine"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -6290,11 +6201,7 @@ The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
-<<<<<<< HEAD
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-dsf.processing.SparkEmrContainersJob.property.stateMachineLogGroup"></a>
-=======
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.property.stateMachineLogGroup"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -6310,21 +6217,12 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-dsf.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.property.DSF_OWNED_TAG"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -6334,11 +6232,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-<<<<<<< HEAD
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-dsf.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE"></a>
-=======
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrContainerJob.property.DSF_TRACKING_CODE"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -8465,15 +8359,14 @@ The list of values to create CfnOutputs.
 
 ---
 
-<<<<<<< HEAD
-### AthenaWorkgroupProps <a name="AthenaWorkgroupProps" id="aws-dsf.consumption.AthenaWorkgroupProps"></a>
+### AthenaWorkgroupProps <a name="AthenaWorkgroupProps" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps"></a>
 
 Properties for the AthenaWorkgroup Construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.consumption.AthenaWorkgroupProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-dsf'
+import { consumption } from 'aws-data-solutions-framework'
 
 const athenaWorkgroupProps: consumption.AthenaWorkgroupProps = { ... }
 ```
@@ -8482,25 +8375,25 @@ const athenaWorkgroupProps: consumption.AthenaWorkgroupProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.name">name</a></code> | <code>string</code> | Name of the Workgroup. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultLocationPrefix">resultLocationPrefix</a></code> | <code>string</code> | Specifies the location in Amazon S3 where query results are stored. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery">bytesScannedCutoffPerQuery</a></code> | <code>number</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration">enforceWorkGroupConfiguration</a></code> | <code>boolean</code> | If set to "true", the settings for the workgroup override client-side settings. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.engineVersion">engineVersion</a></code> | <code>aws-dsf.consumption.EngineVersion</code> | The engine version on which the query runs. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled">publishCloudWatchMetricsEnabled</a></code> | <code>boolean</code> | Indicates that the Amazon CloudWatch metrics are enabled for the workgroup. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled">requesterPaysEnabled</a></code> | <code>boolean</code> | Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Amazon S3 Bucket where query results are stored. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucketName">resultBucketName</a></code> | <code>string</code> | Name for the S3 Bucket in case it should be created. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used to encrypt query results. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod">resultsRetentionPeriod</a></code> | <code>aws-cdk-lib.Duration</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
-| <code><a href="#aws-dsf.consumption.AthenaWorkgroupProps.property.state">state</a></code> | <code>aws-dsf.consumption.State</code> | The state of the Workgroup. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.name">name</a></code> | <code>string</code> | Name of the Workgroup. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultLocationPrefix">resultLocationPrefix</a></code> | <code>string</code> | Specifies the location in Amazon S3 where query results are stored. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery">bytesScannedCutoffPerQuery</a></code> | <code>number</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration">enforceWorkGroupConfiguration</a></code> | <code>boolean</code> | If set to "true", the settings for the workgroup override client-side settings. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.engineVersion">engineVersion</a></code> | <code>aws-data-solutions-framework.consumption.EngineVersion</code> | The engine version on which the query runs. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled">publishCloudWatchMetricsEnabled</a></code> | <code>boolean</code> | Indicates that the Amazon CloudWatch metrics are enabled for the workgroup. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled">requesterPaysEnabled</a></code> | <code>boolean</code> | Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Amazon S3 Bucket where query results are stored. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucketName">resultBucketName</a></code> | <code>string</code> | Name for the S3 Bucket in case it should be created. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used to encrypt query results. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod">resultsRetentionPeriod</a></code> | <code>aws-cdk-lib.Duration</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
+| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.state">state</a></code> | <code>aws-data-solutions-framework.consumption.State</code> | The state of the Workgroup. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.consumption.AthenaWorkgroupProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -8512,7 +8405,7 @@ Name of the Workgroup.
 
 ---
 
-##### `resultLocationPrefix`<sup>Required</sup> <a name="resultLocationPrefix" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultLocationPrefix"></a>
+##### `resultLocationPrefix`<sup>Required</sup> <a name="resultLocationPrefix" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultLocationPrefix"></a>
 
 ```typescript
 public readonly resultLocationPrefix: string;
@@ -8524,7 +8417,7 @@ Specifies the location in Amazon S3 where query results are stored.
 
 ---
 
-##### `bytesScannedCutoffPerQuery`<sup>Optional</sup> <a name="bytesScannedCutoffPerQuery" id="aws-dsf.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery"></a>
+##### `bytesScannedCutoffPerQuery`<sup>Optional</sup> <a name="bytesScannedCutoffPerQuery" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery"></a>
 
 ```typescript
 public readonly bytesScannedCutoffPerQuery: number;
@@ -8536,7 +8429,7 @@ Indicates the number of days after creation when objects are deleted from the Re
 
 ---
 
-##### `enforceWorkGroupConfiguration`<sup>Optional</sup> <a name="enforceWorkGroupConfiguration" id="aws-dsf.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration"></a>
+##### `enforceWorkGroupConfiguration`<sup>Optional</sup> <a name="enforceWorkGroupConfiguration" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration"></a>
 
 ```typescript
 public readonly enforceWorkGroupConfiguration: boolean;
@@ -8549,20 +8442,20 @@ If set to "true", the settings for the workgroup override client-side settings.
 
 ---
 
-##### `engineVersion`<sup>Optional</sup> <a name="engineVersion" id="aws-dsf.consumption.AthenaWorkgroupProps.property.engineVersion"></a>
+##### `engineVersion`<sup>Optional</sup> <a name="engineVersion" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.engineVersion"></a>
 
 ```typescript
 public readonly engineVersion: EngineVersion;
 ```
 
-- *Type:* aws-dsf.consumption.EngineVersion
+- *Type:* aws-data-solutions-framework.consumption.EngineVersion
 - *Default:* AUTO.
 
 The engine version on which the query runs.
 
 ---
 
-##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-dsf.consumption.AthenaWorkgroupProps.property.executionRole"></a>
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -8575,7 +8468,7 @@ Role used to access user resources in an Athena for Apache Spark session.
 
 ---
 
-##### `publishCloudWatchMetricsEnabled`<sup>Optional</sup> <a name="publishCloudWatchMetricsEnabled" id="aws-dsf.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled"></a>
+##### `publishCloudWatchMetricsEnabled`<sup>Optional</sup> <a name="publishCloudWatchMetricsEnabled" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled"></a>
 
 ```typescript
 public readonly publishCloudWatchMetricsEnabled: boolean;
@@ -8588,7 +8481,7 @@ Indicates that the Amazon CloudWatch metrics are enabled for the workgroup.
 
 ---
 
-##### `recursiveDeleteOption`<sup>Optional</sup> <a name="recursiveDeleteOption" id="aws-dsf.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption"></a>
+##### `recursiveDeleteOption`<sup>Optional</sup> <a name="recursiveDeleteOption" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption"></a>
 
 ```typescript
 public readonly recursiveDeleteOption: boolean;
@@ -8601,7 +8494,7 @@ The option to delete a workgroup and its contents even if the workgroup contains
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.consumption.AthenaWorkgroupProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -8617,7 +8510,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `requesterPaysEnabled`<sup>Optional</sup> <a name="requesterPaysEnabled" id="aws-dsf.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled"></a>
+##### `requesterPaysEnabled`<sup>Optional</sup> <a name="requesterPaysEnabled" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled"></a>
 
 ```typescript
 public readonly requesterPaysEnabled: boolean;
@@ -8630,7 +8523,7 @@ Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buc
 
 ---
 
-##### `resultBucket`<sup>Optional</sup> <a name="resultBucket" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucket"></a>
+##### `resultBucket`<sup>Optional</sup> <a name="resultBucket" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucket"></a>
 
 ```typescript
 public readonly resultBucket: IBucket;
@@ -8643,7 +8536,7 @@ Amazon S3 Bucket where query results are stored.
 
 ---
 
-##### `resultBucketName`<sup>Optional</sup> <a name="resultBucketName" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultBucketName"></a>
+##### `resultBucketName`<sup>Optional</sup> <a name="resultBucketName" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucketName"></a>
 
 ```typescript
 public readonly resultBucketName: string;
@@ -8656,7 +8549,7 @@ Name for the S3 Bucket in case it should be created.
 
 ---
 
-##### `resultsEncryptionKey`<sup>Optional</sup> <a name="resultsEncryptionKey" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey"></a>
+##### `resultsEncryptionKey`<sup>Optional</sup> <a name="resultsEncryptionKey" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey"></a>
 
 ```typescript
 public readonly resultsEncryptionKey: IKey;
@@ -8673,7 +8566,7 @@ principals that were granted to run queries using AthenaWorkGroup's grantRunQuer
 
 ---
 
-##### `resultsRetentionPeriod`<sup>Optional</sup> <a name="resultsRetentionPeriod" id="aws-dsf.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod"></a>
+##### `resultsRetentionPeriod`<sup>Optional</sup> <a name="resultsRetentionPeriod" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod"></a>
 
 ```typescript
 public readonly resultsRetentionPeriod: Duration;
@@ -8685,23 +8578,20 @@ Indicates the number of days after creation when objects are deleted from the Re
 
 ---
 
-##### `state`<sup>Optional</sup> <a name="state" id="aws-dsf.consumption.AthenaWorkgroupProps.property.state"></a>
+##### `state`<sup>Optional</sup> <a name="state" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.state"></a>
 
 ```typescript
 public readonly state: State;
 ```
 
-- *Type:* aws-dsf.consumption.State
+- *Type:* aws-data-solutions-framework.consumption.State
 - *Default:* ENABLED.
 
 The state of the Workgroup.
 
 ---
 
-### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-dsf.governance.DataCatalogDatabaseProps"></a>
-=======
 ### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
 
 Properties for the `DataCatalogDatabase` construct.
 
@@ -10259,11 +10149,7 @@ The EMR Spark image to use to run the unit tests.
 
 ---
 
-<<<<<<< HEAD
-### SparkEmrContainersJobApiProps <a name="SparkEmrContainersJobApiProps" id="aws-dsf.processing.SparkEmrContainersJobApiProps"></a>
-=======
-### SparkEmrContainerJobApiProps <a name="SparkEmrContainerJobApiProps" id="aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+### SparkEmrContainersJobApiProps <a name="SparkEmrContainersJobApiProps" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps"></a>
 
 Configuration for the EMR on EKS job.
 
@@ -10271,11 +10157,7 @@ Use this interface when `SparkEmrContainerJobProps` doesn't give you access to t
 
 > [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
 
-<<<<<<< HEAD
-#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersJobApiProps.Initializer"></a>
-=======
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.Initializer"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-data-solutions-framework'
@@ -10287,25 +10169,14 @@ const sparkEmrContainersJobApiProps: processing.SparkEmrContainersJobApiProps = 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.removalPolicy"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | Job execution timeout in minutes. |
-
----
-
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.removalPolicy"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10321,11 +10192,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-<<<<<<< HEAD
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.schedule"></a>
-=======
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.schedule"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10338,11 +10205,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-<<<<<<< HEAD
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.jobConfig"></a>
-=======
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.jobConfig"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -10356,11 +10219,7 @@ EMR on EKS StartJobRun API configuration.
 
 ---
 
-<<<<<<< HEAD
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainersJobApiProps.property.executionTimeout"></a>
-=======
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-data-solutions-framework.processing.SparkEmrContainerJobApiProps.property.executionTimeoutMinutes"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -10373,19 +10232,11 @@ Job execution timeout.
 
 ---
 
-<<<<<<< HEAD
-### SparkEmrContainersJobProps <a name="SparkEmrContainersJobProps" id="aws-dsf.processing.SparkEmrContainersJobProps"></a>
+### SparkEmrContainersJobProps <a name="SparkEmrContainersJobProps" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps"></a>
 
 Simplified configuration for the `SparkEmrEksJob` construct.
 
-#### Initializer <a name="Initializer" id="aws-dsf.processing.SparkEmrContainersJobProps.Initializer"></a>
-=======
-### SparkEmrContainerJobProps <a name="SparkEmrContainerJobProps" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps"></a>
-
-Simplified configuration for the `SparkEmrEksJob` construct.
-
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.Initializer"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.Initializer"></a>
 
 ```typescript
 import { processing } from 'aws-data-solutions-framework'
@@ -10397,50 +10248,27 @@ const sparkEmrContainersJobProps: processing.SparkEmrContainersJobProps = { ... 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-dsf.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrContainersJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-data-solutions-framework.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-dsf.processing.SparkEmrContainersJobProps.property.removalPolicy"></a>
-=======
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | The IAM execution Role ARN for the EMR on EKS job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | The CloudWatch Log Group name for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | The execution timeout in minutes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.releaseLabel">releaseLabel</a></code> | <code>string</code> | The EMR runtime to use. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | The Amazon S3 destination URI for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
-
----
-
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.removalPolicy"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10456,11 +10284,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-<<<<<<< HEAD
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-dsf.processing.SparkEmrContainersJobProps.property.schedule"></a>
-=======
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.schedule"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10473,11 +10297,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-<<<<<<< HEAD
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrContainersJobProps.property.executionRole"></a>
-=======
-##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.executionRoleArn"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -10489,11 +10309,7 @@ The IAM execution Role ARN for the EMR on EKS job.
 
 ---
 
-<<<<<<< HEAD
-##### `name`<sup>Required</sup> <a name="name" id="aws-dsf.processing.SparkEmrContainersJobProps.property.name"></a>
-=======
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.name"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -10505,11 +10321,7 @@ The Spark job name.
 
 ---
 
-<<<<<<< HEAD
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint"></a>
-=======
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPoint"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -10523,11 +10335,7 @@ The entry point for the Spark submit job run.
 
 ---
 
-<<<<<<< HEAD
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-dsf.processing.SparkEmrContainersJobProps.property.virtualClusterId"></a>
-=======
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.virtualClusterId"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.virtualClusterId"></a>
 
 ```typescript
 public readonly virtualClusterId: string;
@@ -10539,11 +10347,7 @@ The EMR on EKS virtual cluster ID.
 
 ---
 
-<<<<<<< HEAD
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-dsf.processing.SparkEmrContainersJobProps.property.applicationConfiguration"></a>
-=======
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.applicationConfiguration"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -10558,11 +10362,7 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-<<<<<<< HEAD
-##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup"></a>
-=======
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupName"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
 public readonly cloudWatchLogGroup: ILogGroup;
@@ -10575,11 +10375,7 @@ The CloudWatch Log Group name for log publishing.
 
 ---
 
-<<<<<<< HEAD
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-dsf.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
-=======
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -10592,11 +10388,7 @@ The CloudWatch Log Group stream prefix for log publishing.
 
 ---
 
-<<<<<<< HEAD
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrContainersJobProps.property.executionTimeout"></a>
-=======
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.executionTimeoutMinutes"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -10609,11 +10401,7 @@ The execution timeout.
 
 ---
 
-<<<<<<< HEAD
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-dsf.processing.SparkEmrContainersJobProps.property.maxRetries"></a>
-=======
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.maxRetries"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.maxRetries"></a>
 
 ```typescript
 public readonly maxRetries: number;
@@ -10626,17 +10414,13 @@ The maximum number of retries.
 
 ---
 
-<<<<<<< HEAD
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-dsf.processing.SparkEmrContainersJobProps.property.releaseLabel"></a>
-=======
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.releaseLabel"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
-- *Type:* aws-dsf.processing.EmrRuntimeVersion
+- *Type:* aws-data-solutions-framework.processing.EmrRuntimeVersion
 - *Default:* [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
 
 The EMR release version associated with the application.
@@ -10645,11 +10429,7 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-<<<<<<< HEAD
-##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogBucket"></a>
-=======
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.s3LogUri"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogBucket"></a>
 
 ```typescript
 public readonly s3LogBucket: IBucket;
@@ -10662,7 +10442,7 @@ The S3 Bucket for log publishing.
 
 ---
 
-##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-dsf.processing.SparkEmrContainersJobProps.property.s3LogPrefix"></a>
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogPrefix"></a>
 
 ```typescript
 public readonly s3LogPrefix: string;
@@ -10675,11 +10455,7 @@ The S3 Bucket prefix for log publishing.
 
 ---
 
-<<<<<<< HEAD
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments"></a>
-=======
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.sparkSubmitEntryPointArguments"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string[];
@@ -10694,11 +10470,7 @@ The arguments for the Spark submit job run.
 
 ---
 
-<<<<<<< HEAD
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-dsf.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters"></a>
-=======
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.sparkSubmitParameters"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -10713,11 +10485,7 @@ The parameters for the Spark submit job run.
 
 ---
 
-<<<<<<< HEAD
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-dsf.processing.SparkEmrContainersJobProps.property.tags"></a>
-=======
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-data-solutions-framework.processing.SparkEmrContainerJobProps.property.tags"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `tags`<sup>Optional</sup> <a name="tags" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -11139,48 +10907,26 @@ const sparkEmrServerlessJobProps: processing.SparkEmrServerlessJobProps = { ... 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-<<<<<<< HEAD
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application to execute the Spark Job. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role for the EMR Serverless job. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | The Spark Job name. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey">cloudWatchEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on CloudWatch. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group Stream prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | The types of logs to log in CloudWatch Log. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | Enable Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey">persistentAppUIKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey">s3LogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on S3. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
-| <code><a href="#aws-dsf.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
-=======
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application ID to execute the Spark Job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRoleArn">executionRoleArn</a></code> | <code>string</code> | The IAM execution Role ARN for the EMR Serverless job. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application to execute the Spark Job. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role for the EMR Serverless job. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | The Spark Job name. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn">cloudWatchEncryptionKeyArn</a></code> | <code>string</code> | The KMS Key for encrypting logs on CloudWatch. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName">cloudWatchLogGroupName</a></code> | <code>string</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey">cloudWatchEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on CloudWatch. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group Stream prefix for log publishing. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | The types of logs to log in CloudWatch Log. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes">executionTimeoutMinutes</a></code> | <code>number</code> | The execution timeout in minutes. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | Enable Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn">persistentAppUIKeyArn</a></code> | <code>string</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogUri">s3LogUri</a></code> | <code>string</code> | The S3 URI for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn">s3LogUriKeyArn</a></code> | <code>string</code> | The KMS Key for encrypting logs on S3. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey">persistentAppUIKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey">s3LogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on S3. |
+| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
 | <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
 
 ---
 
@@ -11225,11 +10971,7 @@ The EMR Serverless Application to execute the Spark Job.
 
 ---
 
-<<<<<<< HEAD
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionRole"></a>
-=======
-##### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRoleArn"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -11282,11 +11024,7 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-<<<<<<< HEAD
-##### `cloudWatchEncryptionKey`<sup>Optional</sup> <a name="cloudWatchEncryptionKey" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey"></a>
-=======
-##### `cloudWatchEncryptionKeyArn`<sup>Optional</sup> <a name="cloudWatchEncryptionKeyArn" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKeyArn"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `cloudWatchEncryptionKey`<sup>Optional</sup> <a name="cloudWatchEncryptionKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey"></a>
 
 ```typescript
 public readonly cloudWatchEncryptionKey: IKey;
@@ -11299,11 +11037,7 @@ The KMS Key for encrypting logs on CloudWatch.
 
 ---
 
-<<<<<<< HEAD
-##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup"></a>
-=======
-##### `cloudWatchLogGroupName`<sup>Optional</sup> <a name="cloudWatchLogGroupName" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupName"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
 public readonly cloudWatchLogGroup: ILogGroup;
@@ -11341,11 +11075,7 @@ The types of logs to log in CloudWatch Log.
 
 ---
 
-<<<<<<< HEAD
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.executionTimeout"></a>
-=======
-##### `executionTimeoutMinutes`<sup>Optional</sup> <a name="executionTimeoutMinutes" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeoutMinutes"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -11371,11 +11101,7 @@ Enable Spark persistent UI logs in EMR managed storage.
 
 ---
 
-<<<<<<< HEAD
-##### `persistentAppUIKey`<sup>Optional</sup> <a name="persistentAppUIKey" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey"></a>
-=======
-##### `persistentAppUIKeyArn`<sup>Optional</sup> <a name="persistentAppUIKeyArn" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKeyArn"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `persistentAppUIKey`<sup>Optional</sup> <a name="persistentAppUIKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey"></a>
 
 ```typescript
 public readonly persistentAppUIKey: IKey;
@@ -11388,11 +11114,7 @@ The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage.
 
 ---
 
-<<<<<<< HEAD
-##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogBucket"></a>
-=======
-##### `s3LogUri`<sup>Optional</sup> <a name="s3LogUri" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogUri"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogBucket"></a>
 
 ```typescript
 public readonly s3LogBucket: IBucket;
@@ -11405,7 +11127,7 @@ The S3 Bucket for log publishing.
 
 ---
 
-##### `s3LogEncryptionKey`<sup>Optional</sup> <a name="s3LogEncryptionKey" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey"></a>
+##### `s3LogEncryptionKey`<sup>Optional</sup> <a name="s3LogEncryptionKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey"></a>
 
 ```typescript
 public readonly s3LogEncryptionKey: IKey;
@@ -11418,7 +11140,7 @@ The KMS Key for encrypting logs on S3.
 
 ---
 
-##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-dsf.processing.SparkEmrServerlessJobProps.property.s3LogPrefix"></a>
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogPrefix"></a>
 
 ```typescript
 public readonly s3LogPrefix: string;
@@ -11427,24 +11149,7 @@ public readonly s3LogPrefix: string;
 - *Type:* string
 - *Default:* No logging to S3
 
-<<<<<<< HEAD
 The S3 Bucket prefix for log publishing.
-=======
-The S3 URI for log publishing.
-
----
-
-##### `s3LogUriKeyArn`<sup>Optional</sup> <a name="s3LogUriKeyArn" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogUriKeyArn"></a>
-
-```typescript
-public readonly s3LogUriKeyArn: string;
-```
-
-- *Type:* string
-- *Default:* No encryption
-
-The KMS Key for encrypting logs on S3.
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
 
 ---
 
@@ -12401,38 +12106,34 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 ---
 
 
-<<<<<<< HEAD
-### EngineVersion <a name="EngineVersion" id="aws-dsf.consumption.EngineVersion"></a>
+### EngineVersion <a name="EngineVersion" id="aws-data-solutions-framework.consumption.EngineVersion"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.consumption.EngineVersion.AUTO">AUTO</a></code> | *No description.* |
-| <code><a href="#aws-dsf.consumption.EngineVersion.ATHENA_V3">ATHENA_V3</a></code> | *No description.* |
-| <code><a href="#aws-dsf.consumption.EngineVersion.PYSPARK_V3">PYSPARK_V3</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.EngineVersion.AUTO">AUTO</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.EngineVersion.ATHENA_V3">ATHENA_V3</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3">PYSPARK_V3</a></code> | *No description.* |
 
 ---
 
-##### `AUTO` <a name="AUTO" id="aws-dsf.consumption.EngineVersion.AUTO"></a>
-
----
-
-
-##### `ATHENA_V3` <a name="ATHENA_V3" id="aws-dsf.consumption.EngineVersion.ATHENA_V3"></a>
+##### `AUTO` <a name="AUTO" id="aws-data-solutions-framework.consumption.EngineVersion.AUTO"></a>
 
 ---
 
 
-##### `PYSPARK_V3` <a name="PYSPARK_V3" id="aws-dsf.consumption.EngineVersion.PYSPARK_V3"></a>
+##### `ATHENA_V3` <a name="ATHENA_V3" id="aws-data-solutions-framework.consumption.EngineVersion.ATHENA_V3"></a>
 
 ---
 
 
-### KarpenterVersion <a name="KarpenterVersion" id="aws-dsf.processing.KarpenterVersion"></a>
-=======
+##### `PYSPARK_V3` <a name="PYSPARK_V3" id="aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3"></a>
+
+---
+
+
 ### KarpenterVersion <a name="KarpenterVersion" id="aws-data-solutions-framework.processing.KarpenterVersion"></a>
->>>>>>> 95ec441 (change name of the framework packages in NPM and PYPI)
 
 The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 is supported.
 
@@ -12537,23 +12238,23 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 ---
 
 
-### State <a name="State" id="aws-dsf.consumption.State"></a>
+### State <a name="State" id="aws-data-solutions-framework.consumption.State"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-dsf.consumption.State.ENABLED">ENABLED</a></code> | *No description.* |
-| <code><a href="#aws-dsf.consumption.State.DISABLED">DISABLED</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.State.ENABLED">ENABLED</a></code> | *No description.* |
+| <code><a href="#aws-data-solutions-framework.consumption.State.DISABLED">DISABLED</a></code> | *No description.* |
 
 ---
 
-##### `ENABLED` <a name="ENABLED" id="aws-dsf.consumption.State.ENABLED"></a>
+##### `ENABLED` <a name="ENABLED" id="aws-data-solutions-framework.consumption.State.ENABLED"></a>
 
 ---
 
 
-##### `DISABLED` <a name="DISABLED" id="aws-dsf.consumption.State.DISABLED"></a>
+##### `DISABLED` <a name="DISABLED" id="aws-data-solutions-framework.consumption.State.DISABLED"></a>
 
 ---
 
