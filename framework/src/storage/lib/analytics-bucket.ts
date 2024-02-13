@@ -47,6 +47,7 @@ export class AnalyticsBucket extends Bucket {
       blockPublicAccess: props?.blockPublicAccess || BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
       encryption: BucketEncryption.KMS,
+      bucketKeyEnabled: true,
       lifecycleRules: props?.lifecycleRules?.concat(AnalyticsBucket.LIFECYCLE_RULE) || AnalyticsBucket.LIFECYCLE_RULE,
       removalPolicy,
       serverAccessLogsPrefix: props?.serverAccessLogsPrefix || bucketName,

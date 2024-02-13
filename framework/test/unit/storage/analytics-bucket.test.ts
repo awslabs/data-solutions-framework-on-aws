@@ -39,6 +39,7 @@ describe('AnalyticsBucket Construct with default configuration', () => {
           BucketEncryption: {
             ServerSideEncryptionConfiguration: [
               {
+                BucketKeyEnabled: true,
                 ServerSideEncryptionByDefault: {
                   SSEAlgorithm: 'aws:kms',
                 },
