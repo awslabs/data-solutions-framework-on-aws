@@ -20,9 +20,9 @@ export class CreateServiceLinkedRole extends Construct {
 
   private readonly serviceToken: string;
 
-  constructor(scope: Construct, id: string, props: CreateServiceLinkedRoleProps) {
+  constructor(scope: Construct, id: string, props?: CreateServiceLinkedRoleProps) {
     super(scope, id);
-    const removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
     const providerRole = new Role(this, 'CreateServiceLinkedRoleProviderRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       inlinePolicies: {
@@ -48,7 +48,7 @@ export class CreateServiceLinkedRole extends Construct {
         depsLockFilePath: __dirname+'/resources/lambda/create-service-linked-role/package-lock.json',
         entryFile: __dirname+'/resources/lambda/create-service-linked-role/index.mjs',
         handler: 'index.handler',
-        timeout: Duration.seconds(1),
+        timeout: Duration.seconds(10),
       },
       removalPolicy,
     });

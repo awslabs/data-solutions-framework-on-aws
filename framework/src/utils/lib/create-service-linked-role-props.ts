@@ -14,5 +14,5 @@ export interface CreateServiceLinkedRoleProps {
    * Otherwise, the removalPolicy is reverted to RETAIN.
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
-  readonly removalPolicy: RemovalPolicy;
+  readonly removalPolicy?: RemovalPolicy;
 }
