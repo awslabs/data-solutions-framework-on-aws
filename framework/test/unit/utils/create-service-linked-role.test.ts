@@ -16,7 +16,7 @@ describe('With default configuration, the construct ', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   const slr = new CreateServiceLinkedRole(stack, 'CreateSLR');
-  const slrService = ServiceLinkedRoleService.REDSHIFT
+  const slrService = ServiceLinkedRoleService.REDSHIFT;
   slr.create(slrService);
   const template = Template.fromStack(stack);
 
@@ -32,15 +32,15 @@ describe('With default configuration, the construct ', () => {
         Statement: Match.arrayWith([
           Match.objectLike({
             Action: Match.exact('iam:CreateServiceLinkedRole'),
-            Resource: Match.not(Match.exact("*")),
+            Resource: Match.not(Match.exact('*')),
             Condition: Match.objectEquals({
               StringLike: Match.objectEquals({
-                "iam:AWSServiceName": slrService.serviceName
-              })
-            })
-          })
-        ])
-      })
-    })
-  })
+                'iam:AWSServiceName': slrService.serviceName,
+              }),
+            }),
+          }),
+        ]),
+      }),
+    });
+  });
 });
