@@ -2,7 +2,7 @@
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
-### AccessLogsBucket <a name="AccessLogsBucket" id="aws-data-solutions-framework.storage.AccessLogsBucket"></a>
+### AccessLogsBucket <a name="AccessLogsBucket" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket"></a>
 
 Amazon S3 Bucket configured with best-practices and smart defaults for storing S3 access logs.
 
@@ -17,35 +17,35 @@ const bucket = new dsf.storage.AccessLogsBucket(this, 'AccessLogsBucket')
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.storage.AccessLogsBucket.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 new storage.AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.props">props</a></code> | <code>aws-cdk-lib.aws_s3.BucketProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.Initializer.parameter.props"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketProps
 
@@ -55,36 +55,36 @@ new storage.AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.storage.AccessLogsBucket.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.toString"></a>
 
 ```typescript
 public toString(): string
@@ -92,7 +92,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-data-solutions-framework.storage.AccessLogsBucket.applyRemovalPolicy"></a>
+##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.applyRemovalPolicy"></a>
 
 ```typescript
 public applyRemovalPolicy(policy: RemovalPolicy): void
@@ -108,13 +108,13 @@ to be replaced.
 The resource can be deleted (`RemovalPolicy.DESTROY`), or left in your AWS
 account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-data-solutions-framework.storage.AccessLogsBucket.applyRemovalPolicy.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.applyRemovalPolicy.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
-##### `addEventNotification` <a name="addEventNotification" id="aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification"></a>
+##### `addEventNotification` <a name="addEventNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification"></a>
 
 ```typescript
 public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -133,7 +133,7 @@ Adds a bucket notification event destination.
 ```
 
 
-###### `event`<sup>Required</sup> <a name="event" id="aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.event"></a>
+###### `event`<sup>Required</sup> <a name="event" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.event"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.EventType
 
@@ -141,7 +141,7 @@ The event to trigger the notification.
 
 ---
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -149,7 +149,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -161,7 +161,7 @@ for details about allowed filter rules.
 
 ---
 
-##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification"></a>
+##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
 public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -172,7 +172,7 @@ Subscribes a destination to receive notifications when an object is created in t
 This is identical to calling
 `onEvent(EventType.OBJECT_CREATED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -180,7 +180,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -188,7 +188,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification"></a>
+##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
 public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -199,7 +199,7 @@ Subscribes a destination to receive notifications when an object is removed from
 This is identical to calling
 `onEvent(EventType.OBJECT_REMOVED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -207,7 +207,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -215,7 +215,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-data-solutions-framework.storage.AccessLogsBucket.addToResourcePolicy"></a>
+##### `addToResourcePolicy` <a name="addToResourcePolicy" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addToResourcePolicy"></a>
 
 ```typescript
 public addToResourcePolicy(permission: PolicyStatement): AddToResourcePolicyResult
@@ -229,7 +229,7 @@ it's not possible to tell whether the bucket already has a policy
 attached, let alone to re-use that policy to add more statements to it.
 So it's safest to do nothing in these cases.
 
-###### `permission`<sup>Required</sup> <a name="permission" id="aws-data-solutions-framework.storage.AccessLogsBucket.addToResourcePolicy.parameter.permission"></a>
+###### `permission`<sup>Required</sup> <a name="permission" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addToResourcePolicy.parameter.permission"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
@@ -237,7 +237,7 @@ the policy statement to be added to the bucket's policy.
 
 ---
 
-##### `arnForObjects` <a name="arnForObjects" id="aws-data-solutions-framework.storage.AccessLogsBucket.arnForObjects"></a>
+##### `arnForObjects` <a name="arnForObjects" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.arnForObjects"></a>
 
 ```typescript
 public arnForObjects(keyPattern: string): string
@@ -251,13 +251,13 @@ If you need to specify a keyPattern with multiple components, concatenate them i
 
   arnForObjects(`home/${team}/${user}/*`)
 
-###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.arnForObjects.parameter.keyPattern"></a>
+###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.arnForObjects.parameter.keyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-data-solutions-framework.storage.AccessLogsBucket.enableEventBridgeNotification"></a>
+##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.enableEventBridgeNotification"></a>
 
 ```typescript
 public enableEventBridgeNotification(): void
@@ -276,7 +276,7 @@ Object Deleted (DeleteObject)
 - Object Tags Added
 - Object Tags Deleted
 
-##### `grantDelete` <a name="grantDelete" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete"></a>
+##### `grantDelete` <a name="grantDelete" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete"></a>
 
 ```typescript
 public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -284,7 +284,7 @@ public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
 
 Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -292,7 +292,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantDelete.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -302,7 +302,7 @@ Parameter type is `any` but `string` should be passed in.
 
 ---
 
-##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess"></a>
+##### `grantPublicAccess` <a name="grantPublicAccess" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess"></a>
 
 ```typescript
 public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
@@ -329,7 +329,7 @@ Note that if this `IBucket` refers to an existing bucket, possibly not
 managed by CloudFormation, this method will have no effect, since it's
 impossible to modify the policy of an existing bucket.
 
-###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
+###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
 - *Type:* string
 
@@ -339,7 +339,7 @@ Default is "s3:GetObject".
 
 ---
 
-###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess.parameter.keyPrefix"></a>
+###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess.parameter.keyPrefix"></a>
 
 - *Type:* string
 
@@ -347,7 +347,7 @@ the prefix of S3 object keys (e.g. `home/*`). Default is "*".
 
 ---
 
-##### `grantPut` <a name="grantPut" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPut"></a>
+##### `grantPut` <a name="grantPut" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPut"></a>
 
 ```typescript
 public grantPut(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -358,7 +358,7 @@ Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM princip
 If encryption is used, permission to use the key to encrypt the contents
 of written files will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPut.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPut.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -366,7 +366,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPut.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPut.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -376,7 +376,7 @@ Parameter type is `any` but `string` should be passed in.
 
 ---
 
-##### `grantPutAcl` <a name="grantPutAcl" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl"></a>
+##### `grantPutAcl` <a name="grantPutAcl" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl"></a>
 
 ```typescript
 public grantPutAcl(identity: IGrantable, objectsKeyPattern?: string): Grant
@@ -388,19 +388,19 @@ If your application has the '@aws-cdk/aws-s3:grantWriteWithoutAcl' feature flag 
 calling `grantWrite` or `grantReadWrite` no longer grants permissions to modify the ACLs of the objects;
 in this case, if you need to modify object ACLs, call this method explicitly.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `grantRead` <a name="grantRead" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantRead"></a>
+##### `grantRead` <a name="grantRead" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantRead"></a>
 
 ```typescript
 public grantRead(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -411,7 +411,7 @@ Grant read permissions for this bucket and it's contents to an IAM principal (Ro
 If encryption is used, permission to use the key to decrypt the contents
 of the bucket will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantRead.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantRead.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -419,7 +419,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantRead.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantRead.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -429,7 +429,7 @@ Parameter type is `any` but `string` should be passed in.
 
 ---
 
-##### `grantReadWrite` <a name="grantReadWrite" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite"></a>
+##### `grantReadWrite` <a name="grantReadWrite" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite"></a>
 
 ```typescript
 public grantReadWrite(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -448,19 +448,19 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-##### `grantWrite` <a name="grantWrite" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite"></a>
+##### `grantWrite` <a name="grantWrite" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite"></a>
 
 ```typescript
 public grantWrite(identity: IGrantable, objectsKeyPattern?: any, allowedActionPatterns?: string[]): Grant
@@ -479,25 +479,25 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite.parameter.allowedActionPatterns"></a>
+###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite.parameter.allowedActionPatterns"></a>
 
 - *Type:* string[]
 
 ---
 
-##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent"></a>
+##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent"></a>
 
 ```typescript
 public onCloudTrailEvent(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -508,7 +508,7 @@ Define a CloudWatch event that triggers when something happens to this repositor
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent.parameter.id"></a>
 
 - *Type:* string
 
@@ -516,7 +516,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -524,7 +524,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject"></a>
+##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject"></a>
 
 ```typescript
 public onCloudTrailPutObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -539,7 +539,7 @@ so using `onCloudTrailWriteObject` may be preferable.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -547,7 +547,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -555,7 +555,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject"></a>
+##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject"></a>
 
 ```typescript
 public onCloudTrailWriteObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -573,7 +573,7 @@ so using this method may be preferable to `onCloudTrailPutObject`.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -581,7 +581,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailWriteObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -589,7 +589,7 @@ Options for adding the rule.
 
 ---
 
-##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-data-solutions-framework.storage.AccessLogsBucket.s3UrlForObject"></a>
+##### `s3UrlForObject` <a name="s3UrlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.s3UrlForObject"></a>
 
 ```typescript
 public s3UrlForObject(key?: string): string
@@ -600,7 +600,7 @@ The S3 URL of an S3 object. For example:.
 `s3://onlybucket`
 - `s3://bucket/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AccessLogsBucket.s3UrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.s3UrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -611,7 +611,7 @@ bucket is returned.
 
 ---
 
-##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject"></a>
+##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject"></a>
 
 ```typescript
 public transferAccelerationUrlForObject(key?: string, options?: TransferAccelerationUrlOptions): string
@@ -625,7 +625,7 @@ for dual-stack endpoint (connect to the bucket over IPv6). For example:
 - `https://bucket.s3-accelerate.amazonaws.com`
 - `https://bucket.s3-accelerate.amazonaws.com/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -636,7 +636,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.transferAccelerationUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.TransferAccelerationUrlOptions
 
@@ -644,7 +644,7 @@ Options for generating URL.
 
 ---
 
-##### `urlForObject` <a name="urlForObject" id="aws-data-solutions-framework.storage.AccessLogsBucket.urlForObject"></a>
+##### `urlForObject` <a name="urlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.urlForObject"></a>
 
 ```typescript
 public urlForObject(key?: string): string
@@ -656,7 +656,7 @@ The https URL of an S3 object. Specify `regional: false` at the options for non-
 - `https://s3.us-west-1.amazonaws.com/bucket/key`
 - `https://s3.cn-north-1.amazonaws.com.cn/china-bucket/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AccessLogsBucket.urlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.urlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -667,7 +667,7 @@ bucket is returned.
 
 ---
 
-##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject"></a>
+##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject"></a>
 
 ```typescript
 public virtualHostedUrlForObject(key?: string, options?: VirtualHostedStyleUrlOptions): string
@@ -680,7 +680,7 @@ The virtual hosted-style URL of an S3 object. Specify `regional: false` at the o
 - `https://bucket.s3.amazonaws.com/key`
 - `https://china-bucket.s3.cn-north-1.amazonaws.com.cn/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -691,7 +691,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.virtualHostedUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.VirtualHostedStyleUrlOptions
 
@@ -699,7 +699,7 @@ Options for generating URL.
 
 ---
 
-##### `addCorsRule` <a name="addCorsRule" id="aws-data-solutions-framework.storage.AccessLogsBucket.addCorsRule"></a>
+##### `addCorsRule` <a name="addCorsRule" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addCorsRule"></a>
 
 ```typescript
 public addCorsRule(rule: CorsRule): void
@@ -707,7 +707,7 @@ public addCorsRule(rule: CorsRule): void
 
 Adds a cross-origin access configuration for objects in an Amazon S3 bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.storage.AccessLogsBucket.addCorsRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addCorsRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CorsRule
 
@@ -715,7 +715,7 @@ The CORS configuration rule to add.
 
 ---
 
-##### `addInventory` <a name="addInventory" id="aws-data-solutions-framework.storage.AccessLogsBucket.addInventory"></a>
+##### `addInventory` <a name="addInventory" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addInventory"></a>
 
 ```typescript
 public addInventory(inventory: Inventory): void
@@ -723,7 +723,7 @@ public addInventory(inventory: Inventory): void
 
 Add an inventory configuration.
 
-###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-data-solutions-framework.storage.AccessLogsBucket.addInventory.parameter.inventory"></a>
+###### `inventory`<sup>Required</sup> <a name="inventory" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addInventory.parameter.inventory"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.Inventory
 
@@ -731,7 +731,7 @@ configuration to add.
 
 ---
 
-##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-data-solutions-framework.storage.AccessLogsBucket.addLifecycleRule"></a>
+##### `addLifecycleRule` <a name="addLifecycleRule" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addLifecycleRule"></a>
 
 ```typescript
 public addLifecycleRule(rule: LifecycleRule): void
@@ -739,7 +739,7 @@ public addLifecycleRule(rule: LifecycleRule): void
 
 Add a lifecycle rule to the bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.storage.AccessLogsBucket.addLifecycleRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addLifecycleRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.LifecycleRule
 
@@ -747,7 +747,7 @@ The rule to add.
 
 ---
 
-##### `addMetric` <a name="addMetric" id="aws-data-solutions-framework.storage.AccessLogsBucket.addMetric"></a>
+##### `addMetric` <a name="addMetric" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addMetric"></a>
 
 ```typescript
 public addMetric(metric: BucketMetrics): void
@@ -755,7 +755,7 @@ public addMetric(metric: BucketMetrics): void
 
 Adds a metrics configuration for the CloudWatch request metrics from the bucket.
 
-###### `metric`<sup>Required</sup> <a name="metric" id="aws-data-solutions-framework.storage.AccessLogsBucket.addMetric.parameter.metric"></a>
+###### `metric`<sup>Required</sup> <a name="metric" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addMetric.parameter.metric"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketMetrics
 
@@ -767,21 +767,21 @@ The metric configuration to add.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.storage.AccessLogsBucket.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isConstruct"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.isConstruct(x: any)
 ```
@@ -802,7 +802,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.storage.AccessLogsBucket.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -810,75 +810,75 @@ Any object.
 
 ---
 
-##### `isOwnedResource` <a name="isOwnedResource" id="aws-data-solutions-framework.storage.AccessLogsBucket.isOwnedResource"></a>
+##### `isOwnedResource` <a name="isOwnedResource" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isOwnedResource"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.isOwnedResource(construct: IConstruct)
 ```
 
 Returns true if the construct was created by CDK, and false otherwise.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.storage.AccessLogsBucket.isOwnedResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isOwnedResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `isResource` <a name="isResource" id="aws-data-solutions-framework.storage.AccessLogsBucket.isResource"></a>
+##### `isResource` <a name="isResource" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isResource"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.isResource(construct: IConstruct)
 ```
 
 Check whether the given construct is a Resource.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.storage.AccessLogsBucket.isResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.isResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `fromBucketArn` <a name="fromBucketArn" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn"></a>
+##### `fromBucketArn` <a name="fromBucketArn" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn.parameter.bucketArn"></a>
+###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketArn.parameter.bucketArn"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes"></a>
+##### `fromBucketAttributes` <a name="fromBucketAttributes" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
 ```
 
 Creates a Bucket construct that represents an external bucket.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -886,7 +886,7 @@ The parent creating construct (usually `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes.parameter.id"></a>
 
 - *Type:* string
 
@@ -894,7 +894,7 @@ The construct's name.
 
 ---
 
-###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes.parameter.attrs"></a>
+###### `attrs`<sup>Required</sup> <a name="attrs" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketAttributes.parameter.attrs"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketAttributes
 
@@ -905,59 +905,59 @@ Can be obtained from a call to
 
 ---
 
-##### `fromBucketName` <a name="fromBucketName" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName"></a>
+##### `fromBucketName` <a name="fromBucketName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName.parameter.bucketName"></a>
+###### `bucketName`<sup>Required</sup> <a name="bucketName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromBucketName.parameter.bucketName"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromCfnBucket"></a>
+##### `fromCfnBucket` <a name="fromCfnBucket" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromCfnBucket"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.fromCfnBucket(cfnBucket: CfnBucket)
 ```
 
 Create a mutable `IBucket` based on a low-level `CfnBucket`.
 
-###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-data-solutions-framework.storage.AccessLogsBucket.fromCfnBucket.parameter.cfnBucket"></a>
+###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.fromCfnBucket.parameter.cfnBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CfnBucket
 
 ---
 
-##### `validateBucketName` <a name="validateBucketName" id="aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName"></a>
+##### `validateBucketName` <a name="validateBucketName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AccessLogsBucket.validateBucketName(physicalName: string)
 ```
 
 Thrown an exception if the given bucket name is not valid.
 
-###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName.parameter.physicalName"></a>
+###### `physicalName`<sup>Required</sup> <a name="physicalName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName.parameter.physicalName"></a>
 
 - *Type:* string
 
@@ -969,23 +969,23 @@ name of the bucket.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
-| <code><a href="#aws-data-solutions-framework.storage.AccessLogsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -997,7 +997,7 @@ The tree node.
 
 ---
 
-##### `env`<sup>Required</sup> <a name="env" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.env"></a>
+##### `env`<sup>Required</sup> <a name="env" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.env"></a>
 
 ```typescript
 public readonly env: ResourceEnvironment;
@@ -1016,7 +1016,7 @@ that might be different than the stack they were imported into.
 
 ---
 
-##### `stack`<sup>Required</sup> <a name="stack" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.stack"></a>
+##### `stack`<sup>Required</sup> <a name="stack" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.stack"></a>
 
 ```typescript
 public readonly stack: Stack;
@@ -1028,7 +1028,7 @@ The stack in which this resource is defined.
 
 ---
 
-##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketArn"></a>
+##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketArn"></a>
 
 ```typescript
 public readonly bucketArn: string;
@@ -1040,7 +1040,7 @@ The ARN of the bucket.
 
 ---
 
-##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDomainName"></a>
+##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDomainName"></a>
 
 ```typescript
 public readonly bucketDomainName: string;
@@ -1052,7 +1052,7 @@ The IPv4 DNS name of the specified bucket.
 
 ---
 
-##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDualStackDomainName"></a>
+##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketDualStackDomainName"></a>
 
 ```typescript
 public readonly bucketDualStackDomainName: string;
@@ -1064,7 +1064,7 @@ The IPv6 DNS name of the specified bucket.
 
 ---
 
-##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketName"></a>
+##### `bucketName`<sup>Required</sup> <a name="bucketName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -1076,7 +1076,7 @@ The name of the bucket.
 
 ---
 
-##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketRegionalDomainName"></a>
+##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketRegionalDomainName"></a>
 
 ```typescript
 public readonly bucketRegionalDomainName: string;
@@ -1088,7 +1088,7 @@ The regional domain name of the specified bucket.
 
 ---
 
-##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteDomainName"></a>
+##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteDomainName"></a>
 
 ```typescript
 public readonly bucketWebsiteDomainName: string;
@@ -1100,7 +1100,7 @@ The Domain name of the static website.
 
 ---
 
-##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteUrl"></a>
+##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.bucketWebsiteUrl"></a>
 
 ```typescript
 public readonly bucketWebsiteUrl: string;
@@ -1112,7 +1112,7 @@ The URL of the static website.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -1124,7 +1124,7 @@ Optional KMS encryption key associated with this bucket.
 
 ---
 
-##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.isWebsite"></a>
+##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.isWebsite"></a>
 
 ```typescript
 public readonly isWebsite: boolean;
@@ -1136,7 +1136,7 @@ If this bucket has been configured for static website hosting.
 
 ---
 
-##### `policy`<sup>Optional</sup> <a name="policy" id="aws-data-solutions-framework.storage.AccessLogsBucket.property.policy"></a>
+##### `policy`<sup>Optional</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.policy"></a>
 
 ```typescript
 public readonly policy: BucketPolicy;
@@ -1152,7 +1152,7 @@ first call to addToResourcePolicy(s).
 ---
 
 
-### AnalyticsBucket <a name="AnalyticsBucket" id="aws-data-solutions-framework.storage.AnalyticsBucket"></a>
+### AnalyticsBucket <a name="AnalyticsBucket" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket"></a>
 
 Amazon S3 Bucket configured with best-practices and defaults for analytics.
 
@@ -1180,37 +1180,37 @@ new dsf.storage.AnalyticsBucket(this, 'MyAnalyticsBucket', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.storage.AnalyticsBucket.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 new storage.AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucketProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.storage.AnalyticsBucketProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.storage.AnalyticsBucketProps
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps
 
 ---
 
@@ -1218,36 +1218,36 @@ new storage.AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucket
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification">addEventNotification</a></code> | Adds a bucket notification event destination. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification">addObjectCreatedNotification</a></code> | Subscribes a destination to receive notifications when an object is created in the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification">addObjectRemovedNotification</a></code> | Subscribes a destination to receive notifications when an object is removed from the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addToResourcePolicy">addToResourcePolicy</a></code> | Adds a statement to the resource policy for a principal (i.e. account/role/service) to perform actions on this bucket and/or its contents. Use `bucketArn` and `arnForObjects(keys)` to obtain ARNs for this bucket or objects. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.arnForObjects">arnForObjects</a></code> | Returns an ARN that represents all objects within the bucket that match the key pattern specified. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.enableEventBridgeNotification">enableEventBridgeNotification</a></code> | Enables event bridge notification, causing all events below to be sent to EventBridge:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete">grantDelete</a></code> | Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess">grantPublicAccess</a></code> | Allows unrestricted access to objects from this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPut">grantPut</a></code> | Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject">onCloudTrailWriteObject</a></code> | Defines an AWS CloudWatch event that triggers when an object at the specified paths (keys) in this bucket are written to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.s3UrlForObject">s3UrlForObject</a></code> | The S3 URL of an S3 object. For example:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject">transferAccelerationUrlForObject</a></code> | The https Transfer Acceleration URL of an S3 object. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.urlForObject">urlForObject</a></code> | The https URL of an S3 object. Specify `regional: false` at the options for non-regional URLs. For example:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject">virtualHostedUrlForObject</a></code> | The virtual hosted-style URL of an S3 object. Specify `regional: false` at the options for non-regional URL. For example:. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addCorsRule">addCorsRule</a></code> | Adds a cross-origin access configuration for objects in an Amazon S3 bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addInventory">addInventory</a></code> | Add an inventory configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addLifecycleRule">addLifecycleRule</a></code> | Add a lifecycle rule to the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addMetric">addMetric</a></code> | Adds a metrics configuration for the CloudWatch request metrics from the bucket. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.storage.AnalyticsBucket.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.toString"></a>
 
 ```typescript
 public toString(): string
@@ -1255,7 +1255,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="aws-data-solutions-framework.storage.AnalyticsBucket.applyRemovalPolicy"></a>
+##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.applyRemovalPolicy"></a>
 
 ```typescript
 public applyRemovalPolicy(policy: RemovalPolicy): void
@@ -1271,13 +1271,13 @@ to be replaced.
 The resource can be deleted (`RemovalPolicy.DESTROY`), or left in your AWS
 account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-data-solutions-framework.storage.AnalyticsBucket.applyRemovalPolicy.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.applyRemovalPolicy.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
-##### `addEventNotification` <a name="addEventNotification" id="aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification"></a>
+##### `addEventNotification` <a name="addEventNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification"></a>
 
 ```typescript
 public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1296,7 +1296,7 @@ Adds a bucket notification event destination.
 ```
 
 
-###### `event`<sup>Required</sup> <a name="event" id="aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.event"></a>
+###### `event`<sup>Required</sup> <a name="event" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.event"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.EventType
 
@@ -1304,7 +1304,7 @@ The event to trigger the notification.
 
 ---
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1312,7 +1312,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1324,7 +1324,7 @@ for details about allowed filter rules.
 
 ---
 
-##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification"></a>
+##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
 public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1335,7 +1335,7 @@ Subscribes a destination to receive notifications when an object is created in t
 This is identical to calling
 `onEvent(EventType.OBJECT_CREATED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1343,7 +1343,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1351,7 +1351,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification"></a>
+##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
 public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
@@ -1362,7 +1362,7 @@ Subscribes a destination to receive notifications when an object is removed from
 This is identical to calling
 `onEvent(EventType.OBJECT_REMOVED)`.
 
-###### `dest`<sup>Required</sup> <a name="dest" id="aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.dest"></a>
+###### `dest`<sup>Required</sup> <a name="dest" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.dest"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucketNotificationDestination
 
@@ -1370,7 +1370,7 @@ The notification destination (see onEvent).
 
 ---
 
-###### `filters`<sup>Required</sup> <a name="filters" id="aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
+###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
 
@@ -1378,7 +1378,7 @@ Filters (see onEvent).
 
 ---
 
-##### `addToResourcePolicy` <a name="addToResourcePolicy" id="aws-data-solutions-framework.storage.AnalyticsBucket.addToResourcePolicy"></a>
+##### `addToResourcePolicy` <a name="addToResourcePolicy" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addToResourcePolicy"></a>
 
 ```typescript
 public addToResourcePolicy(permission: PolicyStatement): AddToResourcePolicyResult
@@ -1392,7 +1392,7 @@ it's not possible to tell whether the bucket already has a policy
 attached, let alone to re-use that policy to add more statements to it.
 So it's safest to do nothing in these cases.
 
-###### `permission`<sup>Required</sup> <a name="permission" id="aws-data-solutions-framework.storage.AnalyticsBucket.addToResourcePolicy.parameter.permission"></a>
+###### `permission`<sup>Required</sup> <a name="permission" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addToResourcePolicy.parameter.permission"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
@@ -1400,7 +1400,7 @@ the policy statement to be added to the bucket's policy.
 
 ---
 
-##### `arnForObjects` <a name="arnForObjects" id="aws-data-solutions-framework.storage.AnalyticsBucket.arnForObjects"></a>
+##### `arnForObjects` <a name="arnForObjects" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.arnForObjects"></a>
 
 ```typescript
 public arnForObjects(keyPattern: string): string
@@ -1414,13 +1414,13 @@ If you need to specify a keyPattern with multiple components, concatenate them i
 
   arnForObjects(`home/${team}/${user}/*`)
 
-###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.arnForObjects.parameter.keyPattern"></a>
+###### `keyPattern`<sup>Required</sup> <a name="keyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.arnForObjects.parameter.keyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="aws-data-solutions-framework.storage.AnalyticsBucket.enableEventBridgeNotification"></a>
+##### `enableEventBridgeNotification` <a name="enableEventBridgeNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.enableEventBridgeNotification"></a>
 
 ```typescript
 public enableEventBridgeNotification(): void
@@ -1439,7 +1439,7 @@ Object Deleted (DeleteObject)
 - Object Tags Added
 - Object Tags Deleted
 
-##### `grantDelete` <a name="grantDelete" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete"></a>
+##### `grantDelete` <a name="grantDelete" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete"></a>
 
 ```typescript
 public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1447,7 +1447,7 @@ public grantDelete(identity: IGrantable, objectsKeyPattern?: any): Grant
 
 Grants s3:DeleteObject* permission to an IAM principal for objects in this bucket.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1455,7 +1455,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantDelete.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1465,7 +1465,7 @@ Parameter type is `any` but `string` should be passed in.
 
 ---
 
-##### `grantPublicAccess` <a name="grantPublicAccess" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess"></a>
+##### `grantPublicAccess` <a name="grantPublicAccess" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess"></a>
 
 ```typescript
 public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
@@ -1492,7 +1492,7 @@ Note that if this `IBucket` refers to an existing bucket, possibly not
 managed by CloudFormation, this method will have no effect, since it's
 impossible to modify the policy of an existing bucket.
 
-###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
+###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
 - *Type:* string
 
@@ -1502,7 +1502,7 @@ Default is "s3:GetObject".
 
 ---
 
-###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess.parameter.keyPrefix"></a>
+###### `keyPrefix`<sup>Optional</sup> <a name="keyPrefix" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess.parameter.keyPrefix"></a>
 
 - *Type:* string
 
@@ -1510,7 +1510,7 @@ the prefix of S3 object keys (e.g. `home/*`). Default is "*".
 
 ---
 
-##### `grantPut` <a name="grantPut" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPut"></a>
+##### `grantPut` <a name="grantPut" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPut"></a>
 
 ```typescript
 public grantPut(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1521,7 +1521,7 @@ Grants s3:PutObject* and s3:Abort* permissions for this bucket to an IAM princip
 If encryption is used, permission to use the key to encrypt the contents
 of written files will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPut.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPut.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1529,7 +1529,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPut.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPut.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1539,7 +1539,7 @@ Parameter type is `any` but `string` should be passed in.
 
 ---
 
-##### `grantPutAcl` <a name="grantPutAcl" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl"></a>
+##### `grantPutAcl` <a name="grantPutAcl" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl"></a>
 
 ```typescript
 public grantPutAcl(identity: IGrantable, objectsKeyPattern?: string): Grant
@@ -1551,19 +1551,19 @@ If your application has the '@aws-cdk/aws-s3:grantWriteWithoutAcl' feature flag 
 calling `grantWrite` or `grantReadWrite` no longer grants permissions to modify the ACLs of the objects;
 in this case, if you need to modify object ACLs, call this method explicitly.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl.parameter.objectsKeyPattern"></a>
 
 - *Type:* string
 
 ---
 
-##### `grantRead` <a name="grantRead" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantRead"></a>
+##### `grantRead` <a name="grantRead" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantRead"></a>
 
 ```typescript
 public grantRead(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1574,7 +1574,7 @@ Grant read permissions for this bucket and it's contents to an IAM principal (Ro
 If encryption is used, permission to use the key to decrypt the contents
 of the bucket will also be granted to the same principal.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantRead.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantRead.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -1582,7 +1582,7 @@ The principal.
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantRead.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantRead.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
@@ -1592,7 +1592,7 @@ Parameter type is `any` but `string` should be passed in.
 
 ---
 
-##### `grantReadWrite` <a name="grantReadWrite" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite"></a>
+##### `grantReadWrite` <a name="grantReadWrite" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite"></a>
 
 ```typescript
 public grantReadWrite(identity: IGrantable, objectsKeyPattern?: any): Grant
@@ -1611,19 +1611,19 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-##### `grantWrite` <a name="grantWrite" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite"></a>
+##### `grantWrite` <a name="grantWrite" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite"></a>
 
 ```typescript
 public grantWrite(identity: IGrantable, objectsKeyPattern?: any, allowedActionPatterns?: string[]): Grant
@@ -1642,25 +1642,25 @@ in the `context` key of your cdk.json file.
 If you've already updated, but still need the principal to have permissions to modify the ACLs,
 use the `grantPutAcl` method.
 
-###### `identity`<sup>Required</sup> <a name="identity" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite.parameter.identity"></a>
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite.parameter.identity"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
 ---
 
-###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite.parameter.objectsKeyPattern"></a>
+###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
 
 ---
 
-###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite.parameter.allowedActionPatterns"></a>
+###### `allowedActionPatterns`<sup>Optional</sup> <a name="allowedActionPatterns" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite.parameter.allowedActionPatterns"></a>
 
 - *Type:* string[]
 
 ---
 
-##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent"></a>
+##### `onCloudTrailEvent` <a name="onCloudTrailEvent" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent"></a>
 
 ```typescript
 public onCloudTrailEvent(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1671,7 +1671,7 @@ Define a CloudWatch event that triggers when something happens to this repositor
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent.parameter.id"></a>
 
 - *Type:* string
 
@@ -1679,7 +1679,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1687,7 +1687,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject"></a>
+##### `onCloudTrailPutObject` <a name="onCloudTrailPutObject" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject"></a>
 
 ```typescript
 public onCloudTrailPutObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1702,7 +1702,7 @@ so using `onCloudTrailWriteObject` may be preferable.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -1710,7 +1710,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1718,7 +1718,7 @@ Options for adding the rule.
 
 ---
 
-##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject"></a>
+##### `onCloudTrailWriteObject` <a name="onCloudTrailWriteObject" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject"></a>
 
 ```typescript
 public onCloudTrailWriteObject(id: string, options?: OnCloudTrailBucketEventOptions): Rule
@@ -1736,7 +1736,7 @@ so using this method may be preferable to `onCloudTrailPutObject`.
 Requires that there exists at least one CloudTrail Trail in your account
 that captures the event. This method will not create the Trail.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject.parameter.id"></a>
 
 - *Type:* string
 
@@ -1744,7 +1744,7 @@ The id of the rule.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailWriteObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.OnCloudTrailBucketEventOptions
 
@@ -1752,7 +1752,7 @@ Options for adding the rule.
 
 ---
 
-##### `s3UrlForObject` <a name="s3UrlForObject" id="aws-data-solutions-framework.storage.AnalyticsBucket.s3UrlForObject"></a>
+##### `s3UrlForObject` <a name="s3UrlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.s3UrlForObject"></a>
 
 ```typescript
 public s3UrlForObject(key?: string): string
@@ -1763,7 +1763,7 @@ The S3 URL of an S3 object. For example:.
 `s3://onlybucket`
 - `s3://bucket/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AnalyticsBucket.s3UrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.s3UrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1774,7 +1774,7 @@ bucket is returned.
 
 ---
 
-##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject"></a>
+##### `transferAccelerationUrlForObject` <a name="transferAccelerationUrlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject"></a>
 
 ```typescript
 public transferAccelerationUrlForObject(key?: string, options?: TransferAccelerationUrlOptions): string
@@ -1788,7 +1788,7 @@ for dual-stack endpoint (connect to the bucket over IPv6). For example:
 - `https://bucket.s3-accelerate.amazonaws.com`
 - `https://bucket.s3-accelerate.amazonaws.com/key`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1799,7 +1799,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.transferAccelerationUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.TransferAccelerationUrlOptions
 
@@ -1807,7 +1807,7 @@ Options for generating URL.
 
 ---
 
-##### `urlForObject` <a name="urlForObject" id="aws-data-solutions-framework.storage.AnalyticsBucket.urlForObject"></a>
+##### `urlForObject` <a name="urlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.urlForObject"></a>
 
 ```typescript
 public urlForObject(key?: string): string
@@ -1819,7 +1819,7 @@ The https URL of an S3 object. Specify `regional: false` at the options for non-
 - `https://s3.us-west-1.amazonaws.com/bucket/key`
 - `https://s3.cn-north-1.amazonaws.com.cn/china-bucket/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AnalyticsBucket.urlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.urlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1830,7 +1830,7 @@ bucket is returned.
 
 ---
 
-##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject"></a>
+##### `virtualHostedUrlForObject` <a name="virtualHostedUrlForObject" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject"></a>
 
 ```typescript
 public virtualHostedUrlForObject(key?: string, options?: VirtualHostedStyleUrlOptions): string
@@ -1843,7 +1843,7 @@ The virtual hosted-style URL of an S3 object. Specify `regional: false` at the o
 - `https://bucket.s3.amazonaws.com/key`
 - `https://china-bucket.s3.cn-north-1.amazonaws.com.cn/mykey`
 
-###### `key`<sup>Optional</sup> <a name="key" id="aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject.parameter.key"></a>
+###### `key`<sup>Optional</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject.parameter.key"></a>
 
 - *Type:* string
 
@@ -1854,7 +1854,7 @@ bucket is returned.
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.virtualHostedUrlForObject.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.VirtualHostedStyleUrlOptions
 
@@ -1862,7 +1862,7 @@ Options for generating URL.
 
 ---
 
-##### `addCorsRule` <a name="addCorsRule" id="aws-data-solutions-framework.storage.AnalyticsBucket.addCorsRule"></a>
+##### `addCorsRule` <a name="addCorsRule" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addCorsRule"></a>
 
 ```typescript
 public addCorsRule(rule: CorsRule): void
@@ -1870,7 +1870,7 @@ public addCorsRule(rule: CorsRule): void
 
 Adds a cross-origin access configuration for objects in an Amazon S3 bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.storage.AnalyticsBucket.addCorsRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addCorsRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CorsRule
 
@@ -1878,7 +1878,7 @@ The CORS configuration rule to add.
 
 ---
 
-##### `addInventory` <a name="addInventory" id="aws-data-solutions-framework.storage.AnalyticsBucket.addInventory"></a>
+##### `addInventory` <a name="addInventory" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addInventory"></a>
 
 ```typescript
 public addInventory(inventory: Inventory): void
@@ -1886,7 +1886,7 @@ public addInventory(inventory: Inventory): void
 
 Add an inventory configuration.
 
-###### `inventory`<sup>Required</sup> <a name="inventory" id="aws-data-solutions-framework.storage.AnalyticsBucket.addInventory.parameter.inventory"></a>
+###### `inventory`<sup>Required</sup> <a name="inventory" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addInventory.parameter.inventory"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.Inventory
 
@@ -1894,7 +1894,7 @@ configuration to add.
 
 ---
 
-##### `addLifecycleRule` <a name="addLifecycleRule" id="aws-data-solutions-framework.storage.AnalyticsBucket.addLifecycleRule"></a>
+##### `addLifecycleRule` <a name="addLifecycleRule" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addLifecycleRule"></a>
 
 ```typescript
 public addLifecycleRule(rule: LifecycleRule): void
@@ -1902,7 +1902,7 @@ public addLifecycleRule(rule: LifecycleRule): void
 
 Add a lifecycle rule to the bucket.
 
-###### `rule`<sup>Required</sup> <a name="rule" id="aws-data-solutions-framework.storage.AnalyticsBucket.addLifecycleRule.parameter.rule"></a>
+###### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addLifecycleRule.parameter.rule"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.LifecycleRule
 
@@ -1910,7 +1910,7 @@ The rule to add.
 
 ---
 
-##### `addMetric` <a name="addMetric" id="aws-data-solutions-framework.storage.AnalyticsBucket.addMetric"></a>
+##### `addMetric` <a name="addMetric" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addMetric"></a>
 
 ```typescript
 public addMetric(metric: BucketMetrics): void
@@ -1918,7 +1918,7 @@ public addMetric(metric: BucketMetrics): void
 
 Adds a metrics configuration for the CloudWatch request metrics from the bucket.
 
-###### `metric`<sup>Required</sup> <a name="metric" id="aws-data-solutions-framework.storage.AnalyticsBucket.addMetric.parameter.metric"></a>
+###### `metric`<sup>Required</sup> <a name="metric" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addMetric.parameter.metric"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketMetrics
 
@@ -1930,21 +1930,21 @@ The metric configuration to add.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn">fromBucketArn</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes">fromBucketAttributes</a></code> | Creates a Bucket construct that represents an external bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName">fromBucketName</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromCfnBucket">fromCfnBucket</a></code> | Create a mutable `IBucket` based on a low-level `CfnBucket`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName">validateBucketName</a></code> | Thrown an exception if the given bucket name is not valid. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.storage.AnalyticsBucket.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isConstruct"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.isConstruct(x: any)
 ```
@@ -1965,7 +1965,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.storage.AnalyticsBucket.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -1973,75 +1973,75 @@ Any object.
 
 ---
 
-##### `isOwnedResource` <a name="isOwnedResource" id="aws-data-solutions-framework.storage.AnalyticsBucket.isOwnedResource"></a>
+##### `isOwnedResource` <a name="isOwnedResource" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isOwnedResource"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.isOwnedResource(construct: IConstruct)
 ```
 
 Returns true if the construct was created by CDK, and false otherwise.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.storage.AnalyticsBucket.isOwnedResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isOwnedResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `isResource` <a name="isResource" id="aws-data-solutions-framework.storage.AnalyticsBucket.isResource"></a>
+##### `isResource` <a name="isResource" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isResource"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.isResource(construct: IConstruct)
 ```
 
 Check whether the given construct is a Resource.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.storage.AnalyticsBucket.isResource.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.isResource.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
 ---
 
-##### `fromBucketArn` <a name="fromBucketArn" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn"></a>
+##### `fromBucketArn` <a name="fromBucketArn" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.fromBucketArn(scope: Construct, id: string, bucketArn: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn.parameter.bucketArn"></a>
+###### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketArn.parameter.bucketArn"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromBucketAttributes` <a name="fromBucketAttributes" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes"></a>
+##### `fromBucketAttributes` <a name="fromBucketAttributes" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.fromBucketAttributes(scope: Construct, id: string, attrs: BucketAttributes)
 ```
 
 Creates a Bucket construct that represents an external bucket.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2049,7 +2049,7 @@ The parent creating construct (usually `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes.parameter.id"></a>
 
 - *Type:* string
 
@@ -2057,7 +2057,7 @@ The construct's name.
 
 ---
 
-###### `attrs`<sup>Required</sup> <a name="attrs" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes.parameter.attrs"></a>
+###### `attrs`<sup>Required</sup> <a name="attrs" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketAttributes.parameter.attrs"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.BucketAttributes
 
@@ -2068,59 +2068,59 @@ Can be obtained from a call to
 
 ---
 
-##### `fromBucketName` <a name="fromBucketName" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName"></a>
+##### `fromBucketName` <a name="fromBucketName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.fromBucketName(scope: Construct, id: string, bucketName: string)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName.parameter.bucketName"></a>
+###### `bucketName`<sup>Required</sup> <a name="bucketName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromBucketName.parameter.bucketName"></a>
 
 - *Type:* string
 
 ---
 
-##### `fromCfnBucket` <a name="fromCfnBucket" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromCfnBucket"></a>
+##### `fromCfnBucket` <a name="fromCfnBucket" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromCfnBucket"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.fromCfnBucket(cfnBucket: CfnBucket)
 ```
 
 Create a mutable `IBucket` based on a low-level `CfnBucket`.
 
-###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="aws-data-solutions-framework.storage.AnalyticsBucket.fromCfnBucket.parameter.cfnBucket"></a>
+###### `cfnBucket`<sup>Required</sup> <a name="cfnBucket" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.fromCfnBucket.parameter.cfnBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.CfnBucket
 
 ---
 
-##### `validateBucketName` <a name="validateBucketName" id="aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName"></a>
+##### `validateBucketName` <a name="validateBucketName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.AnalyticsBucket.validateBucketName(physicalName: string)
 ```
 
 Thrown an exception if the given bucket name is not valid.
 
-###### `physicalName`<sup>Required</sup> <a name="physicalName" id="aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName.parameter.physicalName"></a>
+###### `physicalName`<sup>Required</sup> <a name="physicalName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName.parameter.physicalName"></a>
 
 - *Type:* string
 
@@ -2132,23 +2132,23 @@ name of the bucket.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.env">env</a></code> | <code>aws-cdk-lib.ResourceEnvironment</code> | The environment this resource belongs to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.stack">stack</a></code> | <code>aws-cdk-lib.Stack</code> | The stack in which this resource is defined. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketArn">bucketArn</a></code> | <code>string</code> | The ARN of the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDomainName">bucketDomainName</a></code> | <code>string</code> | The IPv4 DNS name of the specified bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDualStackDomainName">bucketDualStackDomainName</a></code> | <code>string</code> | The IPv6 DNS name of the specified bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketName">bucketName</a></code> | <code>string</code> | The name of the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketRegionalDomainName">bucketRegionalDomainName</a></code> | <code>string</code> | The regional domain name of the specified bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteDomainName">bucketWebsiteDomainName</a></code> | <code>string</code> | The Domain name of the static website. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteUrl">bucketWebsiteUrl</a></code> | <code>string</code> | The URL of the static website. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Optional KMS encryption key associated with this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.isWebsite">isWebsite</a></code> | <code>boolean</code> | If this bucket has been configured for static website hosting. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.policy">policy</a></code> | <code>aws-cdk-lib.aws_s3.BucketPolicy</code> | The resource policy associated with this bucket. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2160,7 +2160,7 @@ The tree node.
 
 ---
 
-##### `env`<sup>Required</sup> <a name="env" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.env"></a>
+##### `env`<sup>Required</sup> <a name="env" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.env"></a>
 
 ```typescript
 public readonly env: ResourceEnvironment;
@@ -2179,7 +2179,7 @@ that might be different than the stack they were imported into.
 
 ---
 
-##### `stack`<sup>Required</sup> <a name="stack" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.stack"></a>
+##### `stack`<sup>Required</sup> <a name="stack" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.stack"></a>
 
 ```typescript
 public readonly stack: Stack;
@@ -2191,7 +2191,7 @@ The stack in which this resource is defined.
 
 ---
 
-##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketArn"></a>
+##### `bucketArn`<sup>Required</sup> <a name="bucketArn" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketArn"></a>
 
 ```typescript
 public readonly bucketArn: string;
@@ -2203,7 +2203,7 @@ The ARN of the bucket.
 
 ---
 
-##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDomainName"></a>
+##### `bucketDomainName`<sup>Required</sup> <a name="bucketDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDomainName"></a>
 
 ```typescript
 public readonly bucketDomainName: string;
@@ -2215,7 +2215,7 @@ The IPv4 DNS name of the specified bucket.
 
 ---
 
-##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDualStackDomainName"></a>
+##### `bucketDualStackDomainName`<sup>Required</sup> <a name="bucketDualStackDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketDualStackDomainName"></a>
 
 ```typescript
 public readonly bucketDualStackDomainName: string;
@@ -2227,7 +2227,7 @@ The IPv6 DNS name of the specified bucket.
 
 ---
 
-##### `bucketName`<sup>Required</sup> <a name="bucketName" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketName"></a>
+##### `bucketName`<sup>Required</sup> <a name="bucketName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -2239,7 +2239,7 @@ The name of the bucket.
 
 ---
 
-##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketRegionalDomainName"></a>
+##### `bucketRegionalDomainName`<sup>Required</sup> <a name="bucketRegionalDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketRegionalDomainName"></a>
 
 ```typescript
 public readonly bucketRegionalDomainName: string;
@@ -2251,7 +2251,7 @@ The regional domain name of the specified bucket.
 
 ---
 
-##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteDomainName"></a>
+##### `bucketWebsiteDomainName`<sup>Required</sup> <a name="bucketWebsiteDomainName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteDomainName"></a>
 
 ```typescript
 public readonly bucketWebsiteDomainName: string;
@@ -2263,7 +2263,7 @@ The Domain name of the static website.
 
 ---
 
-##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteUrl"></a>
+##### `bucketWebsiteUrl`<sup>Required</sup> <a name="bucketWebsiteUrl" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.bucketWebsiteUrl"></a>
 
 ```typescript
 public readonly bucketWebsiteUrl: string;
@@ -2275,7 +2275,7 @@ The URL of the static website.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -2287,7 +2287,7 @@ Optional KMS encryption key associated with this bucket.
 
 ---
 
-##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.isWebsite"></a>
+##### `isWebsite`<sup>Optional</sup> <a name="isWebsite" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.isWebsite"></a>
 
 ```typescript
 public readonly isWebsite: boolean;
@@ -2299,7 +2299,7 @@ If this bucket has been configured for static website hosting.
 
 ---
 
-##### `policy`<sup>Optional</sup> <a name="policy" id="aws-data-solutions-framework.storage.AnalyticsBucket.property.policy"></a>
+##### `policy`<sup>Optional</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.policy"></a>
 
 ```typescript
 public readonly policy: BucketPolicy;
@@ -2315,27 +2315,27 @@ first call to addToResourcePolicy(s).
 ---
 
 
-### ApplicationStage <a name="ApplicationStage" id="aws-data-solutions-framework.utils.ApplicationStage"></a>
+### ApplicationStage <a name="ApplicationStage" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage"></a>
 
 ApplicationStage class that creates a CDK Pipelines Stage from an ApplicationStackFactory.
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.ApplicationStage.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.ApplicationStage(scope: Construct, id: string, props: ApplicationStageProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.utils.ApplicationStageProps</code> | the ApplicationStage properties. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps</code> | the ApplicationStage properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -2343,7 +2343,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -2351,9 +2351,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.utils.ApplicationStageProps
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps
 
 the ApplicationStage properties.
 
@@ -2363,12 +2363,12 @@ the ApplicationStage properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.utils.ApplicationStage.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2376,7 +2376,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `synth` <a name="synth" id="aws-data-solutions-framework.utils.ApplicationStage.synth"></a>
+##### `synth` <a name="synth" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.synth"></a>
 
 ```typescript
 public synth(options?: StageSynthesisOptions): CloudAssembly
@@ -2387,7 +2387,7 @@ Synthesize this stage into a cloud assembly.
 Once an assembly has been synthesized, it cannot be modified. Subsequent
 calls will return the same assembly.
 
-###### `options`<sup>Optional</sup> <a name="options" id="aws-data-solutions-framework.utils.ApplicationStage.synth.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.synth.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.StageSynthesisOptions
 
@@ -2397,16 +2397,16 @@ calls will return the same assembly.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.isStage">isStage</a></code> | Test whether the given construct is a stage. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.of">of</a></code> | Return the stage this construct is contained with, if available. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.isStage">isStage</a></code> | Test whether the given construct is a stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.of">of</a></code> | Return the stage this construct is contained with, if available. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.utils.ApplicationStage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.isConstruct"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.ApplicationStage.isConstruct(x: any)
 ```
@@ -2427,7 +2427,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.utils.ApplicationStage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2435,26 +2435,26 @@ Any object.
 
 ---
 
-##### `isStage` <a name="isStage" id="aws-data-solutions-framework.utils.ApplicationStage.isStage"></a>
+##### `isStage` <a name="isStage" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.isStage"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.ApplicationStage.isStage(x: any)
 ```
 
 Test whether the given construct is a stage.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.utils.ApplicationStage.isStage.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.isStage.parameter.x"></a>
 
 - *Type:* any
 
 ---
 
-##### `of` <a name="of" id="aws-data-solutions-framework.utils.ApplicationStage.of"></a>
+##### `of` <a name="of" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.of"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.ApplicationStage.of(construct: IConstruct)
 ```
@@ -2464,7 +2464,7 @@ Return the stage this construct is contained with, if available.
 If called
 on a nested stage, returns its parent.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="aws-data-solutions-framework.utils.ApplicationStage.of.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.of.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
@@ -2474,20 +2474,20 @@ on a nested stage, returns its parent.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.artifactId">artifactId</a></code> | <code>string</code> | Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.assetOutdir">assetOutdir</a></code> | <code>string</code> | The cloud assembly asset output directory. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.outdir">outdir</a></code> | <code>string</code> | The cloud assembly output directory. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.stageName">stageName</a></code> | <code>string</code> | The name of the stage. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.artifactId">artifactId</a></code> | <code>string</code> | Artifact ID of the assembly if it is a nested stage. The root stage (app) will return an empty string. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.assetOutdir">assetOutdir</a></code> | <code>string</code> | The cloud assembly asset output directory. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.outdir">outdir</a></code> | <code>string</code> | The cloud assembly output directory. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.stageName">stageName</a></code> | <code>string</code> | The name of the stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.utils.ApplicationStage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2499,7 +2499,7 @@ The tree node.
 
 ---
 
-##### `artifactId`<sup>Required</sup> <a name="artifactId" id="aws-data-solutions-framework.utils.ApplicationStage.property.artifactId"></a>
+##### `artifactId`<sup>Required</sup> <a name="artifactId" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.artifactId"></a>
 
 ```typescript
 public readonly artifactId: string;
@@ -2513,7 +2513,7 @@ Derived from the construct path.
 
 ---
 
-##### `assetOutdir`<sup>Required</sup> <a name="assetOutdir" id="aws-data-solutions-framework.utils.ApplicationStage.property.assetOutdir"></a>
+##### `assetOutdir`<sup>Required</sup> <a name="assetOutdir" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.assetOutdir"></a>
 
 ```typescript
 public readonly assetOutdir: string;
@@ -2525,7 +2525,7 @@ The cloud assembly asset output directory.
 
 ---
 
-##### `outdir`<sup>Required</sup> <a name="outdir" id="aws-data-solutions-framework.utils.ApplicationStage.property.outdir"></a>
+##### `outdir`<sup>Required</sup> <a name="outdir" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.outdir"></a>
 
 ```typescript
 public readonly outdir: string;
@@ -2537,7 +2537,7 @@ The cloud assembly output directory.
 
 ---
 
-##### `policyValidationBeta1`<sup>Required</sup> <a name="policyValidationBeta1" id="aws-data-solutions-framework.utils.ApplicationStage.property.policyValidationBeta1"></a>
+##### `policyValidationBeta1`<sup>Required</sup> <a name="policyValidationBeta1" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.policyValidationBeta1"></a>
 
 ```typescript
 public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
@@ -2553,7 +2553,7 @@ synthesis will be interrupted and the report displayed to the user.
 
 ---
 
-##### `stageName`<sup>Required</sup> <a name="stageName" id="aws-data-solutions-framework.utils.ApplicationStage.property.stageName"></a>
+##### `stageName`<sup>Required</sup> <a name="stageName" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.stageName"></a>
 
 ```typescript
 public readonly stageName: string;
@@ -2568,7 +2568,7 @@ hypens.
 
 ---
 
-##### `account`<sup>Optional</sup> <a name="account" id="aws-data-solutions-framework.utils.ApplicationStage.property.account"></a>
+##### `account`<sup>Optional</sup> <a name="account" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.account"></a>
 
 ```typescript
 public readonly account: string;
@@ -2580,7 +2580,7 @@ The default account for all resources defined within this stage.
 
 ---
 
-##### `parentStage`<sup>Optional</sup> <a name="parentStage" id="aws-data-solutions-framework.utils.ApplicationStage.property.parentStage"></a>
+##### `parentStage`<sup>Optional</sup> <a name="parentStage" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.parentStage"></a>
 
 ```typescript
 public readonly parentStage: Stage;
@@ -2594,7 +2594,7 @@ The parent stage or `undefined` if this is the app.
 
 ---
 
-##### `region`<sup>Optional</sup> <a name="region" id="aws-data-solutions-framework.utils.ApplicationStage.property.region"></a>
+##### `region`<sup>Optional</sup> <a name="region" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.region"></a>
 
 ```typescript
 public readonly region: string;
@@ -2606,7 +2606,7 @@ The default region for all resources defined within this stage.
 
 ---
 
-##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="aws-data-solutions-framework.utils.ApplicationStage.property.stackOutputsEnv"></a>
+##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.stackOutputsEnv"></a>
 
 ```typescript
 public readonly stackOutputsEnv: {[ key: string ]: CfnOutput};
@@ -2619,7 +2619,7 @@ The list of CfnOutputs created by the CDK Stack.
 ---
 
 
-### AthenaWorkGroup <a name="AthenaWorkGroup" id="aws-data-solutions-framework.consumption.AthenaWorkGroup"></a>
+### AthenaWorkGroup <a name="AthenaWorkGroup" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup"></a>
 
 An Amazon Athena Workgroup configured with default result bucket.
 
@@ -2633,37 +2633,37 @@ new dsf.consumption.AthenaWorkGroup(this, 'AthenaWorkGroupDefault', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 new consumption.AthenaWorkGroup(scope: Construct, id: string, props: AthenaWorkgroupProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.consumption.AthenaWorkgroupProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.consumption.AthenaWorkgroupProps
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps
 
 ---
 
@@ -2671,13 +2671,13 @@ new consumption.AthenaWorkGroup(scope: Construct, id: string, props: AthenaWorkg
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries">grantRunQueries</a></code> | Grants running queries access to Principal. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries">grantRunQueries</a></code> | Grants running queries access to Principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2685,7 +2685,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantRunQueries` <a name="grantRunQueries" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries"></a>
+##### `grantRunQueries` <a name="grantRunQueries" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries"></a>
 
 ```typescript
 public grantRunQueries(principal: IPrincipal): void
@@ -2693,7 +2693,7 @@ public grantRunQueries(principal: IPrincipal): void
 
 Grants running queries access to Principal.
 
-###### `principal`<sup>Required</sup> <a name="principal" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries.parameter.principal"></a>
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.grantRunQueries.parameter.principal"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
@@ -2701,7 +2701,7 @@ Principal to attach query access to Athena Workgroup.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -2713,14 +2713,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 consumption.AthenaWorkGroup.isConstruct(x: any)
 ```
@@ -2741,7 +2741,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -2753,16 +2753,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket used for query results. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key to encrypt the query results. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroup">workGroup</a></code> | <code>aws-cdk-lib.aws_athena.CfnWorkGroup</code> | Athena Workgroup that is created. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroupName">workGroupName</a></code> | <code>string</code> | WorkGroup name with the randomized suffix. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket used for query results. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key to encrypt the query results. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroup">workGroup</a></code> | <code>aws-cdk-lib.aws_athena.CfnWorkGroup</code> | Athena Workgroup that is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroupName">workGroupName</a></code> | <code>string</code> | WorkGroup name with the randomized suffix. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -2774,7 +2774,7 @@ The tree node.
 
 ---
 
-##### `resultBucket`<sup>Required</sup> <a name="resultBucket" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultBucket"></a>
+##### `resultBucket`<sup>Required</sup> <a name="resultBucket" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultBucket"></a>
 
 ```typescript
 public readonly resultBucket: IBucket;
@@ -2786,7 +2786,7 @@ S3 Bucket used for query results.
 
 ---
 
-##### `resultsEncryptionKey`<sup>Required</sup> <a name="resultsEncryptionKey" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultsEncryptionKey"></a>
+##### `resultsEncryptionKey`<sup>Required</sup> <a name="resultsEncryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.resultsEncryptionKey"></a>
 
 ```typescript
 public readonly resultsEncryptionKey: IKey;
@@ -2798,7 +2798,7 @@ KMS Key to encrypt the query results.
 
 ---
 
-##### `workGroup`<sup>Required</sup> <a name="workGroup" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroup"></a>
+##### `workGroup`<sup>Required</sup> <a name="workGroup" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroup"></a>
 
 ```typescript
 public readonly workGroup: CfnWorkGroup;
@@ -2810,7 +2810,7 @@ Athena Workgroup that is created.
 
 ---
 
-##### `workGroupName`<sup>Required</sup> <a name="workGroupName" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroupName"></a>
+##### `workGroupName`<sup>Required</sup> <a name="workGroupName" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.workGroupName"></a>
 
 ```typescript
 public readonly workGroupName: string;
@@ -2822,7 +2822,7 @@ WorkGroup name with the randomized suffix.
 
 ---
 
-##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.executionRole"></a>
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -2838,12 +2838,12 @@ Role used to access user resources in an Athena for Apache Spark session.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -2853,7 +2853,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkGroup.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -2863,7 +2863,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DataCatalogDatabase <a name="DataCatalogDatabase" id="aws-data-solutions-framework.governance.DataCatalogDatabase"></a>
+### DataCatalogDatabase <a name="DataCatalogDatabase" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
 
@@ -2882,37 +2882,37 @@ new dsf.governance.DataCatalogDatabase(this, 'ExampleDatabase', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer"></a>
 
 ```typescript
-import { governance } from 'aws-data-solutions-framework'
+import { governance } from '@cdklabs/aws-data-solutions-framework'
 
 new governance.DataCatalogDatabase(scope: Construct, id: string, props: DataCatalogDatabaseProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.governance.DataCatalogDatabaseProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.governance.DataCatalogDatabaseProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps
 
 ---
 
@@ -2920,13 +2920,13 @@ new governance.DataCatalogDatabase(scope: Construct, id: string, props: DataCata
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess">grantReadOnlyAccess</a></code> | Grants read access via identity based policy to the principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.governance.DataCatalogDatabase.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.toString"></a>
 
 ```typescript
 public toString(): string
@@ -2934,7 +2934,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantReadOnlyAccess` <a name="grantReadOnlyAccess" id="aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess"></a>
+##### `grantReadOnlyAccess` <a name="grantReadOnlyAccess" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess"></a>
 
 ```typescript
 public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult
@@ -2944,7 +2944,7 @@ Grants read access via identity based policy to the principal.
 
 This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables.
 
-###### `principal`<sup>Required</sup> <a name="principal" id="aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
@@ -2952,7 +2952,7 @@ Principal to attach the Glue Database read access to.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.governance.DataCatalogDatabase.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -2964,14 +2964,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.governance.DataCatalogDatabase.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.isConstruct"></a>
 
 ```typescript
-import { governance } from 'aws-data-solutions-framework'
+import { governance } from '@cdklabs/aws-data-solutions-framework'
 
 governance.DataCatalogDatabase.isConstruct(x: any)
 ```
@@ -2992,7 +2992,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.governance.DataCatalogDatabase.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3004,17 +3004,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue Database that's created. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue Database name with the randomized suffix to prevent name collisions in the catalog. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler created when `autoCrawl` is set to `true` (default value). |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used by the Crawler. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue crawler when created. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration">crawlerSecurityConfiguration</a></code> | <code>aws-cdk-lib.aws_glue.CfnSecurityConfiguration</code> | The Glue security configuration used by the Glue Crawler when created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.database">database</a></code> | <code>aws-cdk-lib.aws_glue.CfnDatabase</code> | The Glue Database that's created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.databaseName">databaseName</a></code> | <code>string</code> | The Glue Database name with the randomized suffix to prevent name collisions in the catalog. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawler">crawler</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler</code> | The Glue Crawler created when `autoCrawl` is set to `true` (default value). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used by the Crawler. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue crawler when created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration">crawlerSecurityConfiguration</a></code> | <code>aws-cdk-lib.aws_glue.CfnSecurityConfiguration</code> | The Glue security configuration used by the Glue Crawler when created. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3026,7 +3026,7 @@ The tree node.
 
 ---
 
-##### `database`<sup>Required</sup> <a name="database" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.database"></a>
+##### `database`<sup>Required</sup> <a name="database" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.database"></a>
 
 ```typescript
 public readonly database: CfnDatabase;
@@ -3038,7 +3038,7 @@ The Glue Database that's created.
 
 ---
 
-##### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.databaseName"></a>
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.databaseName"></a>
 
 ```typescript
 public readonly databaseName: string;
@@ -3050,7 +3050,7 @@ The Glue Database name with the randomized suffix to prevent name collisions in 
 
 ---
 
-##### `crawler`<sup>Optional</sup> <a name="crawler" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawler"></a>
+##### `crawler`<sup>Optional</sup> <a name="crawler" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawler"></a>
 
 ```typescript
 public readonly crawler: CfnCrawler;
@@ -3064,7 +3064,7 @@ This property can be undefined if `autoCrawl` is set to `false`.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -3076,7 +3076,7 @@ KMS encryption Key used by the Crawler.
 
 ---
 
-##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerRole"></a>
+##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerRole"></a>
 
 ```typescript
 public readonly crawlerRole: IRole;
@@ -3088,7 +3088,7 @@ The IAM Role used by the Glue crawler when created.
 
 ---
 
-##### `crawlerSecurityConfiguration`<sup>Optional</sup> <a name="crawlerSecurityConfiguration" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration"></a>
+##### `crawlerSecurityConfiguration`<sup>Optional</sup> <a name="crawlerSecurityConfiguration" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.crawlerSecurityConfiguration"></a>
 
 ```typescript
 public readonly crawlerSecurityConfiguration: CfnSecurityConfiguration;
@@ -3104,12 +3104,12 @@ The Glue security configuration used by the Glue Crawler when created.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -3119,7 +3119,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -3129,7 +3129,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DataLakeCatalog <a name="DataLakeCatalog" id="aws-data-solutions-framework.governance.DataLakeCatalog"></a>
+### DataLakeCatalog <a name="DataLakeCatalog" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog"></a>
 
 Creates a Data Lake Catalog on top of a `DataLakeStorage`.
 
@@ -3152,23 +3152,23 @@ const dataLakeCatalog = new dsf.governance.DataLakeCatalog(this, "ExampleDataLak
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.governance.DataLakeCatalog.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer"></a>
 
 ```typescript
-import { governance } from 'aws-data-solutions-framework'
+import { governance } from '@cdklabs/aws-data-solutions-framework'
 
 new governance.DataLakeCatalog(scope: Construct, id: string, props: DataLakeCatalogProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.governance.DataLakeCatalogProps</code> | the DataLakeCatalog properties. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps</code> | the DataLakeCatalog properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3176,7 +3176,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3184,9 +3184,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.governance.DataLakeCatalogProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps
 
 the DataLakeCatalog properties.
 
@@ -3196,12 +3196,12 @@ the DataLakeCatalog properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.governance.DataLakeCatalog.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3209,7 +3209,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.governance.DataLakeCatalog.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3221,14 +3221,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.governance.DataLakeCatalog.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.isConstruct"></a>
 
 ```typescript
-import { governance } from 'aws-data-solutions-framework'
+import { governance } from '@cdklabs/aws-data-solutions-framework'
 
 governance.DataLakeCatalog.isConstruct(x: any)
 ```
@@ -3249,7 +3249,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.governance.DataLakeCatalog.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3261,15 +3261,15 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code>aws-data-solutions-framework.governance.DataCatalogDatabase</code> | The Glue Database for the Bronze S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code>aws-data-solutions-framework.governance.DataCatalogDatabase</code> | The Glue Database for the Gold S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code>aws-data-solutions-framework.governance.DataCatalogDatabase</code> | The Glue Database for the Silver S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the Glue Crawler logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.bronzeCatalogDatabase">bronzeCatalogDatabase</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase</code> | The Glue Database for the Bronze S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.goldCatalogDatabase">goldCatalogDatabase</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase</code> | The Glue Database for the Gold S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.silverCatalogDatabase">silverCatalogDatabase</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase</code> | The Glue Database for the Silver S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the Glue Crawler logs. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3281,43 +3281,43 @@ The tree node.
 
 ---
 
-##### `bronzeCatalogDatabase`<sup>Required</sup> <a name="bronzeCatalogDatabase" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.bronzeCatalogDatabase"></a>
+##### `bronzeCatalogDatabase`<sup>Required</sup> <a name="bronzeCatalogDatabase" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.bronzeCatalogDatabase"></a>
 
 ```typescript
 public readonly bronzeCatalogDatabase: DataCatalogDatabase;
 ```
 
-- *Type:* aws-data-solutions-framework.governance.DataCatalogDatabase
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase
 
 The Glue Database for the Bronze S3 Bucket.
 
 ---
 
-##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.goldCatalogDatabase"></a>
+##### `goldCatalogDatabase`<sup>Required</sup> <a name="goldCatalogDatabase" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.goldCatalogDatabase"></a>
 
 ```typescript
 public readonly goldCatalogDatabase: DataCatalogDatabase;
 ```
 
-- *Type:* aws-data-solutions-framework.governance.DataCatalogDatabase
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase
 
 The Glue Database for the Gold S3 Bucket.
 
 ---
 
-##### `silverCatalogDatabase`<sup>Required</sup> <a name="silverCatalogDatabase" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.silverCatalogDatabase"></a>
+##### `silverCatalogDatabase`<sup>Required</sup> <a name="silverCatalogDatabase" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.silverCatalogDatabase"></a>
 
 ```typescript
 public readonly silverCatalogDatabase: DataCatalogDatabase;
 ```
 
-- *Type:* aws-data-solutions-framework.governance.DataCatalogDatabase
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase
 
 The Glue Database for the Silver S3 Bucket.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -3333,12 +3333,12 @@ The KMS Key used to encrypt the Glue Crawler logs.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -3348,7 +3348,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalog.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -3358,7 +3358,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DataLakeStorage <a name="DataLakeStorage" id="aws-data-solutions-framework.storage.DataLakeStorage"></a>
+### DataLakeStorage <a name="DataLakeStorage" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage"></a>
 
 Creates the storage layer for a data lake, composed of 3 `AnalyticsBucket` for Bronze, Silver, and Gold data.
 
@@ -3385,23 +3385,23 @@ new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.storage.DataLakeStorage.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 new storage.DataLakeStorage(scope: Construct, id: string, props?: DataLakeStorageProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.storage.DataLakeStorageProps</code> | the DataLakeStorageProps properties. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps</code> | the DataLakeStorageProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3409,7 +3409,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3417,9 +3417,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.storage.DataLakeStorageProps
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps
 
 the DataLakeStorageProps properties.
 
@@ -3429,12 +3429,12 @@ the DataLakeStorageProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.storage.DataLakeStorage.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3442,7 +3442,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.storage.DataLakeStorage.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3454,14 +3454,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.storage.DataLakeStorage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.isConstruct"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 storage.DataLakeStorage.isConstruct(x: any)
 ```
@@ -3482,7 +3482,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.storage.DataLakeStorage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3494,16 +3494,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code>aws-data-solutions-framework.storage.AccessLogsBucket</code> | The S3 Bucket for access logs. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code>aws-data-solutions-framework.storage.AnalyticsBucket</code> | The S3 Bucket for Bronze layer. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code>aws-data-solutions-framework.storage.AnalyticsBucket</code> | The S3 Bucket for Gold layer. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code>aws-data-solutions-framework.storage.AnalyticsBucket</code> | The S3 Bucket for Silver layer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.accessLogsBucket">accessLogsBucket</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket</code> | The S3 Bucket for access logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.bronzeBucket">bronzeBucket</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket</code> | The S3 Bucket for Bronze layer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.goldBucket">goldBucket</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket</code> | The S3 Bucket for Gold layer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.silverBucket">silverBucket</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket</code> | The S3 Bucket for Silver layer. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.storage.DataLakeStorage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3515,31 +3515,31 @@ The tree node.
 
 ---
 
-##### `accessLogsBucket`<sup>Required</sup> <a name="accessLogsBucket" id="aws-data-solutions-framework.storage.DataLakeStorage.property.accessLogsBucket"></a>
+##### `accessLogsBucket`<sup>Required</sup> <a name="accessLogsBucket" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.accessLogsBucket"></a>
 
 ```typescript
 public readonly accessLogsBucket: AccessLogsBucket;
 ```
 
-- *Type:* aws-data-solutions-framework.storage.AccessLogsBucket
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket
 
 The S3 Bucket for access logs.
 
 ---
 
-##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="aws-data-solutions-framework.storage.DataLakeStorage.property.bronzeBucket"></a>
+##### `bronzeBucket`<sup>Required</sup> <a name="bronzeBucket" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.bronzeBucket"></a>
 
 ```typescript
 public readonly bronzeBucket: AnalyticsBucket;
 ```
 
-- *Type:* aws-data-solutions-framework.storage.AnalyticsBucket
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket
 
 The S3 Bucket for Bronze layer.
 
 ---
 
-##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="aws-data-solutions-framework.storage.DataLakeStorage.property.dataLakeKey"></a>
+##### `dataLakeKey`<sup>Required</sup> <a name="dataLakeKey" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.dataLakeKey"></a>
 
 ```typescript
 public readonly dataLakeKey: IKey;
@@ -3551,25 +3551,25 @@ The KMS Key used to encrypt all DataLakeStorage S3 buckets.
 
 ---
 
-##### `goldBucket`<sup>Required</sup> <a name="goldBucket" id="aws-data-solutions-framework.storage.DataLakeStorage.property.goldBucket"></a>
+##### `goldBucket`<sup>Required</sup> <a name="goldBucket" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.goldBucket"></a>
 
 ```typescript
 public readonly goldBucket: AnalyticsBucket;
 ```
 
-- *Type:* aws-data-solutions-framework.storage.AnalyticsBucket
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket
 
 The S3 Bucket for Gold layer.
 
 ---
 
-##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="aws-data-solutions-framework.storage.DataLakeStorage.property.silverBucket"></a>
+##### `silverBucket`<sup>Required</sup> <a name="silverBucket" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.silverBucket"></a>
 
 ```typescript
 public readonly silverBucket: AnalyticsBucket;
 ```
 
-- *Type:* aws-data-solutions-framework.storage.AnalyticsBucket
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket
 
 The S3 Bucket for Silver layer.
 
@@ -3579,12 +3579,12 @@ The S3 Bucket for Silver layer.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -3594,7 +3594,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -3604,7 +3604,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DataVpc <a name="DataVpc" id="aws-data-solutions-framework.utils.DataVpc"></a>
+### DataVpc <a name="DataVpc" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc"></a>
 
 Creates a VPC with best practices for securely deploying data solutions.
 
@@ -3621,37 +3621,37 @@ vpc.tagVpc('Name', 'My VPC');
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.DataVpc.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.DataVpc(scope: Construct, id: string, props: DataVpcProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.utils.DataVpcProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.DataVpcProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.utils.DataVpcProps
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.DataVpcProps
 
 ---
 
@@ -3659,12 +3659,12 @@ new utils.DataVpc(scope: Construct, id: string, props: DataVpcProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.tagVpc">tagVpc</a></code> | Tag the VPC and the subnets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.tagVpc">tagVpc</a></code> | Tag the VPC and the subnets. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.utils.DataVpc.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3672,7 +3672,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `tagVpc` <a name="tagVpc" id="aws-data-solutions-framework.utils.DataVpc.tagVpc"></a>
+##### `tagVpc` <a name="tagVpc" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.tagVpc"></a>
 
 ```typescript
 public tagVpc(key: string, value: string): void
@@ -3680,7 +3680,7 @@ public tagVpc(key: string, value: string): void
 
 Tag the VPC and the subnets.
 
-###### `key`<sup>Required</sup> <a name="key" id="aws-data-solutions-framework.utils.DataVpc.tagVpc.parameter.key"></a>
+###### `key`<sup>Required</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.tagVpc.parameter.key"></a>
 
 - *Type:* string
 
@@ -3688,7 +3688,7 @@ the tag key.
 
 ---
 
-###### `value`<sup>Required</sup> <a name="value" id="aws-data-solutions-framework.utils.DataVpc.tagVpc.parameter.value"></a>
+###### `value`<sup>Required</sup> <a name="value" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.tagVpc.parameter.value"></a>
 
 - *Type:* string
 
@@ -3700,14 +3700,14 @@ the tag value.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.utils.DataVpc.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.isConstruct"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.DataVpc.isConstruct(x: any)
 ```
@@ -3728,7 +3728,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.utils.DataVpc.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3740,16 +3740,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group created for the VPC flow logs. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt VPC flow logs. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to publish VPC Flow Logs. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint gateway. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The amazon VPC created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group created for the VPC flow logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt VPC flow logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to publish VPC Flow Logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint gateway. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The amazon VPC created. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.utils.DataVpc.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3761,7 +3761,7 @@ The tree node.
 
 ---
 
-##### `flowLogGroup`<sup>Required</sup> <a name="flowLogGroup" id="aws-data-solutions-framework.utils.DataVpc.property.flowLogGroup"></a>
+##### `flowLogGroup`<sup>Required</sup> <a name="flowLogGroup" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogGroup"></a>
 
 ```typescript
 public readonly flowLogGroup: ILogGroup;
@@ -3773,7 +3773,7 @@ The CloudWatch Log Group created for the VPC flow logs.
 
 ---
 
-##### `flowLogKey`<sup>Required</sup> <a name="flowLogKey" id="aws-data-solutions-framework.utils.DataVpc.property.flowLogKey"></a>
+##### `flowLogKey`<sup>Required</sup> <a name="flowLogKey" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogKey"></a>
 
 ```typescript
 public readonly flowLogKey: IKey;
@@ -3785,7 +3785,7 @@ The KMS Key used to encrypt VPC flow logs.
 
 ---
 
-##### `flowLogRole`<sup>Required</sup> <a name="flowLogRole" id="aws-data-solutions-framework.utils.DataVpc.property.flowLogRole"></a>
+##### `flowLogRole`<sup>Required</sup> <a name="flowLogRole" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogRole"></a>
 
 ```typescript
 public readonly flowLogRole: IRole;
@@ -3797,7 +3797,7 @@ The IAM role used to publish VPC Flow Logs.
 
 ---
 
-##### `s3VpcEndpoint`<sup>Required</sup> <a name="s3VpcEndpoint" id="aws-data-solutions-framework.utils.DataVpc.property.s3VpcEndpoint"></a>
+##### `s3VpcEndpoint`<sup>Required</sup> <a name="s3VpcEndpoint" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.s3VpcEndpoint"></a>
 
 ```typescript
 public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
@@ -3809,7 +3809,7 @@ The S3 VPC endpoint gateway.
 
 ---
 
-##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-data-solutions-framework.utils.DataVpc.property.vpc"></a>
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -3822,7 +3822,7 @@ The amazon VPC created.
 ---
 
 
-### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="aws-data-solutions-framework.processing.PySparkApplicationPackage"></a>
+### PySparkApplicationPackage <a name="PySparkApplicationPackage" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage"></a>
 
 A construct that takes your PySpark application, packages its virtual environment and uploads it along its entrypoint to an Amazon S3 bucket This construct requires Docker daemon installed locally to run.
 
@@ -3840,23 +3840,23 @@ let pysparkPacker = new dsf.processing.PySparkApplicationPackage (this, 'pyspark
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 new processing.PySparkApplicationPackage(scope: Construct, id: string, props: PySparkApplicationPackageProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.PySparkApplicationPackageProps</code> | {@link PySparkApplicationPackageProps}. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps</code> | {@link PySparkApplicationPackageProps}. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3864,7 +3864,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3872,9 +3872,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.PySparkApplicationPackageProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps
 
 {@link PySparkApplicationPackageProps}.
 
@@ -3884,12 +3884,12 @@ the ID of the CDK Construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3897,7 +3897,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3909,14 +3909,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.PySparkApplicationPackage.isConstruct(x: any)
 ```
@@ -3937,7 +3937,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -3949,17 +3949,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive). |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | The location (generally it's an S3 URI) where the entry point is saved. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri">venvArchiveUri</a></code> | <code>string</code> | The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts (entrypoint and virtual environment archive). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | The location (generally it's an S3 URI) where the entry point is saved. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri">venvArchiveUri</a></code> | <code>string</code> | The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -3971,7 +3971,7 @@ The tree node.
 
 ---
 
-##### `artifactsBucket`<sup>Required</sup> <a name="artifactsBucket" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsBucket"></a>
+##### `artifactsBucket`<sup>Required</sup> <a name="artifactsBucket" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsBucket"></a>
 
 ```typescript
 public readonly artifactsBucket: IBucket;
@@ -3983,7 +3983,7 @@ The S3 Bucket for storing the artifacts (entrypoint and virtual environment arch
 
 ---
 
-##### `assetUploadManagedPolicy`<sup>Required</sup> <a name="assetUploadManagedPolicy" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy"></a>
+##### `assetUploadManagedPolicy`<sup>Required</sup> <a name="assetUploadManagedPolicy" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy"></a>
 
 ```typescript
 public readonly assetUploadManagedPolicy: IManagedPolicy;
@@ -3995,7 +3995,7 @@ The IAM Managed Policy used by the custom resource for the assets deployment.
 
 ---
 
-##### `assetUploadRole`<sup>Required</sup> <a name="assetUploadRole" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadRole"></a>
+##### `assetUploadRole`<sup>Required</sup> <a name="assetUploadRole" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadRole"></a>
 
 ```typescript
 public readonly assetUploadRole: IRole;
@@ -4010,7 +4010,7 @@ you must provide S3 write access to this role to upload the artifacts.
 
 ---
 
-##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri"></a>
+##### `entrypointUri`<sup>Required</sup> <a name="entrypointUri" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri"></a>
 
 ```typescript
 public readonly entrypointUri: string;
@@ -4024,7 +4024,7 @@ You can pass this location to your Spark job.
 
 ---
 
-##### `sparkVenvConf`<sup>Optional</sup> <a name="sparkVenvConf" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.sparkVenvConf"></a>
+##### `sparkVenvConf`<sup>Optional</sup> <a name="sparkVenvConf" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.sparkVenvConf"></a>
 
 ```typescript
 public readonly sparkVenvConf: string;
@@ -4036,7 +4036,7 @@ The Spark Config containing the configuration of virtual environment archive wit
 
 ---
 
-##### `venvArchiveUri`<sup>Optional</sup> <a name="venvArchiveUri" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri"></a>
+##### `venvArchiveUri`<sup>Optional</sup> <a name="venvArchiveUri" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri"></a>
 
 ```typescript
 public readonly venvArchiveUri: string;
@@ -4054,13 +4054,13 @@ You can pass this location to your Spark job.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX">ARTIFACTS_PREFIX</a></code> | <code>string</code> | The prefix used to store artifacts on the artifact bucket. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX">ARTIFACTS_PREFIX</a></code> | <code>string</code> | The prefix used to store artifacts on the artifact bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `ARTIFACTS_PREFIX`<sup>Required</sup> <a name="ARTIFACTS_PREFIX" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX"></a>
+##### `ARTIFACTS_PREFIX`<sup>Required</sup> <a name="ARTIFACTS_PREFIX" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.ARTIFACTS_PREFIX"></a>
 
 ```typescript
 public readonly ARTIFACTS_PREFIX: string;
@@ -4072,7 +4072,7 @@ The prefix used to store artifacts on the artifact bucket.
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4082,7 +4082,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -4092,7 +4092,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### RedshiftData <a name="RedshiftData" id="aws-data-solutions-framework.consumption.RedshiftData"></a>
+### RedshiftData <a name="RedshiftData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData"></a>
 
 Creates an asynchronous custom resource that handles the execution of SQL using Redshift's Data API.
 
@@ -4116,37 +4116,37 @@ rsData.createDbRole("EngineeringRole", "defaultdb", "engineering");
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.consumption.RedshiftData.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.consumption.RedshiftDataProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.consumption.RedshiftDataProps
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps
 
 ---
 
@@ -4154,20 +4154,20 @@ new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataPr
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole">assignDbRolesToIAMRole</a></code> | Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.createDbRole">createDbRole</a></code> | Creates a new DB role. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole">grantDbAllPrivilegesToRole</a></code> | Grants both read and write permissions on all the tables in the `schema` to the DB role. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole">grantDbSchemaToRole</a></code> | Grants access to the schema to the DB role. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole">grantSchemaReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Run the `MERGE` query using simplified mode. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL">runCustomSQL</a></code> | Runs a custom SQL. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole">assignDbRolesToIAMRole</a></code> | Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.createDbRole">createDbRole</a></code> | Creates a new DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole">grantDbAllPrivilegesToRole</a></code> | Grants both read and write permissions on all the tables in the `schema` to the DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole">grantDbSchemaToRole</a></code> | Grants access to the schema to the DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole">grantSchemaReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Run the `MERGE` query using simplified mode. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL">runCustomSQL</a></code> | Runs a custom SQL. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.consumption.RedshiftData.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4175,7 +4175,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `assignDbRolesToIAMRole` <a name="assignDbRolesToIAMRole" id="aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole"></a>
+##### `assignDbRolesToIAMRole` <a name="assignDbRolesToIAMRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole"></a>
 
 ```typescript
 public assignDbRolesToIAMRole(dbRoles: string[], targetRole: IRole): void
@@ -4183,7 +4183,7 @@ public assignDbRolesToIAMRole(dbRoles: string[], targetRole: IRole): void
 
 Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag.
 
-###### `dbRoles`<sup>Required</sup> <a name="dbRoles" id="aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole.parameter.dbRoles"></a>
+###### `dbRoles`<sup>Required</sup> <a name="dbRoles" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole.parameter.dbRoles"></a>
 
 - *Type:* string[]
 
@@ -4191,7 +4191,7 @@ List of Redshift DB roles to assign to IAM role.
 
 ---
 
-###### `targetRole`<sup>Required</sup> <a name="targetRole" id="aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole.parameter.targetRole"></a>
+###### `targetRole`<sup>Required</sup> <a name="targetRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole.parameter.targetRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -4199,7 +4199,7 @@ The IAM role to assign the Redshift DB roles to.
 
 ---
 
-##### `createDbRole` <a name="createDbRole" id="aws-data-solutions-framework.consumption.RedshiftData.createDbRole"></a>
+##### `createDbRole` <a name="createDbRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.createDbRole"></a>
 
 ```typescript
 public createDbRole(id: string, databaseName: string, roleName: string): CustomResource
@@ -4207,7 +4207,7 @@ public createDbRole(id: string, databaseName: string, roleName: string): CustomR
 
 Creates a new DB role.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.createDbRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.createDbRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -4215,7 +4215,7 @@ The CDK Construct ID.
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.createDbRole.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.createDbRole.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4223,7 +4223,7 @@ The name of the database to run this command.
 
 ---
 
-###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-data-solutions-framework.consumption.RedshiftData.createDbRole.parameter.roleName"></a>
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.createDbRole.parameter.roleName"></a>
 
 - *Type:* string
 
@@ -4231,7 +4231,7 @@ The name of the role to create.
 
 ---
 
-##### `grantDbAllPrivilegesToRole` <a name="grantDbAllPrivilegesToRole" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole"></a>
+##### `grantDbAllPrivilegesToRole` <a name="grantDbAllPrivilegesToRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole"></a>
 
 ```typescript
 public grantDbAllPrivilegesToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
@@ -4239,7 +4239,7 @@ public grantDbAllPrivilegesToRole(id: string, databaseName: string, schema: stri
 
 Grants both read and write permissions on all the tables in the `schema` to the DB role.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -4247,7 +4247,7 @@ The CDK Construct ID.
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4255,7 +4255,7 @@ The name of the database to run this command.
 
 ---
 
-###### `schema`<sup>Required</sup> <a name="schema" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.schema"></a>
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.schema"></a>
 
 - *Type:* string
 
@@ -4263,7 +4263,7 @@ The schema where the tables are located in.
 
 ---
 
-###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.roleName"></a>
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole.parameter.roleName"></a>
 
 - *Type:* string
 
@@ -4271,7 +4271,7 @@ The DB role to grant the permissions to.
 
 ---
 
-##### `grantDbSchemaToRole` <a name="grantDbSchemaToRole" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole"></a>
+##### `grantDbSchemaToRole` <a name="grantDbSchemaToRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole"></a>
 
 ```typescript
 public grantDbSchemaToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
@@ -4279,7 +4279,7 @@ public grantDbSchemaToRole(id: string, databaseName: string, schema: string, rol
 
 Grants access to the schema to the DB role.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -4287,7 +4287,7 @@ The CDK Construct ID.
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4295,7 +4295,7 @@ The name of the database to run this command.
 
 ---
 
-###### `schema`<sup>Required</sup> <a name="schema" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.schema"></a>
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.schema"></a>
 
 - *Type:* string
 
@@ -4303,7 +4303,7 @@ The schema where the tables are located in.
 
 ---
 
-###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.roleName"></a>
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbSchemaToRole.parameter.roleName"></a>
 
 - *Type:* string
 
@@ -4311,7 +4311,7 @@ The DB role to grant the permissions to.
 
 ---
 
-##### `grantSchemaReadToRole` <a name="grantSchemaReadToRole" id="aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole"></a>
+##### `grantSchemaReadToRole` <a name="grantSchemaReadToRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole"></a>
 
 ```typescript
 public grantSchemaReadToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
@@ -4319,13 +4319,13 @@ public grantSchemaReadToRole(id: string, databaseName: string, schema: string, r
 
 Grants read permission on all the tables in the `schema` to the DB role.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4333,7 +4333,7 @@ The name of the database to run this command.
 
 ---
 
-###### `schema`<sup>Required</sup> <a name="schema" id="aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.schema"></a>
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.schema"></a>
 
 - *Type:* string
 
@@ -4341,7 +4341,7 @@ The schema where the tables are located in.
 
 ---
 
-###### `roleName`<sup>Required</sup> <a name="roleName" id="aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.roleName"></a>
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole.parameter.roleName"></a>
 
 - *Type:* string
 
@@ -4349,7 +4349,7 @@ The DB role to grant the permissions to.
 
 ---
 
-##### `ingestData` <a name="ingestData" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData"></a>
+##### `ingestData` <a name="ingestData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData"></a>
 
 ```typescript
 public ingestData(id: string, databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string, ingestAdditionalOptions?: string, role?: IRole): CustomResource
@@ -4357,7 +4357,7 @@ public ingestData(id: string, databaseName: string, targetTable: string, sourceB
 
 Ingest data from S3 into a Redshift table.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.id"></a>
 
 - *Type:* string
 
@@ -4365,7 +4365,7 @@ The CDK Construct ID.
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4373,7 +4373,7 @@ The name of the database to run this command.
 
 ---
 
-###### `targetTable`<sup>Required</sup> <a name="targetTable" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.targetTable"></a>
+###### `targetTable`<sup>Required</sup> <a name="targetTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.targetTable"></a>
 
 - *Type:* string
 
@@ -4381,7 +4381,7 @@ The target table to load the data into.
 
 ---
 
-###### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.sourceBucket"></a>
+###### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.sourceBucket"></a>
 
 - *Type:* aws-cdk-lib.aws_s3.IBucket
 
@@ -4389,7 +4389,7 @@ The bucket where the source data would be coming from.
 
 ---
 
-###### `sourcePrefix`<sup>Required</sup> <a name="sourcePrefix" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.sourcePrefix"></a>
+###### `sourcePrefix`<sup>Required</sup> <a name="sourcePrefix" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.sourcePrefix"></a>
 
 - *Type:* string
 
@@ -4397,7 +4397,7 @@ The location inside the bucket where the data would be ingested from.
 
 ---
 
-###### `ingestAdditionalOptions`<sup>Optional</sup> <a name="ingestAdditionalOptions" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.ingestAdditionalOptions"></a>
+###### `ingestAdditionalOptions`<sup>Optional</sup> <a name="ingestAdditionalOptions" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.ingestAdditionalOptions"></a>
 
 - *Type:* string
 
@@ -4407,7 +4407,7 @@ Additional options to pass to the `COPY` command. For example, `delimiter '|'` o
 
 ---
 
-###### `role`<sup>Optional</sup> <a name="role" id="aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.role"></a>
+###### `role`<sup>Optional</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData.parameter.role"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -4417,7 +4417,7 @@ The IAM Role to use to access the data in S3. If not provided, it would use the 
 
 ---
 
-##### `mergeToTargetTable` <a name="mergeToTargetTable" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable"></a>
+##### `mergeToTargetTable` <a name="mergeToTargetTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable"></a>
 
 ```typescript
 public mergeToTargetTable(id: string, databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string, targetColumnId?: string): CustomResource
@@ -4427,7 +4427,7 @@ Run the `MERGE` query using simplified mode.
 
 This command would do an upsert into the target table.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.id"></a>
 
 - *Type:* string
 
@@ -4435,7 +4435,7 @@ The CDK Construct ID.
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4443,7 +4443,7 @@ The name of the database to run this command.
 
 ---
 
-###### `sourceTable`<sup>Required</sup> <a name="sourceTable" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.sourceTable"></a>
+###### `sourceTable`<sup>Required</sup> <a name="sourceTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.sourceTable"></a>
 
 - *Type:* string
 
@@ -4453,7 +4453,7 @@ Schema can also be included using the following format: `schemaName.tableName`
 
 ---
 
-###### `targetTable`<sup>Required</sup> <a name="targetTable" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.targetTable"></a>
+###### `targetTable`<sup>Required</sup> <a name="targetTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.targetTable"></a>
 
 - *Type:* string
 
@@ -4463,7 +4463,7 @@ Schema can also be included using the following format: `schemaName.tableName`
 
 ---
 
-###### `sourceColumnId`<sup>Optional</sup> <a name="sourceColumnId" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.sourceColumnId"></a>
+###### `sourceColumnId`<sup>Optional</sup> <a name="sourceColumnId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.sourceColumnId"></a>
 
 - *Type:* string
 
@@ -4473,7 +4473,7 @@ Default is `id`
 
 ---
 
-###### `targetColumnId`<sup>Optional</sup> <a name="targetColumnId" id="aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.targetColumnId"></a>
+###### `targetColumnId`<sup>Optional</sup> <a name="targetColumnId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable.parameter.targetColumnId"></a>
 
 - *Type:* string
 
@@ -4483,7 +4483,7 @@ Default is `id`
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4491,7 +4491,7 @@ public retrieveVersion(): any
 
 Retrieve DSF package.json version.
 
-##### `runCustomSQL` <a name="runCustomSQL" id="aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL"></a>
+##### `runCustomSQL` <a name="runCustomSQL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL"></a>
 
 ```typescript
 public runCustomSQL(id: string, databaseName: string, sql: string, deleteSql?: string): CustomResource
@@ -4501,7 +4501,7 @@ Runs a custom SQL.
 
 Once the custom resource finishes execution, the attribute `Data` contains an attribute `execId` which contains the Redshift Data API execution ID. You can then use this to retrieve execution results via the `GetStatementResult` API.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.id"></a>
 
 - *Type:* string
 
@@ -4509,7 +4509,7 @@ The CDK Construct ID.
 
 ---
 
-###### `databaseName`<sup>Required</sup> <a name="databaseName" id="aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.databaseName"></a>
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.databaseName"></a>
 
 - *Type:* string
 
@@ -4517,7 +4517,7 @@ The name of the database to run this command.
 
 ---
 
-###### `sql`<sup>Required</sup> <a name="sql" id="aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.sql"></a>
+###### `sql`<sup>Required</sup> <a name="sql" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.sql"></a>
 
 - *Type:* string
 
@@ -4525,7 +4525,7 @@ The sql to run.
 
 ---
 
-###### `deleteSql`<sup>Optional</sup> <a name="deleteSql" id="aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.deleteSql"></a>
+###### `deleteSql`<sup>Optional</sup> <a name="deleteSql" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL.parameter.deleteSql"></a>
 
 - *Type:* string
 
@@ -4539,14 +4539,14 @@ The sql to run when this resource gets deleted
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.consumption.RedshiftData.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.isConstruct"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 consumption.RedshiftData.isConstruct(x: any)
 ```
@@ -4567,7 +4567,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.consumption.RedshiftData.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4579,25 +4579,25 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Data API execution. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data API status checks. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API status checks. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.submitFunction">submitFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data submission. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.submitLogGroup">submitLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API submission. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.targetArn">targetArn</a></code> | <code>string</code> | The ARN of the target cluster or workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.targetId">targetId</a></code> | <code>string</code> | The ID of the target cluster or workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data cleaning up lambda. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Data API execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data API status checks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API status checks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.submitFunction">submitFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.submitLogGroup">submitLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetArn">targetArn</a></code> | <code>string</code> | The ARN of the target cluster or workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetId">targetId</a></code> | <code>string</code> | The ID of the target cluster or workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.consumption.RedshiftData.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4609,7 +4609,7 @@ The tree node.
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-data-solutions-framework.consumption.RedshiftData.property.executionRole"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -4621,7 +4621,7 @@ The IAM Role for the Redshift Data API execution.
 
 ---
 
-##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="aws-data-solutions-framework.consumption.RedshiftData.property.statusFunction"></a>
+##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.statusFunction"></a>
 
 ```typescript
 public readonly statusFunction: IFunction;
@@ -4633,7 +4633,7 @@ The Lambda Function for the Redshift Data API status checks.
 
 ---
 
-##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="aws-data-solutions-framework.consumption.RedshiftData.property.statusLogGroup"></a>
+##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.statusLogGroup"></a>
 
 ```typescript
 public readonly statusLogGroup: ILogGroup;
@@ -4645,7 +4645,7 @@ The CloudWatch Log Group for the Redshift Data API status checks.
 
 ---
 
-##### `submitFunction`<sup>Required</sup> <a name="submitFunction" id="aws-data-solutions-framework.consumption.RedshiftData.property.submitFunction"></a>
+##### `submitFunction`<sup>Required</sup> <a name="submitFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.submitFunction"></a>
 
 ```typescript
 public readonly submitFunction: IFunction;
@@ -4657,7 +4657,7 @@ The Lambda Function for the Redshift Data submission.
 
 ---
 
-##### `submitLogGroup`<sup>Required</sup> <a name="submitLogGroup" id="aws-data-solutions-framework.consumption.RedshiftData.property.submitLogGroup"></a>
+##### `submitLogGroup`<sup>Required</sup> <a name="submitLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.submitLogGroup"></a>
 
 ```typescript
 public readonly submitLogGroup: ILogGroup;
@@ -4669,7 +4669,7 @@ The CloudWatch Log Group for the Redshift Data API submission.
 
 ---
 
-##### `taggingManagedPolicy`<sup>Required</sup> <a name="taggingManagedPolicy" id="aws-data-solutions-framework.consumption.RedshiftData.property.taggingManagedPolicy"></a>
+##### `taggingManagedPolicy`<sup>Required</sup> <a name="taggingManagedPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.taggingManagedPolicy"></a>
 
 ```typescript
 public readonly taggingManagedPolicy: IManagedPolicy;
@@ -4681,7 +4681,7 @@ The managed IAM policy allowing IAM Role to retrieve tag information.
 
 ---
 
-##### `targetArn`<sup>Required</sup> <a name="targetArn" id="aws-data-solutions-framework.consumption.RedshiftData.property.targetArn"></a>
+##### `targetArn`<sup>Required</sup> <a name="targetArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetArn"></a>
 
 ```typescript
 public readonly targetArn: string;
@@ -4693,7 +4693,7 @@ The ARN of the target cluster or workgroup.
 
 ---
 
-##### `targetId`<sup>Required</sup> <a name="targetId" id="aws-data-solutions-framework.consumption.RedshiftData.property.targetId"></a>
+##### `targetId`<sup>Required</sup> <a name="targetId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetId"></a>
 
 ```typescript
 public readonly targetId: string;
@@ -4705,7 +4705,7 @@ The ID of the target cluster or workgroup.
 
 ---
 
-##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpFunction"></a>
+##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpFunction"></a>
 
 ```typescript
 public readonly cleanUpFunction: IFunction;
@@ -4717,7 +4717,7 @@ The Lambda function for the S3 data copy cleaning up lambda.
 
 ---
 
-##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpLogGroup"></a>
+##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpLogGroup"></a>
 
 ```typescript
 public readonly cleanUpLogGroup: ILogGroup;
@@ -4729,7 +4729,7 @@ The CloudWatch Log Group for the Redshift Data cleaning up lambda.
 
 ---
 
-##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpRole"></a>
+##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpRole"></a>
 
 ```typescript
 public readonly cleanUpRole: IRole;
@@ -4741,7 +4741,7 @@ The IAM Role for the the S3 data copy cleaning up lambda.
 
 ---
 
-##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup"></a>
+##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup"></a>
 
 ```typescript
 public readonly customResourceSecurityGroup: ISecurityGroup;
@@ -4753,7 +4753,7 @@ The Security Group used by the Custom Resource when deployed in a VPC.
 
 ---
 
-##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint"></a>
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint"></a>
 
 ```typescript
 public readonly vpcEndpoint: InterfaceVpcEndpoint;
@@ -4765,7 +4765,7 @@ The created Redshift Data API interface vpc endpoint when deployed in a VPC.
 
 ---
 
-##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup"></a>
+##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup"></a>
 
 ```typescript
 public readonly vpcEndpointSecurityGroup: ISecurityGroup;
@@ -4781,12 +4781,12 @@ The Security Group used by the VPC Endpoint when deployed in a VPC.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftData.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.consumption.RedshiftData.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4796,7 +4796,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.consumption.RedshiftData.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -4806,7 +4806,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### RedshiftServerlessNamespace <a name="RedshiftServerlessNamespace" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace"></a>
+### RedshiftServerlessNamespace <a name="RedshiftServerlessNamespace" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace"></a>
 
 Create a Redshift Serverless Namespace with the admin credentials stored in Secrets Manager.
 
@@ -4820,37 +4820,37 @@ const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'Default
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 new consumption.RedshiftServerlessNamespace(scope: Construct, id: string, props: RedshiftServerlessNamespaceProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps
 
 ---
 
@@ -4858,12 +4858,12 @@ new consumption.RedshiftServerlessNamespace(scope: Construct, id: string, props:
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4871,7 +4871,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4883,14 +4883,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.isConstruct"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 consumption.RedshiftServerlessNamespace.isConstruct(x: any)
 ```
@@ -4911,7 +4911,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4923,26 +4923,26 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecret">adminSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The created Secrets Manager secret containing the admin credentials. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials secret. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Serverless creation. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the Redshift Serverless creation. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Serverless creation. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.customResource">customResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource that creates the Namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt the data. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dbName">dbName</a></code> | <code>string</code> | The name of the database. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceArn">namespaceArn</a></code> | <code>string</code> | The ARN of the created namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the created namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.roles">roles</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.IRole}</code> | The roles attached to the namespace in the form of `{RoleArn: IRole}`. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the creation status check. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the creation status check. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusRole">statusRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the creation status check. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecret">adminSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The created Secrets Manager secret containing the admin credentials. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials secret. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Serverless creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the Redshift Serverless creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Serverless creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.customResource">customResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource that creates the Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | KMS key used by the namespace to encrypt the data. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dbName">dbName</a></code> | <code>string</code> | The name of the database. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceArn">namespaceArn</a></code> | <code>string</code> | The ARN of the created namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceId">namespaceId</a></code> | <code>string</code> | The ID of the created namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceName">namespaceName</a></code> | <code>string</code> | The name of the created namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.roles">roles</a></code> | <code>{[ key: string ]: aws-cdk-lib.aws_iam.IRole}</code> | The roles attached to the namespace in the form of `{RoleArn: IRole}`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the creation status check. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the creation status check. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusRole">statusRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the creation status check. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4954,7 +4954,7 @@ The tree node.
 
 ---
 
-##### `adminSecret`<sup>Required</sup> <a name="adminSecret" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecret"></a>
+##### `adminSecret`<sup>Required</sup> <a name="adminSecret" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecret"></a>
 
 ```typescript
 public readonly adminSecret: ISecret;
@@ -4966,7 +4966,7 @@ The created Secrets Manager secret containing the admin credentials.
 
 ---
 
-##### `adminSecretKey`<sup>Required</sup> <a name="adminSecretKey" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecretKey"></a>
+##### `adminSecretKey`<sup>Required</sup> <a name="adminSecretKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.adminSecretKey"></a>
 
 ```typescript
 public readonly adminSecretKey: IKey;
@@ -4978,7 +4978,7 @@ The KMS Key used to encrypt the admin credentials secret.
 
 ---
 
-##### `createFunction`<sup>Required</sup> <a name="createFunction" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createFunction"></a>
+##### `createFunction`<sup>Required</sup> <a name="createFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createFunction"></a>
 
 ```typescript
 public readonly createFunction: IFunction;
@@ -4990,7 +4990,7 @@ The Lambda Function for the Redshift Serverless creation.
 
 ---
 
-##### `createLogGroup`<sup>Required</sup> <a name="createLogGroup" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createLogGroup"></a>
+##### `createLogGroup`<sup>Required</sup> <a name="createLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createLogGroup"></a>
 
 ```typescript
 public readonly createLogGroup: ILogGroup;
@@ -5002,7 +5002,7 @@ The CloudWatch Logs Log Group for the Redshift Serverless creation.
 
 ---
 
-##### `createRole`<sup>Required</sup> <a name="createRole" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createRole"></a>
+##### `createRole`<sup>Required</sup> <a name="createRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.createRole"></a>
 
 ```typescript
 public readonly createRole: IRole;
@@ -5014,7 +5014,7 @@ The IAM Role for the Redshift Serverless creation.
 
 ---
 
-##### `customResource`<sup>Required</sup> <a name="customResource" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.customResource"></a>
+##### `customResource`<sup>Required</sup> <a name="customResource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.customResource"></a>
 
 ```typescript
 public readonly customResource: CustomResource;
@@ -5026,7 +5026,7 @@ The custom resource that creates the Namespace.
 
 ---
 
-##### `dataKey`<sup>Required</sup> <a name="dataKey" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dataKey"></a>
+##### `dataKey`<sup>Required</sup> <a name="dataKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dataKey"></a>
 
 ```typescript
 public readonly dataKey: Key;
@@ -5038,7 +5038,7 @@ KMS key used by the namespace to encrypt the data.
 
 ---
 
-##### `dbName`<sup>Required</sup> <a name="dbName" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dbName"></a>
+##### `dbName`<sup>Required</sup> <a name="dbName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.dbName"></a>
 
 ```typescript
 public readonly dbName: string;
@@ -5050,7 +5050,7 @@ The name of the database.
 
 ---
 
-##### `namespaceArn`<sup>Required</sup> <a name="namespaceArn" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceArn"></a>
+##### `namespaceArn`<sup>Required</sup> <a name="namespaceArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceArn"></a>
 
 ```typescript
 public readonly namespaceArn: string;
@@ -5062,7 +5062,7 @@ The ARN of the created namespace.
 
 ---
 
-##### `namespaceId`<sup>Required</sup> <a name="namespaceId" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceId"></a>
+##### `namespaceId`<sup>Required</sup> <a name="namespaceId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceId"></a>
 
 ```typescript
 public readonly namespaceId: string;
@@ -5074,7 +5074,7 @@ The ID of the created namespace.
 
 ---
 
-##### `namespaceName`<sup>Required</sup> <a name="namespaceName" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceName"></a>
+##### `namespaceName`<sup>Required</sup> <a name="namespaceName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.namespaceName"></a>
 
 ```typescript
 public readonly namespaceName: string;
@@ -5086,7 +5086,7 @@ The name of the created namespace.
 
 ---
 
-##### `roles`<sup>Required</sup> <a name="roles" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.roles"></a>
+##### `roles`<sup>Required</sup> <a name="roles" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.roles"></a>
 
 ```typescript
 public readonly roles: {[ key: string ]: IRole};
@@ -5102,7 +5102,7 @@ These roles are used to access other AWS services for ingestion, federated query
 
 ---
 
-##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusFunction"></a>
+##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusFunction"></a>
 
 ```typescript
 public readonly statusFunction: IFunction;
@@ -5114,7 +5114,7 @@ The Lambda Function for the creation status check.
 
 ---
 
-##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusLogGroup"></a>
+##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusLogGroup"></a>
 
 ```typescript
 public readonly statusLogGroup: ILogGroup;
@@ -5126,7 +5126,7 @@ The CloudWatch Logs Log Group for the creation status check.
 
 ---
 
-##### `statusRole`<sup>Required</sup> <a name="statusRole" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusRole"></a>
+##### `statusRole`<sup>Required</sup> <a name="statusRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.statusRole"></a>
 
 ```typescript
 public readonly statusRole: IRole;
@@ -5142,12 +5142,12 @@ The IAM Role for the creation status check.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -5157,7 +5157,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -5167,7 +5167,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### RedshiftServerlessWorkgroup <a name="RedshiftServerlessWorkgroup" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup"></a>
+### RedshiftServerlessWorkgroup <a name="RedshiftServerlessWorkgroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup"></a>
 
 - *Implements:* aws-cdk-lib.aws_ec2.IConnectable
 
@@ -5188,37 +5188,37 @@ const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "Redshif
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 new consumption.RedshiftServerlessWorkgroup(scope: Construct, id: string, props: RedshiftServerlessWorkgroupProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps
 
 ---
 
@@ -5226,14 +5226,14 @@ new consumption.RedshiftServerlessWorkgroup(scope: Construct, id: string, props:
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData">accessData</a></code> | Creates an instance of `RedshiftData` to send custom SQLs to the workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables">catalogTables</a></code> | Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData">accessData</a></code> | Creates an instance of `RedshiftData` to send custom SQLs to the workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables">catalogTables</a></code> | Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.toString"></a>
 
 ```typescript
 public toString(): string
@@ -5241,7 +5241,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `accessData` <a name="accessData" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData"></a>
+##### `accessData` <a name="accessData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData"></a>
 
 ```typescript
 public accessData(id: string, createVpcEndpoint?: boolean): RedshiftData
@@ -5249,13 +5249,13 @@ public accessData(id: string, createVpcEndpoint?: boolean): RedshiftData
 
 Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `createVpcEndpoint`<sup>Optional</sup> <a name="createVpcEndpoint" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createVpcEndpoint"></a>
+###### `createVpcEndpoint`<sup>Optional</sup> <a name="createVpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createVpcEndpoint"></a>
 
 - *Type:* boolean
 
@@ -5263,7 +5263,7 @@ if set to true, create interface VPC endpoint for Redshift Data API.
 
 ---
 
-##### `catalogTables` <a name="catalogTables" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables"></a>
+##### `catalogTables` <a name="catalogTables" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables"></a>
 
 ```typescript
 public catalogTables(id: string, catalogDbName: string, pathToCrawl?: string): DataCatalogDatabase
@@ -5271,7 +5271,7 @@ public catalogTables(id: string, catalogDbName: string, pathToCrawl?: string): D
 
 Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.id"></a>
 
 - *Type:* string
 
@@ -5279,7 +5279,7 @@ The CDK ID of the resource.
 
 ---
 
-###### `catalogDbName`<sup>Required</sup> <a name="catalogDbName" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.catalogDbName"></a>
+###### `catalogDbName`<sup>Required</sup> <a name="catalogDbName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.catalogDbName"></a>
 
 - *Type:* string
 
@@ -5287,7 +5287,7 @@ The name of the Glue Database to create.
 
 ---
 
-###### `pathToCrawl`<sup>Optional</sup> <a name="pathToCrawl" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.pathToCrawl"></a>
+###### `pathToCrawl`<sup>Optional</sup> <a name="pathToCrawl" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables.parameter.pathToCrawl"></a>
 
 - *Type:* string
 
@@ -5295,7 +5295,7 @@ The path of Redshift tables to crawl.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -5307,14 +5307,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.isConstruct"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 consumption.RedshiftServerlessWorkgroup.isConstruct(x: any)
 ```
@@ -5335,7 +5335,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -5347,18 +5347,18 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup</code> | The created Redshift Serverless Workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.connections">connections</a></code> | <code>aws-cdk-lib.aws_ec2.Connections</code> | Connections used by Workgroup security group. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.glueConnection">glueConnection</a></code> | <code>aws-cdk-lib.aws_glue.CfnConnection</code> | The Glue Connection associated with the workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.namespace">namespace</a></code> | <code>aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The associated Redshift Serverless Namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup">primarySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The primary EC2 Security Group associated with the Redshift Serverless Workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup</code> | The created Redshift Serverless Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.connections">connections</a></code> | <code>aws-cdk-lib.aws_ec2.Connections</code> | Connections used by Workgroup security group. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.glueConnection">glueConnection</a></code> | <code>aws-cdk-lib.aws_glue.CfnConnection</code> | The Glue Connection associated with the workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.namespace">namespace</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The associated Redshift Serverless Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup">primarySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The primary EC2 Security Group associated with the Redshift Serverless Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.selectedSubnets">selectedSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -5370,7 +5370,7 @@ The tree node.
 
 ---
 
-##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.cfnResource"></a>
+##### `cfnResource`<sup>Required</sup> <a name="cfnResource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.cfnResource"></a>
 
 ```typescript
 public readonly cfnResource: CfnWorkgroup;
@@ -5382,7 +5382,7 @@ The created Redshift Serverless Workgroup.
 
 ---
 
-##### `connections`<sup>Required</sup> <a name="connections" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.connections"></a>
+##### `connections`<sup>Required</sup> <a name="connections" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.connections"></a>
 
 ```typescript
 public readonly connections: Connections;
@@ -5396,7 +5396,7 @@ Used this to enable access from clients connecting to the workgroup
 
 ---
 
-##### `glueConnection`<sup>Required</sup> <a name="glueConnection" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.glueConnection"></a>
+##### `glueConnection`<sup>Required</sup> <a name="glueConnection" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.glueConnection"></a>
 
 ```typescript
 public readonly glueConnection: CfnConnection;
@@ -5410,19 +5410,19 @@ This can be used by Glue ETL Jobs to read/write data from/to Redshift workgroup
 
 ---
 
-##### `namespace`<sup>Required</sup> <a name="namespace" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.namespace"></a>
+##### `namespace`<sup>Required</sup> <a name="namespace" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.namespace"></a>
 
 ```typescript
 public readonly namespace: RedshiftServerlessNamespace;
 ```
 
-- *Type:* aws-data-solutions-framework.consumption.RedshiftServerlessNamespace
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace
 
 The associated Redshift Serverless Namespace.
 
 ---
 
-##### `primarySecurityGroup`<sup>Required</sup> <a name="primarySecurityGroup" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup"></a>
+##### `primarySecurityGroup`<sup>Required</sup> <a name="primarySecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup"></a>
 
 ```typescript
 public readonly primarySecurityGroup: ISecurityGroup;
@@ -5434,7 +5434,7 @@ The primary EC2 Security Group associated with the Redshift Serverless Workgroup
 
 ---
 
-##### `selectedSubnets`<sup>Required</sup> <a name="selectedSubnets" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.selectedSubnets"></a>
+##### `selectedSubnets`<sup>Required</sup> <a name="selectedSubnets" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.selectedSubnets"></a>
 
 ```typescript
 public readonly selectedSubnets: SelectedSubnets;
@@ -5446,7 +5446,7 @@ The subnets where the Redshift Serverless Workgroup is deployed.
 
 ---
 
-##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.vpc"></a>
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -5462,12 +5462,12 @@ The VPC where the Redshift Serverless Workgroup is deployed.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -5477,7 +5477,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -5487,7 +5487,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### S3DataCopy <a name="S3DataCopy" id="aws-data-solutions-framework.utils.S3DataCopy"></a>
+### S3DataCopy <a name="S3DataCopy" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy"></a>
 
 Copy data from one S3 bucket to another.
 
@@ -5512,37 +5512,37 @@ new dsf.utils.S3DataCopy(this, 'S3DataCopy', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.S3DataCopy.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.S3DataCopy(scope: Construct, id: string, props: S3DataCopyProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.utils.S3DataCopyProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.utils.S3DataCopyProps
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps
 
 ---
 
@@ -5550,12 +5550,12 @@ new utils.S3DataCopy(scope: Construct, id: string, props: S3DataCopyProps)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.utils.S3DataCopy.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.toString"></a>
 
 ```typescript
 public toString(): string
@@ -5563,7 +5563,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.utils.S3DataCopy.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -5575,14 +5575,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.utils.S3DataCopy.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.isConstruct"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.S3DataCopy.isConstruct(x: any)
 ```
@@ -5603,7 +5603,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.utils.S3DataCopy.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -5615,18 +5615,18 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.copyFunction">copyFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the copy. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.copyLogGroup">copyLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the S3 data copy. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the copy Lambba Function. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the S3 data copy cleaning up lambda. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of EC2 Security Groups used by the Lambda Functions. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.copyFunction">copyFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the copy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.copyLogGroup">copyLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the S3 data copy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.copyRole">copyRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the copy Lambba Function. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the S3 data copy cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of EC2 Security Groups used by the Lambda Functions. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.utils.S3DataCopy.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -5638,7 +5638,7 @@ The tree node.
 
 ---
 
-##### `copyFunction`<sup>Required</sup> <a name="copyFunction" id="aws-data-solutions-framework.utils.S3DataCopy.property.copyFunction"></a>
+##### `copyFunction`<sup>Required</sup> <a name="copyFunction" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.copyFunction"></a>
 
 ```typescript
 public readonly copyFunction: IFunction;
@@ -5650,7 +5650,7 @@ The Lambda Function for the copy.
 
 ---
 
-##### `copyLogGroup`<sup>Required</sup> <a name="copyLogGroup" id="aws-data-solutions-framework.utils.S3DataCopy.property.copyLogGroup"></a>
+##### `copyLogGroup`<sup>Required</sup> <a name="copyLogGroup" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.copyLogGroup"></a>
 
 ```typescript
 public readonly copyLogGroup: ILogGroup;
@@ -5662,7 +5662,7 @@ The CloudWatch Log Group for the S3 data copy.
 
 ---
 
-##### `copyRole`<sup>Required</sup> <a name="copyRole" id="aws-data-solutions-framework.utils.S3DataCopy.property.copyRole"></a>
+##### `copyRole`<sup>Required</sup> <a name="copyRole" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.copyRole"></a>
 
 ```typescript
 public readonly copyRole: IRole;
@@ -5674,7 +5674,7 @@ The IAM Role for the copy Lambba Function.
 
 ---
 
-##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpFunction"></a>
+##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpFunction"></a>
 
 ```typescript
 public readonly cleanUpFunction: IFunction;
@@ -5686,7 +5686,7 @@ The Lambda function for the S3 data copy cleaning up lambda.
 
 ---
 
-##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpLogGroup"></a>
+##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpLogGroup"></a>
 
 ```typescript
 public readonly cleanUpLogGroup: ILogGroup;
@@ -5698,7 +5698,7 @@ The CloudWatch Log Group for the S3 data copy cleaning up lambda.
 
 ---
 
-##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpRole"></a>
+##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.cleanUpRole"></a>
 
 ```typescript
 public readonly cleanUpRole: IRole;
@@ -5710,7 +5710,7 @@ The IAM Role for the the S3 data copy cleaning up lambda.
 
 ---
 
-##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="aws-data-solutions-framework.utils.S3DataCopy.property.securityGroups"></a>
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.securityGroups"></a>
 
 ```typescript
 public readonly securityGroups: ISecurityGroup[];
@@ -5726,12 +5726,12 @@ The list of EC2 Security Groups used by the Lambda Functions.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopy.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.utils.S3DataCopy.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -5741,7 +5741,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.utils.S3DataCopy.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopy.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -5751,7 +5751,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline"></a>
+### SparkEmrCICDPipeline <a name="SparkEmrCICDPipeline" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline"></a>
 
 A CICD Pipeline to test and deploy a Spark application on Amazon EMR in cross-account environments using CDK Pipelines.
 
@@ -5802,23 +5802,23 @@ class MyCICDStack extends cdk.Stack {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 new processing.SparkEmrCICDPipeline(scope: Construct, id: string, props: SparkEmrCICDPipelineProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps</code> | the SparkCICDPipelineProps properties. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps</code> | the SparkCICDPipelineProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -5826,7 +5826,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -5834,9 +5834,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps
 
 the SparkCICDPipelineProps properties.
 
@@ -5846,12 +5846,12 @@ the SparkCICDPipelineProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.toString"></a>
 
 ```typescript
 public toString(): string
@@ -5859,7 +5859,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -5871,14 +5871,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrCICDPipeline.isConstruct(x: any)
 ```
@@ -5899,7 +5899,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -5911,17 +5911,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the access logs on the artifact S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit Repository created as part of the Spark CICD Pipeline. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket">artifactAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the access logs on the artifact S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit Repository created as part of the Spark CICD Pipeline. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -5933,7 +5933,7 @@ The tree node.
 
 ---
 
-##### `artifactAccessLogsBucket`<sup>Required</sup> <a name="artifactAccessLogsBucket" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket"></a>
+##### `artifactAccessLogsBucket`<sup>Required</sup> <a name="artifactAccessLogsBucket" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactAccessLogsBucket"></a>
 
 ```typescript
 public readonly artifactAccessLogsBucket: IBucket;
@@ -5945,7 +5945,7 @@ The S3 Bucket for storing the access logs on the artifact S3 Bucket.
 
 ---
 
-##### `artifactBucket`<sup>Required</sup> <a name="artifactBucket" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket"></a>
+##### `artifactBucket`<sup>Required</sup> <a name="artifactBucket" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket"></a>
 
 ```typescript
 public readonly artifactBucket: IBucket;
@@ -5957,7 +5957,7 @@ The S3 Bucket for storing the artifacts.
 
 ---
 
-##### `pipeline`<sup>Required</sup> <a name="pipeline" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline"></a>
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline"></a>
 
 ```typescript
 public readonly pipeline: CodePipeline;
@@ -5969,7 +5969,7 @@ The CodePipeline created as part of the Spark CICD Pipeline.
 
 ---
 
-##### `pipelineLogGroup`<sup>Required</sup> <a name="pipelineLogGroup" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup"></a>
+##### `pipelineLogGroup`<sup>Required</sup> <a name="pipelineLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup"></a>
 
 ```typescript
 public readonly pipelineLogGroup: ILogGroup;
@@ -5981,7 +5981,7 @@ The CloudWatch Log Group for storing the CodePipeline logs.
 
 ---
 
-##### `repository`<sup>Required</sup> <a name="repository" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository"></a>
+##### `repository`<sup>Required</sup> <a name="repository" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository"></a>
 
 ```typescript
 public readonly repository: Repository;
@@ -5993,7 +5993,7 @@ The CodeCommit Repository created as part of the Spark CICD Pipeline.
 
 ---
 
-##### `integrationTestStage`<sup>Optional</sup> <a name="integrationTestStage" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage"></a>
+##### `integrationTestStage`<sup>Optional</sup> <a name="integrationTestStage" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage"></a>
 
 ```typescript
 public readonly integrationTestStage: CodeBuildStep;
@@ -6009,12 +6009,12 @@ The CodeBuild Step for the staging stage.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -6024,7 +6024,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -6034,7 +6034,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrContainersJob <a name="SparkEmrContainersJob" id="aws-data-solutions-framework.processing.SparkEmrContainersJob"></a>
+### SparkEmrContainersJob <a name="SparkEmrContainersJob" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob"></a>
 
 A construct to run Spark Jobs using EMR Container runtime (EMR on EKS).
 
@@ -6068,37 +6068,37 @@ new cdk.CfnOutput(this, 'SparkJobStateMachine', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 new processing.SparkEmrContainersJob(scope: Construct, id: string, props: SparkEmrContainersJobProps | SparkEmrContainersJobApiProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkEmrContainersJobProps \| aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps \| @cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkEmrContainersJobProps | aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps | @cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps
 
 ---
 
@@ -6106,12 +6106,12 @@ new processing.SparkEmrContainersJob(scope: Construct, id: string, props: SparkE
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -6119,7 +6119,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -6131,14 +6131,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrContainersJob.isConstruct(x: any)
 ```
@@ -6159,7 +6159,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -6171,13 +6171,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -6189,7 +6189,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -6201,7 +6201,7 @@ The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -6217,12 +6217,12 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -6232,7 +6232,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -6242,7 +6242,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrContainersRuntime <a name="SparkEmrContainersRuntime" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime"></a>
+### SparkEmrContainersRuntime <a name="SparkEmrContainersRuntime" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime"></a>
 
 A construct to create an EKS cluster, configure it and enable it with EMR on EKS.
 
@@ -6288,17 +6288,17 @@ const execRole = emrEksCluster.createExecutionRole(this, 'ExecRole', s3ReadPolic
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster">addEmrVirtualCluster</a></code> | Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint">addInteractiveEndpoint</a></code> | Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Cluster . |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass">addKarpenterNodePoolAndNodeClass</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole">createExecutionRole</a></code> | Create and configure a new Amazon IAM Role usable as an execution role. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate">uploadPodTemplate</a></code> | Upload podTemplates to the Amazon S3 location used by the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster">addEmrVirtualCluster</a></code> | Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint">addInteractiveEndpoint</a></code> | Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Cluster . |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass">addKarpenterNodePoolAndNodeClass</a></code> | Apply the provided manifest and add the CDK dependency on EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole">createExecutionRole</a></code> | Create and configure a new Amazon IAM Role usable as an execution role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate">uploadPodTemplate</a></code> | Upload podTemplates to the Amazon S3 location used by the cluster. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.toString"></a>
 
 ```typescript
 public toString(): string
@@ -6306,7 +6306,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `addEmrVirtualCluster` <a name="addEmrVirtualCluster" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster"></a>
+##### `addEmrVirtualCluster` <a name="addEmrVirtualCluster" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster"></a>
 
 ```typescript
 public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterProps): CfnVirtualCluster
@@ -6314,7 +6314,7 @@ public addEmrVirtualCluster(scope: Construct, options: EmrVirtualClusterProps): 
 
 Add a new Amazon EMR Virtual Cluster linked to Amazon EKS Cluster.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -6322,15 +6322,15 @@ of the stack where virtual cluster is deployed.
 
 ---
 
-###### `options`<sup>Required</sup> <a name="options" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.options"></a>
+###### `options`<sup>Required</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addEmrVirtualCluster.parameter.options"></a>
 
-- *Type:* aws-data-solutions-framework.processing.EmrVirtualClusterProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps
 
 the EmrVirtualClusterProps [properties]{@link EmrVirtualClusterProps}.
 
 ---
 
-##### `addInteractiveEndpoint` <a name="addInteractiveEndpoint" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint"></a>
+##### `addInteractiveEndpoint` <a name="addInteractiveEndpoint" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint"></a>
 
 ```typescript
 public addInteractiveEndpoint(scope: Construct, id: string, interactiveSessionOptions: SparkEmrContainersRuntimeInteractiveSessionProps): CustomResource
@@ -6340,7 +6340,7 @@ Creates a new Amazon EMR managed endpoint to be used with Amazon EMR Virtual Clu
 
 CfnOutput can be customized.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -6348,7 +6348,7 @@ the scope of the stack where managed endpoint is deployed.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.id"></a>
 
 - *Type:* string
 
@@ -6356,15 +6356,15 @@ the CDK id for endpoint.
 
 ---
 
-###### `interactiveSessionOptions`<sup>Required</sup> <a name="interactiveSessionOptions" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.interactiveSessionOptions"></a>
+###### `interactiveSessionOptions`<sup>Required</sup> <a name="interactiveSessionOptions" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addInteractiveEndpoint.parameter.interactiveSessionOptions"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps
 
 the EmrManagedEndpointOptions to configure the Amazon EMR managed endpoint.
 
 ---
 
-##### `addKarpenterNodePoolAndNodeClass` <a name="addKarpenterNodePoolAndNodeClass" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass"></a>
+##### `addKarpenterNodePoolAndNodeClass` <a name="addKarpenterNodePoolAndNodeClass" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass"></a>
 
 ```typescript
 public addKarpenterNodePoolAndNodeClass(id: string, manifest: any): any
@@ -6372,7 +6372,7 @@ public addKarpenterNodePoolAndNodeClass(id: string, manifest: any): any
 
 Apply the provided manifest and add the CDK dependency on EKS cluster.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass.parameter.id"></a>
 
 - *Type:* string
 
@@ -6380,7 +6380,7 @@ the unique ID of the CDK resource.
 
 ---
 
-###### `manifest`<sup>Required</sup> <a name="manifest" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass.parameter.manifest"></a>
+###### `manifest`<sup>Required</sup> <a name="manifest" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.addKarpenterNodePoolAndNodeClass.parameter.manifest"></a>
 
 - *Type:* any
 
@@ -6390,7 +6390,7 @@ You can use the Utils class that offers method to read yaml file and load it as 
 
 ---
 
-##### `createExecutionRole` <a name="createExecutionRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole"></a>
+##### `createExecutionRole` <a name="createExecutionRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole"></a>
 
 ```typescript
 public createExecutionRole(scope: Construct, id: string, policy: IManagedPolicy, eksNamespace: string, name: string): Role
@@ -6400,7 +6400,7 @@ Create and configure a new Amazon IAM Role usable as an execution role.
 
 This method makes the created role assumed by the Amazon EKS cluster Open ID Connect provider.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -6408,7 +6408,7 @@ of the IAM role.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -6416,7 +6416,7 @@ of the CDK resource to be created, it should be unique across the stack.
 
 ---
 
-###### `policy`<sup>Required</sup> <a name="policy" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.policy"></a>
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.policy"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IManagedPolicy
 
@@ -6424,7 +6424,7 @@ the execution policy to attach to the role.
 
 ---
 
-###### `eksNamespace`<sup>Required</sup> <a name="eksNamespace" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.eksNamespace"></a>
+###### `eksNamespace`<sup>Required</sup> <a name="eksNamespace" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.eksNamespace"></a>
 
 - *Type:* string
 
@@ -6434,7 +6434,7 @@ MUST be the same as the namespace of the Virtual Cluster from which the job is s
 
 ---
 
-###### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.createExecutionRole.parameter.name"></a>
 
 - *Type:* string
 
@@ -6442,7 +6442,7 @@ Name to use for the role, required and is used to scope the iam role.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -6450,7 +6450,7 @@ public retrieveVersion(): any
 
 Retrieve DSF package.json version.
 
-##### `uploadPodTemplate` <a name="uploadPodTemplate" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate"></a>
+##### `uploadPodTemplate` <a name="uploadPodTemplate" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate"></a>
 
 ```typescript
 public uploadPodTemplate(id: string, filePath: string): void
@@ -6458,7 +6458,7 @@ public uploadPodTemplate(id: string, filePath: string): void
 
 Upload podTemplates to the Amazon S3 location used by the cluster.
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.id"></a>
 
 - *Type:* string
 
@@ -6466,7 +6466,7 @@ the unique ID of the CDK resource.
 
 ---
 
-###### `filePath`<sup>Required</sup> <a name="filePath" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.filePath"></a>
+###### `filePath`<sup>Required</sup> <a name="filePath" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.uploadPodTemplate.parameter.filePath"></a>
 
 - *Type:* string
 
@@ -6478,16 +6478,16 @@ The local path of the yaml podTemplate files to upload.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate">getOrCreate</a></code> | Get an existing EmrEksCluster based on the cluster name property or create a new one only one EKS cluster can exist per stack. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method granting the right to start and monitor a job to an IAM Role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate">getOrCreate</a></code> | Get an existing EmrEksCluster based on the cluster name property or create a new one only one EKS cluster can exist per stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method granting the right to start and monitor a job to an IAM Role. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrContainersRuntime.isConstruct(x: any)
 ```
@@ -6508,7 +6508,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -6516,17 +6516,17 @@ Any object.
 
 ---
 
-##### `getOrCreate` <a name="getOrCreate" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate"></a>
+##### `getOrCreate` <a name="getOrCreate" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrContainersRuntime.getOrCreate(scope: Construct, props: SparkEmrContainersRuntimeProps)
 ```
 
 Get an existing EmrEksCluster based on the cluster name property or create a new one only one EKS cluster can exist per stack.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -6534,18 +6534,18 @@ the CDK scope used to search or create the cluster.
 
 ---
 
-###### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate.parameter.props"></a>
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.getOrCreate.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps
 
 the EmrEksClusterProps [properties]{@link EmrEksClusterProps } if created.
 
 ---
 
-##### `grantStartJobExecution` <a name="grantStartJobExecution" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution"></a>
+##### `grantStartJobExecution` <a name="grantStartJobExecution" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrContainersRuntime.grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], virtualClusterArn: string)
 ```
@@ -6556,7 +6556,7 @@ The method will scope the following actions `DescribeJobRun`, `TagResource` and 
 It will also scope `StartJobRun` as defined in the
 [EMR on EKS official documentation](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/iam-execution-role.html)
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -6564,7 +6564,7 @@ the role that will call the start job api and which needs to have the iam:PassRo
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string[]
 
@@ -6572,7 +6572,7 @@ the role used by EMR on EKS to access resources during the job execution.
 
 ---
 
-###### `virtualClusterArn`<sup>Required</sup> <a name="virtualClusterArn" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.virtualClusterArn"></a>
+###### `virtualClusterArn`<sup>Required</sup> <a name="virtualClusterArn" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.grantStartJobExecution.parameter.virtualClusterArn"></a>
 
 - *Type:* string
 
@@ -6584,37 +6584,37 @@ the EMR Virtual Cluster ARN to which the job is submitted.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole">ec2InstanceNodeGroupRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers like EBS CSI driver, core dns. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster created by the construct if it is not provided. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC used by the EKS cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket holding podtemplates referenced in the configuration override for the job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to upload assets (pod templates) on S3. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by IRSA for the aws-node daemonset. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for criticale jobs. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole">csiDriverIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role created for the EBS CSI controller. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksSecretKmsKey">eksSecretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used for storing EKS secrets. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.emrServiceRole">emrServiceRole</a></code> | <code>aws-cdk-lib.aws_iam.CfnServiceLinkedRole</code> | The Service Linked role created for EMR. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the VPC flow log when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for the VPC flow logs when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the VPC flow logs when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterEventRules">karpenterEventRules</a></code> | <code>aws-cdk-lib.aws_events.IRule[]</code> | The rules used by Karpenter to track node health, rules are defined in the cloudformation below https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the EC2NodeClass of the default nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>any</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for critical nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for critical nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared">podTemplateS3LocationDriverShared</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for shared nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared">podTemplateS3LocationExecutorShared</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for shared nodes. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver">podTemplateS3LocationNotebookDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for interactive sessions. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor">podTemplateS3LocationNotebookExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for interactive sessions. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint attached to the private subnets of the VPC when VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig">sharedDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for none criticale jobs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole">ec2InstanceNodeGroupRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the tooling managed nodegroup hosting core Kubernetes controllers like EBS CSI driver, core dns. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS cluster created by the construct if it is not provided. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC used by the EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetBucket">assetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The bucket holding podtemplates referenced in the configuration override for the job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetUploadBucketRole">assetUploadBucketRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to upload assets (pod templates) on S3. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.awsNodeRole">awsNodeRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by IRSA for the aws-node daemonset. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig">criticalDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for criticale jobs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole">csiDriverIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role created for the EBS CSI controller. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksSecretKmsKey">eksSecretKmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used for storing EKS secrets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.emrServiceRole">emrServiceRole</a></code> | <code>aws-cdk-lib.aws_iam.CfnServiceLinkedRole</code> | The Service Linked role created for EMR. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the VPC flow log when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for the VPC flow logs when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the VPC flow logs when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterEventRules">karpenterEventRules</a></code> | <code>aws-cdk-lib.aws_events.IRule[]</code> | The rules used by Karpenter to track node health, rules are defined in the cloudformation below https://raw.githubusercontent.com/aws/karpenter/"${KARPENTER_VERSION}"/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the EC2NodeClass of the default nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>any</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for critical nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for critical nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared">podTemplateS3LocationDriverShared</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for shared nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared">podTemplateS3LocationExecutorShared</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for shared nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver">podTemplateS3LocationNotebookDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for interactive sessions. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor">podTemplateS3LocationNotebookExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for interactive sessions. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint attached to the private subnets of the VPC when VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig">sharedDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes for none criticale jobs. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -6626,7 +6626,7 @@ The tree node.
 
 ---
 
-##### `ec2InstanceNodeGroupRole`<sup>Required</sup> <a name="ec2InstanceNodeGroupRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole"></a>
+##### `ec2InstanceNodeGroupRole`<sup>Required</sup> <a name="ec2InstanceNodeGroupRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.ec2InstanceNodeGroupRole"></a>
 
 ```typescript
 public readonly ec2InstanceNodeGroupRole: IRole;
@@ -6638,7 +6638,7 @@ The IAM role used by the tooling managed nodegroup hosting core Kubernetes contr
 
 ---
 
-##### `eksCluster`<sup>Required</sup> <a name="eksCluster" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksCluster"></a>
+##### `eksCluster`<sup>Required</sup> <a name="eksCluster" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksCluster"></a>
 
 ```typescript
 public readonly eksCluster: Cluster;
@@ -6650,7 +6650,7 @@ The EKS cluster created by the construct if it is not provided.
 
 ---
 
-##### `vpc`<sup>Required</sup> <a name="vpc" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.vpc"></a>
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -6662,7 +6662,7 @@ The VPC used by the EKS cluster.
 
 ---
 
-##### `assetBucket`<sup>Optional</sup> <a name="assetBucket" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetBucket"></a>
+##### `assetBucket`<sup>Optional</sup> <a name="assetBucket" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetBucket"></a>
 
 ```typescript
 public readonly assetBucket: IBucket;
@@ -6674,7 +6674,7 @@ The bucket holding podtemplates referenced in the configuration override for the
 
 ---
 
-##### `assetUploadBucketRole`<sup>Optional</sup> <a name="assetUploadBucketRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetUploadBucketRole"></a>
+##### `assetUploadBucketRole`<sup>Optional</sup> <a name="assetUploadBucketRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.assetUploadBucketRole"></a>
 
 ```typescript
 public readonly assetUploadBucketRole: IRole;
@@ -6686,7 +6686,7 @@ The IAM role used to upload assets (pod templates) on S3.
 
 ---
 
-##### `awsNodeRole`<sup>Optional</sup> <a name="awsNodeRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.awsNodeRole"></a>
+##### `awsNodeRole`<sup>Optional</sup> <a name="awsNodeRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.awsNodeRole"></a>
 
 ```typescript
 public readonly awsNodeRole: IRole;
@@ -6698,7 +6698,7 @@ The IAM Role used by IRSA for the aws-node daemonset.
 
 ---
 
-##### `criticalDefaultConfig`<sup>Optional</sup> <a name="criticalDefaultConfig" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig"></a>
+##### `criticalDefaultConfig`<sup>Optional</sup> <a name="criticalDefaultConfig" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.criticalDefaultConfig"></a>
 
 ```typescript
 public readonly criticalDefaultConfig: string;
@@ -6710,7 +6710,7 @@ The configuration override for the spark application to use with the default nod
 
 ---
 
-##### `csiDriverIrsaRole`<sup>Optional</sup> <a name="csiDriverIrsaRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole"></a>
+##### `csiDriverIrsaRole`<sup>Optional</sup> <a name="csiDriverIrsaRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.csiDriverIrsaRole"></a>
 
 ```typescript
 public readonly csiDriverIrsaRole: IRole;
@@ -6722,7 +6722,7 @@ The IAM Role created for the EBS CSI controller.
 
 ---
 
-##### `eksSecretKmsKey`<sup>Optional</sup> <a name="eksSecretKmsKey" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksSecretKmsKey"></a>
+##### `eksSecretKmsKey`<sup>Optional</sup> <a name="eksSecretKmsKey" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.eksSecretKmsKey"></a>
 
 ```typescript
 public readonly eksSecretKmsKey: IKey;
@@ -6734,7 +6734,7 @@ The KMS key used for storing EKS secrets.
 
 ---
 
-##### `emrServiceRole`<sup>Optional</sup> <a name="emrServiceRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.emrServiceRole"></a>
+##### `emrServiceRole`<sup>Optional</sup> <a name="emrServiceRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.emrServiceRole"></a>
 
 ```typescript
 public readonly emrServiceRole: CfnServiceLinkedRole;
@@ -6746,7 +6746,7 @@ The Service Linked role created for EMR.
 
 ---
 
-##### `flowLogGroup`<sup>Optional</sup> <a name="flowLogGroup" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogGroup"></a>
+##### `flowLogGroup`<sup>Optional</sup> <a name="flowLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogGroup"></a>
 
 ```typescript
 public readonly flowLogGroup: ILogGroup;
@@ -6758,7 +6758,7 @@ The CloudWatch Log Group for the VPC flow log when the VPC is created.
 
 ---
 
-##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogKey"></a>
+##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogKey"></a>
 
 ```typescript
 public readonly flowLogKey: IKey;
@@ -6770,7 +6770,7 @@ The KMS Key used for the VPC flow logs when the VPC is created.
 
 ---
 
-##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogRole"></a>
+##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.flowLogRole"></a>
 
 ```typescript
 public readonly flowLogRole: IRole;
@@ -6782,7 +6782,7 @@ The IAM Role used for the VPC flow logs when the VPC is created.
 
 ---
 
-##### `karpenterEventRules`<sup>Optional</sup> <a name="karpenterEventRules" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterEventRules"></a>
+##### `karpenterEventRules`<sup>Optional</sup> <a name="karpenterEventRules" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterEventRules"></a>
 
 ```typescript
 public readonly karpenterEventRules: IRule[];
@@ -6794,7 +6794,7 @@ The rules used by Karpenter to track node health, rules are defined in the cloud
 
 ---
 
-##### `karpenterIrsaRole`<sup>Optional</sup> <a name="karpenterIrsaRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole"></a>
+##### `karpenterIrsaRole`<sup>Optional</sup> <a name="karpenterIrsaRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole"></a>
 
 ```typescript
 public readonly karpenterIrsaRole: IRole;
@@ -6806,7 +6806,7 @@ The IAM role created for the Karpenter controller.
 
 ---
 
-##### `karpenterQueue`<sup>Optional</sup> <a name="karpenterQueue" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterQueue"></a>
+##### `karpenterQueue`<sup>Optional</sup> <a name="karpenterQueue" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterQueue"></a>
 
 ```typescript
 public readonly karpenterQueue: IQueue;
@@ -6818,7 +6818,7 @@ The SQS queue used by Karpenter to receive critical events from AWS services whi
 
 ---
 
-##### `karpenterSecurityGroup`<sup>Optional</sup> <a name="karpenterSecurityGroup" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup"></a>
+##### `karpenterSecurityGroup`<sup>Optional</sup> <a name="karpenterSecurityGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup"></a>
 
 ```typescript
 public readonly karpenterSecurityGroup: ISecurityGroup;
@@ -6830,7 +6830,7 @@ The security group used by the EC2NodeClass of the default nodes.
 
 ---
 
-##### `notebookDefaultConfig`<sup>Optional</sup> <a name="notebookDefaultConfig" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig"></a>
+##### `notebookDefaultConfig`<sup>Optional</sup> <a name="notebookDefaultConfig" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig"></a>
 
 ```typescript
 public readonly notebookDefaultConfig: any;
@@ -6842,7 +6842,7 @@ The configuration override for the spark application to use with the default nod
 
 ---
 
-##### `podTemplateS3LocationCriticalDriver`<sup>Optional</sup> <a name="podTemplateS3LocationCriticalDriver" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver"></a>
+##### `podTemplateS3LocationCriticalDriver`<sup>Optional</sup> <a name="podTemplateS3LocationCriticalDriver" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver"></a>
 
 ```typescript
 public readonly podTemplateS3LocationCriticalDriver: string;
@@ -6854,7 +6854,7 @@ The S3 location holding the driver pod tempalte for critical nodes.
 
 ---
 
-##### `podTemplateS3LocationCriticalExecutor`<sup>Optional</sup> <a name="podTemplateS3LocationCriticalExecutor" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor"></a>
+##### `podTemplateS3LocationCriticalExecutor`<sup>Optional</sup> <a name="podTemplateS3LocationCriticalExecutor" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor"></a>
 
 ```typescript
 public readonly podTemplateS3LocationCriticalExecutor: string;
@@ -6866,7 +6866,7 @@ The S3 location holding the executor pod tempalte for critical nodes.
 
 ---
 
-##### `podTemplateS3LocationDriverShared`<sup>Optional</sup> <a name="podTemplateS3LocationDriverShared" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared"></a>
+##### `podTemplateS3LocationDriverShared`<sup>Optional</sup> <a name="podTemplateS3LocationDriverShared" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared"></a>
 
 ```typescript
 public readonly podTemplateS3LocationDriverShared: string;
@@ -6878,7 +6878,7 @@ The S3 location holding the driver pod tempalte for shared nodes.
 
 ---
 
-##### `podTemplateS3LocationExecutorShared`<sup>Optional</sup> <a name="podTemplateS3LocationExecutorShared" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared"></a>
+##### `podTemplateS3LocationExecutorShared`<sup>Optional</sup> <a name="podTemplateS3LocationExecutorShared" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationExecutorShared"></a>
 
 ```typescript
 public readonly podTemplateS3LocationExecutorShared: string;
@@ -6890,7 +6890,7 @@ The S3 location holding the executor pod tempalte for shared nodes.
 
 ---
 
-##### `podTemplateS3LocationNotebookDriver`<sup>Optional</sup> <a name="podTemplateS3LocationNotebookDriver" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver"></a>
+##### `podTemplateS3LocationNotebookDriver`<sup>Optional</sup> <a name="podTemplateS3LocationNotebookDriver" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookDriver"></a>
 
 ```typescript
 public readonly podTemplateS3LocationNotebookDriver: string;
@@ -6902,7 +6902,7 @@ The S3 location holding the driver pod tempalte for interactive sessions.
 
 ---
 
-##### `podTemplateS3LocationNotebookExecutor`<sup>Optional</sup> <a name="podTemplateS3LocationNotebookExecutor" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor"></a>
+##### `podTemplateS3LocationNotebookExecutor`<sup>Optional</sup> <a name="podTemplateS3LocationNotebookExecutor" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationNotebookExecutor"></a>
 
 ```typescript
 public readonly podTemplateS3LocationNotebookExecutor: string;
@@ -6914,7 +6914,7 @@ The S3 location holding the executor pod tempalte for interactive sessions.
 
 ---
 
-##### `s3VpcEndpoint`<sup>Optional</sup> <a name="s3VpcEndpoint" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.s3VpcEndpoint"></a>
+##### `s3VpcEndpoint`<sup>Optional</sup> <a name="s3VpcEndpoint" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.s3VpcEndpoint"></a>
 
 ```typescript
 public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
@@ -6926,7 +6926,7 @@ The S3 VPC endpoint attached to the private subnets of the VPC when VPC is creat
 
 ---
 
-##### `sharedDefaultConfig`<sup>Optional</sup> <a name="sharedDefaultConfig" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig"></a>
+##### `sharedDefaultConfig`<sup>Optional</sup> <a name="sharedDefaultConfig" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.sharedDefaultConfig"></a>
 
 ```typescript
 public readonly sharedDefaultConfig: string;
@@ -6942,16 +6942,16 @@ The configuration override for the spark application to use with the default nod
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | The default name of the EKS cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The default EKS version. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The default EMR on EKS version. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | The default CIDR when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME">DEFAULT_CLUSTER_NAME</a></code> | <code>string</code> | The default name of the EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION">DEFAULT_EKS_VERSION</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The default EKS version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION">DEFAULT_EMR_EKS_VERSION</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The default EMR on EKS version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR">DEFAULT_VPC_CIDR</a></code> | <code>string</code> | The default CIDR when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DEFAULT_CLUSTER_NAME`<sup>Required</sup> <a name="DEFAULT_CLUSTER_NAME" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME"></a>
+##### `DEFAULT_CLUSTER_NAME`<sup>Required</sup> <a name="DEFAULT_CLUSTER_NAME" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_CLUSTER_NAME"></a>
 
 ```typescript
 public readonly DEFAULT_CLUSTER_NAME: string;
@@ -6963,7 +6963,7 @@ The default name of the EKS cluster.
 
 ---
 
-##### `DEFAULT_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EKS_VERSION" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION"></a>
+##### `DEFAULT_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EKS_VERSION" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EKS_VERSION"></a>
 
 ```typescript
 public readonly DEFAULT_EKS_VERSION: KubernetesVersion;
@@ -6975,19 +6975,19 @@ The default EKS version.
 
 ---
 
-##### `DEFAULT_EMR_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EMR_EKS_VERSION" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION"></a>
+##### `DEFAULT_EMR_EKS_VERSION`<sup>Required</sup> <a name="DEFAULT_EMR_EKS_VERSION" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_EMR_EKS_VERSION"></a>
 
 ```typescript
 public readonly DEFAULT_EMR_EKS_VERSION: EmrContainersRuntimeVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.EmrContainersRuntimeVersion
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion
 
 The default EMR on EKS version.
 
 ---
 
-##### `DEFAULT_VPC_CIDR`<sup>Required</sup> <a name="DEFAULT_VPC_CIDR" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR"></a>
+##### `DEFAULT_VPC_CIDR`<sup>Required</sup> <a name="DEFAULT_VPC_CIDR" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DEFAULT_VPC_CIDR"></a>
 
 ```typescript
 public readonly DEFAULT_VPC_CIDR: string;
@@ -6999,7 +6999,7 @@ The default CIDR when the VPC is created.
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -7009,7 +7009,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -7019,7 +7019,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrServerlessJob <a name="SparkEmrServerlessJob" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob"></a>
+### SparkEmrServerlessJob <a name="SparkEmrServerlessJob" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob"></a>
 
 A construct to run Spark Jobs using EMR Serverless.
 
@@ -7051,37 +7051,37 @@ const job = new dsf.processing.SparkEmrServerlessJob(this, 'SparkJob', {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 new processing.SparkEmrServerlessJob(scope: Construct, id: string, props: SparkEmrServerlessJobProps | SparkEmrServerlessJobApiProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkEmrServerlessJobProps \| aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps \| @cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkEmrServerlessJobProps | aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps | @cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps
 
 ---
 
@@ -7089,12 +7089,12 @@ new processing.SparkEmrServerlessJob(scope: Construct, id: string, props: SparkE
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -7102,7 +7102,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -7114,14 +7114,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrServerlessJob.isConstruct(x: any)
 ```
@@ -7142,7 +7142,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -7154,14 +7154,14 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Spark job execution role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole">sparkJobExecutionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Spark job execution role. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -7173,7 +7173,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -7185,7 +7185,7 @@ The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -7197,7 +7197,7 @@ The CloudWatch Log Group used by the State Machine.
 
 ---
 
-##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole"></a>
+##### `sparkJobExecutionRole`<sup>Optional</sup> <a name="sparkJobExecutionRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.sparkJobExecutionRole"></a>
 
 ```typescript
 public readonly sparkJobExecutionRole: IRole;
@@ -7215,12 +7215,12 @@ Use this property to add additional IAM permissions if necessary.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -7230,7 +7230,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -7240,7 +7240,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime"></a>
+### SparkEmrServerlessRuntime <a name="SparkEmrServerlessRuntime" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime"></a>
 
 A construct to create a Spark EMR Serverless Application, along with methods to create IAM roles having the least privilege.
 
@@ -7265,23 +7265,23 @@ dsf.processing.SparkEmrServerlessRuntime.grantStartJobExecution(submitterRole, [
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 new processing.SparkEmrServerlessRuntime(scope: Construct, id: string, props: SparkEmrServerlessRuntimeProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps</code> | {@link SparkEmrServerlessRuntimeProps}. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps</code> | {@link SparkEmrServerlessRuntimeProps}. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -7289,7 +7289,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -7297,9 +7297,9 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps
 
 {@link SparkEmrServerlessRuntimeProps}.
 
@@ -7309,13 +7309,13 @@ the ID of the CDK Construct.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution">grantStartExecution</a></code> | A method which will grant an IAM Role the right to start and monitor a job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.toString"></a>
 
 ```typescript
 public toString(): string
@@ -7323,7 +7323,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `grantStartExecution` <a name="grantStartExecution" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution"></a>
+##### `grantStartExecution` <a name="grantStartExecution" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution"></a>
 
 ```typescript
 public grantStartExecution(startJobRole: IRole, executionRoleArn: string): void
@@ -7334,7 +7334,7 @@ A method which will grant an IAM Role the right to start and monitor a job.
 The method will also attach an iam:PassRole permission to limited to the IAM Job Execution roles passed.
 The excution role will be able to submit job to the EMR Serverless application created by the construct.
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -7342,7 +7342,7 @@ the role that will call the start job api and which need to have the iam:PassRol
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string
 
@@ -7350,7 +7350,7 @@ the role use by EMR Serverless to access resources during the job execution.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -7362,16 +7362,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method creating an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method granting the right to start and monitor a job to an IAM Role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole">createExecutionRole</a></code> | A static method creating an execution IAM role that can be assumed by EMR Serverless The method returns the role it creates. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution">grantStartJobExecution</a></code> | A static method granting the right to start and monitor a job to an IAM Role. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrServerlessRuntime.isConstruct(x: any)
 ```
@@ -7392,7 +7392,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -7400,10 +7400,10 @@ Any object.
 
 ---
 
-##### `createExecutionRole` <a name="createExecutionRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole"></a>
+##### `createExecutionRole` <a name="createExecutionRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrServerlessRuntime.createExecutionRole(scope: Construct, id: string, executionRolePolicyDocument?: PolicyDocument, iamPolicyName?: string)
 ```
@@ -7414,7 +7414,7 @@ If no `executionRolePolicyDocument` or `iamPolicyName`
 The method will return a role with only a trust policy to EMR Servereless service principal.
 You can use this role then to grant access to any resources you control.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -7422,7 +7422,7 @@ the scope in which to create the role.
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.id"></a>
 
 - *Type:* string
 
@@ -7430,7 +7430,7 @@ passed to the IAM Role construct object.
 
 ---
 
-###### `executionRolePolicyDocument`<sup>Optional</sup> <a name="executionRolePolicyDocument" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.executionRolePolicyDocument"></a>
+###### `executionRolePolicyDocument`<sup>Optional</sup> <a name="executionRolePolicyDocument" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.executionRolePolicyDocument"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyDocument
 
@@ -7441,7 +7441,7 @@ This parameter is mutually execlusive with iamPolicyName.
 
 ---
 
-###### `iamPolicyName`<sup>Optional</sup> <a name="iamPolicyName" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.iamPolicyName"></a>
+###### `iamPolicyName`<sup>Optional</sup> <a name="iamPolicyName" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.createExecutionRole.parameter.iamPolicyName"></a>
 
 - *Type:* string
 
@@ -7449,10 +7449,10 @@ the IAM policy name to attach to the role, this is mutually execlusive with exec
 
 ---
 
-##### `grantStartJobExecution` <a name="grantStartJobExecution" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution"></a>
+##### `grantStartJobExecution` <a name="grantStartJobExecution" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkEmrServerlessRuntime.grantStartJobExecution(startJobRole: IRole, executionRoleArn: string[], applicationArns: string[])
 ```
@@ -7461,7 +7461,7 @@ A static method granting the right to start and monitor a job to an IAM Role.
 
 The method will also attach an iam:PassRole permission limited to the IAM Job Execution roles passed
 
-###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.startJobRole"></a>
+###### `startJobRole`<sup>Required</sup> <a name="startJobRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.startJobRole"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
@@ -7469,7 +7469,7 @@ the role that will call the start job api and which needs to have the iam:PassRo
 
 ---
 
-###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
+###### `executionRoleArn`<sup>Required</sup> <a name="executionRoleArn" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.executionRoleArn"></a>
 
 - *Type:* string[]
 
@@ -7477,7 +7477,7 @@ the role used by EMR Serverless to access resources during the job execution.
 
 ---
 
-###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.applicationArns"></a>
+###### `applicationArns`<sup>Required</sup> <a name="applicationArns" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.grantStartJobExecution.parameter.applicationArns"></a>
 
 - *Type:* string[]
 
@@ -7489,18 +7489,18 @@ the EMR Serverless aplication ARN, this is used by the method to limit the EMR S
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the VPC flow log when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for the VPC flow log when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the VPC flow log when the VPC is created. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC used by the EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.application">application</a></code> | <code>aws-cdk-lib.aws_emrserverless.CfnApplication</code> | The EMR Serverless application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup">emrApplicationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | If no VPC is provided, one is created by default along with a security group attached to the EMR Serverless Application This attribute is used to expose the security group, if you provide your own security group through the {@link SparkEmrServerlessRuntimeProps} the attribute will be `undefined`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogGroup">flowLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the VPC flow log when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for the VPC flow log when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the VPC flow log when the VPC is created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC used by the EKS cluster. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -7512,7 +7512,7 @@ The tree node.
 
 ---
 
-##### `application`<sup>Required</sup> <a name="application" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.application"></a>
+##### `application`<sup>Required</sup> <a name="application" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.application"></a>
 
 ```typescript
 public readonly application: CfnApplication;
@@ -7524,7 +7524,7 @@ The EMR Serverless application.
 
 ---
 
-##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
+##### `emrApplicationSecurityGroup`<sup>Optional</sup> <a name="emrApplicationSecurityGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.emrApplicationSecurityGroup"></a>
 
 ```typescript
 public readonly emrApplicationSecurityGroup: ISecurityGroup;
@@ -7536,7 +7536,7 @@ If no VPC is provided, one is created by default along with a security group att
 
 ---
 
-##### `flowLogGroup`<sup>Optional</sup> <a name="flowLogGroup" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogGroup"></a>
+##### `flowLogGroup`<sup>Optional</sup> <a name="flowLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogGroup"></a>
 
 ```typescript
 public readonly flowLogGroup: ILogGroup;
@@ -7548,7 +7548,7 @@ The CloudWatch Log Group for the VPC flow log when the VPC is created.
 
 ---
 
-##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogKey"></a>
+##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogKey"></a>
 
 ```typescript
 public readonly flowLogKey: IKey;
@@ -7560,7 +7560,7 @@ The KMS Key used for the VPC flow log when the VPC is created.
 
 ---
 
-##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogRole"></a>
+##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.flowLogRole"></a>
 
 ```typescript
 public readonly flowLogRole: IRole;
@@ -7572,7 +7572,7 @@ The IAM Role used for the VPC flow log when the VPC is created.
 
 ---
 
-##### `s3VpcEndpoint`<sup>Optional</sup> <a name="s3VpcEndpoint" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.s3VpcEndpoint"></a>
+##### `s3VpcEndpoint`<sup>Optional</sup> <a name="s3VpcEndpoint" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.s3VpcEndpoint"></a>
 
 ```typescript
 public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
@@ -7582,7 +7582,7 @@ public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -7598,12 +7598,12 @@ The VPC used by the EKS cluster.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -7613,7 +7613,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntime.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -7623,7 +7623,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### SparkJob <a name="SparkJob" id="aws-data-solutions-framework.processing.SparkJob"></a>
+### SparkJob <a name="SparkJob" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob"></a>
 
 A base construct to run Spark Jobs.
 
@@ -7639,24 +7639,24 @@ Available implementations:
 * {@link SparkEmrServerlessJob } for Emr Serverless implementation
 * {@link SparkEmrEksJob } for EMR On EKS implementation)
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.processing.SparkJob.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 new processing.SparkJob(scope: Construct, id: string, trackingTag: string, props: SparkJobProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.trackingTag">trackingTag</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.props">props</a></code> | <code>aws-data-solutions-framework.processing.SparkJobProps</code> | the SparkJobProps properties. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.trackingTag">trackingTag</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.SparkJobProps</code> | the SparkJobProps properties. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -7664,7 +7664,7 @@ the Scope of the CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -7672,15 +7672,15 @@ the ID of the CDK Construct.
 
 ---
 
-##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.trackingTag"></a>
+##### `trackingTag`<sup>Required</sup> <a name="trackingTag" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.trackingTag"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.Initializer.parameter.props"></a>
 
-- *Type:* aws-data-solutions-framework.processing.SparkJobProps
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkJobProps
 
 the SparkJobProps properties.
 
@@ -7690,12 +7690,12 @@ the SparkJobProps properties.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="aws-data-solutions-framework.processing.SparkJob.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.toString"></a>
 
 ```typescript
 public toString(): string
@@ -7703,7 +7703,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="aws-data-solutions-framework.processing.SparkJob.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -7715,14 +7715,14 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="aws-data-solutions-framework.processing.SparkJob.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.isConstruct"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 processing.SparkJob.isConstruct(x: any)
 ```
@@ -7743,7 +7743,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="aws-data-solutions-framework.processing.SparkJob.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -7755,13 +7755,13 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The Step Functions State Machine created to orchestrate the Spark Job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the State Machine. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="aws-data-solutions-framework.processing.SparkJob.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -7773,7 +7773,7 @@ The tree node.
 
 ---
 
-##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="aws-data-solutions-framework.processing.SparkJob.property.stateMachine"></a>
+##### `stateMachine`<sup>Optional</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.stateMachine"></a>
 
 ```typescript
 public readonly stateMachine: StateMachine;
@@ -7785,7 +7785,7 @@ The Step Functions State Machine created to orchestrate the Spark Job.
 
 ---
 
-##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="aws-data-solutions-framework.processing.SparkJob.property.stateMachineLogGroup"></a>
+##### `stateMachineLogGroup`<sup>Optional</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.stateMachineLogGroup"></a>
 
 ```typescript
 public readonly stateMachineLogGroup: ILogGroup;
@@ -7801,12 +7801,12 @@ The CloudWatch Log Group used by the State Machine.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="aws-data-solutions-framework.processing.SparkJob.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -7816,7 +7816,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="aws-data-solutions-framework.processing.SparkJob.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.processing.SparkJob.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -7828,14 +7828,14 @@ public readonly DSF_TRACKING_CODE: string;
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="aws-data-solutions-framework.storage.AnalyticsBucketProps"></a>
+### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps"></a>
 
 Properties for the `AnalyticsBucket` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 const analyticsBucketProps: storage.AnalyticsBucketProps = { ... }
 ```
@@ -7844,33 +7844,33 @@ const analyticsBucketProps: storage.AnalyticsBucketProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS Key to use for the S3 Bucket encryption. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.accessControl">accessControl</a></code> | <code>aws-cdk-lib.aws_s3.BucketAccessControl</code> | Specifies a canned ACL that grants predefined permissions to the bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the S3 Bucket is removed from the stack or when the stack is deleted. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.blockPublicAccess">blockPublicAccess</a></code> | <code>aws-cdk-lib.aws_s3.BlockPublicAccess</code> | The block public access configuration of this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketKeyEnabled">bucketKeyEnabled</a></code> | <code>boolean</code> | Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | The physical name of this S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.cors">cors</a></code> | <code>aws-cdk-lib.aws_s3.CorsRule[]</code> | The CORS configuration of this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.enforceSSL">enforceSSL</a></code> | <code>boolean</code> | Enforces SSL for requests. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this S3 Bucket should send notifications to Amazon EventBridge or not. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Intelligent Tiering Configurations. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.lifecycleRules">lifecycleRules</a></code> | <code>aws-cdk-lib.aws_s3.LifecycleRule[]</code> | Rules that define how Amazon S3 manages objects during their lifetime. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.metrics">metrics</a></code> | <code>aws-cdk-lib.aws_s3.BucketMetrics[]</code> | The metrics configuration of this bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to be used by the notifications handler. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockDefaultRetention">objectLockDefaultRetention</a></code> | <code>aws-cdk-lib.aws_s3.ObjectLockRetention</code> | The default retention mode and rules for S3 Object Lock. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket destination for the server access logs. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the S3 Bucket's access logs. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this S3 Bucket should have transfer acceleration turned on or not. |
-| <code><a href="#aws-data-solutions-framework.storage.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this S3 Bucket should have versioning turned on or not. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | External KMS Key to use for the S3 Bucket encryption. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.accessControl">accessControl</a></code> | <code>aws-cdk-lib.aws_s3.BucketAccessControl</code> | Specifies a canned ACL that grants predefined permissions to the bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.autoDeleteObjects">autoDeleteObjects</a></code> | <code>boolean</code> | Whether all objects should be automatically deleted when the S3 Bucket is removed from the stack or when the stack is deleted. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.blockPublicAccess">blockPublicAccess</a></code> | <code>aws-cdk-lib.aws_s3.BlockPublicAccess</code> | The block public access configuration of this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketKeyEnabled">bucketKeyEnabled</a></code> | <code>boolean</code> | Whether Amazon S3 should use its own intermediary key to generate data keys. Only relevant when using KMS for encryption. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketName">bucketName</a></code> | <code>string</code> | The physical name of this S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.cors">cors</a></code> | <code>aws-cdk-lib.aws_s3.CorsRule[]</code> | The CORS configuration of this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.enforceSSL">enforceSSL</a></code> | <code>boolean</code> | Enforces SSL for requests. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.eventBridgeEnabled">eventBridgeEnabled</a></code> | <code>boolean</code> | Whether this S3 Bucket should send notifications to Amazon EventBridge or not. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations">intelligentTieringConfigurations</a></code> | <code>aws-cdk-lib.aws_s3.IntelligentTieringConfiguration[]</code> | Intelligent Tiering Configurations. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.inventories">inventories</a></code> | <code>aws-cdk-lib.aws_s3.Inventory[]</code> | The inventory configuration of the S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.lifecycleRules">lifecycleRules</a></code> | <code>aws-cdk-lib.aws_s3.LifecycleRule[]</code> | Rules that define how Amazon S3 manages objects during their lifetime. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.metrics">metrics</a></code> | <code>aws-cdk-lib.aws_s3.BucketMetrics[]</code> | The metrics configuration of this bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.notificationsHandlerRole">notificationsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to be used by the notifications handler. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockDefaultRetention">objectLockDefaultRetention</a></code> | <code>aws-cdk-lib.aws_s3.ObjectLockRetention</code> | The default retention mode and rules for S3 Object Lock. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockEnabled">objectLockEnabled</a></code> | <code>boolean</code> | Enable object lock on the S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectOwnership">objectOwnership</a></code> | <code>aws-cdk-lib.aws_s3.ObjectOwnership</code> | The objectOwnership of the S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.publicReadAccess">publicReadAccess</a></code> | <code>boolean</code> | Grants public read access to all objects in the S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsBucket">serverAccessLogsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 Bucket destination for the server access logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix">serverAccessLogsPrefix</a></code> | <code>string</code> | Optional log file prefix to use for the S3 Bucket's access logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.transferAcceleration">transferAcceleration</a></code> | <code>boolean</code> | Whether this S3 Bucket should have transfer acceleration turned on or not. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.versioned">versioned</a></code> | <code>boolean</code> | Whether this S3 Bucket should have versioning turned on or not. |
 
 ---
 
-##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -7886,7 +7886,7 @@ An error will be emitted if `encryption` is set to `UNENCRYPTED` or `S3_MANAGED`
 
 ---
 
-##### `accessControl`<sup>Optional</sup> <a name="accessControl" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.accessControl"></a>
+##### `accessControl`<sup>Optional</sup> <a name="accessControl" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.accessControl"></a>
 
 ```typescript
 public readonly accessControl: BucketAccessControl;
@@ -7899,7 +7899,7 @@ Specifies a canned ACL that grants predefined permissions to the bucket.
 
 ---
 
-##### `autoDeleteObjects`<sup>Optional</sup> <a name="autoDeleteObjects" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.autoDeleteObjects"></a>
+##### `autoDeleteObjects`<sup>Optional</sup> <a name="autoDeleteObjects" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.autoDeleteObjects"></a>
 
 ```typescript
 public readonly autoDeleteObjects: boolean;
@@ -7914,7 +7914,7 @@ Requires the `removalPolicy` to be set to `RemovalPolicy.DESTROY`.
 
 ---
 
-##### `blockPublicAccess`<sup>Optional</sup> <a name="blockPublicAccess" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.blockPublicAccess"></a>
+##### `blockPublicAccess`<sup>Optional</sup> <a name="blockPublicAccess" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.blockPublicAccess"></a>
 
 ```typescript
 public readonly blockPublicAccess: BlockPublicAccess;
@@ -7927,7 +7927,7 @@ The block public access configuration of this bucket.
 
 ---
 
-##### `bucketKeyEnabled`<sup>Optional</sup> <a name="bucketKeyEnabled" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketKeyEnabled"></a>
+##### `bucketKeyEnabled`<sup>Optional</sup> <a name="bucketKeyEnabled" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketKeyEnabled"></a>
 
 ```typescript
 public readonly bucketKeyEnabled: boolean;
@@ -7946,7 +7946,7 @@ Only relevant, when Encryption is set to `BucketEncryption.KMS` or `BucketEncryp
 
 ---
 
-##### `bucketName`<sup>Optional</sup> <a name="bucketName" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketName"></a>
+##### `bucketName`<sup>Optional</sup> <a name="bucketName" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.bucketName"></a>
 
 ```typescript
 public readonly bucketName: string;
@@ -7959,7 +7959,7 @@ The physical name of this S3 Bucket.
 
 ---
 
-##### `cors`<sup>Optional</sup> <a name="cors" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.cors"></a>
+##### `cors`<sup>Optional</sup> <a name="cors" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.cors"></a>
 
 ```typescript
 public readonly cors: CorsRule[];
@@ -7972,7 +7972,7 @@ The CORS configuration of this bucket.
 
 ---
 
-##### `enforceSSL`<sup>Optional</sup> <a name="enforceSSL" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.enforceSSL"></a>
+##### `enforceSSL`<sup>Optional</sup> <a name="enforceSSL" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.enforceSSL"></a>
 
 ```typescript
 public readonly enforceSSL: boolean;
@@ -7987,7 +7987,7 @@ S3.5 of the AWS Foundational Security Best Practices Regarding S3.
 
 ---
 
-##### `eventBridgeEnabled`<sup>Optional</sup> <a name="eventBridgeEnabled" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.eventBridgeEnabled"></a>
+##### `eventBridgeEnabled`<sup>Optional</sup> <a name="eventBridgeEnabled" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.eventBridgeEnabled"></a>
 
 ```typescript
 public readonly eventBridgeEnabled: boolean;
@@ -8000,7 +8000,7 @@ Whether this S3 Bucket should send notifications to Amazon EventBridge or not.
 
 ---
 
-##### `intelligentTieringConfigurations`<sup>Optional</sup> <a name="intelligentTieringConfigurations" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations"></a>
+##### `intelligentTieringConfigurations`<sup>Optional</sup> <a name="intelligentTieringConfigurations" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.intelligentTieringConfigurations"></a>
 
 ```typescript
 public readonly intelligentTieringConfigurations: IntelligentTieringConfiguration[];
@@ -8013,7 +8013,7 @@ Intelligent Tiering Configurations.
 
 ---
 
-##### `inventories`<sup>Optional</sup> <a name="inventories" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.inventories"></a>
+##### `inventories`<sup>Optional</sup> <a name="inventories" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.inventories"></a>
 
 ```typescript
 public readonly inventories: Inventory[];
@@ -8026,7 +8026,7 @@ The inventory configuration of the S3 Bucket.
 
 ---
 
-##### `lifecycleRules`<sup>Optional</sup> <a name="lifecycleRules" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.lifecycleRules"></a>
+##### `lifecycleRules`<sup>Optional</sup> <a name="lifecycleRules" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.lifecycleRules"></a>
 
 ```typescript
 public readonly lifecycleRules: LifecycleRule[];
@@ -8039,7 +8039,7 @@ Rules that define how Amazon S3 manages objects during their lifetime.
 
 ---
 
-##### `metrics`<sup>Optional</sup> <a name="metrics" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.metrics"></a>
+##### `metrics`<sup>Optional</sup> <a name="metrics" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.metrics"></a>
 
 ```typescript
 public readonly metrics: BucketMetrics[];
@@ -8052,7 +8052,7 @@ The metrics configuration of this bucket.
 
 ---
 
-##### `notificationsHandlerRole`<sup>Optional</sup> <a name="notificationsHandlerRole" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.notificationsHandlerRole"></a>
+##### `notificationsHandlerRole`<sup>Optional</sup> <a name="notificationsHandlerRole" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.notificationsHandlerRole"></a>
 
 ```typescript
 public readonly notificationsHandlerRole: IRole;
@@ -8065,7 +8065,7 @@ The IAM Role to be used by the notifications handler.
 
 ---
 
-##### `objectLockDefaultRetention`<sup>Optional</sup> <a name="objectLockDefaultRetention" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockDefaultRetention"></a>
+##### `objectLockDefaultRetention`<sup>Optional</sup> <a name="objectLockDefaultRetention" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockDefaultRetention"></a>
 
 ```typescript
 public readonly objectLockDefaultRetention: ObjectLockRetention;
@@ -8081,7 +8081,7 @@ has object lock enabled. Enabling object lock for existing buckets is not suppor
 
 ---
 
-##### `objectLockEnabled`<sup>Optional</sup> <a name="objectLockEnabled" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockEnabled"></a>
+##### `objectLockEnabled`<sup>Optional</sup> <a name="objectLockEnabled" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectLockEnabled"></a>
 
 ```typescript
 public readonly objectLockEnabled: boolean;
@@ -8096,7 +8096,7 @@ Enabling object lock for existing buckets is not supported. Object lock must be 
 
 ---
 
-##### `objectOwnership`<sup>Optional</sup> <a name="objectOwnership" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectOwnership"></a>
+##### `objectOwnership`<sup>Optional</sup> <a name="objectOwnership" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.objectOwnership"></a>
 
 ```typescript
 public readonly objectOwnership: ObjectOwnership;
@@ -8109,7 +8109,7 @@ The objectOwnership of the S3 Bucket.
 
 ---
 
-##### `publicReadAccess`<sup>Optional</sup> <a name="publicReadAccess" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.publicReadAccess"></a>
+##### `publicReadAccess`<sup>Optional</sup> <a name="publicReadAccess" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.publicReadAccess"></a>
 
 ```typescript
 public readonly publicReadAccess: boolean;
@@ -8124,7 +8124,7 @@ Similar to calling `bucket.grantPublicAccess()`
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -8140,7 +8140,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `serverAccessLogsBucket`<sup>Optional</sup> <a name="serverAccessLogsBucket" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsBucket"></a>
+##### `serverAccessLogsBucket`<sup>Optional</sup> <a name="serverAccessLogsBucket" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsBucket"></a>
 
 ```typescript
 public readonly serverAccessLogsBucket: IBucket;
@@ -8153,7 +8153,7 @@ S3 Bucket destination for the server access logs.
 
 ---
 
-##### `serverAccessLogsPrefix`<sup>Optional</sup> <a name="serverAccessLogsPrefix" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix"></a>
+##### `serverAccessLogsPrefix`<sup>Optional</sup> <a name="serverAccessLogsPrefix" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.serverAccessLogsPrefix"></a>
 
 ```typescript
 public readonly serverAccessLogsPrefix: string;
@@ -8168,7 +8168,7 @@ If defined without "serverAccessLogsBucket", enables access logs to current S3 B
 
 ---
 
-##### `transferAcceleration`<sup>Optional</sup> <a name="transferAcceleration" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.transferAcceleration"></a>
+##### `transferAcceleration`<sup>Optional</sup> <a name="transferAcceleration" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.transferAcceleration"></a>
 
 ```typescript
 public readonly transferAcceleration: boolean;
@@ -8181,7 +8181,7 @@ Whether this S3 Bucket should have transfer acceleration turned on or not.
 
 ---
 
-##### `versioned`<sup>Optional</sup> <a name="versioned" id="aws-data-solutions-framework.storage.AnalyticsBucketProps.property.versioned"></a>
+##### `versioned`<sup>Optional</sup> <a name="versioned" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps.property.versioned"></a>
 
 ```typescript
 public readonly versioned: boolean;
@@ -8194,14 +8194,14 @@ Whether this S3 Bucket should have versioning turned on or not.
 
 ---
 
-### ApplicationStageProps <a name="ApplicationStageProps" id="aws-data-solutions-framework.utils.ApplicationStageProps"></a>
+### ApplicationStageProps <a name="ApplicationStageProps" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps"></a>
 
 Properties for the `ApplicationStage` class.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.utils.ApplicationStageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 const applicationStageProps: utils.ApplicationStageProps = { ... }
 ```
@@ -8210,18 +8210,18 @@ const applicationStageProps: utils.ApplicationStageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | Default AWS environment (account/region) for `Stack`s in this `Stage`. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.outdir">outdir</a></code> | <code>string</code> | The output directory into which to emit synthesized artifacts. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack Factory used to create application Stacks. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>aws-data-solutions-framework.utils.CICDStage</code> | The Stage to deploy the application CDK Stack in. |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | Default AWS environment (account/region) for `Stack`s in this `Stage`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outdir">outdir</a></code> | <code>string</code> | The output directory into which to emit synthesized artifacts. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack Factory used to create application Stacks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | The Stage to deploy the application CDK Stack in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
 
 ---
 
-##### `env`<sup>Optional</sup> <a name="env" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.env"></a>
+##### `env`<sup>Optional</sup> <a name="env" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.env"></a>
 
 ```typescript
 public readonly env: Environment;
@@ -8262,7 +8262,7 @@ new Stage(app, 'Stage2', {
 ```
 
 
-##### `outdir`<sup>Optional</sup> <a name="outdir" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.outdir"></a>
+##### `outdir`<sup>Optional</sup> <a name="outdir" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outdir"></a>
 
 ```typescript
 public readonly outdir: string;
@@ -8279,7 +8279,7 @@ thrown.
 
 ---
 
-##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.permissionsBoundary"></a>
+##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.permissionsBoundary"></a>
 
 ```typescript
 public readonly permissionsBoundary: PermissionsBoundary;
@@ -8292,7 +8292,7 @@ Options for applying a permissions boundary to all IAM Roles and Users created w
 
 ---
 
-##### `policyValidationBeta1`<sup>Optional</sup> <a name="policyValidationBeta1" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.policyValidationBeta1"></a>
+##### `policyValidationBeta1`<sup>Optional</sup> <a name="policyValidationBeta1" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.policyValidationBeta1"></a>
 
 ```typescript
 public readonly policyValidationBeta1: IPolicyValidationPluginBeta1[];
@@ -8308,7 +8308,7 @@ synthesis will be interrupted and the report displayed to the user.
 
 ---
 
-##### `stageName`<sup>Optional</sup> <a name="stageName" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName"></a>
+##### `stageName`<sup>Optional</sup> <a name="stageName" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName"></a>
 
 ```typescript
 public readonly stageName: string;
@@ -8321,32 +8321,32 @@ Name of this stage.
 
 ---
 
-##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory"></a>
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory"></a>
 
 ```typescript
 public readonly applicationStackFactory: ApplicationStackFactory;
 ```
 
-- *Type:* aws-data-solutions-framework.utils.ApplicationStackFactory
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory
 
 The application CDK Stack Factory used to create application Stacks.
 
 ---
 
-##### `stage`<sup>Required</sup> <a name="stage" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.stage"></a>
+##### `stage`<sup>Required</sup> <a name="stage" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stage"></a>
 
 ```typescript
 public readonly stage: CICDStage;
 ```
 
-- *Type:* aws-data-solutions-framework.utils.CICDStage
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CICDStage
 - *Default:* No stage is passed to the application stack
 
 The Stage to deploy the application CDK Stack in.
 
 ---
 
-##### `outputsEnv`<sup>Optional</sup> <a name="outputsEnv" id="aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv"></a>
+##### `outputsEnv`<sup>Optional</sup> <a name="outputsEnv" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv"></a>
 
 ```typescript
 public readonly outputsEnv: {[ key: string ]: string};
@@ -8359,14 +8359,14 @@ The list of values to create CfnOutputs.
 
 ---
 
-### AthenaWorkgroupProps <a name="AthenaWorkgroupProps" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps"></a>
+### AthenaWorkgroupProps <a name="AthenaWorkgroupProps" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps"></a>
 
 Properties for the AthenaWorkgroup Construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 const athenaWorkgroupProps: consumption.AthenaWorkgroupProps = { ... }
 ```
@@ -8375,25 +8375,25 @@ const athenaWorkgroupProps: consumption.AthenaWorkgroupProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.name">name</a></code> | <code>string</code> | Name of the Workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultLocationPrefix">resultLocationPrefix</a></code> | <code>string</code> | Specifies the location in Amazon S3 where query results are stored. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery">bytesScannedCutoffPerQuery</a></code> | <code>number</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration">enforceWorkGroupConfiguration</a></code> | <code>boolean</code> | If set to "true", the settings for the workgroup override client-side settings. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.engineVersion">engineVersion</a></code> | <code>aws-data-solutions-framework.consumption.EngineVersion</code> | The engine version on which the query runs. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled">publishCloudWatchMetricsEnabled</a></code> | <code>boolean</code> | Indicates that the Amazon CloudWatch metrics are enabled for the workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled">requesterPaysEnabled</a></code> | <code>boolean</code> | Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Amazon S3 Bucket where query results are stored. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucketName">resultBucketName</a></code> | <code>string</code> | Name for the S3 Bucket in case it should be created. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used to encrypt query results. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod">resultsRetentionPeriod</a></code> | <code>aws-cdk-lib.Duration</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
-| <code><a href="#aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.state">state</a></code> | <code>aws-data-solutions-framework.consumption.State</code> | The state of the Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.name">name</a></code> | <code>string</code> | Name of the Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultLocationPrefix">resultLocationPrefix</a></code> | <code>string</code> | Specifies the location in Amazon S3 where query results are stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery">bytesScannedCutoffPerQuery</a></code> | <code>number</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration">enforceWorkGroupConfiguration</a></code> | <code>boolean</code> | If set to "true", the settings for the workgroup override client-side settings. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.engineVersion">engineVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.EngineVersion</code> | The engine version on which the query runs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Role used to access user resources in an Athena for Apache Spark session. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled">publishCloudWatchMetricsEnabled</a></code> | <code>boolean</code> | Indicates that the Amazon CloudWatch metrics are enabled for the workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption">recursiveDeleteOption</a></code> | <code>boolean</code> | The option to delete a workgroup and its contents even if the workgroup contains any named queries. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled">requesterPaysEnabled</a></code> | <code>boolean</code> | Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucket">resultBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | Amazon S3 Bucket where query results are stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucketName">resultBucketName</a></code> | <code>string</code> | Name for the S3 Bucket in case it should be created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey">resultsEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | Encryption key used to encrypt query results. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod">resultsRetentionPeriod</a></code> | <code>aws-cdk-lib.Duration</code> | Indicates the number of days after creation when objects are deleted from the Result bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.state">state</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.State</code> | The state of the Workgroup. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -8405,7 +8405,7 @@ Name of the Workgroup.
 
 ---
 
-##### `resultLocationPrefix`<sup>Required</sup> <a name="resultLocationPrefix" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultLocationPrefix"></a>
+##### `resultLocationPrefix`<sup>Required</sup> <a name="resultLocationPrefix" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultLocationPrefix"></a>
 
 ```typescript
 public readonly resultLocationPrefix: string;
@@ -8417,7 +8417,7 @@ Specifies the location in Amazon S3 where query results are stored.
 
 ---
 
-##### `bytesScannedCutoffPerQuery`<sup>Optional</sup> <a name="bytesScannedCutoffPerQuery" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery"></a>
+##### `bytesScannedCutoffPerQuery`<sup>Optional</sup> <a name="bytesScannedCutoffPerQuery" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.bytesScannedCutoffPerQuery"></a>
 
 ```typescript
 public readonly bytesScannedCutoffPerQuery: number;
@@ -8429,7 +8429,7 @@ Indicates the number of days after creation when objects are deleted from the Re
 
 ---
 
-##### `enforceWorkGroupConfiguration`<sup>Optional</sup> <a name="enforceWorkGroupConfiguration" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration"></a>
+##### `enforceWorkGroupConfiguration`<sup>Optional</sup> <a name="enforceWorkGroupConfiguration" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.enforceWorkGroupConfiguration"></a>
 
 ```typescript
 public readonly enforceWorkGroupConfiguration: boolean;
@@ -8442,20 +8442,20 @@ If set to "true", the settings for the workgroup override client-side settings.
 
 ---
 
-##### `engineVersion`<sup>Optional</sup> <a name="engineVersion" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.engineVersion"></a>
+##### `engineVersion`<sup>Optional</sup> <a name="engineVersion" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.engineVersion"></a>
 
 ```typescript
 public readonly engineVersion: EngineVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.consumption.EngineVersion
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.EngineVersion
 - *Default:* AUTO.
 
 The engine version on which the query runs.
 
 ---
 
-##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.executionRole"></a>
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -8468,7 +8468,7 @@ Role used to access user resources in an Athena for Apache Spark session.
 
 ---
 
-##### `publishCloudWatchMetricsEnabled`<sup>Optional</sup> <a name="publishCloudWatchMetricsEnabled" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled"></a>
+##### `publishCloudWatchMetricsEnabled`<sup>Optional</sup> <a name="publishCloudWatchMetricsEnabled" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.publishCloudWatchMetricsEnabled"></a>
 
 ```typescript
 public readonly publishCloudWatchMetricsEnabled: boolean;
@@ -8481,7 +8481,7 @@ Indicates that the Amazon CloudWatch metrics are enabled for the workgroup.
 
 ---
 
-##### `recursiveDeleteOption`<sup>Optional</sup> <a name="recursiveDeleteOption" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption"></a>
+##### `recursiveDeleteOption`<sup>Optional</sup> <a name="recursiveDeleteOption" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.recursiveDeleteOption"></a>
 
 ```typescript
 public readonly recursiveDeleteOption: boolean;
@@ -8494,7 +8494,7 @@ The option to delete a workgroup and its contents even if the workgroup contains
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -8510,7 +8510,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `requesterPaysEnabled`<sup>Optional</sup> <a name="requesterPaysEnabled" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled"></a>
+##### `requesterPaysEnabled`<sup>Optional</sup> <a name="requesterPaysEnabled" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.requesterPaysEnabled"></a>
 
 ```typescript
 public readonly requesterPaysEnabled: boolean;
@@ -8523,7 +8523,7 @@ Allows members assigned to a workgroup to reference Amazon S3 Requester Pays buc
 
 ---
 
-##### `resultBucket`<sup>Optional</sup> <a name="resultBucket" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucket"></a>
+##### `resultBucket`<sup>Optional</sup> <a name="resultBucket" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucket"></a>
 
 ```typescript
 public readonly resultBucket: IBucket;
@@ -8536,7 +8536,7 @@ Amazon S3 Bucket where query results are stored.
 
 ---
 
-##### `resultBucketName`<sup>Optional</sup> <a name="resultBucketName" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucketName"></a>
+##### `resultBucketName`<sup>Optional</sup> <a name="resultBucketName" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultBucketName"></a>
 
 ```typescript
 public readonly resultBucketName: string;
@@ -8549,7 +8549,7 @@ Name for the S3 Bucket in case it should be created.
 
 ---
 
-##### `resultsEncryptionKey`<sup>Optional</sup> <a name="resultsEncryptionKey" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey"></a>
+##### `resultsEncryptionKey`<sup>Optional</sup> <a name="resultsEncryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsEncryptionKey"></a>
 
 ```typescript
 public readonly resultsEncryptionKey: IKey;
@@ -8566,7 +8566,7 @@ principals that were granted to run queries using AthenaWorkGroup's grantRunQuer
 
 ---
 
-##### `resultsRetentionPeriod`<sup>Optional</sup> <a name="resultsRetentionPeriod" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod"></a>
+##### `resultsRetentionPeriod`<sup>Optional</sup> <a name="resultsRetentionPeriod" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.resultsRetentionPeriod"></a>
 
 ```typescript
 public readonly resultsRetentionPeriod: Duration;
@@ -8578,27 +8578,27 @@ Indicates the number of days after creation when objects are deleted from the Re
 
 ---
 
-##### `state`<sup>Optional</sup> <a name="state" id="aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.state"></a>
+##### `state`<sup>Optional</sup> <a name="state" id="@cdklabs/aws-data-solutions-framework.consumption.AthenaWorkgroupProps.property.state"></a>
 
 ```typescript
 public readonly state: State;
 ```
 
-- *Type:* aws-data-solutions-framework.consumption.State
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.State
 - *Default:* ENABLED.
 
 The state of the Workgroup.
 
 ---
 
-### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps"></a>
+### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps"></a>
 
 Properties for the `DataCatalogDatabase` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.Initializer"></a>
 
 ```typescript
-import { governance } from 'aws-data-solutions-framework'
+import { governance } from '@cdklabs/aws-data-solutions-framework'
 
 const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 ```
@@ -8607,23 +8607,23 @@ const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule to run the Glue Crawler. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used for the Glue Crawler logs. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.glueConnectionName">glueConnectionName</a></code> | <code>string</code> | The connection that would be used by the crawler. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcPath">jdbcPath</a></code> | <code>string</code> | The JDBC path that would be included by the crawler. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecret">jdbcSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The secret associated with the JDBC connection. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey">jdbcSecretKMSKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used by the JDBC secret. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
-| <code><a href="#aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.name">name</a></code> | <code>string</code> | Database name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, this automatically creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule to run the Glue Crawler. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS encryption Key used for the Glue Crawler logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerRole">crawlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Glue Crawler when `autoCrawl` is set to `True`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.glueConnectionName">glueConnectionName</a></code> | <code>string</code> | The connection that would be used by the crawler. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcPath">jdbcPath</a></code> | <code>string</code> | The JDBC path that would be included by the crawler. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecret">jdbcSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The secret associated with the JDBC connection. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey">jdbcSecretKMSKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used by the JDBC secret. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location wwhere table data is stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -8637,7 +8637,7 @@ Construct would add a randomize suffix as part of the name to prevent name colli
 
 ---
 
-##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawl"></a>
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawl"></a>
 
 ```typescript
 public readonly autoCrawl: boolean;
@@ -8650,7 +8650,7 @@ When enabled, this automatically creates a top level Glue Crawler that would run
 
 ---
 
-##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule"></a>
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.autoCrawlSchedule"></a>
 
 ```typescript
 public readonly autoCrawlSchedule: ScheduleProperty;
@@ -8665,7 +8665,7 @@ Default is once a day at 00:01h.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -8678,7 +8678,7 @@ KMS encryption Key used for the Glue Crawler logs.
 
 ---
 
-##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerRole"></a>
+##### `crawlerRole`<sup>Optional</sup> <a name="crawlerRole" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerRole"></a>
 
 ```typescript
 public readonly crawlerRole: IRole;
@@ -8693,7 +8693,7 @@ Additional permissions are granted to this role such as S3 Bucket read only perm
 
 ---
 
-##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth"></a>
+##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.crawlerTableLevelDepth"></a>
 
 ```typescript
 public readonly crawlerTableLevelDepth: number;
@@ -8708,7 +8708,7 @@ This helps the Glue Crawler understand the layout of the folders in S3.
 
 ---
 
-##### `glueConnectionName`<sup>Optional</sup> <a name="glueConnectionName" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.glueConnectionName"></a>
+##### `glueConnectionName`<sup>Optional</sup> <a name="glueConnectionName" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.glueConnectionName"></a>
 
 ```typescript
 public readonly glueConnectionName: string;
@@ -8720,7 +8720,7 @@ The connection that would be used by the crawler.
 
 ---
 
-##### `jdbcPath`<sup>Optional</sup> <a name="jdbcPath" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcPath"></a>
+##### `jdbcPath`<sup>Optional</sup> <a name="jdbcPath" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcPath"></a>
 
 ```typescript
 public readonly jdbcPath: string;
@@ -8732,7 +8732,7 @@ The JDBC path that would be included by the crawler.
 
 ---
 
-##### `jdbcSecret`<sup>Optional</sup> <a name="jdbcSecret" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecret"></a>
+##### `jdbcSecret`<sup>Optional</sup> <a name="jdbcSecret" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecret"></a>
 
 ```typescript
 public readonly jdbcSecret: ISecret;
@@ -8744,7 +8744,7 @@ The secret associated with the JDBC connection.
 
 ---
 
-##### `jdbcSecretKMSKey`<sup>Optional</sup> <a name="jdbcSecretKMSKey" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey"></a>
+##### `jdbcSecretKMSKey`<sup>Optional</sup> <a name="jdbcSecretKMSKey" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey"></a>
 
 ```typescript
 public readonly jdbcSecretKMSKey: IKey;
@@ -8756,7 +8756,7 @@ The KMS key used by the JDBC secret.
 
 ---
 
-##### `locationBucket`<sup>Optional</sup> <a name="locationBucket" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationBucket"></a>
+##### `locationBucket`<sup>Optional</sup> <a name="locationBucket" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationBucket"></a>
 
 ```typescript
 public readonly locationBucket: IBucket;
@@ -8768,7 +8768,7 @@ S3 bucket where data is stored.
 
 ---
 
-##### `locationPrefix`<sup>Optional</sup> <a name="locationPrefix" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationPrefix"></a>
+##### `locationPrefix`<sup>Optional</sup> <a name="locationPrefix" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationPrefix"></a>
 
 ```typescript
 public readonly locationPrefix: string;
@@ -8780,7 +8780,7 @@ Top level location wwhere table data is stored.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -8796,14 +8796,14 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="aws-data-solutions-framework.governance.DataLakeCatalogProps"></a>
+### DataLakeCatalogProps <a name="DataLakeCatalogProps" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps"></a>
 
 Properties for the `DataLakeCatalog` Construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.Initializer"></a>
 
 ```typescript
-import { governance } from 'aws-data-solutions-framework'
+import { governance } from '@cdklabs/aws-data-solutions-framework'
 
 const dataLakeCatalogProps: governance.DataLakeCatalogProps = { ... }
 ```
@@ -8812,29 +8812,29 @@ const dataLakeCatalogProps: governance.DataLakeCatalogProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code>aws-data-solutions-framework.storage.DataLakeStorage</code> | The DataLakeStorage object to create the data catalog on. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Glue Crawler runs, if enabled. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS encryption Key used for the Glue Crawler logs. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the Glue Data Catalog Database. |
-| <code><a href="#aws-data-solutions-framework.governance.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.dataLakeStorage">dataLakeStorage</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.DataLakeStorage</code> | The DataLakeStorage object to create the data catalog on. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawl">autoCrawl</a></code> | <code>boolean</code> | When enabled, creates a top level Glue Crawler that would run based on the defined schedule in the `autoCrawlSchedule` parameter. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawlSchedule">autoCrawlSchedule</a></code> | <code>aws-cdk-lib.aws_glue.CfnCrawler.ScheduleProperty</code> | The schedule when the Glue Crawler runs, if enabled. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey">crawlerLogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS encryption Key used for the Glue Crawler logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth">crawlerTableLevelDepth</a></code> | <code>number</code> | Directory depth where the table folders are located. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.databaseName">databaseName</a></code> | <code>string</code> | The suffix of the Glue Data Catalog Database. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
-##### `dataLakeStorage`<sup>Required</sup> <a name="dataLakeStorage" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.dataLakeStorage"></a>
+##### `dataLakeStorage`<sup>Required</sup> <a name="dataLakeStorage" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.dataLakeStorage"></a>
 
 ```typescript
 public readonly dataLakeStorage: DataLakeStorage;
 ```
 
-- *Type:* aws-data-solutions-framework.storage.DataLakeStorage
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.DataLakeStorage
 
 The DataLakeStorage object to create the data catalog on.
 
 ---
 
-##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawl"></a>
+##### `autoCrawl`<sup>Optional</sup> <a name="autoCrawl" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawl"></a>
 
 ```typescript
 public readonly autoCrawl: boolean;
@@ -8847,7 +8847,7 @@ When enabled, creates a top level Glue Crawler that would run based on the defin
 
 ---
 
-##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
+##### `autoCrawlSchedule`<sup>Optional</sup> <a name="autoCrawlSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.autoCrawlSchedule"></a>
 
 ```typescript
 public readonly autoCrawlSchedule: ScheduleProperty;
@@ -8862,7 +8862,7 @@ Default is once a day at 00:01h.
 
 ---
 
-##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
+##### `crawlerLogEncryptionKey`<sup>Optional</sup> <a name="crawlerLogEncryptionKey" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerLogEncryptionKey"></a>
 
 ```typescript
 public readonly crawlerLogEncryptionKey: IKey;
@@ -8875,7 +8875,7 @@ The KMS encryption Key used for the Glue Crawler logs.
 
 ---
 
-##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth"></a>
+##### `crawlerTableLevelDepth`<sup>Optional</sup> <a name="crawlerTableLevelDepth" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.crawlerTableLevelDepth"></a>
 
 ```typescript
 public readonly crawlerTableLevelDepth: number;
@@ -8890,7 +8890,7 @@ This helps the Glue Crawler understand the layout of the folders in S3.
 
 ---
 
-##### `databaseName`<sup>Optional</sup> <a name="databaseName" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.databaseName"></a>
+##### `databaseName`<sup>Optional</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.databaseName"></a>
 
 ```typescript
 public readonly databaseName: string;
@@ -8906,7 +8906,7 @@ The suffix is also added to the S3 location inside the data lake S3 Buckets.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.governance.DataLakeCatalogProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataLakeCatalogProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -8922,14 +8922,14 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-### DataLakeStorageProps <a name="DataLakeStorageProps" id="aws-data-solutions-framework.storage.DataLakeStorageProps"></a>
+### DataLakeStorageProps <a name="DataLakeStorageProps" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps"></a>
 
 Properties for the DataLakeStorage Construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.storage.DataLakeStorageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.Initializer"></a>
 
 ```typescript
-import { storage } from 'aws-data-solutions-framework'
+import { storage } from '@cdklabs/aws-data-solutions-framework'
 
 const dataLakeStorageProps: storage.DataLakeStorageProps = { ... }
 ```
@@ -8938,21 +8938,21 @@ const dataLakeStorageProps: storage.DataLakeStorageProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketArchiveDelay">bronzeBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay">bronzeBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketName">bronzeBucketName</a></code> | <code>string</code> | Name of the Bronze bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketArchiveDelay">goldBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay">goldBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketName">goldBucketName</a></code> | <code>string</code> | Name of the Gold bucket. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketArchiveDelay">silverBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class). |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay">silverBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class). |
-| <code><a href="#aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketName">silverBucketName</a></code> | <code>string</code> | Name of the Silver bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketArchiveDelay">bronzeBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage class). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay">bronzeBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving BRONZE data to cold storage (Infrequent Access storage class). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketName">bronzeBucketName</a></code> | <code>string</code> | Name of the Bronze bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.dataLakeKey">dataLakeKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt all DataLakeStorage S3 buckets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketArchiveDelay">goldBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving GOLD data to frozen storage (Glacier storage class). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay">goldBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving GOLD data to cold storage (Infrequent Access storage class). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketName">goldBucketName</a></code> | <code>string</code> | Name of the Gold bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketArchiveDelay">silverBucketArchiveDelay</a></code> | <code>number</code> | Delay (in days) before archiving SILVER data to frozen storage (Glacier storage class). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay">silverBucketInfrequentAccessDelay</a></code> | <code>number</code> | Delay (in days) before moving SILVER data to cold storage (Infrequent Access storage class). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketName">silverBucketName</a></code> | <code>string</code> | Name of the Silver bucket. |
 
 ---
 
-##### `bronzeBucketArchiveDelay`<sup>Optional</sup> <a name="bronzeBucketArchiveDelay" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketArchiveDelay"></a>
+##### `bronzeBucketArchiveDelay`<sup>Optional</sup> <a name="bronzeBucketArchiveDelay" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketArchiveDelay"></a>
 
 ```typescript
 public readonly bronzeBucketArchiveDelay: number;
@@ -8965,7 +8965,7 @@ Delay (in days) before archiving BRONZE data to frozen storage (Glacier storage 
 
 ---
 
-##### `bronzeBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="bronzeBucketInfrequentAccessDelay" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay"></a>
+##### `bronzeBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="bronzeBucketInfrequentAccessDelay" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketInfrequentAccessDelay"></a>
 
 ```typescript
 public readonly bronzeBucketInfrequentAccessDelay: number;
@@ -8978,7 +8978,7 @@ Delay (in days) before moving BRONZE data to cold storage (Infrequent Access sto
 
 ---
 
-##### `bronzeBucketName`<sup>Optional</sup> <a name="bronzeBucketName" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketName"></a>
+##### `bronzeBucketName`<sup>Optional</sup> <a name="bronzeBucketName" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.bronzeBucketName"></a>
 
 ```typescript
 public readonly bronzeBucketName: string;
@@ -8993,7 +8993,7 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.dataLakeKey"></a>
+##### `dataLakeKey`<sup>Optional</sup> <a name="dataLakeKey" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.dataLakeKey"></a>
 
 ```typescript
 public readonly dataLakeKey: IKey;
@@ -9006,7 +9006,7 @@ The KMS Key used to encrypt all DataLakeStorage S3 buckets.
 
 ---
 
-##### `goldBucketArchiveDelay`<sup>Optional</sup> <a name="goldBucketArchiveDelay" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketArchiveDelay"></a>
+##### `goldBucketArchiveDelay`<sup>Optional</sup> <a name="goldBucketArchiveDelay" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketArchiveDelay"></a>
 
 ```typescript
 public readonly goldBucketArchiveDelay: number;
@@ -9019,7 +9019,7 @@ Delay (in days) before archiving GOLD data to frozen storage (Glacier storage cl
 
 ---
 
-##### `goldBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="goldBucketInfrequentAccessDelay" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay"></a>
+##### `goldBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="goldBucketInfrequentAccessDelay" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketInfrequentAccessDelay"></a>
 
 ```typescript
 public readonly goldBucketInfrequentAccessDelay: number;
@@ -9032,7 +9032,7 @@ Delay (in days) before moving GOLD data to cold storage (Infrequent Access stora
 
 ---
 
-##### `goldBucketName`<sup>Optional</sup> <a name="goldBucketName" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketName"></a>
+##### `goldBucketName`<sup>Optional</sup> <a name="goldBucketName" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.goldBucketName"></a>
 
 ```typescript
 public readonly goldBucketName: string;
@@ -9047,7 +9047,7 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9063,7 +9063,7 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `silverBucketArchiveDelay`<sup>Optional</sup> <a name="silverBucketArchiveDelay" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketArchiveDelay"></a>
+##### `silverBucketArchiveDelay`<sup>Optional</sup> <a name="silverBucketArchiveDelay" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketArchiveDelay"></a>
 
 ```typescript
 public readonly silverBucketArchiveDelay: number;
@@ -9076,7 +9076,7 @@ Delay (in days) before archiving SILVER data to frozen storage (Glacier storage 
 
 ---
 
-##### `silverBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="silverBucketInfrequentAccessDelay" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay"></a>
+##### `silverBucketInfrequentAccessDelay`<sup>Optional</sup> <a name="silverBucketInfrequentAccessDelay" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketInfrequentAccessDelay"></a>
 
 ```typescript
 public readonly silverBucketInfrequentAccessDelay: number;
@@ -9089,7 +9089,7 @@ Delay (in days) before moving SILVER data to cold storage (Infrequent Access sto
 
 ---
 
-##### `silverBucketName`<sup>Optional</sup> <a name="silverBucketName" id="aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketName"></a>
+##### `silverBucketName`<sup>Optional</sup> <a name="silverBucketName" id="@cdklabs/aws-data-solutions-framework.storage.DataLakeStorageProps.property.silverBucketName"></a>
 
 ```typescript
 public readonly silverBucketName: string;
@@ -9104,14 +9104,14 @@ Use `BucketUtils.generateUniqueBucketName()` to generate a unique name (recommen
 
 ---
 
-### DataVpcProps <a name="DataVpcProps" id="aws-data-solutions-framework.utils.DataVpcProps"></a>
+### DataVpcProps <a name="DataVpcProps" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps"></a>
 
 The properties for the `DataVpc` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.utils.DataVpcProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 const dataVpcProps: utils.DataVpcProps = { ... }
 ```
@@ -9120,15 +9120,15 @@ const dataVpcProps: utils.DataVpcProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpcProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR to use to create the subnets in the VPC. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used to encrypt the VPC Flow Logs in the CloudWatch Log Group. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRetention">flowLogRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | The retention period to apply to VPC Flow Logs. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used to send the VPC Flow Logs in CloudWatch. |
-| <code><a href="#aws-data-solutions-framework.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR to use to create the subnets in the VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used to encrypt the VPC Flow Logs in the CloudWatch Log Group. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRetention">flowLogRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | The retention period to apply to VPC Flow Logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used to send the VPC Flow Logs in CloudWatch. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
-##### `vpcCidr`<sup>Required</sup> <a name="vpcCidr" id="aws-data-solutions-framework.utils.DataVpcProps.property.vpcCidr"></a>
+##### `vpcCidr`<sup>Required</sup> <a name="vpcCidr" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.vpcCidr"></a>
 
 ```typescript
 public readonly vpcCidr: string;
@@ -9140,7 +9140,7 @@ The CIDR to use to create the subnets in the VPC.
 
 ---
 
-##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="aws-data-solutions-framework.utils.DataVpcProps.property.flowLogKey"></a>
+##### `flowLogKey`<sup>Optional</sup> <a name="flowLogKey" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogKey"></a>
 
 ```typescript
 public readonly flowLogKey: IKey;
@@ -9157,7 +9157,7 @@ The resource policy of the key must be configured according to the AWS documenta
 
 ---
 
-##### `flowLogRetention`<sup>Optional</sup> <a name="flowLogRetention" id="aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRetention"></a>
+##### `flowLogRetention`<sup>Optional</sup> <a name="flowLogRetention" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRetention"></a>
 
 ```typescript
 public readonly flowLogRetention: RetentionDays;
@@ -9170,7 +9170,7 @@ The retention period to apply to VPC Flow Logs.
 
 ---
 
-##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRole"></a>
+##### `flowLogRole`<sup>Optional</sup> <a name="flowLogRole" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRole"></a>
 
 ```typescript
 public readonly flowLogRole: IRole;
@@ -9187,7 +9187,7 @@ The role must be configured as described in the AWS VPC Flow Log documentation.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.utils.DataVpcProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9203,14 +9203,14 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-### EmrVirtualClusterProps <a name="EmrVirtualClusterProps" id="aws-data-solutions-framework.processing.EmrVirtualClusterProps"></a>
+### EmrVirtualClusterProps <a name="EmrVirtualClusterProps" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps"></a>
 
 The properties for the `EmrVirtualCluster` Construct class.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.EmrVirtualClusterProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 ```
@@ -9219,14 +9219,14 @@ const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | The name of the Amazon EMR Virtual Cluster to be created. |
-| <code><a href="#aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | The flag to create EKS namespace. |
-| <code><a href="#aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | The name of the EKS namespace to be linked to the EMR virtual cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the Virtual Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | The name of the Amazon EMR Virtual Cluster to be created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | The flag to create EKS namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | The name of the EKS namespace to be linked to the EMR virtual cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the Virtual Cluster. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -9238,7 +9238,7 @@ The name of the Amazon EMR Virtual Cluster to be created.
 
 ---
 
-##### `createNamespace`<sup>Optional</sup> <a name="createNamespace" id="aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.createNamespace"></a>
+##### `createNamespace`<sup>Optional</sup> <a name="createNamespace" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.createNamespace"></a>
 
 ```typescript
 public readonly createNamespace: boolean;
@@ -9251,7 +9251,7 @@ The flag to create EKS namespace.
 
 ---
 
-##### `eksNamespace`<sup>Optional</sup> <a name="eksNamespace" id="aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.eksNamespace"></a>
+##### `eksNamespace`<sup>Optional</sup> <a name="eksNamespace" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.eksNamespace"></a>
 
 ```typescript
 public readonly eksNamespace: string;
@@ -9264,7 +9264,7 @@ The name of the EKS namespace to be linked to the EMR virtual cluster.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: string};
@@ -9277,14 +9277,14 @@ The tags assigned to the Virtual Cluster.
 
 ---
 
-### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps"></a>
+### PySparkApplicationPackageProps <a name="PySparkApplicationPackageProps" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps"></a>
 
 Properties for the `PySparkApplicationPackage` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const pySparkApplicationPackageProps: processing.PySparkApplicationPackageProps = { ... }
 ```
@@ -9293,17 +9293,17 @@ const pySparkApplicationPackageProps: processing.PySparkApplicationPackageProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the PySpark application. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in the code base where the entrypoint is stored. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda function. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where `requirements.txt` or `pyproject.toml` file is stored. These files are used to install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also contain a `Dockerfile` that can [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env). |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the PySpark application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in the code base where the entrypoint is stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda function. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where `requirements.txt` or `pyproject.toml` file is stored. These files are used to install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also contain a `Dockerfile` that can [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
 
 ---
 
-##### `applicationName`<sup>Required</sup> <a name="applicationName" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.applicationName"></a>
+##### `applicationName`<sup>Required</sup> <a name="applicationName" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.applicationName"></a>
 
 ```typescript
 public readonly applicationName: string;
@@ -9317,7 +9317,7 @@ This name is used as a parent directory in S3 to store the entrypoint and the op
 
 ---
 
-##### `entrypointPath`<sup>Required</sup> <a name="entrypointPath" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.entrypointPath"></a>
+##### `entrypointPath`<sup>Required</sup> <a name="entrypointPath" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.entrypointPath"></a>
 
 ```typescript
 public readonly entrypointPath: string;
@@ -9331,7 +9331,7 @@ example `~/my-project/src/entrypoint.py`
 
 ---
 
-##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.artifactsBucket"></a>
+##### `artifactsBucket`<sup>Optional</sup> <a name="artifactsBucket" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.artifactsBucket"></a>
 
 ```typescript
 public readonly artifactsBucket: IBucket;
@@ -9344,7 +9344,7 @@ The S3 bucket where to upload the artifacts of the Spark Job This is where the e
 
 ---
 
-##### `assetUploadRole`<sup>Optional</sup> <a name="assetUploadRole" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole"></a>
+##### `assetUploadRole`<sup>Optional</sup> <a name="assetUploadRole" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole"></a>
 
 ```typescript
 public readonly assetUploadRole: IRole;
@@ -9359,7 +9359,7 @@ Additional permissions would be granted to this role such as S3 Bucket permissio
 
 ---
 
-##### `dependenciesFolder`<sup>Optional</sup> <a name="dependenciesFolder" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
+##### `dependenciesFolder`<sup>Optional</sup> <a name="dependenciesFolder" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.dependenciesFolder"></a>
 
 ```typescript
 public readonly dependenciesFolder: string;
@@ -9372,7 +9372,7 @@ The source directory where `requirements.txt` or `pyproject.toml` file is stored
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9389,7 +9389,7 @@ in the 'cdk.json' or 'cdk.context.json' must be set to true.
 
 ---
 
-##### `venvArchivePath`<sup>Optional</sup> <a name="venvArchivePath" id="aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.venvArchivePath"></a>
+##### `venvArchivePath`<sup>Optional</sup> <a name="venvArchivePath" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.venvArchivePath"></a>
 
 ```typescript
 public readonly venvArchivePath: string;
@@ -9404,14 +9404,14 @@ This is the output path used in the `venv-pack -o` command in your Dockerfile.
 
 ---
 
-### RedshiftDataProps <a name="RedshiftDataProps" id="aws-data-solutions-framework.consumption.RedshiftDataProps"></a>
+### RedshiftDataProps <a name="RedshiftDataProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps"></a>
 
 The properties for the `RedshiftData` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.consumption.RedshiftDataProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 ```
@@ -9420,19 +9420,19 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
 
 ---
 
-##### `secret`<sup>Required</sup> <a name="secret" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.secret"></a>
+##### `secret`<sup>Required</sup> <a name="secret" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.secret"></a>
 
 ```typescript
 public readonly secret: ISecret;
@@ -9444,7 +9444,7 @@ The Secrets Manager Secret containing the admin credentials for the Redshift clu
 
 ---
 
-##### `clusterId`<sup>Optional</sup> <a name="clusterId" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.clusterId"></a>
+##### `clusterId`<sup>Optional</sup> <a name="clusterId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.clusterId"></a>
 
 ```typescript
 public readonly clusterId: string;
@@ -9459,7 +9459,7 @@ It must be configured if the `workgroupId` is not.
 
 ---
 
-##### `createInterfaceVpcEndpoint`<sup>Optional</sup> <a name="createInterfaceVpcEndpoint" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint"></a>
+##### `createInterfaceVpcEndpoint`<sup>Optional</sup> <a name="createInterfaceVpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint"></a>
 
 ```typescript
 public readonly createInterfaceVpcEndpoint: boolean;
@@ -9472,7 +9472,7 @@ If set to true, create the Redshift Data Interface VPC Endpoint in the configure
 
 ---
 
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.executionTimeout"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -9485,7 +9485,7 @@ The timeout for the query execution.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9501,7 +9501,7 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `secretKey`<sup>Optional</sup> <a name="secretKey" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.secretKey"></a>
+##### `secretKey`<sup>Optional</sup> <a name="secretKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.secretKey"></a>
 
 ```typescript
 public readonly secretKey: IKey;
@@ -9514,7 +9514,7 @@ The KMS Key used to encrypt the admin credentials for the Redshift cluster / nam
 
 ---
 
-##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.subnets"></a>
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.subnets"></a>
 
 ```typescript
 public readonly subnets: SelectedSubnets;
@@ -9529,7 +9529,7 @@ A Redshift Data API Interface VPC Endpoint is created in the subnets.
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -9544,7 +9544,7 @@ A Redshift Data API Interface VPC Endpoint is created in the VPC.
 
 ---
 
-##### `workgroupId`<sup>Optional</sup> <a name="workgroupId" id="aws-data-solutions-framework.consumption.RedshiftDataProps.property.workgroupId"></a>
+##### `workgroupId`<sup>Optional</sup> <a name="workgroupId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.workgroupId"></a>
 
 ```typescript
 public readonly workgroupId: string;
@@ -9559,14 +9559,14 @@ It must be configured if the `clusterId` is not.
 
 ---
 
-### RedshiftServerlessNamespaceProps <a name="RedshiftServerlessNamespaceProps" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps"></a>
+### RedshiftServerlessNamespaceProps <a name="RedshiftServerlessNamespaceProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps"></a>
 
 RedshiftServerlessNamespace properties.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceProps = { ... }
 ```
@@ -9575,19 +9575,19 @@ const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceP
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dbName">dbName</a></code> | <code>string</code> | The name of the primary database that would be created in the Redshift Serverless Namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used by the managed Secrets Manager Secret storing admin credentials. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminUsername">adminUsername</a></code> | <code>string</code> | The admin username to be used. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM Role associated to the Redshift Serverless Namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The type of logs to be exported. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dbName">dbName</a></code> | <code>string</code> | The name of the primary database that would be created in the Redshift Serverless Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminSecretKey">adminSecretKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used by the managed Secrets Manager Secret storing admin credentials. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminUsername">adminUsername</a></code> | <code>string</code> | The admin username to be used. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dataKey">dataKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the data. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole">defaultIAMRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | Default IAM Role associated to the Redshift Serverless Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The type of logs to be exported. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
-##### `dbName`<sup>Required</sup> <a name="dbName" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dbName"></a>
+##### `dbName`<sup>Required</sup> <a name="dbName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dbName"></a>
 
 ```typescript
 public readonly dbName: string;
@@ -9599,7 +9599,7 @@ The name of the primary database that would be created in the Redshift Serverles
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -9611,7 +9611,7 @@ The name of the Redshift Serverless Namespace.
 
 ---
 
-##### `adminSecretKey`<sup>Optional</sup> <a name="adminSecretKey" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminSecretKey"></a>
+##### `adminSecretKey`<sup>Optional</sup> <a name="adminSecretKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminSecretKey"></a>
 
 ```typescript
 public readonly adminSecretKey: Key;
@@ -9624,7 +9624,7 @@ The KMS Key used by the managed Secrets Manager Secret storing admin credentials
 
 ---
 
-##### `adminUsername`<sup>Optional</sup> <a name="adminUsername" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminUsername"></a>
+##### `adminUsername`<sup>Optional</sup> <a name="adminUsername" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.adminUsername"></a>
 
 ```typescript
 public readonly adminUsername: string;
@@ -9637,7 +9637,7 @@ The admin username to be used.
 
 ---
 
-##### `dataKey`<sup>Optional</sup> <a name="dataKey" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dataKey"></a>
+##### `dataKey`<sup>Optional</sup> <a name="dataKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.dataKey"></a>
 
 ```typescript
 public readonly dataKey: Key;
@@ -9650,7 +9650,7 @@ The KMS Key used to encrypt the data.
 
 ---
 
-##### `defaultIAMRole`<sup>Optional</sup> <a name="defaultIAMRole" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole"></a>
+##### `defaultIAMRole`<sup>Optional</sup> <a name="defaultIAMRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.defaultIAMRole"></a>
 
 ```typescript
 public readonly defaultIAMRole: IRole;
@@ -9663,7 +9663,7 @@ Default IAM Role associated to the Redshift Serverless Namespace.
 
 ---
 
-##### `iamRoles`<sup>Optional</sup> <a name="iamRoles" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.iamRoles"></a>
+##### `iamRoles`<sup>Optional</sup> <a name="iamRoles" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.iamRoles"></a>
 
 ```typescript
 public readonly iamRoles: IRole[];
@@ -9678,20 +9678,20 @@ This list of Roles must also contain the `defaultIamRole`.
 
 ---
 
-##### `logExports`<sup>Optional</sup> <a name="logExports" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.logExports"></a>
+##### `logExports`<sup>Optional</sup> <a name="logExports" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.logExports"></a>
 
 ```typescript
 public readonly logExports: RedshiftServerlessNamespaceLogExport[];
 ```
 
-- *Type:* aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport[]
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport[]
 - *Default:* No logs are exported
 
 The type of logs to be exported.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9707,14 +9707,14 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-### RedshiftServerlessWorkgroupProps <a name="RedshiftServerlessWorkgroupProps" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps"></a>
+### RedshiftServerlessWorkgroupProps <a name="RedshiftServerlessWorkgroupProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps"></a>
 
 RedshiftServerlessWorkgroup properties.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.Initializer"></a>
 
 ```typescript
-import { consumption } from 'aws-data-solutions-framework'
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
 const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupProps = { ... }
 ```
@@ -9723,18 +9723,18 @@ const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupP
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The Redshift Serverless Namespace associated with the Workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups">extraSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | The custom port to use when connecting to workgroup. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The Redshift Serverless Namespace associated with the Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups">extraSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | The custom port to use when connecting to workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Redshift Serverless Workgroup is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The VPC where the Redshift Serverless Workgroup is deployed. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -9746,19 +9746,19 @@ The name of the Redshift Serverless Workgroup.
 
 ---
 
-##### `namespace`<sup>Required</sup> <a name="namespace" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.namespace"></a>
+##### `namespace`<sup>Required</sup> <a name="namespace" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.namespace"></a>
 
 ```typescript
 public readonly namespace: RedshiftServerlessNamespace;
 ```
 
-- *Type:* aws-data-solutions-framework.consumption.RedshiftServerlessNamespace
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace
 
 The Redshift Serverless Namespace associated with the Workgroup.
 
 ---
 
-##### `baseCapacity`<sup>Optional</sup> <a name="baseCapacity" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity"></a>
+##### `baseCapacity`<sup>Optional</sup> <a name="baseCapacity" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity"></a>
 
 ```typescript
 public readonly baseCapacity: number;
@@ -9771,7 +9771,7 @@ The base capacity of the Redshift Serverless Workgroup in RPU.
 
 ---
 
-##### `extraSecurityGroups`<sup>Optional</sup> <a name="extraSecurityGroups" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups"></a>
+##### `extraSecurityGroups`<sup>Optional</sup> <a name="extraSecurityGroups" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups"></a>
 
 ```typescript
 public readonly extraSecurityGroups: SecurityGroup[];
@@ -9784,7 +9784,7 @@ The extra EC2 Security Groups to associate with the Redshift Serverless Workgrou
 
 ---
 
-##### `port`<sup>Optional</sup> <a name="port" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.port"></a>
+##### `port`<sup>Optional</sup> <a name="port" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.port"></a>
 
 ```typescript
 public readonly port: number;
@@ -9799,7 +9799,7 @@ Valid port ranges are 5431-5455 and 8191-8215.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9815,7 +9815,7 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.subnets"></a>
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.subnets"></a>
 
 ```typescript
 public readonly subnets: SubnetSelection;
@@ -9828,7 +9828,7 @@ The subnets where the Redshift Serverless Workgroup is deployed.
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.vpc"></a>
 
 ```typescript
 public readonly vpc: Vpc;
@@ -9841,14 +9841,14 @@ The VPC where the Redshift Serverless Workgroup is deployed.
 
 ---
 
-### S3DataCopyProps <a name="S3DataCopyProps" id="aws-data-solutions-framework.utils.S3DataCopyProps"></a>
+### S3DataCopyProps <a name="S3DataCopyProps" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps"></a>
 
 Properties for S3DataCopy construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.utils.S3DataCopyProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 const s3DataCopyProps: utils.S3DataCopyProps = { ... }
 ```
@@ -9857,20 +9857,20 @@ const s3DataCopyProps: utils.S3DataCopyProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucket">sourceBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The source S3 Bucket containing the data to copy. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source S3 Bucket region. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The target S3 Bucket. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to use in the custom resource for copying data. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of security groups to attach to the custom resource. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets to deploy the custom resource in. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | The target S3 Bucket prefix with a slash at the end. |
-| <code><a href="#aws-data-solutions-framework.utils.S3DataCopyProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the custom resource in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucket">sourceBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The source S3 Bucket containing the data to copy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketRegion">sourceBucketRegion</a></code> | <code>string</code> | The source S3 Bucket region. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucket">targetBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The target S3 Bucket. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to use in the custom resource for copying data. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of security groups to attach to the custom resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketPrefix">sourceBucketPrefix</a></code> | <code>string</code> | The source bucket prefix with a slash at the end. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets to deploy the custom resource in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucketPrefix">targetBucketPrefix</a></code> | <code>string</code> | The target S3 Bucket prefix with a slash at the end. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the custom resource in. |
 
 ---
 
-##### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucket"></a>
+##### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucket"></a>
 
 ```typescript
 public readonly sourceBucket: IBucket;
@@ -9882,7 +9882,7 @@ The source S3 Bucket containing the data to copy.
 
 ---
 
-##### `sourceBucketRegion`<sup>Required</sup> <a name="sourceBucketRegion" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketRegion"></a>
+##### `sourceBucketRegion`<sup>Required</sup> <a name="sourceBucketRegion" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketRegion"></a>
 
 ```typescript
 public readonly sourceBucketRegion: string;
@@ -9894,7 +9894,7 @@ The source S3 Bucket region.
 
 ---
 
-##### `targetBucket`<sup>Required</sup> <a name="targetBucket" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucket"></a>
+##### `targetBucket`<sup>Required</sup> <a name="targetBucket" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucket"></a>
 
 ```typescript
 public readonly targetBucket: IBucket;
@@ -9906,7 +9906,7 @@ The target S3 Bucket.
 
 ---
 
-##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.executionRole"></a>
+##### `executionRole`<sup>Optional</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -9919,7 +9919,7 @@ The IAM Role to use in the custom resource for copying data.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -9935,7 +9935,7 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.securityGroups"></a>
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.securityGroups"></a>
 
 ```typescript
 public readonly securityGroups: ISecurityGroup[];
@@ -9948,7 +9948,7 @@ The list of security groups to attach to the custom resource.
 
 ---
 
-##### `sourceBucketPrefix`<sup>Optional</sup> <a name="sourceBucketPrefix" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketPrefix"></a>
+##### `sourceBucketPrefix`<sup>Optional</sup> <a name="sourceBucketPrefix" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.sourceBucketPrefix"></a>
 
 ```typescript
 public readonly sourceBucketPrefix: string;
@@ -9961,7 +9961,7 @@ The source bucket prefix with a slash at the end.
 
 ---
 
-##### `subnets`<sup>Optional</sup> <a name="subnets" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.subnets"></a>
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.subnets"></a>
 
 ```typescript
 public readonly subnets: SubnetSelection;
@@ -9974,7 +9974,7 @@ The subnets to deploy the custom resource in.
 
 ---
 
-##### `targetBucketPrefix`<sup>Optional</sup> <a name="targetBucketPrefix" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucketPrefix"></a>
+##### `targetBucketPrefix`<sup>Optional</sup> <a name="targetBucketPrefix" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.targetBucketPrefix"></a>
 
 ```typescript
 public readonly targetBucketPrefix: string;
@@ -9987,7 +9987,7 @@ The target S3 Bucket prefix with a slash at the end.
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="aws-data-solutions-framework.utils.S3DataCopyProps.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.utils.S3DataCopyProps.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -10000,14 +10000,14 @@ The VPC to deploy the custom resource in.
 
 ---
 
-### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps"></a>
+### SparkEmrCICDPipelineProps <a name="SparkEmrCICDPipelineProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps"></a>
 
 Properties for the `SparkEmrCICDPipeline` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 ```
@@ -10016,31 +10016,31 @@ const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack to deploy in the different CDK Pipelines Stages. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM Policy statements to add permissions for running the integration tests. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code>aws-data-solutions-framework.processing.SparkImage</code> | The EMR Spark image to use to run the unit tests. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | The IAM Policy statements to add permissions for running the integration tests. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestScript">integTestScript</a></code> | <code>string</code> | The path to the Shell script that contains integration tests. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath">sparkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the Spark Application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkImage">sparkImage</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.SparkImage</code> | The EMR Spark image to use to run the unit tests. |
 
 ---
 
-##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory"></a>
+##### `applicationStackFactory`<sup>Required</sup> <a name="applicationStackFactory" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory"></a>
 
 ```typescript
 public readonly applicationStackFactory: ApplicationStackFactory;
 ```
 
-- *Type:* aws-data-solutions-framework.utils.ApplicationStackFactory
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory
 
 The application CDK Stack to deploy in the different CDK Pipelines Stages.
 
 ---
 
-##### `sparkApplicationName`<sup>Required</sup> <a name="sparkApplicationName" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName"></a>
+##### `sparkApplicationName`<sup>Required</sup> <a name="sparkApplicationName" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName"></a>
 
 ```typescript
 public readonly sparkApplicationName: string;
@@ -10052,7 +10052,7 @@ The name of the Spark application to be deployed.
 
 ---
 
-##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath"></a>
+##### `cdkApplicationPath`<sup>Optional</sup> <a name="cdkApplicationPath" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath"></a>
 
 ```typescript
 public readonly cdkApplicationPath: string;
@@ -10065,7 +10065,7 @@ The path to the folder that contains the CDK Application.
 
 ---
 
-##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestEnv"></a>
+##### `integTestEnv`<sup>Optional</sup> <a name="integTestEnv" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestEnv"></a>
 
 ```typescript
 public readonly integTestEnv: {[ key: string ]: string};
@@ -10081,7 +10081,7 @@ Key is the name of the environment variable to create. Value is generally a CfnO
 
 ---
 
-##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestPermissions"></a>
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestPermissions"></a>
 
 ```typescript
 public readonly integTestPermissions: PolicyStatement[];
@@ -10094,7 +10094,7 @@ The IAM Policy statements to add permissions for running the integration tests.
 
 ---
 
-##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestScript"></a>
+##### `integTestScript`<sup>Optional</sup> <a name="integTestScript" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestScript"></a>
 
 ```typescript
 public readonly integTestScript: string;
@@ -10107,7 +10107,7 @@ The path to the Shell script that contains integration tests.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10123,7 +10123,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath"></a>
+##### `sparkApplicationPath`<sup>Optional</sup> <a name="sparkApplicationPath" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationPath"></a>
 
 ```typescript
 public readonly sparkApplicationPath: string;
@@ -10136,20 +10136,20 @@ The path to the folder that contains the Spark Application.
 
 ---
 
-##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkImage"></a>
+##### `sparkImage`<sup>Optional</sup> <a name="sparkImage" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkImage"></a>
 
 ```typescript
 public readonly sparkImage: SparkImage;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.SparkImage
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.SparkImage
 - *Default:* [DEFAULT_SPARK_IMAGE](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L51)
 
 The EMR Spark image to use to run the unit tests.
 
 ---
 
-### SparkEmrContainersJobApiProps <a name="SparkEmrContainersJobApiProps" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps"></a>
+### SparkEmrContainersJobApiProps <a name="SparkEmrContainersJobApiProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps"></a>
 
 Configuration for the EMR on EKS job.
 
@@ -10157,10 +10157,10 @@ Use this interface when `SparkEmrContainerJobProps` doesn't give you access to t
 
 > [[https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-on-eks/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrContainersJobApiProps: processing.SparkEmrContainersJobApiProps = { ... }
 ```
@@ -10169,14 +10169,14 @@ const sparkEmrContainersJobApiProps: processing.SparkEmrContainersJobApiProps = 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR on EKS StartJobRun API configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Job execution timeout. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10192,7 +10192,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10205,7 +10205,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -10219,7 +10219,7 @@ EMR on EKS StartJobRun API configuration.
 
 ---
 
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.executionTimeout"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobApiProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -10232,14 +10232,14 @@ Job execution timeout.
 
 ---
 
-### SparkEmrContainersJobProps <a name="SparkEmrContainersJobProps" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps"></a>
+### SparkEmrContainersJobProps <a name="SparkEmrContainersJobProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps"></a>
 
 Simplified configuration for the `SparkEmrEksJob` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrContainersJobProps: processing.SparkEmrContainersJobProps = { ... }
 ```
@@ -10248,27 +10248,27 @@ const sparkEmrContainersJobProps: processing.SparkEmrContainersJobProps = { ... 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-data-solutions-framework.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role ARN for the EMR on EKS job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.name">name</a></code> | <code>string</code> | The Spark job name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The EMR on EKS virtual cluster ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group stream prefix for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.maxRetries">maxRetries</a></code> | <code>number</code> | The maximum number of retries. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.releaseLabel">releaseLabel</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10284,7 +10284,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10297,7 +10297,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionRole"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -10309,7 +10309,7 @@ The IAM execution Role ARN for the EMR on EKS job.
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -10321,7 +10321,7 @@ The Spark job name.
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -10335,7 +10335,7 @@ The entry point for the Spark submit job run.
 
 ---
 
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.virtualClusterId"></a>
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.virtualClusterId"></a>
 
 ```typescript
 public readonly virtualClusterId: string;
@@ -10347,7 +10347,7 @@ The EMR on EKS virtual cluster ID.
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -10362,7 +10362,7 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup"></a>
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
 public readonly cloudWatchLogGroup: ILogGroup;
@@ -10375,7 +10375,7 @@ The CloudWatch Log Group name for log publishing.
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -10388,7 +10388,7 @@ The CloudWatch Log Group stream prefix for log publishing.
 
 ---
 
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionTimeout"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -10401,7 +10401,7 @@ The execution timeout.
 
 ---
 
-##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.maxRetries"></a>
+##### `maxRetries`<sup>Optional</sup> <a name="maxRetries" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.maxRetries"></a>
 
 ```typescript
 public readonly maxRetries: number;
@@ -10414,13 +10414,13 @@ The maximum number of retries.
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.EmrRuntimeVersion
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion
 - *Default:* [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
 
 The EMR release version associated with the application.
@@ -10429,7 +10429,7 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogBucket"></a>
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogBucket"></a>
 
 ```typescript
 public readonly s3LogBucket: IBucket;
@@ -10442,7 +10442,7 @@ The S3 Bucket for log publishing.
 
 ---
 
-##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogPrefix"></a>
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.s3LogPrefix"></a>
 
 ```typescript
 public readonly s3LogPrefix: string;
@@ -10455,7 +10455,7 @@ The S3 Bucket prefix for log publishing.
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string[];
@@ -10470,7 +10470,7 @@ The arguments for the Spark submit job run.
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -10485,7 +10485,7 @@ The parameters for the Spark submit job run.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -10498,14 +10498,14 @@ Tags to be added to the EMR Serverless job.
 
 ---
 
-### SparkEmrContainersRuntimeInteractiveSessionProps <a name="SparkEmrContainersRuntimeInteractiveSessionProps" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps"></a>
+### SparkEmrContainersRuntimeInteractiveSessionProps <a name="SparkEmrContainersRuntimeInteractiveSessionProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps"></a>
 
 The properties for the EMR Managed Endpoint to create.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrContainersRuntimeInteractiveSessionProps = { ... }
 ```
@@ -10514,15 +10514,15 @@ const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrConta
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Amazon IAM role used as the execution role, this role must provide access to all the AWS resource a user will interact with These can be S3, DynamoDB, Glue Catalog. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Amazon IAM role used as the execution role, this role must provide access to all the AWS resource a user will interact with These can be S3, DynamoDB, Glue Catalog. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -10534,7 +10534,7 @@ The Amazon IAM role used as the execution role, this role must provide access to
 
 ---
 
-##### `managedEndpointName`<sup>Required</sup> <a name="managedEndpointName" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName"></a>
+##### `managedEndpointName`<sup>Required</sup> <a name="managedEndpointName" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName"></a>
 
 ```typescript
 public readonly managedEndpointName: string;
@@ -10546,7 +10546,7 @@ The name of the EMR managed endpoint.
 
 ---
 
-##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId"></a>
+##### `virtualClusterId`<sup>Required</sup> <a name="virtualClusterId" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId"></a>
 
 ```typescript
 public readonly virtualClusterId: string;
@@ -10558,7 +10558,7 @@ The Id of the Amazon EMR virtual cluster containing the managed endpoint.
 
 ---
 
-##### `configurationOverrides`<sup>Optional</sup> <a name="configurationOverrides" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides"></a>
+##### `configurationOverrides`<sup>Optional</sup> <a name="configurationOverrides" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides"></a>
 
 ```typescript
 public readonly configurationOverrides: any;
@@ -10571,27 +10571,27 @@ The JSON configuration overrides for Amazon EMR on EKS configuration attached to
 
 ---
 
-##### `emrOnEksVersion`<sup>Optional</sup> <a name="emrOnEksVersion" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion"></a>
+##### `emrOnEksVersion`<sup>Optional</sup> <a name="emrOnEksVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion"></a>
 
 ```typescript
 public readonly emrOnEksVersion: EmrContainersRuntimeVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.EmrContainersRuntimeVersion
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion
 - *Default:* The [default Amazon EMR version]{@link EmrEksCluster.DEFAULT_EMR_VERSION }
 
 The Amazon EMR version to use.
 
 ---
 
-### SparkEmrContainersRuntimeProps <a name="SparkEmrContainersRuntimeProps" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps"></a>
+### SparkEmrContainersRuntimeProps <a name="SparkEmrContainersRuntimeProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps"></a>
 
 The properties for the `SparkEmrContainerRuntime` Construct class.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrContainersRuntimeProps: processing.SparkEmrContainersRuntimeProps = { ... }
 ```
@@ -10600,24 +10600,24 @@ const sparkEmrContainersRuntimeProps: processing.SparkEmrContainersRuntimeProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | The Lambda Layer with Kubectl to use for EKS Cluster setup. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed to access to your cluster’s public Kubernetes API server endpoint. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Flag to create an IAM Service Linked Role for EMR on EKS. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | The flag to create default Karpenter Node Provisioners for:  * Critical jobs which use on-demand instances, high speed disks and workload isolation  * Shared workloads which use EC2 Spot Instances and no isolation to optimize costs  * Notebooks which leverage a cost optimized configuration for running EMR managed endpoints and spark drivers/executors. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole">ec2InstanceRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the cluster nodes instance profile. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to configure in the EKS master roles. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS Cluster to setup EMR on. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | The name of the EKS cluster to create. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to use when creating the EKS cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>aws-data-solutions-framework.processing.KarpenterVersion</code> | The Karpenter version to use for autoscaling nodes in the EKS Cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The Kubernetes version used to create the EKS Cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the EKS cluster. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR of the VPC to use when creating the EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer">kubectlLambdaLayer</a></code> | <code>aws-cdk-lib.aws_lambda.ILayerVersion</code> | The Lambda Layer with Kubectl to use for EKS Cluster setup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs">publicAccessCIDRs</a></code> | <code>string[]</code> | The CIDR blocks that are allowed to access to your cluster’s public Kubernetes API server endpoint. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole">createEmrOnEksServiceLinkedRole</a></code> | <code>boolean</code> | Flag to create an IAM Service Linked Role for EMR on EKS. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.defaultNodes">defaultNodes</a></code> | <code>boolean</code> | The flag to create default Karpenter Node Provisioners for:  * Critical jobs which use on-demand instances, high speed disks and workload isolation  * Shared workloads which use EC2 Spot Instances and no isolation to optimize costs  * Notebooks which leverage a cost optimized configuration for running EMR managed endpoints and spark drivers/executors. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole">ec2InstanceRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used for the cluster nodes instance profile. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole">eksAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role to configure in the EKS master roles. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksCluster">eksCluster</a></code> | <code>aws-cdk-lib.aws_eks.Cluster</code> | The EKS Cluster to setup EMR on. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksClusterName">eksClusterName</a></code> | <code>string</code> | The name of the EKS cluster to create. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksVpc">eksVpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to use when creating the EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion">karpenterVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion</code> | The Karpenter version to use for autoscaling nodes in the EKS Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion">kubernetesVersion</a></code> | <code>aws-cdk-lib.aws_eks.KubernetesVersion</code> | The Kubernetes version used to create the EKS Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the EKS cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.vpcCidr">vpcCidr</a></code> | <code>string</code> | The CIDR of the VPC to use when creating the EKS cluster. |
 
 ---
 
-##### `kubectlLambdaLayer`<sup>Required</sup> <a name="kubectlLambdaLayer" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer"></a>
+##### `kubectlLambdaLayer`<sup>Required</sup> <a name="kubectlLambdaLayer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubectlLambdaLayer"></a>
 
 ```typescript
 public readonly kubectlLambdaLayer: ILayerVersion;
@@ -10635,7 +10635,7 @@ contains the libraries that you should add for the right Kubernetes version.
 
 ---
 
-##### `publicAccessCIDRs`<sup>Required</sup> <a name="publicAccessCIDRs" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs"></a>
+##### `publicAccessCIDRs`<sup>Required</sup> <a name="publicAccessCIDRs" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.publicAccessCIDRs"></a>
 
 ```typescript
 public readonly publicAccessCIDRs: string[];
@@ -10647,7 +10647,7 @@ The CIDR blocks that are allowed to access to your cluster’s public Kubernetes
 
 ---
 
-##### `createEmrOnEksServiceLinkedRole`<sup>Optional</sup> <a name="createEmrOnEksServiceLinkedRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole"></a>
+##### `createEmrOnEksServiceLinkedRole`<sup>Optional</sup> <a name="createEmrOnEksServiceLinkedRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.createEmrOnEksServiceLinkedRole"></a>
 
 ```typescript
 public readonly createEmrOnEksServiceLinkedRole: boolean;
@@ -10660,7 +10660,7 @@ Flag to create an IAM Service Linked Role for EMR on EKS.
 
 ---
 
-##### `defaultNodes`<sup>Optional</sup> <a name="defaultNodes" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.defaultNodes"></a>
+##### `defaultNodes`<sup>Optional</sup> <a name="defaultNodes" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.defaultNodes"></a>
 
 ```typescript
 public readonly defaultNodes: boolean;
@@ -10673,7 +10673,7 @@ The flag to create default Karpenter Node Provisioners for:  * Critical jobs whi
 
 ---
 
-##### `ec2InstanceRole`<sup>Optional</sup> <a name="ec2InstanceRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole"></a>
+##### `ec2InstanceRole`<sup>Optional</sup> <a name="ec2InstanceRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.ec2InstanceRole"></a>
 
 ```typescript
 public readonly ec2InstanceRole: IRole;
@@ -10686,7 +10686,7 @@ The IAM Role used for the cluster nodes instance profile.
 
 ---
 
-##### `eksAdminRole`<sup>Optional</sup> <a name="eksAdminRole" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole"></a>
+##### `eksAdminRole`<sup>Optional</sup> <a name="eksAdminRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksAdminRole"></a>
 
 ```typescript
 public readonly eksAdminRole: IRole;
@@ -10702,7 +10702,7 @@ You will use this role to manage the EKS cluster and grant other access to it.
 
 ---
 
-##### `eksCluster`<sup>Optional</sup> <a name="eksCluster" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksCluster"></a>
+##### `eksCluster`<sup>Optional</sup> <a name="eksCluster" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksCluster"></a>
 
 ```typescript
 public readonly eksCluster: Cluster;
@@ -10719,7 +10719,7 @@ When providing an EKS cluster, the methods for adding nodegroups can still be us
 
 ---
 
-##### `eksClusterName`<sup>Optional</sup> <a name="eksClusterName" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksClusterName"></a>
+##### `eksClusterName`<sup>Optional</sup> <a name="eksClusterName" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksClusterName"></a>
 
 ```typescript
 public readonly eksClusterName: string;
@@ -10732,7 +10732,7 @@ The name of the EKS cluster to create.
 
 ---
 
-##### `eksVpc`<sup>Optional</sup> <a name="eksVpc" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksVpc"></a>
+##### `eksVpc`<sup>Optional</sup> <a name="eksVpc" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.eksVpc"></a>
 
 ```typescript
 public readonly eksVpc: IVpc;
@@ -10753,20 +10753,20 @@ Cannot be combined with `vpcCidr`. If combined, `vpcCidr` takes precedence and a
 
 ---
 
-##### `karpenterVersion`<sup>Optional</sup> <a name="karpenterVersion" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion"></a>
+##### `karpenterVersion`<sup>Optional</sup> <a name="karpenterVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.karpenterVersion"></a>
 
 ```typescript
 public readonly karpenterVersion: KarpenterVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.KarpenterVersion
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.KarpenterVersion
 - *Default:* [DEFAULT_KARPENTER_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/karpenter-releases.ts#L11)
 
 The Karpenter version to use for autoscaling nodes in the EKS Cluster.
 
 ---
 
-##### `kubernetesVersion`<sup>Optional</sup> <a name="kubernetesVersion" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion"></a>
+##### `kubernetesVersion`<sup>Optional</sup> <a name="kubernetesVersion" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.kubernetesVersion"></a>
 
 ```typescript
 public readonly kubernetesVersion: KubernetesVersion;
@@ -10779,7 +10779,7 @@ The Kubernetes version used to create the EKS Cluster.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10795,7 +10795,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: string};
@@ -10808,7 +10808,7 @@ The tags assigned to the EKS cluster.
 
 ---
 
-##### `vpcCidr`<sup>Optional</sup> <a name="vpcCidr" id="aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.vpcCidr"></a>
+##### `vpcCidr`<sup>Optional</sup> <a name="vpcCidr" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeProps.property.vpcCidr"></a>
 
 ```typescript
 public readonly vpcCidr: string;
@@ -10824,7 +10824,7 @@ The size of the private subnets is four time the one of the public subnet.
 
 ---
 
-### SparkEmrServerlessJobApiProps <a name="SparkEmrServerlessJobApiProps" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps"></a>
+### SparkEmrServerlessJobApiProps <a name="SparkEmrServerlessJobApiProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps"></a>
 
 Configuration for the EMR Serverless Job API.
 
@@ -10832,10 +10832,10 @@ Use this interface when `SparkEmrServerlessJobProps` doesn't give you access to 
 
 > [[https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html]]([https://docs.aws.amazon.com/emr-serverless/latest/APIReference/API_StartJobRun.html])
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrServerlessJobApiProps: processing.SparkEmrServerlessJobApiProps = { ... }
 ```
@@ -10844,13 +10844,13 @@ const sparkEmrServerlessJobApiProps: processing.SparkEmrServerlessJobApiProps = 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.jobConfig">jobConfig</a></code> | <code>{[ key: string ]: any}</code> | EMR Serverless Job Configuration. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10866,7 +10866,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10879,7 +10879,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.jobConfig"></a>
+##### `jobConfig`<sup>Required</sup> <a name="jobConfig" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobApiProps.property.jobConfig"></a>
 
 ```typescript
 public readonly jobConfig: {[ key: string ]: any};
@@ -10893,12 +10893,12 @@ EMR Serverless Job Configuration.
 
 ---
 
-### SparkEmrServerlessJobProps <a name="SparkEmrServerlessJobProps" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps"></a>
+### SparkEmrServerlessJobProps <a name="SparkEmrServerlessJobProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps"></a>
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrServerlessJobProps: processing.SparkEmrServerlessJobProps = { ... }
 ```
@@ -10907,30 +10907,30 @@ const sparkEmrServerlessJobProps: processing.SparkEmrServerlessJobProps = { ... 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application to execute the Spark Job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role for the EMR Serverless job. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | The Spark Job name. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey">cloudWatchEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on CloudWatch. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group Stream prefix for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | The types of logs to log in CloudWatch Log. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | Enable Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey">persistentAppUIKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey">s3LogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on S3. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationId">applicationId</a></code> | <code>string</code> | The EMR Serverless Application to execute the Spark Job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM execution Role for the EMR Serverless job. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.name">name</a></code> | <code>string</code> | The Spark Job name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint">sparkSubmitEntryPoint</a></code> | <code>string</code> | The entry point for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationConfiguration">applicationConfiguration</a></code> | <code>{[ key: string ]: any}</code> | The application configuration override for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey">cloudWatchEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on CloudWatch. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup">cloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group name for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix">cloudWatchLogGroupStreamPrefix</a></code> | <code>string</code> | The CloudWatch Log Group Stream prefix for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes">cloudWatchLogtypes</a></code> | <code>string</code> | The types of logs to log in CloudWatch Log. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The execution timeout. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUi">persistentAppUi</a></code> | <code>boolean</code> | Enable Spark persistent UI logs in EMR managed storage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey">persistentAppUIKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogBucket">s3LogBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey">s3LogEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encrypting logs on S3. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogPrefix">s3LogPrefix</a></code> | <code>string</code> | The S3 Bucket prefix for log publishing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments">sparkSubmitEntryPointArguments</a></code> | <code>string[]</code> | The arguments for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters">sparkSubmitParameters</a></code> | <code>string</code> | The parameters for the Spark submit job run. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.tags">tags</a></code> | <code>{[ key: string ]: any}</code> | Tags to be added to the EMR Serverless job. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10946,7 +10946,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -10959,7 +10959,7 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
-##### `applicationId`<sup>Required</sup> <a name="applicationId" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationId"></a>
+##### `applicationId`<sup>Required</sup> <a name="applicationId" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationId"></a>
 
 ```typescript
 public readonly applicationId: string;
@@ -10971,7 +10971,7 @@ The EMR Serverless Application to execute the Spark Job.
 
 ---
 
-##### `executionRole`<sup>Required</sup> <a name="executionRole" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRole"></a>
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionRole"></a>
 
 ```typescript
 public readonly executionRole: IRole;
@@ -10983,7 +10983,7 @@ The IAM execution Role for the EMR Serverless job.
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -10995,7 +10995,7 @@ The Spark Job name.
 
 ---
 
-##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint"></a>
+##### `sparkSubmitEntryPoint`<sup>Required</sup> <a name="sparkSubmitEntryPoint" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPoint"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPoint: string;
@@ -11009,7 +11009,7 @@ The entry point for the Spark submit job run.
 
 ---
 
-##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationConfiguration"></a>
+##### `applicationConfiguration`<sup>Optional</sup> <a name="applicationConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.applicationConfiguration"></a>
 
 ```typescript
 public readonly applicationConfiguration: {[ key: string ]: any};
@@ -11024,7 +11024,7 @@ The application configuration override for the Spark submit job run.
 
 ---
 
-##### `cloudWatchEncryptionKey`<sup>Optional</sup> <a name="cloudWatchEncryptionKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey"></a>
+##### `cloudWatchEncryptionKey`<sup>Optional</sup> <a name="cloudWatchEncryptionKey" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchEncryptionKey"></a>
 
 ```typescript
 public readonly cloudWatchEncryptionKey: IKey;
@@ -11037,7 +11037,7 @@ The KMS Key for encrypting logs on CloudWatch.
 
 ---
 
-##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup"></a>
+##### `cloudWatchLogGroup`<sup>Optional</sup> <a name="cloudWatchLogGroup" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroup"></a>
 
 ```typescript
 public readonly cloudWatchLogGroup: ILogGroup;
@@ -11050,7 +11050,7 @@ The CloudWatch Log Group name for log publishing.
 
 ---
 
-##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
+##### `cloudWatchLogGroupStreamPrefix`<sup>Optional</sup> <a name="cloudWatchLogGroupStreamPrefix" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogGroupStreamPrefix"></a>
 
 ```typescript
 public readonly cloudWatchLogGroupStreamPrefix: string;
@@ -11063,7 +11063,7 @@ The CloudWatch Log Group Stream prefix for log publishing.
 
 ---
 
-##### `cloudWatchLogtypes`<sup>Optional</sup> <a name="cloudWatchLogtypes" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes"></a>
+##### `cloudWatchLogtypes`<sup>Optional</sup> <a name="cloudWatchLogtypes" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.cloudWatchLogtypes"></a>
 
 ```typescript
 public readonly cloudWatchLogtypes: string;
@@ -11075,7 +11075,7 @@ The types of logs to log in CloudWatch Log.
 
 ---
 
-##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeout"></a>
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.executionTimeout"></a>
 
 ```typescript
 public readonly executionTimeout: Duration;
@@ -11088,7 +11088,7 @@ The execution timeout.
 
 ---
 
-##### `persistentAppUi`<sup>Optional</sup> <a name="persistentAppUi" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUi"></a>
+##### `persistentAppUi`<sup>Optional</sup> <a name="persistentAppUi" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUi"></a>
 
 ```typescript
 public readonly persistentAppUi: boolean;
@@ -11101,7 +11101,7 @@ Enable Spark persistent UI logs in EMR managed storage.
 
 ---
 
-##### `persistentAppUIKey`<sup>Optional</sup> <a name="persistentAppUIKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey"></a>
+##### `persistentAppUIKey`<sup>Optional</sup> <a name="persistentAppUIKey" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.persistentAppUIKey"></a>
 
 ```typescript
 public readonly persistentAppUIKey: IKey;
@@ -11114,7 +11114,7 @@ The KMS Key ARN to encrypt Spark persistent UI logs in EMR managed storage.
 
 ---
 
-##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogBucket"></a>
+##### `s3LogBucket`<sup>Optional</sup> <a name="s3LogBucket" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogBucket"></a>
 
 ```typescript
 public readonly s3LogBucket: IBucket;
@@ -11127,7 +11127,7 @@ The S3 Bucket for log publishing.
 
 ---
 
-##### `s3LogEncryptionKey`<sup>Optional</sup> <a name="s3LogEncryptionKey" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey"></a>
+##### `s3LogEncryptionKey`<sup>Optional</sup> <a name="s3LogEncryptionKey" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogEncryptionKey"></a>
 
 ```typescript
 public readonly s3LogEncryptionKey: IKey;
@@ -11140,7 +11140,7 @@ The KMS Key for encrypting logs on S3.
 
 ---
 
-##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogPrefix"></a>
+##### `s3LogPrefix`<sup>Optional</sup> <a name="s3LogPrefix" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.s3LogPrefix"></a>
 
 ```typescript
 public readonly s3LogPrefix: string;
@@ -11153,7 +11153,7 @@ The S3 Bucket prefix for log publishing.
 
 ---
 
-##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments"></a>
+##### `sparkSubmitEntryPointArguments`<sup>Optional</sup> <a name="sparkSubmitEntryPointArguments" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitEntryPointArguments"></a>
 
 ```typescript
 public readonly sparkSubmitEntryPointArguments: string[];
@@ -11168,7 +11168,7 @@ The arguments for the Spark submit job run.
 
 ---
 
-##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters"></a>
+##### `sparkSubmitParameters`<sup>Optional</sup> <a name="sparkSubmitParameters" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.sparkSubmitParameters"></a>
 
 ```typescript
 public readonly sparkSubmitParameters: string;
@@ -11183,7 +11183,7 @@ The parameters for the Spark submit job run.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessJobProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: any};
@@ -11196,14 +11196,14 @@ Tags to be added to the EMR Serverless job.
 
 ---
 
-### SparkEmrServerlessRuntimeProps <a name="SparkEmrServerlessRuntimeProps" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps"></a>
+### SparkEmrServerlessRuntimeProps <a name="SparkEmrServerlessRuntimeProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps"></a>
 
 Properties for the `SparkEmrServerlessRuntime` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkEmrServerlessRuntimeProps: processing.SparkEmrServerlessRuntimeProps = { ... }
 ```
@@ -11212,22 +11212,22 @@ const sparkEmrServerlessRuntimeProps: processing.SparkEmrServerlessRuntimeProps 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code>aws-data-solutions-framework.utils.Architecture</code> | The CPU architecture type of the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The unique custom image configuration used for both the Spark Driver and the Spark Executor. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The pre-initialized capacity of the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code>aws-data-solutions-framework.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration">runtimeConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ConfigurationObjectProperty[]</code> | The runtime and monitoring configurations to used as defaults for all of the job runs of this application. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The different custom image configurations used for the Spark Driver and the Spark Executor. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.name">name</a></code> | <code>string</code> | The name of the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.architecture">architecture</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.Architecture</code> | The CPU architecture type of the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration">autoStartConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStartConfigurationProperty</code> | The configuration for an application to automatically start on job submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration">autoStopConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.AutoStopConfigurationProperty</code> | The configuration for an application to automatically stop after a certain amount of time being idle. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration">imageConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ImageConfigurationInputProperty</code> | The unique custom image configuration used for both the Spark Driver and the Spark Executor. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity">initialCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.InitialCapacityConfigKeyValuePairProperty[]</code> | The pre-initialized capacity of the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity">maximumCapacity</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.MaximumAllowedResourcesProperty</code> | The maximum capacity of the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration">networkConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.NetworkConfigurationProperty</code> | The network configuration for customer VPC connectivity for the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel">releaseLabel</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion</code> | The EMR release version associated with the application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration">runtimeConfiguration</a></code> | <code>aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.ConfigurationObjectProperty[]</code> | The runtime and monitoring configurations to used as defaults for all of the job runs of this application. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications">workerTypeSpecifications</a></code> | <code>aws-cdk-lib.IResolvable \| {[ key: string ]: aws-cdk-lib.IResolvable \| aws-cdk-lib.aws_emrserverless.CfnApplication.WorkerTypeSpecificationInputProperty}</code> | The different custom image configurations used for the Spark Driver and the Spark Executor. |
 
 ---
 
-##### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.name"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.name"></a>
 
 ```typescript
 public readonly name: string;
@@ -11242,20 +11242,20 @@ The name must be less than 64 characters.
 
 ---
 
-##### `architecture`<sup>Optional</sup> <a name="architecture" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.architecture"></a>
+##### `architecture`<sup>Optional</sup> <a name="architecture" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.architecture"></a>
 
 ```typescript
 public readonly architecture: Architecture;
 ```
 
-- *Type:* aws-data-solutions-framework.utils.Architecture
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.Architecture
 - *Default:* x86_64
 
 The CPU architecture type of the application.
 
 ---
 
-##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration"></a>
+##### `autoStartConfiguration`<sup>Optional</sup> <a name="autoStartConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStartConfiguration"></a>
 
 ```typescript
 public readonly autoStartConfiguration: IResolvable | AutoStartConfigurationProperty;
@@ -11268,7 +11268,7 @@ The configuration for an application to automatically start on job submission.
 
 ---
 
-##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration"></a>
+##### `autoStopConfiguration`<sup>Optional</sup> <a name="autoStopConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.autoStopConfiguration"></a>
 
 ```typescript
 public readonly autoStopConfiguration: IResolvable | AutoStopConfigurationProperty;
@@ -11281,7 +11281,7 @@ The configuration for an application to automatically stop after a certain amoun
 
 ---
 
-##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration"></a>
+##### `imageConfiguration`<sup>Optional</sup> <a name="imageConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.imageConfiguration"></a>
 
 ```typescript
 public readonly imageConfiguration: IResolvable | ImageConfigurationInputProperty;
@@ -11296,7 +11296,7 @@ The unique custom image configuration used for both the Spark Driver and the Spa
 
 ---
 
-##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity"></a>
+##### `initialCapacity`<sup>Optional</sup> <a name="initialCapacity" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.initialCapacity"></a>
 
 ```typescript
 public readonly initialCapacity: IResolvable | IResolvable | InitialCapacityConfigKeyValuePairProperty[];
@@ -11311,7 +11311,7 @@ The pre-initialized capacity of the application.
 
 ---
 
-##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity"></a>
+##### `maximumCapacity`<sup>Optional</sup> <a name="maximumCapacity" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.maximumCapacity"></a>
 
 ```typescript
 public readonly maximumCapacity: IResolvable | MaximumAllowedResourcesProperty;
@@ -11326,7 +11326,7 @@ This is cumulative across all workers at any given point in time during the life
 
 ---
 
-##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration"></a>
+##### `networkConfiguration`<sup>Optional</sup> <a name="networkConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.networkConfiguration"></a>
 
 ```typescript
 public readonly networkConfiguration: IResolvable | NetworkConfigurationProperty;
@@ -11343,13 +11343,13 @@ The VPC has one NAT Gateway per AZ and an S3 endpoint
 
 ---
 
-##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel"></a>
+##### `releaseLabel`<sup>Optional</sup> <a name="releaseLabel" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.releaseLabel"></a>
 
 ```typescript
 public readonly releaseLabel: EmrRuntimeVersion;
 ```
 
-- *Type:* aws-data-solutions-framework.processing.EmrRuntimeVersion
+- *Type:* @cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion
 - *Default:* [EMR_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/processing/lib/emr-releases.ts#L46)
 
 The EMR release version associated with the application.
@@ -11358,7 +11358,7 @@ The EMR release can be found in this [documentation](https://docs.aws.amazon.com
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -11374,7 +11374,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `runtimeConfiguration`<sup>Optional</sup> <a name="runtimeConfiguration" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration"></a>
+##### `runtimeConfiguration`<sup>Optional</sup> <a name="runtimeConfiguration" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.runtimeConfiguration"></a>
 
 ```typescript
 public readonly runtimeConfiguration: IResolvable | ConfigurationObjectProperty[];
@@ -11389,7 +11389,7 @@ The runtime and monitoring configurations to used as defaults for all of the job
 
 ---
 
-##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications"></a>
+##### `workerTypeSpecifications`<sup>Optional</sup> <a name="workerTypeSpecifications" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrServerlessRuntimeProps.property.workerTypeSpecifications"></a>
 
 ```typescript
 public readonly workerTypeSpecifications: IResolvable | {[ key: string ]: IResolvable | WorkerTypeSpecificationInputProperty};
@@ -11404,14 +11404,14 @@ The different custom image configurations used for the Spark Driver and the Spar
 
 ---
 
-### SparkJobProps <a name="SparkJobProps" id="aws-data-solutions-framework.processing.SparkJobProps"></a>
+### SparkJobProps <a name="SparkJobProps" id="@cdklabs/aws-data-solutions-framework.processing.SparkJobProps"></a>
 
 The properties for the `SparkJob` construct.
 
-#### Initializer <a name="Initializer" id="aws-data-solutions-framework.processing.SparkJobProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.processing.SparkJobProps.Initializer"></a>
 
 ```typescript
-import { processing } from 'aws-data-solutions-framework'
+import { processing } from '@cdklabs/aws-data-solutions-framework'
 
 const sparkJobProps: processing.SparkJobProps = { ... }
 ```
@@ -11420,12 +11420,12 @@ const sparkJobProps: processing.SparkJobProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#aws-data-solutions-framework.processing.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJobProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkJobProps.property.schedule">schedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The Schedule to run the Step Functions state machine. |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="aws-data-solutions-framework.processing.SparkJobProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.processing.SparkJobProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -11441,7 +11441,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `schedule`<sup>Optional</sup> <a name="schedule" id="aws-data-solutions-framework.processing.SparkJobProps.property.schedule"></a>
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="@cdklabs/aws-data-solutions-framework.processing.SparkJobProps.property.schedule"></a>
 
 ```typescript
 public readonly schedule: Schedule;
@@ -11456,7 +11456,7 @@ The Schedule to run the Step Functions state machine.
 
 ## Classes <a name="Classes" id="Classes"></a>
 
-### ApplicationStackFactory <a name="ApplicationStackFactory" id="aws-data-solutions-framework.utils.ApplicationStackFactory"></a>
+### ApplicationStackFactory <a name="ApplicationStackFactory" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory"></a>
 
 Abstract class that needs to be implemented to pass the application Stack to the CICD pipeline.
 
@@ -11484,10 +11484,10 @@ class MyApplicationStackFactory extends dsf.utils.ApplicationStackFactory {
 ```
 
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.ApplicationStackFactory.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.ApplicationStackFactory()
 ```
@@ -11501,11 +11501,11 @@ new utils.ApplicationStackFactory()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.ApplicationStackFactory.createStack">createStack</a></code> | Abstract method that needs to be implemented to return the application Stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory.createStack">createStack</a></code> | Abstract method that needs to be implemented to return the application Stack. |
 
 ---
 
-##### `createStack` <a name="createStack" id="aws-data-solutions-framework.utils.ApplicationStackFactory.createStack"></a>
+##### `createStack` <a name="createStack" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory.createStack"></a>
 
 ```typescript
 public createStack(scope: Construct, stage: CICDStage): Stack
@@ -11513,7 +11513,7 @@ public createStack(scope: Construct, stage: CICDStage): Stack
 
 Abstract method that needs to be implemented to return the application Stack.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.utils.ApplicationStackFactory.createStack.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory.createStack.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -11521,9 +11521,9 @@ The scope to create the stack in.
 
 ---
 
-###### `stage`<sup>Required</sup> <a name="stage" id="aws-data-solutions-framework.utils.ApplicationStackFactory.createStack.parameter.stage"></a>
+###### `stage`<sup>Required</sup> <a name="stage" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory.createStack.parameter.stage"></a>
 
-- *Type:* aws-data-solutions-framework.utils.CICDStage
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CICDStage
 
 The stage of the pipeline.
 
@@ -11532,14 +11532,14 @@ The stage of the pipeline.
 
 
 
-### BucketUtils <a name="BucketUtils" id="aws-data-solutions-framework.utils.BucketUtils"></a>
+### BucketUtils <a name="BucketUtils" id="@cdklabs/aws-data-solutions-framework.utils.BucketUtils"></a>
 
 Utils for working with Amazon S3 Buckets.
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.BucketUtils.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.BucketUtils.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.BucketUtils()
 ```
@@ -11554,14 +11554,14 @@ new utils.BucketUtils()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName">generateUniqueBucketName</a></code> | Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName">generateUniqueBucketName</a></code> | Generate a unique Amazon S3 bucket name based on the provided name, CDK construct ID and CDK construct scope. |
 
 ---
 
-##### `generateUniqueBucketName` <a name="generateUniqueBucketName" id="aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName"></a>
+##### `generateUniqueBucketName` <a name="generateUniqueBucketName" id="@cdklabs/aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.BucketUtils.generateUniqueBucketName(scope: Construct, id: string, name: string)
 ```
@@ -11571,7 +11571,7 @@ Generate a unique Amazon S3 bucket name based on the provided name, CDK construc
 The bucket name is suffixed the AWS account ID, the AWS region and a unique 8 characters hash.
 The maximum length for name is 26 characters.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -11579,7 +11579,7 @@ the current scope where the construct is created (generally `this`).
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName.parameter.id"></a>
 
 - *Type:* string
 
@@ -11587,7 +11587,7 @@ the CDK ID of the construct.
 
 ---
 
-###### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.utils.BucketUtils.generateUniqueBucketName.parameter.name"></a>
 
 - *Type:* string
 
@@ -11597,14 +11597,14 @@ the name of the bucket.
 
 
 
-### StepFunctionUtils <a name="StepFunctionUtils" id="aws-data-solutions-framework.utils.StepFunctionUtils"></a>
+### StepFunctionUtils <a name="StepFunctionUtils" id="@cdklabs/aws-data-solutions-framework.utils.StepFunctionUtils"></a>
 
 Utils for working with AWS Step Functions.
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.StepFunctionUtils.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.StepFunctionUtils.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.StepFunctionUtils()
 ```
@@ -11619,21 +11619,21 @@ new utils.StepFunctionUtils()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.StepFunctionUtils.camelToPascal">camelToPascal</a></code> | Convert camel case properties to pascal case as required by AWS Step Functions API. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.StepFunctionUtils.camelToPascal">camelToPascal</a></code> | Convert camel case properties to pascal case as required by AWS Step Functions API. |
 
 ---
 
-##### `camelToPascal` <a name="camelToPascal" id="aws-data-solutions-framework.utils.StepFunctionUtils.camelToPascal"></a>
+##### `camelToPascal` <a name="camelToPascal" id="@cdklabs/aws-data-solutions-framework.utils.StepFunctionUtils.camelToPascal"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.StepFunctionUtils.camelToPascal(config: {[ key: string ]: any})
 ```
 
 Convert camel case properties to pascal case as required by AWS Step Functions API.
 
-###### `config`<sup>Required</sup> <a name="config" id="aws-data-solutions-framework.utils.StepFunctionUtils.camelToPascal.parameter.config"></a>
+###### `config`<sup>Required</sup> <a name="config" id="@cdklabs/aws-data-solutions-framework.utils.StepFunctionUtils.camelToPascal.parameter.config"></a>
 
 - *Type:* {[ key: string ]: any}
 
@@ -11641,14 +11641,14 @@ Convert camel case properties to pascal case as required by AWS Step Functions A
 
 
 
-### Utils <a name="Utils" id="aws-data-solutions-framework.utils.Utils"></a>
+### Utils <a name="Utils" id="@cdklabs/aws-data-solutions-framework.utils.Utils"></a>
 
 Utilities class used across the different resources.
 
-#### Initializers <a name="Initializers" id="aws-data-solutions-framework.utils.Utils.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.Utils.Initializer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 new utils.Utils()
 ```
@@ -11663,27 +11663,27 @@ new utils.Utils()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.generateHash">generateHash</a></code> | Generate an 8 character hash from a string based on HMAC algorithm. |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.generateUniqueHash">generateUniqueHash</a></code> | Generate a unique hash of 8 characters from the CDK scope using its path and the stack name. |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
-| <code><a href="#aws-data-solutions-framework.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.generateHash">generateHash</a></code> | Generate an 8 character hash from a string based on HMAC algorithm. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.generateUniqueHash">generateUniqueHash</a></code> | Generate a unique hash of 8 characters from the CDK scope using its path and the stack name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.loadYaml">loadYaml</a></code> | Take a document stored as string and load it as YAML. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.randomize">randomize</a></code> | Create a random string to be used as a seed for IAM User password. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
 
 ---
 
-##### `generateHash` <a name="generateHash" id="aws-data-solutions-framework.utils.Utils.generateHash"></a>
+##### `generateHash` <a name="generateHash" id="@cdklabs/aws-data-solutions-framework.utils.Utils.generateHash"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.generateHash(text: string)
 ```
 
 Generate an 8 character hash from a string based on HMAC algorithm.
 
-###### `text`<sup>Required</sup> <a name="text" id="aws-data-solutions-framework.utils.Utils.generateHash.parameter.text"></a>
+###### `text`<sup>Required</sup> <a name="text" id="@cdklabs/aws-data-solutions-framework.utils.Utils.generateHash.parameter.text"></a>
 
 - *Type:* string
 
@@ -11691,17 +11691,17 @@ the text to hash.
 
 ---
 
-##### `generateUniqueHash` <a name="generateUniqueHash" id="aws-data-solutions-framework.utils.Utils.generateUniqueHash"></a>
+##### `generateUniqueHash` <a name="generateUniqueHash" id="@cdklabs/aws-data-solutions-framework.utils.Utils.generateUniqueHash"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.generateUniqueHash(scope: Construct, id?: string)
 ```
 
 Generate a unique hash of 8 characters from the CDK scope using its path and the stack name.
 
-###### `scope`<sup>Required</sup> <a name="scope" id="aws-data-solutions-framework.utils.Utils.generateUniqueHash.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.Utils.generateUniqueHash.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -11709,7 +11709,7 @@ the CDK construct scope.
 
 ---
 
-###### `id`<sup>Optional</sup> <a name="id" id="aws-data-solutions-framework.utils.Utils.generateUniqueHash.parameter.id"></a>
+###### `id`<sup>Optional</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.Utils.generateUniqueHash.parameter.id"></a>
 
 - *Type:* string
 
@@ -11717,17 +11717,17 @@ the CDK ID of the construct.
 
 ---
 
-##### `loadYaml` <a name="loadYaml" id="aws-data-solutions-framework.utils.Utils.loadYaml"></a>
+##### `loadYaml` <a name="loadYaml" id="@cdklabs/aws-data-solutions-framework.utils.Utils.loadYaml"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.loadYaml(document: string)
 ```
 
 Take a document stored as string and load it as YAML.
 
-###### `document`<sup>Required</sup> <a name="document" id="aws-data-solutions-framework.utils.Utils.loadYaml.parameter.document"></a>
+###### `document`<sup>Required</sup> <a name="document" id="@cdklabs/aws-data-solutions-framework.utils.Utils.loadYaml.parameter.document"></a>
 
 - *Type:* string
 
@@ -11735,17 +11735,17 @@ the document stored as string.
 
 ---
 
-##### `randomize` <a name="randomize" id="aws-data-solutions-framework.utils.Utils.randomize"></a>
+##### `randomize` <a name="randomize" id="@cdklabs/aws-data-solutions-framework.utils.Utils.randomize"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.randomize(name: string)
 ```
 
 Create a random string to be used as a seed for IAM User password.
 
-###### `name`<sup>Required</sup> <a name="name" id="aws-data-solutions-framework.utils.Utils.randomize.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.utils.Utils.randomize.parameter.name"></a>
 
 - *Type:* string
 
@@ -11753,17 +11753,17 @@ the string to which to append a random string.
 
 ---
 
-##### `readYamlDocument` <a name="readYamlDocument" id="aws-data-solutions-framework.utils.Utils.readYamlDocument"></a>
+##### `readYamlDocument` <a name="readYamlDocument" id="@cdklabs/aws-data-solutions-framework.utils.Utils.readYamlDocument"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.readYamlDocument(path: string)
 ```
 
 Read a YAML file from the path provided and return it.
 
-###### `path`<sup>Required</sup> <a name="path" id="aws-data-solutions-framework.utils.Utils.readYamlDocument.parameter.path"></a>
+###### `path`<sup>Required</sup> <a name="path" id="@cdklabs/aws-data-solutions-framework.utils.Utils.readYamlDocument.parameter.path"></a>
 
 - *Type:* string
 
@@ -11771,17 +11771,17 @@ the path to the file.
 
 ---
 
-##### `stringSanitizer` <a name="stringSanitizer" id="aws-data-solutions-framework.utils.Utils.stringSanitizer"></a>
+##### `stringSanitizer` <a name="stringSanitizer" id="@cdklabs/aws-data-solutions-framework.utils.Utils.stringSanitizer"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.stringSanitizer(toSanitize: string)
 ```
 
 Sanitize a string by removing upper case and replacing special characters except underscore.
 
-###### `toSanitize`<sup>Required</sup> <a name="toSanitize" id="aws-data-solutions-framework.utils.Utils.stringSanitizer.parameter.toSanitize"></a>
+###### `toSanitize`<sup>Required</sup> <a name="toSanitize" id="@cdklabs/aws-data-solutions-framework.utils.Utils.stringSanitizer.parameter.toSanitize"></a>
 
 - *Type:* string
 
@@ -11789,17 +11789,17 @@ the string to sanitize.
 
 ---
 
-##### `toPascalCase` <a name="toPascalCase" id="aws-data-solutions-framework.utils.Utils.toPascalCase"></a>
+##### `toPascalCase` <a name="toPascalCase" id="@cdklabs/aws-data-solutions-framework.utils.Utils.toPascalCase"></a>
 
 ```typescript
-import { utils } from 'aws-data-solutions-framework'
+import { utils } from '@cdklabs/aws-data-solutions-framework'
 
 utils.Utils.toPascalCase(text: string)
 ```
 
 Convert a string to PascalCase.
 
-###### `text`<sup>Required</sup> <a name="text" id="aws-data-solutions-framework.utils.Utils.toPascalCase.parameter.text"></a>
+###### `text`<sup>Required</sup> <a name="text" id="@cdklabs/aws-data-solutions-framework.utils.Utils.toPascalCase.parameter.text"></a>
 
 - *Type:* string
 
@@ -11812,7 +11812,7 @@ the string to convert to PascalCase.
 
 ## Enums <a name="Enums" id="Enums"></a>
 
-### Architecture <a name="Architecture" id="aws-data-solutions-framework.utils.Architecture"></a>
+### Architecture <a name="Architecture" id="@cdklabs/aws-data-solutions-framework.utils.Architecture"></a>
 
 List of supported CPU architecture, either  X86_64 or ARM64.
 
@@ -11820,22 +11820,22 @@ List of supported CPU architecture, either  X86_64 or ARM64.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.Architecture.X86_64">X86_64</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.Architecture.ARM64">ARM64</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Architecture.X86_64">X86_64</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Architecture.ARM64">ARM64</a></code> | *No description.* |
 
 ---
 
-##### `X86_64` <a name="X86_64" id="aws-data-solutions-framework.utils.Architecture.X86_64"></a>
-
----
-
-
-##### `ARM64` <a name="ARM64" id="aws-data-solutions-framework.utils.Architecture.ARM64"></a>
+##### `X86_64` <a name="X86_64" id="@cdklabs/aws-data-solutions-framework.utils.Architecture.X86_64"></a>
 
 ---
 
 
-### CICDStage <a name="CICDStage" id="aws-data-solutions-framework.utils.CICDStage"></a>
+##### `ARM64` <a name="ARM64" id="@cdklabs/aws-data-solutions-framework.utils.Architecture.ARM64"></a>
+
+---
+
+
+### CICDStage <a name="CICDStage" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage"></a>
 
 The list of CICD Stages used in CICD Pipelines.
 
@@ -11843,145 +11843,145 @@ The list of CICD Stages used in CICD Pipelines.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.utils.CICDStage.STAGING">STAGING</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.utils.CICDStage.PROD">PROD</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.STAGING">STAGING</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.PROD">PROD</a></code> | *No description.* |
 
 ---
 
-##### `STAGING` <a name="STAGING" id="aws-data-solutions-framework.utils.CICDStage.STAGING"></a>
-
----
-
-
-##### `PROD` <a name="PROD" id="aws-data-solutions-framework.utils.CICDStage.PROD"></a>
+##### `STAGING` <a name="STAGING" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.STAGING"></a>
 
 ---
 
 
-### EmrContainersRuntimeVersion <a name="EmrContainersRuntimeVersion" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion"></a>
+##### `PROD` <a name="PROD" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.PROD"></a>
+
+---
+
+
+### EmrContainersRuntimeVersion <a name="EmrContainersRuntimeVersion" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
 
-##### `V7_0` <a name="V7_0" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0"></a>
-
----
-
-
-##### `V6_15` <a name="V6_15" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15"></a>
+##### `V7_0` <a name="V7_0" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0"></a>
 
 ---
 
 
-##### `V6_14` <a name="V6_14" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14"></a>
+##### `V6_15` <a name="V6_15" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15"></a>
 
 ---
 
 
-##### `V6_13` <a name="V6_13" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_13"></a>
+##### `V6_14` <a name="V6_14" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14"></a>
 
 ---
 
 
-##### `V6_12` <a name="V6_12" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_12"></a>
+##### `V6_13` <a name="V6_13" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_13"></a>
 
 ---
 
 
-##### `V6_11_1` <a name="V6_11_1" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11_1"></a>
+##### `V6_12` <a name="V6_12" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_12"></a>
 
 ---
 
 
-##### `V6_11` <a name="V6_11" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11"></a>
+##### `V6_11_1` <a name="V6_11_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11_1"></a>
 
 ---
 
 
-##### `V6_10_1` <a name="V6_10_1" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10_1"></a>
+##### `V6_11` <a name="V6_11" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_11"></a>
 
 ---
 
 
-##### `V6_10` <a name="V6_10" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10"></a>
+##### `V6_10_1` <a name="V6_10_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10_1"></a>
 
 ---
 
 
-##### `V6_9` <a name="V6_9" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_9"></a>
+##### `V6_10` <a name="V6_10" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_10"></a>
 
 ---
 
 
-##### `V6_8` <a name="V6_8" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_8"></a>
+##### `V6_9` <a name="V6_9" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_9"></a>
 
 ---
 
 
-##### `V6_7` <a name="V6_7" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_7"></a>
+##### `V6_8` <a name="V6_8" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_8"></a>
 
 ---
 
 
-##### `V6_6` <a name="V6_6" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_6"></a>
+##### `V6_7` <a name="V6_7" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_7"></a>
 
 ---
 
 
-##### `V6_5` <a name="V6_5" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_5"></a>
+##### `V6_6` <a name="V6_6" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_6"></a>
 
 ---
 
 
-##### `V6_4` <a name="V6_4" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_4"></a>
+##### `V6_5` <a name="V6_5" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_5"></a>
 
 ---
 
 
-##### `V6_3` <a name="V6_3" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_3"></a>
+##### `V6_4` <a name="V6_4" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_4"></a>
 
 ---
 
 
-##### `V6_2` <a name="V6_2" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_2"></a>
+##### `V6_3` <a name="V6_3" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_3"></a>
 
 ---
 
 
-##### `V5_33` <a name="V5_33" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_33"></a>
+##### `V6_2` <a name="V6_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_2"></a>
 
 ---
 
 
-##### `V5_32` <a name="V5_32" id="aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32"></a>
+##### `V5_33` <a name="V5_33" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_33"></a>
 
 ---
 
 
-### EmrRuntimeVersion <a name="EmrRuntimeVersion" id="aws-data-solutions-framework.processing.EmrRuntimeVersion"></a>
+##### `V5_32` <a name="V5_32" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32"></a>
+
+---
+
+
+### EmrRuntimeVersion <a name="EmrRuntimeVersion" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion"></a>
 
 Enum defining the EMR version as defined in the [Amazon EMR documentation](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html).
 
@@ -11989,151 +11989,151 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_13">V6_13</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_12">V6_12</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11_1">V6_11_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11">V6_11</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10_1">V6_10_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10">V6_10</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_9">V6_9</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_8">V6_8</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_7">V6_7</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_6">V6_6</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_5">V6_5</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_4">V6_4</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_3">V6_3</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_2">V6_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_33">V5_33</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
 
-##### `V7_0` <a name="V7_0" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0"></a>
-
----
-
-
-##### `V6_15` <a name="V6_15" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_15"></a>
+##### `V7_0` <a name="V7_0" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0"></a>
 
 ---
 
 
-##### `V6_14` <a name="V6_14" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_14"></a>
+##### `V6_15` <a name="V6_15" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_15"></a>
 
 ---
 
 
-##### `V6_13` <a name="V6_13" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_13"></a>
+##### `V6_14` <a name="V6_14" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_14"></a>
 
 ---
 
 
-##### `V6_12` <a name="V6_12" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_12"></a>
+##### `V6_13` <a name="V6_13" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_13"></a>
 
 ---
 
 
-##### `V6_11_1` <a name="V6_11_1" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11_1"></a>
+##### `V6_12` <a name="V6_12" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_12"></a>
 
 ---
 
 
-##### `V6_11` <a name="V6_11" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11"></a>
+##### `V6_11_1` <a name="V6_11_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11_1"></a>
 
 ---
 
 
-##### `V6_10_1` <a name="V6_10_1" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10_1"></a>
+##### `V6_11` <a name="V6_11" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_11"></a>
 
 ---
 
 
-##### `V6_10` <a name="V6_10" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10"></a>
+##### `V6_10_1` <a name="V6_10_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10_1"></a>
 
 ---
 
 
-##### `V6_9` <a name="V6_9" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_9"></a>
+##### `V6_10` <a name="V6_10" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_10"></a>
 
 ---
 
 
-##### `V6_8` <a name="V6_8" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_8"></a>
+##### `V6_9` <a name="V6_9" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_9"></a>
 
 ---
 
 
-##### `V6_7` <a name="V6_7" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_7"></a>
+##### `V6_8` <a name="V6_8" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_8"></a>
 
 ---
 
 
-##### `V6_6` <a name="V6_6" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_6"></a>
+##### `V6_7` <a name="V6_7" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_7"></a>
 
 ---
 
 
-##### `V6_5` <a name="V6_5" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_5"></a>
+##### `V6_6` <a name="V6_6" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_6"></a>
 
 ---
 
 
-##### `V6_4` <a name="V6_4" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_4"></a>
+##### `V6_5` <a name="V6_5" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_5"></a>
 
 ---
 
 
-##### `V6_3` <a name="V6_3" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_3"></a>
+##### `V6_4` <a name="V6_4" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_4"></a>
 
 ---
 
 
-##### `V6_2` <a name="V6_2" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_2"></a>
+##### `V6_3` <a name="V6_3" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_3"></a>
 
 ---
 
 
-##### `V5_33` <a name="V5_33" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_33"></a>
+##### `V6_2` <a name="V6_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_2"></a>
 
 ---
 
 
-##### `V5_32` <a name="V5_32" id="aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32"></a>
+##### `V5_33` <a name="V5_33" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_33"></a>
 
 ---
 
 
-### EngineVersion <a name="EngineVersion" id="aws-data-solutions-framework.consumption.EngineVersion"></a>
+##### `V5_32` <a name="V5_32" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32"></a>
+
+---
+
+
+### EngineVersion <a name="EngineVersion" id="@cdklabs/aws-data-solutions-framework.consumption.EngineVersion"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.EngineVersion.AUTO">AUTO</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.EngineVersion.ATHENA_V3">ATHENA_V3</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3">PYSPARK_V3</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.AUTO">AUTO</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.ATHENA_V3">ATHENA_V3</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3">PYSPARK_V3</a></code> | *No description.* |
 
 ---
 
-##### `AUTO` <a name="AUTO" id="aws-data-solutions-framework.consumption.EngineVersion.AUTO"></a>
-
----
-
-
-##### `ATHENA_V3` <a name="ATHENA_V3" id="aws-data-solutions-framework.consumption.EngineVersion.ATHENA_V3"></a>
+##### `AUTO` <a name="AUTO" id="@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.AUTO"></a>
 
 ---
 
 
-##### `PYSPARK_V3` <a name="PYSPARK_V3" id="aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3"></a>
+##### `ATHENA_V3` <a name="ATHENA_V3" id="@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.ATHENA_V3"></a>
 
 ---
 
 
-### KarpenterVersion <a name="KarpenterVersion" id="aws-data-solutions-framework.processing.KarpenterVersion"></a>
+##### `PYSPARK_V3` <a name="PYSPARK_V3" id="@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3"></a>
+
+---
+
+
+### KarpenterVersion <a name="KarpenterVersion" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion"></a>
 
 The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 is supported.
 
@@ -12141,16 +12141,16 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
 
 ---
 
-##### `V0_32_1` <a name="V0_32_1" id="aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1"></a>
+##### `V0_32_1` <a name="V0_32_1" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1"></a>
 
 ---
 
 
-### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport"></a>
+### RedshiftServerlessNamespaceLogExport <a name="RedshiftServerlessNamespaceLogExport" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport"></a>
 
 Namespace log export types.
 
@@ -12158,28 +12158,28 @@ Namespace log export types.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG">USER_LOG</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG">CONNECTION_LOG</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG">USER_ACTIVITY_LOG</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG">USER_LOG</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG">CONNECTION_LOG</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG">USER_ACTIVITY_LOG</a></code> | *No description.* |
 
 ---
 
-##### `USER_LOG` <a name="USER_LOG" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG"></a>
-
----
-
-
-##### `CONNECTION_LOG` <a name="CONNECTION_LOG" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG"></a>
+##### `USER_LOG` <a name="USER_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_LOG"></a>
 
 ---
 
 
-##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
+##### `CONNECTION_LOG` <a name="CONNECTION_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.CONNECTION_LOG"></a>
 
 ---
 
 
-### SparkImage <a name="SparkImage" id="aws-data-solutions-framework.processing.SparkImage"></a>
+##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
+
+---
+
+
+### SparkImage <a name="SparkImage" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage"></a>
 
 The list of supported Spark images to use in the SparkCICDPipeline.
 
@@ -12187,74 +12187,74 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_7_0">EMR_7_0</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_15">EMR_6_15</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_14">EMR_6_14</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_13">EMR_6_13</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0">EMR_7_0</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_15">EMR_6_15</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_14">EMR_6_14</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_13">EMR_6_13</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_12">EMR_6_12</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_11">EMR_6_11</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_10">EMR_6_10</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
 
-##### `EMR_7_0` <a name="EMR_7_0" id="aws-data-solutions-framework.processing.SparkImage.EMR_7_0"></a>
-
----
-
-
-##### `EMR_6_15` <a name="EMR_6_15" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_15"></a>
+##### `EMR_7_0` <a name="EMR_7_0" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0"></a>
 
 ---
 
 
-##### `EMR_6_14` <a name="EMR_6_14" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_14"></a>
+##### `EMR_6_15` <a name="EMR_6_15" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_15"></a>
 
 ---
 
 
-##### `EMR_6_13` <a name="EMR_6_13" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_13"></a>
+##### `EMR_6_14` <a name="EMR_6_14" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_14"></a>
 
 ---
 
 
-##### `EMR_6_12` <a name="EMR_6_12" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_12"></a>
+##### `EMR_6_13` <a name="EMR_6_13" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_13"></a>
 
 ---
 
 
-##### `EMR_6_11` <a name="EMR_6_11" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_11"></a>
+##### `EMR_6_12` <a name="EMR_6_12" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_12"></a>
 
 ---
 
 
-##### `EMR_6_10` <a name="EMR_6_10" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_10"></a>
+##### `EMR_6_11` <a name="EMR_6_11" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_11"></a>
 
 ---
 
 
-##### `EMR_6_9` <a name="EMR_6_9" id="aws-data-solutions-framework.processing.SparkImage.EMR_6_9"></a>
+##### `EMR_6_10` <a name="EMR_6_10" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_10"></a>
 
 ---
 
 
-### State <a name="State" id="aws-data-solutions-framework.consumption.State"></a>
+##### `EMR_6_9` <a name="EMR_6_9" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_9"></a>
+
+---
+
+
+### State <a name="State" id="@cdklabs/aws-data-solutions-framework.consumption.State"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#aws-data-solutions-framework.consumption.State.ENABLED">ENABLED</a></code> | *No description.* |
-| <code><a href="#aws-data-solutions-framework.consumption.State.DISABLED">DISABLED</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.State.ENABLED">ENABLED</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.State.DISABLED">DISABLED</a></code> | *No description.* |
 
 ---
 
-##### `ENABLED` <a name="ENABLED" id="aws-data-solutions-framework.consumption.State.ENABLED"></a>
+##### `ENABLED` <a name="ENABLED" id="@cdklabs/aws-data-solutions-framework.consumption.State.ENABLED"></a>
 
 ---
 
 
-##### `DISABLED` <a name="DISABLED" id="aws-data-solutions-framework.consumption.State.DISABLED"></a>
+##### `DISABLED` <a name="DISABLED" id="@cdklabs/aws-data-solutions-framework.consumption.State.DISABLED"></a>
 
 ---
 

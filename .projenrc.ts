@@ -130,11 +130,11 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
   constructsVersion: CDK_CONSTRUCTS_VERSION,
   jsiiVersion: JSII_VERSION,
 
-  packageName: 'aws-data-solutions-framework',
+  packageName: '@cdklabs/aws-data-solutions-framework',
 
   publishToPypi: {
-    distName: 'aws_data_solutions_framework',
-    module: 'aws_data_solutions_framework'
+    distName: 'cdklabs.aws_data_solutions_framework',
+    module: 'cdklabs.aws_data_solutions_framework'
   },
 
   deps: [
@@ -288,7 +288,7 @@ synthTask.reset();
 synthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python aws_data_solutions_framework` },
+    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -348,7 +348,7 @@ adsfQuickstartSynthTask.reset();
 adsfQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python aws_data_solutions_framework` },
+    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]

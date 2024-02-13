@@ -7,8 +7,8 @@ package_example()
   PACKAGE_FILE=$(realpath -s $EXAMPLE_DIR)-example.zip
   echo Packaging $PACKAGE_FILE...
   cd $EXAMPLE_DIR
-  # remove the projen header and append 'aws-data-solutions-framework'
-  find . -type f -name 'requirements.txt' | while read file; do sed -i '1d; $a aws-data-solutions-framework' "$file"; done
+  # remove the projen header and append '@cdklabs/aws-data-solutions-framework'
+  find . -type f -name 'requirements.txt' | while read file; do sed -i '1d; $a @cdklabs/aws-data-solutions-framework' "$file"; done
   zip $PACKAGE_FILE  * -r -x "*.projen/*" "*pytest*" "*__pycache__*" "*.venv/*" "*cdk.out/*" "*.git*" "*package.json" "*requirements-dev.txt"
   mv $PACKAGE_FILE ../$PACKAGE_DIR/
 }

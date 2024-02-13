@@ -1,5 +1,5 @@
 {
-  "name": "aws-data-solutions-framework",
+  "name": "@cdklabs/aws-data-solutions-framework",
   "description": "L3 CDK Constructs used to build data solutions with AWS",
   "repository": {
     "type": "git",
@@ -156,8 +156,8 @@
     "outdir": "dist",
     "targets": {
       "python": {
-        "distName": "aws_data_solutions_framework",
-        "module": "aws_data_solutions_framework"
+        "distName": "cdklabs.aws_data_solutions_framework",
+        "module": "cdklabs.aws_data_solutions_framework"
       }
     },
     "tsc": {
