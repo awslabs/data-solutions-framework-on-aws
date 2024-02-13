@@ -68,7 +68,7 @@ The default value of the path that the crawler would use is `<databaseName>/publ
 An [Amazon Athena workgroup](https://docs.aws.amazon.com/athena/latest/ug/manage-queries-control-costs-with-workgroups.html) with provided configuration.
 
 `AthenaWorkGroup` provides Athena workgroup configuration with best-practices:
-- Amazon S3 bucket for query results, based on [`AnalyticsBucket`](../storage/README.md#AnalyticsBucket).
+- Amazon S3 bucket for query results, based on [`AnalyticsBucket`](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/analytics-bucket).
 - Query results are encrypted using AWS KMS Key.
 - Execution Role for the PySpark query engine.
 - A grant method to allow principals to run queries.
