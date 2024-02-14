@@ -8,6 +8,6 @@
         "package": "npx projen package"
     },
     "dependencies": {
-        "aws-data-solutions-framework": "*"
+        "@cdklabs/aws-data-solutions-framework": "*"
     }
 }
