@@ -9,7 +9,7 @@ from aws_cdk import custom_resources as cr
 from aws_cdk.aws_events_targets import LambdaFunction
 from constructs import Construct
 
-import aws_dsf as dsf
+import cdklabs.aws_data_solutions_framework as dsf
 
 
 class SparkJobTrigger(Construct):

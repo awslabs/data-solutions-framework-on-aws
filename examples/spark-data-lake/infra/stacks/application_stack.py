@@ -4,7 +4,7 @@
 from aws_cdk import Stack, RemovalPolicy, Names
 from aws_cdk import aws_iam as iam
 from constructs import Construct
-import aws_dsf as dsf
+import cdklabs.aws_data_solutions_framework as dsf
 
 from stacks.demo_helpers.data_load import DataLoad
 from stacks.demo_helpers.spark_job_trigger import SparkJobTrigger

@@ -1,8 +1,8 @@
 {
   "dependencies": [
     {
-      "name": "@types/node",
-      "version": "16.0.0",
+      "name": "constructs",
+      "version": "^10.0.0",
       "type": "build"
     },
     {

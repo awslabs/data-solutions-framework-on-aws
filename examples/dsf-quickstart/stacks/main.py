@@ -6,7 +6,7 @@ from aws_cdk.aws_iam import Policy, PolicyStatement
 from aws_cdk.aws_kms import Key
 from constructs import Construct
 from aws_cdk.aws_s3 import Bucket
-import aws_dsf as dsf
+import cdklabs.aws_data_solutions_framework as dsf
 
 
 class DataStack(Stack):
