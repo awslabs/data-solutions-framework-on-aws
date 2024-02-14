@@ -177,5 +177,6 @@ jobs:
         working-directory: framework
         run: mv .repo/dist dist
       - name: Release
-        working-directory: framework
         uses: pypa/gh-action-pypi-publish@2f6f737ca5f74c637829c0f5c3acd0e29ea5e8bf #v1.8.11
+        with:
+          packages-dir: framework/dist/python/
