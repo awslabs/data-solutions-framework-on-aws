@@ -139,6 +139,7 @@ jobs:
           NPM_DIST_TAG: latest
           NPM_REGISTRY: registry.npmjs.org
           NPM_TOKEN: ${{ secrets.DSF_NPM_TOKEN }}
+          NPM_ACCESS_LEVEL: public
         run: npx -p publib@latest publib-npm
   release_pypi:
     name: Publish to PyPI
