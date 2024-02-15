@@ -23,7 +23,9 @@ export interface DataCatalogDatabaseProps {
   readonly locationBucket?: IBucket;
 
   /**
-   * Top level location wwhere table data is stored.
+   * Top level location where table data is stored.
+   * The location prefix cannot be empty if the `locationBucket` is set.
+   * The minimal configuration is `/` for the root level in the Bucket.
    */
   readonly locationPrefix?: string;
 

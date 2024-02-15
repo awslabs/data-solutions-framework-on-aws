@@ -61,6 +61,50 @@ describe('DataCatalogDatabase with passed role', () => {
       ],
     }, 0);
   });
+
+  test('DataCatalogDatabase should grant the crawler execution role proper permissions', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          {
+            Action: [
+              's3:GetObject*',
+              's3:GetBucket*',
+              's3:List*',
+            ],
+            Effect: 'Allow',
+            Resource: [
+              Match.objectLike({
+                'Fn::GetAtt': [
+                  'dbBucket53E3A0D8',
+                  'Arn',
+                ],
+              }),
+              Match.objectLike({
+                'Fn::Join': [
+                  '',
+                  [
+                    {
+                      'Fn::GetAtt': [
+                        Match.stringLikeRegexp('.*dbBucket.*'),
+                        'Arn',
+                      ],
+                    },
+                    Match.stringLikeRegexp('\\*'),
+                  ],
+                ],
+              }),
+            ],
+          },
+        ]),
+      },
+      Roles: [
+        {
+          Ref: Match.stringLikeRegexp('.*SampleCrawlerRole.*'),
+        },
+      ],
+    });
+  });
 });
 
 describe('DataCatalogDatabase with no top-level database', () => {
@@ -505,6 +549,64 @@ describe('DataCatalogDatabase with missing leading slash in the prefix and globa
 
           ],
         },
+      },
+    });
+  });
+});
+
+describe('DataCatalogDatabase with / as location prefix', () => {
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+  const dbBucketName = 'sample-db';
+  const dbBucket = new Bucket(stack, 'dbBucket', {
+    bucketName: dbBucketName,
+  });
+  const locationPrefix = '/';
+  const dbName = 'sample';
+  new DataCatalogDatabase(stack, 'database', {
+    locationBucket: dbBucket,
+    locationPrefix: locationPrefix,
+    name: dbName,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  test('should create a policy with proper S3 access', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          {
+            Action: [
+              's3:GetObject*',
+              's3:GetBucket*',
+              's3:List*',
+            ],
+            Effect: 'Allow',
+            Resource: [
+              Match.objectLike({
+                'Fn::GetAtt': [
+                  'dbBucket53E3A0D8',
+                  'Arn',
+                ],
+              }),
+              Match.objectLike({
+                'Fn::Join': [
+                  '',
+                  [
+                    {
+                      'Fn::GetAtt': [
+                        Match.stringLikeRegexp('.*dbBucket.*'),
+                        'Arn',
+                      ],
+                    },
+                    Match.stringLikeRegexp('\\*'),
+                  ],
+                ],
+              }),
+            ],
+          },
+        ]),
       },
     });
   });
