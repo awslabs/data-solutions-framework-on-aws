@@ -309,7 +309,8 @@ export class DataCatalogDatabase extends TrackedConstruct {
    */
   private handleS3TypeCrawler(props: DataCatalogDatabaseProps, s3Props: S3CrawlerProps): CfnCrawler {
     const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(s3Props.locationPrefix);
-    props.locationBucket!.grantRead(this.crawlerRole!, s3Props.locationPrefix+'*');
+    const grantPrefix = s3Props.locationPrefix == '/' ? '' : s3Props.locationPrefix;
+    props.locationBucket!.grantRead(this.crawlerRole!, grantPrefix+'*');
 
     return new CfnCrawler(this, 'DatabaseAutoCrawler', {
       role: this.crawlerRole!.roleArn,
