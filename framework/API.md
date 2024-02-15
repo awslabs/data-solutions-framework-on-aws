@@ -8778,7 +8778,7 @@ public readonly locationPrefix: string;
 
 Top level location where table data is stored.
 
-The location prefix cannot be empty if the `locationBucket` is set. 
+The location prefix cannot be empty if the `locationBucket` is set.
 The minimal configuration is `/` for the root level in the Bucket.
 
 ---
