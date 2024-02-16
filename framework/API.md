@@ -3745,10 +3745,14 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt VPC flow logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to publish VPC Flow Logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint gateway. |
+<<<<<<< HEAD
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The amazon VPC created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.clientVpnEndpoint">clientVpnEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.ClientVpnEndpoint</code> | The Client VPN Endpoint. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpnLogGroup">vpnLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The log group for Client VPN Endpoint. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpnSecurityGroups">vpnSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The security group for Client VPN Endpoint. |
+=======
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The amazon VPC created. |
+>>>>>>> f2bae5e (construct foundation)
 
 ---
 
@@ -3815,10 +3819,10 @@ The S3 VPC endpoint gateway.
 ##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc"></a>
 
 ```typescript
-public readonly vpc: IVpc;
+public readonly vpc: Vpc;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Type:* aws-cdk-lib.aws_ec2.Vpc
 
 The amazon VPC created.
 
