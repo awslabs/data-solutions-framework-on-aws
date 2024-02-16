@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
@@ -9,7 +10,6 @@ import { Construct } from 'constructs';
 import { mskCrudProviderSetup } from './msk-helpers';
 import { MskServerlessProps, MskTopic } from './msk-serverless-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
@@ -43,9 +43,9 @@ export class MskServerless extends TrackedConstruct {
 
     //Security group dedicated to lambda CR
     const lambdaSecurityGroup = new SecurityGroup(this, 'LambdaSecurityGroup', {
-                                  vpc: props.vpc,
-                                });
-    
+      vpc: props.vpc,
+    });
+
     props.vpcConfigs[0].securityGroups!.push(lambdaSecurityGroup.securityGroupId);
 
     this.mskServerlessCluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
@@ -57,10 +57,10 @@ export class MskServerless extends TrackedConstruct {
     console.log(this.removalPolicy);
 
     let mskCrudProvider = mskCrudProviderSetup(
-      this, 
-      this.removalPolicy, 
-      props.vpc, 
-      this.mskServerlessCluster, 
+      this,
+      this.removalPolicy,
+      props.vpc,
+      this.mskServerlessCluster,
       lambdaSecurityGroup);
 
     this.mskCrudProviderToken = mskCrudProvider.serviceToken;
@@ -68,7 +68,7 @@ export class MskServerless extends TrackedConstruct {
   }
 
 
-  public createTopic (scope: Construct, id: string, topicDefinition: MskTopic [], waitForLeaders: boolean,  timeout: number) {
+  public createTopic (scope: Construct, id: string, topicDefinition: MskTopic [], waitForLeaders: boolean, timeout: number) {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
