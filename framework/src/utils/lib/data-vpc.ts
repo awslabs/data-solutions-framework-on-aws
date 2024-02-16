@@ -6,7 +6,7 @@ import {
   ClientVpnEndpoint, ClientVpnEndpointOptions, ClientVpnUserBasedAuthentication,
   FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint,
   ISecurityGroup, IpAddresses, Peer, Port, SecurityGroup, SubnetType,
-  TransportProtocol, IVpc, Vpc, VpnPort,
+  TransportProtocol, Vpc, VpnPort,
 } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IRole, PolicyStatement, Role, SamlMetadataDocument, SamlProvider, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
@@ -32,7 +32,7 @@ export class DataVpc extends Construct {
   /**
    * The amazon VPC created
    */
-  public readonly vpc: IVpc;
+  public readonly vpc: Vpc;
   /**
    * The KMS Key used to encrypt VPC flow logs
    */
