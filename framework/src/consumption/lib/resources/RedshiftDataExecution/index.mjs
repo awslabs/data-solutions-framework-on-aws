@@ -53,7 +53,7 @@ export const isCompleteHandler = async(event) => {
     let isComplete = false
     let execId = null
     
-    if (event["Data"] && event["Data"]["execId"] && event["RequestType"] !== "Delete") {
+    if (event["Data"] && event["Data"]["execId"]) {
         execId = event["Data"]["execId"]
 
         const resp = await client.send(new DescribeStatementCommand({Id: execId}))
