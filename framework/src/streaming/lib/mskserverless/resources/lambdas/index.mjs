@@ -40,6 +40,8 @@ export const onEventHandler = async (event) => {
 
     const admin = kafka.admin();
 
+    let listTopic = await admin.listTopics(); //Debug CR only to be removed
+
     console.info('======Recieved for Event=======');
     console.info(event);
 
@@ -47,13 +49,16 @@ export const onEventHandler = async (event) => {
         case 'Create':
 
             console.log(event.ResourceProperties.topics);
+            console.log(listTopic);
 
-            await admin.createTopics({
+            let kafkaResponse = await admin.createTopics({
                 validateOnly: false,
                 waitForLeaders: event.ResourceProperties.waitForLeaders,
                 timeout: event.ResourceProperties.timeout,
                 topics: event.ResourceProperties.topics,
             });
+
+            console.log(kafkaResponse);
 
             await admin.disconnect();
 
@@ -61,7 +66,6 @@ export const onEventHandler = async (event) => {
 
         case 'Update':
             console.info(event.RequestType);
-            physicalResourceId = (await onCreate(event)).PhysicalResourceId;
 
             return undefined;
 
