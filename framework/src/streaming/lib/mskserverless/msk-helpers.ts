@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { SecurityGroup, SubnetType, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, SubnetType, IVpc, Port } from 'aws-cdk-lib/aws-ec2';
 import { Effect, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { Construct } from 'constructs';
@@ -13,11 +13,14 @@ export function mskCrudProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
-  mskCluster: CfnServerlessCluster) : DsfProvider {
+  mskCluster: CfnServerlessCluster,
+  lambdaSecurityGroup: SecurityGroup) : DsfProvider {
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
     vpc,
   });
+
+  lambdaSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
 
   //The policy allowing the managed endpoint custom resource to create call the APIs for managed endpoint
   const lambdaPolicy = [
@@ -43,9 +46,6 @@ export function mskCrudProviderSetup(
     statements: lambdaPolicy,
     description: 'Policy for emr containers CR to create managed endpoint',
   });
-
-  console.log(__dirname);
-  console.log(path.join(__dirname, './resources/lambdas/package-lock.json'));
 
   const provider = new DsfProvider(scope, 'MskCrudProvider', {
     providerName: 'msk-crud-provider',
