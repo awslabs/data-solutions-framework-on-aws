@@ -32,10 +32,9 @@ export interface MskServerlessProps {
  * Properties for the `MskTopic`
  */
 export interface MskTopic {
-
   topic: string;
-  numPartitions: number;     // default: -1 (uses broker `num.partitions` configuration)
-  replicationFactor: number; // default: -1 (uses broker `default.replication.factor` configuration)
-  replicaAssignment: {string:any}[];  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
-  configEntries: {string:any}[];       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+  numPartitions?: number;     // default: -1 (uses broker `num.partitions` configuration)
+  replicationFactor?: number; // default: -1 (uses broker `default.replication.factor` configuration)
+  replicaAssignment?: {[key: string]: any}[];  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
+  configEntries?: {[key: string]: any}[];       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
 }

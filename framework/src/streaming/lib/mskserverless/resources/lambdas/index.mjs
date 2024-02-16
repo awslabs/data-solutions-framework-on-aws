@@ -16,13 +16,15 @@ async function oauthBearerTokenProvider(region) {
 // Handler functions
 export const onEventHandler = async (event) => {
 
-    const client = new KafkaClient(config);
+    console.log(event);
+
+    const client = new KafkaClient();
     const input = {
         ClusterArn: event.ResourceProperties.mskClusterArn,
       };
     
     const command = new GetBootstrapBrokersCommand(input);
-    const response = await client.send(command).promise();
+    const response = await client.send(command);
 
     const brokerUrl = response.BootstrapBrokerStringSaslIam;
 
@@ -36,13 +38,15 @@ export const onEventHandler = async (event) => {
         }
     });
 
-    const admin = kafka.admin()
+    const admin = kafka.admin();
 
     console.info('======Recieved for Event=======');
     console.info(event);
 
     switch (event.RequestType) {
         case 'Create':
+
+            console.log(event.ResourceProperties.topics);
 
             await admin.createTopics({
                 validateOnly: false,
