@@ -31,10 +31,10 @@ export function mskCrudProviderSetup(
 
     new PolicyStatement({
       actions: [
-        "kafka-cluster:Connect",
-        "kafka-cluster:AlterCluster",
-        "kafka-cluster:DescribeCluster",
-        "kafka-cluster:DescribeClusterV2",
+        'kafka-cluster:Connect',
+        'kafka-cluster:AlterCluster',
+        'kafka-cluster:DescribeCluster',
+        'kafka-cluster:DescribeClusterV2',
       ],
       resources: [
         `arn:aws:kafka:${region}:${account}:cluster/${clusterName}/*`,
@@ -42,24 +42,24 @@ export function mskCrudProviderSetup(
     }),
     new PolicyStatement({
       actions: [
-        "kafka-cluster:*Topic*",
-        "kafka-cluster:WriteData",
-        "kafka-cluster:ReadData",
+        'kafka-cluster:*Topic*',
+        'kafka-cluster:WriteData',
+        'kafka-cluster:ReadData',
       ],
       resources: [
         `arn:aws:kafka:${region}:${account}:topic/${clusterName}/*`,
       ],
     }),
     new PolicyStatement({
-      actions: ["kafka-cluster:AlterGroup", "kafka-cluster:DescribeGroup"],
+      actions: ['kafka-cluster:AlterGroup', 'kafka-cluster:DescribeGroup'],
       resources: [
         `arn:aws:kafka:${region}:${account}:group/${clusterName}/*`,
       ],
     }),
     new PolicyStatement({
-      actions: ["kafka:GetBootstrapBrokers", "kafka:DescribeClusterV2", "kafka:CreateVpcConnection"],
+      actions: ['kafka:GetBootstrapBrokers', 'kafka:DescribeClusterV2', 'kafka:CreateVpcConnection'],
       resources: [
-        mskCluster.attrArn
+        mskCluster.attrArn,
       ],
     }),
   ];
@@ -80,9 +80,9 @@ export function mskCrudProviderSetup(
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
-            'aws-msk-iam-sasl-signer-js',
-            'kafkajs'
-        ]
+          'aws-msk-iam-sasl-signer-js',
+          'kafkajs',
+        ],
       },
     },
     isCompleteHandlerDefinition: {
@@ -92,9 +92,9 @@ export function mskCrudProviderSetup(
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
-            'aws-msk-iam-sasl-signer-js',
-            'kafkajs'
-        ]
+          'aws-msk-iam-sasl-signer-js',
+          'kafkajs',
+        ],
       },
     },
     vpc: vpc,
