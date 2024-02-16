@@ -36,6 +36,6 @@ export interface MskTopic {
   topic: string;
   numPartitions: number;     // default: -1 (uses broker `num.partitions` configuration)
   replicationFactor: number; // default: -1 (uses broker `default.replication.factor` configuration)
-  replicaAssignment: any;  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
-  configEntries: any;       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+  replicaAssignment: {string:any}[];  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
+  configEntries: {string:any}[];       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
 }
