@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, Port } from 'aws-cdk-lib/aws-ec2';
-import { Effect, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
@@ -16,6 +16,10 @@ export function mskCrudProviderSetup(
   mskCluster: CfnServerlessCluster,
   lambdaSecurityGroup: SecurityGroup) : DsfProvider {
 
+  let account = Stack.of(scope).account;
+  let region = Stack.of(scope).region;
+  let clusterName = mskCluster.clusterName;
+
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
     vpc,
   });
@@ -24,22 +28,42 @@ export function mskCrudProviderSetup(
 
   //The policy allowing the managed endpoint custom resource to create call the APIs for managed endpoint
   const lambdaPolicy = [
+
     new PolicyStatement({
-      effect: Effect.ALLOW,
-      resources: [
-        mskCluster.attrArn,
-      ],
       actions: [
-        'kafka-cluster:*', //Wide permission for test
+        "kafka-cluster:Connect",
+        "kafka-cluster:AlterCluster",
+        "kafka-cluster:DescribeCluster",
+        "kafka-cluster:DescribeClusterV2",
+      ],
+      resources: [
+        `arn:aws:kafka:${region}:${account}:cluster/${clusterName}/*`,
       ],
     }),
     new PolicyStatement({
-      actions: ["kafka:GetBootstrapBrokers", "kafka:DescribeClusterV2"],
+      actions: [
+        "kafka-cluster:*Topic*",
+        "kafka-cluster:WriteData",
+        "kafka-cluster:ReadData",
+      ],
       resources: [
-        mskCluster.attrArn,
+        `arn:aws:kafka:${region}:${account}:topic/${clusterName}/*`,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ["kafka-cluster:AlterGroup", "kafka-cluster:DescribeGroup"],
+      resources: [
+        `arn:aws:kafka:${region}:${account}:group/${clusterName}/*`,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ["kafka:GetBootstrapBrokers", "kafka:DescribeClusterV2", "kafka:CreateVpcConnection"],
+      resources: [
+        mskCluster.attrArn
       ],
     }),
   ];
+
 
   //Policy to allow lambda access to cloudwatch logs
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
