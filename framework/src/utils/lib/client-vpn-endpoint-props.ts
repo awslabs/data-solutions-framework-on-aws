@@ -46,7 +46,7 @@ export interface DataVpcClientVpnEndpointProps {
    * A CloudWatch Logs log group for connection logging.
    * @default true
    */
-  readonly logging?: true; 
+  readonly logging?: boolean; 
   
   /**
    * The port number to assign to the Client VPN endpoint for TCP and UDP traffic.

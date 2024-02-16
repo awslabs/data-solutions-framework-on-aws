@@ -167,6 +167,7 @@ export class DataVpc extends Construct {
   }
 
   /**
+   * @internal
    * Configure Client VPN Endpoint
    * @param scope current scope
    * @param props DataVpcProps 
