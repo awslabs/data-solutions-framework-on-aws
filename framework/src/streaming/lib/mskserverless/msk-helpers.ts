@@ -30,6 +30,12 @@ export function mskCrudProviderSetup(
         'kafka-cluster:*', //Wide permission for test
       ],
     }),
+    new PolicyStatement({
+      actions: ["kafka:GetBootstrapBrokers", "kafka:DescribeClusterV2"],
+      resources: [
+        mskCluster.attrArn,
+      ],
+    }),
   ];
 
   //Policy to allow lambda access to cloudwatch logs

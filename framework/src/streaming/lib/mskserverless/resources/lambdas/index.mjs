@@ -3,6 +3,7 @@
 
 import { Kafka } from "kafkajs";
 import { generateAuthToken } from "aws-msk-iam-sasl-signer-js";
+import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka"; 
 
 async function oauthBearerTokenProvider(region) {
     // Uses AWS Default Credentials Provider Chain to fetch credentials
@@ -15,13 +16,23 @@ async function oauthBearerTokenProvider(region) {
 // Handler functions
 export const onEventHandler = async (event) => {
 
+    const client = new KafkaClient(config);
+    const input = {
+        ClusterArn: event.ResourceProperties.mskClusterArn,
+      };
+    
+    const command = new GetBootstrapBrokersCommand(input);
+    const response = await client.send(command).promise();
+
+    const brokerUrl = response.BootstrapBrokerStringSaslIam;
+
     const kafka = new Kafka({
         clientId: 'my-app',
-        brokers: [event.bootstrapServer],
+        brokers: [brokerUrl],
         ssl: true,
         sasl: {
             mechanism: 'oauthbearer',
-            oauthBearerProvider: () => oauthBearerTokenProvider('us-east-1')
+            oauthBearerProvider: () => oauthBearerTokenProvider(event.ResourceProperties.region)
         }
     });
 
@@ -39,6 +50,8 @@ export const onEventHandler = async (event) => {
                 timeout: event.ResourceProperties.timeout,
                 topics: event.ResourceProperties.topics,
             });
+
+            await admin.disconnect();
 
             return undefined;
 
