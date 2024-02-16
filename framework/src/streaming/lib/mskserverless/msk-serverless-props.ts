@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RemovalPolicy } from "aws-cdk-lib";
-import { CfnServerlessCluster } from "aws-cdk-lib/aws-msk";
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { IVpc } from 'aws-cdk-lib/aws-ec2';
+import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 /**
- * Properties for the `SparkEmrServerlessRuntime` construct
+ * Properties for the `MskServerlessCluster` construct
  */
 export interface MskServerlessProps {
 
@@ -21,6 +22,20 @@ export interface MskServerlessProps {
 
   readonly clientAuthentication: CfnServerlessCluster.ClientAuthenticationProperty;
 
-  readonly vpcConfigs: CfnServerlessCluster.VpcConfigProperty;
+  readonly vpcConfigs: CfnServerlessCluster.VpcConfigProperty [];
 
+  readonly vpc: IVpc;
+}
+
+
+/**
+ * Properties for the `MskTopic`
+ */
+export interface MskTopic {
+
+  topic: string;
+  numPartitions: number;     // default: -1 (uses broker `num.partitions` configuration)
+  replicationFactor: number; // default: -1 (uses broker `default.replication.factor` configuration)
+  replicaAssignment: any;  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
+  configEntries: any;       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
 }

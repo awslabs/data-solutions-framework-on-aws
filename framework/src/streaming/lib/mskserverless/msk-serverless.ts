@@ -1,16 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Aws, Stack, Tags, CfnJson, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
-import { IGatewayVpcEndpoint, ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { CfnServerlessCluster } from "aws-cdk-lib/aws-msk"; 
-
-
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { Construct } from 'constructs';
-import { MskServerlessProps } from './msk-serverless-props';
+import { RemovalPolicy } from 'aws-cdk-lib';
 import { IPrincipal } from 'aws-cdk-lib/aws-iam';
+import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+
+import { Construct } from 'constructs';
+import { mskCrudProviderSetup } from './msk-helpers';
+import { MskServerlessProps } from './msk-serverless-props';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A construct to create an EKS cluster, configure it and enable it with EMR on EKS
@@ -20,15 +18,9 @@ import { IPrincipal } from 'aws-cdk-lib/aws-iam';
  */
 export class MskServerless extends TrackedConstruct {
 
-  /**
-   * The default CIDR when the VPC is created
-   */
-  public static readonly DEFAULT_VPC_CIDR = '10.0.0.0/16';
-
   public readonly mskServerlessCluster: CfnServerlessCluster;
 
   private readonly removalPolicy: RemovalPolicy;
-
 
 
   /**
@@ -48,15 +40,23 @@ export class MskServerless extends TrackedConstruct {
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     this.mskServerlessCluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
-        clusterName: props.clusterName ?? 'dsfServerlessCluster',
-        vpcConfigs: [props.vpcConfigs],
-        clientAuthentication: props.clientAuthentication,
-    })
+      clusterName: props.clusterName ?? 'dsfServerlessCluster',
+      vpcConfigs: props.vpcConfigs,
+      clientAuthentication: props.clientAuthentication,
+    });
+
+    console.log(this.removalPolicy);
+
+    mskCrudProviderSetup(this, this.removalPolicy, props.vpc, this.mskServerlessCluster);
 
   }
 
 
   public createTopic (topicName: string ) {
+    console.log(topicName);
+  }
+
+  public deleteTopic (topicName: string) {
     console.log(topicName);
   }
 
