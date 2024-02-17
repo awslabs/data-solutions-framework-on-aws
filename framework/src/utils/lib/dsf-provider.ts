@@ -189,9 +189,11 @@ export class DsfProvider extends Construct {
 
     let frameworkOnEventFunction = customResourceProvider.node.findChild('framework-onEvent') as Function;
 
+    console.log(frameworkOnEventFunction);
+
     this.onEventHandlerFunction.addPermission('InvokePermissionOnEvent', {
       principal: new ServicePrincipal('lambda.amazonaws.com'),
-      sourceArn: frameworkOnEventFunction.functionArn,
+      sourceArn: customResourceProvider.serviceToken,
     });
 
     if (this.isCompleteHandlerFunction) {
