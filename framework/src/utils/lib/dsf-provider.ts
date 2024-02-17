@@ -187,15 +187,12 @@ export class DsfProvider extends Construct {
       logRetention: DsfProvider.LOG_RETENTION,
     });
 
-    // Scope down the `onEventHandlerFunction` to be called
-    // Only by the function created by the Provider
+    let frameworkOnEventFunction = customResourceProvider.node.findChild('framework-onEvent') as Function;
+
     this.onEventHandlerFunction.addPermission('InvokePermissionOnEvent', {
       principal: new ServicePrincipal('lambda.amazonaws.com'),
-      sourceArn: customResourceProvider.serviceToken,
+      sourceArn: frameworkOnEventFunction.functionArn,
     });
-
-    // Scope down the `isCompleteHandlerFunction` to be called
-    // Only by the function created by the Provider
 
     if (this.isCompleteHandlerFunction) {
       let frameworkOnIsCompleteFunction = customResourceProvider.node.findChild('framework-isComplete') as Function;
