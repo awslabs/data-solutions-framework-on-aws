@@ -1,3 +1,4 @@
+[//]: # (utils.s3-data-copy)
 # S3DataCopy
 
 Data copy from one bucket to another during deployment time.
@@ -26,6 +27,7 @@ Public subnets are not supported.
 
 [example vpc](./examples/s3-data-copy-vpc.lit.ts)
 
+[//]: # (utils.data-vpc)
 # DataVpc
 
 Amazon VPC optimized for data solutions.
@@ -76,6 +78,7 @@ Or programmatically in your CDK app:
 
 [example object removal](./examples/data-vpc-removal.lit.ts)
 
+[//]: # (utils.customization)
 # Customize DSF on AWS constructs
 
 You can customize DSF on AWS constructs in several ways to adapt to your specific needs:
@@ -122,6 +125,7 @@ AWS CDK offers escape hatches to modify constructs that are encapsulated in DSF 
 
 [example customization cfn](./examples/customization-cfn.lit.ts)
 
+[//]: # (utils.custom-resources)
 # Create custom resources with the DsfProvider
 
 DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs.
