@@ -1,4 +1,3 @@
-[//]: # (utils.s3-data-copy)
 # S3DataCopy
 
 Data copy from one bucket to another during deployment time.
@@ -6,6 +5,7 @@ Data copy from one bucket to another during deployment time.
 ## Overview
 
 `S3DataCopy` construct provides a process to copy objects from one bucket to another during CDK deployment time:
+
 - The copy is part of the CDK and CloudFormation deployment process. It's using a synchronous CDK Custom Resource running on AWS Lambda.
 - The Lambda function is written in Typescript and copies objects between source and target buckets.
 - The execution role used by the Lambda function is scoped to the least privileges. A custom role can be provided.
@@ -26,7 +26,6 @@ Public subnets are not supported.
 
 [example vpc](./examples/s3-data-copy-vpc.lit.ts)
 
-[//]: # (utils.data-vpc)
 # DataVpc
 
 Amazon VPC optimized for data solutions.
@@ -34,8 +33,9 @@ Amazon VPC optimized for data solutions.
 ## Overview
 
 `DataVpc` construct provides a standard Amazon VPC with best practices for security and data solutions implementations:
+
 - The VPC is created with public and private subnets across 3 availability zones (1 of each per AZ) and 3 NAT gateways.
-- VPC CIDR mask should be larger than 28. The CIDR is split between public and private subnets with private subnets being twice as large as public subnet. 
+- VPC CIDR mask should be larger than 28. The CIDR is split between public and private subnets with private subnets being twice as large as public subnet.
 - The flow logs maaged by a dedicated least-privilege IAM Role. The role can be customized.
 - The flow logs exported to an Amazon CloudWatch LogGroup encrypted with an Amazon KMS customer managed key. The KMS key can be customized.
 - A gateway VPC endpoint is created for S3 access.
@@ -44,13 +44,13 @@ Amazon VPC optimized for data solutions.
 
 [example default](./examples/data-vpc-default.lit.ts)
 
-
 ## VPC Flow Logs
 
-The construct logs VPC Flow logs in a Cloudwatch Log Group that is encrypted with a customer managed KMS Key. Exporting VPC Flow Logs to CloudWatch requires an IAM Role. 
+The construct logs VPC Flow logs in a Cloudwatch Log Group that is encrypted with a customer managed KMS Key. Exporting VPC Flow Logs to CloudWatch requires an IAM Role.
 You can customize the VPC Flow Logs management with:
-- your own KMS Key. Be sure to attach the right permissions to your key. 
-Refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html) for full description.
+
+- your own KMS Key. Be sure to attach the right permissions to your key.
+  Refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html) for full description.
 - your own IAM Role. Be sure to configure the proper trust policy and permissions. Refer to the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role) for full description.
 - a custom log retention policy. Default is one week.
 
@@ -64,7 +64,7 @@ Log group and encryption key can be destroyed when the CDK resource is destroyed
 
 You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
-```json title="cdk.json"
+```json
 {
   "context": {
     "@data-solutions-framework-on-aws/removeDataOnDestroy": true
@@ -76,14 +76,13 @@ Or programmatically in your CDK app:
 
 [example object removal](./examples/data-vpc-removal.lit.ts)
 
-[//]: # (utils.customization)
 # Customize DSF on AWS constructs
 
 You can customize DSF on AWS constructs in several ways to adapt to your specific needs:
+
 1. Use the Constructs properties instead of the smart defaults.
 2. Extend existing constructs and override specific methods or properties.
 3. Access CDK L1 resources and override any property.
-
 
 ## Constructs properties
 
@@ -101,6 +100,7 @@ For example, you can use the `DataLakeStorage` properties to modify the lifecycl
 ## Construct extension
 
 AWS CDK allows developers to extend classes like any object-oriented programing language. You can use this method when you want to:
+
 * Override a specific method exposed by a construct.
 * Implement your own defaults. Refer to the example of the [`AnalyticsBucket`](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/storage/analytics-bucket.ts) that extends the CDK L2 `Bucket` construct to enforce some of the parameters.
 
@@ -122,16 +122,17 @@ AWS CDK offers escape hatches to modify constructs that are encapsulated in DSF 
 
 [example customization cfn](./examples/customization-cfn.lit.ts)
 
-[//]: # (utils.custom-resources)
 # Create custom resources with the DsfProvider
 
-DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs. 
-The `DsfProvider` construct handles the undifferentiated tasks for you so you can focus on the custom resource logic. 
-This construct is an opinionated implementation of the [CDK Custom Resource Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#the-custom-resource-provider-framework). 
+DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs.
+The `DsfProvider` construct handles the undifferentiated tasks for you so you can focus on the custom resource logic.
+This construct is an opinionated implementation of the [CDK Custom Resource Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#the-custom-resource-provider-framework).
 It creates:
+
 * A custom resource provider to manage the entire custom resource lifecycle
 * An onEvent Lambda function from the provided code to perform actions you need in your custom resource
 * An optional isComplete Lambda function from the provided code when using [asynchronous custom resources](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#asynchronous-providers-iscomplete)
+* The `onEvent` and `isComplete `Lambda functions are scoped down through a resource policy to be invoked only by the `Provider`.
 * CloudWatch Logs log groups for each Lambda function
 * IAM roles for each Lambda function and associated permissions
 
@@ -143,8 +144,8 @@ You still need to provide an IAM Managed Policy required by the actions of the L
 
 The `DsfProvider` construct requires a Lambda function handler called `onEvent` to perform the actions of the custom resource. It also supports an optional Lambda function handler called `isComplete` to regularly perform status checks for asynchronous operation triggered in the `onEvent` handler.
 
-Both Lambda functions are implemented in Typescript. 
-`esbuild` is used to package the Lambda code and is automatically installed by `Projen`. If `esbuild` is available, `docker` will be used. 
+Both Lambda functions are implemented in Typescript.
+`esbuild` is used to package the Lambda code and is automatically installed by `Projen`. If `esbuild` is available, `docker` will be used.
 You need to configure the path of the Lambda code (entry file) and the path of the dependency lock file (`package-lock.json`) for each handler.
 
 To generate the `package-lock.json` file, run from the Lambda code folder:
@@ -166,12 +167,13 @@ Dependencies can be added to the Lambda handlers using the bundling options. For
 ## Running the Custom Resource in VPC
 
 You can configure the `DsfProvider` to run all the Lambda functions within a VPC (for example in private subnets). It includes the Lambda handlers (`onEvent` and `isComplete`) and the Lambda functions used by the custom resource framework. The following configurations are available when running the custom resource in a VPC:
- * The VPC where you want to run the custom resource.
- * The subnets where you want to run the Lambda functions. Subnets are optional. If not configured, the construct uses the VPC default strategy to select subnets. 
- * The EC2 security groups to attach to the Lambda functions. Security groups are optional. If not configured, a single security group is created for all the Lambda functions.
+
+* The VPC where you want to run the custom resource.
+* The subnets where you want to run the Lambda functions. Subnets are optional. If not configured, the construct uses the VPC default strategy to select subnets.
+* The EC2 security groups to attach to the Lambda functions. Security groups are optional. If not configured, a single security group is created for all the Lambda functions.
 
 :::danger
-The `DsfProvider` construct implements a custom process to efficiently clean up ENIs when deleting the custom resource. Without this process it can take up to one hour to delete the ENI and dependant resources. 
+The `DsfProvider` construct implements a custom process to efficiently clean up ENIs when deleting the custom resource. Without this process it can take up to one hour to delete the ENI and dependant resources.
 This process requires the security groups to be dedicated to the custom resource. If you configure security groups, ensure they are dedicated.
 :::
 
@@ -191,7 +193,7 @@ Log groups can be destroyed when the CDK resource is destroyed only if **both** 
 
 You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
-```json title="cdk.json"
+```json
 {
   "context": {
     "@data-solutions-framework-on-aws/removeDataOnDestroy": true
@@ -202,3 +204,8 @@ You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `f
 Or programmatically in your CDK app:
 
 [example log group removal](./examples/dsf-provider-removal-policy.lit.ts)
+
+[//]: #
+[//]: #
+[//]: #
+[//]: #
