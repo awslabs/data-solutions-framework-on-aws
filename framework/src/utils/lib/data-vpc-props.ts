@@ -42,7 +42,7 @@ export interface DataVpcProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
-  /** 
+  /**
    * ClientVpnEndpoint propertioes. Required if client vpn endpoint is needed
    * @default None
    */

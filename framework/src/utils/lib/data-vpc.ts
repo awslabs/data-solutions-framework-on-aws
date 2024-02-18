@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { ClientVpnEndpoint, ClientVpnEndpointOptions, ClientVpnUserBasedAuthentication, 
+import {
+  ClientVpnEndpoint, ClientVpnEndpointOptions, ClientVpnUserBasedAuthentication,
   FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint,
-  ISecurityGroup, IpAddresses, Peer, Port, SecurityGroup, SubnetType, 
-  TransportProtocol, IVpc, Vpc, VpnPort } from 'aws-cdk-lib/aws-ec2';
+  ISecurityGroup, IpAddresses, Peer, Port, SecurityGroup, SubnetType,
+  TransportProtocol, IVpc, Vpc, VpnPort,
+} from 'aws-cdk-lib/aws-ec2';
 import { Effect, IRole, PolicyStatement, Role, SamlMetadataDocument, SamlProvider, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
@@ -55,12 +57,11 @@ export class DataVpc extends Construct {
   /**
    * The log group for Client VPN Endpoint
    */
-  public readonly vpnLogGroup: LogGroup | undefined;
+  public readonly vpnLogGroup: ILogGroup | undefined;
   /**
    * The security group for Client VPN Endpoint
    */
   public readonly vpnSecurityGroups: ISecurityGroup[] | undefined;
-
 
 
   constructor(scope: Construct, id: string, props: DataVpcProps) {
@@ -148,7 +149,7 @@ export class DataVpc extends Construct {
 
     // Create a Client VPN Endpoint
     if (props.clientVpnEndpointProps) {
-      [ this.vpnSecurityGroups , this.vpnLogGroup, this.clientVpnEndpoint ] = this.setupClientVpn(scope,props,removalPolicy,retention); 
+      [this.vpnSecurityGroups, this.vpnLogGroup, this.clientVpnEndpoint] = this.setupClientVpn(scope, props, removalPolicy, retention);
     }
   }
 
@@ -170,11 +171,13 @@ export class DataVpc extends Construct {
    * @internal
    * Configure Client VPN Endpoint
    * @param scope current scope
-   * @param props DataVpcProps 
+   * @param props DataVpcProps
    * @param removalPolicy RemovalPolicy
    * @param retention RetentionDays for Cloudwatch log group
+   * @returns [ISecurityGroup[], ILogGroup, ClientVpnEndpoint] created ClientVpnEndpoint alongside with security group and log group.
    */
-  private setupClientVpn(scope:Construct, props:DataVpcProps, removalPolicy:RemovalPolicy, retention:RetentionDays):any {
+  private setupClientVpn(scope:Construct, props:DataVpcProps, removalPolicy:RemovalPolicy, retention:RetentionDays):
+  [ISecurityGroup[], ILogGroup, ClientVpnEndpoint] {
 
     const vpnSamlProvider = new SamlProvider(scope, 'SamlProviderVpnEndpoint', {
       metadataDocument: SamlMetadataDocument.fromXml(props.clientVpnEndpointProps!.samlMetadataDocument),
@@ -184,16 +187,28 @@ export class DataVpc extends Construct {
       ...props.clientVpnEndpointProps,
       vpnSubnets: this.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
       userBasedAuthentication: ClientVpnUserBasedAuthentication.federated(vpnSamlProvider),
-      cidr: this.vpc.publicSubnets[0].ipv4CidrBlock
+      cidr: this.vpc.publicSubnets[0].ipv4CidrBlock,
     };
-    
+
+    endpointProps.logging ??= true;
+    endpointProps.transportProtocol ??= TransportProtocol.TCP;
+    endpointProps.splitTunnel ??= true;
+    endpointProps.dnsServers ??= [props.vpcCidr.replace(/^(\d+)\.(\d+)\.(\d+)\.\d+\/\d+$/, '$1.$2.$3.2')];
+    endpointProps.authorizeAllUsersToVpcCidr ??= true;
+    endpointProps.port ??= VpnPort.HTTPS;
+    endpointProps.selfServicePortal ??= true;
+
     if (!endpointProps.securityGroups) {
       const vpnSecurityGroup = new SecurityGroup(scope, 'vpnSecurityGroup', {
         vpc: this.vpc,
         allowAllOutbound: true,
       });
-      vpnSecurityGroup.addIngressRule(Peer.ipv4(props.vpcCidr), Port.tcp(443));
-      vpnSecurityGroup.applyRemovalPolicy(removalPolicy);    
+      vpnSecurityGroup.addIngressRule(
+        Peer.ipv4(props.vpcCidr),
+        (endpointProps.transportProtocol == TransportProtocol.TCP) ?
+          Port.tcp(endpointProps.port) : Port.udp(endpointProps.port),
+      );
+      vpnSecurityGroup.applyRemovalPolicy(removalPolicy);
       endpointProps.securityGroups = [vpnSecurityGroup];
     };
 
@@ -206,17 +221,10 @@ export class DataVpc extends Construct {
       endpointProps.logGroup = vpnLogGroup;
     }
 
-    endpointProps.logging ??= true;
-    endpointProps.transportProtocol ??= TransportProtocol.TCP;
-    endpointProps.splitTunnel ??= true;
-    endpointProps.dnsServers ??= [props.vpcCidr.replace(/^(\d+)\.(\d+)\.(\d+)\.\d+\/\d+$/, "$1.$2.$3.2")];
-    endpointProps.authorizeAllUsersToVpcCidr ??= true;
-    endpointProps.port ??= VpnPort.HTTPS;
-    endpointProps.selfServicePortal ??= true;
-
     const clientVpnEndpoint = this.vpc.addClientVpnEndpoint('Endpoint', endpointProps as ClientVpnEndpointOptions);
 
     clientVpnEndpoint.applyRemovalPolicy(removalPolicy);
-    return [ endpointProps.securityGroups , endpointProps.logGroup , clientVpnEndpoint ];
+
+    return [endpointProps.securityGroups, endpointProps.logGroup, clientVpnEndpoint];
   }
 }
