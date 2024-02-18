@@ -98,6 +98,10 @@
       "type": "build"
     },
     {
+      "name": "node-libcurl",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
