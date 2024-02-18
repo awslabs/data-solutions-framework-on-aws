@@ -54,6 +54,23 @@ describe('With default configuration, the construct ', () => {
     );
   });
 
+  test('Lambda must have a resource policy for allowing an invoke', () => {
+    template.hasResourceProperties('AWS::Lambda::Permission',
+      Match.objectLike({
+        FunctionName: {
+          'Fn::GetAtt': ['ProviderOnEventHandlerFunctionB0717C76', 'Arn'],
+        },
+        Principal: 'lambda.amazonaws.com',
+        Action: 'lambda:InvokeFunction',
+        SourceArn: { 'Fn::GetAtt': ['CustomResourceProviderframeworkonEvent0AA4376C', 'Arn'] },
+      }),
+    );
+  });
+
+  test('Lambda have only 1 resource permission', () => {
+    template.resourceCountIs('AWS::Lambda::Permission', 1);
+  });
+
   test('should set proper log retention for the custom resource', () => {
     template.resourcePropertiesCountIs('Custom::LogRetention', {
       RetentionInDays: 7,
@@ -520,6 +537,10 @@ describe('With custom configuration, the construct should', () => {
 
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('Lambda have exactly 2 resource permission', () => {
+    template.resourceCountIs('AWS::Lambda::Permission', 2);
+  });
 
   test('should create a managed policy with ENI permissions', () => {
     template.hasResourceProperties('AWS::IAM::ManagedPolicy',
