@@ -5,7 +5,7 @@ import * as path from 'path';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, Port } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -26,7 +26,7 @@ export function mskCrudProviderSetup(
 
   lambdaSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
 
-  //The policy allowing the managed endpoint custom resource to create call the APIs for managed endpoint
+  //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
   const lambdaPolicy = [
 
     new PolicyStatement({
@@ -42,9 +42,10 @@ export function mskCrudProviderSetup(
     }),
     new PolicyStatement({
       actions: [
-        'kafka-cluster:*Topic*',
-        'kafka-cluster:WriteData',
-        'kafka-cluster:ReadData',
+        'kafka-cluster:CreateTopic',
+        'kafka-cluster:DescribeTopic',
+        'kafka-cluster:AlterTopic',
+        'kafka-cluster:DeleteTopic',
       ],
       resources: [
         `arn:aws:kafka:${region}:${account}:topic/${clusterName}/*`,
@@ -65,7 +66,7 @@ export function mskCrudProviderSetup(
   ];
 
 
-  //Policy to allow lambda access to cloudwatch logs
+  //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
     statements: lambdaPolicy,
     description: 'Policy for emr containers CR to create managed endpoint',
@@ -75,8 +76,8 @@ export function mskCrudProviderSetup(
     providerName: 'msk-crud-provider',
     onEventHandlerDefinition: {
       handler: 'index.onEventHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudIam/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/crudIam/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
@@ -87,12 +88,77 @@ export function mskCrudProviderSetup(
     },
     isCompleteHandlerDefinition: {
       handler: 'index.isCompleteHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudIam/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/crudIam/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
           'aws-msk-iam-sasl-signer-js',
+          'kafkajs',
+        ],
+      },
+    },
+    vpc: vpc,
+    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+    securityGroups: [lambdaProviderSecurityGroup],
+    removalPolicy,
+  });
+
+  return provider;
+
+}
+
+
+export function mskCrudTlsProviderSetup(
+  scope: Construct,
+  removalPolicy: RemovalPolicy,
+  vpc: IVpc,
+  mskCluster: CfnCluster,
+  lambdaSecurityGroup: SecurityGroup) : DsfProvider {
+
+  let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudTlsCrSg', {
+    vpc,
+  });
+
+  lambdaSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
+
+  //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
+  const lambdaPolicy = [
+    new PolicyStatement({
+      actions: ['kafka:DescribeCluster'],
+      resources: [
+        mskCluster.attrArn,
+      ],
+    }),
+  ];
+
+
+  //Attach policy to IAM Role
+  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
+    statements: lambdaPolicy,
+    description: 'Policy for emr containers CR to create managed endpoint',
+  });
+
+  const provider = new DsfProvider(scope, 'MskCrudTlsProvider', {
+    providerName: 'msk-crud-provider',
+    onEventHandlerDefinition: {
+      handler: 'index.onEventHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudTls/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/crudTls/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+      bundling: {
+        nodeModules: [
+          'kafkajs',
+        ],
+      },
+    },
+    isCompleteHandlerDefinition: {
+      handler: 'index.isCompleteHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudTls/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/crudTls/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+      bundling: {
+        nodeModules: [
           'kafkajs',
         ],
       },

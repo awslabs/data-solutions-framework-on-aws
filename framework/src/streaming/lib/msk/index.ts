@@ -3,3 +3,6 @@
 
 export * from './msk-serverless';
 export * from './msk-serverless-props';
+export * from './msk-provisioned';
+export * from './msk-provisioned-props';
+export * from './msk-provisioned-props-utils';
