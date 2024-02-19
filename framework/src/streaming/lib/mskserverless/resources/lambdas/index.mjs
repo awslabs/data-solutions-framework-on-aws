@@ -28,8 +28,10 @@ export const onEventHandler = async (event) => {
 
     const brokerUrl = response.BootstrapBrokerStringSaslIam;
 
+    let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
+
     const kafka = new Kafka({
-        clientId: 'my-app',
+        clientId: `client-CR-${clusterName}`,
         brokers: [brokerUrl],
         ssl: true,
         sasl: {
@@ -40,16 +42,13 @@ export const onEventHandler = async (event) => {
 
     const admin = kafka.admin();
 
-    let listTopic = await admin.listTopics(); //Debug CR only to be removed
-
-    console.info('======Recieved for Event=======');
+    console.info('======Recieved Event=======');
     console.info(event);
 
     switch (event.RequestType) {
         case 'Create':
 
             console.log(event.ResourceProperties.topics);
-            console.log(listTopic);
 
             let kafkaResponse = await admin.createTopics({
                 validateOnly: false,
@@ -71,9 +70,19 @@ export const onEventHandler = async (event) => {
 
         case 'Delete':
 
+            console.info('======Recieved for Event Delete Topic=======');
+            
+            console.log(event.ResourceProperties.topics);
+
+            let topics = []; 
+            
+            event.ResourceProperties.topics.forEach (topic => {
+                topics.push(topic.topic);
+            });
+
             await admin.deleteTopics({
                 timeout: event.ResourceProperties.timeout,
-                topics: event.ResourceProperties.topics,
+                topics: topics,
             });
 
             return undefined;
