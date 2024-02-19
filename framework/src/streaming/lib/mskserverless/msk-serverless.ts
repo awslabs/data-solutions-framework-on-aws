@@ -54,8 +54,6 @@ export class MskServerless extends TrackedConstruct {
       clientAuthentication: props.clientAuthentication,
     });
 
-    console.log(this.removalPolicy);
-
     let mskCrudProvider = mskCrudProviderSetup(
       this,
       this.removalPolicy,
@@ -68,7 +66,7 @@ export class MskServerless extends TrackedConstruct {
   }
 
 
-  public createTopic (scope: Construct, id: string, topicDefinition: MskTopic [], waitForLeaders: boolean, timeout: number) {
+  public addTopic (scope: Construct, id: string, topicDefinition: MskTopic [], removalPolicy?: RemovalPolicy , waitForLeaders?: boolean, timeout?: number) {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
@@ -81,15 +79,10 @@ export class MskServerless extends TrackedConstruct {
         mskClusterArn: this.mskServerlessCluster.attrArn,
       },
       resourceType: 'Custom::MskTopic',
+      removalPolicy: removalPolicy ?? RemovalPolicy.DESTROY,
     });
 
     cr.node.addDependency(this.mskServerlessCluster);
-
-    console.log(topicDefinition);
-  }
-
-  public deleteTopic (topicName: string) {
-    console.log(topicName);
   }
 
   public grantProduce (topicName: string, principal: IPrincipal) {
