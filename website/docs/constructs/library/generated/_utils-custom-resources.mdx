@@ -2,13 +2,15 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs. 
-The `DsfProvider` construct handles the undifferentiated tasks for you so you can focus on the custom resource logic. 
-This construct is an opinionated implementation of the [CDK Custom Resource Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#the-custom-resource-provider-framework). 
+DSF provides an internal construct named `DsfProvider` to facilitate the creation of custom resources in DSF constructs.
+The `DsfProvider` construct handles the undifferentiated tasks for you so you can focus on the custom resource logic.
+This construct is an opinionated implementation of the [CDK Custom Resource Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#the-custom-resource-provider-framework).
 It creates:
+
 * A custom resource provider to manage the entire custom resource lifecycle
 * An onEvent Lambda function from the provided code to perform actions you need in your custom resource
 * An optional isComplete Lambda function from the provided code when using [asynchronous custom resources](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#asynchronous-providers-iscomplete)
+* The `onEvent` and `isComplete `Lambda functions are scoped down through a resource policy to be invoked only by the `Provider`.
 * CloudWatch Logs log groups for each Lambda function
 * IAM roles for each Lambda function and associated permissions
 
@@ -20,8 +22,8 @@ You still need to provide an IAM Managed Policy required by the actions of the L
 
 The `DsfProvider` construct requires a Lambda function handler called `onEvent` to perform the actions of the custom resource. It also supports an optional Lambda function handler called `isComplete` to regularly perform status checks for asynchronous operation triggered in the `onEvent` handler.
 
-Both Lambda functions are implemented in Typescript. 
-`esbuild` is used to package the Lambda code and is automatically installed by `Projen`. If `esbuild` is available, `docker` will be used. 
+Both Lambda functions are implemented in Typescript.
+`esbuild` is used to package the Lambda code and is automatically installed by `Projen`. If `esbuild` is available, `docker` will be used.
 You need to configure the path of the Lambda code (entry file) and the path of the dependency lock file (`package-lock.json`) for each handler.
 
 To generate the `package-lock.json` file, run from the Lambda code folder:
@@ -168,12 +170,13 @@ my_provider = DsfProvider(self, "Provider",
 ## Running the Custom Resource in VPC
 
 You can configure the `DsfProvider` to run all the Lambda functions within a VPC (for example in private subnets). It includes the Lambda handlers (`onEvent` and `isComplete`) and the Lambda functions used by the custom resource framework. The following configurations are available when running the custom resource in a VPC:
- * The VPC where you want to run the custom resource.
- * The subnets where you want to run the Lambda functions. Subnets are optional. If not configured, the construct uses the VPC default strategy to select subnets. 
- * The EC2 security groups to attach to the Lambda functions. Security groups are optional. If not configured, a single security group is created for all the Lambda functions.
+
+* The VPC where you want to run the custom resource.
+* The subnets where you want to run the Lambda functions. Subnets are optional. If not configured, the construct uses the VPC default strategy to select subnets.
+* The EC2 security groups to attach to the Lambda functions. Security groups are optional. If not configured, a single security group is created for all the Lambda functions.
 
 :::danger
-The `DsfProvider` construct implements a custom process to efficiently clean up ENIs when deleting the custom resource. Without this process it can take up to one hour to delete the ENI and dependant resources. 
+The `DsfProvider` construct implements a custom process to efficiently clean up ENIs when deleting the custom resource. Without this process it can take up to one hour to delete the ENI and dependant resources.
 This process requires the security groups to be dedicated to the custom resource. If you configure security groups, ensure they are dedicated.
 :::
 
@@ -282,7 +285,7 @@ Log groups can be destroyed when the CDK resource is destroyed only if **both** 
 
 You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
 
-```json title="cdk.json"
+```json
 {
   "context": {
     "@data-solutions-framework-on-aws/removeDataOnDestroy": true

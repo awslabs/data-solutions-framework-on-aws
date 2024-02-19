@@ -7,6 +7,7 @@ Data copy from one bucket to another during deployment time.
 ## Overview
 
 `S3DataCopy` construct provides a process to copy objects from one bucket to another during CDK deployment time:
+
 - The copy is part of the CDK and CloudFormation deployment process. It's using a synchronous CDK Custom Resource running on AWS Lambda.
 - The Lambda function is written in Typescript and copies objects between source and target buckets.
 - The execution role used by the Lambda function is scoped to the least privileges. A custom role can be provided.
