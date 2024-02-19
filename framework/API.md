@@ -3745,14 +3745,10 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt VPC flow logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to publish VPC Flow Logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.s3VpcEndpoint">s3VpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IGatewayVpcEndpoint</code> | The S3 VPC endpoint gateway. |
-<<<<<<< HEAD
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The amazon VPC created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The amazon VPC created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.clientVpnEndpoint">clientVpnEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.ClientVpnEndpoint</code> | The Client VPN Endpoint. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpnLogGroup">vpnLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The log group for Client VPN Endpoint. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpnSecurityGroups">vpnSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The security group for Client VPN Endpoint. |
-=======
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpc.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | The amazon VPC created. |
->>>>>>> f2bae5e (construct foundation)
 
 ---
 
@@ -3864,6 +3860,634 @@ The security group for Client VPN Endpoint.
 
 ---
 
+
+### MskProvisioned <a name="MskProvisioned" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned"></a>
+
+A construct to create an MSK Provisioned cluster.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+new streaming.msk.MskProvisioned(scope: Construct, id: string, props: MskProvisionedProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl">addAcl</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic">addTopic</a></code> | Creates a topic in the Msk Serverless. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addAcl` <a name="addAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl"></a>
+
+```typescript
+public addAcl(scope: Construct, id: string, aclDefinition: KafkaAclProp): void
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.aclDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp
+
+---
+
+##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic"></a>
+
+```typescript
+public addTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+```
+
+Creates a topic in the Msk Serverless.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the stack where Topic will be created.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.topicDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic[]
+
+the Kafka topic definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.waitForLeaders"></a>
+
+- *Type:* boolean
+
+If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+
+---
+
+###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.timeout"></a>
+
+- *Type:* number
+
+The time in ms to wait for a topic to be completely created on the controller node.
+
+---
+
+##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
+
+```typescript
+public grantConsume(topicName: string, principal: IPrincipal): void
+```
+
+Grant a principal the right to consume data from a topic.
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can consume data from.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the consume action.
+
+---
+
+##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce"></a>
+
+```typescript
+public grantProduce(topicName: string, principal: IPrincipal): void
+```
+
+Grant a principal to produce data to a topic.
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can produce data.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the produce to.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration">createCLusterConfiguration</a></code> | *No description.* |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.isConstruct"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.MskProvisioned.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+##### `createCLusterConfiguration` <a name="createCLusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: string, name: string, serverPropertiesFilePath: string, kafkaVersions: KafkaVersion[], configurationDescription?: string, latestRevision?: LatestRevisionProperty)
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.name"></a>
+
+- *Type:* string
+
+---
+
+###### `serverPropertiesFilePath`<sup>Required</sup> <a name="serverPropertiesFilePath" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.serverPropertiesFilePath"></a>
+
+- *Type:* string
+
+---
+
+###### `kafkaVersions`<sup>Required</sup> <a name="kafkaVersions" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.kafkaVersions"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion[]
+
+---
+
+###### `configurationDescription`<sup>Optional</sup> <a name="configurationDescription" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.configurationDescription"></a>
+
+- *Type:* string
+
+---
+
+###### `latestRevision`<sup>Optional</sup> <a name="latestRevision" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.latestRevision"></a>
+
+- *Type:* aws-cdk-lib.aws_msk.CfnConfiguration.LatestRevisionProperty
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskProvisionedCluster">mskProvisionedCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `mskProvisionedCluster`<sup>Required</sup> <a name="mskProvisionedCluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskProvisionedCluster"></a>
+
+```typescript
+public readonly mskProvisionedCluster: CfnCluster;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnCluster
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### MskServerless <a name="MskServerless" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless"></a>
+
+A construct to create an MSK Serverless cluster.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+new streaming.msk.MskServerless(scope: Construct, id: string, props: MskServerlessProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic">addTopic</a></code> | Creates a topic in the Msk Serverless. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic"></a>
+
+```typescript
+public addTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+```
+
+Creates a topic in the Msk Serverless.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the stack where Topic will be created.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.topicDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic[]
+
+the Kafka topic definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.waitForLeaders"></a>
+
+- *Type:* boolean
+
+If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+
+---
+
+###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.timeout"></a>
+
+- *Type:* number
+
+The time in ms to wait for a topic to be completely created on the controller node.
+
+---
+
+##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantConsume"></a>
+
+```typescript
+public grantConsume(topicName: string, principal: IPrincipal): void
+```
+
+Grant a principal the right to consume data from a topic.
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantConsume.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can consume data from.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantConsume.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the consume action.
+
+---
+
+##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantProduce"></a>
+
+```typescript
+public grantProduce(topicName: string, principal: IPrincipal): void
+```
+
+Grant a principal to produce data to a topic.
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantProduce.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can produce data.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.grantProduce.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the produce to.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.isConstruct"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.MskServerless.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.mskServerlessCluster">mskServerlessCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `mskServerlessCluster`<sup>Required</sup> <a name="mskServerlessCluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.mskServerlessCluster"></a>
+
+```typescript
+public readonly mskServerlessCluster: CfnServerlessCluster;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
 
 ### OpenSearchCluster <a name="OpenSearchCluster" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster"></a>
 
@@ -8977,6 +9601,116 @@ The state of the Workgroup.
 
 ---
 
+### BrokerLogging <a name="BrokerLogging" id="@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging"></a>
+
+Configuration details related to broker logs.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const brokerLogging: streaming.msk.BrokerLogging = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.property.cloudwatchLogGroup">cloudwatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs group that is the destination for broker logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.property.firehoseDeliveryStreamName">firehoseDeliveryStreamName</a></code> | <code>string</code> | The Kinesis Data Firehose delivery stream that is the destination for broker logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.property.s3">s3</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration</code> | Details of the Amazon S3 destination for broker logs. |
+
+---
+
+##### `cloudwatchLogGroup`<sup>Optional</sup> <a name="cloudwatchLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.property.cloudwatchLogGroup"></a>
+
+```typescript
+public readonly cloudwatchLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+- *Default:* disabled
+
+The CloudWatch Logs group that is the destination for broker logs.
+
+---
+
+##### `firehoseDeliveryStreamName`<sup>Optional</sup> <a name="firehoseDeliveryStreamName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.property.firehoseDeliveryStreamName"></a>
+
+```typescript
+public readonly firehoseDeliveryStreamName: string;
+```
+
+- *Type:* string
+- *Default:* disabled
+
+The Kinesis Data Firehose delivery stream that is the destination for broker logs.
+
+---
+
+##### `s3`<sup>Optional</sup> <a name="s3" id="@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging.property.s3"></a>
+
+```typescript
+public readonly s3: S3LoggingConfiguration;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration
+- *Default:* disabled
+
+Details of the Amazon S3 destination for broker logs.
+
+---
+
+### ClusterConfigurationInfo <a name="ClusterConfigurationInfo" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo"></a>
+
+The Amazon MSK configuration to use for the cluster.
+
+Note: There is currently no Cloudformation Resource to create a Configuration
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const clusterConfigurationInfo: streaming.msk.ClusterConfigurationInfo = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo.property.arn">arn</a></code> | <code>string</code> | The Amazon Resource Name (ARN) of the MSK configuration to use. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo.property.revision">revision</a></code> | <code>number</code> | The revision of the Amazon MSK configuration to use. |
+
+---
+
+##### `arn`<sup>Required</sup> <a name="arn" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo.property.arn"></a>
+
+```typescript
+public readonly arn: string;
+```
+
+- *Type:* string
+
+The Amazon Resource Name (ARN) of the MSK configuration to use.
+
+For example, arn:aws:kafka:us-east-1:123456789012:configuration/example-configuration-name/abcdabcd-1234-abcd-1234-abcd123e8e8e-1.
+
+---
+
+##### `revision`<sup>Required</sup> <a name="revision" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo.property.revision"></a>
+
+```typescript
+public readonly revision: number;
+```
+
+- *Type:* number
+
+The revision of the Amazon MSK configuration to use.
+
+---
+
 ### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps"></a>
 
 Properties for the `DataCatalogDatabase` construct.
@@ -9807,6 +10541,53 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
+### EbsStorageInfo <a name="EbsStorageInfo" id="@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo"></a>
+
+EBS volume information.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const ebsStorageInfo: streaming.msk.EbsStorageInfo = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The AWS KMS key for encrypting data at rest. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo.property.volumeSize">volumeSize</a></code> | <code>number</code> | The size in GiB of the EBS volume for the data drive on each broker node. |
+
+---
+
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* Uses AWS managed CMK (aws/kafka)
+
+The AWS KMS key for encrypting data at rest.
+
+---
+
+##### `volumeSize`<sup>Optional</sup> <a name="volumeSize" id="@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo.property.volumeSize"></a>
+
+```typescript
+public readonly volumeSize: number;
+```
+
+- *Type:* number
+- *Default:* 1000
+
+The size in GiB of the EBS volume for the data drive on each broker node.
+
+---
+
 ### EmrVirtualClusterProps <a name="EmrVirtualClusterProps" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps"></a>
 
 The properties for the `EmrVirtualCluster` Construct class.
@@ -9892,6 +10673,528 @@ public readonly tags: {[ key: string ]: string};
 - *Default:* none
 
 The tags assigned to the Virtual Cluster.
+
+---
+
+### KafkaAclProp <a name="KafkaAclProp" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const kafkaAclProp: streaming.msk.KafkaAclProp = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.operation">operation</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.permissionType">permissionType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceName">resourceName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceType">resourceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.host">host</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.principal">principal</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `operation`<sup>Required</sup> <a name="operation" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.operation"></a>
+
+```typescript
+public readonly operation: AclOperationTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes
+
+---
+
+##### `permissionType`<sup>Required</sup> <a name="permissionType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.permissionType"></a>
+
+```typescript
+public readonly permissionType: AclPermissionTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes
+
+---
+
+##### `resourceName`<sup>Required</sup> <a name="resourceName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceName"></a>
+
+```typescript
+public readonly resourceName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `resourceType`<sup>Required</sup> <a name="resourceType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceType"></a>
+
+```typescript
+public readonly resourceType: AclResourceTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes
+
+---
+
+##### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.host"></a>
+
+```typescript
+public readonly host: string;
+```
+
+- *Type:* string
+
+---
+
+##### `principal`<sup>Optional</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.principal"></a>
+
+```typescript
+public readonly principal: string;
+```
+
+- *Type:* string
+
+---
+
+### MonitoringConfiguration <a name="MonitoringConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration"></a>
+
+Monitoring Configuration.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const monitoringConfiguration: streaming.msk.MonitoringConfiguration = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.property.clusterMonitoringLevel">clusterMonitoringLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel</code> | Specifies the level of monitoring for the MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.property.enablePrometheusJmxExporter">enablePrometheusJmxExporter</a></code> | <code>boolean</code> | Indicates whether you want to enable or disable the JMX Exporter. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.property.enablePrometheusNodeExporter">enablePrometheusNodeExporter</a></code> | <code>boolean</code> | Indicates whether you want to enable or disable the Prometheus Node Exporter. |
+
+---
+
+##### `clusterMonitoringLevel`<sup>Optional</sup> <a name="clusterMonitoringLevel" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.property.clusterMonitoringLevel"></a>
+
+```typescript
+public readonly clusterMonitoringLevel: ClusterMonitoringLevel;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel
+- *Default:* DEFAULT
+
+Specifies the level of monitoring for the MSK cluster.
+
+---
+
+##### `enablePrometheusJmxExporter`<sup>Optional</sup> <a name="enablePrometheusJmxExporter" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.property.enablePrometheusJmxExporter"></a>
+
+```typescript
+public readonly enablePrometheusJmxExporter: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Indicates whether you want to enable or disable the JMX Exporter.
+
+---
+
+##### `enablePrometheusNodeExporter`<sup>Optional</sup> <a name="enablePrometheusNodeExporter" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration.property.enablePrometheusNodeExporter"></a>
+
+```typescript
+public readonly enablePrometheusNodeExporter: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Indicates whether you want to enable or disable the Prometheus Node Exporter.
+
+You can use the Prometheus Node Exporter to get CPU and disk metrics for the broker nodes.
+
+---
+
+### MskProvisionedProps <a name="MskProvisionedProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration</code> | Cluster monitoring configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.mskBrokerinstanceType">mskBrokerinstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.numberOfBrokerNodes">numberOfBrokerNodes</a></code> | <code>number</code> | Number of Apache Kafka brokers deployed in each Availability Zone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | What to do when this resource is deleted from a stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode</code> | This controls storage mode for supported storage tiers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | Defines the virtual networking environment for this cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Where to place the nodes within the VPC. |
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+The physical name of the cluster.
+
+---
+
+##### `kafkaVersion`<sup>Required</sup> <a name="kafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion"></a>
+
+```typescript
+public readonly kafkaVersion: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+The version of Apache Kafka.
+
+---
+
+##### `clientAuthentication`<sup>Optional</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication"></a>
+
+```typescript
+public readonly clientAuthentication: ClientAuthentication;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication
+- *Default:* IAM is used
+
+Configuration properties for client authentication.
+
+MSK supports using private TLS certificates or SASL/SCRAM to authenticate the identity of clients.
+
+---
+
+##### `configurationInfo`<sup>Optional</sup> <a name="configurationInfo" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo"></a>
+
+```typescript
+public readonly configurationInfo: ClusterConfigurationInfo;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo
+- *Default:* none
+
+The Amazon MSK configuration to use for the cluster.
+
+---
+
+##### `ebsStorageInfo`<sup>Optional</sup> <a name="ebsStorageInfo" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo"></a>
+
+```typescript
+public readonly ebsStorageInfo: EbsStorageInfo;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo
+- *Default:* 100 GiB EBS volume
+
+Information about storage volumes attached to MSK broker nodes.
+
+---
+
+##### `logging`<sup>Optional</sup> <a name="logging" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.logging"></a>
+
+```typescript
+public readonly logging: BrokerLogging;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging
+- *Default:* disabled
+
+Configure your MSK cluster to send broker logs to different destination types.
+
+---
+
+##### `monitoring`<sup>Optional</sup> <a name="monitoring" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.monitoring"></a>
+
+```typescript
+public readonly monitoring: MonitoringConfiguration;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration
+- *Default:* DEFAULT monitoring level
+
+Cluster monitoring configuration.
+
+---
+
+##### `mskBrokerinstanceType`<sup>Optional</sup> <a name="mskBrokerinstanceType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.mskBrokerinstanceType"></a>
+
+```typescript
+public readonly mskBrokerinstanceType: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+- *Default:* kafka.m5.large
+
+The EC2 instance type that you want Amazon MSK to use when it creates your brokers.
+
+> [https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types](https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types)
+
+---
+
+##### `numberOfBrokerNodes`<sup>Optional</sup> <a name="numberOfBrokerNodes" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.numberOfBrokerNodes"></a>
+
+```typescript
+public readonly numberOfBrokerNodes: number;
+```
+
+- *Type:* number
+- *Default:* 1
+
+Number of Apache Kafka brokers deployed in each Availability Zone.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+What to do when this resource is deleted from a stack.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+- *Default:* create new security group
+
+The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster.
+
+---
+
+##### `storageMode`<sup>Optional</sup> <a name="storageMode" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode"></a>
+
+```typescript
+public readonly storageMode: StorageMode;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode
+- *Default:* StorageMode.LOCAL
+
+This controls storage mode for supported storage tiers.
+
+> [https://docs.aws.amazon.com/msk/latest/developerguide/msk-tiered-storage.html](https://docs.aws.amazon.com/msk/latest/developerguide/msk-tiered-storage.html)
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: Vpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.Vpc
+
+Defines the virtual networking environment for this cluster.
+
+Must have at least 2 subnets in two different AZs.
+
+---
+
+##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets"></a>
+
+```typescript
+public readonly vpcSubnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* the Vpc default strategy if not specified.
+
+Where to place the nodes within the VPC.
+
+Amazon MSK distributes the broker nodes evenly across the subnets that you specify.
+The subnets that you specify must be in distinct Availability Zones.
+Client subnets can't be in Availability Zone us-east-1e.
+
+---
+
+### MskServerlessProps <a name="MskServerlessProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps"></a>
+
+Properties for the `MskServerlessCluster` construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const mskServerlessProps: streaming.msk.MskServerlessProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clientAuthentication">clientAuthentication</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster.ClientAuthenticationProperty</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpcConfigs">vpcConfigs</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+
+---
+
+##### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clientAuthentication"></a>
+
+```typescript
+public readonly clientAuthentication: ClientAuthenticationProperty;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster.ClientAuthenticationProperty
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `vpcConfigs`<sup>Required</sup> <a name="vpcConfigs" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpcConfigs"></a>
+
+```typescript
+public readonly vpcConfigs: VpcConfigProperty[];
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+### MskTopic <a name="MskTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic"></a>
+
+Properties for the `MskTopic` As defined in `ITopicConfig` in [KafkaJS](https://kafka.js.org/docs/admin) SDK.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const mskTopic: streaming.msk.MskTopic = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.topic">topic</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.configEntries">configEntries</a></code> | <code>{[ key: string ]: any}[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.numPartitions">numPartitions</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.replicaAssignment">replicaAssignment</a></code> | <code>{[ key: string ]: any}[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.replicationFactor">replicationFactor</a></code> | <code>number</code> | *No description.* |
+
+---
+
+##### `topic`<sup>Required</sup> <a name="topic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.topic"></a>
+
+```typescript
+public readonly topic: string;
+```
+
+- *Type:* string
+
+---
+
+##### `configEntries`<sup>Optional</sup> <a name="configEntries" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.configEntries"></a>
+
+```typescript
+public readonly configEntries: {[ key: string ]: any}[];
+```
+
+- *Type:* {[ key: string ]: any}[]
+
+---
+
+##### `numPartitions`<sup>Optional</sup> <a name="numPartitions" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.numPartitions"></a>
+
+```typescript
+public readonly numPartitions: number;
+```
+
+- *Type:* number
+
+---
+
+##### `replicaAssignment`<sup>Optional</sup> <a name="replicaAssignment" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.replicaAssignment"></a>
+
+```typescript
+public readonly replicaAssignment: {[ key: string ]: any}[];
+```
+
+- *Type:* {[ key: string ]: any}[]
+
+---
+
+##### `replicationFactor`<sup>Optional</sup> <a name="replicationFactor" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic.property.replicationFactor"></a>
+
+```typescript
+public readonly replicationFactor: number;
+```
+
+- *Type:* number
 
 ---
 
@@ -11065,6 +12368,132 @@ public readonly vpc: IVpc;
 - *Default:* The Custom Resource is executed in VPCs owned by AWS Lambda service.
 
 The VPC to deploy the custom resource in.
+
+---
+
+### S3LoggingConfiguration <a name="S3LoggingConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration"></a>
+
+Details of the Amazon S3 destination for broker logs.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const s3LoggingConfiguration: streaming.msk.S3LoggingConfiguration = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration.property.bucket">bucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket that is the destination for broker logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration.property.prefix">prefix</a></code> | <code>string</code> | The S3 prefix that is the destination for broker logs. |
+
+---
+
+##### `bucket`<sup>Required</sup> <a name="bucket" id="@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration.property.bucket"></a>
+
+```typescript
+public readonly bucket: IBucket;
+```
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The S3 bucket that is the destination for broker logs.
+
+---
+
+##### `prefix`<sup>Optional</sup> <a name="prefix" id="@cdklabs/aws-data-solutions-framework.streaming.msk.S3LoggingConfiguration.property.prefix"></a>
+
+```typescript
+public readonly prefix: string;
+```
+
+- *Type:* string
+- *Default:* no prefix
+
+The S3 prefix that is the destination for broker logs.
+
+---
+
+### SaslAuthProps <a name="SaslAuthProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps"></a>
+
+SASL authentication properties.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const saslAuthProps: streaming.msk.SaslAuthProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps.property.iam">iam</a></code> | <code>boolean</code> | Enable IAM access control. |
+
+---
+
+##### `iam`<sup>Optional</sup> <a name="iam" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps.property.iam"></a>
+
+```typescript
+public readonly iam: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Enable IAM access control.
+
+---
+
+### SaslTlsAuthProps <a name="SaslTlsAuthProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps"></a>
+
+SASL + TLS authentication properties.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const saslTlsAuthProps: streaming.msk.SaslTlsAuthProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps.property.iam">iam</a></code> | <code>boolean</code> | Enable IAM access control. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps.property.certificateAuthorities">certificateAuthorities</a></code> | <code>aws-cdk-lib.aws_acmpca.ICertificateAuthority[]</code> | List of ACM Certificate Authorities to enable TLS authentication. |
+
+---
+
+##### `iam`<sup>Optional</sup> <a name="iam" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps.property.iam"></a>
+
+```typescript
+public readonly iam: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Enable IAM access control.
+
+---
+
+##### `certificateAuthorities`<sup>Optional</sup> <a name="certificateAuthorities" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps.property.certificateAuthorities"></a>
+
+```typescript
+public readonly certificateAuthorities: ICertificateAuthority[];
+```
+
+- *Type:* aws-cdk-lib.aws_acmpca.ICertificateAuthority[]
+- *Default:* none
+
+List of ACM Certificate Authorities to enable TLS authentication.
 
 ---
 
@@ -12522,6 +13951,39 @@ The Schedule to run the Step Functions state machine.
 
 ---
 
+### TlsAuthProps <a name="TlsAuthProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps"></a>
+
+TLS authentication properties.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const tlsAuthProps: streaming.msk.TlsAuthProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps.property.certificateAuthorities">certificateAuthorities</a></code> | <code>aws-cdk-lib.aws_acmpca.ICertificateAuthority[]</code> | List of ACM Certificate Authorities to enable TLS authentication. |
+
+---
+
+##### `certificateAuthorities`<sup>Optional</sup> <a name="certificateAuthorities" id="@cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps.property.certificateAuthorities"></a>
+
+```typescript
+public readonly certificateAuthorities: ICertificateAuthority[];
+```
+
+- *Type:* aws-cdk-lib.aws_acmpca.ICertificateAuthority[]
+- *Default:* none
+
+List of ACM Certificate Authorities to enable TLS authentication.
+
+---
+
 ## Classes <a name="Classes" id="Classes"></a>
 
 ### ApplicationStackFactory <a name="ApplicationStackFactory" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory"></a>
@@ -12664,6 +14126,586 @@ the name of the bucket.
 ---
 
 
+
+### ClientAuthentication <a name="ClientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication"></a>
+
+Configuration properties for client authentication.
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.sasl">sasl</a></code> | SASL authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.saslTls">saslTls</a></code> | SASL + TLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.tls">tls</a></code> | TLS authentication. |
+
+---
+
+##### `sasl` <a name="sasl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.sasl"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.ClientAuthentication.sasl(props: SaslAuthProps)
+```
+
+SASL authentication.
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.sasl.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps
+
+---
+
+##### `saslTls` <a name="saslTls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.saslTls"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.ClientAuthentication.saslTls(saslTlsProps: SaslTlsAuthProps)
+```
+
+SASL + TLS authentication.
+
+###### `saslTlsProps`<sup>Required</sup> <a name="saslTlsProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.saslTls.parameter.saslTlsProps"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.SaslTlsAuthProps
+
+---
+
+##### `tls` <a name="tls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.tls"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.ClientAuthentication.tls(props: TlsAuthProps)
+```
+
+TLS authentication.
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.tls.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.property.saslProps">saslProps</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps</code> | - properties for SASL authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.property.tlsProps">tlsProps</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps</code> | - properties for TLS authentication. |
+
+---
+
+##### `saslProps`<sup>Optional</sup> <a name="saslProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.property.saslProps"></a>
+
+```typescript
+public readonly saslProps: SaslAuthProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps
+
+properties for SASL authentication.
+
+---
+
+##### `tlsProps`<sup>Optional</sup> <a name="tlsProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication.property.tlsProps"></a>
+
+```typescript
+public readonly tlsProps: TlsAuthProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.TlsAuthProps
+
+properties for TLS authentication.
+
+---
+
+
+### KafkaVersion <a name="KafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion"></a>
+
+Kafka cluster version.
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.of">of</a></code> | Custom cluster version. |
+
+---
+
+##### `of` <a name="of" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.of"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.KafkaVersion.of(version: string)
+```
+
+Custom cluster version.
+
+###### `version`<sup>Required</sup> <a name="version" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.of.parameter.version"></a>
+
+- *Type:* string
+
+custom version number.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.version">version</a></code> | <code>string</code> | cluster version number. |
+
+---
+
+##### `version`<sup>Required</sup> <a name="version" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.version"></a>
+
+```typescript
+public readonly version: string;
+```
+
+- *Type:* string
+
+cluster version number.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V1_1_1">V1_1_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | **Deprecated by Amazon MSK. You can't create a Kafka cluster with a deprecated version.**. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_2_1">V2_2_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.2.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_3_1">V2_3_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.3.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_4_1_1">V2_4_1_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.4.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_5_1">V2_5_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.5.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_0">V2_6_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.6.0. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_1">V2_6_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.6.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_2">V2_6_2</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.6.2. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_3">V2_6_3</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.6.3. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_7_0">V2_7_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.7.0. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_7_1">V2_7_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.7.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_7_2">V2_7_2</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.7.2. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_8_0">V2_8_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.8.0. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_8_1">V2_8_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 2.8.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_8_2_TIERED">V2_8_2_TIERED</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | AWS MSK Kafka version 2.8.2.tiered. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_1_1">V3_1_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.1.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_2_0">V3_2_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.2.0. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_3_1">V3_3_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.3.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_3_2">V3_3_2</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.3.2. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_4_0">V3_4_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.4.0. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_5_1">V3_5_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.5.1. |
+
+---
+
+##### ~~`V1_1_1`~~<sup>Required</sup> <a name="V1_1_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V1_1_1"></a>
+
+- *Deprecated:* use the latest runtime instead
+
+```typescript
+public readonly V1_1_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+**Deprecated by Amazon MSK. You can't create a Kafka cluster with a deprecated version.**.
+
+Kafka version 1.1.1
+
+---
+
+##### `V2_2_1`<sup>Required</sup> <a name="V2_2_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_2_1"></a>
+
+```typescript
+public readonly V2_2_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.2.1.
+
+---
+
+##### `V2_3_1`<sup>Required</sup> <a name="V2_3_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_3_1"></a>
+
+```typescript
+public readonly V2_3_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.3.1.
+
+---
+
+##### `V2_4_1_1`<sup>Required</sup> <a name="V2_4_1_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_4_1_1"></a>
+
+```typescript
+public readonly V2_4_1_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.4.1.
+
+---
+
+##### `V2_5_1`<sup>Required</sup> <a name="V2_5_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_5_1"></a>
+
+```typescript
+public readonly V2_5_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.5.1.
+
+---
+
+##### `V2_6_0`<sup>Required</sup> <a name="V2_6_0" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_0"></a>
+
+```typescript
+public readonly V2_6_0: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.6.0.
+
+---
+
+##### `V2_6_1`<sup>Required</sup> <a name="V2_6_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_1"></a>
+
+```typescript
+public readonly V2_6_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.6.1.
+
+---
+
+##### `V2_6_2`<sup>Required</sup> <a name="V2_6_2" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_2"></a>
+
+```typescript
+public readonly V2_6_2: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.6.2.
+
+---
+
+##### `V2_6_3`<sup>Required</sup> <a name="V2_6_3" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_6_3"></a>
+
+```typescript
+public readonly V2_6_3: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.6.3.
+
+---
+
+##### `V2_7_0`<sup>Required</sup> <a name="V2_7_0" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_7_0"></a>
+
+```typescript
+public readonly V2_7_0: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.7.0.
+
+---
+
+##### `V2_7_1`<sup>Required</sup> <a name="V2_7_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_7_1"></a>
+
+```typescript
+public readonly V2_7_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.7.1.
+
+---
+
+##### `V2_7_2`<sup>Required</sup> <a name="V2_7_2" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_7_2"></a>
+
+```typescript
+public readonly V2_7_2: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.7.2.
+
+---
+
+##### `V2_8_0`<sup>Required</sup> <a name="V2_8_0" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_8_0"></a>
+
+```typescript
+public readonly V2_8_0: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.8.0.
+
+---
+
+##### `V2_8_1`<sup>Required</sup> <a name="V2_8_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_8_1"></a>
+
+```typescript
+public readonly V2_8_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 2.8.1.
+
+---
+
+##### `V2_8_2_TIERED`<sup>Required</sup> <a name="V2_8_2_TIERED" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V2_8_2_TIERED"></a>
+
+```typescript
+public readonly V2_8_2_TIERED: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+AWS MSK Kafka version 2.8.2.tiered.
+
+---
+
+##### `V3_1_1`<sup>Required</sup> <a name="V3_1_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_1_1"></a>
+
+```typescript
+public readonly V3_1_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.1.1.
+
+---
+
+##### `V3_2_0`<sup>Required</sup> <a name="V3_2_0" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_2_0"></a>
+
+```typescript
+public readonly V3_2_0: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.2.0.
+
+---
+
+##### `V3_3_1`<sup>Required</sup> <a name="V3_3_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_3_1"></a>
+
+```typescript
+public readonly V3_3_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.3.1.
+
+---
+
+##### `V3_3_2`<sup>Required</sup> <a name="V3_3_2" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_3_2"></a>
+
+```typescript
+public readonly V3_3_2: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.3.2.
+
+---
+
+##### `V3_4_0`<sup>Required</sup> <a name="V3_4_0" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_4_0"></a>
+
+```typescript
+public readonly V3_4_0: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.4.0.
+
+---
+
+##### `V3_5_1`<sup>Required</sup> <a name="V3_5_1" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_5_1"></a>
+
+```typescript
+public readonly V3_5_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.5.1.
+
+---
+
+### MskBrokerInstanceType <a name="MskBrokerInstanceType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType"></a>
+
+Kafka cluster version.
+
+
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.instance">instance</a></code> | <code>aws-cdk-lib.aws_ec2.InstanceType</code> | *No description.* |
+
+---
+
+##### `instance`<sup>Required</sup> <a name="instance" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.instance"></a>
+
+```typescript
+public readonly instance: InstanceType;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.InstanceType
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_12XLARGE">KAFKA_M5_12XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.12xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_16XLARGE">KAFKA_M5_16XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.16xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_24XLARGE">KAFKA_M5_24XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.24xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_2XLARGE">KAFKA_M5_2XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.2xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_4XLARGE">KAFKA_M5_4XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.4xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_8XLARGE">KAFKA_M5_8XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.8xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_LARGE">KAFKA_M5_LARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.large. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_XLARGE">KAFKA_M5_XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_T3_SMALL">KAFKA_T3_SMALL</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.t3.small. |
+
+---
+
+##### `KAFKA_M5_12XLARGE`<sup>Required</sup> <a name="KAFKA_M5_12XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_12XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_12XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.12xlarge.
+
+---
+
+##### `KAFKA_M5_16XLARGE`<sup>Required</sup> <a name="KAFKA_M5_16XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_16XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_16XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.16xlarge.
+
+---
+
+##### `KAFKA_M5_24XLARGE`<sup>Required</sup> <a name="KAFKA_M5_24XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_24XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_24XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.24xlarge.
+
+---
+
+##### `KAFKA_M5_2XLARGE`<sup>Required</sup> <a name="KAFKA_M5_2XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_2XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_2XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.2xlarge.
+
+---
+
+##### `KAFKA_M5_4XLARGE`<sup>Required</sup> <a name="KAFKA_M5_4XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_4XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_4XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.4xlarge.
+
+---
+
+##### `KAFKA_M5_8XLARGE`<sup>Required</sup> <a name="KAFKA_M5_8XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_8XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_8XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.8xlarge.
+
+---
+
+##### `KAFKA_M5_LARGE`<sup>Required</sup> <a name="KAFKA_M5_LARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_LARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_LARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.large.
+
+---
+
+##### `KAFKA_M5_XLARGE`<sup>Required</sup> <a name="KAFKA_M5_XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M5_XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m5.xlarge.
+
+---
+
+##### `KAFKA_T3_SMALL`<sup>Required</sup> <a name="KAFKA_T3_SMALL" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_T3_SMALL"></a>
+
+```typescript
+public readonly KAFKA_T3_SMALL: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.t3.small.
+
+---
 
 ### StepFunctionUtils <a name="StepFunctionUtils" id="@cdklabs/aws-data-solutions-framework.utils.StepFunctionUtils"></a>
 
@@ -12880,6 +14922,141 @@ the string to convert to PascalCase.
 
 ## Enums <a name="Enums" id="Enums"></a>
 
+### AclOperationTypes <a name="AclOperationTypes" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALL">ALL</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.READ">READ</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.WRITE">WRITE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.CREATE">CREATE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DELETE">DELETE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER">ALTER</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DESCRIBE">DESCRIBE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.CLUSTER_ACTION">CLUSTER_ACTION</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER_CONFIGS">ALTER_CONFIGS</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.IDEMPOTENT_WRITE">IDEMPOTENT_WRITE</a></code> | *No description.* |
+
+---
+
+##### `ALL` <a name="ALL" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALL"></a>
+
+---
+
+
+##### `READ` <a name="READ" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.READ"></a>
+
+---
+
+
+##### `WRITE` <a name="WRITE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.WRITE"></a>
+
+---
+
+
+##### `CREATE` <a name="CREATE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.CREATE"></a>
+
+---
+
+
+##### `DELETE` <a name="DELETE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DELETE"></a>
+
+---
+
+
+##### `ALTER` <a name="ALTER" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER"></a>
+
+---
+
+
+##### `DESCRIBE` <a name="DESCRIBE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DESCRIBE"></a>
+
+---
+
+
+##### `CLUSTER_ACTION` <a name="CLUSTER_ACTION" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.CLUSTER_ACTION"></a>
+
+---
+
+
+##### `ALTER_CONFIGS` <a name="ALTER_CONFIGS" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER_CONFIGS"></a>
+
+---
+
+
+##### `IDEMPOTENT_WRITE` <a name="IDEMPOTENT_WRITE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.IDEMPOTENT_WRITE"></a>
+
+---
+
+
+### AclPermissionTypes <a name="AclPermissionTypes" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ANY">ANY</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.DENY">DENY</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ALLOW">ALLOW</a></code> | *No description.* |
+
+---
+
+##### `ANY` <a name="ANY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ANY"></a>
+
+---
+
+
+##### `DENY` <a name="DENY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.DENY"></a>
+
+---
+
+
+##### `ALLOW` <a name="ALLOW" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ALLOW"></a>
+
+---
+
+
+### AclResourceTypes <a name="AclResourceTypes" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.ANY">ANY</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TOPIC">TOPIC</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.GROUP">GROUP</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.CLUSTER">CLUSTER</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TRANSACTIONAL_ID">TRANSACTIONAL_ID</a></code> | *No description.* |
+
+---
+
+##### `ANY` <a name="ANY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.ANY"></a>
+
+---
+
+
+##### `TOPIC` <a name="TOPIC" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TOPIC"></a>
+
+---
+
+
+##### `GROUP` <a name="GROUP" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.GROUP"></a>
+
+---
+
+
+##### `CLUSTER` <a name="CLUSTER" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.CLUSTER"></a>
+
+---
+
+
+##### `TRANSACTIONAL_ID` <a name="TRANSACTIONAL_ID" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TRANSACTIONAL_ID"></a>
+
+---
+
+
 ### Architecture <a name="Architecture" id="@cdklabs/aws-data-solutions-framework.utils.Architecture"></a>
 
 List of supported CPU architecture, either  X86_64 or ARM64.
@@ -12922,6 +15099,51 @@ The list of CICD Stages used in CICD Pipelines.
 
 
 ##### `PROD` <a name="PROD" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.PROD"></a>
+
+---
+
+
+### ClusterMonitoringLevel <a name="ClusterMonitoringLevel" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel"></a>
+
+The level of monitoring for the MSK cluster.
+
+> [https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html#metrics-details](https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html#metrics-details)
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.DEFAULT">DEFAULT</a></code> | Default metrics are the essential metrics to monitor. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.PER_BROKER">PER_BROKER</a></code> | Per Broker metrics give you metrics at the broker level. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.PER_TOPIC_PER_BROKER">PER_TOPIC_PER_BROKER</a></code> | Per Topic Per Broker metrics help you understand volume at the topic level. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.PER_TOPIC_PER_PARTITION">PER_TOPIC_PER_PARTITION</a></code> | Per Topic Per Partition metrics help you understand consumer group lag at the topic partition level. |
+
+---
+
+##### `DEFAULT` <a name="DEFAULT" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.DEFAULT"></a>
+
+Default metrics are the essential metrics to monitor.
+
+---
+
+
+##### `PER_BROKER` <a name="PER_BROKER" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.PER_BROKER"></a>
+
+Per Broker metrics give you metrics at the broker level.
+
+---
+
+
+##### `PER_TOPIC_PER_BROKER` <a name="PER_TOPIC_PER_BROKER" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.PER_TOPIC_PER_BROKER"></a>
+
+Per Topic Per Broker metrics help you understand volume at the topic level.
+
+---
+
+
+##### `PER_TOPIC_PER_PARTITION` <a name="PER_TOPIC_PER_PARTITION" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterMonitoringLevel.PER_TOPIC_PER_PARTITION"></a>
+
+Per Topic Per Partition metrics help you understand consumer group lag at the topic partition level.
 
 ---
 
@@ -13352,6 +15574,33 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 
 ##### `DISABLED` <a name="DISABLED" id="@cdklabs/aws-data-solutions-framework.consumption.State.DISABLED"></a>
+
+---
+
+
+### StorageMode <a name="StorageMode" id="@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode"></a>
+
+The storage mode for the cluster brokers.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode.LOCAL">LOCAL</a></code> | Local storage mode utilizes network attached EBS storage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode.TIERED">TIERED</a></code> | Tiered storage mode utilizes EBS storage and Tiered storage. |
+
+---
+
+##### `LOCAL` <a name="LOCAL" id="@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode.LOCAL"></a>
+
+Local storage mode utilizes network attached EBS storage.
+
+---
+
+
+##### `TIERED` <a name="TIERED" id="@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode.TIERED"></a>
+
+Tiered storage mode utilizes EBS storage and Tiered storage.
 
 ---
 
