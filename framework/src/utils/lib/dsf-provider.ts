@@ -186,7 +186,7 @@ export class DsfProvider extends Construct {
       totalTimeout: props.queryTimeout,
       logRetention: DsfProvider.LOG_RETENTION,
     });
-    
+
     // Scope down the `onEventHandlerFunction` to be called
     // Only by the function created by the Provider
     this.onEventHandlerFunction.addPermission('InvokePermissionOnEvent', {
