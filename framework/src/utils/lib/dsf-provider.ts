@@ -187,10 +187,6 @@ export class DsfProvider extends Construct {
       logRetention: DsfProvider.LOG_RETENTION,
     });
 
-    let frameworkOnEventFunction = customResourceProvider.node.findChild('framework-onEvent') as Function;
-
-    console.log(frameworkOnEventFunction);
-
     this.onEventHandlerFunction.addPermission('InvokePermissionOnEvent', {
       principal: new ServicePrincipal('lambda.amazonaws.com'),
       sourceArn: customResourceProvider.serviceToken,
