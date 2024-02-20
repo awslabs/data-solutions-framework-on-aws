@@ -61,6 +61,7 @@
     "jsii-docgen": "^10.3.15",
     "jsii-pacmak": "^1.94.0",
     "jsii-rosetta": "~5.3.0",
+    "node-libcurl": "^4.0.0",
     "projen": "^0.79.7",
     "rosetta": "^1.1.0",
     "standard-version": "^9",

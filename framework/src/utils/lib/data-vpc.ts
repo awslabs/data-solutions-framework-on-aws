@@ -1,9 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Stack, Tags } from 'aws-cdk-lib';
-import { FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint, IVpc, IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Effect, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
+import {
+  ClientVpnEndpoint, ClientVpnEndpointOptions, ClientVpnUserBasedAuthentication,
+  FlowLogDestination, GatewayVpcEndpointAwsService, IGatewayVpcEndpoint,
+  ISecurityGroup, IpAddresses, Peer, Port, SecurityGroup, SubnetType,
+  TransportProtocol, IVpc, Vpc, VpnPort,
+} from 'aws-cdk-lib/aws-ec2';
+import { Effect, IRole, PolicyStatement, Role, SamlMetadataDocument, SamlProvider, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
@@ -44,6 +49,20 @@ export class DataVpc extends Construct {
    * The S3 VPC endpoint gateway
    */
   public readonly s3VpcEndpoint: IGatewayVpcEndpoint;
+  /**
+   * The Client VPN Endpoint
+   */
+  public readonly clientVpnEndpoint: ClientVpnEndpoint | undefined;
+
+  /**
+   * The log group for Client VPN Endpoint
+   */
+  public readonly vpnLogGroup: ILogGroup | undefined;
+  /**
+   * The security group for Client VPN Endpoint
+   */
+  public readonly vpnSecurityGroups: ISecurityGroup[] | undefined;
+
 
   constructor(scope: Construct, id: string, props: DataVpcProps) {
 
@@ -127,6 +146,11 @@ export class DataVpc extends Construct {
     this.s3VpcEndpoint= this.vpc.addGatewayEndpoint('S3VpcEndpoint', {
       service: GatewayVpcEndpointAwsService.S3,
     });
+
+    // Create a Client VPN Endpoint
+    if (props.clientVpnEndpointProps) {
+      [this.vpnSecurityGroups, this.vpnLogGroup, this.clientVpnEndpoint] = this.setupClientVpn(scope, props, removalPolicy, retention);
+    }
   }
 
   /**
@@ -141,5 +165,67 @@ export class DataVpc extends Construct {
     }
     // Add tags to vpc
     Tags.of(this.vpc).add(key, value);
+  }
+
+  /**
+   * @internal
+   * Configure Client VPN Endpoint
+   * @param scope current scope
+   * @param props DataVpcProps
+   * @param removalPolicy RemovalPolicy
+   * @param retention RetentionDays for Cloudwatch log group
+   * @returns [ISecurityGroup[], ILogGroup, ClientVpnEndpoint] created ClientVpnEndpoint alongside with security group and log group.
+   */
+  private setupClientVpn(scope:Construct, props:DataVpcProps, removalPolicy:RemovalPolicy, retention:RetentionDays):
+  [ISecurityGroup[], ILogGroup, ClientVpnEndpoint] {
+
+    const vpnSamlProvider = new SamlProvider(scope, 'SamlProviderVpnEndpoint', {
+      metadataDocument: SamlMetadataDocument.fromXml(props.clientVpnEndpointProps!.samlMetadataDocument),
+    });
+
+    const endpointProps = {
+      ...props.clientVpnEndpointProps,
+      vpnSubnets: this.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+      userBasedAuthentication: ClientVpnUserBasedAuthentication.federated(vpnSamlProvider),
+      cidr: this.vpc.publicSubnets[0].ipv4CidrBlock,
+    };
+
+    endpointProps.logging ??= true;
+    endpointProps.transportProtocol ??= TransportProtocol.TCP;
+    endpointProps.splitTunnel ??= true;
+    endpointProps.dnsServers ??= [props.vpcCidr.replace(/^(\d+)\.(\d+)\.(\d+)\.\d+\/\d+$/, '$1.$2.$3.2')];
+    endpointProps.authorizeAllUsersToVpcCidr ??= true;
+    endpointProps.port ??= VpnPort.HTTPS;
+    endpointProps.selfServicePortal ??= true;
+
+    if (!endpointProps.securityGroups) {
+      const vpnSecurityGroup = new SecurityGroup(scope, 'vpnSecurityGroup', {
+        vpc: this.vpc,
+        allowAllOutbound: false,
+      });
+      vpnSecurityGroup.addIngressRule(
+        Peer.ipv4(props.vpcCidr),
+        (endpointProps.transportProtocol == TransportProtocol.TCP) ?
+          Port.tcp(endpointProps.port) : Port.udp(endpointProps.port),
+      );
+      vpnSecurityGroup.addEgressRule(Peer.anyIpv4(), Port.tcp(443));
+      vpnSecurityGroup.applyRemovalPolicy(removalPolicy);
+      endpointProps.securityGroups = [vpnSecurityGroup];
+    };
+
+    if (!endpointProps.logGroup) {
+      const vpnLogGroup = new LogGroup(scope, 'vpnLogGroup', {
+        encryptionKey: this.flowLogKey,
+        retention,
+        removalPolicy: removalPolicy,
+      });
+      endpointProps.logGroup = vpnLogGroup;
+    }
+
+    const clientVpnEndpoint = this.vpc.addClientVpnEndpoint('Endpoint', endpointProps as ClientVpnEndpointOptions);
+
+    clientVpnEndpoint.applyRemovalPolicy(removalPolicy);
+
+    return [endpointProps.securityGroups, endpointProps.logGroup, clientVpnEndpoint];
   }
 }

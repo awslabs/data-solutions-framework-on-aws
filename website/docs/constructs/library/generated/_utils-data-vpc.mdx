@@ -147,3 +147,83 @@ dsf.utils.DataVpc(self, "MyDataVpc",
   </TabItem>
 </Tabs>
 
+## Client VPN Endpoint
+
+You can add client VPN endpoint to the DataVpc. Current impelementation supports SAML based authentication only and requires SSL certificate created in Amazon Certificate Manager. 
+
+If you don't have an SSL certificate, you can follow this [workshop lab](https://catalog.us-east-1.prod.workshops.aws/workshops/d903ff2b-f043-4126-a4f5-64a7cc2922ec/en-US/3-aws-client-vpn/1-rsacertificatecreation) to generate a self-signed certificate and import it into Amazon Certificate Manager. 
+
+Refer to the [documentation](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/federated-authentication.html) on setting up SAML federated authentication. If you don't currently use any IdP, we suggest AWS IAM Identity Center that can also be used with other DSF constructs, such as OpenSearch construct.  
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleDefaultDataVpcStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new dsf.utils.DataVpc(this, 'MyDataVpc', {
+      vpcCidr: '10.0.0.0/16',
+      clientVpnEndpointProps: {
+        serverCertificateArn: 'arn:aws:acm:us-east-1:XXXXXXXX:certificate/XXXXXXXXXX',
+        samlMetadataDocument: `<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/XXXXXXXXXXXXXX">
+          <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+            <md:KeyDescriptor use="signing">
+              <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                  <ds:X509Certificate>XXXXXXXXXXXXXXXXXXXXXXXXX</ds:X509Certificate>
+                </ds:X509Data>
+              </ds:KeyInfo>
+            </md:KeyDescriptor>
+            <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/XXXXXXXXXXXXXX"/>
+            <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/XXXXXXXXXXXXXX"/>
+            <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+            <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/XXXXXXXXXXXXXX"/>
+            <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/XXXXXXXXXXXXXX"/>
+          </md:IDPSSODescriptor>
+        </md:EntityDescriptor>`,
+        selfServicePortal:false
+      }
+    });
+  }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleDefaultDataVpcStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        dsf.utils.DataVpc(self, "MyDataVpc",
+            vpc_cidr="10.0.0.0/16",
+            client_vpn_endpoint_props=dsf.utils.DataVpcClientVpnEndpointProps(
+                server_certificate_arn="arn:aws:acm:us-east-1:XXXXXXXX:certificate/XXXXXXXXXX",
+                saml_metadata_document="""<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/XXXXXXXXXXXXXX">
+                          <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+                            <md:KeyDescriptor use="signing">
+                              <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                                <ds:X509Data>
+                                  <ds:X509Certificate>XXXXXXXXXXXXXXXXXXXXXXXXX</ds:X509Certificate>
+                                </ds:X509Data>
+                              </ds:KeyInfo>
+                            </md:KeyDescriptor>
+                            <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/XXXXXXXXXXXXXX"/>
+                            <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/XXXXXXXXXXXXXX"/>
+                            <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+                            <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/XXXXXXXXXXXXXX"/>
+                            <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/XXXXXXXXXXXXXX"/>
+                          </md:IDPSSODescriptor>
+                        </md:EntityDescriptor>""",
+                self_service_portal=False
+            )
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+

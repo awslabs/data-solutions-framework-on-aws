@@ -5,6 +5,7 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { DataVpcClientVpnEndpointProps } from './client-vpn-endpoint-props';
 
 /**
  * The properties for the `DataVpc` construct
@@ -41,4 +42,9 @@ export interface DataVpcProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+  /**
+   * ClientVpnEndpoint propertioes. Required if client vpn endpoint is needed
+   * @default None
+   */
+  readonly clientVpnEndpointProps?: DataVpcClientVpnEndpointProps;
 }
