@@ -78,6 +78,17 @@ Or programmatically in your CDK app:
 
 [example object removal](./examples/data-vpc-removal.lit.ts)
 
+## Client VPN Endpoint
+
+You can add client VPN endpoint to the DataVpc. Current impelementation supports SAML based authentication only and requires SSL certificate created in Amazon Certificate Manager. 
+
+If you don't have an SSL certificate, you can follow this [workshop lab](https://catalog.us-east-1.prod.workshops.aws/workshops/d903ff2b-f043-4126-a4f5-64a7cc2922ec/en-US/3-aws-client-vpn/1-rsacertificatecreation) to generate a self-signed certificate and import it into Amazon Certificate Manager. 
+
+Refer to the [documentation](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/federated-authentication.html) on setting up SAML federated authentication. If you don't currently use any IdP, we suggest AWS IAM Identity Center that can also be used with other DSF constructs, such as OpenSearch construct.  
+
+
+[example client vpn endpoint default](./examples/data-vpc-endpoint.lit.ts)
+
 [//]: # (utils.customization)
 # Customize DSF on AWS constructs
 
