@@ -201,13 +201,14 @@ export class DataVpc extends Construct {
     if (!endpointProps.securityGroups) {
       const vpnSecurityGroup = new SecurityGroup(scope, 'vpnSecurityGroup', {
         vpc: this.vpc,
-        allowAllOutbound: true,
+        allowAllOutbound: false,
       });
       vpnSecurityGroup.addIngressRule(
         Peer.ipv4(props.vpcCidr),
         (endpointProps.transportProtocol == TransportProtocol.TCP) ?
           Port.tcp(endpointProps.port) : Port.udp(endpointProps.port),
       );
+      vpnSecurityGroup.addEgressRule(Peer.anyIpv4(), Port.tcp(443));
       vpnSecurityGroup.applyRemovalPolicy(removalPolicy);
       endpointProps.securityGroups = [vpnSecurityGroup];
     };
