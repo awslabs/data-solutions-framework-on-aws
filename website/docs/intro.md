@@ -86,6 +86,8 @@ In `lib/dsf-example-stack.ts`
   ```typescript
   import * as cdk from 'aws-cdk-lib';
   import * as dsf from '@cdklabs/aws-data-solutions-framework';
+  import { Key } from 'aws-cdk-lib/aws-kms';
+  import { Policy, PolicyStatement} from 'aws-cdk-lib/aws-iam';
 
   export class DsfExampleStack extends cdk.Stack {
     constructor(scope: cdk.Construt, id: string, props?: cdk.StackProps) {
@@ -109,6 +111,8 @@ In `lib/dsf-example-stack.ts`
     import cdklabs.aws_data_solutions_framework as dsf
     from aws_cdk.aws_s3 import Bucket
     from aws_cdk import Stack, RemovalPolicy, CfnOutput
+    from aws_cdk.aws_iam import Policy, PolicyStatement
+    from aws_cdk.aws_kms import Key  
 
     from constructs import Construct
 
@@ -243,6 +247,14 @@ Last we will output the ARNs for the role and EMR serverless app, the ID of the 
 </Tabs>
 
 ## Deploy the CDK app
+
+If this is the first time you deploy an AWS CDK app into an environment (account/region), you can install a “bootstrap stack”.
+
+```bash
+cdk bootstrap
+```
+
+After the bootstrap is completed you can now deploy the stack.
 
 ```bash
 cdk deploy
