@@ -155,10 +155,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'eslint-plugin-local-rules',
     'esbuild',
     'sync-request-curl',
-<<<<<<< HEAD
     'node-libcurl'
-=======
->>>>>>> 0d40331 (update lock after build)
   ],
 
   bundledDeps: [
