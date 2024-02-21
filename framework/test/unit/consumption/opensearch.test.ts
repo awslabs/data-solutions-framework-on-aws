@@ -3,7 +3,7 @@
 
 /**
  * Tests for OpenSearch cluster construct
- * @group unit/storage/opensearch
+ * @group unit/consumption/opensearch
  */
 
 
@@ -56,7 +56,7 @@ describe('default configuration', () => {
         DedicatedMasterCount: 3,
         DedicatedMasterEnabled: true,
         DedicatedMasterType: 'm6g.large.search',
-        InstanceType: 'm6g.xlarge.search',
+        InstanceType: 'r6g.xlarge.search',
         MultiAZWithStandbyEnabled: false,
         ZoneAwarenessEnabled: true,
       },
@@ -121,7 +121,7 @@ describe('non vpc config', () => {
         DedicatedMasterCount: 3,
         DedicatedMasterEnabled: true,
         DedicatedMasterType: 'm6g.large.search',
-        InstanceType: 'm6g.xlarge.search',
+        InstanceType: 'r6g.xlarge.search',
         MultiAZWithStandbyEnabled: false,
         ZoneAwarenessEnabled: true,
       },

@@ -24,25 +24,25 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 
 // Instantiate AccessLogsBucket Construct with default
 const domain = new OpensearchCluster(stack, 'OpensearchVpc', {
-  domainName: 'mycluster2',
-  samlEntityId: 'https://portal.sso.us-east-1.amazonaws.com/saml/metadata/NDQ0OTc1NjczNTMwX2lucy01MTRmOGNkNGRjYzJhMjky',
-  samlMetadataContent: `<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/NDQ0OTc1NjczNTMwX2lucy01MTRmOGNkNGRjYzJhMjky">
-<md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-  <md:KeyDescriptor use="signing">
-    <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-      <ds:X509Data>
-        <ds:X509Certificate>MIIDBzCCAe+gAwIBAgIFAJRn/1owDQYJKoZIhvcNAQELBQAwRTEWMBQGA1UEAwwNYW1hem9uYXdzLmNvbTENMAsGA1UECwwESURBUzEPMA0GA1UECgwGQW1hem9uMQswCQYDVQQGEwJVUzAeFw0yNDAxMDMxNDI3MjVaFw0yOTAxMDMxNDI3MjVaMEUxFjAUBgNVBAMMDWFtYXpvbmF3cy5jb20xDTALBgNVBAsMBElEQVMxDzANBgNVBAoMBkFtYXpvbjELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC4njhO6vSqfZy+oO3NwUAOiXg/y4053BvSGQIBn/QTiQnSwitQ8gDwnbFs7O65fs+JBEx+L7/4qRkNVGvI9CmF/bCWGqK6OFxUqeA9Ex+8Q42RonnruD+WloniQyDWEs6UR1x+RAFoCFMY28Xvhse1GwV8N+kg20sH3nzHo0Z7B+pRJqflY0/B2dQV8QE/fkJ2EnwLpaxbfsPVYt9pba0GK7xtiXJYzfl4kJ7eb5P0mtNeUHvMZQ786OmykABZVUMLx07po2oMXWxVw0OwoXPj3ijpa4odNRzJt65UAGsqnP45oHYO0FB+GqcVj1Iva2zYcq+4yu1UWXkY/Nf/k2u7AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAEL2rJc6U7vNoq3gMVmfA2U/TqUMq3owcIrpI3YnXBspvKHpXzgHhht3PW1JPujLopszf3/txckzqvysLIlvNV2ZF4ecoHhq7cBkc5/KpR265N8XVJ9JjLV5mCDaDj0PcaRYdiMI0n/PDuHTrUT/WoYxZ29JSBVa0SB8rIJAlB6ffusxs1Kpq3NzewsVe9Jv3c+Y04G4A2NXJ2DZlEzPzAOJYXOLcrd4TVABAIsbU1Oek8UWn70I65Knp8kA/JunwJtpfLwHfH31l8A/yUsjU1+9hSci7O8cqy0+E7Xn+Tif0bE3YUO2kSMc5bkvv+Da4RqzblIQSCi5g2TgWAoNg8o=</ds:X509Certificate>
-      </ds:X509Data>
-    </ds:KeyInfo>
-  </md:KeyDescriptor>
-  <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/NDQ0OTc1NjczNTMwX2lucy01MTRmOGNkNGRjYzJhMjky"/>
-  <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/logout/NDQ0OTc1NjczNTMwX2lucy01MTRmOGNkNGRjYzJhMjky"/>
-  <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
-  <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/NDQ0OTc1NjczNTMwX2lucy01MTRmOGNkNGRjYzJhMjky"/>
-  <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.us-east-1.amazonaws.com/saml/assertion/NDQ0OTc1NjczNTMwX2lucy01MTRmOGNkNGRjYzJhMjky"/>
-</md:IDPSSODescriptor>
+  domainName: 'e2e-tests-cluster',
+  samlEntityId: 'https://portal.sso.eu-west-1.amazonaws.com/saml/assertion/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1',
+  samlMetadataContent: `<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.eu-west-1.amazonaws.com/saml/assertion/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1">
+  <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDBzCCAe+gAwIBAgIFAMWCViwwDQYJKoZIhvcNAQELBQAwRTEWMBQGA1UEAwwNYW1hem9uYXdzLmNvbTENMAsGA1UECwwESURBUzEPMA0GA1UECgwGQW1hem9uMQswCQYDVQQGEwJVUzAeFw0yNDAyMjExNTQ4MTJaFw0yOTAyMjExNTQ4MTJaMEUxFjAUBgNVBAMMDWFtYXpvbmF3cy5jb20xDTALBgNVBAsMBElEQVMxDzANBgNVBAoMBkFtYXpvbjELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDHco1Vg9SeXOJHv4CEbY7folO9+zP3naA570q97Oi9o81l9ibP5c+a1404qUBuv5E4HH1chtHU6Yos5LMXHaRet/bOUBrAIOieF0RCMLfHz1Vkf213SWf60yfAA19QgwQRLH3HTEc+nhfe93RAgcw1T7mZBcHk5Zljt6gShq3N4YzupO4KpuRBX2S2XzfhasuDV8JpcB6BGexTDzAEcZ1P0v8X+vpCF7fN9Gd5K/rrOtCuPcSC694KJgfOucvMNj7PqpkLvLzTosxlqL6P5PQheW5sZwYqvw+MJrGIg5WBqRXoTF0JE5A6lv1aWhQDfuyzQ8UojGeMjTwgz1/PTQGFAgMBAAEwDQYJKoZIhvcNAQELBQADggEBADWTz+ggtrkhDGYKqEqFn04s0fMhfcQ9f6j0Rs8igysdINM7VCyD4PJapn5kekKwlzir27t9fpCD+PcgiCAKxGnaTvaKSTfoyGvHnRYhTbjb+XougPyyTl5qdJZkXx0x6ucw6OjbF/WH2VLY1xvr9MQkbUWNcS9b2FDIujHs881hpITPIKadV42BbIAK5sRJTncykJ6KSdN/MGVwYYVrE2rAM1uubwcKLkmbGxDBiS7ci3gu0M+5A53WHrjeGR/JC6ER49ybGYjouEKJWRw8ixRLV03H1kdrveuV4CUdv/mUJLzHulHWEGZFrvJIrQjf0ORYb790AAjBg092tlwg2Ys=</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.eu-west-1.amazonaws.com/saml/logout/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.eu-west-1.amazonaws.com/saml/logout/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1"/>
+    <md:NameIDFormat/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://portal.sso.eu-west-1.amazonaws.com/saml/assertion/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1"/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://portal.sso.eu-west-1.amazonaws.com/saml/assertion/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1"/>
+  </md:IDPSSODescriptor>
 </md:EntityDescriptor>`,
-  samlMasterBackendRole: 'IdpGroupId',
+  samlMasterBackendRole: 'admin',
   deployInVpc: true,
   removalPolicy: RemovalPolicy.DESTROY,
 });

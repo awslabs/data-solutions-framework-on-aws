@@ -1,7 +1,10 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 /* eslint-disable */
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 /* eslint-enable */
-import { sendRequest } from './helper';
+import { sendRequest } from './helper.mjs';
 
 const region = process.env.REGION!;
 const client = new SecretsManagerClient({ region });

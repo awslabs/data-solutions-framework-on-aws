@@ -4,34 +4,33 @@
 import * as path from 'path';
 import { RemovalPolicy, CustomResource, Stack, Duration, Aws } from 'aws-cdk-lib';
 import { EbsDeviceVolumeType, IVpc, Peer, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { AnyPrincipal, CfnServiceLinkedRole, Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
-import { LogGroup } from 'aws-cdk-lib/aws-logs';
-import { Domain, DomainProps, EngineVersion, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
+import { AnyPrincipal, CfnServiceLinkedRole, Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
+import { Domain, DomainProps, IDomain, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
 import { Construct } from 'constructs';
-import { OpensearchProps, OpensearchNodes } from './opensearch-props';
+import { OpensearchProps, OpensearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
- * A construct to provision Amazon Openssearch Cluster and OpenSearch Dashboards.
+ * A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
  * Uses IAM Identity Center SAML authentication.
  * If OpenSearch cluster is deployed in vpc created using DataVpc construct,
- * ClientVPNEndpoint will be provisioned automatically for secure access to Opnesearch Dashboards.
+ * ClientVPNEndpoint will be provisioned automatically for secure access to OpenSearch Dashboards.
  *
  * @example
+ *  const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
+ *    domainName:"mycluster2",
+ *    samlEntityId:'<IdpIdentityId>',
+ *    samlMetadataContent:'<IdpMetadataXml>',
+ *    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+ *    deployInVpc:true,
+ *    removalPolicy:cdk.RemovalPolicy.DESTROY
+ *  } as dsf.consumption.OpensearchProps );
  *
- *    const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
- *      domainName:"mycluster2",
- *      samlEntityId:'<IdpIdentityId>',
- *      samlMetadataContent:'<IdpMetadataXml>',
- *      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
- *      deployInVpc:true,
- *      removalPolicy:cdk.RemovalPolicy.DESTROY
- *    } as dsf.consumption.OpensearchProps );
- *
- *    osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
- *    osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+ *  osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+ *  osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
  *
  *
 */
@@ -42,13 +41,18 @@ export class OpensearchCluster extends TrackedConstruct {
    * @public
    * OpenSearchCluster domain
    */
-  public readonly domain: Domain;
+  public readonly domain: IDomain;
 
   /**
    * @public
    * Cloudwatch log group to store OpenSearch cluster logs
    */
-  public readonly logGroup: LogGroup;
+  public readonly logGroup: ILogGroup;
+
+  /**
+   * The KMS Key used to encrypt data and logs
+   */
+  public readonly encryptionKey: IKey;
 
   /**
    * @public
@@ -64,7 +68,7 @@ export class OpensearchCluster extends TrackedConstruct {
   /**
    * IAM Role used to provision and configure OpenSearch domain
    */
-  public readonly masterRole: Role;
+  public readonly masterRole: IRole;
 
   private prevCr?: CustomResource;
 
@@ -93,31 +97,49 @@ export class OpensearchCluster extends TrackedConstruct {
 
     //get or create service-linked role, required for vpc configuration
     try {
-      Role.fromRoleName(this, 'OpensearchSlr', 'AWSServiceRoleForAmazonOpenSearchService');
+      Role.fromRoleName(this, 'ServiceLinkedRole', 'AWSServiceRoleForAmazonOpenSearchService');
     } catch (error) {
       new CfnServiceLinkedRole(this, 'ServiceLinkedRole', {
         awsServiceName: 'es.amazonaws.com',
       });
     }
 
-    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
-    this.logGroup = new LogGroup(this, 'OpensearchLogsCloudWatchLogGroup', {
+    this.encryptionKey = props.encryptionKey || new Key(this, 'EncryptionKey', { removalPolicy: this.removalPolicy, enableKeyRotation: true });
+
+    this.logGroup = new LogGroup(this, 'LogGroup', {
       logGroupName: 'opensearch-domain-logs-'+props.domainName,
-      encryptionKey: props.encryptionKmsKeyArn ? Key.fromKeyArn(this, 'OpensearchLogsCloudWatchEncryptionKey', props.encryptionKmsKeyArn) : undefined,
+      encryptionKey: this.encryptionKey,
       removalPolicy: this.removalPolicy,
     });
 
+    this.encryptionKey.addToResourcePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        principals: [new ServicePrincipal(`logs.${Stack.of(scope).region}.amazonaws.com`)],
+        actions: [
+          'kms:Encrypt*',
+          'kms:Decrypt*',
+          'kms:ReEncrypt*',
+          'kms:GenerateDataKey*',
+          'kms:Describe*',
+        ],
+        conditions: {
+          ArnLike: {
+            'kms:EncryptionContext:aws:logs:arn': `arn:aws:logs:${Stack.of(scope).region}:${Stack.of(scope).account}:*`,
+          },
+        },
+        resources: ['*'],
+      }),
+    );
+
     this.logGroup.grantWrite(new ServicePrincipal('es.amazonaws.com'));
 
-    this.vpc = props.deployInVpc !=false ? (props.vpc ?? new DataVpc(scope, 'data-vpc-opensearch', { vpcCidr: '10.0.0.0/16' }).vpc ) : undefined;
+    this.vpc = props.deployInVpc !=false ? (props.vpc ?? new DataVpc(this, 'DataVpc', { vpcCidr: '10.0.0.0/16', removalPolicy: this.removalPolicy }).vpc ) : undefined;
     const vpcSubnetsSelection = this.vpc?.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
 
-    const kmsKey = props.encryptionKmsKeyArn ?
-      Key.fromKeyArn(this, 'OpensearchEncryptionKey', props.encryptionKmsKeyArn) :
-      new Key(this, 'OpensearchEncryptionKey', { removalPolicy: this.removalPolicy, enableKeyRotation: true });
-
-    const masterRolePolicy = new ManagedPolicy(scope, 'masterRolePolicy');
+    const masterRolePolicy = new ManagedPolicy(this, 'MasterRolePolicy');
     masterRolePolicy.addStatements(
       new PolicyStatement({
         actions: [
@@ -128,7 +150,7 @@ export class OpensearchCluster extends TrackedConstruct {
       }),
       new PolicyStatement({
         actions: ['kms:DescribeKey'],
-        resources: [kmsKey.keyArn],
+        resources: [this.encryptionKey.keyArn],
       }),
     );
 
@@ -156,17 +178,22 @@ export class OpensearchCluster extends TrackedConstruct {
       ],
     });
 
+    if (props.samlSessionTimeout) {
+      if (props.samlSessionTimeout.toMinutes() > 1440) {
+        throw new Error('The maximum allowed session timeout is 1440 minutes');
+      }
+    }
     const samlMetaData: SAMLOptionsProperty = {
       idpEntityId: props.samlEntityId,
       idpMetadataContent: props.samlMetadataContent,
       rolesKey: props.samlRolesKey ?? 'Role',
       subjectKey: props.samlSubjectKey,
       masterBackendRole: props.samlMasterBackendRole,
-      sessionTimeoutMinutes: props.samlSessionTimeoutMinutes ?? Duration.hours(8).toMinutes(),
+      sessionTimeoutMinutes: props.samlSessionTimeout?.toMinutes() ?? Duration.hours(8).toMinutes(),
     };
     let clusterSg = undefined;
     if (this.vpc) {
-      clusterSg = new SecurityGroup(scope, 'OpensearchSecurityGroup', {
+      clusterSg = new SecurityGroup(this, 'SecurityGroup', {
         vpc: this.vpc,
         allowAllOutbound: true,
       });
@@ -176,7 +203,7 @@ export class OpensearchCluster extends TrackedConstruct {
     const defaultAzNumber = 2;
     const domainProps : DomainProps = {
       domainName: props.domainName,
-      version: props.version ?? EngineVersion.OPENSEARCH_2_9,
+      version: props.version ?? OPENSEARCH_DEFAULT_VERSION,
       vpc: this.vpc,
       capacity: {
         masterNodes: props.masterNodeInstanceCount ?? 3,
@@ -189,7 +216,7 @@ export class OpensearchCluster extends TrackedConstruct {
       },
       encryptionAtRest: {
         enabled: true,
-        kmsKeyId: kmsKey.keyId,
+        kmsKeyId: this.encryptionKey.keyId,
       },
       ebs: {
         volumeSize: props.ebsSize ?? 10,
@@ -225,14 +252,14 @@ export class OpensearchCluster extends TrackedConstruct {
     } as DomainProps;
 
 
-    this.domain = new Domain(this, 'Domain', domainProps as DomainProps);
+    const domain = new Domain(this, 'Domain', domainProps as DomainProps);
 
-    this.domain.addAccessPolicies(
+    domain.addAccessPolicies(
       new PolicyStatement({
         actions: ['es:ESHttp*'],
         effect: Effect.ALLOW,
         principals: [new AnyPrincipal()],
-        resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${this.domain.domainName}/*`],
+        resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${domain.domainName}/*`],
       }));
 
     this.apiProvider = new DsfProvider(this, 'Provider', {
@@ -240,11 +267,11 @@ export class OpensearchCluster extends TrackedConstruct {
       onEventHandlerDefinition: {
         managedPolicy: masterRolePolicy,
         handler: 'handler',
-        depsLockFilePath: path.join(__dirname, './resources/lambda/package-lock.json'),
-        entryFile: path.join(__dirname, './resources/lambda/opensearch-api.ts'),
+        depsLockFilePath: path.join(__dirname, './resources/lambda/opensearch-api/package-lock.json'),
+        entryFile: path.join(__dirname, './resources/lambda/opensearch-api/opensearch-api.mjs'),
         environment: {
           REGION: Stack.of(this).region,
-          ENDPOINT: this.domain.domainEndpoint,
+          ENDPOINT: domain.domainEndpoint,
         },
         bundling: {
           nodeModules: [
@@ -261,6 +288,7 @@ export class OpensearchCluster extends TrackedConstruct {
       subnets: vpcSubnetsSelection,
     });
 
+    this.domain = domain;
 
     const samlAdminGroupId = props.samlMasterBackendRole;
 
@@ -279,7 +307,7 @@ export class OpensearchCluster extends TrackedConstruct {
   private apiCustomResource(apiPath: string, body: any) {
     const cr = new CustomResource(this, 'ApiCR-'+ Math.random().toFixed(8), {
       serviceToken: this.apiProvider.serviceToken,
-      resourceType: 'Custom::MyCustomResource',
+      resourceType: 'Custom::OpenSearchAPI',
       properties: {
         path: apiPath,
         body,

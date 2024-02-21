@@ -67,6 +67,8 @@ The default value of the path that the crawler would use is `<databaseName>/publ
 
 An [Amazon Athena workgroup](https://docs.aws.amazon.com/athena/latest/ug/manage-queries-control-costs-with-workgroups.html) with provided configuration.
 
+## Overview
+
 `AthenaWorkGroup` provides Athena workgroup configuration with best-practices:
 - Amazon S3 bucket for query results, based on [`AnalyticsBucket`](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/analytics-bucket).
 - Query results are encrypted using AWS KMS Key.
@@ -137,23 +139,35 @@ You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `f
 [//]: # (consumption.opensearch)
 # OpenSearch
 
-Amazon OpenSearch construct supporting SAML integration using IAM Identity Center. 
+An Amazon OpenSearch Domain with SAML integration and access to OpenSearch REST API. 
 
 ## Overview
 
-The construct follows best practises for Amazon OpenSearch deployment, provisioning OpenSearch domain in VPC and using SAML-authentication plugin to access OpenSearch Dashboards. 
+The `OpensearchCluster` construct implements an OpenSeach Domain following best practises including:
+ * private deployment in VPC
+ * SAML-authentication plugin to access OpenSearch Dashboards via a SAML2.0-compatible IdP
+ * access to the OpenSeach REST API to interact with OpenSearch objects like Roles, Indexes, Mappings... 
+  
 By default VPC also creates VPN client endpoint with SAML-authentication to allow secure access to the dashboards. Optionally, you can also provide your own VPC or choose to deploy internet-facing OpenSearch domain by setting `deployInVpc=false` in construct parameters.
 
 SAML-authentication can work with any SAML2.0-compatible provider like Okta. If you use AWS IAM Identity center please check the section below for details. The construct require at least admin role to be provided as parameters. 
 
 For mapping additional IdP roles to OpenSearch dashboard roles, you can use `addRoleMapping` method. 
 
-## Confgiure IAM Identity center
+## Configure IAM Identity center
 
 You need to have IAM Identity center enabled in the same region you plan to deploy your solution. 
 To configure SAML integration with OpenSearch you will need to create a custom SAML 2.0 Application and have at least one user group created and attached to the application.
 Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/role-based-access-control-in-amazon-opensearch-service-via-saml-integration-with-aws-iam-identity-center/) to set up IAM Identity center SAML application.
 
+Main steps are:
+1. In the region where you deploy OpenSearch, enable IAM Identity Center with AWS Organizations
+2. Create a user. It will be the admin role in OpenSearch Dashboards
+3. Download the IAM Identity Center SAML metadata file
+4. Extract the entityID URL from the metadata file and pass it to `samlEntityId` parameter
+5. Use the content of the metadata file in the `samlMetadataContent` parameter
+
 ## Usage
 
 [example default](examples/opensearch-saml.lit.ts)
+

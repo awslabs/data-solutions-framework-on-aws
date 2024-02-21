@@ -2,22 +2,33 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Amazon OpenSearch construct supporting SAML integration using IAM Identity Center. 
+An Amazon OpenSearch Domain with SAML integration and access to OpenSearch REST API. 
 
 ## Overview
 
-The construct follows best practises for Amazon OpenSearch deployment, provisioning OpenSearch domain in VPC and using SAML-authentication plugin to access OpenSearch Dashboards. 
+The `OpensearchCluster` construct implements an OpenSeach Domain following best practises including:
+ * private deployment in VPC
+ * SAML-authentication plugin to access OpenSearch Dashboards via a SAML2.0-compatible IdP
+ * access to the OpenSeach REST API to interact with OpenSearch objects like Roles, Indexes, Mappings... 
+  
 By default VPC also creates VPN client endpoint with SAML-authentication to allow secure access to the dashboards. Optionally, you can also provide your own VPC or choose to deploy internet-facing OpenSearch domain by setting `deployInVpc=false` in construct parameters.
 
 SAML-authentication can work with any SAML2.0-compatible provider like Okta. If you use AWS IAM Identity center please check the section below for details. The construct require at least admin role to be provided as parameters. 
 
 For mapping additional IdP roles to OpenSearch dashboard roles, you can use `addRoleMapping` method. 
 
-## Confgiure IAM Identity center
+## Configure IAM Identity center
 
 You need to have IAM Identity center enabled in the same region you plan to deploy your solution. 
 To configure SAML integration with OpenSearch you will need to create a custom SAML 2.0 Application and have at least one user group created and attached to the application.
 Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/role-based-access-control-in-amazon-opensearch-service-via-saml-integration-with-aws-iam-identity-center/) to set up IAM Identity center SAML application.
+
+Main steps are:
+1. In the region where you deploy OpenSearch, enable IAM Identity Center with AWS Organizations
+2. Create a user. It will be the admin role in OpenSearch Dashboards
+3. Download the IAM Identity Center SAML metadata file
+4. Extract the entityID URL from the metadata file and pass it to `samlEntityId` parameter
+5. Use the content of the metadata file in the `samlMetadataContent` parameter
 
 ## Usage
 
@@ -26,15 +37,13 @@ Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/
 
   ```typescript
 const osCluster = new dsf.consumption.OpensearchCluster(scope, 'MyOpensearchCluster',{
-    domainName:"mycluster3",
-    samlEntityId:'<IdpIdentityId>',
-    samlMetadataContent:'<IdpMetadataXml>',
-    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
-    deployInVpc:true,
-    removalPolicy:cdk.RemovalPolicy.DESTROY
-} as dsf.consumption.OpensearchProps);
-osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
-osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+  domainName:"mycluster",
+  samlEntityId:'<IdpIdentityId>',
+  samlMetadataContent:'<IdpMetadataXml>',
+  samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+  deployInVpc:true,
+  removalPolicy:cdk.RemovalPolicy.DESTROY
+});
   ```
   
   ```mdx-code-block
@@ -44,15 +53,13 @@ osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
 
   ```python
 os_cluster = dsf.consumption.OpensearchCluster(scope, "MyOpensearchCluster",
-    domain_name="mycluster3",
+    domain_name="mycluster",
     saml_entity_id="<IdpIdentityId>",
     saml_metadata_content="<IdpMetadataXml>",
     saml_master_backend_role="<IAMIdentityCenterAdminGroupId>",
     deploy_in_vpc=True,
     removal_policy=cdk.RemovalPolicy.DESTROY
 )
-os_cluster.add_role_mapping("dashboards_user", "<IAMIdentityCenterDashboardUsersGroupId>")
-os_cluster.add_role_mapping("readall", "<IAMIdentityCenterDashboardUsersGroupId>")
   ```
 
   </TabItem>

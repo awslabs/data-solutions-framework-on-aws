@@ -1,62 +1,127 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { EbsDeviceVolumeType, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
 
 
 /**
  * Simplified configuration for the Opensearch Cluster.
- * @param domainName OpenSearchCluster domain name
- * @param version OpenSearch version, default is OpenSearch_2.9
- * @param dataNodeInstanceType Data node instance type, default is OpenssearchNodes.DATA_NODE_INSTANCE_DEFAULT
- * @param dataNodeInstanceCount Data node instance count, default is equal to the number of AZs for vpc domain, 2 for public domain.
- * @param masterNodeInstanceType Master node instance type, default is OpenssearchNodes.MASTER_NODE_INSTANCE_DEFAULT
- * @param masterNodeInstanceCount Master node instance count, default is 3
- * @param warmInstanceType Warm node instance type, default is OpenssearchNodes.WARM_NODE_INSTANCE_DEFAULT
- * @param warmInstanceCount Warm node instance count, default is 0
- * @param multiAzWithStandbyEnabled Multi AZ with Standby enabled, default is false
- * @param zoneAwarenessEnabled Zone Awareness enabled, default is true
- * @param ebsVolumeType EBS Volume Type, default is gp3
- * @param ebsSize EBS Volume Size, default is 10
- * @param samlEntityId SAML Idp Entity Id
- * @param samlMetadataContent SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center
- * @param samlRolesKey SAML Roles Key, default "Role"
- * @param samlSubjectKey SAML Subject Key, default none
- * @param samlSessionTimeoutMinutes SAML Session Timeout Minutes, default is 480 minutes
- * @param samlMasterBackendRole SAML Idp Admin GroupId as returned by {user:groups} in Idp
- * @param enableAutoSoftwareUpdate Enable Auto Software Update, default is false
- * @param enableVersionUpgrade Enable Version Upgrade, default is false
- * @param encryptionKmsKeyArn Encryption KMS Key Arn, default is none
- * @param deployInVpc deploy OpenSearch cluster in vpc, default true. Ser deployInVpc=false to create public domain endpoint.
- * @param vpc VPC where the cluster is deployed, default new vpc is created if deployInVpc=true, @see DataVpc
- * @param masterUserName OpenSearch master user name for internal database
- * @param removalPolicy Removal Policy, default is retain.
-*/
+ */
 export interface OpensearchProps {
+  /**
+   * The OpenSearch Domain name
+   */
   readonly domainName: string;
+  /**
+   * The OpenSearch version
+   * @default - [OPENSEARCH_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   */
   readonly version?: EngineVersion;
+  /**
+   * The EC2 Instance Type used for OpenSearch data nodes
+   * @default - [OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   */
   readonly dataNodeInstanceType?: string;
+  /**
+   * The number of OpenSearch data nodes to provision
+   * @default - 2 data nodes are created if no VPC is configured
+   */
   readonly dataNodeInstanceCount?: number;
+  /**
+   * The EC2 Instance Type for OpenSearch master nodes
+   * @default - [OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   */
   readonly masterNodeInstanceType?: string;
+  /**
+   * The number of OpenSearch master nodes to provision
+   * @default - 3 master nodes are created
+   */
   readonly masterNodeInstanceCount?: number;
+  /**
+   * The type of nodes for Ultra Warn nodes
+   * @default - [OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   */
   readonly warmInstanceType?:number;
+  /**
+   * The number of Ultra Warn nodes to provision
+   * @default - No Ultra Warn nodes are created
+   */
   readonly warmInstanceCount?: number;
+  /**
+   * If multi AZ with standby mode is enabled
+   * @default - false
+   */
   readonly multiAzWithStandbyEnabled?: boolean;
+  /**
+   * The type of EBS Volumes to use
+   * @default - EbsDeviceVolumeType.GENERAL_PURPOSE_SSD_GP3 is used
+   */
   readonly ebsVolumeType?: EbsDeviceVolumeType;
+  /**
+   * The size of EBS Volumes to use
+   * @default - 10
+   */
   readonly ebsSize?: number;
+  /**
+   * The SAML entity ID used for SAML based authentication
+   */
   readonly samlEntityId:string;
+  /**
+   * The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center
+   */
   readonly samlMetadataContent:string;
+  /**
+   * The SAML Idp Admin GroupId as returned by {user:groups} in Idp
+   */
   readonly samlMasterBackendRole:string;
+  /**
+   * The SAML Roles Key
+   * @default - "Role" is used
+   */
   readonly samlRolesKey?:string;
+  /**
+   * The SAML Subject Key
+   * @default - No subject key is used
+   */
   readonly samlSubjectKey?:string;
-  readonly samlSessionTimeoutMinutes?:number;
+  /**
+   * The timeout of the SAML session. Max allowed value is 24 hours.
+   * @default - 480 minutes
+   */
+  readonly samlSessionTimeout?: Duration;
+  /**
+   * Enable OpenSearch Auto Software Update
+   * @default - false
+   */
   readonly enableAutoSoftwareUpdate?: boolean;
+  /**
+   * Enable OpenSearch Version Upgrade
+   * @default - false
+   */
   readonly enableVersionUpgrade?: boolean;
-  readonly encryptionKmsKeyArn?:string;
+  /**
+   * The KMS Key for encryption in OpenSearch (data and logs)
+   * @default - A new key is created
+   */
+  readonly encryptionKey?: IKey;
+  /**
+   * If the OpenSearch Domain is created in a default VPC when there is no VPC configured
+   */
   readonly deployInVpc:boolean;
+  /**
+   * The VPC to deploy the OpenSearch Domain
+   * @default - A new VPC is created if deployInVpc=true, @see DataVpc
+   */
   readonly vpc?: IVpc;
+  /**
+   * The removal policy when deleting the CDK resource.
+   * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+   * Otherwise the removalPolicy is reverted to RETAIN.
+   * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
+   */
   readonly removalPolicy?: RemovalPolicy;
 }
 
@@ -64,7 +129,9 @@ export interface OpensearchProps {
  * Default Node Instances for Opensearch cluster
  */
 export enum OpensearchNodes {
-  DATA_NODE_INSTANCE_DEFAULT = 'm6g.xlarge.search',
+  DATA_NODE_INSTANCE_DEFAULT = 'r6g.xlarge.search',
   MASTER_NODE_INSTANCE_DEFAULT = 'm6g.large.search',
   WARM_NODE_INSTANCE_DEFAULT = 'ultrawarm1.medium.search',
 }
+
+export const OPENSEARCH_DEFAULT_VERSION = EngineVersion.OPENSEARCH_2_9;
