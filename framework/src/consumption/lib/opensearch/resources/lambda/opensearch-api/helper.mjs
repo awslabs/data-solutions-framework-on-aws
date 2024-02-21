@@ -6,8 +6,8 @@ import { HttpRequest } from '@aws-sdk/protocol-http';
 import { SignatureV4 } from '@aws-sdk/signature-v4';
 /* eslint-enable */
 
-const region = process.env.REGION!;
-const endpoint = process.env.ENDPOINT!;
+const region = process.env.REGION;
+const endpoint = process.env.ENDPOINT;
 
 const signer = new SignatureV4({
   credentials: defaultProvider(),
@@ -16,16 +16,16 @@ const signer = new SignatureV4({
   sha256: Sha256,
 });
 
-export async function sendRequest(props: { method: string; path: string; body?: any }) {
+export async function sendRequest(props) {
   const { method, path, body } = props;
-  const request: any = { method, path };
+  const request = { method, path };
   if (body) request.body = JSON.stringify(body);
   const signedRequest = await generateSignedRequest(request);
   const { response } = await new NodeHttpHandler().handle(new HttpRequest(signedRequest));
   console.log(response.statusCode + ' ' + response.body.statusMessage);
   let responseBody = '';
   return new Promise((resolve) => {
-    response.body.on('data', (chunk: any) => {
+    response.body.on('data', (chunk) => {
       responseBody += chunk;
     });
     response.body.on('end', () => {
@@ -35,7 +35,7 @@ export async function sendRequest(props: { method: string; path: string; body?: 
   });
 }
 
-async function generateSignedRequest(props: { method: string; path: string; body: string }) {
+async function generateSignedRequest(props) {
   const { method, path, body } = props;
   const request = new HttpRequest({
     path,
