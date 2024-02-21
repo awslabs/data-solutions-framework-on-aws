@@ -17,12 +17,12 @@ export interface OpensearchProps {
   readonly domainName: string;
   /**
    * The OpenSearch version
-   * @default - [OPENSEARCH_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   * @default - @see OPENSEARCH_DEFAULT_VERSION
    */
   readonly version?: EngineVersion;
   /**
    * The EC2 Instance Type used for OpenSearch data nodes
-   * @default - [OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   * @default - @see OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT
    */
   readonly dataNodeInstanceType?: string;
   /**
@@ -32,7 +32,7 @@ export interface OpensearchProps {
   readonly dataNodeInstanceCount?: number;
   /**
    * The EC2 Instance Type for OpenSearch master nodes
-   * @default - [OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   * @default - @see OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT
    */
   readonly masterNodeInstanceType?: string;
   /**
@@ -42,7 +42,7 @@ export interface OpensearchProps {
   readonly masterNodeInstanceCount?: number;
   /**
    * The type of nodes for Ultra Warn nodes
-   * @default - [OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+   * @default - @see OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT
    */
   readonly warmInstanceType?:number;
   /**

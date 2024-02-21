@@ -9905,9 +9905,11 @@ public readonly dataNodeInstanceType: string;
 ```
 
 - *Type:* string
-- *Default:* [OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+- *Default:* 
 
 The EC2 Instance Type used for OpenSearch data nodes.
+
+> [OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT](OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT)
 
 ---
 
@@ -9996,9 +9998,11 @@ public readonly masterNodeInstanceType: string;
 ```
 
 - *Type:* string
-- *Default:* [OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+- *Default:* 
 
 The EC2 Instance Type for OpenSearch master nodes.
+
+> [OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT](OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT)
 
 ---
 
@@ -10079,9 +10083,11 @@ public readonly version: EngineVersion;
 ```
 
 - *Type:* aws-cdk-lib.aws_opensearchservice.EngineVersion
-- *Default:* [OPENSEARCH_DEFAULT_VERSION](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+- *Default:* 
 
 The OpenSearch version.
+
+> [OPENSEARCH_DEFAULT_VERSION](OPENSEARCH_DEFAULT_VERSION)
 
 ---
 
@@ -10120,9 +10126,11 @@ public readonly warmInstanceType: number;
 ```
 
 - *Type:* number
-- *Default:* [OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT](https://github.com/awslabs/data-solutions-framework-on-aws/blob/HEAD/framework/src/consumption/lib/opensearch-props.ts#L79)
+- *Default:* 
 
 The type of nodes for Ultra Warn nodes.
+
+> [OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT](OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT)
 
 ---
 
