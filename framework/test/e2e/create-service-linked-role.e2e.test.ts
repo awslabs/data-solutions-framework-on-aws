@@ -21,7 +21,7 @@ const roleNameToCheck = slrService.roleName;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-const slr = new CreateServiceLinkedRole(stack, 'CreateSLR',{
+const slr = new CreateServiceLinkedRole(stack, 'CreateSLR', {
   removalPolicy: RemovalPolicy.DESTROY,
 });
 const createResource = slr.create(slrService);
