@@ -25,11 +25,11 @@ export class CreateServiceLinkedRole extends Construct {
   constructor(scope: Construct, id: string, props?: CreateServiceLinkedRoleProps) {
     super(scope, id);
     const removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
-    this.providerRole = new Role(this, 'CreateServiceLinkedRoleProviderRole', {
+    this.providerRole = new Role(this, 'ProviderRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
 
-    const provider = new DsfProvider(this, 'CreateServiceLinkedRoleProvider', {
+    const provider = new DsfProvider(this, 'Provider', {
       providerName: 'CreateServiceLinkedRoleProvider',
       onEventHandlerDefinition: {
         iamRole: this.providerRole,

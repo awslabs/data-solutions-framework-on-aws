@@ -9,6 +9,7 @@ export class ServiceLinkedRoleService {
   public static readonly EMR_SERVERLESS = new ServiceLinkedRoleService('ops.emr-serverless.amazonaws.com', 'AWSServiceRoleForAmazonEMRServerless');
   public static readonly KAFKA = new ServiceLinkedRoleService('kafka.amazonaws.com', 'AWSServiceRoleForKafka');
   public static readonly REDSHIFT = new ServiceLinkedRoleService('redshift.amazonaws.com', 'AWSServiceRoleForRedshift');
+  public static readonly OPENSEARCH = new ServiceLinkedRoleService('opensearchservice.amazonaws.com', 'AWSServiceRoleForAmazonOpenSearchService');
 
   public readonly serviceName: string;
   public readonly roleName: string;

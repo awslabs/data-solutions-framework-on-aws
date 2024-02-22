@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CfnOutput } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { CreateServiceLinkedRole } from '../../src/utils';
@@ -21,7 +21,9 @@ const roleNameToCheck = slrService.roleName;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-const slr = new CreateServiceLinkedRole(stack, 'CreateSLR');
+const slr = new CreateServiceLinkedRole(stack, 'CreateSLR',{
+  removalPolicy: RemovalPolicy.DESTROY,
+});
 const createResource = slr.create(slrService);
 
 const createdRole = Role.fromRoleName(stack, 'CreatedSLRRole', roleNameToCheck);
