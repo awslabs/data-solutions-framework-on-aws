@@ -24,6 +24,7 @@ To configure SAML integration with OpenSearch you will need to create a custom S
 Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/role-based-access-control-in-amazon-opensearch-service-via-saml-integration-with-aws-iam-identity-center/) to set up IAM Identity center SAML application.
 
 Main steps are:
+
 1. In the region where you deploy OpenSearch, enable IAM Identity Center with AWS Organizations
 2. Create a user. It will be the admin role in OpenSearch Dashboards
 3. Download the IAM Identity Center SAML metadata file
@@ -31,6 +32,8 @@ Main steps are:
 5. Use the content of the metadata file in the `samlMetadataContent` parameter
 
 ## Usage
+
+Default configuration 
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -59,6 +62,57 @@ os_cluster = dsf.consumption.OpensearchCluster(scope, "MyOpensearchCluster",
     saml_master_backend_role="<IAMIdentityCenterAdminGroupId>",
     deploy_in_vpc=True,
     removal_policy=cdk.RemovalPolicy.DESTROY
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+Using Client VPN Endpoint 
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const vpcVpn = new dsf.utils.DataVpc(this, 'VpcWithVpn', {
+  vpcCidr:'10.0.0.0/16',
+  clientVpnEndpointProps: {
+      serverCertificateArn:"<ACMCertificateArn>",
+      samlMetadataDocument:`<IdpClientVpnApplicationMetadataXml>`,
+      selfServicePortal:false
+  }
+})
+const osCluster = new dsf.consumption.OpensearchCluster(scope, 'MyOpensearchCluster',{
+  domainName:"mycluster",
+  samlEntityId:'<IdpIdentityId>',
+  samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
+  samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+  deployInVpc:true,
+  vpc:vpcVpn.vpc
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+vpc_vpn = dsf.utils.DataVpc(self, "VpcWithVpn",
+    vpc_cidr="10.0.0.0/16",
+    client_vpn_endpoint_props=dsf.utils.DataVpcClientVpnEndpointProps(
+        server_certificate_arn="<ACMCertificateArn>",
+        saml_metadata_document="<IdpClientVpnApplicationMetadataXml>",
+        self_service_portal=False
+    )
+)
+os_cluster = dsf.consumption.OpensearchCluster(scope, "MyOpensearchCluster",
+    domain_name="mycluster",
+    saml_entity_id="<IdpIdentityId>",
+    saml_metadata_content="<IdpOpenSearchApplicationMetadataXml>",
+    saml_master_backend_role="<IAMIdentityCenterAdminGroupId>",
+    deploy_in_vpc=True,
+    vpc=vpc_vpn.vpc
 )
   ```
 

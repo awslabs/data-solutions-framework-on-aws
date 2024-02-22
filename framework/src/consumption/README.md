@@ -161,6 +161,7 @@ To configure SAML integration with OpenSearch you will need to create a custom S
 Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/role-based-access-control-in-amazon-opensearch-service-via-saml-integration-with-aws-iam-identity-center/) to set up IAM Identity center SAML application.
 
 Main steps are:
+
 1. In the region where you deploy OpenSearch, enable IAM Identity Center with AWS Organizations
 2. Create a user. It will be the admin role in OpenSearch Dashboards
 3. Download the IAM Identity Center SAML metadata file
@@ -169,5 +170,12 @@ Main steps are:
 
 ## Usage
 
+Default configuration 
+
 [example default](examples/opensearch-saml.lit.ts)
+
+Using Client VPN Endpoint 
+
+[example default](examples/opensearch-saml-clientvpn.lit.ts)
+
 

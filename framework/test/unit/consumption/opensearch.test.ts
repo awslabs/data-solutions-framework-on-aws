@@ -73,7 +73,7 @@ describe('default configuration', () => {
       EncryptionAtRestOptions: {
         Enabled: true,
       },
-      EngineVersion: 'OpenSearch_2.9',
+      EngineVersion: 'OpenSearch_2.11',
       AdvancedSecurityOptions: {
         Enabled: true,
         InternalUserDatabaseEnabled: false,
@@ -138,7 +138,7 @@ describe('non vpc config', () => {
       EncryptionAtRestOptions: {
         Enabled: true,
       },
-      EngineVersion: 'OpenSearch_2.9',
+      EngineVersion: 'OpenSearch_2.11',
       AdvancedSecurityOptions: {
         Enabled: true,
         InternalUserDatabaseEnabled: false,

@@ -134,4 +134,4 @@ export enum OpensearchNodes {
   WARM_NODE_INSTANCE_DEFAULT = 'ultrawarm1.medium.search',
 }
 
-export const OPENSEARCH_DEFAULT_VERSION = EngineVersion.OPENSEARCH_2_9;
+export const OPENSEARCH_DEFAULT_VERSION = EngineVersion.OPENSEARCH_2_11;
