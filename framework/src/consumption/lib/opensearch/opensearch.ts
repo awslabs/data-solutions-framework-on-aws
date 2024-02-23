@@ -4,14 +4,15 @@
 import * as path from 'path';
 import { RemovalPolicy, CustomResource, Stack, Duration, Aws } from 'aws-cdk-lib';
 import { EbsDeviceVolumeType, IVpc, Peer, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { AnyPrincipal, CfnServiceLinkedRole, Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { AnyPrincipal, Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Domain, DomainProps, IDomain, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
 import { Construct } from 'constructs';
 import { OpensearchProps, OpensearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
-import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, CreateServiceLinkedRole, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
+import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role-service';
 
 /**
  * A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
@@ -95,16 +96,13 @@ export class OpensearchCluster extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    //get or create service-linked role, required for vpc configuration
-    try {
-      Role.fromRoleName(this, 'ServiceLinkedRole', 'AWSServiceRoleForAmazonOpenSearchService');
-    } catch (error) {
-      new CfnServiceLinkedRole(this, 'ServiceLinkedRole', {
-        awsServiceName: 'es.amazonaws.com',
-      });
-    }
-
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
+
+    //get or create service-linked role, required for vpc configuration
+    const slr = new CreateServiceLinkedRole(scope, 'CreateSLR', {
+      removalPolicy: this.removalPolicy,
+    });
+    slr.create(ServiceLinkedRoleService.OPENSEARCH);
 
     this.encryptionKey = props.encryptionKey || new Key(this, 'EncryptionKey', { removalPolicy: this.removalPolicy, enableKeyRotation: true });
 

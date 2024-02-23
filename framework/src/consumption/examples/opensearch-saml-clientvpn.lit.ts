@@ -9,21 +9,13 @@ class ExampleDefaultOpensearchStack extends cdk.Stack {
     
     super(scope, id, props);
     /// !show
-    const vpcVpn = new dsf.utils.DataVpc(this, 'VpcWithVpn', {
-      vpcCidr:'10.0.0.0/16',
-      clientVpnEndpointProps: {
-          serverCertificateArn:"<ACMCertificateArn>",
-          samlMetadataDocument:`<IdpClientVpnApplicationMetadataXml>`,
-          selfServicePortal:false
-      }
-    })
+    vpcVpn
     const osCluster = new dsf.consumption.OpensearchCluster(scope, 'MyOpensearchCluster',{
       domainName:"mycluster",
       samlEntityId:'<IdpIdentityId>',
-      samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
+      samlMetadataContent:'<IdpMetadataXml>',
       samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
-      deployInVpc:true,
-      vpc:vpcVpn.vpc
+      deployInVpc:true
     });
     /// !hide
     osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');

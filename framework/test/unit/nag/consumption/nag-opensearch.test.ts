@@ -44,6 +44,25 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
+  '/Stack/CreateSLR/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+  [{ id: 'AwsSolutions-IAM4', reason: 'Separately handled in SLR construct' }],
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/CreateSLR/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'Separately handled in SLR construct' }],
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/CreateSLR/CustomResourceProvider/framework-onEvent/Resource',
+  [{ id: 'AwsSolutions-L1', reason: 'Separately handled in SLR construct' }],
+);
+
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
   '/Stack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource',
   [
     { id: 'AwsSolutions-IAM4', reason: 'AWSLambdaBasicExecutionRole this is default recommended IAM Policy to use' },
