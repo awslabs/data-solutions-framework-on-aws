@@ -163,10 +163,18 @@ Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/
 Main steps are:
 
 1. In the region where you deploy OpenSearch, enable IAM Identity Center with AWS Organizations
-2. Create a user. It will be the admin role in OpenSearch Dashboards
-3. Download the IAM Identity Center SAML metadata file
-4. Extract the entityID URL from the metadata file and pass it to `samlEntityId` parameter
-5. Use the content of the metadata file in the `samlMetadataContent` parameter
+2. Create a IAM Identity Center group. Use its group ID in the `saml_master_backend_role` parameter of the construct
+3. Create a custom application in IAM Identity Center and provide fake URLs as temporary
+4. Download the IAM Identity Center SAML metadata file
+5. Extract the entityID URL from the metadata file and pass it to `samlEntityId` parameter of the construct
+6. Use the content of the metadata file in the `samlMetadataContent` parameter of the construct
+7. Provision the construct
+8. Update the IAM Identity Center application attribute mappings by adding
+   1.  `${user:email}` as the `Subject` with `emailAddress` format. `Subject` is the default subject key used in Opensearch construct, modify the mapping according to your configuration.
+   2.  `${user:groups}`as the `Role` with `unspecified` format. `Role` is the default role key used in Opensearch construct, modify the mapping according to your configuration.
+9. Update the IAM Identity Center application configuration
+   1.  Set the `Application ACS URL` to the `Opensearch SSO URL (IdP initiated)` from the Opensearch Domain security configuration
+   2.  Set the `Application SAML audience` to the `Service provider entity ID` from the Opensearch Domain security configuration
 
 ## Usage
 
