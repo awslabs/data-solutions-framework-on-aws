@@ -17,7 +17,7 @@ class ExampleDefaultOpensearchStack extends cdk.Stack {
           selfServicePortal:false
       }
     })
-    const osCluster = new dsf.consumption.OpensearchCluster(scope, 'MyOpensearchCluster',{
+    const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
       domainName:"mycluster",
       samlEntityId:'<IdpIdentityId>',
       samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
