@@ -9820,6 +9820,7 @@ const opensearchProps: consumption.OpensearchProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | The SAML Subject Key. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | The OpenSearch version. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the OpenSearch Domain. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The VPC Subnets to deploy the OpenSearch cluster nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | The number of Ultra Warn nodes to provision. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | The type of nodes for Ultra Warn nodes. |
 
@@ -10101,6 +10102,24 @@ public readonly vpc: IVpc;
 - *Default:* A new VPC is created if deployInVpc=true,
 
 The VPC to deploy the OpenSearch Domain.
+
+> [DataVpc](DataVpc)
+
+---
+
+##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpcSubnets"></a>
+
+```typescript
+public readonly vpcSubnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* Single private subnet per each AZ.
+
+The VPC Subnets to deploy the OpenSearch cluster nodes.
+
+Only used for VPC deployments.
+You must specify VPC if you specify this parameter.
 
 > [DataVpc](DataVpc)
 

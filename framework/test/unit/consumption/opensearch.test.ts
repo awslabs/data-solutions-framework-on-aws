@@ -9,6 +9,8 @@
 
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { DataVpc } from '../../../lib/utils';
 import { OpensearchCluster } from '../../../src/consumption';
 
 
@@ -160,4 +162,67 @@ describe('non vpc config', () => {
       VPCOptions: Match.absent(),
     });
   });
+});
+
+
+describe('custom vpc configuration', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Set context value for global data removal policy
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const vpc = new DataVpc(stack, 'OpensearchDataVpc', {
+    vpcCidr: '10.0.0.0/16',
+    clientVpnEndpointProps: {
+      serverCertificateArn: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+      samlMetadataDocument: 'samlMetadataDocument',
+    },
+  });
+  const vpcSubnetsSelection = vpc.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
+
+  new OpensearchCluster(stack, 'OpensearchDomainVpc', {
+    domainName: 'mycluster2',
+    samlEntityId: '<idpTest>',
+    samlMetadataContent: 'xmlContent',
+    samlMasterBackendRole: 'IdpGroupId',
+    deployInVpc: true,
+    vpc: vpc.vpc,
+    vpcSubnets: vpcSubnetsSelection,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  //console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should have OpenSearch domain', () => {
+    template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+      VPCOptions: {
+        SecurityGroupIds: [
+          {
+            'Fn::GetAtt': [
+              'OpensearchDomainVpcSecurityGroup019B7A8A',
+              'GroupId',
+            ],
+          },
+        ],
+        SubnetIds: [
+          {
+            Ref: 'VpcPrivateSubnet1Subnet536B997A',
+          },
+          {
+            Ref: 'VpcPrivateSubnet2Subnet3788AAA1',
+          },
+          {
+            Ref: 'VpcPrivateSubnet1Subnet536B997A',
+          },
+          {
+            Ref: 'VpcPrivateSubnet2Subnet3788AAA1',
+          },
+        ],
+      },
+    });
+  });
+
 });

@@ -134,8 +134,12 @@ export class OpensearchCluster extends TrackedConstruct {
 
     this.logGroup.grantWrite(new ServicePrincipal('es.amazonaws.com'));
 
+    if (props.deployInVpc!=false && !props.vpc && props.vpcSubnets?.subnets?.length) {
+      throw new Error('VPC subnet configuration is only allowed when custom VPC is provided');
+    }
+
     this.vpc = props.deployInVpc !=false ? (props.vpc ?? new DataVpc(this, 'DataVpc', { vpcCidr: '10.0.0.0/16', removalPolicy: this.removalPolicy }).vpc ) : undefined;
-    const vpcSubnetsSelection = this.vpc?.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
+    const vpcSubnetsSelection = props.vpcSubnets ?? this.vpc?.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
 
     const masterRolePolicy = new ManagedPolicy(this, 'MasterRolePolicy');
     masterRolePolicy.addStatements(
@@ -203,10 +207,11 @@ export class OpensearchCluster extends TrackedConstruct {
       domainName: props.domainName,
       version: props.version ?? OPENSEARCH_DEFAULT_VERSION,
       vpc: this.vpc,
+      vpcSubnets: props.vpcSubnets ? vpcSubnetsSelection?.subnets : undefined,
       capacity: {
         masterNodes: props.masterNodeInstanceCount ?? 3,
         masterNodeInstanceType: props.masterNodeInstanceType ?? OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT,
-        dataNodes: props.dataNodeInstanceCount ?? (vpcSubnetsSelection?.subnets.length || defaultAzNumber),
+        dataNodes: props.dataNodeInstanceCount ?? (vpcSubnetsSelection?.subnets?.length || defaultAzNumber),
         dataNodeInstanceType: props.dataNodeInstanceType ?? OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT,
         warmNodes: props.warmInstanceCount ?? 0,
         warmInstanceType: props.warmInstanceType ?? OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT,
@@ -227,7 +232,7 @@ export class OpensearchCluster extends TrackedConstruct {
       },
       zoneAwareness: {
         enabled: true,
-        availabilityZoneCount: vpcSubnetsSelection?.subnets.length || defaultAzNumber,
+        availabilityZoneCount: vpcSubnetsSelection?.subnets?.length || defaultAzNumber,
       },
       nodeToNodeEncryption: true,
       useUnsignedBasicAuth: false,

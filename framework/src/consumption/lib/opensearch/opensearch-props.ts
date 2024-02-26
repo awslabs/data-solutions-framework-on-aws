@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { EbsDeviceVolumeType, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { EbsDeviceVolumeType, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
 
@@ -116,6 +116,12 @@ export interface OpensearchProps {
    * @default - A new VPC is created if deployInVpc=true, @see DataVpc
    */
   readonly vpc?: IVpc;
+  /**
+   * The VPC Subnets to deploy the OpenSearch cluster nodes. Only used for VPC deployments.
+   * You must specify VPC if you specify this parameter.
+   * @default - Single private subnet per each AZ. @see DataVpc
+   */
+  readonly vpcSubnets?: SubnetSelection;
   /**
    * The removal policy when deleting the CDK resource.
    * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
