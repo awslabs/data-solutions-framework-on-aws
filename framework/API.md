@@ -3932,6 +3932,7 @@ the OpenSearchCluster [properties]{@link OpenSearchClusterProps}.
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping">addRoleMapping</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi">callOpenSearchApi</a></code> | Calls OpenSearch API using custom resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
@@ -3947,10 +3948,18 @@ Returns a string representation of this construct.
 ##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping"></a>
 
 ```typescript
-public addRoleMapping(name: string, role: string): void
+public addRoleMapping(id: string, name: string, role: string): void
 ```
 
 > [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
 
 ###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.name"></a>
 
@@ -3965,6 +3974,38 @@ OpenSearch role name.
 - *Type:* string
 
 IAM Identity center SAML group Id.
+
+---
+
+##### `callOpenSearchApi` <a name="callOpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi"></a>
+
+```typescript
+public callOpenSearchApi(id: string, apiPath: string, body: any): void
+```
+
+Calls OpenSearch API using custom resource.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
+
+###### `apiPath`<sup>Required</sup> <a name="apiPath" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi.parameter.apiPath"></a>
+
+- *Type:* string
+
+OpenSearch API path.
+
+---
+
+###### `body`<sup>Required</sup> <a name="body" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi.parameter.body"></a>
+
+- *Type:* any
+
+OpenSearch API request body.
 
 ---
 

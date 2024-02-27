@@ -26,8 +26,8 @@ class ExampleDefaultOpenSearchStack extends cdk.Stack {
       vpc:vpcVpn.vpc
     });
     /// !hide
-    osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
-    osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+    osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+    osCluster.addRoleMapping('ReadAllOsRole','readall','<IAMIdentityCenterDashboardUsersGroupId>');
   }
 
 
