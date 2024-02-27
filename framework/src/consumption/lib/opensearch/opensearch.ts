@@ -9,7 +9,7 @@ import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Domain, DomainProps, IDomain, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
 import { Construct } from 'constructs';
-import { OpensearchProps, OpensearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
+import { OpenSearchClusterProps, OpenSearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
 import { Context, CreateServiceLinkedRole, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role-service';
@@ -21,14 +21,14 @@ import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role
  * ClientVPNEndpoint will be provisioned automatically for secure access to OpenSearch Dashboards.
  *
  * @example
- *  const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
+ *  const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
  *    domainName:"mycluster2",
  *    samlEntityId:'<IdpIdentityId>',
  *    samlMetadataContent:'<IdpMetadataXml>',
  *    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
  *    deployInVpc:true,
  *    removalPolicy:cdk.RemovalPolicy.DESTROY
- *  } as dsf.consumption.OpensearchProps );
+ *  } as dsf.consumption.OpenSearchProps );
  *
  *  osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
  *  osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
@@ -36,17 +36,15 @@ import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role
  *
 */
 
-export class OpensearchCluster extends TrackedConstruct {
+export class OpenSearchCluster extends TrackedConstruct {
 
   /**
-   * @public
    * OpenSearchCluster domain
    */
   public readonly domain: IDomain;
 
   /**
-   * @public
-   * Cloudwatch log group to store OpenSearch cluster logs
+   * CloudWatch Logs Log Group to store OpenSearch cluster logs
    */
   public readonly logGroup: ILogGroup;
 
@@ -56,7 +54,6 @@ export class OpensearchCluster extends TrackedConstruct {
   public readonly encryptionKey: IKey;
 
   /**
-   * @public
    * VPC OpenSearch cluster is provisioned in.
    */
   public readonly vpc:IVpc | undefined;
@@ -86,12 +83,12 @@ export class OpensearchCluster extends TrackedConstruct {
    * Constructs a new instance of the OpenSearchCluster class
    * @param {Construct} scope the Scope of the AWS CDK Construct
    * @param {string} id the ID of the AWS CDK Construct
-   * @param {OpensearchClusterProps} props the OpenSearchCluster [properties]{@link OpensearchClusterProps}
+   * @param {OpenSearchClusterProps} props the OpenSearchCluster [properties]{@link OpenSearchClusterProps}
    */
 
-  constructor(scope: Construct, id: string, props: OpensearchProps) {
+  constructor(scope: Construct, id: string, props: OpenSearchClusterProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: id,
+      trackingTag: OpenSearchCluster.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -210,11 +207,11 @@ export class OpensearchCluster extends TrackedConstruct {
       vpcSubnets: props.vpcSubnets ? vpcSubnetsSelection?.subnets : undefined,
       capacity: {
         masterNodes: props.masterNodeInstanceCount ?? 3,
-        masterNodeInstanceType: props.masterNodeInstanceType ?? OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT,
+        masterNodeInstanceType: props.masterNodeInstanceType ?? OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT,
         dataNodes: props.dataNodeInstanceCount ?? (vpcSubnetsSelection?.subnets?.length || defaultAzNumber),
-        dataNodeInstanceType: props.dataNodeInstanceType ?? OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT,
+        dataNodeInstanceType: props.dataNodeInstanceType ?? OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT,
         warmNodes: props.warmInstanceCount ?? 0,
-        warmInstanceType: props.warmInstanceType ?? OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT,
+        warmInstanceType: props.warmInstanceType ?? OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT,
         multiAzWithStandbyEnabled: props.multiAzWithStandbyEnabled ?? false,
       },
       encryptionAtRest: {
@@ -295,20 +292,19 @@ export class OpensearchCluster extends TrackedConstruct {
 
     const samlAdminGroupId = props.samlMasterBackendRole;
 
-
-    //todo refactor to use new custom resource framework
-    this.addRoleMapping('all_access', samlAdminGroupId);
-    this.addRoleMapping('security_manager', samlAdminGroupId);
+    this.addRoleMapping('AllAccessOsRole', 'all_access', samlAdminGroupId);
+    this.addRoleMapping('SecurityManagerOsRole', 'security_manager', samlAdminGroupId);
   }
 
   /**
-   * Calls Opensearch API using custom resource.
-   * @param apiPath  Opensearch API path
-   * @param body  Opensearch API request body
+   * Calls OpenSearch API using custom resource.
+   * @param id The CDK resource ID
+   * @param apiPath  OpenSearch API path
+   * @param body  OpenSearch API request body
    */
 
-  private apiCustomResource(apiPath: string, body: any) {
-    const cr = new CustomResource(this, 'ApiCR-'+ Math.random().toFixed(8), {
+  public callOpenSearchApi(id: string, apiPath: string, body: any) {
+    const cr = new CustomResource(this, id, {
       serviceToken: this.apiProvider.serviceToken,
       resourceType: 'Custom::OpenSearchAPI',
       properties: {
@@ -324,12 +320,13 @@ export class OpensearchCluster extends TrackedConstruct {
   /**
    * @public
    * Add a new role mapping to the cluster.
-   * This method is used to add a role mapping to the Amazon Opensearch cluster
-   * @param name Opensearch role name @see https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles
+   * This method is used to add a role mapping to the Amazon OpenSearch cluster
+   * @param id The CDK resource ID
+   * @param name OpenSearch role name @see https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles
    * @param role IAM Identity center SAML group Id
    */
-  public addRoleMapping(name: string, role: string) {
-    this.apiCustomResource('_plugins/_security/api/rolesmapping/' + name, {
+  public addRoleMapping(id: string, name: string, role: string) {
+    this.callOpenSearchApi(id, '_plugins/_security/api/rolesmapping/' + name, {
       backend_roles: [role],
     });
   }

@@ -11,7 +11,7 @@ import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { DataVpc } from '../../../lib/utils';
-import { OpensearchCluster } from '../../../src/consumption';
+import { OpenSearchCluster } from '../../../src/consumption';
 
 
 describe('default configuration', () => {
@@ -23,7 +23,7 @@ describe('default configuration', () => {
   stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with default
-  new OpensearchCluster(stack, 'OpensearchVpc', {
+  new OpenSearchCluster(stack, 'OpenSearchVpc', {
     domainName: 'mycluster2',
     samlEntityId: '<idpTest>',
     samlMetadataContent: 'xmlContent',
@@ -103,7 +103,7 @@ describe('non vpc config', () => {
   stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
   // Instantiate AccessLogsBucket Construct with default
-  new OpensearchCluster(stack, 'OpensearchPublic', {
+  new OpenSearchCluster(stack, 'OpenSearchPublic', {
     domainName: 'mycluster2-public',
     samlEntityId: '<idpTest>',
     samlMetadataContent: 'xmlContent',
@@ -173,7 +173,7 @@ describe('custom vpc configuration', () => {
   // Set context value for global data removal policy
   stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-  const vpc = new DataVpc(stack, 'OpensearchDataVpc', {
+  const vpc = new DataVpc(stack, 'OpenSearchDataVpc', {
     vpcCidr: '10.0.0.0/16',
     clientVpnEndpointProps: {
       serverCertificateArn: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
@@ -182,7 +182,7 @@ describe('custom vpc configuration', () => {
   });
   const vpcSubnetsSelection = vpc.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
 
-  new OpensearchCluster(stack, 'OpensearchDomainVpc', {
+  new OpenSearchCluster(stack, 'OpenSearchDomainVpc', {
     domainName: 'mycluster2',
     samlEntityId: '<idpTest>',
     samlMetadataContent: 'xmlContent',
@@ -202,7 +202,7 @@ describe('custom vpc configuration', () => {
         SecurityGroupIds: [
           {
             'Fn::GetAtt': [
-              'OpensearchDomainVpcSecurityGroup019B7A8A',
+              Match.stringLikeRegexp('OpenSearchDomainVpcSecurityGroup.*'),
               'GroupId',
             ],
           },

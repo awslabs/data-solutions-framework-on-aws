@@ -8,9 +8,9 @@ import { EngineVersion } from 'aws-cdk-lib/aws-opensearchservice';
 
 
 /**
- * Simplified configuration for the Opensearch Cluster.
+ * Simplified configuration for the OpenSearch Cluster.
  */
-export interface OpensearchProps {
+export interface OpenSearchClusterProps {
   /**
    * The OpenSearch Domain name
    */
@@ -22,7 +22,7 @@ export interface OpensearchProps {
   readonly version?: EngineVersion;
   /**
    * The EC2 Instance Type used for OpenSearch data nodes
-   * @default - @see OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT
+   * @default - @see OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT
    */
   readonly dataNodeInstanceType?: string;
   /**
@@ -32,7 +32,7 @@ export interface OpensearchProps {
   readonly dataNodeInstanceCount?: number;
   /**
    * The EC2 Instance Type for OpenSearch master nodes
-   * @default - @see OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT
+   * @default - @see OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT
    */
   readonly masterNodeInstanceType?: string;
   /**
@@ -42,7 +42,7 @@ export interface OpensearchProps {
   readonly masterNodeInstanceCount?: number;
   /**
    * The type of nodes for Ultra Warn nodes
-   * @default - @see OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT
+   * @default - @see OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT
    */
   readonly warmInstanceType?:number;
   /**
@@ -132,9 +132,9 @@ export interface OpensearchProps {
 }
 
 /**
- * Default Node Instances for Opensearch cluster
+ * Default Node Instances for OpenSearch cluster
  */
-export enum OpensearchNodes {
+export enum OpenSearchNodes {
   DATA_NODE_INSTANCE_DEFAULT = 'r6g.xlarge.search',
   MASTER_NODE_INSTANCE_DEFAULT = 'm6g.large.search',
   WARM_NODE_INSTANCE_DEFAULT = 'ultrawarm1.medium.search',

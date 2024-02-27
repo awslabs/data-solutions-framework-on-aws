@@ -3861,7 +3861,7 @@ The security group for Client VPN Endpoint.
 ---
 
 
-### OpensearchCluster <a name="OpensearchCluster" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster"></a>
+### OpenSearchCluster <a name="OpenSearchCluster" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster"></a>
 
 A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
 
@@ -3872,37 +3872,37 @@ ClientVPNEndpoint will be provisioned automatically for secure access to OpenSea
 *Example*
 
 ```typescript
- const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
+ const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
    domainName:"mycluster2",
    samlEntityId:'<IdpIdentityId>',
    samlMetadataContent:'<IdpMetadataXml>',
    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
    deployInVpc:true,
    removalPolicy:cdk.RemovalPolicy.DESTROY
- } as dsf.consumption.OpensearchProps );
+ } as dsf.consumption.OpenSearchProps );
 
  osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
  osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
 ```
 
 
-#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer"></a>
 
 ```typescript
 import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
-new consumption.OpensearchCluster(scope: Construct, id: string, props: OpensearchProps)
+new consumption.OpenSearchCluster(scope: Construct, id: string, props: OpenSearchClusterProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps</code> | the OpenSearchCluster [properties]{@link OpensearchClusterProps }. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps</code> | the OpenSearchCluster [properties]{@link OpenSearchClusterProps}. |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
@@ -3910,7 +3910,7 @@ the Scope of the AWS CDK Construct.
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer.parameter.id"></a>
 
 - *Type:* string
 
@@ -3918,11 +3918,11 @@ the ID of the AWS CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.Initializer.parameter.props"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpensearchProps
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps
 
-the OpenSearchCluster [properties]{@link OpensearchClusterProps }.
+the OpenSearchCluster [properties]{@link OpenSearchClusterProps}.
 
 ---
 
@@ -3930,13 +3930,13 @@ the OpenSearchCluster [properties]{@link OpensearchClusterProps }.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.addRoleMapping">addRoleMapping</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping">addRoleMapping</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.toString"></a>
 
 ```typescript
 public toString(): string
@@ -3944,7 +3944,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.addRoleMapping"></a>
+##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping"></a>
 
 ```typescript
 public addRoleMapping(name: string, role: string): void
@@ -3952,15 +3952,15 @@ public addRoleMapping(name: string, role: string): void
 
 > [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
 
-###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.addRoleMapping.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.name"></a>
 
 - *Type:* string
 
-Opensearch role name.
+OpenSearch role name.
 
 ---
 
-###### `role`<sup>Required</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.addRoleMapping.parameter.role"></a>
+###### `role`<sup>Required</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.role"></a>
 
 - *Type:* string
 
@@ -3968,7 +3968,7 @@ IAM Identity center SAML group Id.
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -3980,16 +3980,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.isConstruct"></a>
 
 ```typescript
 import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
-consumption.OpensearchCluster.isConstruct(x: any)
+consumption.OpenSearchCluster.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4008,7 +4008,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4020,16 +4020,16 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.domain">domain</a></code> | <code>aws-cdk-lib.aws_opensearchservice.IDomain</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt data and logs. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.masterRole">masterRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM Role used to provision and configure OpenSearch domain. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.domain">domain</a></code> | <code>aws-cdk-lib.aws_opensearchservice.IDomain</code> | OpenSearchCluster domain. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt data and logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | CloudWatch Logs Log Group to store OpenSearch cluster logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.masterRole">masterRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM Role used to provision and configure OpenSearch domain. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | VPC OpenSearch cluster is provisioned in. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4041,7 +4041,7 @@ The tree node.
 
 ---
 
-##### `domain`<sup>Required</sup> <a name="domain" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.domain"></a>
+##### `domain`<sup>Required</sup> <a name="domain" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.domain"></a>
 
 ```typescript
 public readonly domain: IDomain;
@@ -4049,9 +4049,11 @@ public readonly domain: IDomain;
 
 - *Type:* aws-cdk-lib.aws_opensearchservice.IDomain
 
+OpenSearchCluster domain.
+
 ---
 
-##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -4063,7 +4065,7 @@ The KMS Key used to encrypt data and logs.
 
 ---
 
-##### `logGroup`<sup>Required</sup> <a name="logGroup" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.logGroup"></a>
+##### `logGroup`<sup>Required</sup> <a name="logGroup" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.logGroup"></a>
 
 ```typescript
 public readonly logGroup: ILogGroup;
@@ -4071,9 +4073,11 @@ public readonly logGroup: ILogGroup;
 
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
+CloudWatch Logs Log Group to store OpenSearch cluster logs.
+
 ---
 
-##### `masterRole`<sup>Required</sup> <a name="masterRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.masterRole"></a>
+##### `masterRole`<sup>Required</sup> <a name="masterRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.masterRole"></a>
 
 ```typescript
 public readonly masterRole: IRole;
@@ -4085,7 +4089,7 @@ IAM Role used to provision and configure OpenSearch domain.
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -4093,18 +4097,20 @@ public readonly vpc: IVpc;
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
+VPC OpenSearch cluster is provisioned in.
+
 ---
 
 #### Constants <a name="Constants" id="Constants"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4114,7 +4120,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchCluster.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -9783,50 +9789,50 @@ The tags assigned to the Virtual Cluster.
 
 ---
 
-### OpensearchProps <a name="OpensearchProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps"></a>
+### OpenSearchClusterProps <a name="OpenSearchClusterProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps"></a>
 
-Simplified configuration for the Opensearch Cluster.
+Simplified configuration for the OpenSearch Cluster.
 
-#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.Initializer"></a>
 
 ```typescript
 import { consumption } from '@cdklabs/aws-data-solutions-framework'
 
-const opensearchProps: consumption.OpensearchProps = { ... }
+const openSearchClusterProps: consumption.OpenSearchClusterProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.deployInVpc">deployInVpc</a></code> | <code>boolean</code> | If the OpenSearch Domain is created in a default VPC when there is no VPC configured. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.domainName">domainName</a></code> | <code>string</code> | The OpenSearch Domain name. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlEntityId">samlEntityId</a></code> | <code>string</code> | The SAML entity ID used for SAML based authentication. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | The SAML Idp Admin GroupId as returned by {user:groups} in Idp. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.dataNodeInstanceCount">dataNodeInstanceCount</a></code> | <code>number</code> | The number of OpenSearch data nodes to provision. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.dataNodeInstanceType">dataNodeInstanceType</a></code> | <code>string</code> | The EC2 Instance Type used for OpenSearch data nodes. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.ebsSize">ebsSize</a></code> | <code>number</code> | The size of EBS Volumes to use. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.ebsVolumeType">ebsVolumeType</a></code> | <code>aws-cdk-lib.aws_ec2.EbsDeviceVolumeType</code> | The type of EBS Volumes to use. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.enableAutoSoftwareUpdate">enableAutoSoftwareUpdate</a></code> | <code>boolean</code> | Enable OpenSearch Auto Software Update. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.enableVersionUpgrade">enableVersionUpgrade</a></code> | <code>boolean</code> | Enable OpenSearch Version Upgrade. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encryption in OpenSearch (data and logs). |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.masterNodeInstanceCount">masterNodeInstanceCount</a></code> | <code>number</code> | The number of OpenSearch master nodes to provision. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.masterNodeInstanceType">masterNodeInstanceType</a></code> | <code>string</code> | The EC2 Instance Type for OpenSearch master nodes. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.multiAzWithStandbyEnabled">multiAzWithStandbyEnabled</a></code> | <code>boolean</code> | If multi AZ with standby mode is enabled. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlRolesKey">samlRolesKey</a></code> | <code>string</code> | The SAML Roles Key. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlSessionTimeout">samlSessionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout of the SAML session. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | The SAML Subject Key. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | The OpenSearch version. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the OpenSearch Domain. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The VPC Subnets to deploy the OpenSearch cluster nodes. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | The number of Ultra Warn nodes to provision. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | The type of nodes for Ultra Warn nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.deployInVpc">deployInVpc</a></code> | <code>boolean</code> | If the OpenSearch Domain is created in a default VPC when there is no VPC configured. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.domainName">domainName</a></code> | <code>string</code> | The OpenSearch Domain name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlEntityId">samlEntityId</a></code> | <code>string</code> | The SAML entity ID used for SAML based authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | The SAML Idp Admin GroupId as returned by {user:groups} in Idp. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceCount">dataNodeInstanceCount</a></code> | <code>number</code> | The number of OpenSearch data nodes to provision. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceType">dataNodeInstanceType</a></code> | <code>string</code> | The EC2 Instance Type used for OpenSearch data nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.ebsSize">ebsSize</a></code> | <code>number</code> | The size of EBS Volumes to use. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.ebsVolumeType">ebsVolumeType</a></code> | <code>aws-cdk-lib.aws_ec2.EbsDeviceVolumeType</code> | The type of EBS Volumes to use. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.enableAutoSoftwareUpdate">enableAutoSoftwareUpdate</a></code> | <code>boolean</code> | Enable OpenSearch Auto Software Update. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.enableVersionUpgrade">enableVersionUpgrade</a></code> | <code>boolean</code> | Enable OpenSearch Version Upgrade. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encryption in OpenSearch (data and logs). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.masterNodeInstanceCount">masterNodeInstanceCount</a></code> | <code>number</code> | The number of OpenSearch master nodes to provision. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.masterNodeInstanceType">masterNodeInstanceType</a></code> | <code>string</code> | The EC2 Instance Type for OpenSearch master nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.multiAzWithStandbyEnabled">multiAzWithStandbyEnabled</a></code> | <code>boolean</code> | If multi AZ with standby mode is enabled. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlRolesKey">samlRolesKey</a></code> | <code>string</code> | The SAML Roles Key. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlSessionTimeout">samlSessionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout of the SAML session. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | The SAML Subject Key. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | The OpenSearch version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the OpenSearch Domain. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The VPC Subnets to deploy the OpenSearch cluster nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | The number of Ultra Warn nodes to provision. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | The type of nodes for Ultra Warn nodes. |
 
 ---
 
-##### `deployInVpc`<sup>Required</sup> <a name="deployInVpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.deployInVpc"></a>
+##### `deployInVpc`<sup>Required</sup> <a name="deployInVpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.deployInVpc"></a>
 
 ```typescript
 public readonly deployInVpc: boolean;
@@ -9838,7 +9844,7 @@ If the OpenSearch Domain is created in a default VPC when there is no VPC config
 
 ---
 
-##### `domainName`<sup>Required</sup> <a name="domainName" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.domainName"></a>
+##### `domainName`<sup>Required</sup> <a name="domainName" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.domainName"></a>
 
 ```typescript
 public readonly domainName: string;
@@ -9850,7 +9856,7 @@ The OpenSearch Domain name.
 
 ---
 
-##### `samlEntityId`<sup>Required</sup> <a name="samlEntityId" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlEntityId"></a>
+##### `samlEntityId`<sup>Required</sup> <a name="samlEntityId" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlEntityId"></a>
 
 ```typescript
 public readonly samlEntityId: string;
@@ -9862,7 +9868,7 @@ The SAML entity ID used for SAML based authentication.
 
 ---
 
-##### `samlMasterBackendRole`<sup>Required</sup> <a name="samlMasterBackendRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlMasterBackendRole"></a>
+##### `samlMasterBackendRole`<sup>Required</sup> <a name="samlMasterBackendRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlMasterBackendRole"></a>
 
 ```typescript
 public readonly samlMasterBackendRole: string;
@@ -9874,7 +9880,7 @@ The SAML Idp Admin GroupId as returned by {user:groups} in Idp.
 
 ---
 
-##### `samlMetadataContent`<sup>Required</sup> <a name="samlMetadataContent" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlMetadataContent"></a>
+##### `samlMetadataContent`<sup>Required</sup> <a name="samlMetadataContent" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlMetadataContent"></a>
 
 ```typescript
 public readonly samlMetadataContent: string;
@@ -9886,7 +9892,7 @@ The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Cent
 
 ---
 
-##### `dataNodeInstanceCount`<sup>Optional</sup> <a name="dataNodeInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.dataNodeInstanceCount"></a>
+##### `dataNodeInstanceCount`<sup>Optional</sup> <a name="dataNodeInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceCount"></a>
 
 ```typescript
 public readonly dataNodeInstanceCount: number;
@@ -9899,7 +9905,7 @@ The number of OpenSearch data nodes to provision.
 
 ---
 
-##### `dataNodeInstanceType`<sup>Optional</sup> <a name="dataNodeInstanceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.dataNodeInstanceType"></a>
+##### `dataNodeInstanceType`<sup>Optional</sup> <a name="dataNodeInstanceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceType"></a>
 
 ```typescript
 public readonly dataNodeInstanceType: string;
@@ -9910,11 +9916,11 @@ public readonly dataNodeInstanceType: string;
 
 The EC2 Instance Type used for OpenSearch data nodes.
 
-> [OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT](OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT)
+> [OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT](OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT)
 
 ---
 
-##### `ebsSize`<sup>Optional</sup> <a name="ebsSize" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.ebsSize"></a>
+##### `ebsSize`<sup>Optional</sup> <a name="ebsSize" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.ebsSize"></a>
 
 ```typescript
 public readonly ebsSize: number;
@@ -9927,7 +9933,7 @@ The size of EBS Volumes to use.
 
 ---
 
-##### `ebsVolumeType`<sup>Optional</sup> <a name="ebsVolumeType" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.ebsVolumeType"></a>
+##### `ebsVolumeType`<sup>Optional</sup> <a name="ebsVolumeType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.ebsVolumeType"></a>
 
 ```typescript
 public readonly ebsVolumeType: EbsDeviceVolumeType;
@@ -9940,7 +9946,7 @@ The type of EBS Volumes to use.
 
 ---
 
-##### `enableAutoSoftwareUpdate`<sup>Optional</sup> <a name="enableAutoSoftwareUpdate" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.enableAutoSoftwareUpdate"></a>
+##### `enableAutoSoftwareUpdate`<sup>Optional</sup> <a name="enableAutoSoftwareUpdate" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.enableAutoSoftwareUpdate"></a>
 
 ```typescript
 public readonly enableAutoSoftwareUpdate: boolean;
@@ -9953,7 +9959,7 @@ Enable OpenSearch Auto Software Update.
 
 ---
 
-##### `enableVersionUpgrade`<sup>Optional</sup> <a name="enableVersionUpgrade" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.enableVersionUpgrade"></a>
+##### `enableVersionUpgrade`<sup>Optional</sup> <a name="enableVersionUpgrade" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.enableVersionUpgrade"></a>
 
 ```typescript
 public readonly enableVersionUpgrade: boolean;
@@ -9966,7 +9972,7 @@ Enable OpenSearch Version Upgrade.
 
 ---
 
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.encryptionKey"></a>
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.encryptionKey"></a>
 
 ```typescript
 public readonly encryptionKey: IKey;
@@ -9979,7 +9985,7 @@ The KMS Key for encryption in OpenSearch (data and logs).
 
 ---
 
-##### `masterNodeInstanceCount`<sup>Optional</sup> <a name="masterNodeInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.masterNodeInstanceCount"></a>
+##### `masterNodeInstanceCount`<sup>Optional</sup> <a name="masterNodeInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.masterNodeInstanceCount"></a>
 
 ```typescript
 public readonly masterNodeInstanceCount: number;
@@ -9992,7 +9998,7 @@ The number of OpenSearch master nodes to provision.
 
 ---
 
-##### `masterNodeInstanceType`<sup>Optional</sup> <a name="masterNodeInstanceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.masterNodeInstanceType"></a>
+##### `masterNodeInstanceType`<sup>Optional</sup> <a name="masterNodeInstanceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.masterNodeInstanceType"></a>
 
 ```typescript
 public readonly masterNodeInstanceType: string;
@@ -10003,11 +10009,11 @@ public readonly masterNodeInstanceType: string;
 
 The EC2 Instance Type for OpenSearch master nodes.
 
-> [OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT](OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT)
+> [OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT](OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT)
 
 ---
 
-##### `multiAzWithStandbyEnabled`<sup>Optional</sup> <a name="multiAzWithStandbyEnabled" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.multiAzWithStandbyEnabled"></a>
+##### `multiAzWithStandbyEnabled`<sup>Optional</sup> <a name="multiAzWithStandbyEnabled" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.multiAzWithStandbyEnabled"></a>
 
 ```typescript
 public readonly multiAzWithStandbyEnabled: boolean;
@@ -10020,7 +10026,7 @@ If multi AZ with standby mode is enabled.
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;
@@ -10036,7 +10042,7 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
-##### `samlRolesKey`<sup>Optional</sup> <a name="samlRolesKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlRolesKey"></a>
+##### `samlRolesKey`<sup>Optional</sup> <a name="samlRolesKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlRolesKey"></a>
 
 ```typescript
 public readonly samlRolesKey: string;
@@ -10049,7 +10055,7 @@ The SAML Roles Key.
 
 ---
 
-##### `samlSessionTimeout`<sup>Optional</sup> <a name="samlSessionTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlSessionTimeout"></a>
+##### `samlSessionTimeout`<sup>Optional</sup> <a name="samlSessionTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlSessionTimeout"></a>
 
 ```typescript
 public readonly samlSessionTimeout: Duration;
@@ -10064,7 +10070,7 @@ Max allowed value is 24 hours.
 
 ---
 
-##### `samlSubjectKey`<sup>Optional</sup> <a name="samlSubjectKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.samlSubjectKey"></a>
+##### `samlSubjectKey`<sup>Optional</sup> <a name="samlSubjectKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlSubjectKey"></a>
 
 ```typescript
 public readonly samlSubjectKey: string;
@@ -10077,7 +10083,7 @@ The SAML Subject Key.
 
 ---
 
-##### `version`<sup>Optional</sup> <a name="version" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.version"></a>
+##### `version`<sup>Optional</sup> <a name="version" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.version"></a>
 
 ```typescript
 public readonly version: EngineVersion;
@@ -10092,7 +10098,7 @@ The OpenSearch version.
 
 ---
 
-##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpc"></a>
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpc"></a>
 
 ```typescript
 public readonly vpc: IVpc;
@@ -10107,7 +10113,7 @@ The VPC to deploy the OpenSearch Domain.
 
 ---
 
-##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.vpcSubnets"></a>
+##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpcSubnets"></a>
 
 ```typescript
 public readonly vpcSubnets: SubnetSelection;
@@ -10125,7 +10131,7 @@ You must specify VPC if you specify this parameter.
 
 ---
 
-##### `warmInstanceCount`<sup>Optional</sup> <a name="warmInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.warmInstanceCount"></a>
+##### `warmInstanceCount`<sup>Optional</sup> <a name="warmInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.warmInstanceCount"></a>
 
 ```typescript
 public readonly warmInstanceCount: number;
@@ -10138,7 +10144,7 @@ The number of Ultra Warn nodes to provision.
 
 ---
 
-##### `warmInstanceType`<sup>Optional</sup> <a name="warmInstanceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchProps.property.warmInstanceType"></a>
+##### `warmInstanceType`<sup>Optional</sup> <a name="warmInstanceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.warmInstanceType"></a>
 
 ```typescript
 public readonly warmInstanceType: number;
@@ -10149,7 +10155,7 @@ public readonly warmInstanceType: number;
 
 The type of nodes for Ultra Warn nodes.
 
-> [OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT](OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT)
+> [OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT](OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT)
 
 ---
 
@@ -13026,31 +13032,31 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 ---
 
 
-### OpensearchNodes <a name="OpensearchNodes" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes"></a>
+### OpenSearchNodes <a name="OpenSearchNodes" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes"></a>
 
-Default Node Instances for Opensearch cluster.
+Default Node Instances for OpenSearch cluster.
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT">DATA_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT">MASTER_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT">WARM_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT">DATA_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT">MASTER_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT">WARM_NODE_INSTANCE_DEFAULT</a></code> | *No description.* |
 
 ---
 
-##### `DATA_NODE_INSTANCE_DEFAULT` <a name="DATA_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes.DATA_NODE_INSTANCE_DEFAULT"></a>
-
----
-
-
-##### `MASTER_NODE_INSTANCE_DEFAULT` <a name="MASTER_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes.MASTER_NODE_INSTANCE_DEFAULT"></a>
+##### `DATA_NODE_INSTANCE_DEFAULT` <a name="DATA_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT"></a>
 
 ---
 
 
-##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpensearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
+##### `MASTER_NODE_INSTANCE_DEFAULT` <a name="MASTER_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
 
 ---
 

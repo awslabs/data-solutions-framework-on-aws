@@ -11,7 +11,7 @@
 import { App, RemovalPolicy, CfnOutput } from 'aws-cdk-lib';
 
 import { TestStack } from './test-stack';
-import { OpensearchCluster } from '../../src/consumption/index';
+import { OpenSearchCluster } from '../../src/consumption/index';
 
 
 jest.setTimeout(10000000);
@@ -23,7 +23,7 @@ const { stack } = testStack;
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 // Instantiate AccessLogsBucket Construct with default
-const domain = new OpensearchCluster(stack, 'OpensearchVpc', {
+const domain = new OpenSearchCluster(stack, 'OpenSearchVpc', {
   domainName: 'e2e-tests-cluster',
   samlEntityId: 'https://portal.sso.eu-west-1.amazonaws.com/saml/assertion/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1',
   samlMetadataContent: `<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://portal.sso.eu-west-1.amazonaws.com/saml/assertion/MTQ1Mzg4NjI1ODYwX2lucy02MmQ3Y2VlYWM0YWNkNjA1">

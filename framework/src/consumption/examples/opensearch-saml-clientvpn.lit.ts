@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import * as dsf from '../../index';
 
 
-class ExampleDefaultOpensearchStack extends cdk.Stack {
+class ExampleDefaultOpenSearchStack extends cdk.Stack {
 
   constructor(scope: Construct, id: string , props:cdk.StackProps) {
 
@@ -17,7 +17,7 @@ class ExampleDefaultOpensearchStack extends cdk.Stack {
           selfServicePortal:false
       }
     })
-    const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
+    const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
       domainName:"mycluster",
       samlEntityId:'<IdpIdentityId>',
       samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
@@ -35,4 +35,4 @@ class ExampleDefaultOpensearchStack extends cdk.Stack {
 
 
 const app = new cdk.App();
-new ExampleDefaultOpensearchStack(app, 'ExampleDefaultDataLakeStorage', { env: {region:'us-east-1'} });
+new ExampleDefaultOpenSearchStack(app, 'ExampleDefaultDataLakeStorage', { env: {region:'us-east-1'} });

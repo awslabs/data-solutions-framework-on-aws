@@ -6,7 +6,7 @@ An Amazon OpenSearch Domain with SAML integration and access to OpenSearch REST 
 
 ## Overview
 
-The `OpensearchCluster` construct implements an OpenSeach Domain following best practises including:
+The `OpenSearchCluster` construct implements an OpenSeach Domain following best practises including:
  * private deployment in VPC
  * SAML-authentication plugin to access OpenSearch Dashboards via a SAML2.0-compatible IdP
  * access to the OpenSeach REST API to interact with OpenSearch objects like Roles, Indexes, Mappings... 
@@ -33,11 +33,11 @@ Main steps are:
 6. Use the content of the metadata file in the `samlMetadataContent` parameter of the construct
 7. Provision the construct
 8. Update the IAM Identity Center application attribute mappings by adding
-   1.  `${user:email}` as the `Subject` with `emailAddress` format. `Subject` is the default subject key used in Opensearch construct, modify the mapping according to your configuration.
-   2.  `${user:groups}`as the `Role` with `unspecified` format. `Role` is the default role key used in Opensearch construct, modify the mapping according to your configuration.
+   1.  `${user:email}` as the `Subject` with `emailAddress` format. `Subject` is the default subject key used in OpenSearch construct, modify the mapping according to your configuration.
+   2.  `${user:groups}`as the `Role` with `unspecified` format. `Role` is the default role key used in OpenSearch construct, modify the mapping according to your configuration.
 9. Update the IAM Identity Center application configuration
-   1.  Set the `Application ACS URL` to the `Opensearch SSO URL (IdP initiated)` from the Opensearch Domain security configuration
-   2.  Set the `Application SAML audience` to the `Service provider entity ID` from the Opensearch Domain security configuration
+   1.  Set the `Application ACS URL` to the `OpenSearch SSO URL (IdP initiated)` from the OpenSearch Domain security configuration
+   2.  Set the `Application SAML audience` to the `Service provider entity ID` from the OpenSearch Domain security configuration
 
 ## Usage
 
@@ -47,7 +47,7 @@ Default configuration
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
+const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
   domainName:"mycluster",
   samlEntityId:'<IdpIdentityId>',
   samlMetadataContent:'<IdpMetadataXml>',
@@ -63,7 +63,7 @@ const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchClust
   <TabItem value="python" label="Python">
 
   ```python
-os_cluster = dsf.consumption.OpensearchCluster(self, "MyOpensearchCluster",
+os_cluster = dsf.consumption.OpenSearchCluster(self, "MyOpenSearchCluster",
     domain_name="mycluster",
     saml_entity_id="<IdpIdentityId>",
     saml_metadata_content="<IdpMetadataXml>",
@@ -90,7 +90,7 @@ const vpcVpn = new dsf.utils.DataVpc(this, 'VpcWithVpn', {
       selfServicePortal:false
   }
 })
-const osCluster = new dsf.consumption.OpensearchCluster(this, 'MyOpensearchCluster',{
+const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
   domainName:"mycluster",
   samlEntityId:'<IdpIdentityId>',
   samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
@@ -114,7 +114,7 @@ vpc_vpn = dsf.utils.DataVpc(self, "VpcWithVpn",
         self_service_portal=False
     )
 )
-os_cluster = dsf.consumption.OpensearchCluster(self, "MyOpensearchCluster",
+os_cluster = dsf.consumption.OpenSearchCluster(self, "MyOpenSearchCluster",
     domain_name="mycluster",
     saml_entity_id="<IdpIdentityId>",
     saml_metadata_content="<IdpOpenSearchApplicationMetadataXml>",
