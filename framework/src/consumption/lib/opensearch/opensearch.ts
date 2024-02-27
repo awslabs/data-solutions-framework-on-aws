@@ -28,10 +28,10 @@ import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role
  *    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
  *    deployInVpc:true,
  *    removalPolicy:cdk.RemovalPolicy.DESTROY
- *  } as dsf.consumption.OpenSearchProps );
+ *  });
  *
- *  osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
- *  osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+ *  osCluster.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+ *  osCluster.addRoleMapping('ReadAllRole', 'readall','<IAMIdentityCenterDashboardUsersGroupId>');
  *
  *
 */
@@ -136,7 +136,8 @@ export class OpenSearchCluster extends TrackedConstruct {
     }
 
     this.vpc = props.deployInVpc !=false ? (props.vpc ?? new DataVpc(this, 'DataVpc', { vpcCidr: '10.0.0.0/16', removalPolicy: this.removalPolicy }).vpc ) : undefined;
-    const vpcSubnetsSelection = props.vpcSubnets ?? this.vpc?.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
+    const vpcSubnetsSelection = props.vpcSubnets ?? { onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS };
+    const subnets = this.vpc?.selectSubnets(vpcSubnetsSelection);
 
     const masterRolePolicy = new ManagedPolicy(this, 'MasterRolePolicy');
     masterRolePolicy.addStatements(
@@ -199,16 +200,33 @@ export class OpenSearchCluster extends TrackedConstruct {
       clusterSg.addIngressRule(Peer.ipv4(this.vpc.vpcCidrBlock), Port.tcp(443));
     }
 
-    const defaultAzNumber = 2;
+    const azCount = subnets?.subnets?.length || 1;
+
+    if (subnets) {
+      console.log(' vpc subnet length ' + subnets!.subnets!.length);
+      console.log('az count ' + azCount);
+    } else {
+      console.log('no vpc');
+      console.log('az count ' + azCount);
+    }
+
+    let zoneAwareness;
+    if (azCount === undefined || azCount === 1) {
+      zoneAwareness = false;
+    } else {
+      zoneAwareness = true;
+    }
+    console.log('zoneAwareness ' + zoneAwareness);
+
     const domainProps : DomainProps = {
       domainName: props.domainName,
       version: props.version ?? OPENSEARCH_DEFAULT_VERSION,
       vpc: this.vpc,
-      vpcSubnets: props.vpcSubnets ? vpcSubnetsSelection?.subnets : undefined,
+      vpcSubnets: [subnets],
       capacity: {
-        masterNodes: props.masterNodeInstanceCount ?? 3,
+        masterNodes: props.masterNodeInstanceCount ?? 0,
         masterNodeInstanceType: props.masterNodeInstanceType ?? OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT,
-        dataNodes: props.dataNodeInstanceCount ?? (vpcSubnetsSelection?.subnets?.length || defaultAzNumber),
+        dataNodes: props.dataNodeInstanceCount ?? (vpcSubnetsSelection?.subnets?.length || 1),
         dataNodeInstanceType: props.dataNodeInstanceType ?? OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT,
         warmNodes: props.warmInstanceCount ?? 0,
         warmInstanceType: props.warmInstanceType ?? OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT,
@@ -228,8 +246,8 @@ export class OpenSearchCluster extends TrackedConstruct {
         samlAuthenticationOptions: samlMetaData,
       },
       zoneAwareness: {
-        enabled: true,
-        availabilityZoneCount: vpcSubnetsSelection?.subnets?.length || defaultAzNumber,
+        enabled: zoneAwareness,
+        availabilityZoneCount: azCount > 1 ? azCount : undefined,
       },
       nodeToNodeEncryption: true,
       useUnsignedBasicAuth: false,
@@ -285,7 +303,7 @@ export class OpenSearchCluster extends TrackedConstruct {
         },
       },
       vpc: this.vpc,
-      subnets: vpcSubnetsSelection,
+      subnets: subnets,
     });
 
     this.domain = domain;

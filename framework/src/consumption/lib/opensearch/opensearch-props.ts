@@ -26,8 +26,9 @@ export interface OpenSearchClusterProps {
    */
   readonly dataNodeInstanceType?: string;
   /**
-   * The number of OpenSearch data nodes to provision
-   * @default - 2 data nodes are created if no VPC is configured
+   * The number of OpenSearch data nodes to provision.
+   * Be sure to configure the number of data nodes to a multiple of the number of AZ.
+   * @default - For public Domains, 1 data node is created. For private Domains, 1 data node per AZ.
    */
   readonly dataNodeInstanceCount?: number;
   /**
@@ -37,7 +38,7 @@ export interface OpenSearchClusterProps {
   readonly masterNodeInstanceType?: string;
   /**
    * The number of OpenSearch master nodes to provision
-   * @default - 3 master nodes are created
+   * @default - No master nodes are created
    */
   readonly masterNodeInstanceCount?: number;
   /**
@@ -55,6 +56,13 @@ export interface OpenSearchClusterProps {
    * @default - false
    */
   readonly multiAzWithStandbyEnabled?: boolean;
+  /**
+   * The number of availability zones to use.
+   * Be sure to configure the number of data nodes to a multiple of the number of AZ.
+   * @default - For private Domains, use the number of configured `vpcSubnets` or the number of AZ in the VPC if not configured.
+   * For public Domains, 1 AZ is used.
+   */
+  readonly availabilityZoneCount?: number;
   /**
    * The type of EBS Volumes to use
    * @default - EbsDeviceVolumeType.GENERAL_PURPOSE_SSD_GP3 is used
@@ -112,13 +120,13 @@ export interface OpenSearchClusterProps {
    */
   readonly deployInVpc:boolean;
   /**
-   * The VPC to deploy the OpenSearch Domain
-   * @default - A new VPC is created if deployInVpc=true, @see DataVpc
+   * The VPC to deploy the OpenSearch Domain.
+   * @default - A new VPC is created if `deployInVpc` is `true`, @see DataVpc
    */
   readonly vpc?: IVpc;
   /**
-   * The VPC Subnets to deploy the OpenSearch cluster nodes. Only used for VPC deployments.
-   * You must specify VPC if you specify this parameter.
+   * The VPC private Subnets to deploy the OpenSearch cluster nodes. Only used for VPC deployments.
+   * You must configure a VPC if you configure this parameter. Provide only one Subnet per AZ.
    * @default - Single private subnet per each AZ. @see DataVpc
    */
   readonly vpcSubnets?: SubnetSelection;

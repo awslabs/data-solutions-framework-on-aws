@@ -22,6 +22,8 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 // Instantiate AccessLogsBucket Construct with default
 new OpenSearchCluster(stack, 'OpenSearch', {
   domainName: 'test',
+  masterNodeInstanceCount: 3,
+  dataNodeInstanceCount: 4,
   samlEntityId: '<idpTest>',
   samlMetadataContent: 'xmlCOntent',
   samlMasterBackendRole: 'IdpGroupId',

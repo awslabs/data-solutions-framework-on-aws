@@ -55,9 +55,7 @@ describe('default configuration', () => {
   test( 'should have domain settings', () => {
     template.hasResourceProperties('AWS::OpenSearchService::Domain', {
       ClusterConfig: {
-        DedicatedMasterCount: 3,
-        DedicatedMasterEnabled: true,
-        DedicatedMasterType: 'm6g.large.search',
+        DedicatedMasterEnabled: false,
         InstanceType: 'r6g.xlarge.search',
         MultiAZWithStandbyEnabled: false,
         ZoneAwarenessEnabled: true,
@@ -90,6 +88,12 @@ describe('default configuration', () => {
           MasterBackendRole: 'IdpGroupId',
         },
       },
+      VPCOptions: Match.objectLike({
+        SubnetIds: [
+          { Ref: Match.stringLikeRegexp('OpenSearchVpcPrivateSubnet1Subnet.*') },
+          { Ref: Match.stringLikeRegexp('OpenSearchVpcPrivateSubnet2Subnet.*') },
+        ],
+      }),
     });
   });
 });
@@ -120,12 +124,11 @@ describe('non vpc config', () => {
   test('should have domain settings', () => {
     template.hasResourceProperties('AWS::OpenSearchService::Domain', {
       ClusterConfig: {
-        DedicatedMasterCount: 3,
-        DedicatedMasterEnabled: true,
-        DedicatedMasterType: 'm6g.large.search',
+        DedicatedMasterEnabled: false,
+        InstanceCount: 1,
         InstanceType: 'r6g.xlarge.search',
         MultiAZWithStandbyEnabled: false,
-        ZoneAwarenessEnabled: true,
+        ZoneAwarenessEnabled: false,
       },
       DomainEndpointOptions: {
         EnforceHTTPS: true,
@@ -180,7 +183,9 @@ describe('custom vpc configuration', () => {
       samlMetadataDocument: 'samlMetadataDocument',
     },
   });
-  const vpcSubnetsSelection = vpc.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS });
+
+  const subnets = vpc.vpc.selectSubnets({ onePerAz: true, subnetType: SubnetType.PRIVATE_WITH_EGRESS }).subnets;
+  const vpcSubnetsSelection = vpc.vpc.selectSubnets({ subnets: [subnets[0]] });
 
   new OpenSearchCluster(stack, 'OpenSearchDomainVpc', {
     domainName: 'mycluster2',
@@ -194,10 +199,16 @@ describe('custom vpc configuration', () => {
   });
 
   const template = Template.fromStack(stack);
-  //console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should have OpenSearch domain', () => {
     template.hasResourceProperties('AWS::OpenSearchService::Domain', {
+      ClusterConfig: {
+        DedicatedMasterEnabled: false,
+        InstanceType: 'r6g.xlarge.search',
+        MultiAZWithStandbyEnabled: false,
+        ZoneAwarenessEnabled: false,
+      },
       VPCOptions: {
         SecurityGroupIds: [
           {
@@ -210,15 +221,6 @@ describe('custom vpc configuration', () => {
         SubnetIds: [
           {
             Ref: 'VpcPrivateSubnet1Subnet536B997A',
-          },
-          {
-            Ref: 'VpcPrivateSubnet2Subnet3788AAA1',
-          },
-          {
-            Ref: 'VpcPrivateSubnet1Subnet536B997A',
-          },
-          {
-            Ref: 'VpcPrivateSubnet2Subnet3788AAA1',
           },
         ],
       },

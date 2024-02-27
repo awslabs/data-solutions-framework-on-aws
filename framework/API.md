@@ -3879,10 +3879,10 @@ ClientVPNEndpoint will be provisioned automatically for secure access to OpenSea
    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
    deployInVpc:true,
    removalPolicy:cdk.RemovalPolicy.DESTROY
- } as dsf.consumption.OpenSearchProps );
+ });
 
- osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
- osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+ osCluster.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+ osCluster.addRoleMapping('ReadAllRole', 'readall','<IAMIdentityCenterDashboardUsersGroupId>');
 ```
 
 
@@ -9851,6 +9851,7 @@ const openSearchClusterProps: consumption.OpenSearchClusterProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlEntityId">samlEntityId</a></code> | <code>string</code> | The SAML entity ID used for SAML based authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | The SAML Idp Admin GroupId as returned by {user:groups} in Idp. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.availabilityZoneCount">availabilityZoneCount</a></code> | <code>number</code> | The number of availability zones to use. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceCount">dataNodeInstanceCount</a></code> | <code>number</code> | The number of OpenSearch data nodes to provision. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceType">dataNodeInstanceType</a></code> | <code>string</code> | The EC2 Instance Type used for OpenSearch data nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.ebsSize">ebsSize</a></code> | <code>number</code> | The size of EBS Volumes to use. |
@@ -9867,7 +9868,7 @@ const openSearchClusterProps: consumption.OpenSearchClusterProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | The SAML Subject Key. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.version">version</a></code> | <code>aws-cdk-lib.aws_opensearchservice.EngineVersion</code> | The OpenSearch version. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the OpenSearch Domain. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The VPC Subnets to deploy the OpenSearch cluster nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The VPC private Subnets to deploy the OpenSearch cluster nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.warmInstanceCount">warmInstanceCount</a></code> | <code>number</code> | The number of Ultra Warn nodes to provision. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.warmInstanceType">warmInstanceType</a></code> | <code>number</code> | The type of nodes for Ultra Warn nodes. |
 
@@ -9933,6 +9934,21 @@ The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Cent
 
 ---
 
+##### `availabilityZoneCount`<sup>Optional</sup> <a name="availabilityZoneCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.availabilityZoneCount"></a>
+
+```typescript
+public readonly availabilityZoneCount: number;
+```
+
+- *Type:* number
+- *Default:* For private Domains, use the number of configured `vpcSubnets` or the number of AZ in the VPC if not configured. For public Domains, 1 AZ is used.
+
+The number of availability zones to use.
+
+Be sure to configure the number of data nodes to a multiple of the number of AZ.
+
+---
+
 ##### `dataNodeInstanceCount`<sup>Optional</sup> <a name="dataNodeInstanceCount" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps.property.dataNodeInstanceCount"></a>
 
 ```typescript
@@ -9940,9 +9956,11 @@ public readonly dataNodeInstanceCount: number;
 ```
 
 - *Type:* number
-- *Default:* 2 data nodes are created if no VPC is configured
+- *Default:* For public Domains, 1 data node is created. For private Domains, 1 data node per AZ.
 
 The number of OpenSearch data nodes to provision.
+
+Be sure to configure the number of data nodes to a multiple of the number of AZ.
 
 ---
 
@@ -10033,7 +10051,7 @@ public readonly masterNodeInstanceCount: number;
 ```
 
 - *Type:* number
-- *Default:* 3 master nodes are created
+- *Default:* No master nodes are created
 
 The number of OpenSearch master nodes to provision.
 
@@ -10146,7 +10164,7 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
-- *Default:* A new VPC is created if deployInVpc=true,
+- *Default:* A new VPC is created if `deployInVpc` is `true`,
 
 The VPC to deploy the OpenSearch Domain.
 
@@ -10163,10 +10181,10 @@ public readonly vpcSubnets: SubnetSelection;
 - *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
 - *Default:* Single private subnet per each AZ.
 
-The VPC Subnets to deploy the OpenSearch cluster nodes.
+The VPC private Subnets to deploy the OpenSearch cluster nodes.
 
 Only used for VPC deployments.
-You must specify VPC if you specify this parameter.
+You must configure a VPC if you configure this parameter. Provide only one Subnet per AZ.
 
 > [DataVpc](DataVpc)
 
