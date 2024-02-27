@@ -78,7 +78,8 @@ const rootProject = new LernaProject({
 
   projenrcTs: true,
 
-  jest: false
+  jest: false,
+  
 });
 
 rootProject.package.addField('resolutions', {
@@ -162,6 +163,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     '@types/js-yaml',
     'simple-base',
     'semver',
+    'esbuild',
   ],
 
   jestOptions: {
@@ -183,9 +185,13 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
       lib: [
         "ES2021"
       ],
-      target: "ES2021"
-    }
+      target: "ES2021", 
+    },
   },
+
+  excludeTypescript : [
+    "src/**/resources/lambda/*",
+  ],
 
   eslintOptions: {
     dirs: ['src'],

@@ -4,6 +4,8 @@ import TabItem from '@theme/TabItem';
 
 An [Amazon Athena workgroup](https://docs.aws.amazon.com/athena/latest/ug/manage-queries-control-costs-with-workgroups.html) with provided configuration.
 
+## Overview
+
 `AthenaWorkGroup` provides Athena workgroup configuration with best-practices:
 - Amazon S3 bucket for query results, based on [`AnalyticsBucket`](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Storage/analytics-bucket).
 - Query results are encrypted using AWS KMS Key.
@@ -188,3 +190,21 @@ athena_wg.grant_run_queries(athena_example_role)
   </TabItem>
 </Tabs>
 
+
+## Workgroup removal
+
+You can specify if Athena Workgroup construct resources should be deleted when CDK Stack is destroyed using `removalPolicy`. To have an additional layer of protection, we require users to set a global context value for data removal in their CDK applications.
+
+Athena workgroup will be destroyed only if **both** the removal policy parameter of the construct and DSF global removal policy are set to remove objects.
+
+If set to be destroyed, Athena workgroup construct will use `recursiveDeleteOption`, that will delete the workgroup and its contents even if it contains any named queries.
+
+You can set `@data-solutions-framework-on-aws/removeDataOnDestroy` (`true` or `false`) global data removal policy in `cdk.json`:
+
+```json title="cdk.json"
+{
+  "context": {
+    "@data-solutions-framework-on-aws/removeDataOnDestroy": true
+  }
+}
+```

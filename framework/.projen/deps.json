@@ -131,6 +131,10 @@
       "type": "bundled"
     },
     {
+      "name": "esbuild",
+      "type": "bundled"
+    },
+    {
       "name": "js-yaml",
       "type": "bundled"
     },

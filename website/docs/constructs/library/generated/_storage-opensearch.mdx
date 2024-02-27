@@ -1,0 +1,60 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/storage)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Amazon Opensearch construct supporting SAML integration using IAM Identity Center. 
+
+## Overview
+
+The construct follows best practises for Amazon Opensearch deployment, provisioning opensearch domain in VPC and using SAML-authentication plugin to access Opensearch Dashboards. 
+By default VPC also creates VPN client endpoint with SAML-authentication to allow secure access to the dashboards. Optionally, you can also provide your own VPC or choose to deploy internet-facing Opensearch domain by setting `deployInVpc=false` in construct parameters.
+
+SAML-authentication can work with any SAML2.0-compatible provider like Okta. If you use AWS IAM Identity center please check the section below for details. The construct require at least admin role to be provided as parameters. 
+
+For mapping additional IdP roles to opensearch dashboard roles, you can use `addRoleMapping` method. 
+
+## Confgiure IAM Identity center
+
+You need to have IAM Identity center enabled in the same region you plan to deploy your solution. 
+To configure SAML integration with opensearch you will need to create a custom SAML 2.0 Application and have at least one user group created and attached to the application.
+Please follow the [step-by-step guidance](https://aws.amazon.com/blogs/big-data/role-based-access-control-in-amazon-opensearch-service-via-saml-integration-with-aws-iam-identity-center/) to set up IAM Identity center SAML application.
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const osCluster = new OpensearchCluster(scope, 'MyOpensearchCluster',{
+    domainName:"mycluster3",
+    samlEntityId:'<IdpIdentityId>',
+    samlMetadataContent:'<IdpMetadataXml>',
+    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+    deployInVpc:true,
+    removalPolicy:cdk.RemovalPolicy.DESTROY
+} as OpensearchProps);
+osCluster.addRoleMapping('dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+osCluster.addRoleMapping('readall','<IAMIdentityCenterDashboardUsersGroupId>');
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+os_cluster = OpensearchCluster(scope, "MyOpensearchCluster",
+    domain_name="mycluster3",
+    saml_entity_id="<IdpIdentityId>",
+    saml_metadata_content="<IdpMetadataXml>",
+    saml_master_backend_role="<IAMIdentityCenterAdminGroupId>",
+    deploy_in_vpc=True,
+    removal_policy=cdk.RemovalPolicy.DESTROY
+)
+os_cluster.add_role_mapping("dashboards_user", "<IAMIdentityCenterDashboardUsersGroupId>")
+os_cluster.add_role_mapping("readall", "<IAMIdentityCenterDashboardUsersGroupId>")
+  ```
+
+  </TabItem>
+</Tabs>
+
