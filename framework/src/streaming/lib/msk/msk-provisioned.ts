@@ -18,7 +18,7 @@ import { Construct } from 'constructs';
 import { mskCrudTlsProviderSetup } from './msk-helpers';
 import { clientAuthenticationSetup, getZookeeperConnectionString, monitoringSetup } from './msk-provisioned-cluster-setup';
 import { KafkaAclProp, MskProvisionedProps } from './msk-provisioned-props';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
+import { KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -300,14 +300,14 @@ export class MskProvisioned extends TrackedConstruct {
       zooKeeperSecurityGroup);
 
     this.mskCrudTlsProviderToken = mskCrudProvider.serviceToken;
-    
+
     //Update cluster configuration as a last step before handing the cluster to customer.
-    
+
     //Create the configuration
     let clusterConfiguration: CfnConfiguration | undefined = undefined;
-    
+
     //= MskProvisioned.createCLusterConfiguration(this, 'DsfclusterConfig', 'dsf-msk-configuration', join(__dirname, './cluster-config-msk-provisioned'), [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
-    
+
     const crAcls: CustomResource [] = this.setAcls ();
 
     this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
@@ -315,7 +315,6 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
 
-  
   //ACL operations through cli are defined here
   // https://jaceklaskowski.gitbooks.io/apache-kafka/content/kafka-admin-AclCommand.html
   // https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Authorization+Command+Line+Interface
@@ -334,7 +333,7 @@ export class MskProvisioned extends TrackedConstruct {
         host: aclDefinition.host,
         operation: aclDefinition.operation,
         permissionType: aclDefinition.permissionType,
-        command: ''
+        command: '',
       },
       resourceType: 'Custom::MskAcl',
     });
