@@ -3929,7 +3929,7 @@ Returns a string representation of this construct.
 ##### `addAcl` <a name="addAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl"></a>
 
 ```typescript
-public addAcl(scope: Construct, id: string, aclDefinition: KafkaAclProp): void
+public addAcl(scope: Construct, id: string, aclDefinition: KafkaAclProp): CustomResource
 ```
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.scope"></a>
