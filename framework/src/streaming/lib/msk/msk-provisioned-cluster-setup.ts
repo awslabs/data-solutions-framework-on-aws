@@ -194,3 +194,41 @@ export function getZookeeperConnectionString(scope: Construct, cluster: CfnClust
   };
 }
 
+/**
+   * Get the ZooKeeper Connection string
+   *
+   * Uses a Custom Resource to make an API call to `describeCluster` using the Javascript SDK
+   *
+   * @param scope
+   * @param clusterArn
+   * @returns - The am object with the connection string to use to connect to the ZooKeeper both in plaintext and TLS.
+   */
+export function updateClusterConfiguration(scope: Construct, cluster: CfnCluster): Construct {
+
+  let updateClusterConfiguration = new AwsCustomResource(scope, 'ZookeeperConnect', {
+    onUpdate: {
+      service: 'Kafka',
+      action: 'updateClusterConfigurationCommand',
+      parameters: {
+        ClusterArn: cluster.attrArn,
+        ConfigurationInfo: {
+          Arn: '',
+          Revision: 0,
+        }
+      },
+      physicalResourceId: PhysicalResourceId.of(
+        'FinalisedClusterConfig',
+      ),
+    },
+    policy: AwsCustomResourcePolicy.fromSdkCalls({
+      resources: [cluster.attrArn],
+    }),
+    installLatestAwsSdk: false,
+  });
+
+  updateClusterConfiguration.node.addDependency(cluster);
+
+  return updateClusterConfiguration;
+}
+
+
