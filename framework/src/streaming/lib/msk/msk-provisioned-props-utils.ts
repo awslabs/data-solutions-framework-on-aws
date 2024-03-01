@@ -422,11 +422,11 @@ export class ClientAuthentication {
 }
 
 export enum AclResourceTypes {
-  ANY = 'ANY',
-  TOPIC = 'TOPIC',
-  GROUP = 'GROUP',
-  CLUSTER = 'CLUSTER',
-  TRANSACTIONAL_ID = 'TRANSACTIONAL_ID',
+  ANY = 'Any',
+  TOPIC = 'Topic',
+  GROUP = 'Group',
+  CLUSTER = 'Cluster',
+  TRANSACTIONAL_ID = 'Transactional_id',
 }
 
 export enum AclPermissionTypes {

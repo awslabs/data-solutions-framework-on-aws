@@ -18,7 +18,7 @@ import { Construct } from 'constructs';
 import { mskCrudTlsProviderSetup } from './msk-helpers';
 import { clientAuthenticationSetup, getZookeeperConnectionString, monitoringSetup } from './msk-provisioned-cluster-setup';
 import { KafkaAclProp, MskProvisionedProps } from './msk-provisioned-props';
-import { KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
+import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -38,7 +38,7 @@ export class MskProvisioned extends TrackedConstruct {
     serverPropertiesFilePath: string,
     kafkaVersions: KafkaVersion[],
     configurationDescription?: string,
-    latestRevision?: CfnConfiguration.LatestRevisionProperty) {
+    latestRevision?: CfnConfiguration.LatestRevisionProperty) : CfnConfiguration {
 
     let versions: string[] = [];
 
@@ -46,7 +46,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     const data = readFileSync(serverPropertiesFilePath, 'utf8');
 
-    new CfnConfiguration(scope, id, {
+    return new CfnConfiguration(scope, id, {
       name: name,
       serverProperties: data,
       kafkaVersionsList: versions,
@@ -300,9 +300,22 @@ export class MskProvisioned extends TrackedConstruct {
       zooKeeperSecurityGroup);
 
     this.mskCrudTlsProviderToken = mskCrudProvider.serviceToken;
+    
+    //Update cluster configuration as a last step before handing the cluster to customer.
+    
+    //Create the configuration
+    let clusterConfiguration: CfnConfiguration | undefined = undefined;
+    
+    //= MskProvisioned.createCLusterConfiguration(this, 'DsfclusterConfig', 'dsf-msk-configuration', join(__dirname, './cluster-config-msk-provisioned'), [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
+    
+    const crAcls: CustomResource [] = this.setAcls ();
 
+    this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
 
   }
+
+
+  
   //ACL operations through cli are defined here
   // https://jaceklaskowski.gitbooks.io/apache-kafka/content/kafka-admin-AclCommand.html
   // https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Authorization+Command+Line+Interface
@@ -310,7 +323,7 @@ export class MskProvisioned extends TrackedConstruct {
     scope: Construct,
     id: string,
     aclDefinition: KafkaAclProp,
-  ) {
+  ): CustomResource {
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
       serviceToken: this.mskAclProviderToken,
@@ -321,11 +334,14 @@ export class MskProvisioned extends TrackedConstruct {
         host: aclDefinition.host,
         operation: aclDefinition.operation,
         permissionType: aclDefinition.permissionType,
+        command: ''
       },
       resourceType: 'Custom::MskAcl',
     });
 
     cr.node.addDependency(this.mskProvisionedCluster);
+
+    return cr;
   }
 
   /**
@@ -386,6 +402,32 @@ export class MskProvisioned extends TrackedConstruct {
 
     console.log(topicName);
     console.log(principal);
+
+  }
+
+  private setAcls (): CustomResource [] {
+
+    let aclsResources: CustomResource[] = [];
+    //set Acls after updating the zookeeper
+    // aclsResources.push(this.addAcl(this, 'AdminAcl', {
+    //     resourceType: AclResourceTypes.TOPIC,
+    //     resourceName: 'topic1',
+    //     host: '*',
+    //     principal: '',
+    //     operation: AclOperationTypes.CREATE,
+    //     permissionType: AclPermissionTypes.ALLOW,
+    // }));
+
+    return aclsResources;
+
+  }
+
+  private setClusterConfiguration (scope: Construct, cluster: CfnCluster, configuration?: CfnConfiguration, aclsResources?: CustomResource []) {
+    //Need to add trigger after set ACl is finalized
+    console.log(scope);
+    console.log(cluster);
+    console.log(configuration);
+    console.log(aclsResources);
 
   }
 }
