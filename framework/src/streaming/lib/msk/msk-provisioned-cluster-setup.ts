@@ -205,7 +205,7 @@ export function getZookeeperConnectionString(scope: Construct, cluster: CfnClust
    */
 export function updateClusterConfiguration(scope: Construct, cluster: CfnCluster): Construct {
 
-  let updateClusterConfiguration = new AwsCustomResource(scope, 'ZookeeperConnect', {
+  let updateClusterConfigurationCr = new AwsCustomResource(scope, 'ZookeeperConnect', {
     onUpdate: {
       service: 'Kafka',
       action: 'updateClusterConfigurationCommand',
@@ -214,7 +214,7 @@ export function updateClusterConfiguration(scope: Construct, cluster: CfnCluster
         ConfigurationInfo: {
           Arn: '',
           Revision: 0,
-        }
+        },
       },
       physicalResourceId: PhysicalResourceId.of(
         'FinalisedClusterConfig',
@@ -226,9 +226,9 @@ export function updateClusterConfiguration(scope: Construct, cluster: CfnCluster
     installLatestAwsSdk: false,
   });
 
-  updateClusterConfiguration.node.addDependency(cluster);
+  updateClusterConfigurationCr.node.addDependency(cluster);
 
-  return updateClusterConfiguration;
+  return updateClusterConfigurationCr;
 }
 
 
