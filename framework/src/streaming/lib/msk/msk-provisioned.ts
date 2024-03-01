@@ -304,6 +304,7 @@ export class MskProvisioned extends TrackedConstruct {
 
   }
   //ACL operations through cli are defined here
+  // https://jaceklaskowski.gitbooks.io/apache-kafka/content/kafka-admin-AclCommand.html
   // https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Authorization+Command+Line+Interface
   public addAcl(
     scope: Construct,
