@@ -26,13 +26,13 @@ export const onEventHandler = async (event) => {
     const command = new GetBootstrapBrokersCommand(input);
     const response = await client.send(command);
 
-    const brokerUrl = response.BootstrapBrokerStringSaslIam;
+    const brokerUrl = response.BootstrapBrokerStringSaslIam.split(',');
 
     let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
 
     const kafka = new Kafka({
         clientId: `client-CR-${clusterName}`,
-        brokers: [brokerUrl],
+        brokers: brokerUrl,
         ssl: true,
         sasl: {
             mechanism: 'oauthbearer',
