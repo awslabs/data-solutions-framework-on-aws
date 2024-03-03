@@ -17,7 +17,8 @@ do
 
   # Run the handler function from the script
   RESPONSE=$($(echo "$_HANDLER" | cut -d. -f2) "$EVENT_DATA")
+  OUTPUT="{\"PhysicalResourceId\": \"myphysicalresource\"}"
 
   # Send the response
-  curl "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response"  -d "$RESPONSE"
+  curl "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response"  -d "$OUTPUT"
 done
