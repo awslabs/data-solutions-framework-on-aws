@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { SecurityGroup, SubnetType, IVpc, Port } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { Construct } from 'constructs';
@@ -14,7 +14,7 @@ export function mskCrudProviderSetup(
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
   mskCluster: CfnServerlessCluster,
-  lambdaSecurityGroup: SecurityGroup) : DsfProvider {
+  lambdaSecurityGroup: ISecurityGroup) : DsfProvider {
 
   let account = Stack.of(scope).account;
   let region = Stack.of(scope).region;
@@ -108,21 +108,20 @@ export function mskCrudProviderSetup(
 
 }
 
-
-export function mskCrudTlsProviderSetup(
+export function mskAclAdminProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
   mskCluster: CfnCluster,
-  lambdaSecurityGroup: SecurityGroup) : DsfProvider {
+  lambdaSecurityGroup: ISecurityGroup) : DsfProvider {
 
-  let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudTlsCrSg', {
+  let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskAclAdminCr', {
     vpc,
   });
 
   lambdaSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
 
-  //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
+  //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
   const lambdaPolicy = [
     new PolicyStatement({
       actions: ['kafka:DescribeCluster'],
@@ -130,23 +129,44 @@ export function mskCrudTlsProviderSetup(
         mskCluster.attrArn,
       ],
     }),
+    new PolicyStatement({
+      actions: ['kafka:GetBootstrapBrokers'],
+      resources: [
+        '*',
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['secretsmanager:*'],
+      resources: [
+        '*',
+      ],
+    }),
   ];
 
 
   //Attach policy to IAM Role
-  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
+  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicymskAclAdminCr', {
     statements: lambdaPolicy,
     description: 'Policy for emr containers CR to create managed endpoint',
   });
 
-  const provider = new DsfProvider(scope, 'MskCrudTlsProvider', {
-    providerName: 'msk-crud-provider',
+  const provider = new DsfProvider(scope, 'MskAclAdminProvider', {
+    providerName: 'msk-acl-admin-provider',
     onEventHandlerDefinition: {
       handler: 'index.onEventHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudTls/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/crudTls/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/aclAdminClient/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/aclAdminClient/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
+        commandHooks: {
+          afterBundling: (inputDir: string, outputDir: string): string[] => [
+            `cp ${inputDir}/caCert.pem ${outputDir}/caCert.pem`,
+            `cp ${inputDir}/client-certificate.pem ${outputDir}/client-certificate.pem`,
+            `cp ${inputDir}/client-private.pem ${outputDir}/client-private.pem`
+          ],
+          beforeBundling: (): string[] => [],
+          beforeInstall: (): string[] => [],
+        },
         nodeModules: [
           'kafkajs',
         ],
@@ -154,8 +174,8 @@ export function mskCrudTlsProviderSetup(
     },
     isCompleteHandlerDefinition: {
       handler: 'index.isCompleteHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudTls/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/crudTls/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/aclAdminClient/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/aclAdminClient/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
