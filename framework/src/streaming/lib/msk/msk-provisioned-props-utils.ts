@@ -188,6 +188,16 @@ export class MskBrokerInstanceType {
   public static readonly KAFKA_M5_24XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M5, InstanceSize.XLARGE24));
 
   /**
+   * Borker instance type kafka.m7g.large
+   */
+  public static readonly KAFKA_M7G_LARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.LARGE));
+
+  /**
+   * Borker instance type kafka.m7g.xlarge
+   */
+  public static readonly KAFKA_M7G_XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE));
+
+  /**
    * Custom cluster version
    * @param version custom version number
    */
@@ -421,29 +431,51 @@ export class ClientAuthentication {
   ) {}
 }
 
+//Taken from https://github.com/tulios/kafkajs/blob/master/types/index.d.ts
+//Cannot be imported/bundled due to JSII limitation
 export enum AclResourceTypes {
-  ANY = 'Any',
-  TOPIC = 'Topic',
-  GROUP = 'Group',
-  CLUSTER = 'Cluster',
-  TRANSACTIONAL_ID = 'Transactional_id',
+  UNKNOWN = 0,
+  ANY = 1,
+  TOPIC = 2,
+  GROUP = 3,
+  CLUSTER = 4,
+  TRANSACTIONAL_ID = 5,
+  DELEGATION_TOKEN = 6,
 }
 
+//Taken from https://github.com/tulios/kafkajs/blob/master/types/index.d.ts
+//Cannot be imported/bundled due to JSII limitation
 export enum AclPermissionTypes {
-  ANY = 'Any',
-  DENY = 'Deny',
-  ALLOW = 'Allow',
+  UNKNOWN = 0,
+  ANY = 1,
+  DENY = 2,
+  ALLOW = 3,
 }
 
+//Taken from https://github.com/tulios/kafkajs/blob/master/types/index.d.ts
+//Cannot be imported/bundled due to JSII limitation
 export enum AclOperationTypes {
-  ALL = 'All',
-  READ = 'Read',
-  WRITE = 'Write',
-  CREATE = 'Create',
-  DELETE = 'Delete',
-  ALTER = 'Alter',
-  DESCRIBE = 'Describe',
-  CLUSTER_ACTION = 'ClusterAction',
-  ALTER_CONFIGS = 'AlterConfigs',
-  IDEMPOTENT_WRITE = 'IdempotentWrite',
+  UNKNOWN = 0,
+  ANY = 1,
+  ALL = 2,
+  READ = 3,
+  WRITE = 4,
+  CREATE = 5,
+  DELETE = 6,
+  ALTER = 7,
+  DESCRIBE = 8,
+  CLUSTER_ACTION = 9,
+  DESCRIBE_CONFIGS = 10,
+  ALTER_CONFIGS = 11,
+  IDEMPOTENT_WRITE = 12,
+}
+
+//Taken from https://github.com/tulios/kafkajs/blob/master/types/index.d.ts
+//Cannot be imported/bundled due to JSII limitation
+export enum ResourcePatternTypes {
+  UNKNOWN = 0,
+  ANY = 1,
+  MATCH = 2,
+  LITERAL = 3,
+  PREFIXED = 4,
 }

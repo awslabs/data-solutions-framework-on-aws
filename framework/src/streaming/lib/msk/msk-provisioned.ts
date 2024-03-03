@@ -6,19 +6,23 @@ import { join } from 'path';
 
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Connections, IVpc, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Platform } from 'aws-cdk-lib/aws-ecr-assets';
+import { Connections, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Code, Function, Handler, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
-import { Provider } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
-import { mskCrudTlsProviderSetup } from './msk-helpers';
-import { clientAuthenticationSetup, getZookeeperConnectionString, monitoringSetup } from './msk-provisioned-cluster-setup';
-import { KafkaAclProp, MskProvisionedProps } from './msk-provisioned-props';
-import { AclResourceTypes, KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
+import { mskAclAdminProviderSetup } from './msk-helpers';
+import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cluster-setup';
+import { Acl, MskProvisionedProps } from './msk-provisioned-props';
+import {
+
+  //AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
+
+  KafkaVersion, MskBrokerInstanceType,
+
+} from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -59,8 +63,7 @@ export class MskProvisioned extends TrackedConstruct {
   public readonly mskProvisionedCluster: CfnCluster;
 
   private readonly removalPolicy: RemovalPolicy;
-  private readonly mskCrudTlsProviderToken: string;
-  private readonly mskAclProviderToken: string;
+  private readonly mskAclAdminProviderToken: string;
   private readonly account: string;
   private readonly region: string;
   private readonly mskBrokerinstanceType: MskBrokerInstanceType;
@@ -68,7 +71,6 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly subnetSelectionIds: string[];
   private readonly connections: Connections;
   private readonly numberOfBrokerNodes: number;
-  private readonly zookeeperConnectionString = { ZookeeperConnectStringTls: '', ZookeeperConnectString: '' };
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -212,13 +214,6 @@ export class MskProvisioned extends TrackedConstruct {
         actions: ['ec2:*'],
         resources: ['*'],
       }),
-      new PolicyStatement({
-        actions: [
-          'ecr:BatchGetImage',
-          'ecr:GetDownloadUrlForLayer',
-        ],
-        resources: ['*'],
-      }),
     ];
 
     //Attach policy to IAM Role
@@ -237,7 +232,7 @@ export class MskProvisioned extends TrackedConstruct {
     lambdaRole.addManagedPolicy(lambdaExecutionRolePolicy);
 
     let zooKeeperSecurityGroup: SecurityGroup = new SecurityGroup(this, 'ZookeeperSecurityGroup', {
-      allowAllOutbound: true,
+      allowAllOutbound: false,
       vpc: this.vpc,
     });
 
@@ -262,55 +257,29 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.mskProvisionedCluster],
     });
 
-    this.zookeeperConnectionString = getZookeeperConnectionString(this, this.mskProvisionedCluster);
-
-    const aclShell = new Function(this, 'AclShellContainer', {
-      handler: Handler.FROM_IMAGE,
-      code: Code.fromAssetImage(
-        join(__dirname, './resources/lambdas/aclShell'), {
-          platform: Platform.LINUX_AMD64,
-        }),
-      runtime: Runtime.FROM_IMAGE,
-      role: lambdaRole,
-      timeout: Duration.minutes(7),
-      vpc: this.vpc,
-      memorySize: 256,
-      environment: {
-        ZK_CONNECTION_STRING: this.zookeeperConnectionString.ZookeeperConnectString,
-        ZK_CONNECTION_STRING_TLS: this.zookeeperConnectionString.ZookeeperConnectStringTls,
-      },
-      securityGroups: [zooKeeperSecurityGroup],
-      vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-    });
-
-    //This need to be changed to a dedicated SG for lambda
-    zooKeeperSecurityGroup.addIngressRule(zooKeeperSecurityGroup, Port.allTcp());
-
-    this.mskAclProviderToken = new Provider(this, 'AclProvider', {
-      onEventHandler: aclShell,
-    }).serviceToken;
-
-
     //CR place holder for applying ACLs
-    let mskCrudProvider = mskCrudTlsProviderSetup(
+    this.mskAclAdminProviderToken = mskAclAdminProviderSetup(
       this,
       this.removalPolicy,
       this.vpc,
       this.mskProvisionedCluster,
-      zooKeeperSecurityGroup);
-
-    this.mskCrudTlsProviderToken = mskCrudProvider.serviceToken;
+      this.connections.securityGroups[0],
+    ).serviceToken;
 
     //Update cluster configuration as a last step before handing the cluster to customer.
 
-    //Create the configuration
-    let clusterConfiguration: CfnConfiguration | undefined = undefined;
+    // Create the configuration
+    //let clusterConfiguration: CfnConfiguration =
+      MskProvisioned.createCLusterConfiguration(
+        this, 'DsfclusterConfig',
+        'dsfconfig',
+        join(__dirname, './resources/cluster-config-msk-provisioned'),
+        [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
 
-    //= MskProvisioned.createCLusterConfiguration(this, 'DsfclusterConfig', 'dsf-msk-configuration', join(__dirname, './cluster-config-msk-provisioned'), [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
+    //const crAcls: CustomResource [] = 
+    this.setAcls (props);
 
-    const crAcls: CustomResource [] = this.setAcls ();
-
-    this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
+    //this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
 
   }
 
@@ -321,13 +290,22 @@ export class MskProvisioned extends TrackedConstruct {
   public addAcl(
     scope: Construct,
     id: string,
-    aclDefinition: KafkaAclProp,
+    aclDefinition: Acl,
   ): CustomResource {
-    // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
+
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskAclProviderToken,
+      serviceToken: this.mskAclAdminProviderToken,
       properties: {
-        command: this.getAclCliCommand(aclDefinition),
+        secretName: 'dsf/mskCert',
+        region: Stack.of(scope).region,
+        mskClusterArn: this.mskProvisionedCluster.attrArn,
+        resourceType: aclDefinition.resourceType,
+        resourcePatternType: aclDefinition.resourcePatternType,
+        resourceName: aclDefinition.resourceName,
+        principal: aclDefinition.principal,
+        host: aclDefinition.host,
+        operation: aclDefinition.operation,
+        permissionType: aclDefinition.permissionType,
       },
       resourceType: 'Custom::MskAcl',
     });
@@ -338,7 +316,7 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-     * Creates a topic in the Msk Serverless
+     * Creates a topic in the Msk Cluster
      *
      * @param {Construct} scope the scope of the stack where Topic will be created
      * @param {string} id the CDK id for Topic
@@ -358,7 +336,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskCrudTlsProviderToken,
+      serviceToken: this.mskAclAdminProviderToken,
       properties: {
         topics: topicDefinition,
         waitForLeaders: waitForLeaders,
@@ -367,6 +345,25 @@ export class MskProvisioned extends TrackedConstruct {
         mskClusterArn: this.mskProvisionedCluster,
       },
       resourceType: 'Custom::MskTopic',
+      removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
+    });
+
+    cr.node.addDependency(this.mskProvisionedCluster);
+  }
+
+  public addAclAdminClient(
+    scope: Construct,
+    id: string,
+    removalPolicy?: RemovalPolicy) {
+
+    // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
+    const cr = new CustomResource(scope, id, {
+      serviceToken: this.mskAclAdminProviderToken,
+      properties: {
+        region: Stack.of(scope).region,
+        mskClusterArn: this.mskProvisionedCluster.attrArn,
+      },
+      resourceType: 'Custom::MskAdminAcl',
       removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
     });
 
@@ -383,6 +380,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     console.log(topicName);
     console.log(principal);
+
   }
 
   /**
@@ -394,68 +392,90 @@ export class MskProvisioned extends TrackedConstruct {
   public grantConsume(topicName: string, principal: IPrincipal) {
 
     console.log(topicName);
-    console.log(principal);
+    console.log(principal); 
 
   }
 
-  private setAcls (): CustomResource [] {
+  private setAcls (props: MskProvisionedProps): CustomResource [] {
 
     let aclsResources: CustomResource[] = [];
-    //set Acls after updating the zookeeper
-    // aclsResources.push(this.addAcl(this, 'AdminAcl', {
-    //     resourceType: AclResourceTypes.TOPIC,
-    //     resourceName: 'topic1',
+    console.log(props.clusterName);
+
+    // aclsResources.push(
+    //   this.addAcl(this, 'acl1', {
+    //     resourceType: AclResourceTypes.CLUSTER,
+    //     resourceName: 'kafka-cluster',
+    //     resourcePatternType: ResourcePatternTypes.LITERAL,
+    //     principal: props.certificateDefinition.principal, 
     //     host: '*',
-    //     principal: '',
-    //     operation: AclOperationTypes.CREATE,
+    //     operation: AclOperationTypes.ALTER,
     //     permissionType: AclPermissionTypes.ALLOW,
-    // }));
+    //   }));
+
+    //   aclsResources.push(
+    //     this.addAcl(this, 'acl2', {
+    //       resourceType: AclResourceTypes.CLUSTER,
+    //       resourceName: 'kafka-cluster',
+    //       resourcePatternType: ResourcePatternTypes.LITERAL,
+    //       principal: 'REPLACE-WITH-BOOTSTRAP',
+    //       host: '*',
+    //       operation: AclOperationTypes.CLUSTER_ACTION,
+    //       permissionType: AclPermissionTypes.ALLOW,
+    //     }));
 
     return aclsResources;
 
   }
 
-  private setClusterConfiguration (scope: Construct, cluster: CfnCluster, configuration?: CfnConfiguration, aclsResources?: CustomResource []) {
+  public setClusterConfiguration (scope: Construct, cluster: CfnCluster, configuration: CfnConfiguration
+    , aclsResources: CustomResource []) {
     //Need to add trigger after set ACl is finalized
-    console.log(scope);
-    console.log(cluster);
-    console.log(configuration);
-    console.log(aclsResources);
+    //console.log(aclsResources);
 
-  }
+    const lambdaPolicy = [
+      new PolicyStatement({
+        actions: ['kafka:*'],
+        resources: [
+          cluster.attrArn,
+          configuration.attrArn,
+        ],
+      }),
+    ];
 
-  private getAclCliCommand(aclDefinition:KafkaAclProp, isRemove:boolean=false):string {
+    //Attach policy to IAM Role
+    const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicyUpdateConfiguration', {
+      statements: lambdaPolicy,
+      description: 'Policy for modifying security group for MSK zookeeper',
+    });
 
-    const permission = aclDefinition.permissionType.toLowerCase();
-    //don't prompt for confirmation
-    let command='--force';
-    command = `${command} --${isRemove?'remove':'add'}`;
 
-    if (aclDefinition.principal) {
-      try {
-        if (['User', 'Group'].indexOf(aclDefinition.principal.split(':')[0])<0) {
-          throw new Error('Pincipal should follow PrincipalType:principalName format');
-        }
-      } catch (e) {
-        console.log(e);
-        throw (e as Error);
-      }
-      command = `${command} --${permission}-principal ${aclDefinition.principal}`;
-    }
-    //implicit * for omitted --(allow|deny)-host parameter
-    if (aclDefinition.host && aclDefinition.host!='*') {
-      command = `${command} --${permission}-host' ${aclDefinition.host}`;
-    }
+    //TO be scoped down
+    let lambdaRole: Role = new Role(scope, 'LambdaExecutionRoleUpdateConfiguration', {
+      managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')],
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+    });
 
-    command = `${command} --${aclDefinition.resourceType.toLowerCase()}`;
-    if (aclDefinition.resourceType !== AclResourceTypes.CLUSTER) {
-      command = `${command} '${aclDefinition.resourceName}'`;
-    }
-    if (aclDefinition.operation) {
-      command = `${command} --operation ${aclDefinition.operation}`;
-    }
-    console.log(command);
-    return command;
+    lambdaRole.addManagedPolicy(lambdaExecutionRolePolicy);
+
+    const func = new Function(this, 'updateConfiguration', {
+      handler: 'index.onEventHandler',
+      code: Code.fromAsset(join(__dirname, './resources/lambdas/updateConfiguration')),
+      runtime: Runtime.NODEJS_20_X,
+      environment: {
+        MSK_CONFIGURATION_ARN: configuration.attrArn,
+        MSK_CLUSTER_ARN: cluster.attrArn,
+      },
+      role: lambdaRole,
+      timeout: Duration.seconds(20),
+    });
+
+    new Trigger(this, 'UpdateMskConfiguration', {
+      handler: func,
+      timeout: Duration.minutes(10),
+      invocationType: InvocationType.REQUEST_RESPONSE,
+      executeAfter: [configuration, ...aclsResources],
+    });
+
   }
 
 }

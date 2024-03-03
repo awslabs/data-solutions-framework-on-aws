@@ -176,6 +176,7 @@ export class DsfProvider extends Construct {
       }
     }
 
+
     const customResourceProvider = new Provider (this, 'CustomResourceProvider', {
       onEventHandler: this.onEventHandlerFunction,
       isCompleteHandler: this.isCompleteHandlerFunction ?? undefined,

@@ -7,7 +7,21 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, Vpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, BrokerLogging, ClientAuthentication, ClusterConfigurationInfo, EbsStorageInfo, KafkaVersion, MonitoringConfiguration, MskBrokerInstanceType, StorageMode } from './msk-provisioned-props-utils';
+import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
+import {
+  AclOperationTypes,
+  AclPermissionTypes,
+  AclResourceTypes,
+  BrokerLogging,
+  ClientAuthentication,
+  ClusterConfigurationInfo,
+  EbsStorageInfo,
+  KafkaVersion,
+  MonitoringConfiguration,
+  MskBrokerInstanceType,
+  ResourcePatternTypes,
+  StorageMode,
+} from './msk-provisioned-props-utils';
 
 export interface MskProvisionedProps {
   /**
@@ -109,16 +123,24 @@ export interface MskProvisionedProps {
       * @default RemovalPolicy.RETAIN
       */
   readonly removalPolicy?: RemovalPolicy;
+
+  readonly certificateDefinition: AclAdminProps;
 }
 
 
-export interface KafkaAclProp {
-  readonly resourceType: AclResourceTypes;
-  readonly resourceName: string;
-  readonly principal?: string;
-  readonly host?: string;
+export interface AclAdminProps {
+  readonly principal: string;
+  readonly secretArnCertificate?: ISecret;
+  readonly lambdaRoleName?: string;
+}
+
+export interface Acl {
+  readonly principal: string;
+  readonly host: string;
   readonly operation: AclOperationTypes;
   readonly permissionType: AclPermissionTypes;
+  readonly resourceType: AclResourceTypes;
+  readonly resourceName: string;
+  readonly resourcePatternType: ResourcePatternTypes;
 }
-
 

@@ -1,4 +1,4 @@
-allow.everyone.if.no.acl.found=fasle
+allow.everyone.if.no.acl.found=false
 auto.create.topics.enable=false
 default.replication.factor=3
 min.insync.replicas=2
@@ -11,4 +11,4 @@ socket.receive.buffer.bytes=102400
 socket.request.max.bytes=104857600
 socket.send.buffer.bytes=102400
 unclean.leader.election.enable=true
-zookeeper.session.timeout.ms=18000
+zookeeper.session.timeout.ms=16000
