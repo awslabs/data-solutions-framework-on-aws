@@ -16,8 +16,22 @@ do
   REQUEST_ID=$(grep -Fi Lambda-Runtime-Aws-Request-Id "$HEADERS" | tr -d '[:space:]' | cut -d: -f2)
 
   # Run the handler function from the script
-  RESPONSE=$($(echo "$_HANDLER" | cut -d. -f2) "$EVENT_DATA")
-  OUTPUT="{\"PhysicalResourceId\": \"myphysicalresource\"}"
+  REQUEST_TYPE=$(echo "$EVENT_DATA" | jq -r '.RequestType')
+  COMMAND=$(echo "$EVENT_DATA" | jq -r '.ResourceProperties.command')
+  OLD_COMMAND=""
+  if [ "$REQUEST_TYPE" == "Update" ]; then
+    OLD_COMMAND=$(echo "$EVENT_DATA" | jq -r '.OldResourceProperties.command')
+  fi
+  
+  RESPONSE=$($(echo "$_HANDLER" | cut -d. -f2) "$REQUEST_TYPE" "$COMMAND" "$OLD_COMMAND")
+
+  if [ "$REQUEST_TYPE" == "Create" ]; then
+    OUTPUT="{\"PhysicalResourceId\": \""$(echo $COMMAND | md5sum | cut -c-14)"\"}"
+  else
+    OUTPUT="{\"Status\": \"OK\"}"
+  fi
+  
+  echo "$OUTPUT" 1>&2; 
 
   # Send the response
   curl "http://${AWS_LAMBDA_RUNTIME_API}/2018-06-01/runtime/invocation/$REQUEST_ID/response"  -d "$OUTPUT"
