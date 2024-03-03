@@ -18,7 +18,7 @@ import { Construct } from 'constructs';
 import { mskCrudTlsProviderSetup } from './msk-helpers';
 import { clientAuthenticationSetup, getZookeeperConnectionString, monitoringSetup } from './msk-provisioned-cluster-setup';
 import { KafkaAclProp, MskProvisionedProps } from './msk-provisioned-props';
-import { KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
+import { AclResourceTypes, KafkaVersion, MskBrokerInstanceType } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -327,13 +327,7 @@ export class MskProvisioned extends TrackedConstruct {
     const cr = new CustomResource(scope, id, {
       serviceToken: this.mskAclProviderToken,
       properties: {
-        resourceType: aclDefinition.resourceType,
-        resourceName: aclDefinition.resourceName,
-        principal: aclDefinition.principal,
-        host: aclDefinition.host,
-        operation: aclDefinition.operation,
-        permissionType: aclDefinition.permissionType,
-        command: '',
+        command: this.getAclCliCommand(aclDefinition),
       },
       resourceType: 'Custom::MskAcl',
     });
@@ -429,4 +423,39 @@ export class MskProvisioned extends TrackedConstruct {
     console.log(aclsResources);
 
   }
+
+  private getAclCliCommand(aclDefinition:KafkaAclProp, isRemove:boolean=false):string {
+
+    const permission = aclDefinition.permissionType.toLowerCase();
+    //don't prompt for confirmation
+    let command='--force';
+    command = `${command} --${isRemove?'remove':'add'}`;
+
+    if (aclDefinition.principal) {
+      try {
+        if (['User', 'Group'].indexOf(aclDefinition.principal.split(':')[0])<0) {
+          throw new Error('Pincipal should follow PrincipalType:principalName format');
+        }
+      } catch (e) {
+        console.log(e);
+        throw (e as Error);
+      }
+      command = `${command} --${permission}-principal ${aclDefinition.principal}`;
+    }
+    //implicit * for omitted --(allow|deny)-host parameter
+    if (aclDefinition.host && aclDefinition.host!='*') {
+      command = `${command} --${permission}-host' ${aclDefinition.host}`;
+    }
+
+    command = `${command} --${aclDefinition.resourceType.toLowerCase()}`;
+    if (aclDefinition.resourceType !== AclResourceTypes.CLUSTER) {
+      command = `${command} '${aclDefinition.resourceName}'`;
+    }
+    if (aclDefinition.operation) {
+      command = `${command} --operation ${aclDefinition.operation}`;
+    }
+    console.log(command);
+    return command;
+  }
+
 }
