@@ -1,6 +1,6 @@
 FROM public.ecr.aws/lambda/provided:al2023
 
-RUN dnf install java-21-amazon-corretto-headless tar gzip -y
+RUN dnf install java-21-amazon-corretto-headless tar gzip jq -y
 RUN curl -L0 https://downloads.apache.org/kafka/3.7.0/kafka_2.13-3.7.0.tgz --output /var/task/kafka.tgz
 
 RUN tar -xvf kafka.tgz
