@@ -4,14 +4,26 @@ function handler () {
 
   echo "$EVENT_DATA" 1>&2;
 
-  echo "Zookeper connection string: $ZK_CONNECTION_STRING" 1>&2;
+  #echo "Zookeper connection string: $ZK_CONNECTION_STRING" 1>&2;
 
-  sh /var/task/kafka_2.13-3.7.0/bin/kafka-acls.sh --version 1>&2;
+  #using jq parse EVENT_DATA to get parameters
+  COMMAND=$(echo "$EVENT_DATA" | jq -r '.ResourceProperties.command') 
+  REQUEST_TYPE=$(echo "$EVENT_DATA" | jq -r '.RequestType')
 
-  sh /var/task/kafka_2.13-3.7.0/bin/kafka-acls.sh --authorizer-properties zookeeper.connect="$ZK_CONNECTION_STRING" --add --allow-principal User\:dummy --operation Write --topic testaclfail 1>&2;
+  echo "Command: $COMMAND" 1>&2;
+  echo "Command: $REQUEST_TYPE" 1>&2;
 
-  RESPONSE="{\"PhysicalResourceId\": \"myphysicalresource\"}"
+  COMMAND+=" --authorizer-properties zookeeper.connect=${ZK_CONNECTION_STRING} "
+  
+  if [ "$REQUEST_TYPE" != "Create" ]; then
+    COMMAND=$(echo $COMMAND | sed 's/ --add / --remove /')
+  fi
+  
+  echo "Command Updated: $COMMAND" 1>&2;
 
-  echo $RESPONSE
-
+  RESULT=$(sh /var/task/kafka_2.13-3.7.0/bin/kafka-acls.sh $COMMAND) 1>&2;
+  STATUS=$?
+  echo "Status: $STATUS" 1>&2;
+  echo "RESULT: $RESULT" 1>&2;
+  exit $STATUS;
 }
