@@ -132,6 +132,8 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       manageAdminPassword: true,
       logExports,
       indexParameterName,
+      finalSnapshotName: props.finalSnapshotName,
+      finalSnapshotRetentionPeriod: props.finalSnapshotRetentionPeriod,
     };
 
     const roleArns = Object.keys(this.roles);

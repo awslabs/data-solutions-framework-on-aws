@@ -71,4 +71,16 @@ export interface RedshiftServerlessNamespaceProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * If provided, final snapshot would be taken with the name provided.
+   * @default No final snapshot would be taken
+   */
+  readonly finalSnapshotName?: string;
+
+  /**
+   * The number of days the final snapshot would be retained. Must be between 1-3653 days.
+   * @default Indefinite final snapshot retention
+   */
+  readonly finalSnapshotRetentionPeriod?: number;
 }

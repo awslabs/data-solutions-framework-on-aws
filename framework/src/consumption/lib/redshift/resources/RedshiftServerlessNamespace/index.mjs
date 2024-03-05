@@ -118,7 +118,20 @@ export const handler = async(event) => {
   } else if (requestType === "Update") {
     return await handleUpdate(event)
   } else if (requestType === "Delete") {
-    await client.send(new DeleteNamespaceCommand({"namespaceName": resourceProperties["namespaceName"]}))
+    const deletePayload = {
+      "namespaceName": resourceProperties["namespaceName"]
+    }
+
+    if (resourceProperties["finalSnapshotName"]) {
+       deletePayload.finalSnapshotName = resourceProperties["finalSnapshotName"]
+
+       if (resourceProperties["finalSnapshotRetentionPeriod"]) {
+        deletePayload.finalSnapshotRetentionPeriod = parseInt(resourceProperties["finalSnapshotRetentionPeriod"])
+       }
+       
+    }
+
+    await client.send(new DeleteNamespaceCommand(deletePayload))
     
     return
   }
