@@ -67,4 +67,11 @@ export interface RedshiftDataProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * If this parameter is provided, the data access execution security group would be added to the interface VPC endpoint's security group.
+   * This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`
+   * @default - No security group ingress rule would be created.
+   */
+  readonly existingInterfaceVPCEndpointId?: string;
 }

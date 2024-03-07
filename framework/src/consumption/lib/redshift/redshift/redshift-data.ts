@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // import { createHash } from 'crypto';
-import { CustomResource, Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
-import { ISecurityGroup, InterfaceVpcEndpoint, InterfaceVpcEndpointAwsService, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { Effect, IManagedPolicy, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { CustomResource, Duration, Tags } from 'aws-cdk-lib';
+import { Effect, IManagedPolicy, IRole, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
+import { BaseRedshiftDataAccess, RedshiftDataAccessTargetProps } from './base-redshift-data-access';
 import { RedshiftDataProps } from './redshift-data-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../../utils';
+import { TrackedConstructProps } from '../../../../utils';
 import { DsfProvider } from '../../../../utils/lib/dsf-provider';
 
 /**
@@ -30,7 +30,7 @@ import { DsfProvider } from '../../../../utils/lib/dsf-provider';
  * const rsData = workgroup.accessData('DataApi');
  * rsData.createDbRole("EngineeringRole", "defaultdb", "engineering");
  */
-export class RedshiftData extends TrackedConstruct {
+export class RedshiftData extends BaseRedshiftDataAccess {
 
   /**
    * The CloudWatch Log Group for the Redshift Data API submission
@@ -68,124 +68,28 @@ export class RedshiftData extends TrackedConstruct {
   public readonly cleanUpRole?: IRole;
 
   /**
-   * The ARN of the target cluster or workgroup
-   */
-  public readonly targetArn: string;
-
-  /**
-   * The ID of the target cluster or workgroup
-   */
-  public readonly targetId: string;
-
-  /**
    * The managed IAM policy allowing IAM Role to retrieve tag information
    */
   public readonly taggingManagedPolicy: IManagedPolicy;
 
   /**
-   * The created Redshift Data API interface vpc endpoint when deployed in a VPC
+   * Contains normalized details of the target Redshift cluster/workgroup for data access
    */
-  public readonly vpcEndpoint?: InterfaceVpcEndpoint;
+  public readonly dataAccessTargetProps: RedshiftDataAccessTargetProps;
 
-  /**
-   * The Security Group used by the Custom Resource when deployed in a VPC
-   */
-  public readonly customResourceSecurityGroup?: ISecurityGroup;
-
-  /**
-   * The Security Group used by the VPC Endpoint when deployed in a VPC
-   */
-  public readonly vpcEndpointSecurityGroup?: ISecurityGroup;
-
-  private readonly removalPolicy: RemovalPolicy;
   private readonly serviceToken: string;
-
 
   constructor(scope: Construct, id: string, props: RedshiftDataProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: RedshiftData.name,
     };
 
-    super(scope, id, trackedConstructProps);
+    super(scope, id, props, trackedConstructProps);
 
-    const currentStack = Stack.of(this);
 
-    let targetArn: string|undefined;
-    let targetType: string|undefined;
-    let targetId: string|undefined;
-    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.dataAccessTargetProps = this.getDataAccessTarget(props);
 
-    if (props.clusterId) {
-      targetArn = `arn:aws:redshift:${currentStack.region}:${currentStack.account}:cluster:${props.clusterId}`;
-      targetType = 'provisioned';
-      targetId = props.clusterId;
-    } else if (props.workgroupId) {
-      targetArn = `arn:aws:redshift-serverless:${currentStack.region}:${currentStack.account}:workgroup/${props.workgroupId}`;
-      targetType = 'serverless';
-      targetId = props.workgroupId;
-    } else {
-      throw new Error('Either cluster identifier or workgroup id is required');
-    }
-
-    this.targetArn = targetArn;
-    this.targetId = targetId;
-
-    if (props.vpc && props.subnets) {
-      this.customResourceSecurityGroup = new SecurityGroup(this, 'CrSecurityGroup', {
-        vpc: props.vpc,
-      });
-
-      if (props.createInterfaceVpcEndpoint) {
-        this.vpcEndpointSecurityGroup = new SecurityGroup(this, 'InterfaceVpcEndpointSecurityGroup', {
-          vpc: props.vpc,
-        });
-
-        this.vpcEndpointSecurityGroup.addIngressRule(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(443));
-
-        this.vpcEndpoint = new InterfaceVpcEndpoint(this, 'InterfaceVpcEndpoint', {
-          vpc: props.vpc,
-          subnets: props.subnets,
-          service: InterfaceVpcEndpointAwsService.REDSHIFT_DATA,
-          securityGroups: [this.vpcEndpointSecurityGroup],
-        });
-
-        this.vpcEndpoint.connections.allowFrom(this.customResourceSecurityGroup, Port.tcp(443));
-      }
-    }
-
-    this.executionRole = new Role(this, 'ExecutionRole', {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
-      ],
-      inlinePolicies: {
-        RedshiftDataPermission: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                'redshift-data:BatchExecuteStatement',
-                'redshift-data:ExecuteStatement',
-              ],
-              resources: [
-                targetArn,
-              ],
-            }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                'redshift-data:DescribeStatement',
-                'redshift-data:CancelStatement',
-                'redshift-data:GetStatementResult',
-              ],
-              resources: ['*'],
-            }),
-          ],
-        }),
-      },
-    });
-    if (props.secretKey) props.secretKey.grantDecrypt(this.executionRole);
-    props.secret.grantRead(this.executionRole);
+    this.executionRole = this.createProviderExecutionRole('ExecutionRole', this.dataAccessTargetProps, props);
 
     const timeout = props.executionTimeout || Duration.minutes(5);
 
@@ -196,8 +100,8 @@ export class RedshiftData extends TrackedConstruct {
         entryFile: __dirname+'/../resources/RedshiftDataExecution/index.mjs',
         handler: 'index.onEventHandler',
         environment: {
-          TARGET_ARN: targetArn,
-          TARGET_TYPE: targetType,
+          TARGET_ARN: this.dataAccessTargetProps.targetArn,
+          TARGET_TYPE: this.dataAccessTargetProps.targetType,
           SECRET_NAME: props.secret.secretArn,
         },
         iamRole: this.executionRole,
@@ -210,9 +114,9 @@ export class RedshiftData extends TrackedConstruct {
         entryFile: __dirname+'/../resources/RedshiftDataExecution/index.mjs',
         timeout,
         environment: {
-          TARGET_ARN: targetArn,
-          TARGET_TYPE: targetType,
-          TARGET_ID: targetId,
+          TARGET_ARN: this.dataAccessTargetProps.targetArn,
+          TARGET_TYPE: this.dataAccessTargetProps.targetType,
+          TARGET_ID: this.dataAccessTargetProps.targetId,
           SECRET_NAME: props.secret.secretArn,
         },
       },

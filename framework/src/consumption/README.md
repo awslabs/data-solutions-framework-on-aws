@@ -62,6 +62,24 @@ The default value of the path that the crawler would use is `<databaseName>/publ
 
 [example catalog](./examples/redshift-serverless-workgroup-catalog.lit.ts)
 
+[//]: # (consumption.redshift-data-sharing)
+# Redshift Data Sharing
+
+The `RedshiftDataSharing` construct allows [Redshift data sharing](https://docs.aws.amazon.com/redshift/latest/dg/datashare-overview.html) management for both producers and consumers.
+
+## Overview
+
+The `RedshiftDataSharing` construct provides the following functionality:
+
+- Create a new data share
+- Grants access to the data share to another Redshift namespace or to another AWS account (provides auto data share authorization for cross-account grants)
+- Create a database from the data share (and for cross-account grants, auto association of the data share to the consumer's Redshift Namespace)
+
+## Usage
+
+[same account data shares](./examples/redshift-data-sharing-same-account.lit.ts)
+[cross account data shares](./examples/redshift-data-sharing-cross-account.lit.ts)
+
 [//]: # (consumption.athena-workgroup)
 # Athena Workgroup
 

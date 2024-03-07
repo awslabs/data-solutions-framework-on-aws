@@ -4,9 +4,27 @@
 import {RedshiftServerlessClient, CreateNamespaceCommand, UpdateNamespaceCommand, DeleteNamespaceCommand, GetNamespaceCommand} from "@aws-sdk/client-redshift-serverless"
 import { SSMClient, GetParameterCommand, PutParameterCommand, DeleteParameterCommand } from "@aws-sdk/client-ssm"
 
+const prepDeletePayload = (event) => {
+  const resourceProperties = event["ResourceProperties"]
+  const deletePayload = {
+    "namespaceName": resourceProperties["namespaceName"]
+  }
+
+  if (resourceProperties["finalSnapshotName"]) {
+    deletePayload.finalSnapshotName = resourceProperties["finalSnapshotName"]
+
+    if (resourceProperties["finalSnapshotRetentionPeriod"]) {
+      deletePayload.finalSnapshotRetentionPeriod = parseInt(resourceProperties["finalSnapshotRetentionPeriod"])
+    }
+    
+  }
+
+  return deletePayload
+}
+
 const handleUpdate = async(event) => {
+  const client = new RedshiftServerlessClient()
   if (event["RequestType"] === "Update") {
-    const client = new RedshiftServerlessClient()
     const ssmClient = new SSMClient()
     const resourceProperties = event["ResourceProperties"]
     const indexParameterName = resourceProperties["indexParameterName"]
@@ -69,6 +87,22 @@ const handleUpdate = async(event) => {
       }
     }
   } else {
+    if (event["RequestType"] === "Delete") {
+      const resourceProperties = event["ResourceProperties"]
+      const describeResp = await client.send(new GetNamespaceCommand({namespaceName: resourceProperties["namespaceName"]}))
+      const status = describeResp["namespace"]["status"]
+      if (status === "AVAILABLE") {
+        //continue to retry, because Namespace deletion sometimes fail because of in-flight requests that Redshift is waiting to complete
+        try {
+          await client.send(new DeleteNamespaceCommand(prepDeletePayload(event)))
+        } catch (e) {
+          return {
+            "IsComplete": false
+          }          
+        }
+      }
+    }
+
     return {
       "IsComplete": true
     }
@@ -118,21 +152,12 @@ export const handler = async(event) => {
   } else if (requestType === "Update") {
     return await handleUpdate(event)
   } else if (requestType === "Delete") {
-    const deletePayload = {
-      "namespaceName": resourceProperties["namespaceName"]
+    try {
+      await client.send(new DeleteNamespaceCommand(prepDeletePayload(event)))
+    } catch (e) {
+      console.log(`DeleteNamespace error: ${JSON.stringify(e)}`)
     }
 
-    if (resourceProperties["finalSnapshotName"]) {
-       deletePayload.finalSnapshotName = resourceProperties["finalSnapshotName"]
-
-       if (resourceProperties["finalSnapshotRetentionPeriod"]) {
-        deletePayload.finalSnapshotRetentionPeriod = parseInt(resourceProperties["finalSnapshotRetentionPeriod"])
-       }
-       
-    }
-
-    await client.send(new DeleteNamespaceCommand(deletePayload))
-    
     return
   }
 }
