@@ -11,6 +11,7 @@ import { RedshiftServerlessWorkgroupProps } from './redshift-serverless-workgrou
 import { DataCatalogDatabase } from '../../../../governance';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { RedshiftData } from '../redshift/redshift-data';
+import { RedshiftDataSharing } from '../redshift/redshift-data-sharing';
 
 
 /**
@@ -61,6 +62,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
 
   private readonly removalPolicy: RemovalPolicy;
   private redshiftData?: RedshiftData;
+  private redshiftDataSharing?: RedshiftDataSharing;
   private port: number;
 
 
@@ -169,9 +171,11 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
   /**
    * Creates an instance of `RedshiftData` to send custom SQLs to the workgroup
    * @param createVpcEndpoint if set to true, create interface VPC endpoint for Redshift Data API
+   * @param existingInterfaceVPCEndpointId if `createVpcEndpoint` is false, and if this is populated,
+   * then the Lambda function's security group would be added in the existing VPC endpoint's security group.
    * @returns `RedshiftData`
    */
-  public accessData(id: string, createVpcEndpoint?: boolean): RedshiftData {
+  public accessData(id: string, createVpcEndpoint?: boolean, existingInterfaceVPCEndpointId?: string): RedshiftData {
 
     if (!this.redshiftData) {
       this.redshiftData = new RedshiftData(this, id, {
@@ -181,6 +185,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
         vpc: this.vpc,
         subnets: this.selectedSubnets,
         createInterfaceVpcEndpoint: createVpcEndpoint,
+        existingInterfaceVPCEndpointId,
         removalPolicy: this.removalPolicy,
       });
 
@@ -188,6 +193,34 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
     }
 
     return this.redshiftData;
+  }
+
+  /**
+   * Creates an instance of `RedshiftDataSharing` to manage the workgroup's data sharing.
+   * @param createVpcEndpoint if set to true, create interface VPC endpoint for Redshift Data API
+   * @param existingInterfaceVPCEndpointId if `createVpcEndpoint` is false, and if this is populated,
+   * then the Lambda function's security group would be added in the existing VPC endpoint's security group.
+   * @returns `RedshiftDataSharing`
+   */
+  public dataSharing(id: string, createVpcEndpoint?: boolean, existingInterfaceVPCEndpointId?: string): RedshiftDataSharing {
+    if (!this.redshiftDataSharing) {
+      const dataAccess = this.accessData(`${id}-dataAccess`, createVpcEndpoint, existingInterfaceVPCEndpointId);
+      this.redshiftDataSharing = new RedshiftDataSharing(this, id, {
+        secret: this.namespace.adminSecret,
+        secretKey: this.namespace.adminSecretKey,
+        workgroupId: this.cfnResource.attrWorkgroupWorkgroupId,
+        vpc: this.vpc,
+        subnets: this.selectedSubnets,
+        createInterfaceVpcEndpoint: false,
+        removalPolicy: this.removalPolicy,
+        redshiftData: dataAccess,
+        existingInterfaceVPCEndpointId: dataAccess.vpcEndpoint?.vpcEndpointId,
+      });
+
+      this.redshiftDataSharing.node.addDependency(this.cfnResource);
+    }
+
+    return this.redshiftDataSharing;
   }
 
   /**
