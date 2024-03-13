@@ -202,21 +202,12 @@ export class OpenSearchCluster extends TrackedConstruct {
 
     const azCount = subnets?.subnets?.length || 1;
 
-    if (subnets) {
-      console.log(' vpc subnet length ' + subnets!.subnets!.length);
-      console.log('az count ' + azCount);
-    } else {
-      console.log('no vpc');
-      console.log('az count ' + azCount);
-    }
-
     let zoneAwareness;
     if (azCount === undefined || azCount === 1) {
       zoneAwareness = false;
     } else {
       zoneAwareness = true;
     }
-    console.log('zoneAwareness ' + zoneAwareness);
 
     const domainProps : DomainProps = {
       domainName: props.domainName,
