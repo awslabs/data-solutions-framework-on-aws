@@ -76,7 +76,7 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/Vpc',
   'Stack/Secret',
   'Stack/RedshiftData/CrProvider',
-  'Stack/RedshiftData/CustomResourceProvider',
+  'Stack/RedshiftData/CrProvider/CustomResourceProvider',
   'Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a',
   'Stack/SourceBucket',
 ], [

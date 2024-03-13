@@ -119,7 +119,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/CustomResourceProvider/framework-onTimeout',
+  'Stack/Provider/CustomResourceProvider/framework-onTimeout',
   [
     { id: 'AwsSolutions-L1', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
     { id: 'AwsSolutions-IAM5', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
@@ -130,7 +130,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CustomResourceProvider/framework-isComplete/Resource',
+  '/Stack/Provider/CustomResourceProvider/framework-isComplete/Resource',
   [
     { id: 'AwsSolutions-L1', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
     { id: 'AwsSolutions-IAM5', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
@@ -141,7 +141,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CustomResourceProvider/framework-onEvent/Resource',
+  '/Stack/Provider/CustomResourceProvider/framework-onEvent/Resource',
   [
     { id: 'AwsSolutions-L1', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
     { id: 'AwsSolutions-IAM5', reason: 'Framework lambda not configurable and provided by the CDK L2 construct for Custom resource provider' },
@@ -152,7 +152,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/CustomResourceProvider/waiter-state-machine',
+  'Stack/Provider/CustomResourceProvider/waiter-state-machine',
   [
     { id: 'AwsSolutions-IAM5', reason: 'State machine not configurable and provided by the CDK L2 construct for Custom resource provider' },
   ],

@@ -84,7 +84,7 @@ NagSuppressions.addResourceSuppressionsByPath(stack,
 NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/RedshiftWorkgroup/DataApi',
   'Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a',
-  'Stack/DefaultNamespace/CustomResourceProvider',
+  'Stack/DefaultNamespace/Provider/CustomResourceProvider',
   'Stack/Vpc/Resource',
 ],
 [
