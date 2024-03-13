@@ -247,7 +247,7 @@ NagSuppressions.addResourceSuppressionsByPath(
   emrEksClusterStack,
   [
     'nagStack/InteractiveSessionProvider/CustomResourceProvider/framework-isComplete',
-    'nagStack/InteractiveSessionProvider/CustomResourceProvider/framework-onTimeout'
+    'nagStack/InteractiveSessionProvider/CustomResourceProvider/framework-onTimeout',
   ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },

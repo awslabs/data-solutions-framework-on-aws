@@ -46,19 +46,19 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
   [{ id: 'AwsSolutions-IAM4', reason: 'Separately handled in SLR construct' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'Separately handled in SLR construct' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/CustomResourceProvider/framework-onEvent/Resource',
+  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/Resource',
   [{ id: 'AwsSolutions-L1', reason: 'Separately handled in SLR construct' }],
 );
 
@@ -124,7 +124,7 @@ NagSuppressions.addResourceSuppressionsByPath(
   stack, [
     '/Stack/OpenSearch/Provider/VpcPolicy/Resource',
     '/Stack/OpenSearch/Provider/CleanUpProvider',
-    '/Stack/OpenSearch/CustomResourceProvider/framework-onEvent',
+    '/Stack/OpenSearch/Provider/CustomResourceProvider/framework-onEvent',
   ],
   [
     { id: 'AwsSolutions-IAM5', reason: 'Resource is not part of the test scope' },
