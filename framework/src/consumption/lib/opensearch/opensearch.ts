@@ -259,7 +259,7 @@ export class OpenSearchCluster extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
       securityGroups: [clusterSg],
     } as DomainProps;
-    
+
     const domain = new Domain(this, 'Domain', domainProps as DomainProps);
 
     domain.addAccessPolicies(
