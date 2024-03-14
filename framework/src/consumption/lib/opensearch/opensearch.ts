@@ -217,7 +217,7 @@ export class OpenSearchCluster extends TrackedConstruct {
       capacity: {
         masterNodes: props.masterNodeInstanceCount ?? 0,
         masterNodeInstanceType: props.masterNodeInstanceType ?? OpenSearchNodes.MASTER_NODE_INSTANCE_DEFAULT,
-        dataNodes: props.dataNodeInstanceCount ?? (vpcSubnetsSelection?.subnets?.length || 1),
+        dataNodes: props.dataNodeInstanceCount ?? azCount,
         dataNodeInstanceType: props.dataNodeInstanceType ?? OpenSearchNodes.DATA_NODE_INSTANCE_DEFAULT,
         warmNodes: props.warmInstanceCount ?? 0,
         warmInstanceType: props.warmInstanceType ?? OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT,
@@ -261,6 +261,8 @@ export class OpenSearchCluster extends TrackedConstruct {
     } as DomainProps;
 
 
+    console.log(domainProps);
+    
     const domain = new Domain(this, 'Domain', domainProps as DomainProps);
 
     domain.addAccessPolicies(
