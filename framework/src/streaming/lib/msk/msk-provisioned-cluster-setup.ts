@@ -10,6 +10,7 @@ import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
 import { BrokerLogging, ClientAuthentication } from './msk-provisioned-props-utils';
+import { Utils } from '../../../utils';
 
 /**
  * @internal
@@ -18,7 +19,11 @@ import { BrokerLogging, ClientAuthentication } from './msk-provisioned-props-uti
  * @param brokerLoggingProps
  * @returns
  */
-export function monitoringSetup(scope: Construct, removalPolicy: RemovalPolicy, brokerLoggingProps?: BrokerLogging): CfnCluster.LoggingInfoProperty {
+export function monitoringSetup(
+  scope: Construct,
+  id: string,
+  removalPolicy: RemovalPolicy,
+  brokerLoggingProps?: BrokerLogging): CfnCluster.LoggingInfoProperty {
 
 
   const loggingBucket = brokerLoggingProps?.s3?.bucket;
@@ -81,9 +86,12 @@ export function monitoringSetup(scope: Construct, removalPolicy: RemovalPolicy, 
   if (brokerLoggingProps?.cloudwatchLogGroup == undefined &&
     brokerLoggingProps?.firehoseDeliveryStreamName == undefined &&
     brokerLoggingProps?.s3 == undefined) {
+
     brokerLogGroup = new LogGroup(scope, 'BrokerLogGroup', {
       removalPolicy: removalPolicy,
+      logGroupName: `/aws/vendedlogs/${Utils.generateUniqueHash(scope, id)}`,
     });
+
     createLogGroup = true;
   }
 
