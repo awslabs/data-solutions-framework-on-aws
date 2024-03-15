@@ -3911,10 +3911,12 @@ the ID of the CDK Construct.
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl">addAcl</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic">addTopic</a></code> | Creates a topic in the Msk Serverless. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient">addAclAdminClient</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic">addTopic</a></code> | Creates a topic in the Msk Cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration">setClusterConfiguration</a></code> | *No description.* |
 
 ---
 
@@ -3929,7 +3931,7 @@ Returns a string representation of this construct.
 ##### `addAcl` <a name="addAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl"></a>
 
 ```typescript
-public addAcl(scope: Construct, id: string, aclDefinition: KafkaAclProp): CustomResource
+public addAcl(scope: Construct, id: string, aclDefinition: Acl): CustomResource
 ```
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.scope"></a>
@@ -3946,7 +3948,31 @@ public addAcl(scope: Construct, id: string, aclDefinition: KafkaAclProp): Custom
 
 ###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.aclDefinition"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Acl
+
+---
+
+##### `addAclAdminClient` <a name="addAclAdminClient" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient"></a>
+
+```typescript
+public addAclAdminClient(scope: Construct, id: string, removalPolicy?: RemovalPolicy): void
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
@@ -3956,7 +3982,7 @@ public addAcl(scope: Construct, id: string, aclDefinition: KafkaAclProp): Custom
 public addTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
 ```
 
-Creates a topic in the Msk Serverless.
+Creates a topic in the Msk Cluster.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.scope"></a>
 
@@ -4061,6 +4087,36 @@ public retrieveVersion(): any
 ```
 
 Retrieve DSF package.json version.
+
+##### `setClusterConfiguration` <a name="setClusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration"></a>
+
+```typescript
+public setClusterConfiguration(scope: Construct, cluster: CfnCluster, configuration: CfnConfiguration, aclsResources: CustomResource[]): void
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.cluster"></a>
+
+- *Type:* aws-cdk-lib.aws_msk.CfnCluster
+
+---
+
+###### `configuration`<sup>Required</sup> <a name="configuration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.configuration"></a>
+
+- *Type:* aws-cdk-lib.aws_msk.CfnConfiguration
+
+---
+
+###### `aclsResources`<sup>Required</sup> <a name="aclsResources" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.aclsResources"></a>
+
+- *Type:* aws-cdk-lib.CustomResource[]
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -8838,6 +8894,150 @@ public readonly DSF_TRACKING_CODE: string;
 
 ## Structs <a name="Structs" id="Structs"></a>
 
+### Acl <a name="Acl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const acl: streaming.msk.Acl = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.host">host</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.operation">operation</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.permissionType">permissionType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.principal">principal</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.resourceName">resourceName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.resourcePatternType">resourcePatternType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.resourceType">resourceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes</code> | *No description.* |
+
+---
+
+##### `host`<sup>Required</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.host"></a>
+
+```typescript
+public readonly host: string;
+```
+
+- *Type:* string
+
+---
+
+##### `operation`<sup>Required</sup> <a name="operation" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.operation"></a>
+
+```typescript
+public readonly operation: AclOperationTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes
+
+---
+
+##### `permissionType`<sup>Required</sup> <a name="permissionType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.permissionType"></a>
+
+```typescript
+public readonly permissionType: AclPermissionTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes
+
+---
+
+##### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.principal"></a>
+
+```typescript
+public readonly principal: string;
+```
+
+- *Type:* string
+
+---
+
+##### `resourceName`<sup>Required</sup> <a name="resourceName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.resourceName"></a>
+
+```typescript
+public readonly resourceName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `resourcePatternType`<sup>Required</sup> <a name="resourcePatternType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.resourcePatternType"></a>
+
+```typescript
+public readonly resourcePatternType: ResourcePatternTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes
+
+---
+
+##### `resourceType`<sup>Required</sup> <a name="resourceType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.property.resourceType"></a>
+
+```typescript
+public readonly resourceType: AclResourceTypes;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes
+
+---
+
+### AclAdminProps <a name="AclAdminProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const aclAdminProps: streaming.msk.AclAdminProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.principal">principal</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.lambdaRoleName">lambdaRoleName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretArnCertificate">secretArnCertificate</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | *No description.* |
+
+---
+
+##### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.principal"></a>
+
+```typescript
+public readonly principal: string;
+```
+
+- *Type:* string
+
+---
+
+##### `lambdaRoleName`<sup>Optional</sup> <a name="lambdaRoleName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.lambdaRoleName"></a>
+
+```typescript
+public readonly lambdaRoleName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `secretArnCertificate`<sup>Optional</sup> <a name="secretArnCertificate" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretArnCertificate"></a>
+
+```typescript
+public readonly secretArnCertificate: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+---
+
 ### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps"></a>
 
 Properties for the `AnalyticsBucket` construct.
@@ -10676,89 +10876,6 @@ The tags assigned to the Virtual Cluster.
 
 ---
 
-### KafkaAclProp <a name="KafkaAclProp" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp"></a>
-
-#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.Initializer"></a>
-
-```typescript
-import { streaming } from '@cdklabs/aws-data-solutions-framework'
-
-const kafkaAclProp: streaming.msk.KafkaAclProp = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.operation">operation</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.permissionType">permissionType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceName">resourceName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceType">resourceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.host">host</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.principal">principal</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `operation`<sup>Required</sup> <a name="operation" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.operation"></a>
-
-```typescript
-public readonly operation: AclOperationTypes;
-```
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes
-
----
-
-##### `permissionType`<sup>Required</sup> <a name="permissionType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.permissionType"></a>
-
-```typescript
-public readonly permissionType: AclPermissionTypes;
-```
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes
-
----
-
-##### `resourceName`<sup>Required</sup> <a name="resourceName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceName"></a>
-
-```typescript
-public readonly resourceName: string;
-```
-
-- *Type:* string
-
----
-
-##### `resourceType`<sup>Required</sup> <a name="resourceType" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.resourceType"></a>
-
-```typescript
-public readonly resourceType: AclResourceTypes;
-```
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes
-
----
-
-##### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.host"></a>
-
-```typescript
-public readonly host: string;
-```
-
-- *Type:* string
-
----
-
-##### `principal`<sup>Optional</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaAclProp.property.principal"></a>
-
-```typescript
-public readonly principal: string;
-```
-
-- *Type:* string
-
----
-
 ### MonitoringConfiguration <a name="MonitoringConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration"></a>
 
 Monitoring Configuration.
@@ -10836,6 +10953,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
@@ -10850,6 +10968,16 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode</code> | This controls storage mode for supported storage tiers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | Defines the virtual networking environment for this cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Where to place the nodes within the VPC. |
+
+---
+
+##### `certificateDefinition`<sup>Required</sup> <a name="certificateDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition"></a>
+
+```typescript
+public readonly certificateDefinition: AclAdminProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps
 
 ---
 
@@ -14595,6 +14723,8 @@ public readonly instance: InstanceType;
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_8XLARGE">KAFKA_M5_8XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.8xlarge. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_LARGE">KAFKA_M5_LARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.large. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_XLARGE">KAFKA_M5_XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_LARGE">KAFKA_M7G_LARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.large. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_XLARGE">KAFKA_M7G_XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.xlarge. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_T3_SMALL">KAFKA_T3_SMALL</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.t3.small. |
 
 ---
@@ -14692,6 +14822,30 @@ public readonly KAFKA_M5_XLARGE: MskBrokerInstanceType;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
 
 Borker instance type kafka.m5.xlarge.
+
+---
+
+##### `KAFKA_M7G_LARGE`<sup>Required</sup> <a name="KAFKA_M7G_LARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_LARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_LARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.large.
+
+---
+
+##### `KAFKA_M7G_XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.xlarge.
 
 ---
 
@@ -14928,6 +15082,8 @@ the string to convert to PascalCase.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.UNKNOWN">UNKNOWN</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ANY">ANY</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALL">ALL</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.READ">READ</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.WRITE">WRITE</a></code> | *No description.* |
@@ -14936,10 +15092,21 @@ the string to convert to PascalCase.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER">ALTER</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DESCRIBE">DESCRIBE</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.CLUSTER_ACTION">CLUSTER_ACTION</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DESCRIBE_CONFIGS">DESCRIBE_CONFIGS</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER_CONFIGS">ALTER_CONFIGS</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.IDEMPOTENT_WRITE">IDEMPOTENT_WRITE</a></code> | *No description.* |
 
 ---
+
+##### `UNKNOWN` <a name="UNKNOWN" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.UNKNOWN"></a>
+
+---
+
+
+##### `ANY` <a name="ANY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ANY"></a>
+
+---
+
 
 ##### `ALL` <a name="ALL" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALL"></a>
 
@@ -14981,6 +15148,11 @@ the string to convert to PascalCase.
 ---
 
 
+##### `DESCRIBE_CONFIGS` <a name="DESCRIBE_CONFIGS" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.DESCRIBE_CONFIGS"></a>
+
+---
+
+
 ##### `ALTER_CONFIGS` <a name="ALTER_CONFIGS" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclOperationTypes.ALTER_CONFIGS"></a>
 
 ---
@@ -14997,11 +15169,17 @@ the string to convert to PascalCase.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.UNKNOWN">UNKNOWN</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ANY">ANY</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.DENY">DENY</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ALLOW">ALLOW</a></code> | *No description.* |
 
 ---
+
+##### `UNKNOWN` <a name="UNKNOWN" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.UNKNOWN"></a>
+
+---
+
 
 ##### `ANY` <a name="ANY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclPermissionTypes.ANY"></a>
 
@@ -15024,13 +15202,20 @@ the string to convert to PascalCase.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.UNKNOWN">UNKNOWN</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.ANY">ANY</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TOPIC">TOPIC</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.GROUP">GROUP</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.CLUSTER">CLUSTER</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TRANSACTIONAL_ID">TRANSACTIONAL_ID</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.DELEGATION_TOKEN">DELEGATION_TOKEN</a></code> | *No description.* |
 
 ---
+
+##### `UNKNOWN` <a name="UNKNOWN" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.UNKNOWN"></a>
+
+---
+
 
 ##### `ANY` <a name="ANY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.ANY"></a>
 
@@ -15053,6 +15238,11 @@ the string to convert to PascalCase.
 
 
 ##### `TRANSACTIONAL_ID` <a name="TRANSACTIONAL_ID" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.TRANSACTIONAL_ID"></a>
+
+---
+
+
+##### `DELEGATION_TOKEN` <a name="DELEGATION_TOKEN" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclResourceTypes.DELEGATION_TOKEN"></a>
 
 ---
 
@@ -15494,6 +15684,45 @@ Namespace log export types.
 
 
 ##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
+
+---
+
+
+### ResourcePatternTypes <a name="ResourcePatternTypes" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.UNKNOWN">UNKNOWN</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.ANY">ANY</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.MATCH">MATCH</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.LITERAL">LITERAL</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.PREFIXED">PREFIXED</a></code> | *No description.* |
+
+---
+
+##### `UNKNOWN` <a name="UNKNOWN" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.UNKNOWN"></a>
+
+---
+
+
+##### `ANY` <a name="ANY" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.ANY"></a>
+
+---
+
+
+##### `MATCH` <a name="MATCH" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.MATCH"></a>
+
+---
+
+
+##### `LITERAL` <a name="LITERAL" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.LITERAL"></a>
+
+---
+
+
+##### `PREFIXED` <a name="PREFIXED" id="@cdklabs/aws-data-solutions-framework.streaming.msk.ResourcePatternTypes.PREFIXED"></a>
 
 ---
 

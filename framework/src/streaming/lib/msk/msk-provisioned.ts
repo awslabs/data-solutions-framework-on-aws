@@ -18,7 +18,7 @@ import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cl
 import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
 
-  //AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
+  AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
 
   KafkaVersion, MskBrokerInstanceType,
 
@@ -155,7 +155,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     let clientAuthentication = clientAuthenticationSetup(props.clientAuthentication);
 
-    let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, this.removalPolicy, props.logging);
+    let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
 
     //check the number of broker vs the number of AZs, it needs to be multiple
     this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? 3;
@@ -269,17 +269,17 @@ export class MskProvisioned extends TrackedConstruct {
     //Update cluster configuration as a last step before handing the cluster to customer.
 
     // Create the configuration
-    //let clusterConfiguration: CfnConfiguration =
-      MskProvisioned.createCLusterConfiguration(
-        this, 'DsfclusterConfig',
-        'dsfconfig',
-        join(__dirname, './resources/cluster-config-msk-provisioned'),
-        [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
+    let clusterConfiguration: CfnConfiguration =
+    MskProvisioned.createCLusterConfiguration(
+      this, 'DsfclusterConfig',
+      'dsfconfig',
+      join(__dirname, './resources/cluster-config-msk-provisioned'),
+      [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
 
-    //const crAcls: CustomResource [] = 
+    const crAcls: CustomResource [] =
     this.setAcls (props);
 
-    //this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
+    this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
 
   }
 
@@ -392,7 +392,7 @@ export class MskProvisioned extends TrackedConstruct {
   public grantConsume(topicName: string, principal: IPrincipal) {
 
     console.log(topicName);
-    console.log(principal); 
+    console.log(principal);
 
   }
 
@@ -401,27 +401,27 @@ export class MskProvisioned extends TrackedConstruct {
     let aclsResources: CustomResource[] = [];
     console.log(props.clusterName);
 
-    // aclsResources.push(
-    //   this.addAcl(this, 'acl1', {
-    //     resourceType: AclResourceTypes.CLUSTER,
-    //     resourceName: 'kafka-cluster',
-    //     resourcePatternType: ResourcePatternTypes.LITERAL,
-    //     principal: props.certificateDefinition.principal, 
-    //     host: '*',
-    //     operation: AclOperationTypes.ALTER,
-    //     permissionType: AclPermissionTypes.ALLOW,
-    //   }));
+    aclsResources.push(
+      this.addAcl(this, 'acl1', {
+        resourceType: AclResourceTypes.CLUSTER,
+        resourceName: 'kafka-cluster',
+        resourcePatternType: ResourcePatternTypes.LITERAL,
+        principal: props.certificateDefinition.principal,
+        host: '*',
+        operation: AclOperationTypes.ALTER,
+        permissionType: AclPermissionTypes.ALLOW,
+      }));
 
-    //   aclsResources.push(
-    //     this.addAcl(this, 'acl2', {
-    //       resourceType: AclResourceTypes.CLUSTER,
-    //       resourceName: 'kafka-cluster',
-    //       resourcePatternType: ResourcePatternTypes.LITERAL,
-    //       principal: 'REPLACE-WITH-BOOTSTRAP',
-    //       host: '*',
-    //       operation: AclOperationTypes.CLUSTER_ACTION,
-    //       permissionType: AclPermissionTypes.ALLOW,
-    //     }));
+    aclsResources.push(
+      this.addAcl(this, 'acl2', {
+        resourceType: AclResourceTypes.CLUSTER,
+        resourceName: 'kafka-cluster',
+        resourcePatternType: ResourcePatternTypes.LITERAL,
+        principal: 'REPLACE-WITH-BOOTSTRAP',
+        host: '*',
+        operation: AclOperationTypes.CLUSTER_ACTION,
+        permissionType: AclPermissionTypes.ALLOW,
+      }));
 
     return aclsResources;
 
