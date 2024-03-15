@@ -176,7 +176,7 @@ export class DsfProvider extends Construct {
       }
     }
 
-    const customResourceProvider = new Provider (scope, 'CustomResourceProvider', {
+    const customResourceProvider = new Provider (this, 'CustomResourceProvider', {
       onEventHandler: this.onEventHandlerFunction,
       isCompleteHandler: this.isCompleteHandlerFunction ?? undefined,
       queryInterval: props.queryInterval,

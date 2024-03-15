@@ -62,7 +62,7 @@ describe('With default configuration, the construct ', () => {
         },
         Principal: 'lambda.amazonaws.com',
         Action: 'lambda:InvokeFunction',
-        SourceArn: { 'Fn::GetAtt': ['CustomResourceProviderframeworkonEvent0AA4376C', 'Arn'] },
+        SourceArn: { 'Fn::GetAtt': [Match.stringLikeRegexp('ProviderCustomResourceProviderframeworkonEvent.*'), 'Arn'] },
       }),
     );
   });

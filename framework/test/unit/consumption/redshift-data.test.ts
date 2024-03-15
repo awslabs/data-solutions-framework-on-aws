@@ -184,7 +184,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'create schema testschema',
@@ -196,7 +196,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'grant usage on schema test to role testrole',
@@ -209,7 +209,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'create role testrole',
@@ -222,7 +222,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'grant select on all tables in schema testschema to role testrole',
@@ -235,7 +235,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'grant all on all tables in schema testschema to role testrole',
@@ -248,7 +248,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: {
@@ -270,7 +270,7 @@ describe('With default configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'merge into testtargettable using testsourcetable on testtargettable.id=testsourcetable.id remove duplicates',
@@ -462,7 +462,7 @@ describe('With custom configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'create schema testschema',
@@ -475,7 +475,7 @@ describe('With custom configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: {
@@ -504,7 +504,7 @@ describe('With custom configuration, the construct ', () => {
     template.hasResourceProperties('Custom::RedshiftDataSql', {
       ServiceToken: {
         'Fn::GetAtt': Match.arrayWith([
-          Match.stringLikeRegexp('RedshiftDataCustomResourceProviderframeworkonEvent.*'),
+          Match.stringLikeRegexp('RedshiftDataCrProviderCustomResourceProviderframeworkonEvent.*'),
         ]),
       },
       sql: 'merge into testtargettable using testsourcetable on testtargettable.test_target_column=testsourcetable.test_source_column remove duplicates',

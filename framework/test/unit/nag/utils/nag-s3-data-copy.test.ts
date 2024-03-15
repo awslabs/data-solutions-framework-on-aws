@@ -55,7 +55,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  'Stack/S3DataCopy/CustomResourceProvider/framework-onEvent',
+  'Stack/S3DataCopy/Provider/CustomResourceProvider/framework-onEvent',
   [
     { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
     { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },

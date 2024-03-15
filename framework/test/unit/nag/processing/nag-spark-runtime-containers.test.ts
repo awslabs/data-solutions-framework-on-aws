@@ -204,7 +204,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   emrEksClusterStack,
-  'nagStack/CustomResourceProvider/framework-onEvent/Resource',
+  'nagStack/InteractiveSessionProvider/CustomResourceProvider/framework-onEvent/Resource',
   [
     { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
     { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
@@ -245,7 +245,10 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   emrEksClusterStack,
-  'nagStack/CustomResourceProvider/framework-isComplete',
+  [
+    'nagStack/InteractiveSessionProvider/CustomResourceProvider/framework-isComplete',
+    'nagStack/InteractiveSessionProvider/CustomResourceProvider/framework-onTimeout',
+  ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
     { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
@@ -256,17 +259,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   emrEksClusterStack,
-  'nagStack/CustomResourceProvider/framework-onTimeout',
-  [
-    { id: 'AwsSolutions-IAM4', reason: 'Custom Resource provider from the CDK framework' },
-    { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
-    { id: 'AwsSolutions-L1', reason: 'Custom Resource provider from the CDK framework' },
-  ],
-  true,
-);
-NagSuppressions.addResourceSuppressionsByPath(
-  emrEksClusterStack,
-  'nagStack/CustomResourceProvider/waiter-state-machine',
+  'nagStack/InteractiveSessionProvider/CustomResourceProvider/waiter-state-machine',
   [
     { id: 'AwsSolutions-IAM5', reason: 'Custom Resource provider from the CDK framework' },
   ],
