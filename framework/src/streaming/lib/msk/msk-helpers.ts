@@ -162,7 +162,7 @@ export function mskAclAdminProviderSetup(
           afterBundling: (inputDir: string, outputDir: string): string[] => [
             `cp ${inputDir}/caCert.pem ${outputDir}/caCert.pem`,
             `cp ${inputDir}/client-certificate.pem ${outputDir}/client-certificate.pem`,
-            `cp ${inputDir}/client-private.pem ${outputDir}/client-private.pem`
+            `cp ${inputDir}/client-private.pem ${outputDir}/client-private.pem`,
           ],
           beforeBundling: (): string[] => [],
           beforeInstall: (): string[] => [],
