@@ -3910,13 +3910,12 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl">addAcl</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient">addAclAdminClient</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic">addTopic</a></code> | Creates a topic in the Msk Cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl">setAcl</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration">setClusterConfiguration</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
 
 ---
 
@@ -3927,110 +3926,6 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
-
-##### `addAcl` <a name="addAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl"></a>
-
-```typescript
-public addAcl(scope: Construct, id: string, aclDefinition: Acl): CustomResource
-```
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.id"></a>
-
-- *Type:* string
-
----
-
-###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAcl.parameter.aclDefinition"></a>
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Acl
-
----
-
-##### `addAclAdminClient` <a name="addAclAdminClient" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient"></a>
-
-```typescript
-public addAclAdminClient(scope: Construct, id: string, removalPolicy?: RemovalPolicy): void
-```
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient.parameter.id"></a>
-
-- *Type:* string
-
----
-
-###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addAclAdminClient.parameter.removalPolicy"></a>
-
-- *Type:* aws-cdk-lib.RemovalPolicy
-
----
-
-##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic"></a>
-
-```typescript
-public addTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
-```
-
-Creates a topic in the Msk Cluster.
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
-the scope of the stack where Topic will be created.
-
----
-
-###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.id"></a>
-
-- *Type:* string
-
-the CDK id for Topic.
-
----
-
-###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.topicDefinition"></a>
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic[]
-
-the Kafka topic definition.
-
----
-
-###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.removalPolicy"></a>
-
-- *Type:* aws-cdk-lib.RemovalPolicy
-
-Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
-
----
-
-###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.waitForLeaders"></a>
-
-- *Type:* boolean
-
-If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
-
----
-
-###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.addTopic.parameter.timeout"></a>
-
-- *Type:* number
-
-The time in ms to wait for a topic to be completely created on the controller node.
-
----
 
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
 
@@ -4088,6 +3983,30 @@ public retrieveVersion(): any
 
 Retrieve DSF package.json version.
 
+##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl"></a>
+
+```typescript
+public setAcl(scope: Construct, id: string, aclDefinition: Acl): CustomResource
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.aclDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Acl
+
+---
+
 ##### `setClusterConfiguration` <a name="setClusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration"></a>
 
 ```typescript
@@ -4115,6 +4034,62 @@ public setClusterConfiguration(scope: Construct, cluster: CfnCluster, configurat
 ###### `aclsResources`<sup>Required</sup> <a name="aclsResources" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.aclsResources"></a>
 
 - *Type:* aws-cdk-lib.CustomResource[]
+
+---
+
+##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic"></a>
+
+```typescript
+public setTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+```
+
+Creates a topic in the Msk Cluster.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the stack where Topic will be created.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.topicDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic[]
+
+the Kafka topic definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.waitForLeaders"></a>
+
+- *Type:* boolean
+
+If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+
+---
+
+###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.timeout"></a>
+
+- *Type:* number
+
+The time in ms to wait for a topic to be completely created on the controller node.
 
 ---
 
@@ -9002,36 +8977,36 @@ const aclAdminProps: streaming.msk.AclAdminProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.principal">principal</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.lambdaRoleName">lambdaRoleName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretArnCertificate">secretArnCertificate</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.aclAdminPrincipal">aclAdminPrincipal</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.adminPrincipal">adminPrincipal</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretCertificate">secretCertificate</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | *No description.* |
 
 ---
 
-##### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.principal"></a>
+##### `aclAdminPrincipal`<sup>Required</sup> <a name="aclAdminPrincipal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.aclAdminPrincipal"></a>
 
 ```typescript
-public readonly principal: string;
+public readonly aclAdminPrincipal: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `lambdaRoleName`<sup>Optional</sup> <a name="lambdaRoleName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.lambdaRoleName"></a>
+##### `adminPrincipal`<sup>Required</sup> <a name="adminPrincipal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.adminPrincipal"></a>
 
 ```typescript
-public readonly lambdaRoleName: string;
+public readonly adminPrincipal: string;
 ```
 
 - *Type:* string
 
 ---
 
-##### `secretArnCertificate`<sup>Optional</sup> <a name="secretArnCertificate" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretArnCertificate"></a>
+##### `secretCertificate`<sup>Required</sup> <a name="secretCertificate" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretCertificate"></a>
 
 ```typescript
-public readonly secretArnCertificate: ISecret;
+public readonly secretCertificate: ISecret;
 ```
 
 - *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
@@ -10956,6 +10931,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.allowEveryoneIfNoAclFound">allowEveryoneIfNoAclFound</a></code> | <code>boolean</code> | if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
@@ -11002,6 +10978,19 @@ public readonly kafkaVersion: KafkaVersion;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
 
 The version of Apache Kafka.
+
+---
+
+##### `allowEveryoneIfNoAclFound`<sup>Optional</sup> <a name="allowEveryoneIfNoAclFound" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.allowEveryoneIfNoAclFound"></a>
+
+```typescript
+public readonly allowEveryoneIfNoAclFound: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster.
 
 ---
 

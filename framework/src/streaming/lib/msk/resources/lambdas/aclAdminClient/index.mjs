@@ -16,11 +16,16 @@ export const onEventHandler = async (event) => {
 
     console.log(event);
 
+    const logLevelProp = event.ResourceProperties.logLevel == 'DEBUG' ? logLevel.DEBUG : logLevel.INFO;
+
+    console.log(event.ResourceProperties.logLevel);
+    console.log(logLevelProp);
+
     const clientSecretManager = new SecretsManagerClient();
 
     const responseSecretManager = await clientSecretManager.send(
         new GetSecretValueCommand({
-            SecretId: event.ResourceProperties.secretName,
+            SecretId: event.ResourceProperties.secretArn,
         }),
     );
 
@@ -50,8 +55,7 @@ export const onEventHandler = async (event) => {
             key: readFileSync('client-private.pem', 'utf-8'),
             cert: readFileSync('client-certificate.pem', 'utf-8')
         },
-        logLevel: logLevel.DEBUG,
-
+        logLevel: logLevelProp,
     });
 
     const admin = kafka.admin();
