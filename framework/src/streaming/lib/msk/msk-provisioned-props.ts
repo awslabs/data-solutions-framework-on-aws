@@ -125,13 +125,34 @@ export interface MskProvisionedProps {
   readonly removalPolicy?: RemovalPolicy;
 
   readonly certificateDefinition: AclAdminProps;
+
+
+  /**
+   * if set the to true the following Kafka configuration
+   * `allow.everyone.if.no.acl.found` is set to true.
+   * When no Cluster Configuration is passed
+   * The construct create a cluster configuration
+   * and set the following configuration to false and apply it to the cluster
+   * @default false
+  */
+  readonly allowEveryoneIfNoAclFound?: boolean;
+
+  /**
+   * @default INFO
+   */
+  readonly kafkaClientLogLevel?: KafkaClientLogLevel;
+
 }
 
+export enum KafkaClientLogLevel {
+    DEBUG =  'DEBUG',
+    INFO = 'INFO',
+}
 
 export interface AclAdminProps {
-  readonly principal: string;
-  readonly secretArnCertificate?: ISecret;
-  readonly lambdaRoleName?: string;
+  readonly adminPrincipal: string;
+  readonly aclAdminPrincipal: string;
+  readonly secretCertificate: ISecret;
 }
 
 export interface Acl {
