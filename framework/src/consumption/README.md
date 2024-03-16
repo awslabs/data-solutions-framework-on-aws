@@ -45,7 +45,7 @@ A [Redshift Serverless Workgroup](https://docs.aws.amazon.com/redshift/latest/mg
 
 The `RedshiftData` construct allows custom SQLs to run against the `RedshiftServerlessWorkgroup` via the Data API. This allows users to bootstrap Redshift directly from CDK.
 
-The `RedshitData` construct provides the following helpers for bootstrapping Redshift databases:
+The `RedshiftData` construct provides the following helpers for bootstrapping Redshift databases:
 - Run a custom SQL command
 - Create Redshift roles
 - Grant Redshift roles full access to schemas
