@@ -6,25 +6,29 @@ import { join } from 'path';
 
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Connections, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Connections, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { Effect, IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
+import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { mskAclAdminProviderSetup } from './msk-helpers';
 import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cluster-setup';
-import { Acl, MskProvisionedProps } from './msk-provisioned-props';
+import { Acl, KafkaClientLogLevel, MskProvisionedProps } from './msk-provisioned-props';
 import {
 
+  ClusterConfigurationInfo,
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
 
-  KafkaVersion, MskBrokerInstanceType,
+  KafkaVersion, MskBrokerInstanceType, //ClusterConfigurationInfo,
 
 } from './msk-provisioned-props-utils';
-import { MskTopic } from './msk-serverless-props';
+//import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { MskTopic } from './msk-serverless-props';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -71,6 +75,8 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly subnetSelectionIds: string[];
   private readonly connections: Connections;
   private readonly numberOfBrokerNodes: number;
+  private readonly tlsCertifacateSecret: ISecret;
+  private readonly kafkaClientLogLevel: string;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -86,8 +92,10 @@ export class MskProvisioned extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    this.account = Stack.of(scope).account;
-    this.region = Stack.of(scope).region;
+    this.account = Stack.of(this).account;
+    this.region = Stack.of(this).region;
+    this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
+    this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
 
     console.log(this.account + this.region);
 
@@ -187,7 +195,6 @@ export class MskProvisioned extends TrackedConstruct {
           clientBroker: 'TLS',
         },
       },
-      configurationInfo: props.configurationInfo,
       enhancedMonitoring: props.monitoring?.clusterMonitoringLevel,
       openMonitoring: openMonitoring,
       storageMode: props.storageMode,
@@ -202,7 +209,16 @@ export class MskProvisioned extends TrackedConstruct {
     //To an indepenedent one
     //https://docs.aws.amazon.com/msk/latest/developerguide/zookeeper-security.html
 
-    //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
+    //The policy allowing to get zookeeper connection string
+    //List the ENIs associated to the zookeeper
+    //and get the security group associated to them
+    //And change the zookeeper security group
+
+    let zooKeeperSecurityGroup: SecurityGroup = new SecurityGroup(this, 'ZookeeperSecurityGroup', {
+      allowAllOutbound: false,
+      vpc: this.vpc,
+    });
+    
     const lambdaPolicy = [
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
@@ -211,30 +227,59 @@ export class MskProvisioned extends TrackedConstruct {
         ],
       }),
       new PolicyStatement({
-        actions: ['ec2:*'],
+        actions: ['ec2:DescribeNetworkInterfaces'],
         resources: ['*'],
+        conditions: {
+          "StringEquals": {
+            "ec2:Region": [
+              Stack.of(this).region
+            ]
+          }
+        }
+      }),
+      new PolicyStatement({
+        actions: ['ec2:ModifyNetworkInterfaceAttribute'],
+        resources: ['*'],
+        conditions: {
+          "StringEquals": {
+            "ec2:Region": [
+              Stack.of(this).region,
+            ]
+          },
+          "ArnEquals": {
+            "ec2:Vpc": this.vpc.vpcArn,
+          }
+        }
       }),
     ];
 
     //Attach policy to IAM Role
-    const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
+    const lambdaExecutionRolePolicy = new ManagedPolicy(this, 'ZookeeperUpdateLambdaExecutionRolePolicy', {
       statements: lambdaPolicy,
       description: 'Policy for modifying security group for MSK zookeeper',
     });
 
+    const zookeeperLambdaSecurityGroup = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
+      vpc: this.vpc,
+      allowAllOutbound: true,
+    });
 
-    //TO be scoped down
-    let lambdaRole: Role = new Role(scope, 'LambdaExecutionRole', {
-      managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')],
+    const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions (
+      zookeeperLambdaSecurityGroup, 
+      this.subnetSelectionIds,
+      'vpcPolicyLambdaUpdateZookeeperSg');
+
+    //To be scoped down
+    let lambdaRole: Role = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
 
     lambdaRole.addManagedPolicy(lambdaExecutionRolePolicy);
+    lambdaRole.addManagedPolicy(vpcPolicyLambda);
 
-    let zooKeeperSecurityGroup: SecurityGroup = new SecurityGroup(this, 'ZookeeperSecurityGroup', {
-      allowAllOutbound: false,
-      vpc: this.vpc,
-    });
+    let zookeeperUpdateLambdaLog = this.createLogGroup('zookeeperLambdaLogGroup');
+
+    zookeeperUpdateLambdaLog.grantWrite(lambdaRole);
 
     const func = new Function(this, 'UpdateZookeeperSg', {
       handler: 'index.onEventHandler',
@@ -247,7 +292,11 @@ export class MskProvisioned extends TrackedConstruct {
         SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
       },
       role: lambdaRole,
-      timeout: Duration.seconds(20),
+      timeout: Duration.seconds(30),
+      vpc: this.vpc,
+      vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+      logGroup: zookeeperUpdateLambdaLog,
+      securityGroups: [zookeeperLambdaSecurityGroup],
     });
 
     new Trigger(this, 'UpdateZookeeperSgTrigger', {
@@ -257,7 +306,8 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.mskProvisionedCluster],
     });
 
-    //CR place holder for applying ACLs
+    //Configure the CR for applying ACLs
+    //CR will also handle topic creation
     this.mskAclAdminProviderToken = mskAclAdminProviderSetup(
       this,
       this.removalPolicy,
@@ -267,19 +317,38 @@ export class MskProvisioned extends TrackedConstruct {
     ).serviceToken;
 
     //Update cluster configuration as a last step before handing the cluster to customer.
-
     // Create the configuration
-    let clusterConfiguration: CfnConfiguration =
-    MskProvisioned.createCLusterConfiguration(
-      this, 'DsfclusterConfig',
-      'dsfconfig',
-      join(__dirname, './resources/cluster-config-msk-provisioned'),
-      [KafkaVersion.V2_8_0, KafkaVersion.V2_8_1]);
 
-    const crAcls: CustomResource [] =
-    this.setAcls (props);
 
-    this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfiguration, crAcls);
+    let clusterConfigurationInfo: ClusterConfigurationInfo;
+
+    if (!props.configurationInfo) {
+
+      let clusterConfiguration: CfnConfiguration =
+      MskProvisioned.createCLusterConfiguration(
+        this, 'DsfclusterConfig',
+        'dsfconfig',
+        join(__dirname, './resources/cluster-config-msk-provisioned'),
+        [props.kafkaVersion],
+      );
+
+      clusterConfigurationInfo = {
+        arn: clusterConfiguration.attrArn,
+        revision: clusterConfiguration.attrLatestRevisionRevision
+      };
+
+    } else {
+      clusterConfigurationInfo = props.configurationInfo;
+    }
+
+    if (!props.allowEveryoneIfNoAclFound) {
+
+      const crAcls: CustomResource [] =
+      this.setAcls (props);
+
+      this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
+    }
+
 
   }
 
@@ -287,7 +356,7 @@ export class MskProvisioned extends TrackedConstruct {
   //ACL operations through cli are defined here
   // https://jaceklaskowski.gitbooks.io/apache-kafka/content/kafka-admin-AclCommand.html
   // https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Authorization+Command+Line+Interface
-  public addAcl(
+  public setAcl(
     scope: Construct,
     id: string,
     aclDefinition: Acl,
@@ -296,7 +365,8 @@ export class MskProvisioned extends TrackedConstruct {
     const cr = new CustomResource(scope, id, {
       serviceToken: this.mskAclAdminProviderToken,
       properties: {
-        secretName: 'dsf/mskCert',
+        logLevel: this.kafkaClientLogLevel,
+        secretArn: this.tlsCertifacateSecret.secretArn,
         region: Stack.of(scope).region,
         mskClusterArn: this.mskProvisionedCluster.attrArn,
         resourceType: aclDefinition.resourceType,
@@ -326,7 +396,7 @@ export class MskProvisioned extends TrackedConstruct {
      * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
      */
 
-  public addTopic(
+  public setTopic(
     scope: Construct,
     id: string,
     topicDefinition: MskTopic[],
@@ -345,25 +415,6 @@ export class MskProvisioned extends TrackedConstruct {
         mskClusterArn: this.mskProvisionedCluster,
       },
       resourceType: 'Custom::MskTopic',
-      removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
-    });
-
-    cr.node.addDependency(this.mskProvisionedCluster);
-  }
-
-  public addAclAdminClient(
-    scope: Construct,
-    id: string,
-    removalPolicy?: RemovalPolicy) {
-
-    // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
-    const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskAclAdminProviderToken,
-      properties: {
-        region: Stack.of(scope).region,
-        mskClusterArn: this.mskProvisionedCluster.attrArn,
-      },
-      resourceType: 'Custom::MskAdminAcl',
       removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
     });
 
@@ -402,18 +453,19 @@ export class MskProvisioned extends TrackedConstruct {
     console.log(props.clusterName);
 
     aclsResources.push(
-      this.addAcl(this, 'acl1', {
+      this.setAcl(this, 'aclOperation', {
         resourceType: AclResourceTypes.CLUSTER,
         resourceName: 'kafka-cluster',
         resourcePatternType: ResourcePatternTypes.LITERAL,
-        principal: props.certificateDefinition.principal,
+        principal: props.certificateDefinition.aclAdminPrincipal,
         host: '*',
         operation: AclOperationTypes.ALTER,
         permissionType: AclPermissionTypes.ALLOW,
-      }));
+      },
+      ));
 
     aclsResources.push(
-      this.addAcl(this, 'acl2', {
+      this.setAcl(this, 'aclBroker', {
         resourceType: AclResourceTypes.CLUSTER,
         resourceName: 'kafka-cluster',
         resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -421,61 +473,148 @@ export class MskProvisioned extends TrackedConstruct {
         host: '*',
         operation: AclOperationTypes.CLUSTER_ACTION,
         permissionType: AclPermissionTypes.ALLOW,
-      }));
+      },
+      ));
 
     return aclsResources;
 
   }
 
-  public setClusterConfiguration (scope: Construct, cluster: CfnCluster, configuration: CfnConfiguration
+  private setClusterConfiguration (scope: Construct, cluster: CfnCluster, configuration: ClusterConfigurationInfo
     , aclsResources: CustomResource []) {
     //Need to add trigger after set ACl is finalized
     //console.log(aclsResources);
 
+    const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(this, 'setClusterConfigurationLambdaSecurityGroup', {
+      vpc: this.vpc,
+      allowAllOutbound: true,
+    });
+
+    const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions(
+      setClusterConfigurationLambdaSecurityGroup, 
+      this.subnetSelectionIds, 
+      'vpcPolicyLambdaSetClusterConfiguration');
+
     const lambdaPolicy = [
       new PolicyStatement({
-        actions: ['kafka:*'],
+        actions: ['kafka:DescribeCluster'],
         resources: [
           cluster.attrArn,
-          configuration.attrArn,
         ],
       }),
+      new PolicyStatement({
+        actions: ['kafka:DescribeConfiguration'],
+        resources: [
+          configuration.arn,
+        ],
+      }),
+      new PolicyStatement({
+        actions: ['kafka:UpdateConfiguration'],
+        resources: [
+          configuration.arn,
+          cluster.attrArn,
+        ],
+      })
     ];
 
     //Attach policy to IAM Role
-    const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicyUpdateConfiguration', {
+    const lambdaExecutionRolePolicy = new ManagedPolicy(this, 'LambdaExecutionRolePolicyUpdateConfiguration', {
       statements: lambdaPolicy,
-      description: 'Policy for modifying security group for MSK zookeeper',
+      description: 'Policy for Updating configuration of MSK cluster',
     });
+
+    const lambdaCloudwatchLogUpdateConfiguration = this.createLogGroup('LambdaCloudwatchLogUpdateConfiguration');
 
 
     //TO be scoped down
-    let lambdaRole: Role = new Role(scope, 'LambdaExecutionRoleUpdateConfiguration', {
-      managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')],
+    let lambdaRole: Role = new Role(this, 'LambdaExecutionRoleUpdateConfiguration', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
 
+    lambdaRole.addManagedPolicy(vpcPolicyLambda);
     lambdaRole.addManagedPolicy(lambdaExecutionRolePolicy);
+    lambdaCloudwatchLogUpdateConfiguration.grantWrite(lambdaRole);
 
     const func = new Function(this, 'updateConfiguration', {
       handler: 'index.onEventHandler',
       code: Code.fromAsset(join(__dirname, './resources/lambdas/updateConfiguration')),
       runtime: Runtime.NODEJS_20_X,
       environment: {
-        MSK_CONFIGURATION_ARN: configuration.attrArn,
+        MSK_CONFIGURATION_ARN: configuration.arn,
         MSK_CLUSTER_ARN: cluster.attrArn,
       },
       role: lambdaRole,
       timeout: Duration.seconds(20),
+      logGroup: lambdaCloudwatchLogUpdateConfiguration,
+      vpc: this.vpc,
+      vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+      securityGroups: [setClusterConfigurationLambdaSecurityGroup],
     });
 
     new Trigger(this, 'UpdateMskConfiguration', {
       handler: func,
       timeout: Duration.minutes(10),
       invocationType: InvocationType.REQUEST_RESPONSE,
-      executeAfter: [configuration, ...aclsResources],
+      executeAfter: [...aclsResources],
     });
 
+  }
+
+  private getVpcPermissions(securityGroup: SecurityGroup, subnets: string[], id: string): ManagedPolicy {
+
+    const securityGroupArn = `arn:aws:ec2:${this.region}:${this.account}:security-group/${securityGroup.securityGroupId}`;
+    const subnetArns = subnets.map(s => `arn:aws:ec2:${this.region}:${this.account}:subnet/${s}`);
+
+    const lambdaVpcPolicy = new ManagedPolicy(this, id, {
+      statements: [
+        new PolicyStatement({
+          actions: [
+            'ec2:DescribeNetworkInterfaces',
+          ],
+          effect: Effect.ALLOW,
+          resources: ['*'],
+          conditions: {
+            StringEquals: {
+              'aws:RequestedRegion': this.region,
+            },
+          },
+        }),
+        new PolicyStatement({
+          actions: [
+            'ec2:DeleteNetworkInterface',
+            'ec2:AssignPrivateIpAddresses',
+            'ec2:UnassignPrivateIpAddresses',
+          ],
+          effect: Effect.ALLOW,
+          resources: ['*'],
+          conditions: {
+            StringEqualsIfExists: {
+              'ec2:Subnet': subnetArns,
+            },
+          },
+        }),
+        new PolicyStatement({
+          actions: [
+            'ec2:CreateNetworkInterface',
+          ],
+          effect: Effect.ALLOW,
+          resources: [
+            `arn:aws:ec2:${this.region}:${this.account}:network-interface/*`,
+          ].concat(subnetArns, securityGroupArn),
+        }),
+      ],
+    });
+    return lambdaVpcPolicy;
+  }
+
+  private createLogGroup(id: string) : ILogGroup {
+
+    const logGroup: LogGroup = new LogGroup (this, id, {
+      retention: RetentionDays.ONE_WEEK,
+      removalPolicy: this.removalPolicy,
+    });
+
+    return logGroup;
   }
 
 }

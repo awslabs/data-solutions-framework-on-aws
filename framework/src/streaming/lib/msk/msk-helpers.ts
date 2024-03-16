@@ -160,7 +160,6 @@ export function mskAclAdminProviderSetup(
       bundling: {
         commandHooks: {
           afterBundling: (inputDir: string, outputDir: string): string[] => [
-            `cp ${inputDir}/caCert.pem ${outputDir}/caCert.pem`,
             `cp ${inputDir}/client-certificate.pem ${outputDir}/client-certificate.pem`,
             `cp ${inputDir}/client-private.pem ${outputDir}/client-private.pem`,
           ],
