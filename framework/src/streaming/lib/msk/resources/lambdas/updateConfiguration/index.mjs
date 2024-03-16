@@ -22,7 +22,6 @@ export const onEventHandler = async (event) => {
 
   const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
 
-
   const inputConfiguration = { // DescribeConfigurationRequest
     Arn: process.env.MSK_CONFIGURATION_ARN, // required
   };
