@@ -1,0 +1,56 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/streaming)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+This section is for MSK Serverless
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const msk = new MskServerless(stack, 'cluster', {
+  clusterName: 'dev-demo',
+  clientAuthentication: {
+    sasl: {
+      iam: {
+        enabled: true,
+      },
+    },
+  },
+  vpcConfigs: [
+    {
+      subnetIds: vpc.vpc.privateSubnets.map((s: ISubnet) => s.subnetId),
+      securityGroups: [vpc.vpc.vpcDefaultSecurityGroup],
+    },
+  ],
+  vpc: vpc.vpc,
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+msk = MskServerless(stack, "cluster",
+    cluster_name="dev-demo",
+    client_authentication=cdk.aws_msk.CfnServerlessCluster.ClientAuthenticationProperty(
+        sasl=cdk.aws_msk.CfnServerlessCluster.SaslProperty(
+            iam=cdk.aws_msk.CfnServerlessCluster.IamProperty(
+                enabled=True
+            )
+        )
+    ),
+    vpc_configs=[cdk.aws_msk.CfnServerlessCluster.VpcConfigProperty(
+        subnet_ids=vpc.vpc.private_subnets.map((s: ISubnet) => s.subnetId),
+        security_groups=[vpc.vpc.vpc_default_security_group]
+    )
+    ],
+    vpc=vpc.vpc
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
