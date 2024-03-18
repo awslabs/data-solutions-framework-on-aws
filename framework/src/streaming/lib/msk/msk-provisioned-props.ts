@@ -145,8 +145,8 @@ export interface MskProvisionedProps {
 }
 
 export enum KafkaClientLogLevel {
-    DEBUG =  'DEBUG',
-    INFO = 'INFO',
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
 }
 
 export interface AclAdminProps {
