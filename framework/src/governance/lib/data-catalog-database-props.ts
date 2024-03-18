@@ -7,6 +7,7 @@ import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
+import { PermissionModel } from '../../utils';
 
 /**
  * Properties for the `DataCatalogDatabase` construct
@@ -87,4 +88,10 @@ export interface DataCatalogDatabaseProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * The permission model to apply to the Glue Database.
+   * @default - IAM permission model is used
+   */
+  readonly permissionModel?: PermissionModel;
 }

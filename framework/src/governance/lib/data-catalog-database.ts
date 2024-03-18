@@ -5,9 +5,11 @@ import { Stack } from 'aws-cdk-lib';
 import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
 import { AddToPrincipalPolicyResult, Effect, IPrincipal, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { CfnDataLakeSettings, CfnResource } from 'aws-cdk-lib/aws-lakeformation';
 import { Construct } from 'constructs';
 import { DataCatalogDatabaseProps } from './data-catalog-database-props';
-import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
+import { makeCdkLfAdmin } from './lake-formation-helpers';
+import { Context, PermissionModel, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -48,6 +50,18 @@ export class DataCatalogDatabase extends TrackedConstruct {
    */
   readonly crawlerLogEncryptionKey?: IKey;
   /**
+   * The DataLakeSettings for Lake Formation
+   */
+  readonly dataLakeSettings?: CfnDataLakeSettings;
+  /**
+   * The IAM Role used by Lake Formation to access data.
+   */
+  readonly lfDataAccessRole?: IRole;
+  /**
+   * The Lake Formation data lake location
+   */
+  readonly dataLakeLocation?: CfnResource;
+  /**
    * Caching constructor properties for internal reuse by constructor methods
    */
   private dataCatalogDatabaseProps: DataCatalogDatabaseProps;
@@ -80,6 +94,29 @@ export class DataCatalogDatabase extends TrackedConstruct {
       }
 
       s3LocationUri = props.locationBucket!.s3UrlForObject(locationPrefix);
+
+      if (props.permissionModel === PermissionModel.LAKE_FORMATION) {
+        this.dataLakeSettings = makeCdkLfAdmin(this, 'CdkAdmin');
+
+        // register location
+        if (props.locationBucket) {
+          // create the IAM role for LF data access
+          this.lfDataAccessRole = new Role(this, 'LfDataAccessRole', {
+            assumedBy: new ServicePrincipal('lakeformation.amazonaws.com'),
+          });
+
+          props.locationBucket.grantReadWrite(this.lfDataAccessRole, locationPrefix);
+          props.locationBucket.encryptionKey?.grantEncryptDecrypt(this.lfDataAccessRole);
+
+          this.dataLakeLocation = new CfnResource(this, 'DataLakeLocation', {
+            useServiceLinkedRole: false,
+            roleArn: this.lfDataAccessRole.roleArn,
+            resourceArn: props.locationBucket?.arnForObjects(props.locationPrefix || ''),
+          });
+          // remove IAMAllowedPrincipal
+
+        }
+      }
     }
 
     this.database = new CfnDatabase(this, 'GlueDatabase', {
