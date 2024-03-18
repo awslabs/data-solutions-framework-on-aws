@@ -6,6 +6,7 @@ import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -113,13 +114,19 @@ export function mskAclAdminProviderSetup(
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
   mskCluster: CfnCluster,
-  lambdaSecurityGroup: ISecurityGroup) : DsfProvider {
+  brokerSecurityGroup: ISecurityGroup,
+  secret: ISecret) : DsfProvider {
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskAclAdminCr', {
     vpc,
   });
 
-  lambdaSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
+
+  brokerSecurityGroup.addIngressRule(
+    lambdaProviderSecurityGroup,
+    Port.allTcp(),
+    'Allow lambda to access MSK cluster',
+    true);
 
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
   const lambdaPolicy = [
@@ -136,9 +143,9 @@ export function mskAclAdminProviderSetup(
       ],
     }),
     new PolicyStatement({
-      actions: ['secretsmanager:*'],
+      actions: ['secretsmanager:GetSecretValue'],
       resources: [
-        '*',
+        secret.secretFullArn!,
       ],
     }),
   ];
@@ -158,14 +165,6 @@ export function mskAclAdminProviderSetup(
       entryFile: path.join(__dirname, './resources/lambdas/aclAdminClient/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
-        commandHooks: {
-          afterBundling: (inputDir: string, outputDir: string): string[] => [
-            `cp ${inputDir}/client-certificate.pem ${outputDir}/client-certificate.pem`,
-            `cp ${inputDir}/client-private.pem ${outputDir}/client-private.pem`,
-          ],
-          beforeBundling: (): string[] => [],
-          beforeInstall: (): string[] => [],
-        },
         nodeModules: [
           'kafkajs',
         ],
