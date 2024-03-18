@@ -45,6 +45,9 @@ export const onEventHandler = async (event) => {
     console.log(response);
     const brokerUrls = response.BootstrapBrokerStringTls.split(',');
 
+    console.log(readFileSync('client-private.pem', 'utf-8'));
+    console.log(readFileSync('client-certificate.pem', 'utf-8'));
+
     let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
 
     const kafka = new Kafka({
@@ -168,10 +171,12 @@ export const onEventHandler = async (event) => {
 
                 console.log(kafkaResponse);
 
+                let errorCode = kafkaResponse.filterResponses[0].errorCode;
+
                 await admin.disconnect();
                 return {
                     "Data": {
-                        "kafkaResponse": kafkaResponse
+                        "kafkaResponse": errorCode == 0 ? true : false, 
                     }
                 };
             }

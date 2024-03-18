@@ -3914,7 +3914,6 @@ the ID of the CDK Construct.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl">setAcl</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration">setClusterConfiguration</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
 
 ---
@@ -4004,36 +4003,6 @@ public setAcl(scope: Construct, id: string, aclDefinition: Acl): CustomResource
 ###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.aclDefinition"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Acl
-
----
-
-##### `setClusterConfiguration` <a name="setClusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration"></a>
-
-```typescript
-public setClusterConfiguration(scope: Construct, cluster: CfnCluster, configuration: CfnConfiguration, aclsResources: CustomResource[]): void
-```
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
----
-
-###### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.cluster"></a>
-
-- *Type:* aws-cdk-lib.aws_msk.CfnCluster
-
----
-
-###### `configuration`<sup>Required</sup> <a name="configuration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.configuration"></a>
-
-- *Type:* aws-cdk-lib.aws_msk.CfnConfiguration
-
----
-
-###### `aclsResources`<sup>Required</sup> <a name="aclsResources" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setClusterConfiguration.parameter.aclsResources"></a>
-
-- *Type:* aws-cdk-lib.CustomResource[]
 
 ---
 
@@ -10935,6 +10904,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration</code> | Cluster monitoring configuration. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.mskBrokerinstanceType">mskBrokerinstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
@@ -11032,6 +11002,17 @@ public readonly ebsStorageInfo: EbsStorageInfo;
 - *Default:* 100 GiB EBS volume
 
 Information about storage volumes attached to MSK broker nodes.
+
+---
+
+##### `kafkaClientLogLevel`<sup>Optional</sup> <a name="kafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaClientLogLevel"></a>
+
+```typescript
+public readonly kafkaClientLogLevel: KafkaClientLogLevel;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel
+- *Default:* INFO
 
 ---
 
@@ -15598,6 +15579,27 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 
 ##### `PYSPARK_V3` <a name="PYSPARK_V3" id="@cdklabs/aws-data-solutions-framework.consumption.EngineVersion.PYSPARK_V3"></a>
+
+---
+
+
+### KafkaClientLogLevel <a name="KafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel.DEBUG">DEBUG</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel.INFO">INFO</a></code> | *No description.* |
+
+---
+
+##### `DEBUG` <a name="DEBUG" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel.DEBUG"></a>
+
+---
+
+
+##### `INFO` <a name="INFO" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel.INFO"></a>
 
 ---
 

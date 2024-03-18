@@ -9,6 +9,7 @@ import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Connections, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -19,16 +20,14 @@ import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cl
 import { Acl, KafkaClientLogLevel, MskProvisionedProps } from './msk-provisioned-props';
 import {
 
-  ClusterConfigurationInfo,
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
 
-  KafkaVersion, MskBrokerInstanceType, //ClusterConfigurationInfo,
+  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo,
 
 } from './msk-provisioned-props-utils';
 //import { MskTopic } from './msk-serverless-props';
-import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { MskTopic } from './msk-serverless-props';
-import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -218,7 +217,7 @@ export class MskProvisioned extends TrackedConstruct {
       allowAllOutbound: false,
       vpc: this.vpc,
     });
-    
+
     const lambdaPolicy = [
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
@@ -230,26 +229,26 @@ export class MskProvisioned extends TrackedConstruct {
         actions: ['ec2:DescribeNetworkInterfaces'],
         resources: ['*'],
         conditions: {
-          "StringEquals": {
-            "ec2:Region": [
-              Stack.of(this).region
-            ]
-          }
-        }
+          StringEquals: {
+            'ec2:Region': [
+              Stack.of(this).region,
+            ],
+          },
+        },
       }),
       new PolicyStatement({
         actions: ['ec2:ModifyNetworkInterfaceAttribute'],
         resources: ['*'],
         conditions: {
-          "StringEquals": {
-            "ec2:Region": [
+          StringEquals: {
+            'ec2:Region': [
               Stack.of(this).region,
-            ]
+            ],
           },
-          "ArnEquals": {
-            "ec2:Vpc": this.vpc.vpcArn,
-          }
-        }
+          ArnEquals: {
+            'ec2:Vpc': this.vpc.vpcArn,
+          },
+        },
       }),
     ];
 
@@ -265,11 +264,10 @@ export class MskProvisioned extends TrackedConstruct {
     });
 
     const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions (
-      zookeeperLambdaSecurityGroup, 
+      zookeeperLambdaSecurityGroup,
       this.subnetSelectionIds,
       'vpcPolicyLambdaUpdateZookeeperSg');
 
-    //To be scoped down
     let lambdaRole: Role = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
@@ -334,10 +332,11 @@ export class MskProvisioned extends TrackedConstruct {
 
       clusterConfigurationInfo = {
         arn: clusterConfiguration.attrArn,
-        revision: clusterConfiguration.attrLatestRevisionRevision
+        revision: clusterConfiguration.attrLatestRevisionRevision,
       };
 
     } else {
+
       clusterConfigurationInfo = props.configurationInfo;
     }
 
@@ -346,9 +345,8 @@ export class MskProvisioned extends TrackedConstruct {
       const crAcls: CustomResource [] =
       this.setAcls (props);
 
-      this.setClusterConfiguration(this, this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
+      this.setClusterConfiguration(this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
     }
-
 
   }
 
@@ -452,38 +450,41 @@ export class MskProvisioned extends TrackedConstruct {
     let aclsResources: CustomResource[] = [];
     console.log(props.clusterName);
 
-    aclsResources.push(
-      this.setAcl(this, 'aclOperation', {
-        resourceType: AclResourceTypes.CLUSTER,
-        resourceName: 'kafka-cluster',
-        resourcePatternType: ResourcePatternTypes.LITERAL,
-        principal: props.certificateDefinition.aclAdminPrincipal,
-        host: '*',
-        operation: AclOperationTypes.ALTER,
-        permissionType: AclPermissionTypes.ALLOW,
-      },
-      ));
+    let aclOperation = this.setAcl(this, 'aclOperation', {
+      resourceType: AclResourceTypes.CLUSTER,
+      resourceName: 'kafka-cluster',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.aclAdminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.ALTER,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
 
-    aclsResources.push(
-      this.setAcl(this, 'aclBroker', {
-        resourceType: AclResourceTypes.CLUSTER,
-        resourceName: 'kafka-cluster',
-        resourcePatternType: ResourcePatternTypes.LITERAL,
-        principal: 'REPLACE-WITH-BOOTSTRAP',
-        host: '*',
-        operation: AclOperationTypes.CLUSTER_ACTION,
-        permissionType: AclPermissionTypes.ALLOW,
-      },
-      ));
+    let aclBroker = this.setAcl(this, 'aclBroker', {
+      resourceType: AclResourceTypes.CLUSTER,
+      resourceName: 'kafka-cluster',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: 'REPLACE-WITH-BOOTSTRAP',
+      host: '*',
+      operation: AclOperationTypes.CLUSTER_ACTION,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
+
+    aclBroker.node.addDependency(aclOperation);
+
+    aclsResources.push(aclBroker);
+    aclsResources.push(aclOperation);
 
     return aclsResources;
 
   }
 
-  private setClusterConfiguration (scope: Construct, cluster: CfnCluster, configuration: ClusterConfigurationInfo
-    , aclsResources: CustomResource []) {
-    //Need to add trigger after set ACl is finalized
-    //console.log(aclsResources);
+  private setClusterConfiguration (
+    cluster: CfnCluster,
+    configuration: ClusterConfigurationInfo,
+    aclsResources: CustomResource []) {
 
     const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(this, 'setClusterConfigurationLambdaSecurityGroup', {
       vpc: this.vpc,
@@ -491,8 +492,8 @@ export class MskProvisioned extends TrackedConstruct {
     });
 
     const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions(
-      setClusterConfigurationLambdaSecurityGroup, 
-      this.subnetSelectionIds, 
+      setClusterConfigurationLambdaSecurityGroup,
+      this.subnetSelectionIds,
       'vpcPolicyLambdaSetClusterConfiguration');
 
     const lambdaPolicy = [
@@ -509,12 +510,12 @@ export class MskProvisioned extends TrackedConstruct {
         ],
       }),
       new PolicyStatement({
-        actions: ['kafka:UpdateConfiguration'],
+        actions: ['kafka:UpdateClusterConfiguration'],
         resources: [
           configuration.arn,
           cluster.attrArn,
         ],
-      })
+      }),
     ];
 
     //Attach policy to IAM Role
