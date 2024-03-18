@@ -18,9 +18,6 @@ export const onEventHandler = async (event) => {
 
     const logLevelProp = event.ResourceProperties.logLevel == 'DEBUG' ? logLevel.DEBUG : logLevel.INFO;
 
-    console.log(event.ResourceProperties.logLevel);
-    console.log(logLevelProp);
-
     const clientSecretManager = new SecretsManagerClient();
 
     const responseSecretManager = await clientSecretManager.send(
@@ -28,11 +25,32 @@ export const onEventHandler = async (event) => {
             SecretId: event.ResourceProperties.secretArn,
         }),
     );
-
+    
     const secret = JSON.parse(responseSecretManager.SecretString);
+    
 
-    console.log(secret.key);
-    console.log(secret.cert);
+    //Cleaning the private key and cert and put them in PEM format
+    //This is to avoid having malformed certificate and keys passed by the user
+    //Error can be like "error:0480006C:PEM routines::no start line"
+    
+    let cleanedString = removeSpacesAndNewlines(secret.cert);
+    
+    const regexCert = /(?<=BEGINCERTIFICATE-----)(.*?)(?=-----ENDCERTIFICATE-----)/gs;
+    const matchCert = cleanedString.match(regexCert);
+    
+    cleanedString = matchCert[0].trim(); // Trim any leading/trailing spaces
+    const pemCertificate = formatToPEM(cleanedString, '-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----');
+
+    let cleanedStringKey = removeSpacesAndNewlines(secret.key);
+    
+    const regexKey = /(?<=BEGINRSAPRIVATEKEY-----)(.*?)(?=-----ENDRSAPRIVATEKEY-----)/gs;
+    const matchKey = cleanedStringKey.match(regexKey);
+
+    cleanedString = matchKey[0].trim(); // Trim any leading/trailing spaces
+    const privateKey = formatToPEM(cleanedString, '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----');
+
+
+    //console.log(JSON.parse(responseSecretManager.SecretString).cert);
 
     const client = new KafkaClient();
     const input = {
@@ -45,9 +63,6 @@ export const onEventHandler = async (event) => {
     console.log(response);
     const brokerUrls = response.BootstrapBrokerStringTls.split(',');
 
-    console.log(readFileSync('client-private.pem', 'utf-8'));
-    console.log(readFileSync('client-certificate.pem', 'utf-8'));
-
     let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
 
     const kafka = new Kafka({
@@ -55,8 +70,8 @@ export const onEventHandler = async (event) => {
         brokers: brokerUrls,
         ssl: {
             rejectUnauthorized: true,
-            key: readFileSync('client-private.pem', 'utf-8'),
-            cert: readFileSync('client-certificate.pem', 'utf-8')
+            key: privateKey,
+            cert: pemCertificate
         },
         logLevel: logLevelProp,
     });
@@ -147,8 +162,6 @@ export const onEventHandler = async (event) => {
                 throw new Error(`Error deleting ACL: ${event.ResourceProperties}. Error ${error}`);
             }
 
-
-
         case 'Delete':
 
             try {
@@ -189,6 +202,25 @@ export const onEventHandler = async (event) => {
         default:
             throw new Error(`invalid request type: ${event.RequestType}`);
     }
+}
+
+
+function formatToPEM(certData, begin, end) {
+    
+    const maxLength = 64;
+
+    let pemCert = begin + '\n';
+    for (let i = 0; i < certData.length; i += maxLength) {
+        pemCert += certData.substring(i, i + maxLength) + '\n';
+    }
+    pemCert += end;
+
+    return pemCert;
+}
+
+function removeSpacesAndNewlines(inputString) {
+    // Using regular expressions to remove spaces and newline characters
+    return inputString.replace(/[\s\n]/g, '');
 }
 
 

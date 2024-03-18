@@ -45,7 +45,7 @@ export class MskProvisioned extends TrackedConstruct {
     serverPropertiesFilePath: string,
     kafkaVersions: KafkaVersion[],
     configurationDescription?: string,
-    latestRevision?: CfnConfiguration.LatestRevisionProperty) : CfnConfiguration {
+    latestRevision?: CfnConfiguration.LatestRevisionProperty): CfnConfiguration {
 
     let versions: string[] = [];
 
@@ -66,7 +66,7 @@ export class MskProvisioned extends TrackedConstruct {
   public readonly mskProvisionedCluster: CfnCluster;
 
   private readonly removalPolicy: RemovalPolicy;
-  private readonly mskAclAdminProviderToken: string;
+  private readonly mskAclAdminProviderToken?: string;
   private readonly account: string;
   private readonly region: string;
   private readonly mskBrokerinstanceType: MskBrokerInstanceType;
@@ -76,6 +76,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly numberOfBrokerNodes: number;
   private readonly tlsCertifacateSecret: ISecret;
   private readonly kafkaClientLogLevel: string;
+  private readonly inClusterAcl: boolean;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -160,7 +161,10 @@ export class MskProvisioned extends TrackedConstruct {
         }
         : undefined;
 
-    let clientAuthentication = clientAuthenticationSetup(props.clientAuthentication);
+    this.inClusterAcl = false;
+    let clientAuthentication: CfnCluster.ClientAuthenticationProperty;
+
+    [clientAuthentication, this.inClusterAcl] = clientAuthenticationSetup(props.clientAuthentication);
 
     let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
 
@@ -263,7 +267,7 @@ export class MskProvisioned extends TrackedConstruct {
       allowAllOutbound: true,
     });
 
-    const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions (
+    const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions(
       zookeeperLambdaSecurityGroup,
       this.subnetSelectionIds,
       'vpcPolicyLambdaUpdateZookeeperSg');
@@ -304,48 +308,53 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.mskProvisionedCluster],
     });
 
-    //Configure the CR for applying ACLs
-    //CR will also handle topic creation
-    this.mskAclAdminProviderToken = mskAclAdminProviderSetup(
-      this,
-      this.removalPolicy,
-      this.vpc,
-      this.mskProvisionedCluster,
-      this.connections.securityGroups[0],
-    ).serviceToken;
+    if (clientAuthentication.tls) {
+      //Configure the CR for applying ACLs
+      //CR will also handle topic creation
+      this.mskAclAdminProviderToken = mskAclAdminProviderSetup(
+        this,
+        this.removalPolicy,
+        this.vpc,
+        this.mskProvisionedCluster,
+        this.connections.securityGroups[0],
+        props.certificateDefinition.secretCertificate,
+      ).serviceToken;
 
-    //Update cluster configuration as a last step before handing the cluster to customer.
-    // Create the configuration
+      //Update cluster configuration as a last step before handing the cluster to customer.
+      // Create the configuration
 
 
-    let clusterConfigurationInfo: ClusterConfigurationInfo;
+      let clusterConfigurationInfo: ClusterConfigurationInfo;
 
-    if (!props.configurationInfo) {
+      if (!props.configurationInfo) {
 
-      let clusterConfiguration: CfnConfiguration =
-      MskProvisioned.createCLusterConfiguration(
-        this, 'DsfclusterConfig',
-        'dsfconfig',
-        join(__dirname, './resources/cluster-config-msk-provisioned'),
-        [props.kafkaVersion],
-      );
+        let clusterConfiguration: CfnConfiguration =
+          MskProvisioned.createCLusterConfiguration(
+            this, 'ClusterConfigDsf',
+            'dsfconfiguration',
+            join(__dirname, './resources/cluster-config-msk-provisioned'),
+            [props.kafkaVersion],
+          );
 
-      clusterConfigurationInfo = {
-        arn: clusterConfiguration.attrArn,
-        revision: clusterConfiguration.attrLatestRevisionRevision,
-      };
+        this.mskProvisionedCluster.node.addDependency(clusterConfiguration);
 
-    } else {
+        clusterConfigurationInfo = {
+          arn: clusterConfiguration.attrArn,
+          revision: clusterConfiguration.attrLatestRevisionRevision,
+        };
 
-      clusterConfigurationInfo = props.configurationInfo;
-    }
+      } else {
 
-    if (!props.allowEveryoneIfNoAclFound) {
+        clusterConfigurationInfo = props.configurationInfo;
+      }
 
-      const crAcls: CustomResource [] =
-      this.setAcls (props);
+      if (!props.allowEveryoneIfNoAclFound) {
 
-      this.setClusterConfiguration(this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
+        const crAcls: CustomResource[] =
+          this.setAcls(props);
+
+        this.setClusterConfiguration(this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
+      }
     }
 
   }
@@ -360,8 +369,12 @@ export class MskProvisioned extends TrackedConstruct {
     aclDefinition: Acl,
   ): CustomResource {
 
+    if (!this.inClusterAcl) {
+      throw Error('Setting ACLs is only supported with TLS and SASL/SCRAM');
+    }
+
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskAclAdminProviderToken,
+      serviceToken: this.mskAclAdminProviderToken!,
       properties: {
         logLevel: this.kafkaClientLogLevel,
         secretArn: this.tlsCertifacateSecret.secretArn,
@@ -404,7 +417,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskAclAdminProviderToken,
+      serviceToken: this.mskAclAdminProviderToken!,
       properties: {
         topics: topicDefinition,
         waitForLeaders: waitForLeaders,
@@ -445,7 +458,7 @@ export class MskProvisioned extends TrackedConstruct {
 
   }
 
-  private setAcls (props: MskProvisionedProps): CustomResource [] {
+  private setAcls(props: MskProvisionedProps): CustomResource[] {
 
     let aclsResources: CustomResource[] = [];
     console.log(props.clusterName);
@@ -481,10 +494,10 @@ export class MskProvisioned extends TrackedConstruct {
 
   }
 
-  private setClusterConfiguration (
+  private setClusterConfiguration(
     cluster: CfnCluster,
     configuration: ClusterConfigurationInfo,
-    aclsResources: CustomResource []) {
+    aclsResources: CustomResource[]) {
 
     const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(this, 'setClusterConfigurationLambdaSecurityGroup', {
       vpc: this.vpc,
@@ -608,9 +621,9 @@ export class MskProvisioned extends TrackedConstruct {
     return lambdaVpcPolicy;
   }
 
-  private createLogGroup(id: string) : ILogGroup {
+  private createLogGroup(id: string): ILogGroup {
 
-    const logGroup: LogGroup = new LogGroup (this, id, {
+    const logGroup: LogGroup = new LogGroup(this, id, {
       retention: RetentionDays.ONE_WEEK,
       removalPolicy: this.removalPolicy,
     });

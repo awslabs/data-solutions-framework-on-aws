@@ -125,9 +125,13 @@ export function monitoringSetup(
  * @returns
  */
 
-export function clientAuthenticationSetup(clientAuthenticationProps?: ClientAuthentication): any {
+export function clientAuthenticationSetup(
+  clientAuthenticationProps?: ClientAuthentication):
+  [CfnCluster.ClientAuthenticationProperty, boolean] {
 
   let clientAuthentication;
+
+  let inClusterAcl: boolean;
 
   if (clientAuthenticationProps?.tlsProps && clientAuthenticationProps?.saslProps?.iam) {
     clientAuthentication = {
@@ -138,6 +142,7 @@ export function clientAuthenticationSetup(clientAuthenticationProps?: ClientAuth
         ),
       },
     };
+    inClusterAcl = true;
   } else if (
     clientAuthenticationProps?.tlsProps?.certificateAuthorities !== undefined
   ) {
@@ -148,13 +153,15 @@ export function clientAuthenticationSetup(clientAuthenticationProps?: ClientAuth
         ),
       },
     };
+    inClusterAcl = true;
   } else {
     clientAuthentication = {
       sasl: { iam: { enabled: true } },
     };
+    inClusterAcl = false;
   }
 
-  return clientAuthentication;
+  return [clientAuthentication, inClusterAcl];
 }
 
 

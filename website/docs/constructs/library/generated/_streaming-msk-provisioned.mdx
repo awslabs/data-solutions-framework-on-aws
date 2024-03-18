@@ -1,0 +1,53 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/streaming)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+This section is for MSK Provisioned
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const msk = new MskProvisioned(stack, 'cluster', {
+  clusterName: 'my-cluster',
+  vpc: vpc.vpc,
+  vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
+  numberOfBrokerNodes: 2,
+  mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M5_LARGE,
+  kafkaVersion: KafkaVersion.V3_4_0,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  certificateDefinition: {
+    adminPrincipal: 'User:CN=mskAdmin',
+    aclAdminPrincipal: 'User:CN=aclAdmin',
+    secretCertificate: Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:REGION:ACCOUNT-ID:secret:msk/mtls/lambda/clientcert-9kM2p6'),
+  },
+  kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+msk = MskProvisioned(stack, "cluster",
+    cluster_name="my-cluster",
+    vpc=vpc.vpc,
+    vpc_subnets=cdk.aws_ec2.SubnetSelection(subnet_type=SubnetType.PRIVATE_WITH_EGRESS),
+    number_of_broker_nodes=2,
+    msk_brokerinstance_type=MskBrokerInstanceType.KAFKA_M5_LARGE,
+    kafka_version=KafkaVersion.V3_4_0,
+    removal_policy=cdk.RemovalPolicy.DESTROY,
+    certificate_definition=AclAdminProps(
+        admin_principal="User:CN=mskAdmin",
+        acl_admin_principal="User:CN=aclAdmin",
+        secret_certificate=Secret.from_secret_complete_arn(stack, "secret", "arn:aws:secretsmanager:REGION:ACCOUNT-ID:secret:msk/mtls/lambda/clientcert-9kM2p6")
+    ),
+    kafka_client_log_level=KafkaClientLogLevel.DEBUG
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
