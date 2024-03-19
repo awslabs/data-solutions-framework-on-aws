@@ -123,6 +123,8 @@ export class MskProvisioned extends TrackedConstruct {
         new SecurityGroup(this, 'SecurityGroup', {
           description: 'MSK security group',
           vpc: this.vpc,
+          allowAllOutbound: true,
+          disableInlineRules: false,
         }),
       ],
     });
@@ -266,6 +268,8 @@ export class MskProvisioned extends TrackedConstruct {
       vpc: this.vpc,
       allowAllOutbound: true,
     });
+
+    this.mskProvisionedCluster.node.addDependency(zookeeperLambdaSecurityGroup);
 
     const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions(
       zookeeperLambdaSecurityGroup,

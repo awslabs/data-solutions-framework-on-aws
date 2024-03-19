@@ -124,7 +124,7 @@ export const onEventHandler = async (event) => {
             catch (error) {
                 await admin.disconnect();
 
-                throw new Error(`Error updating ACL: ${event.ResourceProperties}. Error ${error}`);
+                throw new Error(`Error applying ACL: ${event.ResourceProperties}. Error ${error}`);
             }
 
         case 'Update':
@@ -159,7 +159,7 @@ export const onEventHandler = async (event) => {
             catch (error) {
                 await admin.disconnect();
 
-                throw new Error(`Error deleting ACL: ${event.ResourceProperties}. Error ${error}`);
+                throw new Error(`Error updating ACL: ${event.ResourceProperties}. Error ${error}`);
             }
 
         case 'Delete':
@@ -196,7 +196,7 @@ export const onEventHandler = async (event) => {
             catch (error) {
                 await admin.disconnect();
 
-                throw new Error(`Error appliying ACL: ${event.ResourceProperties}. Error ${error}`);
+                throw new Error(`Error deleting ACL: ${event.ResourceProperties}. Error ${error}`);
             }
 
         default:
