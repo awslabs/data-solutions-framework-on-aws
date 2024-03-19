@@ -94,12 +94,14 @@ export const onEventHandler = async (event) => {
     switch(event.ResourceType) {
         case "Custom::MskAcl":
             console.log("Event for ACL receive");
-            aclCrudOnEvent(event, admin);
-            break;
+            response = await aclCrudOnEvent(event, admin);
+            console.log(response);
+            return response;
         case "Custom::MskTopic":
             console.log("Event for Topic receive");
-            topicCrudOnEvent(event, admin);
-            break;
+            response = await topicCrudOnEvent(event, admin);
+            console.log(response);
+            return response;
         default:
             console.log("Unknown Resource Type");
             throw new Error(`invalid resource type: ${event.ResourceType}`);
@@ -132,13 +134,16 @@ export const isCompleteHandler = async (event) => {
 
     switch(event.ResourceType) {
         case "Custom::MskAcl":
-            console.log("Creating ACL");
-            aclCrudIsComplete(event);
-            break;
+            console.log("ACL Event isComplete");
+            response = await aclCrudIsComplete(event);
+            console.log(response);
+            return response;
+
         case "Custom::MskTopic":
-            console.log("Creating Topic");
-            topicCrudIsComplete(event);
-            break;
+            console.log("Topic Event isComplete");
+            response = await topicCrudIsComplete(event);
+            console.log(response);
+            return response;
         default:
             console.log("Unknown Resource Type");
             throw new Error(`invalid resource type: ${event.ResourceType}`);
