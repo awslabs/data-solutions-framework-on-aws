@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup, Peer } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -121,12 +121,13 @@ export function mskAclAdminProviderSetup(
     vpc,
   });
 
-
+  //We need to add the CIDR block of the VPC
+  //adding the security group as a peer break the destroy
+  //because the ingress rule is destroyed before before the ACLs are removed
   brokerSecurityGroup.addIngressRule(
-    lambdaProviderSecurityGroup,
+    Peer.ipv4(vpc.vpcCidrBlock),
     Port.allTcp(),
-    'Allow lambda to access MSK cluster',
-    true);
+    'Allow lambda to access MSK cluster');
 
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
   const lambdaPolicy = [
