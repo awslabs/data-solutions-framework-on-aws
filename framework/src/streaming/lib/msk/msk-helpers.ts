@@ -162,8 +162,8 @@ export function mskAclAdminProviderSetup(
     providerName: 'msk-acl-admin-provider',
     onEventHandlerDefinition: {
       handler: 'index.onEventHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/aclAdminClient/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/aclAdminClient/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/tlsCrudAdminClient/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/tlsCrudAdminClient/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
@@ -173,8 +173,8 @@ export function mskAclAdminProviderSetup(
     },
     isCompleteHandlerDefinition: {
       handler: 'index.isCompleteHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/aclAdminClient/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/aclAdminClient/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/tlsCrudAdminClient/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/tlsCrudAdminClient/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       bundling: {
         nodeModules: [
