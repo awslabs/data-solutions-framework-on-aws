@@ -421,11 +421,13 @@ export class MskProvisioned extends TrackedConstruct {
     const cr = new CustomResource(scope, id, {
       serviceToken: this.mskAclAdminProviderToken!,
       properties: {
+        logLevel: this.kafkaClientLogLevel,
+        secretArn: this.tlsCertifacateSecret.secretArn,
         topics: topicDefinition,
         waitForLeaders: waitForLeaders,
         timeout: timeout,
-        region: Stack.of(scope).region,
-        mskClusterArn: this.mskProvisionedCluster,
+        region: this.region,
+        mskClusterArn: this.mskProvisionedCluster.attrArn,
       },
       resourceType: 'Custom::MskTopic',
       removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
@@ -503,47 +505,47 @@ export class MskProvisioned extends TrackedConstruct {
     },
     );
 
-    // let aclTopicCreate = this.setAcl(this, 'aclTopicCreate', {
-    //   resourceType: AclResourceTypes.TOPIC,
-    //   resourceName: '*',
-    //   resourcePatternType: ResourcePatternTypes.ANY,
-    //   principal: props.certificateDefinition.aclAdminPrincipal,
-    //   host: '*',
-    //   operation: AclOperationTypes.CREATE,
-    //   permissionType: AclPermissionTypes.ALLOW,
-    // },
-    // );
+    let aclTopicCreate = this.setAcl(this, 'aclTopicCreate', {
+      resourceType: AclResourceTypes.TOPIC,
+      resourceName: '*',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.aclAdminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.CREATE,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
 
-    // let aclTopicDelete = this.setAcl(this, 'aclTopicDelete', {
-    //   resourceType: AclResourceTypes.TOPIC,
-    //   resourceName: '*',
-    //   resourcePatternType: ResourcePatternTypes.ANY,
-    //   principal: props.certificateDefinition.aclAdminPrincipal,
-    //   host: '*',
-    //   operation: AclOperationTypes.DELETE,
-    //   permissionType: AclPermissionTypes.ALLOW,
-    // },
-    // );
+    let aclTopicDelete = this.setAcl(this, 'aclTopicDelete', {
+      resourceType: AclResourceTypes.TOPIC,
+      resourceName: '*',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.aclAdminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.DELETE,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
 
-    // let aclTopicUpdate = this.setAcl(this, 'aclTopicUpdate', {
-    //   resourceType: AclResourceTypes.TOPIC,
-    //   resourceName: '*',
-    //   resourcePatternType: ResourcePatternTypes.ANY,
-    //   principal: props.certificateDefinition.aclAdminPrincipal,
-    //   host: '*',
-    //   operation: AclOperationTypes.ALTER,
-    //   permissionType: AclPermissionTypes.ALLOW,
-    // },
-    // );
+    let aclTopicUpdate = this.setAcl(this, 'aclTopicUpdate', {
+      resourceType: AclResourceTypes.TOPIC,
+      resourceName: '*',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.aclAdminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.ALTER_CONFIGS,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
 
 
     aclBroker.node.addDependency(aclOperation);
 
     aclsResources.push(aclBroker);
     aclsResources.push(aclOperation);
-    // aclsResources.push(aclTopicCreate);
-    // aclsResources.push(aclTopicDelete);
-    // aclsResources.push(aclTopicUpdate);
+    aclsResources.push(aclTopicCreate);
+    aclsResources.push(aclTopicDelete);
+    aclsResources.push(aclTopicUpdate);
 
     return aclsResources;
 
