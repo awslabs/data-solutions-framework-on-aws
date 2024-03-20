@@ -1,4 +1,5 @@
-
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 export async function aclCrudOnEvent (event, admin) {
     switch (event.RequestType) {
@@ -111,19 +112,5 @@ export async function aclCrudOnEvent (event, admin) {
 
         default:
             throw new Error(`invalid request type: ${event.RequestType}`);
-    }
-}
-
-
-export async function aclCrudIsComplete (event) {
-
-    console.info('isCompleteHandler Invocation');
-    console.info(event);
-
-    if (event["Data"]["kafkaResponse"]) {
-        return { IsComplete: true };
-    }
-    else {
-        throw new Error('Error during resource creation or deletion');
     }
 }
