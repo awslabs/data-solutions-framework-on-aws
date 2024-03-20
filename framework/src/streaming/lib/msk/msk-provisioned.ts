@@ -362,13 +362,19 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
 
-  //ACL operations through cli are defined here
-  // https://jaceklaskowski.gitbooks.io/apache-kafka/content/kafka-admin-AclCommand.html
-  // https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Authorization+Command+Line+Interface
+  /**
+     * Creates a topic in the Msk Cluster
+     *
+     * @param {Construct} scope the scope of the stack where Topic will be created
+     * @param {string} id the CDK id for Topic
+     * @param {Acl} aclDefinition the Kafka Acl definition
+     * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+     */
   public setAcl(
     scope: Construct,
     id: string,
     aclDefinition: Acl,
+    removalPolicy: RemovalPolicy,
   ): CustomResource {
 
     if (!this.inClusterAcl) {
@@ -391,6 +397,7 @@ export class MskProvisioned extends TrackedConstruct {
         permissionType: aclDefinition.permissionType,
       },
       resourceType: 'Custom::MskAcl',
+      removalPolicy: removalPolicy,
     });
 
     cr.node.addDependency(this.mskProvisionedCluster);
@@ -399,16 +406,15 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-     * Creates a topic in the Msk Cluster
-     *
-     * @param {Construct} scope the scope of the stack where Topic will be created
-     * @param {string} id the CDK id for Topic
-     * @param {MskTopic []} topicDefinition the Kafka topic definition
-     * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-     * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
-     * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
-     */
-
+    * Creates a topic in the Msk Cluster
+    *
+    * @param {Construct} scope the scope of the stack where Topic will be created
+    * @param {string} id the CDK id for Topic
+    * @param {MskTopic []} topicDefinition the Kafka topic definition
+    * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+    * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
+    * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
+    */
   public setTopic(
     scope: Construct,
     id: string,
@@ -438,11 +444,17 @@ export class MskProvisioned extends TrackedConstruct {
 
   /**
      * Grant a principal to produce data to a topic
-     *
+     * @param {string} id the CDK resource id
      * @param {string} topicName the topic to which the principal can produce data
-     * @param {IPrincipal} principal the IAM principal to grand the produce to
+     * @param {IPrincipal | string } principal the IAM principal to grand the produce to
+     * @param {string} host the host to which the principal can produce data.
      */
-  public grantProduce(id: string, topicName: string, principal: IPrincipal | string, host?: string) {
+  public grantProduce(
+    id: string,
+    topicName: string,
+    principal: IPrincipal | string,
+    host?: string,
+    removalPolicy?: RemovalPolicy) {
 
     this.setAcl(this, id, {
       resourceType: AclResourceTypes.TOPIC,
@@ -453,6 +465,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.WRITE,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    removalPolicy ?? RemovalPolicy.DESTROY,
     );
 
   }
@@ -460,10 +473,18 @@ export class MskProvisioned extends TrackedConstruct {
   /**
      * Grant a principal the right to consume data from a topic
      *
-     * @param {string} topicName the topic to which the principal can consume data from.
-     * @param {IPrincipal} principal the IAM principal to grand the consume action.
+     * @param {string} id the CDK resource id
+     * @param {string} topicName the topic to which the principal can produce data
+     * @param {IPrincipal | string } principal the IAM principal to grand the produce to
+     * @param {string} host the host to which the principal can produce data.
+     *
      */
-  public grantConsume(id: string, topicName: string, principal: IPrincipal | string, host?: string) {
+  public grantConsume(
+    id: string,
+    topicName: string,
+    principal: IPrincipal | string,
+    host?: string,
+    removalPolicy?: RemovalPolicy) {
 
     this.setAcl(this, id, {
       resourceType: AclResourceTypes.TOPIC,
@@ -474,6 +495,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.READ,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    removalPolicy ?? RemovalPolicy.DESTROY,
     );
 
   }
@@ -492,6 +514,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALTER,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    RemovalPolicy.DESTROY,
     );
 
     let aclBroker = this.setAcl(this, 'aclBroker', {
@@ -503,6 +526,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CLUSTER_ACTION,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    RemovalPolicy.DESTROY,
     );
 
     let aclTopicCreate = this.setAcl(this, 'aclTopicCreate', {
@@ -514,6 +538,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CREATE,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    RemovalPolicy.DESTROY,
     );
 
     let aclTopicDelete = this.setAcl(this, 'aclTopicDelete', {
@@ -525,6 +550,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.DELETE,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    RemovalPolicy.DESTROY,
     );
 
     let aclTopicUpdate = this.setAcl(this, 'aclTopicUpdate', {
@@ -536,6 +562,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALTER_CONFIGS,
       permissionType: AclPermissionTypes.ALLOW,
     },
+    RemovalPolicy.DESTROY,
     );
 
 
