@@ -8,8 +8,8 @@ import {
 
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
-import { aclCrudOnEvent, aclCrudIsComplete } from "./acl-crud.mjs";
-import { topicCrudOnEvent,  topicCrudIsComplete } from "./topic-crud.mjs";
+import { aclCrudOnEvent } from "./acl-crud.mjs";
+import { topicCrudOnEvent } from "./topic-crud.mjs";
 
 // Handler functions
 export const onEventHandler = async (event) => {
@@ -94,13 +94,13 @@ export const onEventHandler = async (event) => {
     switch(event.ResourceType) {
         case "Custom::MskAcl":
             console.log("Event for ACL receive");
-            response = await aclCrudOnEvent(event, admin);
-            console.log(response);
+            const responseAcl = await aclCrudOnEvent(event, admin);
+            console.log(responseAcl);
             return response;
         case "Custom::MskTopic":
             console.log("Event for Topic receive");
-            response = await topicCrudOnEvent(event, admin);
-            console.log(response);
+            const responseTopic = await topicCrudOnEvent(event, admin);
+            console.log(responseTopic);
             return response;
         default:
             console.log("Unknown Resource Type");
@@ -127,27 +127,4 @@ function formatToPEM(certData, begin, end) {
 function removeSpacesAndNewlines(inputString) {
     // Using regular expressions to remove spaces and newline characters
     return inputString.replace(/[\s\n]/g, '');
-}
-
-
-export const isCompleteHandler = async (event) => {
-
-    switch(event.ResourceType) {
-        case "Custom::MskAcl":
-            console.log("ACL Event isComplete");
-            response = await aclCrudIsComplete(event);
-            console.log(response);
-            return response;
-
-        case "Custom::MskTopic":
-            console.log("Topic Event isComplete");
-            response = await topicCrudIsComplete(event);
-            console.log(response);
-            return response;
-        default:
-            console.log("Unknown Resource Type");
-            throw new Error(`invalid resource type: ${event.ResourceType}`);
-    }
-
-
 }
