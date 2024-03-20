@@ -97,8 +97,6 @@ export class MskProvisioned extends TrackedConstruct {
     this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
     this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
 
-    console.log(this.account + this.region);
-
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     if (!props.vpc) {
@@ -442,10 +440,18 @@ export class MskProvisioned extends TrackedConstruct {
      * @param {string} topicName the topic to which the principal can produce data
      * @param {IPrincipal} principal the IAM principal to grand the produce to
      */
-  public grantProduce(topicName: string, principal: IPrincipal) {
+  public grantProduce(id: string, topicName: string, principal: IPrincipal | string, host?: string) {
 
-    console.log(topicName);
-    console.log(principal);
+    this.setAcl(this, id, {
+      resourceType: AclResourceTypes.TOPIC,
+      resourceName: topicName,
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: principal as string,
+      host: host ?? '*',
+      operation: AclOperationTypes.WRITE,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
 
   }
 
@@ -455,10 +461,18 @@ export class MskProvisioned extends TrackedConstruct {
      * @param {string} topicName the topic to which the principal can consume data from.
      * @param {IPrincipal} principal the IAM principal to grand the consume action.
      */
-  public grantConsume(topicName: string, principal: IPrincipal) {
+  public grantConsume(id: string, topicName: string, principal: IPrincipal | string, host?: string) {
 
-    console.log(topicName);
-    console.log(principal);
+    this.setAcl(this, id, {
+      resourceType: AclResourceTypes.TOPIC,
+      resourceName: topicName,
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: principal as string,
+      host: host ?? '*',
+      operation: AclOperationTypes.READ,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    );
 
   }
 
