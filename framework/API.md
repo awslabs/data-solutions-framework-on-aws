@@ -3913,7 +3913,7 @@ the ID of the CDK Construct.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl">setAcl</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl">setAcl</a></code> | Creates a topic in the Msk Cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
 
 ---
@@ -3929,34 +3929,64 @@ Returns a string representation of this construct.
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
 
 ```typescript
-public grantConsume(topicName: string, principal: IPrincipal): void
+public grantConsume(id: string, topicName: string, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
 ```
 
 Grant a principal the right to consume data from a topic.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.id"></a>
+
+- *Type:* string
+
+the CDK resource id.
+
+---
 
 ###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.topicName"></a>
 
 - *Type:* string
 
-the topic to which the principal can consume data from.
+the topic to which the principal can produce data.
 
 ---
 
 ###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.principal"></a>
 
-- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+- *Type:* string | aws-cdk-lib.aws_iam.IPrincipal
 
-the IAM principal to grand the consume action.
+the IAM principal to grand the produce to.
+
+---
+
+###### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.host"></a>
+
+- *Type:* string
+
+the host to which the principal can produce data.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce"></a>
 
 ```typescript
-public grantProduce(topicName: string, principal: IPrincipal): void
+public grantProduce(id: string, topicName: string, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
 ```
 
 Grant a principal to produce data to a topic.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.id"></a>
+
+- *Type:* string
+
+the CDK resource id.
+
+---
 
 ###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.topicName"></a>
 
@@ -3968,9 +3998,23 @@ the topic to which the principal can produce data.
 
 ###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.principal"></a>
 
-- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+- *Type:* string | aws-cdk-lib.aws_iam.IPrincipal
 
 the IAM principal to grand the produce to.
+
+---
+
+###### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.host"></a>
+
+- *Type:* string
+
+the host to which the principal can produce data.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
 
 ---
 
@@ -3985,12 +4029,16 @@ Retrieve DSF package.json version.
 ##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl"></a>
 
 ```typescript
-public setAcl(scope: Construct, id: string, aclDefinition: Acl): CustomResource
+public setAcl(scope: Construct, id: string, aclDefinition: Acl, removalPolicy: RemovalPolicy): CustomResource
 ```
+
+Creates a topic in the Msk Cluster.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.scope"></a>
 
 - *Type:* constructs.Construct
+
+the scope of the stack where Topic will be created.
 
 ---
 
@@ -3998,11 +4046,23 @@ public setAcl(scope: Construct, id: string, aclDefinition: Acl): CustomResource
 
 - *Type:* string
 
+the CDK id for Topic.
+
 ---
 
 ###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.aclDefinition"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Acl
+
+the Kafka Acl definition.
+
+---
+
+###### `removalPolicy`<sup>Required</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
 
 ---
 
