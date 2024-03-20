@@ -42,6 +42,7 @@ msk.setAcl(stack, 'acl', {
     host: '*',
     operation: AclOperationTypes.CREATE,
     permissionType: AclPermissionTypes.ALLOW,
-  });
+  },
+  cdk.RemovalPolicy.DESTROY);
 
   
