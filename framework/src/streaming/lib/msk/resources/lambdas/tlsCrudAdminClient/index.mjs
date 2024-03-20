@@ -96,12 +96,12 @@ export const onEventHandler = async (event) => {
             console.log("Event for ACL receive");
             const responseAcl = await aclCrudOnEvent(event, admin);
             console.log(responseAcl);
-            return response;
+            break;
         case "Custom::MskTopic":
             console.log("Event for Topic receive");
             const responseTopic = await topicCrudOnEvent(event, admin);
             console.log(responseTopic);
-            return response;
+            break;
         default:
             console.log("Unknown Resource Type");
             throw new Error(`invalid resource type: ${event.ResourceType}`);
