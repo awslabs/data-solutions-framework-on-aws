@@ -1,4 +1,5 @@
-
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 export async function topicCrudOnEvent (event, admin) {
     switch (event.RequestType) {
@@ -106,19 +107,5 @@ export async function topicCrudOnEvent (event, admin) {
 
         default:
             throw new Error(`invalid request type: ${event.RequestType}`);
-    }
-}
-
-export async function topicCrudIsComplete (event) {
-    console.info('isCompleteHandler Invocation');
-    console.info(event);
-
-    if (event["Data"]["kafkaResponse"]){
-        return { IsComplete: true };
-    } else if (!event["Data"]["kafkaResponse"] && event.RequestType == 'Create'){
-        throw new Error(`Topic already exists`);
-    } 
-    else {
-        throw new Error('Error during rsource creation or deletion');
     }
 }

@@ -87,18 +87,6 @@ export function mskCrudProviderSetup(
         ],
       },
     },
-    isCompleteHandlerDefinition: {
-      handler: 'index.isCompleteHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/crudIam/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/crudIam/index.mjs'),
-      managedPolicy: lambdaExecutionRolePolicy,
-      bundling: {
-        nodeModules: [
-          'aws-msk-iam-sasl-signer-js',
-          'kafkajs',
-        ],
-      },
-    },
     vpc: vpc,
     subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
     securityGroups: [lambdaProviderSecurityGroup],
