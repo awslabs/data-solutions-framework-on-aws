@@ -8961,6 +8961,8 @@ public readonly resourceType: AclResourceTypes;
 
 ### AclAdminProps <a name="AclAdminProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps"></a>
 
+This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to.
+
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.Initializer"></a>
 
 ```typescript
@@ -8973,9 +8975,9 @@ const aclAdminProps: streaming.msk.AclAdminProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.aclAdminPrincipal">aclAdminPrincipal</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.adminPrincipal">adminPrincipal</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretCertificate">secretCertificate</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.aclAdminPrincipal">aclAdminPrincipal</a></code> | <code>string</code> | This Principal will be used by the CDK custom resource to set ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.adminPrincipal">adminPrincipal</a></code> | <code>string</code> | The Principal that will have administrator privilege in MSK The MSK construct does not have access to this principal Keep this principal in a secure storage and should be only used in case you put an ACL that lock MSK access. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretCertificate">secretCertificate</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
 
 ---
 
@@ -8987,6 +8989,8 @@ public readonly aclAdminPrincipal: string;
 
 - *Type:* string
 
+This Principal will be used by the CDK custom resource to set ACLs and Topics.
+
 ---
 
 ##### `adminPrincipal`<sup>Required</sup> <a name="adminPrincipal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.adminPrincipal"></a>
@@ -8997,6 +9001,8 @@ public readonly adminPrincipal: string;
 
 - *Type:* string
 
+The Principal that will have administrator privilege in MSK The MSK construct does not have access to this principal Keep this principal in a secure storage and should be only used in case you put an ACL that lock MSK access.
+
 ---
 
 ##### `secretCertificate`<sup>Required</sup> <a name="secretCertificate" id="@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps.property.secretCertificate"></a>
@@ -9006,6 +9012,17 @@ public readonly secretCertificate: ISecret;
 ```
 
 - *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics.
+
+The secret in AWS secrets manager must be a JSON in the following format
+{
+ "key" : "PRIVATE-KEY",
+ "cert" : "CERTIFICATE"
+}
+
+You can use the following utility to generate the certificates
+https://github.com/aws-samples/amazon-msk-client-authentication
 
 ---
 
@@ -10896,7 +10913,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps</code> | This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.allowEveryoneIfNoAclFound">allowEveryoneIfNoAclFound</a></code> | <code>boolean</code> | if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster. |
@@ -10923,6 +10940,8 @@ public readonly certificateDefinition: AclAdminProps;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps
+
+This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to.
 
 ---
 
@@ -15551,6 +15570,8 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 
 ### KafkaClientLogLevel <a name="KafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel"></a>
+
+The CDK Custom resources uses KafkaJs This enum allow you to set the log level.
 
 #### Members <a name="Members" id="Members"></a>
 
