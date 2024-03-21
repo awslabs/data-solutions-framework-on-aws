@@ -169,16 +169,17 @@ export class MskProvisioned extends TrackedConstruct {
     let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
 
     //check the number of broker vs the number of AZs, it needs to be multiple
-    this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? 3;
 
-    if (this.numberOfBrokerNodes % this.subnetSelectionIds.length) {
+    this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? this.vpc.availabilityZones.length;
+
+    if (this.numberOfBrokerNodes % this.vpc.availabilityZones.length) {
       throw Error('The number of broker nodes needs to be multiple of the number of AZs');
     }
 
     this.mskProvisionedCluster = new CfnCluster(this, 'mskProvisionedCluster', {
       clusterName: props.clusterName,
       kafkaVersion: props.kafkaVersion.version,
-      numberOfBrokerNodes: this.numberOfBrokerNodes ?? 3,
+      numberOfBrokerNodes: this.numberOfBrokerNodes,
       brokerNodeGroupInfo: {
         instanceType: `kafka.${this.mskBrokerinstanceType.instance.toString()}`,
         clientSubnets: this.subnetSelectionIds,
@@ -312,6 +313,9 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.mskProvisionedCluster],
     });
 
+
+    //If TLS or SASL/SCRAM (once implemented)
+    //Set up the CR that will set the ACL using the Certs or Username/Password
     if (clientAuthentication.tls) {
       //Configure the CR for applying ACLs
       //CR will also handle topic creation
@@ -324,10 +328,7 @@ export class MskProvisioned extends TrackedConstruct {
         props.certificateDefinition.secretCertificate,
       ).serviceToken;
 
-      //Update cluster configuration as a last step before handing the cluster to customer.
       // Create the configuration
-
-
       let clusterConfigurationInfo: ClusterConfigurationInfo;
 
       if (!props.configurationInfo) {
@@ -352,6 +353,9 @@ export class MskProvisioned extends TrackedConstruct {
         clusterConfigurationInfo = props.configurationInfo;
       }
 
+      //Update cluster configuration as a last step before handing the cluster to customer.
+      //This will set `allow.everyone.if.no.acl.found` to `false`
+      //And will allow the provide set ACLs for the lambda CR to do CRUD operations on MSK for ACLs and Topics
       if (!props.allowEveryoneIfNoAclFound) {
 
         const crAcls: CustomResource[] =
