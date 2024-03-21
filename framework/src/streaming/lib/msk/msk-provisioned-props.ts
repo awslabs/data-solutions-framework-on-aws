@@ -124,6 +124,11 @@ export interface MskProvisionedProps {
       */
   readonly removalPolicy?: RemovalPolicy;
 
+
+  /**
+ * This Props allow you to define the principals that will be adminstartor
+ * as well as the principal that will be used by the CDK Custom resources to
+ */
   readonly certificateDefinition: AclAdminProps;
 
 
@@ -144,14 +149,45 @@ export interface MskProvisionedProps {
 
 }
 
+/**
+ * The CDK Custom resources uses KafkaJs
+ * This enum allow you to set the log level
+ */
 export enum KafkaClientLogLevel {
   DEBUG = 'DEBUG',
   INFO = 'INFO',
 }
 
+
+/**
+ * This Props allow you to define the principals that will be adminstartor
+ * as well as the principal that will be used by the CDK Custom resources to
+ */
 export interface AclAdminProps {
+  /**
+   * The Principal that will have administrator privilege in MSK
+   * The MSK construct does not have access to this principal
+   * Keep this principal in a secure storage and should be only used
+   * in case you put an ACL that lock MSK access
+  */
   readonly adminPrincipal: string;
+  /**
+   * This Principal will be used by the CDK custom resource
+   * to set ACLs and Topics
+  */
   readonly aclAdminPrincipal: string;
+  /**
+   * This is the TLS certificate of the Principal that is used by
+   * the CDK custom resource which set ACLs and Topics.
+   * The secret in AWS secrets manager must be a JSON in the following format
+   * {
+   *  "key" : "PRIVATE-KEY",
+   *  "cert" : "CERTIFICATE"
+   * }
+   *
+   * You can use the following utility to generate the certificates
+   * https://github.com/aws-samples/amazon-msk-client-authentication
+  */
   readonly secretCertificate: ISecret;
 }
 
