@@ -5,8 +5,8 @@ from aws_cdk import Stack, RemovalPolicy, Names
 from aws_cdk import aws_iam as iam
 from constructs import Construct
 import cdklabs.aws_data_solutions_framework as dsf
+from aws_cdk.aws_s3 import Bucket
 
-from stacks.demo_helpers.data_load import DataLoad
 from stacks.demo_helpers.spark_job_trigger import SparkJobTrigger
 
 
@@ -36,13 +36,14 @@ class ApplicationStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
 
-        # Helper to load example data to bronze bucket. For the demo purposes only.
-        DataLoad(
-            self,
-            "DataLoad",
-            src_bucket_name="nyc-tlc",
-            src_bucket_prefix="trip data/",
-            storage=storage,
+        dsf.utils.S3DataCopy(
+             self,
+            "SourceDataCopy",
+            source_bucket=Bucket.from_bucket_name(self, 'SourceBucket', 'nyc-tlc'),
+            source_bucket_prefix="trip data/",
+            source_bucket_region="us-east-1",
+            target_bucket= storage.silver_bucket,
+            target_bucket_prefix="trip-data/",
         )
 
         processing_exec_role = dsf.processing.SparkEmrServerlessRuntime.create_execution_role(self, "ProcessingExecRole")
