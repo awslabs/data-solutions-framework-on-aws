@@ -222,6 +222,8 @@ export class MskProvisioned extends TrackedConstruct {
       vpc: this.vpc,
     });
 
+    this.mskProvisionedCluster.node.addDependency(zooKeeperSecurityGroup);
+
     const lambdaPolicy = [
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
@@ -456,7 +458,7 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy) {
 
-    this.setAcl(this, id, {
+    const cr = this.setAcl(this, id, {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: topicName,
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -468,6 +470,7 @@ export class MskProvisioned extends TrackedConstruct {
     removalPolicy ?? RemovalPolicy.DESTROY,
     );
 
+    cr.node.addDependency(this.mskProvisionedCluster);
   }
 
   /**
@@ -486,7 +489,8 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy) {
 
-    this.setAcl(this, id, {
+
+    const cr = this.setAcl(this, id, {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: topicName,
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -498,6 +502,7 @@ export class MskProvisioned extends TrackedConstruct {
     removalPolicy ?? RemovalPolicy.DESTROY,
     );
 
+    cr.node.addDependency(this.mskProvisionedCluster);
   }
 
   private setAcls(props: MskProvisionedProps): CustomResource[] {
