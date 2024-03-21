@@ -73,6 +73,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly vpc: IVpc;
   private readonly subnetSelectionIds: string[];
   private readonly connections: Connections;
+  private readonly defaultNumberOfBrokerNodes: number;
   private readonly numberOfBrokerNodes: number;
   private readonly tlsCertifacateSecret: ISecret;
   private readonly kafkaClientLogLevel: string;
@@ -169,8 +170,9 @@ export class MskProvisioned extends TrackedConstruct {
     let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
 
     //check the number of broker vs the number of AZs, it needs to be multiple
-
-    this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? this.vpc.availabilityZones.length;
+      
+    this.defaultNumberOfBrokerNodes = this.vpc.availabilityZones.length > 3 ? 3 : this.vpc.availabilityZones.length;
+    this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? this.defaultNumberOfBrokerNodes;
 
     if (this.numberOfBrokerNodes % this.vpc.availabilityZones.length) {
       throw Error('The number of broker nodes needs to be multiple of the number of AZs');
