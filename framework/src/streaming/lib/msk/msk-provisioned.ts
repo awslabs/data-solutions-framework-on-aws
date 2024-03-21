@@ -170,7 +170,7 @@ export class MskProvisioned extends TrackedConstruct {
     let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
 
     //check the number of broker vs the number of AZs, it needs to be multiple
-      
+
     this.defaultNumberOfBrokerNodes = this.vpc.availabilityZones.length > 3 ? 3 : this.vpc.availabilityZones.length;
     this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? this.defaultNumberOfBrokerNodes;
 
@@ -576,6 +576,17 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
+    let adminAcl = this.setAcl(this, 'aclAdmin', {
+      resourceType: AclResourceTypes.ANY,
+      resourceName: '*',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.adminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.ALL,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    RemovalPolicy.DESTROY,
+    );
 
     aclBroker.node.addDependency(aclOperation);
 
@@ -584,6 +595,7 @@ export class MskProvisioned extends TrackedConstruct {
     aclsResources.push(aclTopicCreate);
     aclsResources.push(aclTopicDelete);
     aclsResources.push(aclTopicUpdate);
+    aclsResources.push(adminAcl);
 
     return aclsResources;
 
