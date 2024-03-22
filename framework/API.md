@@ -4441,6 +4441,374 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### QuickSightSubscription <a name="QuickSightSubscription" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription"></a>
+
+Creates an asynchronous custom resource that handles the creation of a QuickSight subscription.
+
+*Example*
+
+```typescript
+const subscription = new dsf.consumption.QuickSightSubscription(this, 'RedshiftNamespace', {
+   name: "default",
+   dbName: 'defaultdb',
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+new consumption.QuickSightSubscription(scope: Construct, id: string, props: QuickSightSubscriptionProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.createQuickSightSubscription">createQuickSightSubscription</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `createQuickSightSubscription` <a name="createQuickSightSubscription" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.createQuickSightSubscription"></a>
+
+```typescript
+public createQuickSightSubscription(): CustomResource
+```
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.isConstruct"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+consumption.QuickSightSubscription.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.accountName">accountName</a></code> | <code>string</code> | The name of your Amazon QuickSight account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.adminGroup">adminGroup</a></code> | <code>string[]</code> | The admin group associated with your Active Directory or IAM Identity Center account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.authorGroup">authorGroup</a></code> | <code>string[]</code> | The author group associated with your IAM Identity Center account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the QuickSight account subscription execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.identityRegion">identityRegion</a></code> | <code>string</code> | The region to use as main QuickSight region (used to store configuration and identities info). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.notificationEmail">notificationEmail</a></code> | <code>string</code> | The email address that you want Amazon QuickSight to send notifications to regarding your Amazon QuickSight account or Amazon QuickSight subscription. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.readerGroup">readerGroup</a></code> | <code>string[]</code> | The reader group associated with your IAM Identity Center account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the QuickSight account subscription status checks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the QuickSight account subscription status checks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.submitFunction">submitFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the the Redshift Data submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.submitLogGroup">submitLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the QuickSight account subscription submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the QuickSight account subscription cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the QuickSight account subscription cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the QuickSight account subscription cleaning up lambda. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `accountName`<sup>Required</sup> <a name="accountName" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.accountName"></a>
+
+```typescript
+public readonly accountName: string;
+```
+
+- *Type:* string
+
+The name of your Amazon QuickSight account.
+
+This name is unique over all of Amazon Web Services, and it appears only when users sign in. 
+You can't change AccountName value after the Amazon QuickSight account is created.
+
+---
+
+##### `adminGroup`<sup>Required</sup> <a name="adminGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.adminGroup"></a>
+
+```typescript
+public readonly adminGroup: string[];
+```
+
+- *Type:* string[]
+
+The admin group associated with your Active Directory or IAM Identity Center account.
+
+This field is required as IAM_IDENTITY_CENTER is 
+the only supported authentication method of the new Amazon QuickSight account
+
+---
+
+##### `authorGroup`<sup>Required</sup> <a name="authorGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.authorGroup"></a>
+
+```typescript
+public readonly authorGroup: string[];
+```
+
+- *Type:* string[]
+
+The author group associated with your IAM Identity Center account.
+
+---
+
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.executionRole"></a>
+
+```typescript
+public readonly executionRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the QuickSight account subscription execution.
+
+---
+
+##### `identityRegion`<sup>Required</sup> <a name="identityRegion" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.identityRegion"></a>
+
+```typescript
+public readonly identityRegion: string;
+```
+
+- *Type:* string
+
+The region to use as main QuickSight region (used to store configuration and identities info).
+
+---
+
+##### `notificationEmail`<sup>Required</sup> <a name="notificationEmail" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.notificationEmail"></a>
+
+```typescript
+public readonly notificationEmail: string;
+```
+
+- *Type:* string
+
+The email address that you want Amazon QuickSight to send notifications to regarding your Amazon QuickSight account or Amazon QuickSight subscription.
+
+---
+
+##### `readerGroup`<sup>Required</sup> <a name="readerGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.readerGroup"></a>
+
+```typescript
+public readonly readerGroup: string[];
+```
+
+- *Type:* string[]
+
+The reader group associated with your IAM Identity Center account.
+
+---
+
+##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.statusFunction"></a>
+
+```typescript
+public readonly statusFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the QuickSight account subscription status checks.
+
+---
+
+##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.statusLogGroup"></a>
+
+```typescript
+public readonly statusLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the QuickSight account subscription status checks.
+
+---
+
+##### `submitFunction`<sup>Required</sup> <a name="submitFunction" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.submitFunction"></a>
+
+```typescript
+public readonly submitFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the the Redshift Data submission.
+
+---
+
+##### `submitLogGroup`<sup>Required</sup> <a name="submitLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.submitLogGroup"></a>
+
+```typescript
+public readonly submitLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the QuickSight account subscription submission.
+
+---
+
+##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.cleanUpFunction"></a>
+
+```typescript
+public readonly cleanUpFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function for the QuickSight account subscription cleaning up lambda.
+
+---
+
+##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.cleanUpLogGroup"></a>
+
+```typescript
+public readonly cleanUpLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the QuickSight account subscription cleaning up lambda.
+
+---
+
+##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.cleanUpRole"></a>
+
+```typescript
+public readonly cleanUpRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the the QuickSight account subscription cleaning up lambda.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.RESOURCE_TYPE">RESOURCE_TYPE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+##### `RESOURCE_TYPE`<sup>Required</sup> <a name="RESOURCE_TYPE" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscription.property.RESOURCE_TYPE"></a>
+
+```typescript
+public readonly RESOURCE_TYPE: string;
+```
+
+- *Type:* string
+
+---
+
 ### RedshiftData <a name="RedshiftData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData"></a>
 
 Creates an asynchronous custom resource that handles the execution of SQL using Redshift's Data API.
@@ -10342,6 +10710,184 @@ public readonly venvArchivePath: string;
 The path of the Python virtual environment archive generated in the Docker container.
 
 This is the output path used in the `venv-pack -o` command in your Dockerfile.
+
+---
+
+### QuickSightSubscriptionProps <a name="QuickSightSubscriptionProps" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps"></a>
+
+The properties for the `QuickSightSubscription` construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const quickSightSubscriptionProps: consumption.QuickSightSubscriptionProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.accountName">accountName</a></code> | <code>string</code> | The name of your Amazon QuickSight account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.adminGroup">adminGroup</a></code> | <code>string[]</code> | The admin group associated with your Active Directory or IAM Identity Center account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authenticationMethod">authenticationMethod</a></code> | <code>string</code> | The method that you want to use to authenticate your Amazon QuickSight account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authorGroup">authorGroup</a></code> | <code>string[]</code> | The author group associated with your IAM Identity Center account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.awsAccountId">awsAccountId</a></code> | <code>string</code> | The Amazon Web Services account ID of the account that you're using to create your Amazon QuickSight account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.edition">edition</a></code> | <code>string</code> | The edition of Amazon QuickSight that you want your account to have. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.identityRegion">identityRegion</a></code> | <code>string</code> | The region to use as main QuickSight region (used to store configuration and identities info). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.notificationEmail">notificationEmail</a></code> | <code>string</code> | The email address that you want Amazon QuickSight to send notifications to regarding your Amazon QuickSight account or Amazon QuickSight subscription. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.readerGroup">readerGroup</a></code> | <code>string[]</code> | The reader group associated with your IAM Identity Center account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the QuickSight account subscription. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+
+---
+
+##### `accountName`<sup>Required</sup> <a name="accountName" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.accountName"></a>
+
+```typescript
+public readonly accountName: string;
+```
+
+- *Type:* string
+
+The name of your Amazon QuickSight account.
+
+This name is unique over all of Amazon Web Services, and it appears only when users sign in. 
+You can't change AccountName value after the Amazon QuickSight account is created.
+
+---
+
+##### `adminGroup`<sup>Required</sup> <a name="adminGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.adminGroup"></a>
+
+```typescript
+public readonly adminGroup: string[];
+```
+
+- *Type:* string[]
+
+The admin group associated with your Active Directory or IAM Identity Center account.
+
+This field is required as IAM_IDENTITY_CENTER is 
+the only supported authentication method of the new Amazon QuickSight account
+
+---
+
+##### `authenticationMethod`<sup>Required</sup> <a name="authenticationMethod" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authenticationMethod"></a>
+
+```typescript
+public readonly authenticationMethod: string;
+```
+
+- *Type:* string
+
+The method that you want to use to authenticate your Amazon QuickSight account.
+
+Only IAM_IDENTITY_CENTER, IAM_AND_QUICKSIGHT and IAM_ONLY are supported
+
+---
+
+##### `authorGroup`<sup>Required</sup> <a name="authorGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authorGroup"></a>
+
+```typescript
+public readonly authorGroup: string[];
+```
+
+- *Type:* string[]
+
+The author group associated with your IAM Identity Center account.
+
+---
+
+##### `awsAccountId`<sup>Required</sup> <a name="awsAccountId" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.awsAccountId"></a>
+
+```typescript
+public readonly awsAccountId: string;
+```
+
+- *Type:* string
+
+The Amazon Web Services account ID of the account that you're using to create your Amazon QuickSight account.
+
+---
+
+##### `edition`<sup>Required</sup> <a name="edition" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.edition"></a>
+
+```typescript
+public readonly edition: string;
+```
+
+- *Type:* string
+- *Default:* ENTERPRISE is used as default.
+
+The edition of Amazon QuickSight that you want your account to have.
+
+Currently, you can choose from ENTERPRISE or ENTERPRISE_AND_Q .
+
+---
+
+##### `identityRegion`<sup>Required</sup> <a name="identityRegion" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.identityRegion"></a>
+
+```typescript
+public readonly identityRegion: string;
+```
+
+- *Type:* string
+
+The region to use as main QuickSight region (used to store configuration and identities info).
+
+---
+
+##### `notificationEmail`<sup>Required</sup> <a name="notificationEmail" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.notificationEmail"></a>
+
+```typescript
+public readonly notificationEmail: string;
+```
+
+- *Type:* string
+
+The email address that you want Amazon QuickSight to send notifications to regarding your Amazon QuickSight account or Amazon QuickSight subscription.
+
+---
+
+##### `readerGroup`<sup>Required</sup> <a name="readerGroup" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.readerGroup"></a>
+
+```typescript
+public readonly readerGroup: string[];
+```
+
+- *Type:* string[]
+
+The reader group associated with your IAM Identity Center account.
+
+---
+
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.executionTimeout"></a>
+
+```typescript
+public readonly executionTimeout: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+- *Default:* 5mins
+
+The timeout for the QuickSight account subscription.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
