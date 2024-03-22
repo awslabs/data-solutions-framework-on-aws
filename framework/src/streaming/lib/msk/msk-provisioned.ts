@@ -69,6 +69,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly mskAclAdminProviderToken?: string;
   private readonly account: string;
   private readonly region: string;
+  private readonly partition: string;
   private readonly mskBrokerinstanceType: MskBrokerInstanceType;
   private readonly vpc: IVpc;
   private readonly subnetSelectionIds: string[];
@@ -97,6 +98,8 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.account = Stack.of(this).account;
     this.region = Stack.of(this).region;
+    this.partition = Stack.of(this).partition;
+
     this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
     this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
     this.crPrincipal = props.certificateDefinition.aclAdminPrincipal;
@@ -722,8 +725,8 @@ export class MskProvisioned extends TrackedConstruct {
 
   private getVpcPermissions(securityGroup: SecurityGroup, subnets: string[], id: string): ManagedPolicy {
 
-    const securityGroupArn = `arn:aws:ec2:${this.region}:${this.account}:security-group/${securityGroup.securityGroupId}`;
-    const subnetArns = subnets.map(s => `arn:aws:ec2:${this.region}:${this.account}:subnet/${s}`);
+    const securityGroupArn = `arn:${this.partition}:ec2:${this.region}:${this.account}:security-group/${securityGroup.securityGroupId}`;
+    const subnetArns = subnets.map(s => `arn:${this.partition}:ec2:${this.region}:${this.account}:subnet/${s}`);
 
     const lambdaVpcPolicy = new ManagedPolicy(this, id, {
       statements: [
@@ -759,7 +762,7 @@ export class MskProvisioned extends TrackedConstruct {
           ],
           effect: Effect.ALLOW,
           resources: [
-            `arn:aws:ec2:${this.region}:${this.account}:network-interface/*`,
+            `arn:${Stack.of(this).partition}:ec2:${this.region}:${this.account}:network-interface/*`,
           ].concat(subnetArns, securityGroupArn),
         }),
       ],
