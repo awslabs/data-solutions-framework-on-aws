@@ -19,7 +19,7 @@ const signer = new SignatureV4({
 export async function sendRequest(props) {
   const { method, path, body } = props;
   const request = { method, path };
-  if (body) request.body = JSON.stringify(body);
+  if (body) request.body =  typeof object !== 'string' ? JSON.stringify(body) : body;
   const signedRequest = await generateSignedRequest(request);
   const { response } = await new NodeHttpHandler().handle(new HttpRequest(signedRequest));
   console.log(response.statusCode + ' ' + response.body.statusMessage);
