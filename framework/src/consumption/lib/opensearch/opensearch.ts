@@ -13,6 +13,7 @@ import { OpenSearchClusterProps, OpenSearchNodes, OPENSEARCH_DEFAULT_VERSION } f
 import { Context, CreateServiceLinkedRole, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role-service';
+import { AwsCustomResource, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 
 /**
  * A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
@@ -68,8 +69,6 @@ export class OpenSearchCluster extends TrackedConstruct {
    */
   public readonly masterRole: IRole;
 
-  private prevCr?: CustomResource;
-
   /**
    * The removal policy when deleting the CDK resource.
    * Resources like Amazon cloudwatch log or Amazon S3 bucket
@@ -78,6 +77,9 @@ export class OpenSearchCluster extends TrackedConstruct {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   private removalPolicy: RemovalPolicy;
+  
+  private prevCr?: CustomResource | AwsCustomResource;
+  private persistentRoles: {[key:string]:string[]} = {};
 
   /**
    * Constructs a new instance of the OpenSearchCluster class
@@ -143,7 +145,7 @@ export class OpenSearchCluster extends TrackedConstruct {
     masterRolePolicy.addStatements(
       new PolicyStatement({
         actions: [
-          'es:ESHttpPut',
+          'es:ESHttp*',
           'es:UpdateElasticsearchDomainConfig',
         ],
         resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${props.domainName}/*`],
@@ -233,7 +235,7 @@ export class OpenSearchCluster extends TrackedConstruct {
       },
       fineGrainedAccessControl: {
         masterUserArn: this.masterRole.roleArn,
-        samlAuthenticationEnabled: true,
+        samlAuthenticationEnabled: false,
         samlAuthenticationOptions: samlMetaData,
       },
       zoneAwareness: {
@@ -273,7 +275,7 @@ export class OpenSearchCluster extends TrackedConstruct {
     this.apiProvider = new DsfProvider(this, 'Provider', {
       providerName: 'opensearchApiProvider',
       onEventHandlerDefinition: {
-        managedPolicy: masterRolePolicy,
+        iamRole: this.masterRole,
         handler: 'handler',
         depsLockFilePath: path.join(__dirname, './resources/lambda/opensearch-api/package-lock.json'),
         entryFile: path.join(__dirname, './resources/lambda/opensearch-api/opensearch-api.mjs'),
@@ -294,14 +296,46 @@ export class OpenSearchCluster extends TrackedConstruct {
       },
       vpc: this.vpc,
       subnets: subnets,
+      removalPolicy: this.removalPolicy,
     });
 
     this.domain = domain;
 
     const samlAdminGroupId = props.samlMasterBackendRole;
 
-    this.addRoleMapping('AllAccessOsRole', 'all_access', samlAdminGroupId);
-    this.addRoleMapping('SecurityManagerOsRole', 'security_manager', samlAdminGroupId);
+    this.addRoleMapping('AllAccessRoles', 'all_access', [samlAdminGroupId, this.masterRole.roleArn], true);
+    this.addRoleMapping('SecurityManagerRoles', 'security_manager', [samlAdminGroupId, this.masterRole.roleArn], true);
+    
+    //enable SAML authentication after adding lambda permissions to execute API calls later.  
+    const updateDomain = new AwsCustomResource(this, 'EnableInternalUserDatabaseCR', {
+      onCreate: {
+        service: 'OpenSearch',
+        action: 'updateDomainConfig',
+        parameters: {
+          DomainName: this.domain.domainName,
+          AdvancedSecurityOptions: {
+            SAMLOptions:{
+              Enabled:true,
+              Idp: { 
+                 EntityId: samlMetaData.idpEntityId,
+                 MetadataContent: samlMetaData.idpMetadataContent
+              },
+              MasterBackendRole: samlMetaData.masterBackendRole,
+              RolesKey: samlMetaData.rolesKey,
+              SessionTimeoutMinutes: samlMetaData.sessionTimeoutMinutes,
+              SubjectKey:samlMetaData.subjectKey
+            }
+          },
+        },
+        physicalResourceId: PhysicalResourceId.of('idpEntityId'),
+        outputPaths: ['DomainConfig.AdvancedSecurityOptions.SAMLOptions'],
+      },
+      role:this.masterRole,
+      removalPolicy:this.removalPolicy
+    });
+    updateDomain.node.addDependency(this.domain);
+    if (this.prevCr) updateDomain.node.addDependency(this.prevCr);
+    this.prevCr = updateDomain;
   }
 
   /**
@@ -309,16 +343,19 @@ export class OpenSearchCluster extends TrackedConstruct {
    * @param id The CDK resource ID
    * @param apiPath  OpenSearch API path
    * @param body  OpenSearch API request body
+   * @param method Opensearch API method, @default PUT
    */
 
-  public callOpenSearchApi(id: string, apiPath: string, body: any) {
+  public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string) {
     const cr = new CustomResource(this, id, {
       serviceToken: this.apiProvider.serviceToken,
       resourceType: 'Custom::OpenSearchAPI',
       properties: {
         path: apiPath,
         body,
+        method: method ?? 'PUT',
       },
+      removalPolicy: this.removalPolicy,
     });
     cr.node.addDependency(this.domain);
     if (this.prevCr) cr.node.addDependency(this.prevCr);
@@ -331,11 +368,17 @@ export class OpenSearchCluster extends TrackedConstruct {
    * This method is used to add a role mapping to the Amazon OpenSearch cluster
    * @param id The CDK resource ID
    * @param name OpenSearch role name @see https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles
-   * @param role IAM Identity center SAML group Id
+   * @param roles list of IAM roles. For IAM Identity center provide SAML group Id as a role
+   * @param persist Set to true if you want to prevent the roles to be ovewritten by subsequent PUT API calls. Default false.
    */
-  public addRoleMapping(id: string, name: string, role: string) {
+  public addRoleMapping(id: string, name: string, roles: string[], persist:boolean=false) {
+    const persistentRoles = this.persistentRoles[name] || [];
+    const rolesToPersist = persistentRoles.concat(roles);
+    if (persist){
+      this.persistentRoles[name] = rolesToPersist
+    }
     this.callOpenSearchApi(id, '_plugins/_security/api/rolesmapping/' + name, {
-      backend_roles: [role],
+      backend_roles: rolesToPersist,
     });
   }
 }
