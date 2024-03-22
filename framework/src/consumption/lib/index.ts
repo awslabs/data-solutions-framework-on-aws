@@ -4,3 +4,4 @@
 export * from './redshift';
 export * from './athena';
 export * from './opensearch';
+export * from './quicksight';
