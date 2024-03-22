@@ -18,8 +18,8 @@ class ExampleDefaultOpenSearchStack extends cdk.Stack {
       removalPolicy:cdk.RemovalPolicy.DESTROY
     });
     /// !hide
-    osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
-    osCluster.addRoleMapping('ReadAllOsRole','readall','<IAMIdentityCenterDashboardUsersGroupId>');
+    osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user',['<IAMIdentityCenterDashboardUsersGroupId>']);
+    osCluster.addRoleMapping('ReadAllOsRole','readall',['<IAMIdentityCenterDashboardUsersGroupId>']);
   }
   
   
