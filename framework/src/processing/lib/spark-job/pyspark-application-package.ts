@@ -129,7 +129,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
         throw new Error('Virtual environment archive path is required if there are dependencies');
       } else {
 
-        const venvArchiveFileName = path.basename(props.venvArchivePath);
+        // const venvArchiveFileName = path.basename(props.venvArchivePath);
 
         // Build dependencies using the Dockerfile in app/ folder and deploy a zip into CDK asset bucket
         const emrDepsAsset = new Asset(this, 'EmrDepsAsset', {
@@ -165,7 +165,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
         });
 
-        this.venvArchiveUri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${venvArchiveFileName}`);
+        this.venvArchiveUri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${path.basename(emrDepsAsset.s3ObjectKey)}#environment`);
       }
     }
 

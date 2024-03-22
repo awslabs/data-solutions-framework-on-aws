@@ -1,8 +1,10 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from aws_cdk import Stack, RemovalPolicy, Names
+from aws_cdk import CfnOutput, Stack, RemovalPolicy, Names, Duration
 from aws_cdk import aws_iam as iam
+from aws_cdk import aws_s3 as s3
+from aws_cdk import aws_events as events
 from constructs import Construct
 import cdklabs.aws_data_solutions_framework as dsf
 from aws_cdk.aws_s3 import Bucket
@@ -53,24 +55,33 @@ class ApplicationStack(Stack):
 
         # Use DSF on AWS to create Spark EMR serverless runtime, package Spark app, and create a Spark job.
         spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
-            self, "SparkProcessingRuntime", name="TaxiAggregation",
+            self, 
+            "SparkProcessingRuntime", 
+            name="TaxiAggregation",
             removal_policy=RemovalPolicy.DESTROY,
         )
         spark_app = dsf.processing.PySparkApplicationPackage(
             self,
-            "PySparkApplicationPackage",
+            "SparkApp",
             entrypoint_path="./../spark/src/agg_trip_distance.py",
-            application_name="taxi-trip-aggregation",
-            removal_policy=RemovalPolicy.DESTROY,
+            application_name="TaxiAggregation",
+            dependencies_folder='./../spark',
+            venv_archive_path="/venv-package/pyspark-env.tar.gz",
+            removal_policy=RemovalPolicy.DESTROY
         )
 
         spark_app.artifacts_bucket.grant_read_write(processing_exec_role)
 
         params = (
             f"--conf"
-            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.silver_bucket.bucket_name}/spark_data_lake/nyc-taxi"
-            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.gold_bucket.bucket_name}/spark_data_lake"
+            f" spark.emr-serverless.driverEnv.SOURCE_LOCATION=s3://{storage.silver_bucket.bucket_name}/trip-data/"
+            f" --conf spark.emr-serverless.driverEnv.TARGET_LOCATION=s3://{storage.gold_bucket.bucket_name}/aggregated-trip-data/"
         )
+
+        if (stage == dsf.utils.CICDStage.PROD):
+            schedule = events.Schedule.rate(Duration.days(1))
+        else:
+            schedule = None
 
         spark_job = dsf.processing.SparkEmrServerlessJob(
             self,
@@ -80,10 +91,12 @@ class ApplicationStack(Stack):
                 application_id=spark_runtime.application.attr_application_id,
                 execution_role=processing_exec_role,
                 spark_submit_entry_point=spark_app.entrypoint_uri,
-                spark_submit_parameters=params,
+                spark_submit_parameters=spark_app.spark_venv_conf + params,
                 removal_policy=RemovalPolicy.DESTROY,
+                schedule= schedule,
             )
         )
 
-        # Helper with the custom resource to trigger the Spark job. For the demo purposes only.
-        SparkJobTrigger(self, "JobTrigger", spark_job=spark_job, db=catalog.gold_catalog_database)
+        CfnOutput(self, "ProcessingStateMachineArn",
+            value=spark_job.state_machine.state_machine_arn
+        )

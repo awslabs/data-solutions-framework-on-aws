@@ -6,7 +6,9 @@ build-backend = "setuptools.build_meta"
 name = "spark"
 version = "0.0.1"
 
-dependencies = []
+dependencies = [
+  'great-expectations==0.15.6'
+]
 
 [project.optional-dependencies]
 tests = [
