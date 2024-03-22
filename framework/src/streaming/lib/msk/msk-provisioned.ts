@@ -364,11 +364,12 @@ export class MskProvisioned extends TrackedConstruct {
       //Update cluster configuration as a last step before handing the cluster to customer.
       //This will set `allow.everyone.if.no.acl.found` to `false`
       //And will allow the provide set ACLs for the lambda CR to do CRUD operations on MSK for ACLs and Topics
+
+      const crAcls: CustomResource[] = this.setAcls(props);
+
+      this.aclOperationCr = crAcls[0];
+
       if (!props.allowEveryoneIfNoAclFound) {
-
-        const crAcls: CustomResource[] = this.setAcls(props);
-
-        this.aclOperationCr = crAcls[0];
 
         this.setClusterConfiguration(this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
       }
@@ -531,6 +532,8 @@ export class MskProvisioned extends TrackedConstruct {
     let aclsResources: CustomResource[] = [];
     console.log(props.clusterName);
 
+    //Set the ACL to allow the principal used by CR
+    //to add other ACLs
     let aclOperation = this.setAcl(this, 'aclOperation', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
@@ -545,6 +548,8 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.aclOperationCr = aclOperation;
 
+    //Set the ACL to allow for the brokers
+
     let aclBroker = this.setAcl(this, 'aclBroker', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
@@ -557,6 +562,8 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
+    //Set the ACL to allow the principal used by CR
+    //to perform CRUD operations on Topics
     let aclTopicCreate = this.setAcl(this, 'aclTopicCreate', {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
@@ -593,6 +600,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
+    //Set the ACL for Admin principal
     let adminAclCluster = this.setAcl(this, 'adminAclCluster', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
