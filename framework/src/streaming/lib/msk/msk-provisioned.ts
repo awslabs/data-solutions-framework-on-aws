@@ -78,6 +78,8 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly tlsCertifacateSecret: ISecret;
   private readonly kafkaClientLogLevel: string;
   private readonly inClusterAcl: boolean;
+  private aclOperationCr?: CustomResource;
+  private readonly crPrincipal: string;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -97,6 +99,7 @@ export class MskProvisioned extends TrackedConstruct {
     this.region = Stack.of(this).region;
     this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
     this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
+    this.crPrincipal = props.certificateDefinition.aclAdminPrincipal;
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
@@ -360,8 +363,9 @@ export class MskProvisioned extends TrackedConstruct {
       //And will allow the provide set ACLs for the lambda CR to do CRUD operations on MSK for ACLs and Topics
       if (!props.allowEveryoneIfNoAclFound) {
 
-        const crAcls: CustomResource[] =
-          this.setAcls(props);
+        const crAcls: CustomResource[] = this.setAcls(props);
+
+        this.aclOperationCr = crAcls[0];
 
         this.setClusterConfiguration(this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
       }
@@ -382,7 +386,7 @@ export class MskProvisioned extends TrackedConstruct {
     scope: Construct,
     id: string,
     aclDefinition: Acl,
-    removalPolicy: RemovalPolicy,
+    removalPolicy?: RemovalPolicy,
   ): CustomResource {
 
     if (!this.inClusterAcl) {
@@ -407,6 +411,10 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: 'Custom::MskAcl',
       removalPolicy: removalPolicy,
     });
+
+    if (aclDefinition.principal !== this.crPrincipal && this.inClusterAcl) {
+      cr.node.addDependency(this.aclOperationCr!);
+    }
 
     cr.node.addDependency(this.mskProvisionedCluster);
 
@@ -446,6 +454,10 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: 'Custom::MskTopic',
       removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
     });
+
+    if (this.inClusterAcl) {
+      cr.node.addDependency(this.aclOperationCr!);
+    }
 
     cr.node.addDependency(this.mskProvisionedCluster);
   }
@@ -528,6 +540,8 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
+    this.aclOperationCr = aclOperation;
+
     let aclBroker = this.setAcl(this, 'aclBroker', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
@@ -576,8 +590,20 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    let adminAcl = this.setAcl(this, 'aclAdmin', {
-      resourceType: AclResourceTypes.ANY,
+    let adminAclCluster = this.setAcl(this, 'adminAclCluster', {
+      resourceType: AclResourceTypes.CLUSTER,
+      resourceName: 'kafka-cluster',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.adminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.CLUSTER_ACTION,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    RemovalPolicy.DESTROY,
+    );
+
+    let adminAclTopic = this.setAcl(this, 'adminAclTopic', {
+      resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
       principal: props.certificateDefinition.adminPrincipal,
@@ -588,6 +614,19 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
+    let adminAclGroup = this.setAcl(this, 'adminAclGroup', {
+      resourceType: AclResourceTypes.GROUP,
+      resourceName: '*',
+      resourcePatternType: ResourcePatternTypes.LITERAL,
+      principal: props.certificateDefinition.adminPrincipal,
+      host: '*',
+      operation: AclOperationTypes.ALL,
+      permissionType: AclPermissionTypes.ALLOW,
+    },
+    RemovalPolicy.DESTROY,
+    );
+
+
     aclBroker.node.addDependency(aclOperation);
 
     aclsResources.push(aclBroker);
@@ -595,7 +634,9 @@ export class MskProvisioned extends TrackedConstruct {
     aclsResources.push(aclTopicCreate);
     aclsResources.push(aclTopicDelete);
     aclsResources.push(aclTopicUpdate);
-    aclsResources.push(adminAcl);
+    aclsResources.push(adminAclCluster);
+    aclsResources.push(adminAclTopic);
+    aclsResources.push(adminAclGroup);
 
     return aclsResources;
 
@@ -646,8 +687,6 @@ export class MskProvisioned extends TrackedConstruct {
 
     const lambdaCloudwatchLogUpdateConfiguration = this.createLogGroup('LambdaCloudwatchLogUpdateConfiguration');
 
-
-    //TO be scoped down
     let lambdaRole: Role = new Role(this, 'LambdaExecutionRoleUpdateConfiguration', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
