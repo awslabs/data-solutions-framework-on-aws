@@ -4029,7 +4029,7 @@ Retrieve DSF package.json version.
 ##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl"></a>
 
 ```typescript
-public setAcl(scope: Construct, id: string, aclDefinition: Acl, removalPolicy: RemovalPolicy): CustomResource
+public setAcl(scope: Construct, id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
 ```
 
 Creates a topic in the Msk Cluster.
@@ -4058,7 +4058,7 @@ the Kafka Acl definition.
 
 ---
 
-###### `removalPolicy`<sup>Required</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.removalPolicy"></a>
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl.parameter.removalPolicy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
