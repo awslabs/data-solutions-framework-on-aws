@@ -52,7 +52,7 @@ describe('default configuration', () => {
     });
   });
 
-  test( 'should have domain settings', () => {
+  test( 'should have domain settings with SAML disabled by default', () => {
     template.hasResourceProperties('AWS::OpenSearchService::Domain', {
       ClusterConfig: {
         DedicatedMasterEnabled: false,
@@ -77,16 +77,6 @@ describe('default configuration', () => {
       AdvancedSecurityOptions: {
         Enabled: true,
         InternalUserDatabaseEnabled: false,
-        SAMLOptions: {
-          Enabled: true,
-          Idp: {
-            EntityId: '<idpTest>',
-            MetadataContent: 'xmlContent',
-          },
-          RolesKey: 'Role',
-          SessionTimeoutMinutes: 480,
-          MasterBackendRole: 'IdpGroupId',
-        },
       },
       VPCOptions: Match.objectLike({
         SubnetIds: [
@@ -121,7 +111,7 @@ describe('non vpc config', () => {
   test('should have opensearch domain', () => {
     template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
   });
-  test('should have domain settings', () => {
+  test('should have domain settings with saml disabled', () => {
     template.hasResourceProperties('AWS::OpenSearchService::Domain', {
       ClusterConfig: {
         DedicatedMasterEnabled: false,
@@ -147,16 +137,6 @@ describe('non vpc config', () => {
       AdvancedSecurityOptions: {
         Enabled: true,
         InternalUserDatabaseEnabled: false,
-        SAMLOptions: {
-          Enabled: true,
-          Idp: {
-            EntityId: '<idpTest>',
-            MetadataContent: 'xmlContent',
-          },
-          RolesKey: 'Role',
-          SessionTimeoutMinutes: 480,
-          MasterBackendRole: 'IdpGroupId',
-        },
       },
     });
   });
