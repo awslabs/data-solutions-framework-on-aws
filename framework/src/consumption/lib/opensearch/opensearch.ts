@@ -8,12 +8,12 @@ import { AnyPrincipal, Effect, IRole, ManagedPolicy, PolicyStatement, Role, Serv
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Domain, DomainProps, IDomain, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
+import { AwsCustomResource, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { OpenSearchClusterProps, OpenSearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
 import { Context, CreateServiceLinkedRole, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role-service';
-import { AwsCustomResource, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 
 /**
  * A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
@@ -77,7 +77,7 @@ export class OpenSearchCluster extends TrackedConstruct {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   private removalPolicy: RemovalPolicy;
-  
+
   private prevCr?: CustomResource | AwsCustomResource;
   private persistentRoles: {[key:string]:string[]} = {};
 
@@ -305,8 +305,8 @@ export class OpenSearchCluster extends TrackedConstruct {
 
     this.addRoleMapping('AllAccessRoles', 'all_access', [samlAdminGroupId, this.masterRole.roleArn], true);
     this.addRoleMapping('SecurityManagerRoles', 'security_manager', [samlAdminGroupId, this.masterRole.roleArn], true);
-    
-    //enable SAML authentication after adding lambda permissions to execute API calls later.  
+
+    //enable SAML authentication after adding lambda permissions to execute API calls later.
     const updateDomain = new AwsCustomResource(this, 'EnableInternalUserDatabaseCR', {
       onCreate: {
         service: 'OpenSearch',
@@ -314,24 +314,24 @@ export class OpenSearchCluster extends TrackedConstruct {
         parameters: {
           DomainName: this.domain.domainName,
           AdvancedSecurityOptions: {
-            SAMLOptions:{
-              Enabled:true,
-              Idp: { 
-                 EntityId: samlMetaData.idpEntityId,
-                 MetadataContent: samlMetaData.idpMetadataContent
+            SAMLOptions: {
+              Enabled: true,
+              Idp: {
+                EntityId: samlMetaData.idpEntityId,
+                MetadataContent: samlMetaData.idpMetadataContent,
               },
               MasterBackendRole: samlMetaData.masterBackendRole,
               RolesKey: samlMetaData.rolesKey,
               SessionTimeoutMinutes: samlMetaData.sessionTimeoutMinutes,
-              SubjectKey:samlMetaData.subjectKey
-            }
+              SubjectKey: samlMetaData.subjectKey,
+            },
           },
         },
         physicalResourceId: PhysicalResourceId.of('idpEntityId'),
         outputPaths: ['DomainConfig.AdvancedSecurityOptions.SAMLOptions'],
       },
-      role:this.masterRole,
-      removalPolicy:this.removalPolicy
+      role: this.masterRole,
+      removalPolicy: this.removalPolicy,
     });
     updateDomain.node.addDependency(this.domain);
     if (this.prevCr) updateDomain.node.addDependency(this.prevCr);
@@ -374,8 +374,8 @@ export class OpenSearchCluster extends TrackedConstruct {
   public addRoleMapping(id: string, name: string, roles: string[], persist:boolean=false) {
     const persistentRoles = this.persistentRoles[name] || [];
     const rolesToPersist = persistentRoles.concat(roles);
-    if (persist){
-      this.persistentRoles[name] = rolesToPersist
+    if (persist) {
+      this.persistentRoles[name] = rolesToPersist;
     }
     this.callOpenSearchApi(id, '_plugins/_security/api/rolesmapping/' + name, {
       backend_roles: rolesToPersist,
