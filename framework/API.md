@@ -3929,7 +3929,7 @@ Returns a string representation of this construct.
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
 
 ```typescript
-public grantConsume(id: string, topicName: string, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
+public grantConsume(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
 ```
 
 Grant a principal the right to consume data from a topic.
@@ -3947,6 +3947,12 @@ the CDK resource id.
 - *Type:* string
 
 the topic to which the principal can produce data.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
 
 ---
 
@@ -3975,7 +3981,7 @@ the host to which the principal can produce data.
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce"></a>
 
 ```typescript
-public grantProduce(id: string, topicName: string, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
+public grantProduce(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
 ```
 
 Grant a principal to produce data to a topic.
@@ -3993,6 +3999,12 @@ the CDK resource id.
 - *Type:* string
 
 the topic to which the principal can produce data.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
 
 ---
 
@@ -4069,7 +4081,7 @@ Wether to keep the ACL or delete it when removing the resource from the Stack {@
 ##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic"></a>
 
 ```typescript
-public setTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+public setTopic(scope: Construct, id: string, clientAuthentication: Authentitcation, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
 ```
 
 Creates a topic in the Msk Cluster.
@@ -4087,6 +4099,12 @@ the scope of the stack where Topic will be created.
 - *Type:* string
 
 the CDK id for Topic.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
 
 ---
 
@@ -4219,6 +4237,7 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskProvisionedCluster">mskProvisionedCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 
 ---
 
@@ -4241,6 +4260,16 @@ public readonly mskProvisionedCluster: CfnCluster;
 ```
 
 - *Type:* aws-cdk-lib.aws_msk.CfnCluster
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
 
 ---
 
@@ -15315,6 +15344,27 @@ List of supported CPU architecture, either  X86_64 or ARM64.
 
 
 ##### `ARM64` <a name="ARM64" id="@cdklabs/aws-data-solutions-framework.utils.Architecture.ARM64"></a>
+
+---
+
+
+### Authentitcation <a name="Authentitcation" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation.IAM">IAM</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation.MTLS">MTLS</a></code> | *No description.* |
+
+---
+
+##### `IAM` <a name="IAM" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation.IAM"></a>
+
+---
+
+
+##### `MTLS` <a name="MTLS" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation.MTLS"></a>
 
 ---
 
