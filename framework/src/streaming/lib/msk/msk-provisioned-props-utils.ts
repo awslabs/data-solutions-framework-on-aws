@@ -431,6 +431,11 @@ export class ClientAuthentication {
   ) {}
 }
 
+export enum Authentitcation {
+  IAM = 'iam',
+  MTLS = 'mTLS',
+}
+
 //Taken from https://github.com/tulios/kafkajs/blob/master/types/index.d.ts
 //Cannot be imported/bundled due to JSII limitation
 export enum AclResourceTypes {
