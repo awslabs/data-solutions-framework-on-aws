@@ -23,7 +23,7 @@ import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role
  *
  * @example
  *  const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
- *    domainName:"mycluster2",
+ *    domainName:"mycluster1",
  *    samlEntityId:'<IdpIdentityId>',
  *    samlMetadataContent:'<IdpMetadataXml>',
  *    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
@@ -31,8 +31,8 @@ import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role
  *    removalPolicy:cdk.RemovalPolicy.DESTROY
  *  });
  *
- *  osCluster.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
- *  osCluster.addRoleMapping('ReadAllRole', 'readall','<IAMIdentityCenterDashboardUsersGroupId>');
+ *  osCluster.addRoleMapping('DashBoardUser', 'dashboards_user',['<IAMIdentityCenterDashboardUsersGroupId>']);
+ *  osCluster.addRoleMapping('ReadAllRole', 'readall',['<IAMIdentityCenterDashboardUsersGroupId>']);
  *
  *
 */
