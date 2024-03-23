@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, Aws } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup, Peer } from 'aws-cdk-lib/aws-ec2';
-import { ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
-export function mskCrudProviderSetup(
+export function mskIamCrudProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
-  mskCluster: CfnServerlessCluster,
-  lambdaSecurityGroup: ISecurityGroup) : DsfProvider {
+  mskCluster: CfnServerlessCluster | CfnCluster,
+  brokerSecurityGroup: ISecurityGroup) : DsfProvider {
 
   let account = Stack.of(scope).account;
   let region = Stack.of(scope).region;
@@ -25,7 +25,7 @@ export function mskCrudProviderSetup(
     vpc,
   });
 
-  lambdaSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
+  brokerSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
 
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
   const lambdaPolicy = [
@@ -179,4 +179,75 @@ export function mskAclAdminProviderSetup(
 
   return provider;
 
+}
+
+export function grantConsumeIam (
+  topicName: string,
+  principal: IPrincipal,
+  cluster: CfnCluster | CfnServerlessCluster) {
+
+  let clusterName = cluster.attrArn.split('/')[1];
+  let clusterUuid = cluster.attrArn.split('/')[2];
+
+  principal.addToPrincipalPolicy(new PolicyStatement({
+    actions: [
+      'kafka-cluster:Connect',
+    ],
+    resources: [
+      cluster.attrArn,
+    ],
+  }));
+
+  principal.addToPrincipalPolicy(
+    new PolicyStatement({
+      actions: [
+        'kafka-cluster:ReadData',
+        'kafka-cluster:DescribeTopic',
+      ],
+      resources: [
+        `arn:${Aws.PARTITION}:kafka:${Aws.REGION}:${Aws.ACCOUNT_ID}:topic/${clusterName}/${clusterUuid}/${topicName}`,
+      ],
+    }));
+
+  principal.addToPrincipalPolicy(
+    new PolicyStatement({
+      actions: [
+        'kafka-cluster:AlterGroup',
+        'kafka-cluster:DescribeGroup',
+      ],
+      resources: [
+        `arn:${Aws.PARTITION}:kafka:${Aws.REGION}:${Aws.ACCOUNT_ID}:topic/${clusterName}/${clusterUuid}/*`,
+      ],
+    }));
+
+}
+
+export function grantProduceIam (
+  topicName: string,
+  principal: IPrincipal,
+  cluster: CfnCluster | CfnServerlessCluster) {
+
+  let clusterName = cluster.attrArn.split('/')[1];
+  let clusterUuid = cluster.attrArn.split('/')[2];
+
+  principal.addToPrincipalPolicy(new PolicyStatement({
+    actions: [
+      'kafka-cluster:Connect',
+      'kafka-cluster:WriteDataIdempotently',
+    ],
+    resources: [
+      cluster.attrArn,
+    ],
+  }));
+
+  principal.addToPrincipalPolicy(
+    new PolicyStatement({
+      actions: [
+        'kafka-cluster:WriteData',
+        'kafka-cluster:DescribeTopic',
+      ],
+      resources: [
+        `arn:${Aws.PARTITION}:kafka:${Aws.REGION}:${Aws.ACCOUNT_ID}:topic/${clusterName}/${clusterUuid}/${topicName}`,
+      ],
+    }));
 }

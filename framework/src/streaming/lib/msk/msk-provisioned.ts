@@ -15,17 +15,13 @@ import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
-import { mskAclAdminProviderSetup } from './msk-helpers';
+import { grantConsumeIam, grantProduceIam, mskAclAdminProviderSetup, mskIamCrudProviderSetup } from './msk-helpers';
 import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cluster-setup';
 import { Acl, KafkaClientLogLevel, MskProvisionedProps } from './msk-provisioned-props';
 import {
-
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
-
-  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo,
-
+  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation,
 } from './msk-provisioned-props-utils';
-//import { MskTopic } from './msk-serverless-props';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -64,14 +60,15 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   public readonly mskProvisionedCluster: CfnCluster;
+  public readonly vpc: IVpc;
 
   private readonly removalPolicy: RemovalPolicy;
-  private readonly mskAclAdminProviderToken?: string;
+  private readonly mskInClusterAclAdminProviderToken?: string;
+  private readonly mskIamAclAdminProviderToken?: string;
   private readonly account: string;
   private readonly region: string;
   private readonly partition: string;
   private readonly mskBrokerinstanceType: MskBrokerInstanceType;
-  private readonly vpc: IVpc;
   private readonly subnetSelectionIds: string[];
   private readonly connections: Connections;
   private readonly defaultNumberOfBrokerNodes: number;
@@ -79,8 +76,9 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly tlsCertifacateSecret: ISecret;
   private readonly kafkaClientLogLevel: string;
   private readonly inClusterAcl: boolean;
-  private aclOperationCr?: CustomResource;
+  private readonly iamAcl: boolean;
   private readonly crPrincipal: string;
+  private aclOperationCr?: CustomResource;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -169,9 +167,11 @@ export class MskProvisioned extends TrackedConstruct {
         : undefined;
 
     this.inClusterAcl = false;
+    this.iamAcl = false;
+
     let clientAuthentication: CfnCluster.ClientAuthenticationProperty;
 
-    [clientAuthentication, this.inClusterAcl] = clientAuthenticationSetup(props.clientAuthentication);
+    [clientAuthentication, this.inClusterAcl, this.iamAcl] = clientAuthenticationSetup(props.clientAuthentication);
 
     let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
 
@@ -321,13 +321,25 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.mskProvisionedCluster],
     });
 
+    //Set the CR that will use IAM credentials
+    // This will be used for CRUD on Topics
+    if (this.iamAcl) {
+      this.mskIamAclAdminProviderToken = mskIamCrudProviderSetup(
+        this,
+        this.removalPolicy,
+        this.vpc,
+        this.mskProvisionedCluster,
+        this.connections.securityGroups[0],
+      ).serviceToken;
+
+    }
 
     //If TLS or SASL/SCRAM (once implemented)
     //Set up the CR that will set the ACL using the Certs or Username/Password
     if (clientAuthentication.tls) {
       //Configure the CR for applying ACLs
       //CR will also handle topic creation
-      this.mskAclAdminProviderToken = mskAclAdminProviderSetup(
+      this.mskInClusterAclAdminProviderToken = mskAclAdminProviderSetup(
         this,
         this.removalPolicy,
         this.vpc,
@@ -398,7 +410,7 @@ export class MskProvisioned extends TrackedConstruct {
     }
 
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskAclAdminProviderToken!,
+      serviceToken: this.mskInClusterAclAdminProviderToken!,
       properties: {
         logLevel: this.kafkaClientLogLevel,
         secretArn: this.tlsCertifacateSecret.secretArn,
@@ -438,14 +450,23 @@ export class MskProvisioned extends TrackedConstruct {
   public setTopic(
     scope: Construct,
     id: string,
+    clientAuthentication: Authentitcation,
     topicDefinition: MskTopic[],
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
     timeout?: number) {
 
+    let serviceToken: string;
+
+    if (clientAuthentication === Authentitcation.IAM) {
+      serviceToken = this.mskIamAclAdminProviderToken!;
+    } else {
+      serviceToken = this.mskInClusterAclAdminProviderToken!;
+    }
+
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskAclAdminProviderToken!,
+      serviceToken: serviceToken,
       properties: {
         logLevel: this.kafkaClientLogLevel,
         secretArn: this.tlsCertifacateSecret.secretArn,
@@ -476,23 +497,41 @@ export class MskProvisioned extends TrackedConstruct {
   public grantProduce(
     id: string,
     topicName: string,
+    clientAuthentication: Authentitcation,
     principal: IPrincipal | string,
     host?: string,
     removalPolicy?: RemovalPolicy) {
 
-    const cr = this.setAcl(this, id, {
-      resourceType: AclResourceTypes.TOPIC,
-      resourceName: topicName,
-      resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: principal as string,
-      host: host ?? '*',
-      operation: AclOperationTypes.WRITE,
-      permissionType: AclPermissionTypes.ALLOW,
-    },
-    removalPolicy ?? RemovalPolicy.DESTROY,
-    );
+    if (clientAuthentication === Authentitcation.IAM) {
 
-    cr.node.addDependency(this.mskProvisionedCluster);
+      //Check if principal is not a string
+      if (typeof principal == 'string') {
+        throw Error('principal muse be of type IPrincipal not string');
+      }
+
+      grantProduceIam(
+        topicName,
+        principal as IPrincipal,
+        this.mskProvisionedCluster);
+
+    } else {
+
+      const cr = this.setAcl(this, id, {
+        resourceType: AclResourceTypes.TOPIC,
+        resourceName: topicName,
+        resourcePatternType: ResourcePatternTypes.LITERAL,
+        principal: principal as string,
+        host: host ?? '*',
+        operation: AclOperationTypes.WRITE,
+        permissionType: AclPermissionTypes.ALLOW,
+      },
+      removalPolicy ?? RemovalPolicy.DESTROY,
+      );
+
+      cr.node.addDependency(this.mskProvisionedCluster);
+    }
+
+
   }
 
   /**
@@ -507,24 +546,39 @@ export class MskProvisioned extends TrackedConstruct {
   public grantConsume(
     id: string,
     topicName: string,
+    clientAuthentication: Authentitcation,
     principal: IPrincipal | string,
     host?: string,
     removalPolicy?: RemovalPolicy) {
 
+    if (clientAuthentication === Authentitcation.IAM) {
 
-    const cr = this.setAcl(this, id, {
-      resourceType: AclResourceTypes.TOPIC,
-      resourceName: topicName,
-      resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: principal as string,
-      host: host ?? '*',
-      operation: AclOperationTypes.READ,
-      permissionType: AclPermissionTypes.ALLOW,
-    },
-    removalPolicy ?? RemovalPolicy.DESTROY,
-    );
+      //Check if principal is not a string
+      if (typeof principal == 'string') {
+        throw Error('principal muse be of type IPrincipal not string');
+      }
 
-    cr.node.addDependency(this.mskProvisionedCluster);
+      grantConsumeIam(
+        topicName,
+        principal as IPrincipal,
+        this.mskProvisionedCluster);
+
+    } else {
+
+      const cr = this.setAcl(this, id, {
+        resourceType: AclResourceTypes.TOPIC,
+        resourceName: topicName,
+        resourcePatternType: ResourcePatternTypes.LITERAL,
+        principal: principal as string,
+        host: host ?? '*',
+        operation: AclOperationTypes.READ,
+        permissionType: AclPermissionTypes.ALLOW,
+      },
+      removalPolicy ?? RemovalPolicy.DESTROY,
+      );
+
+      cr.node.addDependency(this.mskProvisionedCluster);
+    }
   }
 
   private setAcls(props: MskProvisionedProps): CustomResource[] {
