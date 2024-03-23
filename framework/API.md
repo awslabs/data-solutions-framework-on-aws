@@ -3873,7 +3873,7 @@ ClientVPNEndpoint will be provisioned automatically for secure access to OpenSea
 
 ```typescript
  const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
-   domainName:"mycluster2",
+   domainName:"mycluster1",
    samlEntityId:'<IdpIdentityId>',
    samlMetadataContent:'<IdpMetadataXml>',
    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
@@ -3881,8 +3881,8 @@ ClientVPNEndpoint will be provisioned automatically for secure access to OpenSea
    removalPolicy:cdk.RemovalPolicy.DESTROY
  });
 
- osCluster.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
- osCluster.addRoleMapping('ReadAllRole', 'readall','<IAMIdentityCenterDashboardUsersGroupId>');
+ osCluster.addRoleMapping('DashBoardUser', 'dashboards_user',['<IAMIdentityCenterDashboardUsersGroupId>']);
+ osCluster.addRoleMapping('ReadAllRole', 'readall',['<IAMIdentityCenterDashboardUsersGroupId>']);
 ```
 
 
