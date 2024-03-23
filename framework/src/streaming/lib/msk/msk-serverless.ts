@@ -7,7 +7,7 @@ import { IPrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
-import { mskCrudProviderSetup } from './msk-helpers';
+import { mskIamCrudProviderSetup } from './msk-helpers';
 import { MskServerlessProps, MskTopic } from './msk-serverless-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -59,7 +59,7 @@ export class MskServerless extends TrackedConstruct {
       clientAuthentication: props.clientAuthentication,
     });
 
-    let mskCrudProvider = mskCrudProviderSetup(
+    let mskCrudProvider = mskIamCrudProviderSetup(
       this,
       this.removalPolicy,
       props.vpc,
