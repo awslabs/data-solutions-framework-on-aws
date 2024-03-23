@@ -1,9 +1,6 @@
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: Apache-2.0
-
 import os
 from aws_cdk import App, Environment
-from stacks.main import OpenSearchStack
+from stacks.main import MyStack
 
 # for development, use account/region from cdk cli
 dev_env = Environment(
@@ -12,7 +9,7 @@ dev_env = Environment(
 )
 
 app = App()
-
-OpenSearchStack(app, "dsf-quickstart-dev", env=dev_env);
+MyStack(app, "opensearch-quickstart-dev", env=dev_env)
+# MyStack(app, "opensearch-quickstart-prod", env=prod_env)
 
 app.synth()
