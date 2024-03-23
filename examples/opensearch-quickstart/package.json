@@ -1,0 +1,13 @@
+{
+    "//": "~~ This package definition is used for lerna commands integration with Python. Do not delete. Modify scripts as needed.",
+    "name": "example_opensearch_quickstart",
+    "scripts": {
+        "build-example": "npx projen build-example",
+        "test:unit": "npx projen test:unit",
+        "test:e2e": "npx projen test:e2e",
+        "package": "npx projen package"
+    },
+    "dependencies": {
+        "@cdklabs/aws-data-solutions-framework": "*"
+    }
+}
