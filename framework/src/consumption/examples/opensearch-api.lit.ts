@@ -46,9 +46,15 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
         }
       }
     });
-    osCluster.callOpenSearchApi('AddData1', 'movies-01/_doc',{"title": "Rush", "year": 2013}, 'POST');
-    osCluster.callOpenSearchApi('AddData2', 'movies-01/_doc',{"title": "Barbie", "year": 2023}, 'POST');
-    osCluster.callOpenSearchApi('AddData3', 'movies-01/_doc',{"title": "Toy Story", "year": 2014}, 'POST');
+    const metadata='{ "index" : { "_index" : "movies-02"}}';
+    const bulk=`${metadata}
+    {"title": "Barbie", "year": 2023}
+    ${metadata}
+    {"title": "Openheimer", "year": 2023}`;
+    osCluster.addRoleMapping('AnotherAdmin', 'all_access',['sometestId']);
+    osCluster.callOpenSearchApi('AddBulk','_bulk',bulk+'\n\n','POST');
+    osCluster.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
+    osCluster.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
     osCluster.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
   }
 }
