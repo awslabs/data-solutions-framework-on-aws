@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CustomResource, RemovalPolicy, Stack, Fn } from 'aws-cdk-lib';
+import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
-import { mskIamCrudProviderSetup } from './msk-helpers';
+import { grantConsumeIam, grantProduceIam, mskIamCrudProviderSetup } from './msk-helpers';
 import { MskServerlessProps, MskTopic } from './msk-serverless-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -23,8 +23,6 @@ export class MskServerless extends TrackedConstruct {
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly mskCrudProviderToken: string;
-  private readonly account: string;
-  private readonly region: string;
 
 
   /**
@@ -40,9 +38,6 @@ export class MskServerless extends TrackedConstruct {
     };
 
     super(scope, id, trackedConstructProps);
-
-    this.account = Stack.of(scope).account;
-    this.region = Stack.of(scope).region;
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
@@ -121,29 +116,11 @@ export class MskServerless extends TrackedConstruct {
    */
   public grantProduce (topicName: string, principal: IPrincipal) {
 
-    let clusterName = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
-    let clusterUuid = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
+    grantProduceIam(
+      topicName,
+      principal as IPrincipal,
+      this.mskServerlessCluster);
 
-    principal.addToPrincipalPolicy(new PolicyStatement({
-      actions: [
-        'kafka-cluster:Connect',
-        'kafka-cluster:WriteDataIdempotently',
-      ],
-      resources: [
-        this.mskServerlessCluster.attrArn,
-      ],
-    }));
-
-    principal.addToPrincipalPolicy(
-      new PolicyStatement({
-        actions: [
-          'kafka-cluster:WriteData',
-          'kafka-cluster:DescribeTopic',
-        ],
-        resources: [
-          `arn:aws:kafka:${this.region}:${this.account}:topic/${clusterName}/${clusterUuid}/${topicName}`,
-        ],
-      }));
   }
 
   /**
@@ -154,39 +131,10 @@ export class MskServerless extends TrackedConstruct {
    */
   public grantConsume (topicName: string, principal: IPrincipal) {
 
-    let clusterName = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
-    let clusterUuid = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
-
-    principal.addToPrincipalPolicy(new PolicyStatement({
-      actions: [
-        'kafka-cluster:Connect',
-      ],
-      resources: [
-        this.mskServerlessCluster.attrArn,
-      ],
-    }));
-
-    principal.addToPrincipalPolicy(
-      new PolicyStatement({
-        actions: [
-          'kafka-cluster:ReadData',
-          'kafka-cluster:DescribeTopic',
-        ],
-        resources: [
-          `arn:aws:kafka:${this.region}:${this.account}:topic/${clusterName}/${clusterUuid}/${topicName}`,
-        ],
-      }));
-
-    principal.addToPrincipalPolicy(
-      new PolicyStatement({
-        actions: [
-          'kafka-cluster:AlterGroup',
-          'kafka-cluster:DescribeGroup',
-        ],
-        resources: [
-          `arn:aws:kafka:${this.region}:${this.account}:topic/${clusterName}/${clusterUuid}/*`,
-        ],
-      }));
+    grantConsumeIam(
+      topicName,
+      principal as IPrincipal,
+      this.mskServerlessCluster);
 
   }
 }

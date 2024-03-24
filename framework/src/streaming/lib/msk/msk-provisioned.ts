@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 
-import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CustomResource, Duration, Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Connections, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -362,7 +362,10 @@ export class MskProvisioned extends TrackedConstruct {
         let clusterConfiguration: CfnConfiguration =
           MskProvisioned.createCLusterConfiguration(
             this, 'ClusterConfigDsf',
-            'dsfconfiguration',
+            //This must be unique to avoid failing the stack creation
+            //If we create the construct twice
+            //Name of a configuration is required
+            `dsfconfiguration-${Names.uniqueResourceName(this, {maxLength: 5})}`,
             join(__dirname, './resources/cluster-config-msk-provisioned'),
             [props.kafkaVersion],
           );
@@ -512,7 +515,7 @@ export class MskProvisioned extends TrackedConstruct {
 
       //Check if principal is not a string
       if (typeof principal == 'string') {
-        throw Error('principal muse be of type IPrincipal not string');
+        throw Error('principal must be of type IPrincipal not string');
       }
 
       grantProduceIam(
@@ -521,6 +524,11 @@ export class MskProvisioned extends TrackedConstruct {
         this.mskProvisionedCluster);
 
     } else {
+
+      //Check if principal is not a string
+      if (typeof principal !== 'string') {
+        throw Error('principal must not be of type IPrincipal');
+      }
 
       const cr = this.setAcl(this, id, {
         resourceType: AclResourceTypes.TOPIC,
@@ -561,7 +569,7 @@ export class MskProvisioned extends TrackedConstruct {
 
       //Check if principal is not a string
       if (typeof principal == 'string') {
-        throw Error('principal muse be of type IPrincipal not string');
+        throw Error('principal must be of type IPrincipal not string');
       }
 
       grantConsumeIam(
@@ -570,6 +578,11 @@ export class MskProvisioned extends TrackedConstruct {
         this.mskProvisionedCluster);
 
     } else {
+
+      //Check if principal is not a string
+      if (typeof principal !== 'string') {
+        throw Error('principal must not be of type IPrincipal');
+      }
 
       const cr = this.setAcl(this, id, {
         resourceType: AclResourceTypes.TOPIC,
