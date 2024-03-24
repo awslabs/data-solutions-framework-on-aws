@@ -129,7 +129,7 @@ export interface MskProvisionedProps {
  * This Props allow you to define the principals that will be adminstartor
  * as well as the principal that will be used by the CDK Custom resources to
  */
-  readonly certificateDefinition: AclAdminProps;
+  readonly certificateDefinition?: AclAdminProps;
 
 
   /**

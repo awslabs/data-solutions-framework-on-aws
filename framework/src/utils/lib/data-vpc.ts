@@ -78,7 +78,7 @@ export class DataVpc extends Construct {
       removalPolicy: removalPolicy,
     });
 
-    this.flowLogRole = props.flowLogRole || new Role(scope, 'FlowLogRole', {
+    this.flowLogRole = props.flowLogRole || new Role(this, 'FlowLogRole', {
       assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
     });
 
@@ -92,7 +92,7 @@ export class DataVpc extends Construct {
     const publicSubnetMask = vpcMask + 4;
     const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
-    this.vpc = new Vpc(scope, 'Vpc', {
+    this.vpc = new Vpc(this, 'Vpc', {
       ipAddresses: IpAddresses.cidr(props.vpcCidr),
       maxAzs: 3,
       natGateways: 3,

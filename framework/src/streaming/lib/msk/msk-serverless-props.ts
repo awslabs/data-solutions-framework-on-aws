@@ -20,8 +20,6 @@ export interface MskServerlessProps {
 
   readonly clusterName: string;
 
-  readonly clientAuthentication: CfnServerlessCluster.ClientAuthenticationProperty;
-
   readonly vpcConfigs: CfnServerlessCluster.VpcConfigProperty [];
 
   readonly vpc: IVpc;
