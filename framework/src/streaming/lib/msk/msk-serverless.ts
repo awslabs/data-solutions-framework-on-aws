@@ -56,7 +56,13 @@ export class MskServerless extends TrackedConstruct {
     this.mskServerlessCluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
       clusterName: props.clusterName ?? 'dsfServerlessCluster',
       vpcConfigs: props.vpcConfigs,
-      clientAuthentication: props.clientAuthentication,
+      clientAuthentication: {
+        sasl: {
+          iam: {
+            enabled: true,
+          },
+        },
+      },
     });
 
     let mskCrudProvider = mskIamCrudProviderSetup(

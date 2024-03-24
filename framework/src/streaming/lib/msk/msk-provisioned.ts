@@ -73,11 +73,11 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly connections: Connections;
   private readonly defaultNumberOfBrokerNodes: number;
   private readonly numberOfBrokerNodes: number;
-  private readonly tlsCertifacateSecret: ISecret;
+  private readonly tlsCertifacateSecret?: ISecret;
   private readonly kafkaClientLogLevel: string;
   private readonly inClusterAcl: boolean;
   private readonly iamAcl: boolean;
-  private readonly crPrincipal: string;
+  private readonly crPrincipal?: string;
   private aclOperationCr?: CustomResource;
 
   /**
@@ -98,10 +98,11 @@ export class MskProvisioned extends TrackedConstruct {
     this.region = Stack.of(this).region;
     this.partition = Stack.of(this).partition;
 
-    this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
+    if (props.certificateDefinition) {
+      this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
+      this.crPrincipal = props.certificateDefinition.aclAdminPrincipal;
+    }
     this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
-    this.crPrincipal = props.certificateDefinition.aclAdminPrincipal;
-
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     if (!props.vpc) {
@@ -337,6 +338,11 @@ export class MskProvisioned extends TrackedConstruct {
     //If TLS or SASL/SCRAM (once implemented)
     //Set up the CR that will set the ACL using the Certs or Username/Password
     if (clientAuthentication.tls) {
+
+      if (!props.certificateDefinition) {
+        throw new Error('TLS Authentication requires a certificate definition');
+      }
+
       //Configure the CR for applying ACLs
       //CR will also handle topic creation
       this.mskInClusterAclAdminProviderToken = mskAclAdminProviderSetup(
@@ -345,7 +351,7 @@ export class MskProvisioned extends TrackedConstruct {
         this.vpc,
         this.mskProvisionedCluster,
         this.connections.securityGroups[0],
-        props.certificateDefinition.secretCertificate,
+        props.certificateDefinition!.secretCertificate,
       ).serviceToken;
 
       // Create the configuration
@@ -413,7 +419,7 @@ export class MskProvisioned extends TrackedConstruct {
       serviceToken: this.mskInClusterAclAdminProviderToken!,
       properties: {
         logLevel: this.kafkaClientLogLevel,
-        secretArn: this.tlsCertifacateSecret.secretArn,
+        secretArn: this.tlsCertifacateSecret!.secretArn,
         region: Stack.of(scope).region,
         mskClusterArn: this.mskProvisionedCluster.attrArn,
         resourceType: aclDefinition.resourceType,
@@ -469,7 +475,7 @@ export class MskProvisioned extends TrackedConstruct {
       serviceToken: serviceToken,
       properties: {
         logLevel: this.kafkaClientLogLevel,
-        secretArn: this.tlsCertifacateSecret.secretArn,
+        secretArn: this.tlsCertifacateSecret?.secretArn,
         topics: topicDefinition,
         waitForLeaders: waitForLeaders,
         timeout: timeout,
@@ -592,7 +598,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.aclAdminPrincipal,
+      principal: props.certificateDefinition!.aclAdminPrincipal,
       host: '*',
       operation: AclOperationTypes.ALTER,
       permissionType: AclPermissionTypes.ALLOW,
@@ -622,7 +628,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.aclAdminPrincipal,
+      principal: props.certificateDefinition!.aclAdminPrincipal,
       host: '*',
       operation: AclOperationTypes.CREATE,
       permissionType: AclPermissionTypes.ALLOW,
@@ -634,7 +640,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.aclAdminPrincipal,
+      principal: props.certificateDefinition!.aclAdminPrincipal,
       host: '*',
       operation: AclOperationTypes.DELETE,
       permissionType: AclPermissionTypes.ALLOW,
@@ -646,7 +652,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.aclAdminPrincipal,
+      principal: props.certificateDefinition!.aclAdminPrincipal,
       host: '*',
       operation: AclOperationTypes.ALTER_CONFIGS,
       permissionType: AclPermissionTypes.ALLOW,
@@ -659,7 +665,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.adminPrincipal,
+      principal: props.certificateDefinition!.adminPrincipal,
       host: '*',
       operation: AclOperationTypes.CLUSTER_ACTION,
       permissionType: AclPermissionTypes.ALLOW,
@@ -671,7 +677,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.adminPrincipal,
+      principal: props.certificateDefinition!.adminPrincipal,
       host: '*',
       operation: AclOperationTypes.ALL,
       permissionType: AclPermissionTypes.ALLOW,
@@ -683,7 +689,7 @@ export class MskProvisioned extends TrackedConstruct {
       resourceType: AclResourceTypes.GROUP,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
-      principal: props.certificateDefinition.adminPrincipal,
+      principal: props.certificateDefinition!.adminPrincipal,
       host: '*',
       operation: AclOperationTypes.ALL,
       permissionType: AclPermissionTypes.ALLOW,

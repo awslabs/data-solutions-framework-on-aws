@@ -7,7 +7,7 @@ import { MskServerless } from '../lib/msk';
 
 const app = new cdk.App();
 
-const stack = new cdk.Stack(app, 'DsfTestMskProvisioned');
+const stack = new cdk.Stack(app, 'DsfTestMskServerless');
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
@@ -19,13 +19,6 @@ let vpc = new DataVpc(stack, 'vpc', {
 /// !show
 const msk = new MskServerless(stack, 'cluster', {
   clusterName: 'dev-demo',
-  clientAuthentication: {
-    sasl: {
-      iam: {
-        enabled: true,
-      },
-    },
-  },
   vpcConfigs: [
     {
       subnetIds: vpc.vpc.privateSubnets.map((s: ISubnet) => s.subnetId),

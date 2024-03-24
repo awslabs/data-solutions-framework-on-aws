@@ -295,7 +295,7 @@ describe('With default configuration, the construct ', () => {
         },
         {
           Key: 'Name',
-          Value: 'Default/DataPlatform/Vpc',
+          Value: 'Default/DataPlatform/DataVpc/Vpc',
         },
       ]),
     });
@@ -702,7 +702,7 @@ describe('With default configuration, the construct ', () => {
         },
       ]),
       VpcId: {
-        Ref: Match.stringLikeRegexp('DataPlatformVpc.*'),
+        Ref: Match.stringLikeRegexp('DataPlatformDataVpc.*'),
       },
     });
 
