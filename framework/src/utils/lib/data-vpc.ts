@@ -78,7 +78,7 @@ export class DataVpc extends Construct {
       removalPolicy: removalPolicy,
     });
 
-    this.flowLogRole = props.flowLogRole || new Role(scope, 'FlowLogRole', {
+    this.flowLogRole = props.flowLogRole || new Role(this, 'FlowLogRole', {
       assumedBy: new ServicePrincipal('vpc-flow-logs.amazonaws.com'),
     });
 
@@ -101,7 +101,7 @@ export class DataVpc extends Construct {
       Stack.of(this).availabilityZones.length >3 ?
         3 : Stack.of(this).availabilityZones.length;
 
-    this.vpc = new Vpc(scope, 'Vpc', {
+    this.vpc = new Vpc(this, 'Vpc', {
       ipAddresses: IpAddresses.cidr(props.vpcCidr),
       maxAzs: 3,
       natGateways: props.natGateways ?? defaultNumberOfNat,

@@ -51,14 +51,14 @@ describe('With default configuration, the construct should', () => {
     });
 
     template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyName: Match.stringLikeRegexp('DefaultWorkgroupFlowLogRoleDefaultPolicy.*'),
+      PolicyName: Match.stringLikeRegexp('DefaultNamespaceManagementRoleDefaultPolicy.*'),
     });
 
     template.hasResourceProperties('AWS::EC2::VPC', {
       Tags: Match.arrayWith([
         {
           Key: 'Name',
-          Value: 'Default/DefaultWorkgroup/Vpc',
+          Value: 'Default/DefaultWorkgroup/DefaultVpc/Vpc',
         },
       ]),
     });
@@ -75,7 +75,7 @@ describe('With default configuration, the construct should', () => {
         },
       ],
       VpcId: {
-        Ref: Match.stringLikeRegexp('DefaultWorkgroupVpc.*'),
+        Ref: Match.stringLikeRegexp('DefaultWorkgroupDefaultVpc.*'),
       },
     });
   });
@@ -107,8 +107,8 @@ describe('With default configuration, the construct should', () => {
       Port: 5439,
       PubliclyAccessible: Match.exact(false),
       SubnetIds: Match.arrayEquals([
-        { Ref: Match.stringLikeRegexp('^DefaultWorkgroupVpcPrivateSubnet1Subnet.+') },
-        { Ref: Match.stringLikeRegexp('^DefaultWorkgroupVpcPrivateSubnet2Subnet.+') },
+        { Ref: Match.stringLikeRegexp('^DefaultWorkgroupDefaultVpcPrivateSubnet1.+') },
+        { Ref: Match.stringLikeRegexp('^DefaultWorkgroupDefaultVpcPrivateSubnet2.+') },
       ]),
       SecurityGroupIds: Match.arrayEquals([
         { 'Fn::GetAtt': [Match.stringLikeRegexp('^DefaultWorkgroupDefaultSecurityGroup.+'), 'GroupId'] },
@@ -204,7 +204,7 @@ describe('With default configuration, the construct should', () => {
             },
           ],
           SubnetId: {
-            Ref: Match.stringLikeRegexp('DefaultWorkgroupVpcPrivateSubnet1Subnet.*'),
+            Ref: Match.stringLikeRegexp('DefaultWorkgroupDefaultVpcPrivateSubnet1Subnet.*'),
           },
         },
       },
