@@ -1,10 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "aws-cdk.lambda-layer-kubectl-v27",
-      "type": "devenv"
-    },
-    {
       "name": "black",
       "type": "devenv"
     },
