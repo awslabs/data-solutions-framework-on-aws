@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * E2E test for SparkJob
+ * E2E test for MSK provisioned - IAM auth
  *
- * @group e2e/processing/spark-emr-serverless
+ * @group e2e/streaming/msk-provisioned-iam-auth
  */
 
 import * as cdk from 'aws-cdk-lib';
