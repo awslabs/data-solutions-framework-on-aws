@@ -80,8 +80,8 @@ describe('default configuration', () => {
       },
       VPCOptions: Match.objectLike({
         SubnetIds: [
-          { Ref: Match.stringLikeRegexp('OpenSearchVpcPrivateSubnet1Subnet.*') },
-          { Ref: Match.stringLikeRegexp('OpenSearchVpcPrivateSubnet2Subnet.*') },
+          { Ref: Match.stringLikeRegexp('OpenSearchVpcDataVpcPrivateSubnet1Subnet.*') },
+          { Ref: Match.stringLikeRegexp('OpenSearchVpcDataVpcPrivateSubnet2Subnet.*') },
         ],
       }),
     });
@@ -200,7 +200,7 @@ describe('custom vpc configuration', () => {
         ],
         SubnetIds: [
           {
-            Ref: 'VpcPrivateSubnet1Subnet536B997A',
+            Ref: 'OpenSearchDataVpcPrivateSubnet1Subnet528A300C',
           },
         ],
       },
