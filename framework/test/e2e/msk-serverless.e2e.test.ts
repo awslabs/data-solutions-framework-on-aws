@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * E2E test for SparkJob
+ * E2E test for MSK serverless
  *
- * @group e2e/processing/spark-emr-serverless
+ * @group e2e/streaming/msk-serverless
  */
 
 import * as cdk from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
 import { MskServerless } from '../../src/streaming/lib/msk';
 import { DataVpc } from '../../src/utils';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 jest.setTimeout(10000000);
 
@@ -37,8 +38,20 @@ const msk = new MskServerless(stack, 'cluster', {
     },
   ],
   vpc: vpc.vpc,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
+const consumerRole = new Role(stack, 'consumerRole', {
+    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+});
+
+msk.grantConsume('topic1', consumerRole);
+
+msk.addTopic(stack, 'topic4', [{
+  topic: 'topic4',
+  numPartitions: 1,
+  replicationFactor: 1,
+}], cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskServerlessCluster', {
   value: msk.mskServerlessCluster.attrArn,

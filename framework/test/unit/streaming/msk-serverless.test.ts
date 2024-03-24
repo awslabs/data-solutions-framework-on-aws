@@ -113,7 +113,11 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
               'Fn::Join': [
                 '',
                 [
-                  'arn:aws:kafka:',
+                  'arn:',
+                  {
+                    Ref: 'AWS::Partition',
+                  },
+                  ':kafka:',
                   {
                     Ref: 'AWS::Region',
                   },
@@ -141,7 +145,7 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
                   '/',
                   {
                     'Fn::Select': [
-                      1,
+                      2,
                       {
                         'Fn::Split': [
                           '/',
@@ -170,7 +174,11 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
               'Fn::Join': [
                 '',
                 [
-                  'arn:aws:kafka:',
+                  'arn:',
+                  {
+                    Ref: 'AWS::Partition',
+                  },
+                  ':kafka:',
                   {
                     Ref: 'AWS::Region',
                   },
@@ -198,7 +206,7 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
                   '/',
                   {
                     'Fn::Select': [
-                      1,
+                      2,
                       {
                         'Fn::Split': [
                           '/',
@@ -218,6 +226,7 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
             },
           },
         ],
+        Version: '2012-10-17',
       }),
     });
   });
@@ -251,7 +260,11 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
               'Fn::Join': [
                 '',
                 [
-                  'arn:aws:kafka:',
+                  'arn:',
+                  {
+                    Ref: 'AWS::Partition',
+                  },
+                  ':kafka:',
                   {
                     Ref: 'AWS::Region',
                   },
@@ -279,7 +292,7 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
                   '/',
                   {
                     'Fn::Select': [
-                      1,
+                      2,
                       {
                         'Fn::Split': [
                           '/',
