@@ -22,7 +22,7 @@ jobs:
       contents: write
     strategy:
         matrix:
-          suite: [processing, storage, governance, utils, consumption]
+          suite: [processing, storage, governance, utils, consumption, streaming]
         fail-fast: false
     steps:
       - name: Checkout Repo
