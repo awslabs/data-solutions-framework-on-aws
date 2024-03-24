@@ -92,64 +92,132 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
       Roles: ['consumer'],
       PolicyName: 'consumerRolePolicy3500D1E5',
       PolicyDocument: Match.objectLike({
-        Statement: [
+        Statement:[
           {
-            Action: 'kafka-cluster:Connect',
-            Effect: 'Allow',
-            Resource: {
-              'Fn::GetAtt': [
-                'clusterCfnServerlessCluster0DEE6630',
-                'Arn',
-              ],
-            },
+           "Action": "kafka-cluster:Connect",
+           "Effect": "Allow",
+           "Resource": {
+            "Fn::GetAtt": [
+             "clusterCfnServerlessCluster0DEE6630",
+             "Arn"
+            ]
+           }
           },
           {
-            Action: [
-              'kafka-cluster:ReadData',
-              'kafka-cluster:DescribeTopic',
-            ],
-            Effect: 'Allow',
-            Resource: {
-              'Fn::Join': [
-                '',
-                [
-                  'arn:aws:kafka:',
+           "Action": [
+            "kafka-cluster:ReadData",
+            "kafka-cluster:DescribeTopic"
+           ],
+           "Effect": "Allow",
+           "Resource": {
+            "Fn::Join": [
+             "",
+             [
+              "arn:aws:kafka:",
+              {
+               "Ref": "AWS::Region"
+              },
+              ":",
+              {
+               "Ref": "AWS::AccountId"
+              },
+              ":topic/",
+              {
+               "Fn::Select": [
+                1,
+                {
+                 "Fn::Split": [
+                  "/",
                   {
-                    Ref: 'AWS::Region',
-                  },
-                  ':',
+                   "Fn::GetAtt": [
+                    "clusterCfnServerlessCluster0DEE6630",
+                    "Arn"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              "/",
+              {
+               "Fn::Select": [
+                1,
+                {
+                 "Fn::Split": [
+                  "/",
                   {
-                    Ref: 'AWS::AccountId',
-                  },
-                  ':topic/undefined/undefined/topic1',
-                ],
-              ],
-            },
+                   "Fn::GetAtt": [
+                    "clusterCfnServerlessCluster0DEE6630",
+                    "Arn"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              "/topic1"
+             ]
+            ]
+           }
           },
           {
-            Action: [
-              'kafka-cluster:AlterGroup',
-              'kafka-cluster:DescribeGroup',
-            ],
-            Effect: 'Allow',
-            Resource: {
-              'Fn::Join': [
-                '',
-                [
-                  'arn:aws:kafka:',
+           "Action": [
+            "kafka-cluster:AlterGroup",
+            "kafka-cluster:DescribeGroup"
+           ],
+           "Effect": "Allow",
+           "Resource": {
+            "Fn::Join": [
+             "",
+             [
+              "arn:aws:kafka:",
+              {
+               "Ref": "AWS::Region"
+              },
+              ":",
+              {
+               "Ref": "AWS::AccountId"
+              },
+              ":topic/",
+              {
+               "Fn::Select": [
+                1,
+                {
+                 "Fn::Split": [
+                  "/",
                   {
-                    Ref: 'AWS::Region',
-                  },
-                  ':',
+                   "Fn::GetAtt": [
+                    "clusterCfnServerlessCluster0DEE6630",
+                    "Arn"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              "/",
+              {
+               "Fn::Select": [
+                1,
+                {
+                 "Fn::Split": [
+                  "/",
                   {
-                    Ref: 'AWS::AccountId',
-                  },
-                  ':topic/undefined/undefined/*',
-                ],
-              ],
-            },
-          },
-        ],
+                   "Fn::GetAtt": [
+                    "clusterCfnServerlessCluster0DEE6630",
+                    "Arn"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              "/*"
+             ]
+            ]
+           }
+          }
+         ],
       }),
     });
   });
@@ -161,42 +229,76 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
       PolicyDocument: {
         Statement: [
           {
-            Action: [
-              'kafka-cluster:Connect',
-              'kafka-cluster:WriteDataIdempotently',
-            ],
-            Effect: 'Allow',
-            Resource: {
-              'Fn::GetAtt': [
-                'clusterCfnServerlessCluster0DEE6630',
-                'Arn',
-              ],
-            },
+           "Action": [
+            "kafka-cluster:Connect",
+            "kafka-cluster:WriteDataIdempotently"
+           ],
+           "Effect": "Allow",
+           "Resource": {
+            "Fn::GetAtt": [
+             "clusterCfnServerlessCluster0DEE6630",
+             "Arn"
+            ]
+           }
           },
           {
-            Action: [
-              'kafka-cluster:WriteData',
-              'kafka-cluster:DescribeTopic',
-            ],
-            Effect: 'Allow',
-            Resource: {
-              'Fn::Join': [
-                '',
-                [
-                  'arn:aws:kafka:',
+           "Action": [
+            "kafka-cluster:WriteData",
+            "kafka-cluster:DescribeTopic"
+           ],
+           "Effect": "Allow",
+           "Resource": {
+            "Fn::Join": [
+             "",
+             [
+              "arn:aws:kafka:",
+              {
+               "Ref": "AWS::Region"
+              },
+              ":",
+              {
+               "Ref": "AWS::AccountId"
+              },
+              ":topic/",
+              {
+               "Fn::Select": [
+                1,
+                {
+                 "Fn::Split": [
+                  "/",
                   {
-                    Ref: 'AWS::Region',
-                  },
-                  ':',
+                   "Fn::GetAtt": [
+                    "clusterCfnServerlessCluster0DEE6630",
+                    "Arn"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              "/",
+              {
+               "Fn::Select": [
+                1,
+                {
+                 "Fn::Split": [
+                  "/",
                   {
-                    Ref: 'AWS::AccountId',
-                  },
-                  ':topic/undefined/undefined/topic1',
-                ],
-              ],
-            },
-          },
-        ],
+                   "Fn::GetAtt": [
+                    "clusterCfnServerlessCluster0DEE6630",
+                    "Arn"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              "/topic1"
+             ]
+            ]
+           }
+          }
+         ],
         Version: '2012-10-17',
       },
     });
