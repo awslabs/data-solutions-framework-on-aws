@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CustomResource, RemovalPolicy, Stack, Fn } from 'aws-cdk-lib';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
@@ -121,8 +121,8 @@ export class MskServerless extends TrackedConstruct {
    */
   public grantProduce (topicName: string, principal: IPrincipal) {
 
-    let clusterName = this.mskServerlessCluster.attrArn.split('/')[1];
-    let clusterUuid = this.mskServerlessCluster.attrArn.split('/')[2];
+    let clusterName = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
+    let clusterUuid = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
 
     principal.addToPrincipalPolicy(new PolicyStatement({
       actions: [
@@ -154,8 +154,8 @@ export class MskServerless extends TrackedConstruct {
    */
   public grantConsume (topicName: string, principal: IPrincipal) {
 
-    let clusterName = this.mskServerlessCluster.attrArn.split('/')[1];
-    let clusterUuid = this.mskServerlessCluster.attrArn.split('/')[2];
+    let clusterName = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
+    let clusterUuid = Fn.select(1, Fn.split('/', this.mskServerlessCluster.attrArn));
 
     principal.addToPrincipalPolicy(new PolicyStatement({
       actions: [
