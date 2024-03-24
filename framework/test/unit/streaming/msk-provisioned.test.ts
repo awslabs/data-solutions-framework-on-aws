@@ -31,7 +31,6 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
     clusterName: 'cluster',
     kafkaVersion: KafkaVersion.V3_4_0,
     removalPolicy: RemovalPolicy.DESTROY,
-    kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
   });
 
   msk.setTopic(stack, 'topic1',
