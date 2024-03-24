@@ -1,11 +1,8 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from aws_cdk import Stack, RemovalPolicy, CfnOutput
-from aws_cdk.aws_iam import Policy, PolicyStatement
-from aws_cdk.aws_kms import Key
+from aws_cdk import Stack, CfnOutput
 from constructs import Construct
-from aws_cdk.aws_s3 import Bucket
 import cdklabs.aws_data_solutions_framework as dsf
 
 
