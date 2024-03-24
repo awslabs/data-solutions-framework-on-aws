@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy, Stack, Aws } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, Aws, Fn } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup, Peer } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
@@ -186,8 +186,8 @@ export function grantConsumeIam (
   principal: IPrincipal,
   cluster: CfnCluster | CfnServerlessCluster) {
 
-  let clusterName = cluster.attrArn.split('/')[1];
-  let clusterUuid = cluster.attrArn.split('/')[2];
+  let clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
+  let clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
@@ -227,8 +227,8 @@ export function grantProduceIam (
   principal: IPrincipal,
   cluster: CfnCluster | CfnServerlessCluster) {
 
-  let clusterName = cluster.attrArn.split('/')[1];
-  let clusterUuid = cluster.attrArn.split('/')[2];
+  let clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
+  let clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
