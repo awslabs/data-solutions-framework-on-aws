@@ -47,8 +47,8 @@ const consumerRole = new Role(stack, 'consumerRole', {
 
 msk.grantConsume('topic1', consumerRole);
 
-msk.addTopic(stack, 'topic4', [{
-  topic: 'topic4',
+msk.addTopic(stack, 'topicServerelss', [{
+  topic: 'serverless',
   numPartitions: 1,
   replicationFactor: 1,
 }], cdk.RemovalPolicy.DESTROY, false, 1500);
