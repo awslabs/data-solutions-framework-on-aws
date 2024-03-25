@@ -1,16 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Context, TrackedConstruct, TrackedConstructProps } from "../../../utils";
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import { QuickSightSubscriptionProps } from './quicksight-subscription-props';
-import { Construct } from 'constructs';
 import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRole, ManagedPolicy, PolicyDocument, Role , ServicePrincipal, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
-import { ILogGroup } from 'aws-cdk-lib/aws-logs';
+import { IRole, ManagedPolicy, PolicyDocument, Role, ServicePrincipal, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-
-
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
+import { Construct } from 'constructs';
+import { QuickSightSubscriptionProps } from './quicksight-subscription-props';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 
 /**
@@ -24,12 +22,12 @@ import { IFunction } from 'aws-cdk-lib/aws-lambda';
  *
  */
 
-export class QuickSightSubscription extends TrackedConstruct{
+export class QuickSightSubscription extends TrackedConstruct {
 
   /**
-   * 
+   *
    */
-  public static readonly RESOURCE_TYPE = "Custom::QuickSightSubscription";
+  public static readonly RESOURCE_TYPE = 'Custom::QuickSightSubscription';
 
   /**
    * The CloudWatch Log Group for the QuickSight account subscription submission
@@ -67,18 +65,18 @@ export class QuickSightSubscription extends TrackedConstruct{
   public readonly cleanUpRole?: IRole;
 
   /**
-  * The name of your Amazon QuickSight account. This name is unique over all of Amazon Web Services, and it appears only when users sign in. 
+  * The name of your Amazon QuickSight account. This name is unique over all of Amazon Web Services, and it appears only when users sign in.
   * You can't change AccountName value after the Amazon QuickSight account is created.
   */
   public readonly accountName: string;
-  
-  /**  
+
+  /**
   * The email address that you want Amazon QuickSight to send notifications to regarding your Amazon QuickSight account or Amazon QuickSight subscription.
   */
   readonly notificationEmail: string;
-  
+
   /**
-   * The admin group associated with your Active Directory or IAM Identity Center account. This field is required as IAM_IDENTITY_CENTER is 
+   * The admin group associated with your Active Directory or IAM Identity Center account. This field is required as IAM_IDENTITY_CENTER is
    * the only supported authentication method of the new Amazon QuickSight account
    */
   readonly adminGroup: string[];
@@ -102,11 +100,11 @@ export class QuickSightSubscription extends TrackedConstruct{
 
   private readonly serviceToken: string;
   private readonly policyActions: string[];
-  
+
   constructor (scope: Construct, id: string, props: QuickSightSubscriptionProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: QuickSightSubscription.name,
-    };    
+    };
     super(scope, id, trackedConstructProps);
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
@@ -118,41 +116,41 @@ export class QuickSightSubscription extends TrackedConstruct{
     this.identityRegion = props.identityRegion;
 
     this.policyActions = [
-      "quicksight:Subscribe",
-      "quicksight:UpdateAccountSettings",
-      "quicksight:Create*",
-      "quicksight:Unsubscribe",
-      "quicksight:DescribeAccountSubscription",
-      "sso:GetManagedApplicationInstance" ,
-      "sso:CreateManagedApplicationInstance",
-      "sso:GetManagedApplicationInstance",
-      "sso:DeleteManagedApplicationInstance",
-      "sso:GetManagedApplicationInstance",
-      "sso:DescribeGroup",
-      "sso:SearchGroups",
-      "sso:GetProfile",
-      "sso:AssociateProfile", 
-      "sso:DisassociateProfile", 
-      "sso:ListProfiles", 
-      "sso:ListDirectoryAssociations", 
-      "sso:DescribeRegisteredRegions" 
-    ]
+      'quicksight:Subscribe',
+      'quicksight:UpdateAccountSettings',
+      'quicksight:Create*',
+      'quicksight:Unsubscribe',
+      'quicksight:DescribeAccountSubscription',
+      'sso:GetManagedApplicationInstance',
+      'sso:CreateManagedApplicationInstance',
+      'sso:GetManagedApplicationInstance',
+      'sso:DeleteManagedApplicationInstance',
+      'sso:GetManagedApplicationInstance',
+      'sso:DescribeGroup',
+      'sso:SearchGroups',
+      'sso:GetProfile',
+      'sso:AssociateProfile',
+      'sso:DisassociateProfile',
+      'sso:ListProfiles',
+      'sso:ListDirectoryAssociations',
+      'sso:DescribeRegisteredRegions',
+    ];
 
     if (props.authenticationMethod != 'IAM_IDENTITY_CENTER') {
       this.policyActions = this.policyActions.concat(
         [
-          "ds:AuthorizeApplication",
-          "ds:UnauthorizeApplication",
-          "ds:CheckAlias",
-          "ds:CreateAlias",
-          "ds:DescribeDirectories",
-          "ds:DescribeTrusts",
-          "ds:DeleteDirectory",
-          "ds:CreateIdentityPoolDirectory"
-        ]
-      )
+          'ds:AuthorizeApplication',
+          'ds:UnauthorizeApplication',
+          'ds:CheckAlias',
+          'ds:CreateAlias',
+          'ds:DescribeDirectories',
+          'ds:DescribeTrusts',
+          'ds:DeleteDirectory',
+          'ds:CreateIdentityPoolDirectory',
+        ],
+      );
     }
-    
+
     this.executionRole = new Role(this, 'Role', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
@@ -160,15 +158,15 @@ export class QuickSightSubscription extends TrackedConstruct{
       ],
       inlinePolicies: {
         QuickSightSubscription: new PolicyDocument({
-          statements : [
+          statements: [
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: this.policyActions,
-              resources: ['*']
-            })
-          ]
-        })
-      } 
+              resources: ['*'],
+            }),
+          ],
+        }),
+      },
     });
 
     const timeout = props.executionTimeout || Duration.minutes(5);
@@ -183,7 +181,7 @@ export class QuickSightSubscription extends TrackedConstruct{
           AUTHENTICATION_METHOD: props.authenticationMethod,
           AWS_ACCOUNT_ID: props.awsAccountId,
           EDITION: props.edition,
-          IDENTITY_REGION: props.identityRegion
+          IDENTITY_REGION: props.identityRegion,
         },
         iamRole: this.executionRole,
         timeout,
@@ -198,9 +196,9 @@ export class QuickSightSubscription extends TrackedConstruct{
           AUTHENTICATION_METHOD: props.authenticationMethod,
           AWS_ACCOUNT_ID: props.awsAccountId,
           EDITION: props.edition,
-          IDENTITY_REGION: props.identityRegion
+          IDENTITY_REGION: props.identityRegion,
         },
-      },      
+      },
       queryInterval: Duration.seconds(1),
       removalPolicy: this.removalPolicy,
     });
@@ -212,13 +210,12 @@ export class QuickSightSubscription extends TrackedConstruct{
     this.submitFunction = provider.onEventHandlerFunction;
     this.statusFunction = provider.isCompleteHandlerFunction!;
     this.cleanUpFunction = provider.cleanUpFunction;
-    this.cleanUpRole = provider.cleanUpRole;    
+    this.cleanUpRole = provider.cleanUpRole;
 
   }
 
-  
 
-  public createQuickSightSubscription(){
+  public createQuickSightSubscription() {
     return new CustomResource(this, 'QuickSightSubscription', {
       resourceType: QuickSightSubscription.RESOURCE_TYPE,
       serviceToken: this.serviceToken,
@@ -227,9 +224,9 @@ export class QuickSightSubscription extends TrackedConstruct{
         notificationEmail: this.notificationEmail,
         readerGroup: this.readerGroup,
         authorGroup: this.authorGroup,
-        adminGroup: this.adminGroup
+        adminGroup: this.adminGroup,
       },
-      removalPolicy: this.removalPolicy
-    });    
+      removalPolicy: this.removalPolicy,
+    });
   }
 }
