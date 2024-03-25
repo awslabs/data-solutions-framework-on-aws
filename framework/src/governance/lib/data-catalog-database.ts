@@ -10,6 +10,7 @@ import { Construct } from 'constructs';
 import { DataCatalogDatabaseProps } from './data-catalog-database-props';
 import { makeCdkLfAdmin } from './lake-formation-helpers';
 import { Context, PermissionModel, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
+import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -61,6 +62,10 @@ export class DataCatalogDatabase extends TrackedConstruct {
    * The Lake Formation data lake location
    */
   readonly dataLakeLocation?: CfnResource;
+  /**
+   * The custom resource for revoking IAM permissions from the database
+   */
+  readonly removeIamAllowedPrincipal?: AwsCustomResource;
   /**
    * Caching constructor properties for internal reuse by constructor methods
    */
@@ -114,7 +119,25 @@ export class DataCatalogDatabase extends TrackedConstruct {
             resourceArn: props.locationBucket?.arnForObjects(props.locationPrefix || ''),
           });
           // remove IAMAllowedPrincipal
-
+          this.removeIamAllowedPrincipal = new AwsCustomResource(this, 'AssociateVPCWithHostedZone', {
+            onCreate: {
+              assumedRoleArn: 'arn:aws:iam::OTHERACCOUNT:role/CrossAccount/ManageHostedZoneConnections',
+              service: 'LakeFormation',
+              action: 'AssociateVPCWithHostedZone',
+              parameters: {
+                HostedZoneId: 'hz-123',
+                VPC: {
+                  VPCId: 'vpc-123',
+                  VPCRegion: 'region-for-vpc',
+                },
+              },
+              physicalResourceId: PhysicalResourceId.of('${vpcStack.SharedVpc.VpcId}-${vpcStack.Region}-${PrivateHostedZone.HostedZoneId}'),
+            },
+            //Will ignore any resource and use the assumedRoleArn as resource and 'sts:AssumeRole' for service:action
+            policy: AwsCustomResourcePolicy.fromSdkCalls({
+              resources: AwsCustomResourcePolicy.ANY_RESOURCE,
+            }),
+          });
         }
       }
     }
