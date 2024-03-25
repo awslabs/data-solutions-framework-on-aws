@@ -8,10 +8,10 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { MskServerless } from '../../src/streaming/lib/msk';
 import { DataVpc } from '../../src/utils';
-import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 jest.setTimeout(10000000);
 
@@ -42,7 +42,7 @@ const msk = new MskServerless(stack, 'cluster', {
 });
 
 const consumerRole = new Role(stack, 'consumerRole', {
-    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+  assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
 });
 
 msk.grantConsume('topic1', consumerRole);
