@@ -198,6 +198,36 @@ export class MskBrokerInstanceType {
   public static readonly KAFKA_M7G_XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE));
 
   /**
+   * Borker instance type kafka.m7g.2xlarge
+   */
+  public static readonly KAFKA_M7G_2XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE2));
+
+  /**
+   * Borker instance type kafka.m7g.4xlarge
+   */
+  public static readonly KAFKA_M7G_4XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE4));
+
+  /**
+   * Borker instance type kafka.m7g.8xlarge
+   */
+  public static readonly KAFKA_M7G_8XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE8));
+
+  /**
+   * Borker instance type kafka.m7g.12xlarge
+   */
+  public static readonly KAFKA_M7G_12XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE12));
+
+  /**
+   * Borker instance type kafka.m7g.16xlarge
+   */
+  public static readonly KAFKA_M7G_16XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE16));
+
+  /**
+   * Borker instance type kafka.m7g.24xlarge
+   */
+  public static readonly KAFKA_M7G_24XLARGE = MskBrokerInstanceType.of(InstanceType.of(InstanceClass.M7G, InstanceSize.XLARGE24));
+
+  /**
    * Custom cluster version
    * @param version custom version number
    */

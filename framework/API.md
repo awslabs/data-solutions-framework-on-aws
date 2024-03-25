@@ -14790,6 +14790,12 @@ public readonly instance: InstanceType;
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_8XLARGE">KAFKA_M5_8XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.8xlarge. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_LARGE">KAFKA_M5_LARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.large. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M5_XLARGE">KAFKA_M5_XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m5.xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_12XLARGE">KAFKA_M7G_12XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.12xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_16XLARGE">KAFKA_M7G_16XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.16xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_24XLARGE">KAFKA_M7G_24XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.24xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_2XLARGE">KAFKA_M7G_2XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.2xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_4XLARGE">KAFKA_M7G_4XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.4xlarge. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_8XLARGE">KAFKA_M7G_8XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.8xlarge. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_LARGE">KAFKA_M7G_LARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.large. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_XLARGE">KAFKA_M7G_XLARGE</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.m7g.xlarge. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_T3_SMALL">KAFKA_T3_SMALL</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | Borker instance type kafka.t3.small. |
@@ -14889,6 +14895,78 @@ public readonly KAFKA_M5_XLARGE: MskBrokerInstanceType;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
 
 Borker instance type kafka.m5.xlarge.
+
+---
+
+##### `KAFKA_M7G_12XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_12XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_12XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_12XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.12xlarge.
+
+---
+
+##### `KAFKA_M7G_16XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_16XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_16XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_16XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.16xlarge.
+
+---
+
+##### `KAFKA_M7G_24XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_24XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_24XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_24XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.24xlarge.
+
+---
+
+##### `KAFKA_M7G_2XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_2XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_2XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_2XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.2xlarge.
+
+---
+
+##### `KAFKA_M7G_4XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_4XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_4XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_4XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.4xlarge.
+
+---
+
+##### `KAFKA_M7G_8XLARGE`<sup>Required</sup> <a name="KAFKA_M7G_8XLARGE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType.property.KAFKA_M7G_8XLARGE"></a>
+
+```typescript
+public readonly KAFKA_M7G_8XLARGE: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType
+
+Borker instance type kafka.m7g.8xlarge.
 
 ---
 
