@@ -246,7 +246,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     });
   });
 
-  test('Verify ACLs for lambda CR to perform ACL', () => {
+  test('Verify Trigger to update MSK configuration and lock it', () => {
     template.hasResourceProperties('Custom::Trigger', {
       ExecuteOnHandlerChange: true,
       InvocationType: 'RequestResponse',

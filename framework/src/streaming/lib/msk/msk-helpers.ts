@@ -25,7 +25,7 @@ export function mskIamCrudProviderSetup(
     vpc,
   });
 
-  brokerSecurityGroup.addIngressRule(lambdaProviderSecurityGroup, Port.allTcp(), 'Allow lambda to access MSK cluster');
+  brokerSecurityGroup.addIngressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Allow lambda to access MSK cluster');
 
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
   const lambdaPolicy = [
