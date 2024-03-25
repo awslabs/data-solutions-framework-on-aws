@@ -9,13 +9,13 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
-import { KafkaVersion, MskProvisioned } from '../../src/streaming/lib/msk';
+import { Authentitcation, KafkaVersion, MskProvisioned } from '../../src/streaming/lib/msk';
 
 jest.setTimeout(10000000);
 
 // GIVEN
 const app = new cdk.App();
-const testStack = new TestStack('MskServerkessTestStack', app);
+const testStack = new TestStack('MskProvisionedTestStack', app);
 const { stack } = testStack;
 
 
@@ -28,6 +28,11 @@ const msk = new MskProvisioned(stack, 'cluster', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
+msk.setTopic(stack, 'topic4', Authentitcation.IAM, [{
+  topic: 'topic4',
+  numPartitions: 1,
+  replicationFactor: 1,
+}], cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskServerlessCluster', {
   value: msk.mskProvisionedCluster.attrArn,

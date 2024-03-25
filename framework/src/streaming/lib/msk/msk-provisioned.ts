@@ -365,7 +365,7 @@ export class MskProvisioned extends TrackedConstruct {
             //This must be unique to avoid failing the stack creation
             //If we create the construct twice
             //Name of a configuration is required
-            `dsfconfiguration-${Names.uniqueResourceName(this, {maxLength: 5})}`,
+            `dsfconfiguration-${Names.uniqueResourceName(this, { maxLength: 5 })}`,
             join(__dirname, './resources/cluster-config-msk-provisioned'),
             [props.kafkaVersion],
           );
