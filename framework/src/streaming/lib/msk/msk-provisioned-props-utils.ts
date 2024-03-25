@@ -514,3 +514,5 @@ export enum ResourcePatternTypes {
   LITERAL = 3,
   PREFIXED = 4,
 }
+
+export const MSK_DEFAULT_VERSION: KafkaVersion = KafkaVersion.V3_5_1;

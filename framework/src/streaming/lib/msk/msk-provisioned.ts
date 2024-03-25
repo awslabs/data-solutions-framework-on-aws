@@ -23,7 +23,7 @@ import {
   KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation,
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
-import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -64,7 +64,7 @@ export class MskProvisioned extends TrackedConstruct {
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly mskInClusterAclAdminProviderToken?: string;
-  private readonly mskIamAclAdminProviderToken?: string;
+  private readonly mskIamACrudAdminProviderToken?: string;
   private readonly account: string;
   private readonly region: string;
   private readonly partition: string;
@@ -325,7 +325,7 @@ export class MskProvisioned extends TrackedConstruct {
     //Set the CR that will use IAM credentials
     // This will be used for CRUD on Topics
     if (this.iamAcl) {
-      this.mskIamAclAdminProviderToken = mskIamCrudProviderSetup(
+      this.mskIamACrudAdminProviderToken = mskIamCrudProviderSetup(
         this,
         this.removalPolicy,
         this.vpc,
@@ -365,7 +365,7 @@ export class MskProvisioned extends TrackedConstruct {
             //This must be unique to avoid failing the stack creation
             //If we create the construct twice
             //Name of a configuration is required
-            `dsfconfiguration-${Names.uniqueResourceName(this, { maxLength: 5 })}`,
+            `dsfconfiguration${Utils.generateHash(Stack.of(this).stackName).slice(0, 3)}`,
             join(__dirname, './resources/cluster-config-msk-provisioned'),
             [props.kafkaVersion],
           );
@@ -468,7 +468,7 @@ export class MskProvisioned extends TrackedConstruct {
     let serviceToken: string;
 
     if (clientAuthentication === Authentitcation.IAM) {
-      serviceToken = this.mskIamAclAdminProviderToken!;
+      serviceToken = this.mskIamACrudAdminProviderToken!;
     } else {
       serviceToken = this.mskInClusterAclAdminProviderToken!;
     }
