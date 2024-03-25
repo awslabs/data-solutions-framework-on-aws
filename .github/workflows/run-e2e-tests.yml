@@ -22,7 +22,7 @@ jobs:
       contents: write
     strategy:
         matrix:
-          suite: [processing, storage, governance, utils, consumption]
+          suite: [processing, storage, governance, utils, consumption, streaming]
         fail-fast: false
     steps:
       - name: Checkout Repo
@@ -61,6 +61,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_TO_ASSUME }}
           aws-region: eu-west-1
-          role-duration-seconds: 7200
+          role-duration-seconds: 10800
       - name: Run e2e tests
         run: cd framework && npx jest --group=e2e/${{ matrix.suite }}
