@@ -159,7 +159,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       arn: clusterConfiguration.attrArn,
       revision: clusterConfiguration.attrLatestRevisionRevision,
     },
-    allowEveryoneIfNoAclFound: false
+    allowEveryoneIfNoAclFound: false,
   });
 
   msk.setTopic(stack, 'topic1',
@@ -242,7 +242,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       resourceName: 'kafka-cluster',
       principal: 'User:CN=aclAdmin',
       resourceType: 4,
-      logLevel: "INFO"
+      logLevel: 'INFO',
     });
   });
 
@@ -250,8 +250,8 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     template.hasResourceProperties('Custom::Trigger', {
       ExecuteOnHandlerChange: true,
       InvocationType: 'RequestResponse',
-      ServiceToken: { "Fn::GetAtt": [ "AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91", "Arn" ] },
-      HandlerArn: { "Ref": "clusterupdateConfigurationCurrentVersion9A29E6C8e38315db7510217bb74979f84305cdbb" },
+      ServiceToken: { 'Fn::GetAtt': ['AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91', 'Arn'] },
+      HandlerArn: { Ref: 'clusterupdateConfigurationCurrentVersion9A29E6C8e38315db7510217bb74979f84305cdbb' },
     });
   });
 
@@ -303,7 +303,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       arn: clusterConfiguration.attrArn,
       revision: clusterConfiguration.attrLatestRevisionRevision,
     },
-    allowEveryoneIfNoAclFound: true
+    allowEveryoneIfNoAclFound: true,
   });
 
   msk.setAcl(stack, 'acl', {
@@ -324,7 +324,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     template.hasResourceProperties('Custom::Trigger', {
       ExecuteOnHandlerChange: true,
       InvocationType: 'RequestResponse',
-      HandlerArn: { "Ref": "clusterUpdateZookeeperSgCurrentVersion6BC0411Dd3f8c0b3f35baf66398142df7e12bedd" },
+      HandlerArn: { Ref: 'clusterUpdateZookeeperSgCurrentVersion6BC0411Dd3f8c0b3f35baf66398142df7e12bedd' },
     });
   });
 
@@ -333,7 +333,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       resourceName: 'kafka-cluster',
       principal: 'User:CN=aclAdmin',
       resourceType: 4,
-      logLevel: "DEBUG"
+      logLevel: 'DEBUG',
     });
   });
 
