@@ -26,12 +26,12 @@ jobs:
         fail-fast: false
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
       # If we pass a PR Number when triggering the workflow we will retrieve the PR info and get its headSHA
       - name: Extract PR details
         id: extract_PR_details
         if: ${{ inputs.prNumber != '' }}
-        uses: actions/github-script@d60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
             const script = require('.github/scripts/get-pr-info.js');
@@ -40,7 +40,7 @@ jobs:
       # we checkout the PR at that point in time
       - name: Checkout PR code
         if: ${{ inputs.prNumber != '' }}
-        uses: actions/checkout@4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
         with:
           ref: ${{ steps.extract_PR_details.outputs.headSHA }}
       - name: Setup NodeJS and dependency cache
