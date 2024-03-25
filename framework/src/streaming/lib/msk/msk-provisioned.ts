@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 
-import { CustomResource, Duration, Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Connections, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
