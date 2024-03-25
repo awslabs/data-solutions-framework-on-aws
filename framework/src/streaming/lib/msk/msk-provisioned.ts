@@ -74,7 +74,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly defaultNumberOfBrokerNodes: number;
   private readonly numberOfBrokerNodes: number;
   private readonly tlsCertifacateSecret?: ISecret;
-  private readonly kafkaClientLogLevel: string;
+  private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly inClusterAcl: boolean;
   private readonly iamAcl: boolean;
   private readonly crPrincipal?: string;
