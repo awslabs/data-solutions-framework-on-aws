@@ -9,7 +9,8 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
-import { Authentitcation, KafkaVersion, MskProvisioned } from '../../src/streaming/lib/msk';
+import { Authentitcation, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
+import { Utils } from '../../src/utils';
 
 jest.setTimeout(10000000);
 
@@ -21,15 +22,14 @@ const { stack } = testStack;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-
 const msk = new MskProvisioned(stack, 'cluster', {
-  clusterName: 'cluster',
-  kafkaVersion: KafkaVersion.V3_4_0,
+  clusterName: `cluster${Utils.generateHash(stack.stackName).slice(0, 3)}`,
+  kafkaVersion: MSK_DEFAULT_VERSION,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-msk.setTopic(stack, 'topic4', Authentitcation.IAM, [{
-  topic: 'topic4',
+msk.setTopic(stack, 'topicProvisioned', Authentitcation.IAM, [{
+  topic: 'provisioned',
   numPartitions: 1,
   replicationFactor: 1,
 }], cdk.RemovalPolicy.DESTROY, false, 1500);
@@ -48,7 +48,7 @@ beforeAll(async() => {
 
 }, 10000000);
 
-it('Serverless runtime created successfully', async () => {
+it('MSK provisioned successfully', async () => {
   // THEN
   expect(deployResult.MskServerlessCluster).toContain('arn:aws:kafka:');
 });
