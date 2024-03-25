@@ -233,4 +233,8 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     });
   });
 
+  test('Verify there is only one MSK cluster configuration', () => {
+    template.resourceCountIs('AWS::MSK::Configuration', 1);
+  });
+
 });
