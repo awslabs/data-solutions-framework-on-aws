@@ -4605,7 +4605,7 @@ public readonly accountName: string;
 
 The name of your Amazon QuickSight account.
 
-This name is unique over all of Amazon Web Services, and it appears only when users sign in. 
+This name is unique over all of Amazon Web Services, and it appears only when users sign in.
 You can't change AccountName value after the Amazon QuickSight account is created.
 
 ---
@@ -4620,7 +4620,7 @@ public readonly adminGroup: string[];
 
 The admin group associated with your Active Directory or IAM Identity Center account.
 
-This field is required as IAM_IDENTITY_CENTER is 
+This field is required as IAM_IDENTITY_CENTER is
 the only supported authentication method of the new Amazon QuickSight account
 
 ---
@@ -10753,7 +10753,7 @@ public readonly accountName: string;
 
 The name of your Amazon QuickSight account.
 
-This name is unique over all of Amazon Web Services, and it appears only when users sign in. 
+This name is unique over all of Amazon Web Services, and it appears only when users sign in.
 You can't change AccountName value after the Amazon QuickSight account is created.
 
 ---
@@ -10768,7 +10768,7 @@ public readonly adminGroup: string[];
 
 The admin group associated with your Active Directory or IAM Identity Center account.
 
-This field is required as IAM_IDENTITY_CENTER is 
+This field is required as IAM_IDENTITY_CENTER is
 the only supported authentication method of the new Amazon QuickSight account
 
 ---
