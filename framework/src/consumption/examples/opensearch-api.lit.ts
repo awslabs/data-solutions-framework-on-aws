@@ -22,7 +22,9 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
     /// !hide
 
     //Add another admin
-    osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
+    const adminCr = osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
+    //Overwrite construct-wide removal policy
+    adminCr.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
 
     const indexTemplateCr = osCluster.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
     {
