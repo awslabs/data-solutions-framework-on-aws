@@ -60,7 +60,7 @@ const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
   eksNamespace: 'e2etestns',
 });
 
-const execRole = emrEksCluster.createExecutionRole(stack, 'ExecRole', s3ReadPolicy, 'e2ens', 's3ReadExecRole');
+const execRole = emrEksCluster.createExecutionRole(stack, 'ExecRole', s3ReadPolicy, 'e2ens', `s3ReadExecRole${randomName}`);
 
 const logBucket = new Bucket(stack, 'Bucket', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
