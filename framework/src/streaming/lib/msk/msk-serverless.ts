@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
 import { grantConsumeIam, grantProduceIam, mskIamCrudProviderSetup } from './msk-helpers';
 import { MskServerlessProps, MskTopic } from './msk-serverless-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A construct to create an MSK Serverless cluster
@@ -20,6 +20,8 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils
 export class MskServerless extends TrackedConstruct {
 
   public readonly mskServerlessCluster: CfnServerlessCluster;
+  public readonly vpc: IVpc;
+  public readonly brokerSecurityGroup?: ISecurityGroup;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly mskCrudProviderToken: string;
@@ -41,16 +43,46 @@ export class MskServerless extends TrackedConstruct {
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
+    if (!props.vpc) {
+      this.vpc = new DataVpc(scope, 'Vpc', {
+        vpcCidr: '10.0.0.0/16',
+      }).vpc;
+    } else {
+      this.vpc = props.vpc;
+    }
+
+    if (props.vpc && !props.vpcConfigs || !props.vpc && props.vpcConfigs) {
+      throw new Error('Need to pass both vpcConfigs and vpc');
+    }
+
+    let vpcConfigs;
+
+    if (!props.vpcConfigs) {
+
+      this.brokerSecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
+        vpc: this.vpc,
+      });
+
+      vpcConfigs = [
+        {
+          subnetIds: this.vpc.privateSubnets.map((s) => s.subnetId),
+          securityGroups: [this.brokerSecurityGroup.securityGroupId],
+        },
+      ];
+    } else {
+      vpcConfigs = props.vpcConfigs;
+    }
+
     //Security group dedicated to lambda CR
     const lambdaSecurityGroup = new SecurityGroup(this, 'LambdaSecurityGroup', {
-      vpc: props.vpc,
+      vpc: this.vpc,
     });
 
-    props.vpcConfigs[0].securityGroups!.push(lambdaSecurityGroup.securityGroupId);
+    vpcConfigs[0].securityGroups!.push(lambdaSecurityGroup.securityGroupId);
 
     this.mskServerlessCluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
       clusterName: props.clusterName ?? 'dsfServerlessCluster',
-      vpcConfigs: props.vpcConfigs,
+      vpcConfigs: vpcConfigs,
       clientAuthentication: {
         sasl: {
           iam: {
@@ -63,7 +95,7 @@ export class MskServerless extends TrackedConstruct {
     let mskCrudProvider = mskIamCrudProviderSetup(
       this,
       this.removalPolicy,
-      props.vpc,
+      this.vpc,
       this.mskServerlessCluster,
       lambdaSecurityGroup);
 
@@ -83,10 +115,10 @@ export class MskServerless extends TrackedConstruct {
    * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
    */
 
-  public addTopic (
+  public addTopic(
     scope: Construct,
     id: string,
-    topicDefinition: MskTopic [],
+    topicDefinition: MskTopic[],
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
     timeout?: number) {
@@ -114,7 +146,7 @@ export class MskServerless extends TrackedConstruct {
    * @param {string} topicName the topic to which the principal can produce data
    * @param {IPrincipal} principal the IAM principal to grand the produce to
    */
-  public grantProduce (topicName: string, principal: IPrincipal) {
+  public grantProduce(topicName: string, principal: IPrincipal) {
 
     grantProduceIam(
       topicName,
@@ -129,7 +161,7 @@ export class MskServerless extends TrackedConstruct {
    * @param {string} topicName the topic to which the principal can consume data from.
    * @param {IPrincipal} principal the IAM principal to grand the consume action.
    */
-  public grantConsume (topicName: string, principal: IPrincipal) {
+  public grantConsume(topicName: string, principal: IPrincipal) {
 
     grantConsumeIam(
       topicName,
