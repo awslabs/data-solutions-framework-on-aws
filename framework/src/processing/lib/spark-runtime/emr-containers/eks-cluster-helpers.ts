@@ -191,7 +191,7 @@ export function toolingManagedNodegroupSetup (scope: Construct, cluster: Cluster
  * @param namespace the namespace to create
  * @return the Kubernetes manifest for the namespace
  */
-export function createNamespace (cluster: ICluster, namespace: string): KubernetesManifest {
+export function createNamespace (cluster: ICluster, namespace: string, setNamespaceResourceQuota: boolean): KubernetesManifest {
 
   const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
 
@@ -227,17 +227,18 @@ export function createNamespace (cluster: ICluster, namespace: string): Kubernet
 
   manifestApplyNetworkPolicy.node.addDependency(ns);
 
+  if ( setNamespaceResourceQuota ) {
+    //Create resource quota and limit range for namespace
+    let manifestResourceManagement = Utils.readYamlDocument(`${__dirname}/resources/k8s/resource-management.yaml`);
 
-  //Create resource quota and limit range for namespace
-  let manifestResourceManagement = Utils.readYamlDocument(`${__dirname}/resources/k8s/resource-management.yaml`);
+    manifestResourceManagement = manifestResourceManagement.replace(/(\{{NAMESPACE}})/g, namespace);
 
-  manifestResourceManagement = manifestResourceManagement.replace(/(\{{NAMESPACE}})/g, namespace);
+    let manifestResourceManagementYAML: any = manifestResourceManagement.split('---').map((e: any) => Utils.loadYaml(e));
 
-  let manifestResourceManagementYAML: any = manifestResourceManagement.split('---').map((e: any) => Utils.loadYaml(e));
+    const manifestApplResourceManagement = cluster.addManifest(`${namespace}-resource-management`, ...manifestResourceManagementYAML);
 
-  const manifestApplResourceManagement = cluster.addManifest(`${namespace}-resource-management`, ...manifestResourceManagementYAML);
-
-  manifestApplResourceManagement.node.addDependency(ns);
+    manifestApplResourceManagement.node.addDependency(ns);
+  }
 
   return ns;
 }

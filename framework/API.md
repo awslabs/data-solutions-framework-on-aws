@@ -9775,6 +9775,7 @@ const emrVirtualClusterProps: processing.EmrVirtualClusterProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.name">name</a></code> | <code>string</code> | The name of the Amazon EMR Virtual Cluster to be created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.createNamespace">createNamespace</a></code> | <code>boolean</code> | The flag to create EKS namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.eksNamespace">eksNamespace</a></code> | <code>string</code> | The name of the EKS namespace to be linked to the EMR virtual cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.setNamespaceResourceQuota">setNamespaceResourceQuota</a></code> | <code>boolean</code> | The namespace will be create with ResourceQuota and LimitRange As defined here https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/resource-management.yaml. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | The tags assigned to the Virtual Cluster. |
 
 ---
@@ -9814,6 +9815,19 @@ public readonly eksNamespace: string;
 - *Default:* Use the default namespace
 
 The name of the EKS namespace to be linked to the EMR virtual cluster.
+
+---
+
+##### `setNamespaceResourceQuota`<sup>Optional</sup> <a name="setNamespaceResourceQuota" id="@cdklabs/aws-data-solutions-framework.processing.EmrVirtualClusterProps.property.setNamespaceResourceQuota"></a>
+
+```typescript
+public readonly setNamespaceResourceQuota: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+The namespace will be create with ResourceQuota and LimitRange As defined here https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/resource-management.yaml.
 
 ---
 

@@ -573,9 +573,10 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     const eksNamespace = options.eksNamespace ?? 'default';
 
     let ns = undefined;
+    let setNamespaceResourceQuota = options.setNamespaceResourceQuota == undefined ? true : options.setNamespaceResourceQuota;
 
     if (options.createNamespace) {
-      ns = createNamespace(this.eksCluster, options.eksNamespace!);
+      ns = createNamespace(this.eksCluster, options.eksNamespace!, setNamespaceResourceQuota);
     }
 
     // deep clone the Role Binding template object and replace the namespace

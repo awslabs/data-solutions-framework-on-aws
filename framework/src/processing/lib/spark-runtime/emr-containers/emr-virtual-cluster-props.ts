@@ -22,6 +22,13 @@ export interface EmrVirtualClusterProps {
   readonly createNamespace?: boolean;
 
   /**
+   * The namespace will be create with ResourceQuota and LimitRange
+   * As defined here https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/processing/lib/spark-runtime/emr-containers/resources/k8s/resource-management.yaml
+   * @default - true
+   */
+  readonly setNamespaceResourceQuota?: boolean;
+
+  /**
    * The tags assigned to the Virtual Cluster
    *
    * @default - none
