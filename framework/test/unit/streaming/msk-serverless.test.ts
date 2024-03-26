@@ -319,3 +319,20 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
 
 
 });
+
+describe('Create an MSK serverless cluster with a provided vpc and add topic as well as grant consume produce to a principal', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  new MskServerless(stack, 'cluster', {
+    clusterName: 'unit-test',
+  });
+
+  const template = Template.fromStack(stack, {});
+
+  test('There is one VPC created when no VPC is passed', () => {
+    template.resourceCountIs('AWS::EC2::VPC', 1);
+  });
+},
+);
