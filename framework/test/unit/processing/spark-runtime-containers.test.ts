@@ -960,6 +960,9 @@ describe('Test for interactive endpoint', () => {
 
   const virtualCluster = emrEksCluster.addEmrVirtualCluster(emrEksClusterStack, {
     name: 'test',
+    setNamespaceResourceQuota: true,
+    eksNamespace: 'spark',
+    createNamespace: true,
   });
 
   const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
@@ -999,6 +1002,10 @@ describe('Test for interactive endpoint', () => {
         default: {},
       }),
     });
+  });
+
+  template.hasResourceProperties ('Custom::AWSCDK-EKS-KubernetesResource', {
+    Manifest: Match.stringLikeRegexp('.*?100Mi.*'),
   });
 
   test('should create an interactive endpoint with provided name and provided emr runtime', () => {

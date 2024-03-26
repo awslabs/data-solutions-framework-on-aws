@@ -20,6 +20,8 @@ spec:
   limits:
   - min:
       cpu: "100m"
+      memory: 100Mi
     defaultRequest:
       cpu: "100m"
+      memory: 100Mi
     type: Container
