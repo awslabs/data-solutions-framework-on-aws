@@ -463,7 +463,7 @@ export class MskProvisioned extends TrackedConstruct {
     topicDefinition: MskTopic[],
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
-    timeout?: number) {
+    timeout?: number) : CustomResource {
 
     let serviceToken: string;
 
@@ -494,6 +494,8 @@ export class MskProvisioned extends TrackedConstruct {
     }
 
     cr.node.addDependency(this.mskProvisionedCluster);
+
+    return cr;
   }
 
   /**
@@ -509,7 +511,7 @@ export class MskProvisioned extends TrackedConstruct {
     clientAuthentication: Authentitcation,
     principal: IPrincipal | string,
     host?: string,
-    removalPolicy?: RemovalPolicy) {
+    removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
     if (clientAuthentication === Authentitcation.IAM) {
 
@@ -522,6 +524,8 @@ export class MskProvisioned extends TrackedConstruct {
         topicName,
         principal as IPrincipal,
         this.mskProvisionedCluster);
+
+      return undefined;
 
     } else {
 
@@ -543,6 +547,8 @@ export class MskProvisioned extends TrackedConstruct {
       );
 
       cr.node.addDependency(this.mskProvisionedCluster);
+
+      return cr;
     }
 
 
@@ -563,7 +569,7 @@ export class MskProvisioned extends TrackedConstruct {
     clientAuthentication: Authentitcation,
     principal: IPrincipal | string,
     host?: string,
-    removalPolicy?: RemovalPolicy) {
+    removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
     if (clientAuthentication === Authentitcation.IAM) {
 
@@ -576,6 +582,8 @@ export class MskProvisioned extends TrackedConstruct {
         topicName,
         principal as IPrincipal,
         this.mskProvisionedCluster);
+
+      return undefined;
 
     } else {
 
@@ -597,13 +605,14 @@ export class MskProvisioned extends TrackedConstruct {
       );
 
       cr.node.addDependency(this.mskProvisionedCluster);
+
+      return cr;
     }
   }
 
   private setAcls(props: MskProvisionedProps): CustomResource[] {
 
     let aclsResources: CustomResource[] = [];
-    console.log(props.clusterName);
 
     //Set the ACL to allow the principal used by CR
     //to add other ACLs

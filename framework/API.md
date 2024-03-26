@@ -3929,7 +3929,7 @@ Returns a string representation of this construct.
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
 
 ```typescript
-public grantConsume(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
+public grantConsume(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
 ```
 
 Grant a principal the right to consume data from a topic.
@@ -3981,7 +3981,7 @@ the host to which the principal can produce data.
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce"></a>
 
 ```typescript
-public grantProduce(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): void
+public grantProduce(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
 ```
 
 Grant a principal to produce data to a topic.
@@ -4081,7 +4081,7 @@ Wether to keep the ACL or delete it when removing the resource from the Stack {@
 ##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic"></a>
 
 ```typescript
-public setTopic(scope: Construct, id: string, clientAuthentication: Authentitcation, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+public setTopic(scope: Construct, id: string, clientAuthentication: Authentitcation, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
 ```
 
 Creates a topic in the Msk Cluster.
@@ -4524,6 +4524,8 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.mskServerlessCluster">mskServerlessCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 
 ---
 
@@ -4546,6 +4548,26 @@ public readonly mskServerlessCluster: CfnServerlessCluster;
 ```
 
 - *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `brokerSecurityGroup`<sup>Optional</sup> <a name="brokerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.brokerSecurityGroup"></a>
+
+```typescript
+public readonly brokerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
 ---
 
@@ -11267,9 +11289,9 @@ const mskServerlessProps: streaming.msk.MskServerlessProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpcConfigs">vpcConfigs</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
 
@@ -11280,26 +11302,6 @@ public readonly clusterName: string;
 ```
 
 - *Type:* string
-
----
-
-##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpc"></a>
-
-```typescript
-public readonly vpc: IVpc;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.IVpc
-
----
-
-##### `vpcConfigs`<sup>Required</sup> <a name="vpcConfigs" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpcConfigs"></a>
-
-```typescript
-public readonly vpcConfigs: VpcConfigProperty[];
-```
-
-- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]
 
 ---
 
@@ -11316,6 +11318,26 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `vpcConfigs`<sup>Optional</sup> <a name="vpcConfigs" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.vpcConfigs"></a>
+
+```typescript
+public readonly vpcConfigs: VpcConfigProperty[];
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]
 
 ---
 
