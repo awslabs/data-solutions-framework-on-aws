@@ -152,20 +152,3 @@ export const onEventHandler = async (event) => {
             throw new Error(`invalid request type: ${event.RequestType}`);
     }
 }
-
-
-export const isCompleteHandler = async (event) => {
-    console.info('isCompleteHandler Invocation');
-    console.info(event);
-
-    if (event["Data"]["kafkaResponse"]){
-        return { IsComplete: true };
-    } else if (!event["Data"]["kafkaResponse"] && event.RequestType == 'Create'){
-        throw new Error(`Topic already exists`);
-    } 
-    else {
-        throw new Error('Error during rsource creation or deletion');
-    }
-        
-
-}
