@@ -3873,7 +3873,7 @@ ClientVPNEndpoint will be provisioned automatically for secure access to OpenSea
 
 ```typescript
  const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
-   domainName:"mycluster2",
+   domainName:"mycluster1",
    samlEntityId:'<IdpIdentityId>',
    samlMetadataContent:'<IdpMetadataXml>',
    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
@@ -3948,7 +3948,7 @@ Returns a string representation of this construct.
 ##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping"></a>
 
 ```typescript
-public addRoleMapping(id: string, name: string, role: string): void
+public addRoleMapping(id: string, name: string, role: string, persist?: boolean): CustomResource
 ```
 
 > [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
@@ -3973,14 +3973,26 @@ OpenSearch role name.
 
 - *Type:* string
 
-IAM Identity center SAML group Id.
+list of IAM roles.
+
+For IAM Identity center provide SAML group Id as a role
+
+---
+
+###### `persist`<sup>Optional</sup> <a name="persist" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.persist"></a>
+
+- *Type:* boolean
+
+Set to true if you want to prevent the roles to be ovewritten by subsequent PUT API calls.
+
+Default false.
 
 ---
 
 ##### `callOpenSearchApi` <a name="callOpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi"></a>
 
 ```typescript
-public callOpenSearchApi(id: string, apiPath: string, body: any): void
+public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string): CustomResource
 ```
 
 Calls OpenSearch API using custom resource.
@@ -4006,6 +4018,14 @@ OpenSearch API path.
 - *Type:* any
 
 OpenSearch API request body.
+
+---
+
+###### `method`<sup>Optional</sup> <a name="method" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi.parameter.method"></a>
+
+- *Type:* string
+
+Opensearch API method,.
 
 ---
 

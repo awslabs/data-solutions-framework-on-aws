@@ -9,11 +9,6 @@ import { sendRequest } from './helper.mjs';
 const region = process.env.REGION;
 const client = new SecretsManagerClient({ region });
 
-/*type Event = {
-  RequestType: string;
-  ResourceProperties: { path: string; body: string };
-};*/
-//export async function handler(event: Event): Promise<any> {
 export async function handler(event) {
   console.log(JSON.stringify(event, null, 1));
   switch (event.RequestType) {
@@ -30,10 +25,10 @@ export async function handler(event) {
 }
 
 const onUpdate = async (event) => {
-  const { path, body } = event.ResourceProperties;
+  const { path, body, method } = event.ResourceProperties;
   const secretsResolvedBody = await resolveSecrets(body);
   await sendRequest({
-    method: 'PUT',
+    method,
     path,
     body: secretsResolvedBody,
   });

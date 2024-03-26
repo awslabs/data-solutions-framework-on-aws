@@ -362,6 +362,68 @@ const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
 });
 adsfQuickstart.packageTask.spawn(buildAdsfQuickstartTask);
 
+
+const opensearchQuickstart = new awscdk.AwsCdkPythonApp({
+  name: 'opensearch-quickstart',
+  moduleName: 'stacks',
+  packageName: 'opensearch-quickstart',
+  version: '0.0.1',
+  description: 'An example CDK app demonstrating the most common use cases for Data Solutions Framework on AWS',
+  authorName: author,
+  authorEmail: authorAddress,
+  license,
+
+  parent: rootProject,
+  outdir: 'examples/opensearch-quickstart',
+
+  cdkVersion: CDK_VERSION,
+  constructsVersion: CDK_CONSTRUCTS_VERSION,
+  cdkVersionPinning: true,
+
+  pytest: true,
+  devDeps: [
+    "pytest",
+    "black"
+  ],
+  pythonExec: 'python3',
+  venvOptions: {
+    envdir: '.venv'
+  },
+  context: {
+    '@data-solutions-framework-on-aws/removeDataOnDestroy': true,
+  }
+});
+
+opensearchQuickstart.addGitIgnore('cdk.context.json');
+opensearchQuickstart.removeTask('deploy');
+opensearchQuickstart.removeTask('destroy');
+opensearchQuickstart.removeTask('diff');
+opensearchQuickstart.removeTask('watch');
+opensearchQuickstart.removeTask('synth');
+opensearchQuickstart.testTask.reset();
+opensearchQuickstart.postCompileTask.reset();
+opensearchQuickstart.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'pytest -k "not e2e"'
+});
+opensearchQuickstart.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'pytest -k e2e'
+});
+
+const opensearchQuickstartSynthTask = opensearchQuickstart.tasks.tryFind('synth:silent')!;
+opensearchQuickstartSynthTask.reset();
+opensearchQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
+const buildOpensearchQuickstartTask = opensearchQuickstart.addTask('build-example', {
+  steps: [
+    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { spawn: 'synth:silent' },
+    { spawn: 'test:unit' },
+  ]
+});
+opensearchQuickstart.packageTask.spawn(buildOpensearchQuickstartTask);
+
+
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
 });
