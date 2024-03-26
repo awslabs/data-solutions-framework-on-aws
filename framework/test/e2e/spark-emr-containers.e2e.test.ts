@@ -14,6 +14,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { TestStack } from './test-stack';
 import { SparkEmrContainersJob, SparkEmrContainersRuntime } from '../../src/processing';
+import { Utils } from '../../src/utils';
 
 
 jest.setTimeout(10000000);
@@ -30,6 +31,7 @@ const eksAdminRole = Role.fromRoleArn(stack, 'EksAdminRole', `arn:aws:iam::${sta
 
 // creation of the construct(s) under test
 const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(stack, {
+  eksClusterName: Utils.generateUniqueHash(stack, cdk.Stack.of(stack).stackName.slice(0, 5)),
   eksAdminRole,
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: false,
@@ -51,7 +53,7 @@ const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
 });
 
 const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
-  name: 'e2etest',
+  name: `e2etest${cdk.Stack.of(stack).stackName.slice(0, 5)}`,
   createNamespace: true,
   eksNamespace: 'e2etestns',
 });
