@@ -20,9 +20,11 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
       masterNodeInstanceCount:0
     });
     /// !hide
-    //osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user',['<IAMIdentityCenterDashboardUsersGroupId>']);
-    //osCluster.addRoleMapping('ReadAllOsRole','readall',['<IAMIdentityCenterDashboardUsersGroupId>']);
-    osCluster.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
+
+    //Add another admin
+    osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
+
+    const indexTemplateCr = osCluster.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
     {
       "index_patterns": [
         "movies-*"
@@ -51,11 +53,18 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
     {"title": "Barbie", "year": 2023}
     ${metadata}
     {"title": "Openheimer", "year": 2023}`;
-    osCluster.addRoleMapping('AnotherAdmin', 'all_access',['sometestId']);
-    osCluster.callOpenSearchApi('AddBulk','_bulk',bulk+'\n\n','POST');
-    osCluster.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
-    osCluster.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
-    osCluster.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
+    
+    // add dependency on index template creation
+    const bulkCr = osCluster.callOpenSearchApi('AddBulk','_bulk',bulk+'\n\n','POST');
+    bulkCr.node.addDependency(indexTemplateCr);
+
+    const add1Cr = osCluster.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
+    add1Cr.node.addDependency(indexTemplateCr);
+    const add2Cr = osCluster.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
+    add2Cr.node.addDependency(indexTemplateCr);
+    const add3Cr = osCluster.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
+    add3Cr.node.addDependency(indexTemplateCr);
+
   }
 }
 

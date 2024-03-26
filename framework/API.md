@@ -3881,8 +3881,8 @@ ClientVPNEndpoint will be provisioned automatically for secure access to OpenSea
    removalPolicy:cdk.RemovalPolicy.DESTROY
  });
 
- osCluster.addRoleMapping('DashBoardUser', 'dashboards_user',['<IAMIdentityCenterDashboardUsersGroupId>']);
- osCluster.addRoleMapping('ReadAllRole', 'readall',['<IAMIdentityCenterDashboardUsersGroupId>']);
+ osCluster.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+ osCluster.addRoleMapping('ReadAllRole', 'readall','<IAMIdentityCenterDashboardUsersGroupId>');
 ```
 
 
@@ -3948,7 +3948,7 @@ Returns a string representation of this construct.
 ##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping"></a>
 
 ```typescript
-public addRoleMapping(id: string, name: string, roles: string[], persist?: boolean): void
+public addRoleMapping(id: string, name: string, role: string, persist?: boolean): CustomResource
 ```
 
 > [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
@@ -3969,9 +3969,9 @@ OpenSearch role name.
 
 ---
 
-###### `roles`<sup>Required</sup> <a name="roles" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.roles"></a>
+###### `role`<sup>Required</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.addRoleMapping.parameter.role"></a>
 
-- *Type:* string[]
+- *Type:* string
 
 list of IAM roles.
 
@@ -3992,7 +3992,7 @@ Default false.
 ##### `callOpenSearchApi` <a name="callOpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.callOpenSearchApi"></a>
 
 ```typescript
-public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string): void
+public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string): CustomResource
 ```
 
 Calls OpenSearch API using custom resource.
