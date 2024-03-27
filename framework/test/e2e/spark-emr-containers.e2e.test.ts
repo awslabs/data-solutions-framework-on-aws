@@ -14,6 +14,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { JsonPath } from 'aws-cdk-lib/aws-stepfunctions';
 import { TestStack } from './test-stack';
 import { SparkEmrContainersJob, SparkEmrContainersRuntime } from '../../src/processing';
+import { Utils } from '../../src/utils';
 
 
 jest.setTimeout(10000000);
@@ -28,8 +29,11 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
 const eksAdminRole = Role.fromRoleArn(stack, 'EksAdminRole', `arn:aws:iam::${stack.account}:role/role-name-with-path`);
 
+const randomName = Utils.generateUniqueHash(stack, cdk.Stack.of(stack).stackName.slice(0, 5));
+
 // creation of the construct(s) under test
 const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(stack, {
+  eksClusterName: randomName,
   eksAdminRole,
   publicAccessCIDRs: ['10.0.0.0/32'],
   createEmrOnEksServiceLinkedRole: false,
@@ -51,12 +55,12 @@ const s3ReadPolicy = new ManagedPolicy(stack, 's3ReadPolicy', {
 });
 
 const virtualCluster = emrEksCluster.addEmrVirtualCluster(stack, {
-  name: 'e2etest',
+  name: `e2etest${randomName}`,
   createNamespace: true,
   eksNamespace: 'e2etestns',
 });
 
-const execRole = emrEksCluster.createExecutionRole(stack, 'ExecRole', s3ReadPolicy, 'e2ens', 's3ReadExecRole');
+const execRole = emrEksCluster.createExecutionRole(stack, 'ExecRole', s3ReadPolicy, 'e2ens', `s3ReadExecRole${randomName}`);
 
 const logBucket = new Bucket(stack, 'Bucket', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
