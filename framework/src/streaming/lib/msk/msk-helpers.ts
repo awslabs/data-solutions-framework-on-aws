@@ -23,7 +23,10 @@ export function mskIamCrudProviderSetup(
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
     vpc,
+    allowAllOutbound: false,
   });
+
+  lambdaProviderSecurityGroup.addEgressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Outbound to vpc');
 
   brokerSecurityGroup.addIngressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Allow lambda to access MSK cluster');
 

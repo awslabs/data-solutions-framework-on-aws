@@ -13,6 +13,7 @@ import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
+import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { grantConsumeIam, grantProduceIam, mskAclAdminProviderSetup, mskIamCrudProviderSetup } from './msk-helpers';
@@ -61,6 +62,8 @@ export class MskProvisioned extends TrackedConstruct {
 
   public readonly mskProvisionedCluster: CfnCluster;
   public readonly vpc: IVpc;
+  public readonly bootstrapBrokerStringIam?: string;
+  public readonly bootstrapBrokerStringTls?: string;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly mskInClusterAclAdminProviderToken?: string;
@@ -333,6 +336,8 @@ export class MskProvisioned extends TrackedConstruct {
         this.connections.securityGroups[0],
       ).serviceToken;
 
+      this.bootstrapBrokerStringIam = this.getBootstrapBrokers ('BootstrapBrokerStringSaslIam');
+
     }
 
     //If TLS or SASL/SCRAM (once implemented)
@@ -342,6 +347,8 @@ export class MskProvisioned extends TrackedConstruct {
       if (!props.certificateDefinition) {
         throw new Error('TLS Authentication requires a certificate definition');
       }
+
+      this.bootstrapBrokerStringTls = this.getBootstrapBrokers ('BootstrapBrokerStringTls');
 
       //Configure the CR for applying ACLs
       //CR will also handle topic creation
@@ -868,6 +875,29 @@ export class MskProvisioned extends TrackedConstruct {
     });
 
     return logGroup;
+  }
+
+  private getBootstrapBrokers(responseField: string): string {
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
+    let clusterBootstrapBrokers = new AwsCustomResource(this, `BootstrapBrokers${responseField}`, {
+      onUpdate: {
+        service: 'Kafka',
+        action: 'getBootstrapBrokers',
+        parameters: {
+          ClusterArn: this.mskProvisionedCluster.attrArn,
+        },
+        physicalResourceId: PhysicalResourceId.of('BootstrapBrokers'),
+      },
+      policy: AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [this.mskProvisionedCluster.attrArn],
+      }),
+      installLatestAwsSdk: false,
+    });
+
+    clusterBootstrapBrokers.node.addDependency(this.mskProvisionedCluster);
+
+    return clusterBootstrapBrokers.getResponseField(responseField);
+
   }
 
 }

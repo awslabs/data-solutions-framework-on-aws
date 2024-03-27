@@ -4238,6 +4238,8 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskProvisionedCluster">mskProvisionedCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam">bootstrapBrokerStringIam</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls">bootstrapBrokerStringTls</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -4270,6 +4272,26 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `bootstrapBrokerStringIam`<sup>Optional</sup> <a name="bootstrapBrokerStringIam" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam"></a>
+
+```typescript
+public readonly bootstrapBrokerStringIam: string;
+```
+
+- *Type:* string
+
+---
+
+##### `bootstrapBrokerStringTls`<sup>Optional</sup> <a name="bootstrapBrokerStringTls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls"></a>
+
+```typescript
+public readonly bootstrapBrokerStringTls: string;
+```
+
+- *Type:* string
 
 ---
 
