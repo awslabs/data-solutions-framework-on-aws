@@ -1,5 +1,5 @@
 {
-  "app": "python app.py",
+  "app": "python3 app.py",
   "context": {
     "@data-solutions-framework-on-aws/removeDataOnDestroy": true
   },
