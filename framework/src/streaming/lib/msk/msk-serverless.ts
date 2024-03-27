@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { ISecurityGroup, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
@@ -61,7 +61,10 @@ export class MskServerless extends TrackedConstruct {
 
       this.brokerSecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
         vpc: this.vpc,
+        allowAllOutbound: false,
       });
+
+      this.brokerSecurityGroup.addEgressRule(Peer.ipv4(this.vpc.vpcCidrBlock), Port.allTcp(), 'Outbound to vpc');
 
       vpcConfigs = [
         {
@@ -76,6 +79,7 @@ export class MskServerless extends TrackedConstruct {
     //Security group dedicated to lambda CR
     const lambdaSecurityGroup = new SecurityGroup(this, 'LambdaSecurityGroup', {
       vpc: this.vpc,
+      allowAllOutbound: false,
     });
 
     vpcConfigs[0].securityGroups!.push(lambdaSecurityGroup.securityGroupId);
