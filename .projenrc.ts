@@ -383,6 +383,7 @@ const opensearchQuickstart = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
+    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black"
   ],
   pythonExec: 'python3',
