@@ -13,6 +13,186 @@ import { Match, Template } from 'aws-cdk-lib/assertions';
 import { DataLakeCatalog } from '../../../src/governance';
 import { DataLakeStorage } from '../../../src/storage';
 
+describe ('Create catalog for bronze, silver, gold with no provided databaseName', () => {
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+  const storage = new DataLakeStorage(stack, 'ExampleDLStorage', { removalPolicy: RemovalPolicy.DESTROY });
+  new DataLakeCatalog(stack, 'ExampleDLCatalog', {
+    dataLakeStorage: storage,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  const template = Template.fromStack(stack);
+  test('should create crawlers that uses the bucketName as part of the prefix', () => {
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      DatabaseName: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '-',
+                    {
+                      Ref: Match.stringLikeRegexp('.+?Gold.+'),
+                    },
+                  ],
+                },
+              ],
+            },
+            Match.anyValue(),
+          ],
+        ],
+      },
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  's3://',
+                  {
+                    Ref: Match.stringLikeRegexp('.+?Gold.+'),
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      0,
+                      {
+                        'Fn::Split': [
+                          '-',
+                          {
+                            Ref: Match.stringLikeRegexp('.+?Gold.+'),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      DatabaseName: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '-',
+                    {
+                      Ref: Match.stringLikeRegexp('.+?Silver.+'),
+                    },
+                  ],
+                },
+              ],
+            },
+            Match.anyValue(),
+          ],
+        ],
+      },
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  's3://',
+                  {
+                    Ref: Match.stringLikeRegexp('.+?Silver.+'),
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      0,
+                      {
+                        'Fn::Split': [
+                          '-',
+                          {
+                            Ref: Match.stringLikeRegexp('.+?Silver.+'),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      DatabaseName: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '-',
+                    {
+                      Ref: Match.stringLikeRegexp('.+?Bronze.+'),
+                    },
+                  ],
+                },
+              ],
+            },
+            Match.anyValue(),
+          ],
+        ],
+      },
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  's3://',
+                  {
+                    Ref: Match.stringLikeRegexp('.+?Bronze.+'),
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      0,
+                      {
+                        'Fn::Split': [
+                          '-',
+                          {
+                            Ref: Match.stringLikeRegexp('.+?Bronze.+'),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
+  });
+});
 
 describe('Create catalog for bronze, silver, gold with no global data removal', () => {
   const app = new App();
@@ -25,7 +205,6 @@ describe('Create catalog for bronze, silver, gold with no global data removal', 
   });
 
   const template = Template.fromStack(stack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
   test('should create a KMS Key with RETAIN removal policy', () => {
     template.hasResource('AWS::KMS::Key',
       Match.objectLike({
@@ -33,6 +212,128 @@ describe('Create catalog for bronze, silver, gold with no global data removal', 
         DeletionPolicy: 'Retain',
       }),
     );
+  });
+
+  test('should create crawlers that uses the databaseName', () => {
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      DatabaseName: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '-',
+                    {
+                      Ref: Match.stringLikeRegexp('.+?Gold.+'),
+                    },
+                  ],
+                },
+              ],
+            },
+            Match.anyValue(),
+          ],
+        ],
+      },
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  Match.exact('s3://'),
+                  Match.anyValue(),
+                  Match.exact('/exampledb/'),
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      DatabaseName: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '-',
+                    {
+                      Ref: Match.stringLikeRegexp('.+?Silver.+'),
+                    },
+                  ],
+                },
+              ],
+            },
+            Match.anyValue(),
+          ],
+        ],
+      },
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  Match.exact('s3://'),
+                  Match.anyValue(),
+                  Match.exact('/exampledb/'),
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
+
+    template.hasResourceProperties('AWS::Glue::Crawler', {
+      DatabaseName: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '-',
+                    {
+                      Ref: Match.stringLikeRegexp('.+?Bronze.+'),
+                    },
+                  ],
+                },
+              ],
+            },
+            Match.anyValue(),
+          ],
+        ],
+      },
+      Targets: {
+        S3Targets: [
+          {
+            Path: {
+              'Fn::Join': [
+                '',
+                [
+                  Match.exact('s3://'),
+                  Match.anyValue(),
+                  Match.exact('/exampledb/'),
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
   });
 
 
