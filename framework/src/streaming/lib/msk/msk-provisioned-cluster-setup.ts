@@ -5,7 +5,6 @@ import { FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Effect, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
-import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
@@ -164,51 +163,6 @@ export function clientAuthenticationSetup(
   }
 
   return [clientAuthentication, inClusterAcl, iamAcl];
-}
-
-
-/**
-   * Get the ZooKeeper Connection string
-   *
-   * Uses a Custom Resource to make an API call to `describeCluster` using the Javascript SDK
-   *
-   * @param scope
-   * @param clusterArn
-   * @returns - The am object with the connection string to use to connect to the ZooKeeper both in plaintext and TLS.
-   */
-export function getZookeeperConnectionString(scope: Construct, cluster: CfnCluster): {
-  ZookeeperConnectStringTls: string;
-  ZookeeperConnectString: string;
-} {
-
-  let clusterDescription = new AwsCustomResource(scope, 'ZookeeperConnect', {
-    onUpdate: {
-      service: 'Kafka',
-      action: 'describeCluster',
-      parameters: {
-        ClusterArn: cluster.attrArn,
-      },
-      physicalResourceId: PhysicalResourceId.of(
-        'ZooKeeperConnectionString',
-      ),
-      // Limit the output of describeCluster that is otherwise too large
-      outputPaths: [
-        'ClusterInfo.ZookeeperConnectString',
-        'ClusterInfo.ZookeeperConnectStringTls',
-      ],
-    },
-    policy: AwsCustomResourcePolicy.fromSdkCalls({
-      resources: [cluster.attrArn],
-    }),
-    installLatestAwsSdk: false,
-  });
-
-  clusterDescription.node.addDependency(cluster);
-
-  return {
-    ZookeeperConnectString: clusterDescription.getResponseField('ClusterInfo.ZookeeperConnectString'),
-    ZookeeperConnectStringTls: clusterDescription.getResponseField('ClusterInfo.ZookeeperConnectStringTls'),
-  };
 }
 
 

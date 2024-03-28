@@ -34,6 +34,7 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from
  */
 export class MskProvisioned extends TrackedConstruct {
 
+  public static readonly MSK_DEFAULT_VERSION: KafkaVersion = KafkaVersion.V3_5_1;
 
   public static createCLusterConfiguration(
     scope: Construct,
@@ -82,6 +83,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly iamAcl: boolean;
   private readonly crPrincipal?: string;
   private aclOperationCr?: CustomResource;
+  private readonly deploymentClusterVersion;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -188,9 +190,11 @@ export class MskProvisioned extends TrackedConstruct {
       throw Error('The number of broker nodes needs to be multiple of the number of AZs');
     }
 
+    this.deploymentClusterVersion = props.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
+
     this.mskProvisionedCluster = new CfnCluster(this, 'mskProvisionedCluster', {
-      clusterName: props.clusterName,
-      kafkaVersion: props.kafkaVersion.version,
+      clusterName: props.clusterName ?? 'default-msk-provisioned',
+      kafkaVersion: this.deploymentClusterVersion.version,
       numberOfBrokerNodes: this.numberOfBrokerNodes,
       brokerNodeGroupInfo: {
         instanceType: `kafka.${this.mskBrokerinstanceType.instance.toString()}`,
@@ -374,7 +378,7 @@ export class MskProvisioned extends TrackedConstruct {
             //Name of a configuration is required
             `dsfconfiguration${Utils.generateHash(Stack.of(this).stackName).slice(0, 3)}`,
             join(__dirname, './resources/cluster-config-msk-provisioned'),
-            [props.kafkaVersion],
+            [this.deploymentClusterVersion],
           );
 
         this.mskProvisionedCluster.node.addDependency(clusterConfiguration);
