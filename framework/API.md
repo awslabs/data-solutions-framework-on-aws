@@ -4081,7 +4081,7 @@ Wether to keep the ACL or delete it when removing the resource from the Stack {@
 ##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic"></a>
 
 ```typescript
-public setTopic(scope: Construct, id: string, clientAuthentication: Authentitcation, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
+public setTopic(scope: Construct, id: string, clientAuthentication: Authentitcation, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
 ```
 
 Creates a topic in the Msk Cluster.
@@ -4110,7 +4110,7 @@ the CDK id for Topic.
 
 ###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.topicDefinition"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic[]
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic
 
 the Kafka topic definition.
 
@@ -4402,7 +4402,7 @@ Returns a string representation of this construct.
 ##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic"></a>
 
 ```typescript
-public addTopic(scope: Construct, id: string, topicDefinition: MskTopic[], removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+public addTopic(scope: Construct, id: string, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
 ```
 
 Creates a topic in the Msk Serverless.
@@ -4425,7 +4425,7 @@ the CDK id for Topic.
 
 ###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.addTopic.parameter.topicDefinition"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic[]
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic
 
 the Kafka topic definition.
 
