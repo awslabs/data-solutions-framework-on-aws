@@ -16,6 +16,7 @@ import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
+import { KafkaApi } from './kafka-api';
 import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cluster-setup';
 import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
@@ -24,7 +25,6 @@ import {
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
-import { KafkaApi } from './kafka-api';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -333,7 +333,7 @@ export class MskProvisioned extends TrackedConstruct {
       clusterArn: this.mskProvisionedCluster.attrArn,
       certficateSecret: props.certificateDefinition?.secretCertificate,
       brokerSecurityGroup: this.connections.securityGroups[0],
-      clientAuthentication: props.clientAuthentication ?? ClientAuthentication.sasl( { iam: true}),
+      clientAuthentication: props.clientAuthentication ?? ClientAuthentication.sasl( { iam: true }),
       kafkaClientLogLevel: props.kafkaClientLogLevel,
     });
 
@@ -453,11 +453,11 @@ export class MskProvisioned extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = this.kafkaApi.setTopic(
-      scope, 
-      id, 
-      clientAuthentication, 
-      topicDefinition,  
-      removalPolicy, 
+      scope,
+      id,
+      clientAuthentication,
+      topicDefinition,
+      removalPolicy,
       waitForLeaders,
       timeout);
 
@@ -489,14 +489,14 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
-      return this.kafkaApi.grantProduce(
-        id,
-        topicName,
-        clientAuthentication,
-        principal,
-        host,
-        removalPolicy
-      );
+    return this.kafkaApi.grantProduce(
+      id,
+      topicName,
+      clientAuthentication,
+      principal,
+      host,
+      removalPolicy,
+    );
   }
 
   /**
@@ -517,9 +517,9 @@ export class MskProvisioned extends TrackedConstruct {
     removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
     return this.kafkaApi.grantConsume(
-      id, 
-      topicName, 
-      clientAuthentication, 
+      id,
+      topicName,
+      clientAuthentication,
       principal,
       host,
       removalPolicy);

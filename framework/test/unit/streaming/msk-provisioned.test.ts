@@ -32,11 +32,11 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
   });
 
   msk.setTopic(stack, 'topic1',
-    Authentitcation.IAM, [{
+    Authentitcation.IAM, {
       topic: 'topic1',
       numPartitions: 3,
       replicationFactor: 1,
-    }], RemovalPolicy.DESTROY, false, 1500);
+    }, RemovalPolicy.DESTROY, false, 1500);
 
   msk.grantConsume('topic1', 'topic1', Authentitcation.IAM, Role.fromRoleName(stack, 'consumerRole', 'consumer'));
   msk.grantProduce('topic1', 'topic1', Authentitcation.IAM, Role.fromRoleName(stack, 'producerRole', 'producer'));
@@ -164,11 +164,11 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
   });
 
   msk.setTopic(stack, 'topic1',
-    Authentitcation.MTLS, [{
+    Authentitcation.MTLS, {
       topic: 'topic1',
       numPartitions: 3,
       replicationFactor: 1,
-    }], RemovalPolicy.DESTROY, false, 1500);
+    }, RemovalPolicy.DESTROY, false, 1500);
 
   msk.setAcl(stack, 'acl', {
     resourceType: AclResourceTypes.TOPIC,

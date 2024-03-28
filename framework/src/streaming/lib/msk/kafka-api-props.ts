@@ -4,8 +4,8 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc } from 'aws-cdk-lib/aws-ec2';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
-import { ClientAuthentication } from './msk-provisioned-props-utils';
 import { KafkaClientLogLevel } from './msk-provisioned-props';
+import { ClientAuthentication } from './msk-provisioned-props-utils';
 
 /**
  * Properties for the `MskServerlessCluster` construct

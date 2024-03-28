@@ -28,13 +28,13 @@ Aspects.of(stack).add(new AwsSolutionsChecks({ verbose: true }));
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/stack/cluster/LambdaExecutionRolePolicy/Resource',
+  '/stack/cluster/KafkaApi/LambdaExecutionRolePolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'This the policy for the lambda CR that manage CRUD operation within the MSK Serverless' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/stack/cluster/MskCrudProvider/VpcPolicy/Resource',
+  '/stack/cluster/KafkaApi/MskCrudProvider/VpcPolicy/Resource',
   [
     { id: 'AwsSolutions-IAM5', reason: 'Inherited from DsfProvider and used to clean up the ENIs' },
   ],
@@ -44,12 +44,12 @@ NagSuppressions.addResourceSuppressionsByPath(
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   [
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/Resource',
   ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },

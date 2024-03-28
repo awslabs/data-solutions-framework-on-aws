@@ -58,14 +58,14 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/stack/cluster/LambdaExecutionRolePolicy/Resource',
+  '/stack/cluster/KafkaApi/LambdaExecutionRolePolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'This the policy for the lambda CR that manage CRUD operation within the MSK Provisioned' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   [
-    '/stack/cluster/MskCrudProvider/VpcPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/VpcPolicy/Resource',
     '/stack/cluster/vpcPolicyLambdaSetClusterConfiguration/Resource',
   ],
   [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is scoped with IAM conditions' }],
@@ -74,23 +74,23 @@ NagSuppressions.addResourceSuppressionsByPath(
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   [
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskCrudProvider/CleanUpProvider/framework-onEvent/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskCrudProvider/CustomResourceProvider/framework-onEvent/Resource',
-    '/stack/cluster/MskAclAdminProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskAclAdminProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskAclAdminProvider/CleanUpProvider/framework-onEvent/Resource',
-    '/stack/cluster/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-    '/stack/cluster/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-    '/stack/cluster/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CleanUpProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskCrudProvider/CustomResourceProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CleanUpProvider/framework-onEvent/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/KafkaApi/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/Resource',
     '/stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource',
     '/stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource',
     '/stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
@@ -106,13 +106,13 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/stack/cluster/LambdaExecutionRolePolicymskAclAdminCr/Resource',
+  '/stack/cluster/KafkaApi/LambdaExecutionRolePolicymskAclAdminCr/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is necessary for getting the bootstrapbrokers' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/stack/cluster/MskAclAdminProvider/VpcPolicy/Resource',
+  '/stack/cluster/KafkaApi/MskAclAdminProvider/VpcPolicy/Resource',
   [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is scoped with IAM conditions' }],
 );
 

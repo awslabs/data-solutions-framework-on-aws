@@ -7,10 +7,10 @@ import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
-import { MskServerlessProps, MskTopic } from './msk-serverless-props';
-import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { KafkaApi } from './kafka-api';
 import { Authentitcation, ClientAuthentication } from './msk-provisioned-props-utils';
+import { MskServerlessProps, MskTopic } from './msk-serverless-props';
+import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A construct to create an MSK Serverless cluster
@@ -97,18 +97,18 @@ export class MskServerless extends TrackedConstruct {
       },
     });
 
-    //The select security group of brokers that will be used 
+    //The select security group of brokers that will be used
     //to allow the lambda of CR
     let brokerSecurityGroupCr;
 
     if (props?.vpcConfigs) {
       brokerSecurityGroupCr = SecurityGroup.fromSecurityGroupId(
-        this, 
+        this,
         'brokerSecurityGroup',
         props.vpcConfigs[0].securityGroups![0]);
     } else {
       brokerSecurityGroupCr = this.brokerSecurityGroup!;
-    } 
+    }
 
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
@@ -116,7 +116,7 @@ export class MskServerless extends TrackedConstruct {
       clusterArn: this.mskServerlessCluster.attrArn,
       brokerSecurityGroup: brokerSecurityGroupCr!,
       removalPolicy: this.removalPolicy,
-      clientAuthentication: ClientAuthentication.sasl( { iam: true}),
+      clientAuthentication: ClientAuthentication.sasl( { iam: true }),
     });
 
     this.kafkaApi._initiallizeCluster(this.mskServerlessCluster);
@@ -145,7 +145,7 @@ export class MskServerless extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = this.kafkaApi.setTopic(
-      scope, 
+      scope,
       id,
       Authentitcation.IAM,
       topicDefinition,
@@ -167,7 +167,7 @@ export class MskServerless extends TrackedConstruct {
     this.kafkaApi.grantProduce(
       'N/A',
       topicName,
-      Authentitcation.IAM, 
+      Authentitcation.IAM,
       principal);
 
   }
@@ -183,7 +183,7 @@ export class MskServerless extends TrackedConstruct {
     this.kafkaApi.grantConsume(
       'N/A',
       topicName,
-      Authentitcation.IAM, 
+      Authentitcation.IAM,
       principal);
 
   }

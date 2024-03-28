@@ -175,18 +175,17 @@ export function grantConsumeIam (
   cluster?: CfnCluster | CfnServerlessCluster,
   clusterArn?: string) {
 
-    let clusterUuid = undefined;
-    let clusterName = undefined;
-    let _clusterArn = cluster?.attrArn ?? clusterArn;
-  
-    if (cluster) {
-      clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
-      clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-    } 
-    else {
-      clusterName = clusterArn?.split('/')[1];
-      clusterUuid = clusterArn?.split('/')[2]; 
-    }
+  let clusterUuid = undefined;
+  let clusterName = undefined;
+  let _clusterArn = cluster?.attrArn ?? clusterArn;
+
+  if (cluster) {
+    clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
+    clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
+  } else {
+    clusterName = clusterArn?.split('/')[1];
+    clusterUuid = clusterArn?.split('/')[2];
+  }
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
       'kafka-cluster:Connect',
@@ -233,10 +232,9 @@ export function grantProduceIam (
   if (cluster) {
     clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
     clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-  } 
-  else {
+  } else {
     clusterName = clusterArn?.split('/')[1];
-    clusterUuid = clusterArn?.split('/')[2]; 
+    clusterUuid = clusterArn?.split('/')[2];
   }
 
   principal.addToPrincipalPolicy(new PolicyStatement({
