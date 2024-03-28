@@ -8,16 +8,7 @@ This section is for MSK Serverless
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const msk = new MskServerless(stack, 'cluster', {
-  clusterName: 'dev-demo',
-  vpcConfigs: [
-    {
-      subnetIds: vpc.vpc.privateSubnets.map((s: ISubnet) => s.subnetId),
-      securityGroups: [vpc.vpc.vpcDefaultSecurityGroup],
-    },
-  ],
-  vpc: vpc.vpc,
-});
+const msk = new MskServerless(stack, 'cluster');
   ```
   
   ```mdx-code-block
@@ -26,15 +17,7 @@ const msk = new MskServerless(stack, 'cluster', {
   <TabItem value="python" label="Python">
 
   ```python
-msk = MskServerless(stack, "cluster",
-    cluster_name="dev-demo",
-    vpc_configs=[cdk.aws_msk.CfnServerlessCluster.VpcConfigProperty(
-        subnet_ids=vpc.vpc.private_subnets.map((s: ISubnet) => s.subnetId),
-        security_groups=[vpc.vpc.vpc_default_security_group]
-    )
-    ],
-    vpc=vpc.vpc
-)
+msk = MskServerless(stack, "cluster")
   ```
 
   </TabItem>

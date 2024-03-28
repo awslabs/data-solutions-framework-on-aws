@@ -18,7 +18,7 @@ export interface MskServerlessProps {
    */
   readonly removalPolicy?: RemovalPolicy;
 
-  readonly clusterName: string;
+  readonly clusterName?: string;
 
   readonly vpcConfigs?: CfnServerlessCluster.VpcConfigProperty [];
 
