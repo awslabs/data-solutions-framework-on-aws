@@ -14,12 +14,12 @@ export function mskIamCrudProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
-  mskCluster: CfnServerlessCluster | CfnCluster,
-  brokerSecurityGroup: ISecurityGroup) : DsfProvider {
+  brokerSecurityGroup: ISecurityGroup,
+  clusterArn: string,
+  clusterName: string) : DsfProvider {
 
   let account = Stack.of(scope).account;
   let region = Stack.of(scope).region;
-  let clusterName = mskCluster.clusterName;
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
     vpc,
@@ -61,7 +61,7 @@ export function mskIamCrudProviderSetup(
     new PolicyStatement({
       actions: ['kafka:GetBootstrapBrokers', 'kafka:DescribeClusterV2', 'kafka:CreateVpcConnection'],
       resources: [
-        mskCluster.attrArn,
+        clusterArn,
       ],
     }),
   ];
@@ -101,8 +101,8 @@ export function mskAclAdminProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
-  mskCluster: CfnCluster,
   brokerSecurityGroup: ISecurityGroup,
+  clusterArn: string,
   secret: ISecret) : DsfProvider {
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskAclAdminCr', {
@@ -122,7 +122,7 @@ export function mskAclAdminProviderSetup(
     new PolicyStatement({
       actions: ['kafka:DescribeCluster'],
       resources: [
-        mskCluster.attrArn,
+        clusterArn,
       ],
     }),
     new PolicyStatement({
@@ -172,17 +172,27 @@ export function mskAclAdminProviderSetup(
 export function grantConsumeIam (
   topicName: string,
   principal: IPrincipal,
-  cluster: CfnCluster | CfnServerlessCluster) {
+  cluster?: CfnCluster | CfnServerlessCluster,
+  clusterArn?: string) {
 
-  let clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
-  let clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-
+    let clusterUuid = undefined;
+    let clusterName = undefined;
+    let _clusterArn = cluster?.attrArn ?? clusterArn;
+  
+    if (cluster) {
+      clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
+      clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
+    } 
+    else {
+      clusterName = clusterArn?.split('/')[1];
+      clusterUuid = clusterArn?.split('/')[2]; 
+    }
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
       'kafka-cluster:Connect',
     ],
     resources: [
-      cluster.attrArn,
+      _clusterArn!,
     ],
   }));
 
@@ -213,10 +223,21 @@ export function grantConsumeIam (
 export function grantProduceIam (
   topicName: string,
   principal: IPrincipal,
-  cluster: CfnCluster | CfnServerlessCluster) {
+  cluster?: CfnCluster | CfnServerlessCluster,
+  clusterArn?: string) {
 
-  let clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
-  let clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
+  let clusterUuid = undefined;
+  let clusterName = undefined;
+  let _clusterArn = cluster?.attrArn ?? clusterArn;
+
+  if (cluster) {
+    clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
+    clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
+  } 
+  else {
+    clusterName = clusterArn?.split('/')[1];
+    clusterUuid = clusterArn?.split('/')[2]; 
+  }
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
@@ -224,7 +245,7 @@ export function grantProduceIam (
       'kafka-cluster:WriteDataIdempotently',
     ],
     resources: [
-      cluster.attrArn,
+      _clusterArn!,
     ],
   }));
 

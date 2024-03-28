@@ -4346,7 +4346,7 @@ A construct to create an MSK Serverless cluster.
 ```typescript
 import { streaming } from '@cdklabs/aws-data-solutions-framework'
 
-new streaming.msk.MskServerless(scope: Construct, id: string, props: MskServerlessProps)
+new streaming.msk.MskServerless(scope: Construct, id: string, props?: MskServerlessProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -4373,7 +4373,7 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer.parameter.props"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps
 
@@ -4556,6 +4556,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.mskServerlessCluster">mskServerlessCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
@@ -4571,6 +4572,16 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -11328,7 +11339,7 @@ const mskServerlessProps: streaming.msk.MskServerlessProps = { ... }
 
 ---
 
-##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clusterName"></a>
+##### `clusterName`<sup>Optional</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerlessProps.property.clusterName"></a>
 
 ```typescript
 public readonly clusterName: string;

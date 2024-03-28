@@ -12,19 +12,19 @@ import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
-import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
+
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
-import { grantConsumeIam, grantProduceIam, mskAclAdminProviderSetup, mskIamCrudProviderSetup } from './msk-helpers';
 import { clientAuthenticationSetup, monitoringSetup } from './msk-provisioned-cluster-setup';
-import { Acl, KafkaClientLogLevel, MskProvisionedProps } from './msk-provisioned-props';
+import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
-  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation,
+  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation, ClientAuthentication,
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
+import { KafkaApi } from './kafka-api';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -67,8 +67,6 @@ export class MskProvisioned extends TrackedConstruct {
   public readonly bootstrapBrokerStringTls?: string;
 
   private readonly removalPolicy: RemovalPolicy;
-  private readonly mskInClusterAclAdminProviderToken?: string;
-  private readonly mskIamACrudAdminProviderToken?: string;
   private readonly account: string;
   private readonly region: string;
   private readonly partition: string;
@@ -77,13 +75,12 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly connections: Connections;
   private readonly defaultNumberOfBrokerNodes: number;
   private readonly numberOfBrokerNodes: number;
-  private readonly tlsCertifacateSecret?: ISecret;
-  private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly inClusterAcl: boolean;
   private readonly iamAcl: boolean;
   private readonly crPrincipal?: string;
   private aclOperationCr?: CustomResource;
   private readonly deploymentClusterVersion;
+  private readonly kafkaApi: KafkaApi;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -104,10 +101,9 @@ export class MskProvisioned extends TrackedConstruct {
     this.partition = Stack.of(this).partition;
 
     if (props.certificateDefinition) {
-      this.tlsCertifacateSecret = props.certificateDefinition.secretCertificate;
       this.crPrincipal = props.certificateDefinition.aclAdminPrincipal;
     }
-    this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
+
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
     if (!props.vpc) {
@@ -329,16 +325,23 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.mskProvisionedCluster],
     });
 
+    console.log(props.certificateDefinition?.secretCertificate.secretArn);
+
+    this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
+      vpc: this.vpc,
+      clusterName: this.mskProvisionedCluster.clusterName,
+      clusterArn: this.mskProvisionedCluster.attrArn,
+      certficateSecret: props.certificateDefinition?.secretCertificate,
+      brokerSecurityGroup: this.connections.securityGroups[0],
+      clientAuthentication: props.clientAuthentication ?? ClientAuthentication.sasl( { iam: true}),
+      kafkaClientLogLevel: props.kafkaClientLogLevel,
+    });
+
+    this.kafkaApi._initiallizeCluster(this.mskProvisionedCluster);
+
     //Set the CR that will use IAM credentials
     // This will be used for CRUD on Topics
     if (this.iamAcl) {
-      this.mskIamACrudAdminProviderToken = mskIamCrudProviderSetup(
-        this,
-        this.removalPolicy,
-        this.vpc,
-        this.mskProvisionedCluster,
-        this.connections.securityGroups[0],
-      ).serviceToken;
 
       this.bootstrapBrokerStringIam = this.getBootstrapBrokers ('BootstrapBrokerStringSaslIam');
 
@@ -353,17 +356,6 @@ export class MskProvisioned extends TrackedConstruct {
       }
 
       this.bootstrapBrokerStringTls = this.getBootstrapBrokers ('BootstrapBrokerStringTls');
-
-      //Configure the CR for applying ACLs
-      //CR will also handle topic creation
-      this.mskInClusterAclAdminProviderToken = mskAclAdminProviderSetup(
-        this,
-        this.removalPolicy,
-        this.vpc,
-        this.mskProvisionedCluster,
-        this.connections.securityGroups[0],
-        props.certificateDefinition!.secretCertificate,
-      ).serviceToken;
 
       // Create the configuration
       let clusterConfigurationInfo: ClusterConfigurationInfo;
@@ -429,24 +421,7 @@ export class MskProvisioned extends TrackedConstruct {
       throw Error('Setting ACLs is only supported with TLS and SASL/SCRAM');
     }
 
-    const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskInClusterAclAdminProviderToken!,
-      properties: {
-        logLevel: this.kafkaClientLogLevel,
-        secretArn: this.tlsCertifacateSecret!.secretArn,
-        region: Stack.of(scope).region,
-        mskClusterArn: this.mskProvisionedCluster.attrArn,
-        resourceType: aclDefinition.resourceType,
-        resourcePatternType: aclDefinition.resourcePatternType,
-        resourceName: aclDefinition.resourceName,
-        principal: aclDefinition.principal,
-        host: aclDefinition.host,
-        operation: aclDefinition.operation,
-        permissionType: aclDefinition.permissionType,
-      },
-      resourceType: 'Custom::MskAcl',
-      removalPolicy: removalPolicy,
-    });
+    const cr = this.kafkaApi.setAcl(scope, id, aclDefinition, removalPolicy);
 
     if (aclDefinition.principal !== this.crPrincipal && this.inClusterAcl) {
       cr.node.addDependency(this.aclOperationCr!);
@@ -471,34 +446,24 @@ export class MskProvisioned extends TrackedConstruct {
     scope: Construct,
     id: string,
     clientAuthentication: Authentitcation,
-    topicDefinition: MskTopic[],
+    topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
     timeout?: number) : CustomResource {
 
-    let serviceToken: string;
-
-    if (clientAuthentication === Authentitcation.IAM) {
-      serviceToken = this.mskIamACrudAdminProviderToken!;
-    } else {
-      serviceToken = this.mskInClusterAclAdminProviderToken!;
-    }
-
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
-    const cr = new CustomResource(scope, id, {
-      serviceToken: serviceToken,
-      properties: {
-        logLevel: this.kafkaClientLogLevel,
-        secretArn: this.tlsCertifacateSecret?.secretArn,
-        topics: topicDefinition,
-        waitForLeaders: waitForLeaders,
-        timeout: timeout,
-        region: this.region,
-        mskClusterArn: this.mskProvisionedCluster.attrArn,
-      },
-      resourceType: 'Custom::MskTopic',
-      removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
-    });
+    const cr = this.kafkaApi.setTopic(
+      scope, 
+      id, 
+      clientAuthentication, 
+      topicDefinition,  
+      removalPolicy, 
+      waitForLeaders,
+      timeout);
+
+    if (this.inClusterAcl) {
+      cr.node.addDependency(this.aclOperationCr!);
+    }
 
     if (this.inClusterAcl) {
       cr.node.addDependency(this.aclOperationCr!);
@@ -524,45 +489,14 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
-    if (clientAuthentication === Authentitcation.IAM) {
-
-      //Check if principal is not a string
-      if (typeof principal == 'string') {
-        throw Error('principal must be of type IPrincipal not string');
-      }
-
-      grantProduceIam(
+      return this.kafkaApi.grantProduce(
+        id,
         topicName,
-        principal as IPrincipal,
-        this.mskProvisionedCluster);
-
-      return undefined;
-
-    } else {
-
-      //Check if principal is not a string
-      if (typeof principal !== 'string') {
-        throw Error('principal must not be of type IPrincipal');
-      }
-
-      const cr = this.setAcl(this, id, {
-        resourceType: AclResourceTypes.TOPIC,
-        resourceName: topicName,
-        resourcePatternType: ResourcePatternTypes.LITERAL,
-        principal: principal as string,
-        host: host ?? '*',
-        operation: AclOperationTypes.WRITE,
-        permissionType: AclPermissionTypes.ALLOW,
-      },
-      removalPolicy ?? RemovalPolicy.DESTROY,
+        clientAuthentication,
+        principal,
+        host,
+        removalPolicy
       );
-
-      cr.node.addDependency(this.mskProvisionedCluster);
-
-      return cr;
-    }
-
-
   }
 
   /**
@@ -582,43 +516,13 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
-    if (clientAuthentication === Authentitcation.IAM) {
-
-      //Check if principal is not a string
-      if (typeof principal == 'string') {
-        throw Error('principal must be of type IPrincipal not string');
-      }
-
-      grantConsumeIam(
-        topicName,
-        principal as IPrincipal,
-        this.mskProvisionedCluster);
-
-      return undefined;
-
-    } else {
-
-      //Check if principal is not a string
-      if (typeof principal !== 'string') {
-        throw Error('principal must not be of type IPrincipal');
-      }
-
-      const cr = this.setAcl(this, id, {
-        resourceType: AclResourceTypes.TOPIC,
-        resourceName: topicName,
-        resourcePatternType: ResourcePatternTypes.LITERAL,
-        principal: principal as string,
-        host: host ?? '*',
-        operation: AclOperationTypes.READ,
-        permissionType: AclPermissionTypes.ALLOW,
-      },
-      removalPolicy ?? RemovalPolicy.DESTROY,
-      );
-
-      cr.node.addDependency(this.mskProvisionedCluster);
-
-      return cr;
-    }
+    return this.kafkaApi.grantConsume(
+      id, 
+      topicName, 
+      clientAuthentication, 
+      principal,
+      host,
+      removalPolicy);
   }
 
   private setAcls(props: MskProvisionedProps): CustomResource[] {

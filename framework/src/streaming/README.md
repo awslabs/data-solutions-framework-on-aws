@@ -8,6 +8,8 @@ This section is for MSK Provisioned
 [//]: # (streaming.msk-serverless)
 # MSK Serverless
 
-This section is for MSK Serverless
+An MSK Serverless cluster with helpers to manage topics and IAM permissions. 
+
+## Overview
 
 [example msk provisioned default](./examples/msk-serverless-default.lit.ts)
