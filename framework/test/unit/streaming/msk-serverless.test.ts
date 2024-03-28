@@ -38,17 +38,17 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
     vpc: vpc.vpc,
   });
 
-  msk.addTopic(stack, 'topic1', [{
+  msk.addTopic(stack, 'topic1', {
     topic: 'topic1',
     numPartitions: 3,
     replicationFactor: 1,
-  }]);
+  });
 
-  msk.addTopic(stack, 'topic2', [{
+  msk.addTopic(stack, 'topic2', {
     topic: 'topic2',
     numPartitions: 3,
     replicationFactor: 1,
-  }]);
+  });
 
   msk.grantConsume('topic1', Role.fromRoleName(stack, 'consumerRole', 'consumer'));
   msk.grantProduce('topic1', Role.fromRoleName(stack, 'producerRole', 'producer'));
