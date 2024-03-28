@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
-import { grantConsumeIam, grantProduceIam, mskIamCrudProviderSetup } from './msk-helpers';
 import { MskServerlessProps, MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { KafkaApi } from './kafka-api';
+import { Authentitcation, ClientAuthentication } from './msk-provisioned-props-utils';
 
 /**
  * A construct to create an MSK Serverless cluster
@@ -22,9 +23,10 @@ export class MskServerless extends TrackedConstruct {
   public readonly mskServerlessCluster: CfnServerlessCluster;
   public readonly vpc: IVpc;
   public readonly brokerSecurityGroup?: ISecurityGroup;
+  public readonly clusterName: string;
 
   private readonly removalPolicy: RemovalPolicy;
-  private readonly mskCrudProviderToken: string;
+  private readonly kafkaApi: KafkaApi;
 
 
   /**
@@ -33,7 +35,7 @@ export class MskServerless extends TrackedConstruct {
    * @param {string} id the ID of the CDK Construct
    * @param {MskServerlessProps} props
    */
-  constructor(scope: Construct, id: string, props: MskServerlessProps) {
+  constructor(scope: Construct, id: string, props?: MskServerlessProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: MskServerless.name,
@@ -41,9 +43,11 @@ export class MskServerless extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
 
-    if (!props.vpc) {
+    this.clusterName = props?.clusterName ?? 'default-msk-serverless';
+
+    if (!props?.vpc) {
       this.vpc = new DataVpc(scope, 'Vpc', {
         vpcCidr: '10.0.0.0/16',
       }).vpc;
@@ -51,13 +55,13 @@ export class MskServerless extends TrackedConstruct {
       this.vpc = props.vpc;
     }
 
-    if (props.vpc && !props.vpcConfigs || !props.vpc && props.vpcConfigs) {
+    if (props?.vpc && !props?.vpcConfigs || !props?.vpc && props?.vpcConfigs) {
       throw new Error('Need to pass both vpcConfigs and vpc');
     }
 
     let vpcConfigs;
 
-    if (!props.vpcConfigs) {
+    if (!props?.vpcConfigs) {
 
       this.brokerSecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
         vpc: this.vpc,
@@ -82,7 +86,7 @@ export class MskServerless extends TrackedConstruct {
     vpcConfigs[0].securityGroups!.push(lambdaSecurityGroup.securityGroupId);
 
     this.mskServerlessCluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
-      clusterName: props.clusterName ?? 'dsfServerlessCluster',
+      clusterName: this.clusterName,
       vpcConfigs: vpcConfigs,
       clientAuthentication: {
         sasl: {
@@ -93,14 +97,29 @@ export class MskServerless extends TrackedConstruct {
       },
     });
 
-    let mskCrudProvider = mskIamCrudProviderSetup(
-      this,
-      this.removalPolicy,
-      this.vpc,
-      this.mskServerlessCluster,
-      lambdaSecurityGroup);
+    //The select security group of brokers that will be used 
+    //to allow the lambda of CR
+    let brokerSecurityGroupCr;
 
-    this.mskCrudProviderToken = mskCrudProvider.serviceToken;
+    if (props?.vpcConfigs) {
+      brokerSecurityGroupCr = SecurityGroup.fromSecurityGroupId(
+        this, 
+        'brokerSecurityGroup',
+        props.vpcConfigs[0].securityGroups![0]);
+    } else {
+      brokerSecurityGroupCr = this.brokerSecurityGroup!;
+    } 
+
+    this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
+      vpc: this.vpc,
+      clusterName: this.clusterName,
+      clusterArn: this.mskServerlessCluster.attrArn,
+      brokerSecurityGroup: brokerSecurityGroupCr!,
+      removalPolicy: this.removalPolicy,
+      clientAuthentication: ClientAuthentication.sasl( { iam: true}),
+    });
+
+    this.kafkaApi._initiallizeCluster(this.mskServerlessCluster);
 
   }
 
@@ -119,24 +138,20 @@ export class MskServerless extends TrackedConstruct {
   public addTopic(
     scope: Construct,
     id: string,
-    topicDefinition: MskTopic[],
+    topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
     timeout?: number) {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
-    const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskCrudProviderToken,
-      properties: {
-        topics: topicDefinition,
-        waitForLeaders: waitForLeaders,
-        timeout: timeout,
-        region: Stack.of(scope).region,
-        mskClusterArn: this.mskServerlessCluster.attrArn,
-      },
-      resourceType: 'Custom::MskTopic',
-      removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
-    });
+    const cr = this.kafkaApi.setTopic(
+      scope, 
+      id,
+      Authentitcation.IAM,
+      topicDefinition,
+      removalPolicy,
+      waitForLeaders,
+      timeout);
 
     cr.node.addDependency(this.mskServerlessCluster);
   }
@@ -149,10 +164,11 @@ export class MskServerless extends TrackedConstruct {
    */
   public grantProduce(topicName: string, principal: IPrincipal) {
 
-    grantProduceIam(
+    this.kafkaApi.grantProduce(
+      'N/A',
       topicName,
-      principal as IPrincipal,
-      this.mskServerlessCluster);
+      Authentitcation.IAM, 
+      principal);
 
   }
 
@@ -164,10 +180,11 @@ export class MskServerless extends TrackedConstruct {
    */
   public grantConsume(topicName: string, principal: IPrincipal) {
 
-    grantConsumeIam(
+    this.kafkaApi.grantConsume(
+      'N/A',
       topicName,
-      principal as IPrincipal,
-      this.mskServerlessCluster);
+      Authentitcation.IAM, 
+      principal);
 
   }
 }
