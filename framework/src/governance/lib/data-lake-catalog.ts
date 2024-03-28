@@ -67,12 +67,17 @@ export class DataLakeCatalog extends TrackedConstruct {
     const extractedBronzeBucketName = this.extractBucketName(props.dataLakeStorage.bronzeBucket);
     const extractedSilverBucketName = this.extractBucketName(props.dataLakeStorage.silverBucket);
     const extractedGoldBucketName = this.extractBucketName(props.dataLakeStorage.goldBucket);
-    const locationPrefix = props.databaseName || '/';
+    const bronzeDatabaseName = props.databaseName ? `${extractedBronzeBucketName}_${props.databaseName}` : extractedBronzeBucketName;
+    const silverDatabaseName = props.databaseName ? `${extractedSilverBucketName}_${props.databaseName}` : extractedSilverBucketName;
+    const goldDatabaseName = props.databaseName ? `${extractedGoldBucketName}_${props.databaseName}` : extractedGoldBucketName;
+    const bronzeLocationPrefix = props.databaseName || bronzeDatabaseName;
+    const silverLocationPrefix = props.databaseName || silverDatabaseName;
+    const goldLocationPrefix = props.databaseName || goldDatabaseName;
 
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
-      locationPrefix,
-      name: props.databaseName ? `${extractedBronzeBucketName}_${props.databaseName}` : extractedBronzeBucketName,
+      locationPrefix: bronzeLocationPrefix,
+      name: bronzeDatabaseName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
@@ -82,8 +87,8 @@ export class DataLakeCatalog extends TrackedConstruct {
 
     this.silverCatalogDatabase = new DataCatalogDatabase(this, 'SilverCatalogDatabase', {
       locationBucket: props.dataLakeStorage.silverBucket,
-      locationPrefix,
-      name: props.databaseName ? `${extractedSilverBucketName}_${props.databaseName}` : extractedSilverBucketName,
+      locationPrefix: silverLocationPrefix,
+      name: silverDatabaseName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
@@ -93,8 +98,8 @@ export class DataLakeCatalog extends TrackedConstruct {
 
     this.goldCatalogDatabase = new DataCatalogDatabase(this, 'GoldCatalogDatabase', {
       locationBucket: props.dataLakeStorage.goldBucket,
-      locationPrefix,
-      name: props.databaseName ? `${extractedGoldBucketName}_${props.databaseName}` : extractedGoldBucketName,
+      locationPrefix: goldLocationPrefix,
+      name: goldDatabaseName,
       autoCrawl: props.autoCrawl,
       autoCrawlSchedule: props.autoCrawlSchedule,
       crawlerLogEncryptionKey: this.crawlerLogEncryptionKey,
