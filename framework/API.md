@@ -4301,6 +4301,7 @@ public readonly bootstrapBrokerStringTls: string;
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.MSK_DEFAULT_VERSION">MSK_DEFAULT_VERSION</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | *No description.* |
 
 ---
 
@@ -4321,6 +4322,16 @@ public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `MSK_DEFAULT_VERSION`<sup>Required</sup> <a name="MSK_DEFAULT_VERSION" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.MSK_DEFAULT_VERSION"></a>
+
+```typescript
+public readonly MSK_DEFAULT_VERSION: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
 
 ---
 
@@ -11047,14 +11058,14 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.allowEveryoneIfNoAclFound">allowEveryoneIfNoAclFound</a></code> | <code>boolean</code> | if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps</code> | This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration</code> | Cluster monitoring configuration. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.mskBrokerinstanceType">mskBrokerinstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
@@ -11064,30 +11075,6 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode</code> | This controls storage mode for supported storage tiers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | Defines the virtual networking environment for this cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Where to place the nodes within the VPC. |
-
----
-
-##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName"></a>
-
-```typescript
-public readonly clusterName: string;
-```
-
-- *Type:* string
-
-The physical name of the cluster.
-
----
-
-##### `kafkaVersion`<sup>Required</sup> <a name="kafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion"></a>
-
-```typescript
-public readonly kafkaVersion: KafkaVersion;
-```
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
-
-The version of Apache Kafka.
 
 ---
 
@@ -11131,6 +11118,18 @@ MSK supports using private TLS certificates or SASL/SCRAM to authenticate the id
 
 ---
 
+##### `clusterName`<sup>Optional</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+The physical name of the cluster.
+
+---
+
 ##### `configurationInfo`<sup>Optional</sup> <a name="configurationInfo" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo"></a>
 
 ```typescript
@@ -11165,6 +11164,18 @@ public readonly kafkaClientLogLevel: KafkaClientLogLevel;
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel
 - *Default:* INFO
+
+---
+
+##### `kafkaVersion`<sup>Optional</sup> <a name="kafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion"></a>
+
+```typescript
+public readonly kafkaVersion: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+The version of Apache Kafka.
 
 ---
 
