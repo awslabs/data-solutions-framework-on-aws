@@ -23,19 +23,12 @@ class ExampleRedshiftDataSharingCrossAccountAStack extends Stack {
     const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
     const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
-    const producerDataSharing = producerWorkgroup.dataSharing('producer-datasharing');
-    const newShare = producerDataSharing.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
-    newShare.node.addDependency(createCustomersTable);
+    const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
+    newShare.newShareCustomResource.node.addDependency(createCustomersTable);
     
-    const grantToConsumer = producerDataSharing.grant('GrantToConsumer', {
-      databaseName: dbName,
-      dataShareName: shareName,
-      accountId: "<ACCOUNT-ID-OF-CONSUMER>",
-      dataShareArn: newShare.getAttString("dataShareArn"),
-      autoAuthorized: true
-    });
+    const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, undefined, "<CONSUMER-ACCOUNT-ID>", true);
     
-    grantToConsumer.node.addDependency(newShare);
+    grantToConsumer.resource.node.addDependency(newShare);
   }
 }
 
@@ -57,16 +50,7 @@ class ExampleRedshiftDataSharingCrossAccountBStack extends Stack {
       
       const shareName = 'testshare';
       
-      const consumerDataSharing = consumerWorkgroup.dataSharing('consumer-datasharing');
-      consumerDataSharing.createDatabaseFromShare('consume-datashare', {
-        databaseName: dbName,
-        dataShareName: shareName,
-        newDatabaseName: 'shared_db',
-        namespaceId: "<PRODUCER-REDSHIFT-NAMESPACE-FROM-ACCOUNT-A>",
-        accountId: "<ACCOUNT-ID-OF-PRODUCER>",
-        consumerNamespaceArn: "<CONSUMER-REDSHIFT-NAMESPACE-ARN>",
-        dataShareArn: "<DATA-SHARE-ARN>"
-      });
+      consumerWorkgroup.createDatabaseFromShare('consume-datashare', "db_from_share", shareName, "<PRODUCER NAMESPACE>", "<PRODUCER ACCOUNT>")
     }
   }
 /// !hide

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
+import { IInterfaceVpcEndpoint, IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 
@@ -73,5 +73,5 @@ export interface RedshiftDataProps {
    * This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`
    * @default - No security group ingress rule would be created.
    */
-  readonly existingInterfaceVPCEndpointId?: string;
+  readonly existingInterfaceVPCEndpoint?: IInterfaceVpcEndpoint;
 }

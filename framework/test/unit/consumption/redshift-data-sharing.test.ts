@@ -5,7 +5,6 @@ import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { IpAddresses, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { RedshiftServerlessNamespace, RedshiftServerlessWorkgroup } from '../../../src/consumption';
-
 /**
  * Unit tests for RedshiftDataSharing construct
  *
@@ -63,21 +62,10 @@ describe('With a local based data sharing, the construct ', () => {
     port: 9999,
   });
 
-  const dataSharing = workgroup.dataSharing('data-sharing', true);
-  const dataSharing2 = workgroup2.dataSharing('data-sharing2', true);
-  dataSharing.createShare('NewShare', 'defaultdb', 'demoshare', 'sample', ['sample.customer', 'sample.inventory']);
-  dataSharing.grant('GrantDemo1', {
-    databaseName: 'defaultdb',
-    dataShareName: 'demoshare',
-    namespaceId: '1234567890',
-  });
+  const share1 = workgroup.createShare('NewShare', 'defaultdb', 'demoshare', 'sample', ['sample.customer', 'sample.inventory']);
+  workgroup.grantAccessToShare('GrantDemo1', share1, '1234567890');
 
-  dataSharing2.createDatabaseFromShare('CreateDbFromShare', {
-    databaseName: 'defaultdb',
-    dataShareName: 'demoshare',
-    newDatabaseName: 'shared_db',
-    namespaceId: namespace.namespaceId,
-  });
+  workgroup2.createDatabaseFromShare('CreateDbFromShare', 'shared_db', 'demoshare', namespace.namespaceId);
 
   const template = Template.fromStack(stack);
   test('should create a custom resource to manage new data share', () => {
@@ -193,27 +181,10 @@ describe('With cross account sharing, the construct ', () => {
     port: 9999,
   });
 
-  const dataSharing = workgroup.dataSharing('data-sharing', true);
-  const dataSharing2 = workgroup2.dataSharing('data-sharing2', true);
+  const newShare = workgroup.createShare('NewShare', 'defaultdb', 'demoshare', 'sample', ['sample.customer', 'sample.inventory']);
+  workgroup.grantAccessToShare('GrantDemo1', newShare, undefined, '222222222222', true);
 
-  const newShare = dataSharing.createShare('NewShare', 'defaultdb', 'demoshare', 'sample', ['sample.customer', 'sample.inventory']);
-  dataSharing.grant('GrantDemo1', {
-    databaseName: 'defaultdb',
-    dataShareName: 'demoshare',
-    accountId: '222222222222',
-    autoAuthorized: true,
-    dataShareArn: newShare.getAttString('dataShareArn'),
-  });
-
-  dataSharing2.createDatabaseFromShare('CreateDbFromShare', {
-    databaseName: 'defaultdb',
-    dataShareName: 'demoshare',
-    newDatabaseName: 'shared_db',
-    namespaceId: '1234-5678-9012',
-    accountId: '111111111111',
-    consumerNamespaceArn: namespace2.namespaceArn,
-    dataShareArn: 'example-data-share-arn',
-  });
+  workgroup2.createDatabaseFromShare('CreateDbFromShare', 'shared_db', 'demoshare', '1234-5678-9012', '111111111111');
 
   const template = Template.fromStack(stack);
   const template2 = Template.fromStack(stack2);
@@ -286,7 +257,7 @@ describe('With cross account sharing, the construct ', () => {
         'Fn::Join': [
           '',
           [
-            '{"service":"redshift","action":"associateDataShareConsumer","parameters":{"DataShareArn":"example-data-share-arn","AssociateEntireAccount":false,"ConsumerArn":"',
+            '{"service":"redshift","action":"associateDataShareConsumer","parameters":{"DataShareArn":"arn:aws:redshift:us-east-1:111111111111:datashare:1234-5678-9012/demoshare","AssociateEntireAccount":false,"ConsumerArn":"',
             {
               'Fn::GetAtt': [
                 'DefaultNamespace2CustomResource2C17213D',
@@ -301,7 +272,7 @@ describe('With cross account sharing, the construct ', () => {
         'Fn::Join': [
           '',
           [
-            '{"service":"redshift","action":"disassociateDataShareConsumer","parameters":{"DataShareArn":"example-data-share-arn","ConsumerArn":"',
+            '{"service":"redshift","action":"disassociateDataShareConsumer","parameters":{"DataShareArn":"arn:aws:redshift:us-east-1:111111111111:datashare:1234-5678-9012/demoshare","ConsumerArn":"',
             {
               'Fn::GetAtt': [
                 'DefaultNamespace2CustomResource2C17213D',

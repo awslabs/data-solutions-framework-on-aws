@@ -49,28 +49,17 @@ class ExampleRedshiftDataSharingSameAccountStack extends Stack {
     const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
     const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
-    const producerDataSharing = producerWorkgroup.dataSharing('producer-datasharing');
-    const newShare = producerDataSharing.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
-    newShare.node.addDependency(createCustomersTable);
+    const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
+    newShare.newShareCustomResource.node.addDependency(createCustomersTable);
 
-    const grantToConsumer = producerDataSharing.grant('GrantToConsumer', {
-      databaseName: dbName,
-      dataShareName: shareName,
-      namespaceId: consumerNamespace.namespaceId,
-    });
+    const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, consumerNamespace.namespaceId)
 
-    grantToConsumer.node.addDependency(newShare);
-    grantToConsumer.node.addDependency(consumerNamespace);
+    grantToConsumer.resource.node.addDependency(newShare);
+    grantToConsumer.resource.node.addDependency(consumerNamespace);
 
-    const consumerDataSharing = consumerWorkgroup.dataSharing('consumer-datasharing');
-    const consumeShare = consumerDataSharing.createDatabaseFromShare('consume-datashare', {
-      databaseName: dbName,
-      dataShareName: shareName,
-      newDatabaseName: 'shared_db',
-      namespaceId: producerNamespace.namespaceId,
-    });
+    const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare', 'db_from_share', shareName, producerNamespace.namespaceId)
 
-    consumeShare.node.addDependency(grantToConsumer);
+    consumeShare.resource.node.addDependency(grantToConsumer);
   }
 }
   ```
@@ -112,28 +101,17 @@ class ExampleRedshiftDataSharingSameAccountStack(Stack):
         producer_data_access = producer_workgroup.access_data("ProducerDataAccess")
         create_customers_table = producer_data_access.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
 
-        producer_data_sharing = producer_workgroup.data_sharing("producer-datasharing")
-        new_share = producer_data_sharing.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
-        new_share.node.add_dependency(create_customers_table)
+        new_share = producer_workgroup.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
+        new_share.new_share_custom_resource.node.add_dependency(create_customers_table)
 
-        grant_to_consumer = producer_data_sharing.grant("GrantToConsumer",
-            database_name=db_name,
-            data_share_name=share_name,
-            namespace_id=consumer_namespace.namespace_id
-        )
+        grant_to_consumer = producer_workgroup.grant_access_to_share("GrantToConsumer", new_share, consumer_namespace.namespace_id)
 
-        grant_to_consumer.node.add_dependency(new_share)
-        grant_to_consumer.node.add_dependency(consumer_namespace)
+        grant_to_consumer.resource.node.add_dependency(new_share)
+        grant_to_consumer.resource.node.add_dependency(consumer_namespace)
 
-        consumer_data_sharing = consumer_workgroup.data_sharing("consumer-datasharing")
-        consume_share = consumer_data_sharing.create_database_from_share("consume-datashare",
-            database_name=db_name,
-            data_share_name=share_name,
-            new_database_name="shared_db",
-            namespace_id=producer_namespace.namespace_id
-        )
+        consume_share = consumer_workgroup.create_database_from_share("consume-datashare", "db_from_share", share_name, producer_namespace.namespace_id)
 
-        consume_share.node.add_dependency(grant_to_consumer)
+        consume_share.resource.node.add_dependency(grant_to_consumer)
   ```
 
   </TabItem>
@@ -165,19 +143,12 @@ class ExampleRedshiftDataSharingCrossAccountAStack extends Stack {
     const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
     const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
-    const producerDataSharing = producerWorkgroup.dataSharing('producer-datasharing');
-    const newShare = producerDataSharing.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
-    newShare.node.addDependency(createCustomersTable);
+    const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
+    newShare.newShareCustomResource.node.addDependency(createCustomersTable);
 
-    const grantToConsumer = producerDataSharing.grant('GrantToConsumer', {
-      databaseName: dbName,
-      dataShareName: shareName,
-      accountId: "<ACCOUNT-ID-OF-CONSUMER>",
-      dataShareArn: newShare.getAttString("dataShareArn"),
-      autoAuthorized: true
-    });
+    const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, undefined, "<CONSUMER-ACCOUNT-ID>", true);
 
-    grantToConsumer.node.addDependency(newShare);
+    grantToConsumer.resource.node.addDependency(newShare);
   }
 }
 
@@ -199,16 +170,7 @@ class ExampleRedshiftDataSharingCrossAccountBStack extends Stack {
 
       const shareName = 'testshare';
 
-      const consumerDataSharing = consumerWorkgroup.dataSharing('consumer-datasharing');
-      consumerDataSharing.createDatabaseFromShare('consume-datashare', {
-        databaseName: dbName,
-        dataShareName: shareName,
-        newDatabaseName: 'shared_db',
-        namespaceId: "<PRODUCER-REDSHIFT-NAMESPACE-FROM-ACCOUNT-A>",
-        accountId: "<ACCOUNT-ID-OF-PRODUCER>",
-        consumerNamespaceArn: "<CONSUMER-REDSHIFT-NAMESPACE-ARN>",
-        dataShareArn: "<DATA-SHARE-ARN>"
-      });
+      consumerWorkgroup.createDatabaseFromShare('consume-datashare', "db_from_share", shareName, "<PRODUCER NAMESPACE>", "<PRODUCER ACCOUNT>")
     }
   }
   ```
@@ -240,19 +202,12 @@ class ExampleRedshiftDataSharingCrossAccountAStack(Stack):
         producer_data_access = producer_workgroup.access_data("ProducerDataAccess")
         create_customers_table = producer_data_access.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
 
-        producer_data_sharing = producer_workgroup.data_sharing("producer-datasharing")
-        new_share = producer_data_sharing.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
-        new_share.node.add_dependency(create_customers_table)
+        new_share = producer_workgroup.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
+        new_share.new_share_custom_resource.node.add_dependency(create_customers_table)
 
-        grant_to_consumer = producer_data_sharing.grant("GrantToConsumer",
-            database_name=db_name,
-            data_share_name=share_name,
-            account_id="<ACCOUNT-ID-OF-CONSUMER>",
-            data_share_arn=new_share.get_att_string("dataShareArn"),
-            auto_authorized=True
-        )
+        grant_to_consumer = producer_workgroup.grant_access_to_share("GrantToConsumer", new_share, undefined, "<CONSUMER-ACCOUNT-ID>", True)
 
-        grant_to_consumer.node.add_dependency(new_share)
+        grant_to_consumer.resource.node.add_dependency(new_share)
 
 class ExampleRedshiftDataSharingCrossAccountBStack(Stack):
     def __init__(self, scope, id):
@@ -272,16 +227,7 @@ class ExampleRedshiftDataSharingCrossAccountBStack(Stack):
 
         share_name = "testshare"
 
-        consumer_data_sharing = consumer_workgroup.data_sharing("consumer-datasharing")
-        consumer_data_sharing.create_database_from_share("consume-datashare",
-            database_name=db_name,
-            data_share_name=share_name,
-            new_database_name="shared_db",
-            namespace_id="<PRODUCER-REDSHIFT-NAMESPACE-FROM-ACCOUNT-A>",
-            account_id="<ACCOUNT-ID-OF-PRODUCER>",
-            consumer_namespace_arn="<CONSUMER-REDSHIFT-NAMESPACE-ARN>",
-            data_share_arn="<DATA-SHARE-ARN>"
-        )
+        consumer_workgroup.create_database_from_share("consume-datashare", "db_from_share", share_name, "<PRODUCER NAMESPACE>", "<PRODUCER ACCOUNT>")
   ```
 
   </TabItem>

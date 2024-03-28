@@ -2,15 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CustomResource, Duration, Stack } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
-import { BaseRedshiftDataAccess, RedshiftDataAccessTargetProps } from './base-redshift-data-access';
-import { RedshiftData } from './redshift-data';
 import { RedshiftDataSharingCreateDbProps } from './redshift-data-sharing-createdb-props';
+import { RedshiftDataSharingCreateDbFromShareProps } from './redshift-data-sharing-createdbfromshare-props';
 import { RedshiftDataSharingGrantProps } from './redshift-data-sharing-grant-props';
+import { RedshiftDataSharingGrantedProps } from './redshift-data-sharing-granted-props';
 import { RedshiftDataSharingProps } from './redshift-data-sharing-props';
-import { TrackedConstructProps } from '../../../../utils';
-import { DsfProvider } from '../../../../utils/lib/dsf-provider';
+import { RedshiftNewShareProps } from './redshift-new-share-props';
+import { TrackedConstructProps } from '../../../../../utils';
+import { DsfProvider } from '../../../../../utils/lib/dsf-provider';
+import { BaseRedshiftDataAccess, RedshiftDataAccessTargetProps } from '../base-redshift-data-access';
+import { RedshiftData } from '../redshift-data';
 
 /**
  * Creates an asynchronous custom resource to manage the data sharing lifecycle for
@@ -46,6 +51,38 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
   public readonly executionRole: IRole;
 
   /**
+   * The CloudWatch Log Group for the Redshift Data Sharing submission
+   */
+  public readonly submitLogGroup: ILogGroup;
+  /**
+   * The Lambda Function for the Redshift Data Sharing submission
+   */
+  public readonly submitFunction: IFunction;
+
+  /**
+   * The CloudWatch Log Group for the Redshift Data Sharing status checks
+   */
+  public readonly statusLogGroup: ILogGroup;
+  /**
+   * The Lambda Function for the Redshift Data Sharing status checks
+   */
+  public readonly statusFunction: IFunction;
+
+  /**
+   * The CloudWatch Log Group for the Redshift Data Sharing cleaning up lambda
+   */
+  public readonly cleanUpLogGroup?: ILogGroup;
+  /**
+   * The Lambda function for the cleaning up lambda
+   */
+  public readonly cleanUpFunction?: IFunction;
+
+  /**
+   * The IAM Role for the the cleaning up lambda
+   */
+  public readonly cleanUpRole?: IRole;
+
+  /**
    * Contains normalized details of the target Redshift cluster/workgroup for data access
    */
   public readonly dataAccessTargetProps: RedshiftDataAccessTargetProps;
@@ -70,8 +107,8 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
     const dataShareProvider = new DsfProvider(this, 'CrDataShareProvider', {
       providerName: 'RedshiftDataShareProvider',
       onEventHandlerDefinition: {
-        depsLockFilePath: __dirname+'/../resources/RedshiftDataShare/package-lock.json',
-        entryFile: __dirname+'/../resources/RedshiftDataShare/index.mjs',
+        depsLockFilePath: __dirname+'/../../resources/RedshiftDataShare/package-lock.json',
+        entryFile: __dirname+'/../../resources/RedshiftDataShare/index.mjs',
         handler: 'index.onEventHandler',
         environment: {
           TARGET_ARN: this.dataAccessTargetProps.targetArn,
@@ -85,8 +122,8 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
       isCompleteHandlerDefinition: {
         iamRole: this.executionRole,
         handler: 'index.isCompleteHandler',
-        depsLockFilePath: __dirname+'/../resources/RedshiftDataShare/package-lock.json',
-        entryFile: __dirname+'/../resources/RedshiftDataShare/index.mjs',
+        depsLockFilePath: __dirname+'/../../resources/RedshiftDataShare/package-lock.json',
+        entryFile: __dirname+'/../../resources/RedshiftDataShare/index.mjs',
         timeout,
         environment: {
           TARGET_ARN: this.dataAccessTargetProps.targetArn,
@@ -104,6 +141,14 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
     });
 
     this.serviceToken = dataShareProvider.serviceToken;
+    this.submitLogGroup = dataShareProvider.onEventHandlerLogGroup;
+    this.statusLogGroup = dataShareProvider.isCompleteHandlerLog!;
+    this.cleanUpLogGroup = dataShareProvider.cleanUpLogGroup;
+    this.submitFunction = dataShareProvider.onEventHandlerFunction;
+    this.statusFunction = dataShareProvider.isCompleteHandlerFunction!;
+    this.cleanUpFunction = dataShareProvider.cleanUpFunction;
+    this.cleanUpRole = dataShareProvider.cleanUpRole;
+
     this.redshiftData = props.redshiftData;
   }
 
@@ -113,10 +158,10 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
    * @param dataShareName The name of the datashare
    * @param schema The schema to add in the datashare
    * @param tables The list of tables that would be included in the datashare. This must follow the format: `<schema>.<tableName>`
-   * @returns `CustomResource`
+   * @returns `RedshiftNewShareProps`
    */
-  public createShare(id: string, databaseName: string, dataShareName: string, schema: string, tables: string[]): CustomResource {
-    return new CustomResource(this, id, {
+  public createShare(id: string, databaseName: string, dataShareName: string, schema: string, tables: string[]): RedshiftNewShareProps {
+    const cr = new CustomResource(this, id, {
       resourceType: 'Custom::RedshiftDataShare',
       serviceToken: this.serviceToken,
       properties: {
@@ -127,14 +172,23 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
       },
       removalPolicy: this.removalPolicy,
     });
+
+    return {
+      databaseName,
+      dataShareName,
+      dataShareArn: cr.getAttString('dataShareArn'),
+      producerNamespace: cr.getAttString('dataShareNamespace'),
+      producerArn: cr.getAttString('producerArn'),
+      newShareCustomResource: cr,
+    };
   }
 
   /**
    * Create a datashare grant to a namespace if it's in the same account, or to another account
    * @param props `RedshiftDataSharingGrantProps`
-   * @returns `CustomResource`
+   * @returns `RedshiftDataSharingGrantedProps`
    */
-  public grant(id: string, props: RedshiftDataSharingGrantProps): CustomResource {
+  public grant(id: string, props: RedshiftDataSharingGrantProps): RedshiftDataSharingGrantedProps {
     const { dataShareName, databaseName, autoAuthorized, accountId, namespaceId, dataShareArn } = props;
     let convertedSql = '';
 
@@ -151,14 +205,14 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
 
     // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     const grant = this.redshiftData.runCustomSQL(`${id}-${databaseName}-${dataShareName}`, databaseName, sql, deleteSql);
-
+    let shareAuthorization;
     //Only needed for cross-account grants
     if (autoAuthorized && accountId && accountId != Stack.of(this).account) {
       if (!dataShareArn) {
         throw new Error('For cross account grants, `dataShareArn` is required');
       }
       // eslint-disable-next-line local-rules/no-tokens-in-construct-id
-      const shareAuthorization = new AwsCustomResource(this, `${id}-authorization`, {
+      shareAuthorization = new AwsCustomResource(this, `${id}-authorization`, {
         onCreate: {
           service: 'redshift',
           action: 'authorizeDataShare',
@@ -187,7 +241,10 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
       shareAuthorization.node.addDependency(grant);
     }
 
-    return grant;
+    return {
+      resource: grant,
+      shareAuthorizationResource: shareAuthorization,
+    };
   }
 
   /**
@@ -197,7 +254,7 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
    * @param props `RedshiftDataSharingCreateDbProps`
    * @returns `CustomResource`
    */
-  public createDatabaseFromShare(id: string, props: RedshiftDataSharingCreateDbProps): CustomResource {
+  public createDatabaseFromShare(id: string, props: RedshiftDataSharingCreateDbProps): RedshiftDataSharingCreateDbFromShareProps {
     const currentStack = Stack.of(this);
 
     const { dataShareName, databaseName, newDatabaseName, consumerNamespaceArn, accountId, namespaceId, dataShareArn } = props;
@@ -225,14 +282,14 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
 
     // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     const createDbFromShare = this.redshiftData.runCustomSQL(`${id}-${databaseName}-${dataShareName}`, databaseName, sql, deleteSql);
-
+    let associateDataShare;
     if (isCrossAccount) {
       if (!dataShareArn || !consumerNamespaceArn) {
         throw new Error('For cross-account datashares, `dataShareArn` and `consumerNamespaceArn` is required');
       }
 
       // eslint-disable-next-line local-rules/no-tokens-in-construct-id
-      const associateDataShare = new AwsCustomResource(this, `${id}-associateDataShare`, {
+      associateDataShare = new AwsCustomResource(this, `${id}-associateDataShare`, {
         onCreate: {
           service: 'redshift',
           action: 'associateDataShareConsumer',
@@ -263,6 +320,9 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
       createDbFromShare.node.addDependency(associateDataShare);
     }
 
-    return createDbFromShare;
+    return {
+      resource: createDbFromShare,
+      associateDataShareResource: associateDataShare,
+    };
   }
 }

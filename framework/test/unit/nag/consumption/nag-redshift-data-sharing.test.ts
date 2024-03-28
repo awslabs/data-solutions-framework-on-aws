@@ -49,21 +49,10 @@ const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
   extraSecurityGroups,
 });
 
-const dataSharing = workgroup.dataSharing('data-sharing', true);
-dataSharing.createShare('NewShare', 'defaultdb', 'demoshare', 'sample', ['sample.customer', 'sample.inventory']);
+const newShare = workgroup.createShare('NewShare', 'defaultdb', 'demoshare', 'sample', ['sample.customer', 'sample.inventory']);
 // const dataShareArn = newShare.getAttString("dataShareArn")
-dataSharing.grant('GrantDemo1', {
-  databaseName: 'defaultdb',
-  dataShareName: 'demoshare',
-  namespaceId: '1234567890',
-});
-
-dataSharing.createDatabaseFromShare('CreateDbFromShare', {
-  databaseName: 'defaultdb',
-  dataShareName: 'demoshare',
-  newDatabaseName: 'shared_db',
-  namespaceId: namespace.namespaceId,
-});
+workgroup.grantAccessToShare('GrantDemo1', newShare, '1234567890');
+workgroup.createDatabaseFromShare('CreateDbFromShare', 'shared_db', 'demoshare', namespace.namespaceId);
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
 

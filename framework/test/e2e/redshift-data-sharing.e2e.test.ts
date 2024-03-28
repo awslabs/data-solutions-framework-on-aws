@@ -102,14 +102,13 @@ const shareName = 'testshare';
 const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess', true);
 const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
-const producerDataSharing = producerWorkgroup.dataSharing('producer-datasharing');
-const newShare = producerDataSharing.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
-newShare.node.addDependency(createCustomersTable);
+const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
+newShare.newShareCustomResource.node.addDependency(createCustomersTable);
 
-const dataShareArn = newShare.getAttString('dataShareArn');
-const producerArn = newShare.getAttString('producerArn');
+const dataShareArn = newShare.dataShareArn;
+const producerArn = newShare.producerArn;
 
-const grantToConsumer = producerDataSharing.grant('GrantToConsumer', {
+const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', {
   databaseName: dbName,
   dataShareName: shareName,
   dataShareArn,
@@ -119,8 +118,7 @@ const grantToConsumer = producerDataSharing.grant('GrantToConsumer', {
 grantToConsumer.node.addDependency(newShare);
 grantToConsumer.node.addDependency(consumerNamespace);
 
-const consumerDataSharing = consumerWorkgroup.dataSharing('consumer-datasharing', true);
-const consumeShare = consumerDataSharing.createDatabaseFromShare('consume-datashare', {
+const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare', {
   databaseName: dbName,
   dataShareName: shareName,
   newDatabaseName: 'shared_db',

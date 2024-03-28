@@ -15,18 +15,18 @@ export interface RedshiftDataAccessTargetProps {
 
 export abstract class BaseRedshiftDataAccess extends TrackedConstruct {
   /**
-     * The Security Group used by the Custom Resource when deployed in a VPC
-     */
+   * The Security Group used by the Custom Resource when deployed in a VPC
+   */
   public readonly customResourceSecurityGroup?: ISecurityGroup;
 
   /**
-     * The Security Group used by the VPC Endpoint when deployed in a VPC
-     */
+   * The Security Group used by the VPC Endpoint when deployed in a VPC
+   */
   public readonly vpcEndpointSecurityGroup?: ISecurityGroup;
 
   /**
-     * The created Redshift Data API interface vpc endpoint when deployed in a VPC
-     */
+   * The created Redshift Data API interface vpc endpoint when deployed in a VPC
+   */
   public readonly vpcEndpoint?: IInterfaceVpcEndpoint;
   protected readonly removalPolicy: RemovalPolicy;
   constructor(scope: Construct, id: string, props: RedshiftDataProps, trackedConstructProps: any) {
@@ -52,11 +52,8 @@ export abstract class BaseRedshiftDataAccess extends TrackedConstruct {
           securityGroups: [this.vpcEndpointSecurityGroup],
         });
         this.vpcEndpoint.applyRemovalPolicy(this.removalPolicy);
-      } else if (props.existingInterfaceVPCEndpointId) {
-        this.vpcEndpoint = InterfaceVpcEndpoint.fromInterfaceVpcEndpointAttributes(this, 'ExistingRSInterfaceVPCEndpoint', {
-          port: 443,
-          vpcEndpointId: props.existingInterfaceVPCEndpointId,
-        });
+      } else if (props.existingInterfaceVPCEndpoint) {
+        this.vpcEndpoint = props.existingInterfaceVPCEndpoint;
       }
 
       if (this.vpcEndpoint) {
