@@ -28,8 +28,6 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
   const stack = new Stack(app, 'Stack');
 
   const msk = new MskProvisioned(stack, 'cluster', {
-    clusterName: 'cluster',
-    kafkaVersion: KafkaVersion.V3_4_0,
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
@@ -66,7 +64,10 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
     template.hasResourceProperties('AWS::MSK::Cluster', {
       BrokerNodeGroupInfo: Match.objectLike({
         InstanceType: 'kafka.m5.large',
+        StorageInfo: { EBSStorageInfo: { VolumeSize: 100 } },
       }),
+      KafkaVersion: '3.5.1',
+      NumberOfBrokerNodes: 2,
     });
   });
 

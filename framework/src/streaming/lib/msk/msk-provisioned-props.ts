@@ -27,12 +27,12 @@ export interface MskProvisionedProps {
   /**
       * The physical name of the cluster.
       */
-  readonly clusterName: string;
+  readonly clusterName?: string;
 
   /**
       * The version of Apache Kafka.
       */
-  readonly kafkaVersion: KafkaVersion;
+  readonly kafkaVersion?: KafkaVersion;
 
   /**
       * Number of Apache Kafka brokers deployed in each Availability Zone.
