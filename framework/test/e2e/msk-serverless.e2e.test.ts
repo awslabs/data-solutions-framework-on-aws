@@ -47,14 +47,14 @@ const consumerRole = new Role(stack, 'consumerRole', {
 
 msk.grantConsume('topic1', consumerRole);
 
-msk.addTopic(stack, 'topicServerelss', [{
+msk.addTopic(stack, 'topicServerelss', {
   topic: 'serverless',
   numPartitions: 1,
   replicationFactor: 1,
-}], cdk.RemovalPolicy.DESTROY, false, 1500);
+}, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskServerlessCluster', {
-  value: msk.mskServerlessCluster.attrArn,
+  value: msk.cluster.attrArn,
 });
 
 
