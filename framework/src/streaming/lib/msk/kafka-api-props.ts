@@ -8,7 +8,7 @@ import { KafkaClientLogLevel } from './msk-provisioned-props';
 import { ClientAuthentication } from './msk-provisioned-props-utils';
 
 /**
- * Properties for the `MskServerlessCluster` construct
+ * Properties for the `KafkaApi` construct
  */
 export interface KafkaApiProps {
 

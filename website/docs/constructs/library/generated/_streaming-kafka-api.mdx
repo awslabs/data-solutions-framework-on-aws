@@ -1,0 +1,88 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/streaming)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A construct to support bring your own cluster and perform CRUD operations for ACLs and Topics. 
+
+## Overview
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+  let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
+      vpcId: 'vpc-1111111111',
+      vpcCidrBlock: '10.0.0.0/16',
+      availabilityZones: ['eu-west-1a', 'eu-west-1b'],
+      publicSubnetIds: ['subnet-111111111', 'subnet-11111111'],
+      privateSubnetIds: ['subnet-11111111', 'subnet-1111111'],
+  });
+
+
+  const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
+      vpc: vpc,
+      clusterName: 'byo-msk',
+      clusterArn: 'arn:aws:kafka:eu-west-1:12345678912:cluster/byo-msk/dummy-5cf3-42d5-aece-dummmy-2',
+      brokerSecurityGroup: SecurityGroup.fromSecurityGroupId(stack, 'brokerSecurityGroup', 'sg-98237412hsa'),
+      certficateSecret: secret,
+      clientAuthentication: ClientAuthentication.saslTls({
+          iam: true,
+          certificateAuthorities: [certificateAuthority],
+        },),
+      kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+  });
+
+
+  kafkaApi.setAcl(stack, 'acl', {
+    resourceType: AclResourceTypes.TOPIC,
+    resourceName: 'topic-1',
+    resourcePatternType: ResourcePatternTypes.LITERAL,
+    principal: 'User:Cn=Toto',
+    host: '*',
+    operation: AclOperationTypes.CREATE,
+    permissionType: AclPermissionTypes.ALLOW,
+  },
+  cdk.RemovalPolicy.DESTROY);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+vpc = Vpc.from_vpc_attributes(stack, "vpc",
+    vpc_id="vpc-1111111111",
+    vpc_cidr_block="10.0.0.0/16",
+    availability_zones=["eu-west-1a", "eu-west-1b"],
+    public_subnet_ids=["subnet-111111111", "subnet-11111111"],
+    private_subnet_ids=["subnet-11111111", "subnet-1111111"]
+)
+
+kafka_api = KafkaApi(stack, "kafkaApi",
+    vpc=vpc,
+    cluster_name="byo-msk",
+    cluster_arn="arn:aws:kafka:eu-west-1:12345678912:cluster/byo-msk/dummy-5cf3-42d5-aece-dummmy-2",
+    broker_security_group=SecurityGroup.from_security_group_id(stack, "brokerSecurityGroup", "sg-98237412hsa"),
+    certficate_secret=secret,
+    client_authentication=ClientAuthentication.sasl_tls(
+        iam=True,
+        certificate_authorities=[certificate_authority]
+    ),
+    kafka_client_log_level=KafkaClientLogLevel.DEBUG
+)
+
+kafka_api.set_acl(stack, "acl", Acl(
+    resource_type=AclResourceTypes.TOPIC,
+    resource_name="topic-1",
+    resource_pattern_type=ResourcePatternTypes.LITERAL,
+    principal="User:Cn=Toto",
+    host="*",
+    operation=AclOperationTypes.CREATE,
+    permission_type=AclPermissionTypes.ALLOW
+), cdk.RemovalPolicy.DESTROY)
+  ```
+
+  </TabItem>
+</Tabs>
+
