@@ -6,11 +6,26 @@ An MSK Serverless cluster with helpers to manage topics and IAM permissions.
 
 ## Overview
 
+The construct creates an MSK Serverless Cluster, with the latest Kafka version as the default runtime. You can change the runtime by passing your own as a Resource property to construct initializer. It also provides methods to grant an existing principal (ie IAM Role or IAM User) with the permission to `produce` or `consume` from a kafka topic.
+
+The construct can create a VPC on your behalf that is used to deploy MSK Serverless cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for that is attached to the brokers.
+
+The construct has the following interfaces, you will usage examples in the new sections: 
+    *  setTopic: Perform create, update, and delete operations on Topics
+    *  grantProduce: Attach an IAM policy to a principal to write to a topic 
+    *  grantConsume: Attach an IAM policy to a principal to read from a topic
+
+Below you can find an example of creating an MSK Serverless configuration with the default optios.
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
 const msk = new MskServerless(stack, 'cluster');
+
+new cdk.CfnOutput(stack, 'mskArn', {
+  value: msk.mskServerlessCluster.attrArn,
+});
   ```
   
   ```mdx-code-block
@@ -20,6 +35,179 @@ const msk = new MskServerless(stack, 'cluster');
 
   ```python
 msk = MskServerless(stack, "cluster")
+
+cdk.CfnOutput(stack, "mskArn",
+    value=msk.msk_serverless_cluster.attr_arn
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+
+## Usage
+
+### Bring Your Own Vpc
+
+The construct allows you to provide your own VPC that was created outside the CDK Stack. Below you will find an example usage. 
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
+    vpcId: 'vpc-1111111111',
+    vpcCidrBlock: '10.0.0.0/16',
+    availabilityZones: ['eu-west-1a', 'eu-west-1b'],
+    publicSubnetIds: ['subnet-111111111', 'subnet-11111111'],
+    privateSubnetIds: ['subnet-11111111', 'subnet-1111111'],
+});
+
+const msk = new MskServerless(stack, 'cluster', {
+    clusterName: 'msk-byov',
+    vpcConfigs: [
+      {
+        subnetIds: vpc.privateSubnets.map((s) => s.subnetId),
+        securityGroups: [SecurityGroup.fromLookupByName(stack, 'brokerSecurityGroup', 'broker-sg', vpc).securityGroupId],
+      },
+    ],
+    vpc: vpc,
+  });
+
+new cdk.CfnOutput(stack, 'mskArn', {
+  value: msk.mskServerlessCluster.attrArn,
+});
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+vpc = Vpc.from_vpc_attributes(stack, "vpc",
+    vpc_id="vpc-1111111111",
+    vpc_cidr_block="10.0.0.0/16",
+    availability_zones=["eu-west-1a", "eu-west-1b"],
+    public_subnet_ids=["subnet-111111111", "subnet-11111111"],
+    private_subnet_ids=["subnet-11111111", "subnet-1111111"]
+)
+
+msk = MskServerless(stack, "cluster",
+    cluster_name="msk-byov",
+    vpc_configs=[cdk.aws_msk.CfnServerlessCluster.VpcConfigProperty(
+        subnet_ids=vpc.private_subnets.map((s) => s.subnetId),
+        security_groups=[SecurityGroup.from_lookup_by_name(stack, "brokerSecurityGroup", "broker-sg", vpc).security_group_id]
+    )
+    ],
+    vpc=vpc
+)
+
+cdk.CfnOutput(stack, "mskArn",
+    value=msk.msk_serverless_cluster.attr_arn
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+### setTopic
+
+This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
+The topic is defined by the property type called `MskTopic`. Below you can see the definition of the topic as well as an example of use.
+
+```json
+{
+    topic: <String>,
+    numPartitions: <Number>,     // default: -1 (uses broker `num.partitions` configuration)
+    replicationFactor: <Number>, // default: -1 (uses broker `default.replication.factor` configuration)
+    configEntries: <Array>       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+}
+```
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let topic: MskTopic =  {
+  topic: 'topic1',
+  numPartitions: 3,
+  replicationFactor: 1,
+}
+
+msk.addTopic(stack, 'topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+topic = MskTopic(
+    topic="topic1",
+    num_partitions=3,
+    replication_factor=1
+)
+
+msk.add_topic(stack, "topic1", topic, cdk.RemovalPolicy.DESTROY, False, 1500)
+  ```
+
+  </TabItem>
+</Tabs>
+
+### grantProduce
+
+This method allows to grant a `Principal` the rights to write to a kafka topic.
+The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let iamRole = Role.fromRoleName(stack, 'role', 'role');
+
+msk.grantProduce('topic1',iamRole);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+iam_role = Role.from_role_name(stack, "role", "role")
+
+msk.grant_produce("topic1", iam_role)
+  ```
+
+  </TabItem>
+</Tabs>
+
+### grantConsume
+This method allows to grant a `Principal` the rights to read to a kafka topic.
+The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let iamRole = Role.fromRoleName(stack, 'role', 'role');
+
+msk.grantConsume('topic1',iamRole);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+iam_role = Role.from_role_name(stack, "role", "role")
+
+msk.grant_consume("topic1", iam_role)
   ```
 
   </TabItem>
