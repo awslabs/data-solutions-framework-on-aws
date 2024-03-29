@@ -11070,6 +11070,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.allowEveryoneIfNoAclFound">allowEveryoneIfNoAclFound</a></code> | <code>boolean</code> | if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.brokerEncryptionKey">brokerEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS CMK encryption key to use for the brokers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.AclAdminProps</code> | This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
@@ -11099,6 +11100,19 @@ public readonly allowEveryoneIfNoAclFound: boolean;
 - *Default:* false
 
 if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster.
+
+---
+
+##### `brokerEncryptionKey`<sup>Optional</sup> <a name="brokerEncryptionKey" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.brokerEncryptionKey"></a>
+
+```typescript
+public readonly brokerEncryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A key is created and exposed as construct attribute
+
+The KMS CMK encryption key to use for the brokers.
 
 ---
 
