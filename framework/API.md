@@ -4556,8 +4556,9 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.mskServerlessCluster">mskServerlessCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.lambdaSecurityGroup">lambdaSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 
@@ -4575,6 +4576,16 @@ The tree node.
 
 ---
 
+##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.cluster"></a>
+
+```typescript
+public readonly cluster: CfnServerlessCluster;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster
+
+---
+
 ##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.clusterName"></a>
 
 ```typescript
@@ -4585,13 +4596,13 @@ public readonly clusterName: string;
 
 ---
 
-##### `mskServerlessCluster`<sup>Required</sup> <a name="mskServerlessCluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.mskServerlessCluster"></a>
+##### `lambdaSecurityGroup`<sup>Required</sup> <a name="lambdaSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.property.lambdaSecurityGroup"></a>
 
 ```typescript
-public readonly mskServerlessCluster: CfnServerlessCluster;
+public readonly lambdaSecurityGroup: ISecurityGroup;
 ```
 
-- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
 ---
 

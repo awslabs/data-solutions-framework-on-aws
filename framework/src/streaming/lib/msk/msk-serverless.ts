@@ -20,10 +20,11 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../..
  */
 export class MskServerless extends TrackedConstruct {
 
-  public readonly mskServerlessCluster: CfnServerlessCluster;
+  public readonly cluster: CfnServerlessCluster;
   public readonly vpc: IVpc;
   public readonly brokerSecurityGroup?: ISecurityGroup;
   public readonly clusterName: string;
+  public readonly lambdaSecurityGroup: ISecurityGroup;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly kafkaApi: KafkaApi;
@@ -78,14 +79,14 @@ export class MskServerless extends TrackedConstruct {
     }
 
     //Security group dedicated to lambda CR
-    const lambdaSecurityGroup = new SecurityGroup(this, 'LambdaSecurityGroup', {
+    this.lambdaSecurityGroup = new SecurityGroup(this, 'LambdaSecurityGroup', {
       vpc: this.vpc,
       allowAllOutbound: false,
     });
 
-    vpcConfigs[0].securityGroups!.push(lambdaSecurityGroup.securityGroupId);
+    vpcConfigs[0].securityGroups!.push(this.lambdaSecurityGroup.securityGroupId);
 
-    this.mskServerlessCluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
+    this.cluster = new CfnServerlessCluster(this, 'CfnServerlessCluster', {
       clusterName: this.clusterName,
       vpcConfigs: vpcConfigs,
       clientAuthentication: {
@@ -97,29 +98,16 @@ export class MskServerless extends TrackedConstruct {
       },
     });
 
-    //The select security group of brokers that will be used
-    //to allow the lambda of CR
-    let brokerSecurityGroupCr;
-
-    if (props?.vpcConfigs) {
-      brokerSecurityGroupCr = SecurityGroup.fromSecurityGroupId(
-        this,
-        'brokerSecurityGroup',
-        props.vpcConfigs[0].securityGroups![0]);
-    } else {
-      brokerSecurityGroupCr = this.brokerSecurityGroup!;
-    }
-
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
       clusterName: this.clusterName,
-      clusterArn: this.mskServerlessCluster.attrArn,
-      brokerSecurityGroup: brokerSecurityGroupCr!,
+      clusterArn: this.cluster.attrArn,
+      brokerSecurityGroup: this.lambdaSecurityGroup,
       removalPolicy: this.removalPolicy,
       clientAuthentication: ClientAuthentication.sasl( { iam: true }),
     });
 
-    this.kafkaApi._initiallizeCluster(this.mskServerlessCluster);
+    this.kafkaApi._initiallizeCluster(this.cluster);
 
   }
 
@@ -153,7 +141,7 @@ export class MskServerless extends TrackedConstruct {
       waitForLeaders,
       timeout);
 
-    cr.node.addDependency(this.mskServerlessCluster);
+    cr.node.addDependency(this.cluster);
   }
 
   /**

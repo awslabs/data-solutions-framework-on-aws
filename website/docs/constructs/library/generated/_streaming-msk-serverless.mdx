@@ -24,7 +24,7 @@ Below you can find an example of creating an MSK Serverless configuration with t
 const msk = new MskServerless(stack, 'cluster');
 
 new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.mskServerlessCluster.attrArn,
+  value: msk.cluster.attrArn,
 });
   ```
   
@@ -37,7 +37,7 @@ new cdk.CfnOutput(stack, 'mskArn', {
 msk = MskServerless(stack, "cluster")
 
 cdk.CfnOutput(stack, "mskArn",
-    value=msk.msk_serverless_cluster.attr_arn
+    value=msk.cluster.attr_arn
 )
   ```
 
@@ -76,7 +76,7 @@ const msk = new MskServerless(stack, 'cluster', {
   });
 
 new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.mskServerlessCluster.attrArn,
+  value: msk.cluster.attrArn,
 });
   ```
   
@@ -105,7 +105,7 @@ msk = MskServerless(stack, "cluster",
 )
 
 cdk.CfnOutput(stack, "mskArn",
-    value=msk.msk_serverless_cluster.attr_arn
+    value=msk.cluster.attr_arn
 )
   ```
 
