@@ -88,7 +88,7 @@ export function monitoringSetup(
 
     brokerLogGroup = new LogGroup(scope, 'BrokerLogGroup', {
       removalPolicy: removalPolicy,
-      logGroupName: `/aws/vendedlogs/${Utils.generateUniqueHash(scope, id)}`,
+      logGroupName: `/aws/vendedlogs/msk/${Utils.generateUniqueHash(scope, id)}`,
     });
 
     createLogGroup = true;

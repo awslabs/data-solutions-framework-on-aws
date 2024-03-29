@@ -7,6 +7,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, Vpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import {
   AclOperationTypes,
@@ -147,6 +148,12 @@ export interface MskProvisionedProps {
    */
   readonly kafkaClientLogLevel?: KafkaClientLogLevel;
 
+
+  /**
+ * The KMS CMK encryption key to use for the brokers
+ * @default A key is created and exposed as construct attribute
+ */
+  readonly brokerEncryptionKey?: Key;
 }
 
 /**

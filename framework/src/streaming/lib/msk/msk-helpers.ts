@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { RemovalPolicy, Stack, Aws, Fn } from 'aws-cdk-lib';
-import { SecurityGroup, SubnetType, IVpc, Port, ISecurityGroup, Peer } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, SubnetType, IVpc, ISecurityGroup, CfnSecurityGroupIngress } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -25,7 +25,15 @@ export function mskIamCrudProviderSetup(
     vpc,
   });
 
-  brokerSecurityGroup.addIngressRule(Peer.ipv4(vpc.vpcCidrBlock), Port.allTcp(), 'Allow lambda to access MSK cluster');
+  //Allow only the security group of lambda to broker
+  const allowMskIamPort = new CfnSecurityGroupIngress(scope, 'allowMskIamPort', {
+    groupId: brokerSecurityGroup.securityGroupId,
+    description: 'Allow MSK IAM Ports',
+    ipProtocol: 'tcp',
+    fromPort: 9098,
+    toPort: 9098,
+    sourceSecurityGroupId: lambdaProviderSecurityGroup.securityGroupId,
+  });
 
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic
   const lambdaPolicy = [
@@ -93,6 +101,7 @@ export function mskIamCrudProviderSetup(
     removalPolicy,
   });
 
+  provider.node.addDependency(allowMskIamPort);
   return provider;
 
 }
@@ -109,13 +118,15 @@ export function mskAclAdminProviderSetup(
     vpc,
   });
 
-  //We need to add the CIDR block of the VPC
-  //adding the security group as a peer break the destroy
-  //because the ingress rule is destroyed before before the ACLs are removed
-  brokerSecurityGroup.addIngressRule(
-    Peer.ipv4(vpc.vpcCidrBlock),
-    Port.allTcp(),
-    'Allow lambda to access MSK cluster');
+  //Allow only the security group of lambda to broker
+  const allowMskTlsPort = new CfnSecurityGroupIngress(scope, 'allowMskTlsPort', {
+    groupId: brokerSecurityGroup.securityGroupId,
+    description: 'Allow MSK TLS Ports',
+    ipProtocol: 'tcp',
+    fromPort: 9094,
+    toPort: 9094,
+    sourceSecurityGroupId: lambdaProviderSecurityGroup.securityGroupId,
+  });
 
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
   const lambdaPolicy = [
@@ -164,6 +175,8 @@ export function mskAclAdminProviderSetup(
     securityGroups: [lambdaProviderSecurityGroup],
     removalPolicy,
   });
+
+  provider.node.addDependency(allowMskTlsPort);
 
   return provider;
 
