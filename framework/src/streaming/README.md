@@ -12,10 +12,61 @@ An MSK Serverless cluster with helpers to manage topics and IAM permissions.
 
 ## Overview
 
+The construct creates an MSK Serverless Cluster, with the latest Kafka version as the default runtime. You can change the runtime by passing your own as a Resource property to construct initializer. It also provides methods to grant an existing principal (ie IAM Role or IAM User) with the permission to `produce` or `consume` from a kafka topic.
+
+The construct can create a VPC on your behalf that is used to deploy MSK Serverless cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for that is attached to the brokers.
+
+The construct has the following interfaces, you will usage examples in the new sections: 
+    *  setTopic: Perform create, update, and delete operations on Topics
+    *  grantProduce: Attach an IAM policy to a principal to write to a topic 
+    *  grantConsume: Attach an IAM policy to a principal to read from a topic
+
+Below you can find an example of creating an MSK Serverless configuration with the default optios.
+
 [example msk serverless default](./examples/msk-serverless-default.lit.ts)
 
+
+## Usage
+
+### Bring Your Own Vpc
+
+The construct allows you to provide your own VPC that was created outside the CDK Stack. Below you will find an example usage. 
+
+
+[example msk serverless bring your own vpc](./examples/msk-serverless-bing-vpc.lit.ts)
+
+### setTopic
+
+This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
+The topic is defined by the property type called `MskTopic`. Below you can see the definition of the topic as well as an example of use.
+
+```json
+{
+    topic: <String>,
+    numPartitions: <Number>,     // default: -1 (uses broker `num.partitions` configuration)
+    replicationFactor: <Number>, // default: -1 (uses broker `default.replication.factor` configuration)
+    configEntries: <Array>       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+}
+```
+
+[example msk serverless default](./examples/msk-serverless-setTopic.lit.ts)
+
+### grantProduce
+
+This method allows to grant a `Principal` the rights to write to a kafka topic.
+The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+
+
+[example msk serverless grantProduce](./examples/msk-serverless-grantProduce.lit.ts)
+
+### grantConsume
+This method allows to grant a `Principal` the rights to read to a kafka topic.
+The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+
+[example msk serverless grantProduce](./examples/msk-serverless-grantConsume.lit.ts)
+
 [//]: # (streaming.kafka-api)
-# Kafka Api
+# Kafka Api - Bring your own cluster
 
 A construct to support bring your own cluster and perform CRUD operations for ACLs and Topics. 
 

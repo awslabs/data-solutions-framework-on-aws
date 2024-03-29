@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { MskServerless } from '../lib/msk';
+import { MskServerless, MskTopic } from '../lib/msk';
 
 
 const app = new cdk.App();
@@ -8,18 +8,20 @@ const stack = new cdk.Stack(app, 'DsfTestMskServerless');
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-/// !show
+
 const msk = new MskServerless(stack, 'cluster');
 
 new cdk.CfnOutput(stack, 'mskArn', {
   value: msk.mskServerlessCluster.attrArn,
 });
-/// !hide
 
-msk.addTopic(stack, 'topic1', {
+
+/// !show
+let topic: MskTopic =  {
   topic: 'topic1',
   numPartitions: 3,
   replicationFactor: 1,
-}, cdk.RemovalPolicy.DESTROY, false, 1500);
+}
 
-
+msk.addTopic(stack, 'topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
+/// !hide
