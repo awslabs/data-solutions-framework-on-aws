@@ -12,7 +12,7 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 const msk = new MskServerless(stack, 'cluster');
 
 new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.mskServerlessCluster.attrArn,
+  value: msk.cluster.attrArn,
 });
 
 

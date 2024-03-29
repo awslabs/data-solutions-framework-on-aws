@@ -30,7 +30,7 @@ const msk = new MskServerless(stack, 'cluster', {
   });
 
 new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.mskServerlessCluster.attrArn,
+  value: msk.cluster.attrArn,
 });
 /// !hide
 
