@@ -128,8 +128,7 @@ test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);
   //Not able to suppress the Warning for 'AwsSolutions-EC23'
-  //Increase lenght to 1 not to fail the test
-  expect(warnings).toHaveLength(1);
+  expect(warnings).toHaveLength(0);
 });
 
 test('No unsuppressed Errors', () => {
