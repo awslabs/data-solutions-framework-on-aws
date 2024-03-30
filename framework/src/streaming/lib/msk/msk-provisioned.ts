@@ -8,6 +8,7 @@ import { join } from 'path';
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Connections, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
@@ -65,6 +66,7 @@ export class MskProvisioned extends TrackedConstruct {
   public readonly vpc: IVpc;
   public readonly bootstrapBrokerStringIam?: string;
   public readonly bootstrapBrokerStringTls?: string;
+  public readonly brokerAtRestEncryptionKey: IKey;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly account: string;
@@ -142,12 +144,21 @@ export class MskProvisioned extends TrackedConstruct {
       );
     }
 
-    const encryptionAtRest = props.ebsStorageInfo?.encryptionKey
-      ? {
-        dataVolumeKmsKeyId:
-          props.ebsStorageInfo.encryptionKey.keyId,
-      }
-      : undefined;
+    if (!props.ebsStorageInfo?.encryptionKey) {
+
+      this.brokerAtRestEncryptionKey = new Key(this, 'BrokerAtRestEncryptionKey', {
+        enableKeyRotation: true,
+        description: `Encryption key for MSK broker at rest for cluster ${props.clusterName ?? 'default-msk-provisioned'}`,
+      });
+
+    } else {
+      this.brokerAtRestEncryptionKey = props.ebsStorageInfo.encryptionKey;
+    }
+
+    const encryptionAtRest = {
+      dataVolumeKmsKeyId:
+        this.brokerAtRestEncryptionKey.keyId,
+    };
 
 
     this.mskBrokerinstanceType = props.mskBrokerinstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
