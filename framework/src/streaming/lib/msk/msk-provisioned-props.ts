@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { ISecurityGroup, Vpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import {
@@ -46,7 +46,7 @@ export interface MskProvisionedProps {
       * Defines the virtual networking environment for this cluster.
       * Must have at least 2 subnets in two different AZs.
       */
-  readonly vpc?: Vpc;
+  readonly vpc?: IVpc;
 
   /**
       * Where to place the nodes within the VPC.

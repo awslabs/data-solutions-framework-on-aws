@@ -4236,7 +4236,7 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskProvisionedCluster">mskProvisionedCluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam">bootstrapBrokerStringIam</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls">bootstrapBrokerStringTls</a></code> | <code>string</code> | *No description.* |
@@ -4255,10 +4255,10 @@ The tree node.
 
 ---
 
-##### `mskProvisionedCluster`<sup>Required</sup> <a name="mskProvisionedCluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskProvisionedCluster"></a>
+##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster"></a>
 
 ```typescript
-public readonly mskProvisionedCluster: CfnCluster;
+public readonly cluster: CfnCluster;
 ```
 
 - *Type:* aws-cdk-lib.aws_msk.CfnCluster
@@ -11096,7 +11096,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | What to do when this resource is deleted from a stack. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode</code> | This controls storage mode for supported storage tiers. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.Vpc</code> | Defines the virtual networking environment for this cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Where to place the nodes within the VPC. |
 
 ---
@@ -11313,10 +11313,10 @@ This controls storage mode for supported storage tiers.
 ##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc"></a>
 
 ```typescript
-public readonly vpc: Vpc;
+public readonly vpc: IVpc;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.Vpc
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
 
 Defines the virtual networking environment for this cluster.
 
