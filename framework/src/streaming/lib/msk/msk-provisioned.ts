@@ -61,7 +61,7 @@ export class MskProvisioned extends TrackedConstruct {
 
   }
 
-  public readonly mskProvisionedCluster: CfnCluster;
+  public readonly cluster: CfnCluster;
   public readonly vpc: IVpc;
   public readonly bootstrapBrokerStringIam?: string;
   public readonly bootstrapBrokerStringTls?: string;
@@ -188,7 +188,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.deploymentClusterVersion = props.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
 
-    this.mskProvisionedCluster = new CfnCluster(this, 'mskProvisionedCluster', {
+    this.cluster = new CfnCluster(this, 'mskProvisionedCluster', {
       clusterName: props.clusterName ?? 'default-msk-provisioned',
       kafkaVersion: this.deploymentClusterVersion.version,
       numberOfBrokerNodes: this.numberOfBrokerNodes,
@@ -218,7 +218,7 @@ export class MskProvisioned extends TrackedConstruct {
       clientAuthentication: clientAuthentication,
     });
 
-    this.mskProvisionedCluster.applyRemovalPolicy(this.removalPolicy);
+    this.cluster.applyRemovalPolicy(this.removalPolicy);
 
 
     //The section below address a best practice to change the zookeper security group
@@ -235,13 +235,13 @@ export class MskProvisioned extends TrackedConstruct {
       vpc: this.vpc,
     });
 
-    this.mskProvisionedCluster.node.addDependency(zooKeeperSecurityGroup);
+    this.cluster.node.addDependency(zooKeeperSecurityGroup);
 
     const lambdaPolicy = [
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
         resources: [
-          this.mskProvisionedCluster.attrArn,
+          this.cluster.attrArn,
         ],
       }),
       new PolicyStatement({
@@ -282,7 +282,7 @@ export class MskProvisioned extends TrackedConstruct {
       allowAllOutbound: true,
     });
 
-    this.mskProvisionedCluster.node.addDependency(zookeeperLambdaSecurityGroup);
+    this.cluster.node.addDependency(zookeeperLambdaSecurityGroup);
 
     const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions(
       zookeeperLambdaSecurityGroup,
@@ -305,7 +305,7 @@ export class MskProvisioned extends TrackedConstruct {
       code: Code.fromAsset(join(__dirname, './resources/lambdas/zooKeeperSecurityGroupUpdate')),
       runtime: Runtime.NODEJS_20_X,
       environment: {
-        MSK_CLUSTER_ARN: this.mskProvisionedCluster.attrArn,
+        MSK_CLUSTER_ARN: this.cluster.attrArn,
         REGION: this.region,
         VPC_ID: this.vpc.vpcId,
         SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
@@ -322,22 +322,22 @@ export class MskProvisioned extends TrackedConstruct {
       handler: func,
       timeout: Duration.minutes(10),
       invocationType: InvocationType.REQUEST_RESPONSE,
-      executeAfter: [this.mskProvisionedCluster],
+      executeAfter: [this.cluster],
     });
 
     console.log(props.certificateDefinition?.secretCertificate.secretArn);
 
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
-      clusterName: this.mskProvisionedCluster.clusterName,
-      clusterArn: this.mskProvisionedCluster.attrArn,
+      clusterName: this.cluster.clusterName,
+      clusterArn: this.cluster.attrArn,
       certficateSecret: props.certificateDefinition?.secretCertificate,
       brokerSecurityGroup: this.connections.securityGroups[0],
       clientAuthentication: props.clientAuthentication ?? ClientAuthentication.sasl( { iam: true }),
       kafkaClientLogLevel: props.kafkaClientLogLevel,
     });
 
-    this.kafkaApi._initiallizeCluster(this.mskProvisionedCluster);
+    this.kafkaApi._initiallizeCluster(this.cluster);
 
     //Set the CR that will use IAM credentials
     // This will be used for CRUD on Topics
@@ -373,7 +373,7 @@ export class MskProvisioned extends TrackedConstruct {
             [this.deploymentClusterVersion],
           );
 
-        this.mskProvisionedCluster.node.addDependency(clusterConfiguration);
+        this.cluster.node.addDependency(clusterConfiguration);
 
         clusterConfigurationInfo = {
           arn: clusterConfiguration.attrArn,
@@ -395,7 +395,7 @@ export class MskProvisioned extends TrackedConstruct {
 
       if (!props.allowEveryoneIfNoAclFound) {
 
-        this.setClusterConfiguration(this.mskProvisionedCluster, clusterConfigurationInfo, crAcls);
+        this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls);
       }
     }
 
@@ -427,7 +427,7 @@ export class MskProvisioned extends TrackedConstruct {
       cr.node.addDependency(this.aclOperationCr!);
     }
 
-    cr.node.addDependency(this.mskProvisionedCluster);
+    cr.node.addDependency(this.cluster);
 
     return cr;
   }
@@ -469,7 +469,7 @@ export class MskProvisioned extends TrackedConstruct {
       cr.node.addDependency(this.aclOperationCr!);
     }
 
-    cr.node.addDependency(this.mskProvisionedCluster);
+    cr.node.addDependency(this.cluster);
 
     return cr;
   }
@@ -792,17 +792,17 @@ export class MskProvisioned extends TrackedConstruct {
         service: 'Kafka',
         action: 'getBootstrapBrokers',
         parameters: {
-          ClusterArn: this.mskProvisionedCluster.attrArn,
+          ClusterArn: this.cluster.attrArn,
         },
         physicalResourceId: PhysicalResourceId.of('BootstrapBrokers'),
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.mskProvisionedCluster.attrArn],
+        resources: [this.cluster.attrArn],
       }),
       installLatestAwsSdk: false,
     });
 
-    clusterBootstrapBrokers.node.addDependency(this.mskProvisionedCluster);
+    clusterBootstrapBrokers.node.addDependency(this.cluster);
 
     return clusterBootstrapBrokers.getResponseField(responseField);
 
