@@ -41,8 +41,17 @@ The construct allows you to provide your own VPC that was created outside the CD
 
 ### Create a cluster with mTLS authentication
 
-The construct allows you to provide create a cluster with mTLS, below is a code snippet showing the configuration. Below you will find an example usage. 
+The construct allows you to provide create a cluster with mTLS, below is a code snippet showing the configuration. Below you will find an example usage.
 
+When using MSK with mTLS the constructs requires a principal that is assigned to the custom resources that manage ACLs and Topics. The certificate and private key are expected to be in a secret managed buyy AWS Secrets Manager.
+The secret needs to be in the following format and stored a `JSON Key/value` and not `Plaintext` in the Secret. The construct grants the lambda that supports the Custom Resource read access to the secret as an `Identity based policy`.
+
+```json
+    {
+      key : "PRIVATE-KEY",
+      cert : "CERTIFICATE"
+    }
+```
 
 [example msk provisioned bring your own vpc](./examples/msk-provisioned-create-cluster-mtls.lit.ts)
 
@@ -169,5 +178,15 @@ A construct to support bring your own cluster and perform Create/Update/Delete o
 ## Overview
 
 The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#provider-framework) to deploy a custom resource to manage `topics`, and in case of `mTLS` authentication deploys also a custom resource to manage `ACLs`.
+
+When using MSK with mTLS the constructs requires a principal that is assigned to the custom resources that manage ACLs and Topics. The certificate and private key are expected to be in a secret managed buyy AWS Secrets Manager.
+The secret needs to be in the following format and stored a `JSON Key/value` and not `Plaintext` in the Secret. The construct grants the lambda that supports the Custom Resource read access to the secret as an `Identity based policy`.
+
+```json
+    {
+      key : "PRIVATE-KEY",
+      cert : "CERTIFICATE"
+    }
+```
 
 [example kafka api](./examples/kafka-api-default.lit.ts)
