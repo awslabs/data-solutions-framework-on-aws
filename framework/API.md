@@ -3867,12 +3867,19 @@ A construct to create an MSK Provisioned cluster.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
 
+*Example*
+
+```typescript
+const msk = new MskProvisioned(stack, 'cluster');
+```
+
+
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer"></a>
 
 ```typescript
 import { streaming } from '@cdklabs/aws-data-solutions-framework'
 
-new streaming.msk.MskProvisioned(scope: Construct, id: string, props: MskProvisionedProps)
+new streaming.msk.MskProvisioned(scope: Construct, id: string, props?: MskProvisionedProps)
 ```
 
 | **Name** | **Type** | **Description** |
@@ -3899,7 +3906,7 @@ the ID of the CDK Construct.
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.props"></a>
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.Initializer.parameter.props"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps
 
@@ -4236,11 +4243,20 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerAtRestEncryptionKey">brokerAtRestEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam">bootstrapBrokerStringIam</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls">bootstrapBrokerStringTls</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerAtRestEncryptionKey">brokerAtRestEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key created by the construct for the brokers When no KMS key is passed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogUpdateZookepeerLambda">cloudwatchlogUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | The MSK cluster created by the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleUpdateZookepeerLambda">roleUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupUpdateZookepeerLambda">securityGroupUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC created by the construct or the one passed to it. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam">bootstrapBrokerStringIam</a></code> | <code>string</code> | The connection string to brokers when using IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls">bootstrapBrokerStringTls</a></code> | <code>string</code> | The connection string to brokers when using TLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerCloudWatchLogGroup">brokerCloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda">cloudwatchlogApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.clusterConfiguration">clusterConfiguration</a></code> | <code>aws-cdk-lib.aws_msk.CfnConfiguration</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleApplyConfigurationLambda">roleApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda">securityGroupApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 
 ---
 
@@ -4264,6 +4280,18 @@ public readonly brokerAtRestEncryptionKey: IKey;
 
 - *Type:* aws-cdk-lib.aws_kms.IKey
 
+The KMS CMK key created by the construct for the brokers When no KMS key is passed.
+
+---
+
+##### `cloudwatchlogUpdateZookepeerLambda`<sup>Required</sup> <a name="cloudwatchlogUpdateZookepeerLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogUpdateZookepeerLambda"></a>
+
+```typescript
+public readonly cloudwatchlogUpdateZookepeerLambda: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
 ---
 
 ##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster"></a>
@@ -4273,6 +4301,28 @@ public readonly cluster: CfnCluster;
 ```
 
 - *Type:* aws-cdk-lib.aws_msk.CfnCluster
+
+The MSK cluster created by the construct.
+
+---
+
+##### `roleUpdateZookepeerLambda`<sup>Required</sup> <a name="roleUpdateZookepeerLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleUpdateZookepeerLambda"></a>
+
+```typescript
+public readonly roleUpdateZookepeerLambda: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `securityGroupUpdateZookepeerLambda`<sup>Required</sup> <a name="securityGroupUpdateZookepeerLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupUpdateZookepeerLambda"></a>
+
+```typescript
+public readonly securityGroupUpdateZookepeerLambda: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
 ---
 
@@ -4284,6 +4334,8 @@ public readonly vpc: IVpc;
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
+The VPC created by the construct or the one passed to it.
+
 ---
 
 ##### `bootstrapBrokerStringIam`<sup>Optional</sup> <a name="bootstrapBrokerStringIam" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam"></a>
@@ -4294,6 +4346,8 @@ public readonly bootstrapBrokerStringIam: string;
 
 - *Type:* string
 
+The connection string to brokers when using IAM authentication.
+
 ---
 
 ##### `bootstrapBrokerStringTls`<sup>Optional</sup> <a name="bootstrapBrokerStringTls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls"></a>
@@ -4303,6 +4357,68 @@ public readonly bootstrapBrokerStringTls: string;
 ```
 
 - *Type:* string
+
+The connection string to brokers when using TLS authentication.
+
+---
+
+##### `brokerCloudWatchLogGroup`<sup>Optional</sup> <a name="brokerCloudWatchLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerCloudWatchLogGroup"></a>
+
+```typescript
+public readonly brokerCloudWatchLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `brokerSecurityGroup`<sup>Optional</sup> <a name="brokerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerSecurityGroup"></a>
+
+```typescript
+public readonly brokerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+---
+
+##### `cloudwatchlogApplyConfigurationLambda`<sup>Optional</sup> <a name="cloudwatchlogApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda"></a>
+
+```typescript
+public readonly cloudwatchlogApplyConfigurationLambda: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `clusterConfiguration`<sup>Optional</sup> <a name="clusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.clusterConfiguration"></a>
+
+```typescript
+public readonly clusterConfiguration: CfnConfiguration;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnConfiguration
+
+---
+
+##### `roleApplyConfigurationLambda`<sup>Optional</sup> <a name="roleApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleApplyConfigurationLambda"></a>
+
+```typescript
+public readonly roleApplyConfigurationLambda: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `securityGroupApplyConfigurationLambda`<sup>Optional</sup> <a name="securityGroupApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda"></a>
+
+```typescript
+public readonly securityGroupApplyConfigurationLambda: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
 ---
 
@@ -9017,6 +9133,8 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### Acl <a name="Acl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl"></a>
 
+Kakfa ACL This is similar to the object used by `kafkajs`, for more information see this [link](https://kafka.js.org/docs/admin#create-acl).
+
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.Acl.Initializer"></a>
 
 ```typescript
@@ -11097,7 +11215,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration</code> | Cluster monitoring configuration. |
@@ -11198,6 +11316,8 @@ public readonly kafkaClientLogLevel: KafkaClientLogLevel;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel
 - *Default:* INFO
 
+The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
+
 ---
 
 ##### `kafkaVersion`<sup>Optional</sup> <a name="kafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion"></a>
@@ -11219,7 +11339,7 @@ public readonly logging: BrokerLogging;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.BrokerLogging
-- *Default:* disabled
+- *Default:* A Cloudwatch log is created
 
 Configure your MSK cluster to send broker logs to different destination types.
 
