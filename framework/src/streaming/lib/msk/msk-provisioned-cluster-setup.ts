@@ -3,7 +3,7 @@
 
 import { FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Effect, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { LogGroup } from 'aws-cdk-lib/aws-logs';
+import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
@@ -22,7 +22,7 @@ export function monitoringSetup(
   scope: Construct,
   id: string,
   removalPolicy: RemovalPolicy,
-  brokerLoggingProps?: BrokerLogging): CfnCluster.LoggingInfoProperty {
+  brokerLoggingProps?: BrokerLogging): [CfnCluster.LoggingInfoProperty, ILogGroup?] {
 
 
   const loggingBucket = brokerLoggingProps?.s3?.bucket;
@@ -113,7 +113,7 @@ export function monitoringSetup(
     },
   };
 
-  return loggingInfo;
+  return [loggingInfo, brokerLogGroup!];
 
 }
 
