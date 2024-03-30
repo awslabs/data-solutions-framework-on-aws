@@ -6,8 +6,8 @@ import { join } from 'path';
 
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { Connections, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Effect, IPrincipal, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Connections, ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { Effect, IPrincipal, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
@@ -26,12 +26,16 @@ import {
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an MSK Provisioned cluster
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/
  *
  * @example
+ *
+ * const msk = new MskProvisioned(stack, 'cluster');
+ *
  */
 export class MskProvisioned extends TrackedConstruct {
 
@@ -61,12 +65,37 @@ export class MskProvisioned extends TrackedConstruct {
     });
 
   }
-
+  /**
+   * The MSK cluster created by the construct
+   */
   public readonly cluster: CfnCluster;
+  /**
+   * The VPC created by the construct or the one passed to it
+   */
   public readonly vpc: IVpc;
+  /**
+   * The connection string to brokers when using IAM authentication
+   */
   public readonly bootstrapBrokerStringIam?: string;
+  /**
+   * The connection string to brokers when using TLS authentication
+   */
   public readonly bootstrapBrokerStringTls?: string;
+  /**
+   * The KMS CMK key created by the construct for the brokers
+   * When no KMS key is passed
+   */
   public readonly brokerAtRestEncryptionKey: IKey;
+
+  public readonly cloudwatchlogUpdateZookepeerLambda: ILogGroup;
+  public readonly roleUpdateZookepeerLambda: IRole;
+  public readonly securityGroupUpdateZookepeerLambda: ISecurityGroup;
+  public readonly cloudwatchlogApplyConfigurationLambda?: ILogGroup;
+  public readonly roleApplyConfigurationLambda?: IRole;
+  public readonly securityGroupApplyConfigurationLambda?: ISecurityGroup;
+  public readonly clusterConfiguration?: CfnConfiguration;
+  public readonly brokerSecurityGroup?: ISecurityGroup;
+  public readonly brokerCloudWatchLogGroup?: ILogGroup;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly account: string;
@@ -90,7 +119,7 @@ export class MskProvisioned extends TrackedConstruct {
      * @param {string} id the ID of the CDK Construct
      * @param {MskServerlessProps} props
      */
-  constructor(scope: Construct, id: string, props: MskProvisionedProps) {
+  constructor(scope: Construct, id: string, props?: MskProvisionedProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: MskProvisioned.name,
@@ -102,13 +131,13 @@ export class MskProvisioned extends TrackedConstruct {
     this.region = Stack.of(this).region;
     this.partition = Stack.of(this).partition;
 
-    if (props.certificateDefinition) {
+    if (props?.certificateDefinition) {
       this.crPrincipal = props.certificateDefinition.aclAdminPrincipal;
     }
 
-    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
 
-    if (!props.vpc) {
+    if (!props?.vpc) {
       this.vpc = new DataVpc(scope, 'Vpc', {
         vpcCidr: '10.0.0.0/16',
       }).vpc;
@@ -117,17 +146,17 @@ export class MskProvisioned extends TrackedConstruct {
     }
 
     //if vpcSubnets is pass without VPC throw error or if vpc is passed without vpcSubnets throw error
-    if (props.vpcSubnets && !props.vpc || !props.vpcSubnets && props.vpc) {
+    if (props?.vpcSubnets && !props?.vpc || !props?.vpcSubnets && props?.vpc) {
       throw new Error('Need to pass both vpcSubnets and vpc');
-    } else if (props.vpcSubnets) {
+    } else if (props?.vpcSubnets) {
       this.subnetSelectionIds = this.vpc.selectSubnets(props.vpcSubnets).subnetIds;
     } else {
       this.subnetSelectionIds = this.vpc.privateSubnets.map((subnet) => subnet.subnetId);
     }
 
     this.connections = new Connections({
-      securityGroups: props.securityGroups ?? [
-        new SecurityGroup(this, 'SecurityGroup', {
+      securityGroups: props?.securityGroups ?? [
+        this.brokerSecurityGroup = new SecurityGroup(this, 'SecurityGroup', {
           description: 'MSK security group',
           vpc: this.vpc,
           allowAllOutbound: true,
@@ -136,7 +165,7 @@ export class MskProvisioned extends TrackedConstruct {
       ],
     });
 
-    const volumeSize = props.ebsStorageInfo?.volumeSize ?? 100;
+    const volumeSize = props?.ebsStorageInfo?.volumeSize ?? 100;
     // Minimum: 1 GiB, maximum: 16384 GiB
     if (volumeSize < 1 || volumeSize > 16384) {
       throw Error(
@@ -144,11 +173,12 @@ export class MskProvisioned extends TrackedConstruct {
       );
     }
 
-    if (!props.ebsStorageInfo?.encryptionKey) {
+    if (!props?.ebsStorageInfo?.encryptionKey) {
 
       this.brokerAtRestEncryptionKey = new Key(this, 'BrokerAtRestEncryptionKey', {
         enableKeyRotation: true,
-        description: `Encryption key for MSK broker at rest for cluster ${props.clusterName ?? 'default-msk-provisioned'}`,
+        description: `Encryption key for MSK broker at rest for cluster ${props?.clusterName ?? 'default-msk-provisioned'}`,
+        removalPolicy: this.removalPolicy,
       });
 
     } else {
@@ -161,11 +191,11 @@ export class MskProvisioned extends TrackedConstruct {
     };
 
 
-    this.mskBrokerinstanceType = props.mskBrokerinstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
+    this.mskBrokerinstanceType = props?.mskBrokerinstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
 
     const openMonitoring =
-      props.monitoring?.enablePrometheusJmxExporter ||
-        props.monitoring?.enablePrometheusNodeExporter
+      props?.monitoring?.enablePrometheusJmxExporter ||
+        props?.monitoring?.enablePrometheusNodeExporter
         ? {
           prometheus: {
             jmxExporter: props.monitoring?.enablePrometheusJmxExporter
@@ -184,23 +214,25 @@ export class MskProvisioned extends TrackedConstruct {
 
     let clientAuthentication: CfnCluster.ClientAuthenticationProperty;
 
-    [clientAuthentication, this.inClusterAcl, this.iamAcl] = clientAuthenticationSetup(props.clientAuthentication);
+    [clientAuthentication, this.inClusterAcl, this.iamAcl] = clientAuthenticationSetup(props?.clientAuthentication);
 
-    let loggingInfo: CfnCluster.LoggingInfoProperty = monitoringSetup(this, id, this.removalPolicy, props.logging);
+    let loggingInfo: CfnCluster.LoggingInfoProperty;
+
+    [loggingInfo, this.brokerCloudWatchLogGroup] = monitoringSetup(this, id, this.removalPolicy, props?.logging);
 
     //check the number of broker vs the number of AZs, it needs to be multiple
 
     this.defaultNumberOfBrokerNodes = this.vpc.availabilityZones.length > 3 ? 3 : this.vpc.availabilityZones.length;
-    this.numberOfBrokerNodes = props.numberOfBrokerNodes ?? this.defaultNumberOfBrokerNodes;
+    this.numberOfBrokerNodes = props?.numberOfBrokerNodes ?? this.defaultNumberOfBrokerNodes;
 
     if (this.numberOfBrokerNodes % this.vpc.availabilityZones.length) {
       throw Error('The number of broker nodes needs to be multiple of the number of AZs');
     }
 
-    this.deploymentClusterVersion = props.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
+    this.deploymentClusterVersion = props?.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
 
     this.cluster = new CfnCluster(this, 'mskProvisionedCluster', {
-      clusterName: props.clusterName ?? 'default-msk-provisioned',
+      clusterName: props?.clusterName ?? 'default-msk-provisioned',
       kafkaVersion: this.deploymentClusterVersion.version,
       numberOfBrokerNodes: this.numberOfBrokerNodes,
       brokerNodeGroupInfo: {
@@ -222,9 +254,9 @@ export class MskProvisioned extends TrackedConstruct {
           clientBroker: 'TLS',
         },
       },
-      enhancedMonitoring: props.monitoring?.clusterMonitoringLevel,
+      enhancedMonitoring: props?.monitoring?.clusterMonitoringLevel,
       openMonitoring: openMonitoring,
-      storageMode: props.storageMode,
+      storageMode: props?.storageMode,
       loggingInfo: loggingInfo,
       clientAuthentication: clientAuthentication,
     });
@@ -288,28 +320,28 @@ export class MskProvisioned extends TrackedConstruct {
       description: 'Policy for modifying security group for MSK zookeeper',
     });
 
-    const zookeeperLambdaSecurityGroup = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
+    this.securityGroupUpdateZookepeerLambda = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
       vpc: this.vpc,
       allowAllOutbound: true,
     });
 
-    this.cluster.node.addDependency(zookeeperLambdaSecurityGroup);
+    this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
 
     const vpcPolicyLambda: ManagedPolicy = this.getVpcPermissions(
-      zookeeperLambdaSecurityGroup,
+      this.securityGroupUpdateZookepeerLambda,
       this.subnetSelectionIds,
       'vpcPolicyLambdaUpdateZookeeperSg');
 
-    let lambdaRole: Role = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
+    this.roleUpdateZookepeerLambda = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
 
-    lambdaRole.addManagedPolicy(lambdaExecutionRolePolicy);
-    lambdaRole.addManagedPolicy(vpcPolicyLambda);
+    this.roleUpdateZookepeerLambda.addManagedPolicy(lambdaExecutionRolePolicy);
+    this.roleUpdateZookepeerLambda.addManagedPolicy(vpcPolicyLambda);
 
-    let zookeeperUpdateLambdaLog = this.createLogGroup('zookeeperLambdaLogGroup');
+    this.cloudwatchlogUpdateZookepeerLambda = this.createLogGroup('zookeeperLambdaLogGroup');
 
-    zookeeperUpdateLambdaLog.grantWrite(lambdaRole);
+    this.cloudwatchlogUpdateZookepeerLambda.grantWrite(this.roleUpdateZookepeerLambda);
 
     const func = new Function(this, 'UpdateZookeeperSg', {
       handler: 'index.onEventHandler',
@@ -321,12 +353,12 @@ export class MskProvisioned extends TrackedConstruct {
         VPC_ID: this.vpc.vpcId,
         SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
       },
-      role: lambdaRole,
+      role: this.roleUpdateZookepeerLambda,
       timeout: Duration.seconds(30),
       vpc: this.vpc,
       vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-      logGroup: zookeeperUpdateLambdaLog,
-      securityGroups: [zookeeperLambdaSecurityGroup],
+      logGroup: this.cloudwatchlogUpdateZookepeerLambda,
+      securityGroups: [this.securityGroupUpdateZookepeerLambda],
     });
 
     new Trigger(this, 'UpdateZookeeperSgTrigger', {
@@ -336,17 +368,17 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.cluster],
     });
 
-    console.log(props.certificateDefinition?.secretCertificate.secretArn);
-
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
       clusterName: this.cluster.clusterName,
       clusterArn: this.cluster.attrArn,
-      certficateSecret: props.certificateDefinition?.secretCertificate,
+      certficateSecret: props?.certificateDefinition?.secretCertificate,
       brokerSecurityGroup: this.connections.securityGroups[0],
-      clientAuthentication: props.clientAuthentication ?? ClientAuthentication.sasl( { iam: true }),
-      kafkaClientLogLevel: props.kafkaClientLogLevel,
+      clientAuthentication: props?.clientAuthentication ?? ClientAuthentication.sasl( { iam: true }),
+      kafkaClientLogLevel: props?.kafkaClientLogLevel,
     });
+
+    this.mskIamACrudAdminProvider = this.kafkaApi.mskIamACrudAdminProvider;
 
     this.kafkaApi._initiallizeCluster(this.cluster);
 
@@ -362,9 +394,11 @@ export class MskProvisioned extends TrackedConstruct {
     //Set up the CR that will set the ACL using the Certs or Username/Password
     if (clientAuthentication.tls) {
 
-      if (!props.certificateDefinition) {
+      if (!props?.certificateDefinition) {
         throw new Error('TLS Authentication requires a certificate definition');
       }
+
+      this.mskInClusterAclAdminProvider = this.kafkaApi.mskInClusterAclAdminProvider;
 
       this.bootstrapBrokerStringTls = this.getBootstrapBrokers ('BootstrapBrokerStringTls');
 
@@ -373,7 +407,7 @@ export class MskProvisioned extends TrackedConstruct {
 
       if (!props.configurationInfo) {
 
-        let clusterConfiguration: CfnConfiguration =
+        this.clusterConfiguration =
           MskProvisioned.createCLusterConfiguration(
             this, 'ClusterConfigDsf',
             //This must be unique to avoid failing the stack creation
@@ -384,11 +418,11 @@ export class MskProvisioned extends TrackedConstruct {
             [this.deploymentClusterVersion],
           );
 
-        this.cluster.node.addDependency(clusterConfiguration);
+        this.cluster.node.addDependency(this.clusterConfiguration);
 
         clusterConfigurationInfo = {
-          arn: clusterConfiguration.attrArn,
-          revision: clusterConfiguration.attrLatestRevisionRevision,
+          arn: this.clusterConfiguration.attrArn,
+          revision: this.clusterConfiguration.attrLatestRevisionRevision,
         };
 
       } else {
@@ -399,14 +433,16 @@ export class MskProvisioned extends TrackedConstruct {
       //Update cluster configuration as a last step before handing the cluster to customer.
       //This will set `allow.everyone.if.no.acl.found` to `false`
       //And will allow the provide set ACLs for the lambda CR to do CRUD operations on MSK for ACLs and Topics
-
       const crAcls: CustomResource[] = this.setAcls(props);
 
+      //We isolate this operation so that all subsqueent ACL operations add a dependency on this first one
+      //This aclOperationCr allow the lambda to apply other ACLs.
       this.aclOperationCr = crAcls[0];
 
       if (!props.allowEveryoneIfNoAclFound) {
 
-        this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls);
+        [this.cloudwatchlogApplyConfigurationLambda, this.roleApplyConfigurationLambda, this.securityGroupApplyConfigurationLambda]
+        = this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls);
       }
     }
 
@@ -664,7 +700,11 @@ export class MskProvisioned extends TrackedConstruct {
   private setClusterConfiguration(
     cluster: CfnCluster,
     configuration: ClusterConfigurationInfo,
-    aclsResources: CustomResource[]) {
+    aclsResources: CustomResource[]) : [
+      ILogGroup,
+      IRole,
+      ISecurityGroup
+    ] {
 
     const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(this, 'setClusterConfigurationLambdaSecurityGroup', {
       vpc: this.vpc,
@@ -737,9 +777,11 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [...aclsResources],
     });
 
+    return [lambdaCloudwatchLogUpdateConfiguration, lambdaRole, setClusterConfigurationLambdaSecurityGroup];
+
   }
 
-  private getVpcPermissions(securityGroup: SecurityGroup, subnets: string[], id: string): ManagedPolicy {
+  private getVpcPermissions(securityGroup: ISecurityGroup, subnets: string[], id: string): ManagedPolicy {
 
     const securityGroupArn = `arn:${this.partition}:ec2:${this.region}:${this.account}:security-group/${securityGroup.securityGroupId}`;
     const subnetArns = subnets.map(s => `arn:${this.partition}:ec2:${this.region}:${this.account}:subnet/${s}`);
