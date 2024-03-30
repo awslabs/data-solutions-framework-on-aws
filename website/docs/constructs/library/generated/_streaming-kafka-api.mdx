@@ -2,11 +2,12 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A construct to support bring your own cluster and perform CRUD operations for ACLs and Topics. 
+A construct to support bring your own cluster and perform Create/Update/Delete operations for ACLs and Topics. The constructs support both MSK Serverless and MSK Provisioned. 
 
 ## Overview
 
-[example kafka api](./examples/kafka-api-default.lit.ts)
+The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#provider-framework) to deploy a custom resource to manage `topics`, and in case of `mTLS` authentication deploys also a custom resource to manage `ACLs`.
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
