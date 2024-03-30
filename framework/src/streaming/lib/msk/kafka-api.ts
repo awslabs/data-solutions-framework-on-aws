@@ -16,7 +16,6 @@ import {
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an MSK Serverless cluster

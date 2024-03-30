@@ -26,7 +26,6 @@ import {
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -378,8 +377,6 @@ export class MskProvisioned extends TrackedConstruct {
       kafkaClientLogLevel: props?.kafkaClientLogLevel,
     });
 
-    this.mskIamACrudAdminProvider = this.kafkaApi.mskIamACrudAdminProvider;
-
     this.kafkaApi._initiallizeCluster(this.cluster);
 
     //Set the CR that will use IAM credentials
@@ -397,8 +394,6 @@ export class MskProvisioned extends TrackedConstruct {
       if (!props?.certificateDefinition) {
         throw new Error('TLS Authentication requires a certificate definition');
       }
-
-      this.mskInClusterAclAdminProvider = this.kafkaApi.mskInClusterAclAdminProvider;
 
       this.bootstrapBrokerStringTls = this.getBootstrapBrokers ('BootstrapBrokerStringTls');
 
