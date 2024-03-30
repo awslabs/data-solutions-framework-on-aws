@@ -129,7 +129,36 @@ The topic is defined by the property type called `MskTopic`. Below you can see t
 }
 ```
 
-[example msk serverless default](./examples/msk-serverless-setTopic.lit.ts)
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let topic: MskTopic =  {
+  topic: 'topic1',
+  numPartitions: 3,
+  replicationFactor: 1,
+}
+
+msk.addTopic(stack, 'topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+topic = MskTopic(
+    topic="topic1",
+    num_partitions=3,
+    replication_factor=1
+)
+
+msk.add_topic(stack, "topic1", topic, cdk.RemovalPolicy.DESTROY, False, 1500)
+  ```
+
+  </TabItem>
+</Tabs>
 
 ### grantProduce
 
@@ -137,11 +166,53 @@ This method allows to grant a `Principal` the rights to write to a kafka topic.
 The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
 
 
-[example msk serverless grantProduce](./examples/msk-serverless-grantProduce.lit.ts)
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let iamRole = Role.fromRoleName(stack, 'role', 'role');
+
+msk.grantProduce('topic1',iamRole);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+iam_role = Role.from_role_name(stack, "role", "role")
+
+msk.grant_produce("topic1", iam_role)
+  ```
+
+  </TabItem>
+</Tabs>
 
 ### grantConsume
 This method allows to grant a `Principal` the rights to read to a kafka topic.
 The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
 
-[example msk serverless grantProduce](./examples/msk-serverless-grantConsume.lit.ts)
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+let iamRole = Role.fromRoleName(stack, 'role', 'role');
+
+msk.grantConsume('topic1',iamRole);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+iam_role = Role.from_role_name(stack, "role", "role")
+
+msk.grant_consume("topic1", iam_role)
+  ```
+
+  </TabItem>
+</Tabs>
 

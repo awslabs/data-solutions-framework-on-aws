@@ -6,7 +6,7 @@ An MSK Provisioned cluster with helpers to manage topics and IAM permissions
 
 ## Overview
 
-The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. There is also a method to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User) with the permission to `produce` or `consume` from a kafka topic. The diagram below shows the high level architecture.
+The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. There is also a method to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` from a kafka topic. The diagram below shows the high level architecture.
 
 ![MSK Provisioned High level architecture](../../../../static/img/msk-provisioned.png)
 
@@ -18,7 +18,8 @@ The construct sets up a dedicated security group for Zookeeper as advised in the
 
 ### Interacting with cluster
 
-The construct has the following interfaces, you will usage examples in the new sections: 
+The construct has the following interfaces, you will usage examples in the new sections:
+
     *  setTopic: Perform create, update, and delete operations on Topics
     *  setACL: Perform create, update, and delete operations on ACL
     *  grantProduce: Attach an IAM policy to a principal to write to a topic 
@@ -82,18 +83,18 @@ let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
 });
 
 const msk = new MskProvisioned(stack, 'cluster', {
-  vpc: vpc,
-  clusterName: 'my-cluster',
-  vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
-  numberOfBrokerNodes: 2,
-  mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M5_LARGE,
-  kafkaVersion: KafkaVersion.V3_4_0,
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
-  kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+    vpc: vpc,
+    clusterName: 'my-cluster',
+    vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
+    numberOfBrokerNodes: 2,
+    mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M5_LARGE,
+    kafkaVersion: KafkaVersion.V3_4_0,
+    removalPolicy: cdk.RemovalPolicy.DESTROY,
+    kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
 
 new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.cluster.attrArn,
+    value: msk.cluster.attrArn,
 });
   ```
   
@@ -130,31 +131,39 @@ cdk.CfnOutput(stack, "mskArn",
   </TabItem>
 </Tabs>
 
-### setTopic
 
-This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
-The topic is defined by the property type called `MskTopic`. Below you can see the definition of the topic as well as an example of use.
+### Create a cluster with mTLS authentication
 
-```json
-{
-    topic: <String>,
-    numPartitions: <Number>,     // default: -1 (uses broker `num.partitions` configuration)
-    replicationFactor: <Number>, // default: -1 (uses broker `default.replication.factor` configuration)
-    configEntries: <Array>       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
-}
-```
+The construct allows you to provide create a cluster with mTLS, below is a code snippet showing the configuration. Below you will find an example usage. 
+
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-let topic: MskTopic =  {
-  topic: 'topic1',
-  numPartitions: 3,
-  replicationFactor: 1,
-}
+let certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
+    stack, 'certificateAuthority',
+    'arn:aws:acm-pca:eu-west-1:123456789012:certificate-authority/aaaaaaaa-bbbb-454a-cccc-b454877f0d1b');
 
-msk.addTopic(stack, 'topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
+  const msk = new MskProvisioned(stack, 'cluster', {
+    vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
+    numberOfBrokerNodes: 4,
+    mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
+    kafkaVersion: KafkaVersion.V3_4_0,
+    clientAuthentication: ClientAuthentication.saslTls(
+      {
+        iam: true,
+        certificateAuthorities: [certificateAuthority],
+      },
+    ),
+    removalPolicy: cdk.RemovalPolicy.DESTROY,
+    certificateDefinition: {
+      adminPrincipal: 'User:CN=Admin',
+      aclAdminPrincipal: 'User:CN=aclAdmin',
+      secretCertificate: Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:eu-west-1:123456789012:secret:dsf/mskCert-3UhUJJ'),
+    },
+    allowEveryoneIfNoAclFound: false,
+  });
   ```
   
   ```mdx-code-block
@@ -163,13 +172,123 @@ msk.addTopic(stack, 'topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
   <TabItem value="python" label="Python">
 
   ```python
-topic = MskTopic(
+certificate_authority = CertificateAuthority.from_certificate_authority_arn(stack, "certificateAuthority", "arn:aws:acm-pca:eu-west-1:123456789012:certificate-authority/aaaaaaaa-bbbb-454a-cccc-b454877f0d1b")
+
+msk = MskProvisioned(stack, "cluster",
+    vpc_subnets=cdk.aws_ec2.SubnetSelection(subnet_type=SubnetType.PRIVATE_WITH_EGRESS),
+    number_of_broker_nodes=4,
+    msk_brokerinstance_type=MskBrokerInstanceType.KAFKA_M7G_LARGE,
+    kafka_version=KafkaVersion.V3_4_0,
+    client_authentication=ClientAuthentication.sasl_tls(
+        iam=True,
+        certificate_authorities=[certificate_authority]
+    ),
+    removal_policy=cdk.RemovalPolicy.DESTROY,
+    certificate_definition=AclAdminProps(
+        admin_principal="User:CN=Admin",
+        acl_admin_principal="User:CN=aclAdmin",
+        secret_certificate=Secret.from_secret_complete_arn(stack, "secret", "arn:aws:secretsmanager:eu-west-1:123456789012:secret:dsf/mskCert-3UhUJJ")
+    ),
+    allow_everyone_if_no_acl_found=False
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+### setTopic
+
+This method allows you to create, update or delete an ACL. Its backend uses [kafkajs](https://kafka.js.org/).
+The topic is defined by the property type called `MskTopic`. Below you can see the definition of the ACL as well as a usage. 
+
+```json
+{
+    topic: <String>,
+    numPartitions: <Number>,     // default: -1 (uses broker `num.partitions` configuration)
+    replicationFactor: <Number>, // default: -1 (uses broker `default.replication.factor` configuration)
+    replicaAssignment: <Array>,  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
+    configEntries: <Array>       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+}
+```
+
+Dependeding on the authentication type that is set in the cluster, you need to put the right parameter in authentication, for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. The example below uses IAM as authentication.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+msk.setTopic(stack, 'topic1',
+  Authentitcation.IAM, {
+    topic: 'topic1',
+    numPartitions: 3,
+    replicationFactor: 1,
+  }, cdk.RemovalPolicy.DESTROY, false, 1500);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+msk.set_topic(stack, "topic1", Authentitcation.IAM, MskTopic(
     topic="topic1",
     num_partitions=3,
     replication_factor=1
-)
+), cdk.RemovalPolicy.DESTROY, False, 1500)
+  ```
 
-msk.add_topic(stack, "topic1", topic, cdk.RemovalPolicy.DESTROY, False, 1500)
+  </TabItem>
+</Tabs>
+
+### setACL
+
+This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
+The topic is defined by the property type called `MskACL`. This method should be used only when the cluster authentication is set to `mTLS`. Below you can see the definition of the topic as well as an example of use.
+
+```json
+{
+    resourceType: <AclResourceTypes>,
+    resourceName: <String>,
+    resourcePatternType: <ResourcePatternTypes>,
+    principal: <String>,
+    host: <String>,
+    operation: <AclOperationTypes>,
+    permissionType: <AclPermissionTypes>,
+}
+```
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+msk.setAcl(stack, 'acl', {
+    resourceType: AclResourceTypes.TOPIC,
+    resourceName: 'topic-1',
+    resourcePatternType: ResourcePatternTypes.LITERAL,
+    principal: 'User:Cn=Bar',
+    host: '*',
+    operation: AclOperationTypes.CREATE,
+    permissionType: AclPermissionTypes.ALLOW,
+  },
+  cdk.RemovalPolicy.DESTROY);
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+msk.set_acl(stack, "acl", Acl(
+    resource_type=AclResourceTypes.TOPIC,
+    resource_name="topic-1",
+    resource_pattern_type=ResourcePatternTypes.LITERAL,
+    principal="User:Cn=Bar",
+    host="*",
+    operation=AclOperationTypes.CREATE,
+    permission_type=AclPermissionTypes.ALLOW
+), cdk.RemovalPolicy.DESTROY)
   ```
 
   </TabItem>
@@ -178,16 +297,14 @@ msk.add_topic(stack, "topic1", topic, cdk.RemovalPolicy.DESTROY, False, 1500)
 ### grantProduce
 
 This method allows to grant a `Principal` the rights to write to a kafka topic.
-The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+In case of IAM authentication the method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided. For mTLS authentication, the method apply an ACL for the provided `Common Name` that allows it to write to the topic. 
 
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-let iamRole = Role.fromRoleName(stack, 'role', 'role');
-
-msk.grantProduce('topic1',iamRole);
+msk.grantProduce('consume', 'foo', Authentitcation.MTLS, 'User:Cn=MyUser');
   ```
   
   ```mdx-code-block
@@ -196,9 +313,7 @@ msk.grantProduce('topic1',iamRole);
   <TabItem value="python" label="Python">
 
   ```python
-iam_role = Role.from_role_name(stack, "role", "role")
-
-msk.grant_produce("topic1", iam_role)
+msk.grant_produce("consume", "foo", Authentitcation.MTLS, "User:Cn=MyUser")
   ```
 
   </TabItem>
@@ -206,15 +321,13 @@ msk.grant_produce("topic1", iam_role)
 
 ### grantConsume
 This method allows to grant a `Principal` the rights to read to a kafka topic.
-The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+In case of IAM authentication the method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided. For mTLS authentication, the method apply an ACL for the provided `Common Name` that allows it to read from the topic.
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-let iamRole = Role.fromRoleName(stack, 'role', 'role');
-
-msk.grantConsume('topic1',iamRole);
+msk.grantConsume('consume', 'foo', Authentitcation.MTLS, 'User:Cn=MyUser');
   ```
   
   ```mdx-code-block
@@ -223,9 +336,7 @@ msk.grantConsume('topic1',iamRole);
   <TabItem value="python" label="Python">
 
   ```python
-iam_role = Role.from_role_name(stack, "role", "role")
-
-msk.grant_consume("topic1", iam_role)
+msk.grant_consume("consume", "foo", Authentitcation.MTLS, "User:Cn=MyUser")
   ```
 
   </TabItem>

@@ -5,7 +5,7 @@ An MSK Provisioned cluster with helpers to manage topics and IAM permissions
 
 ## Overview
 
-The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. There is also a method to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User) with the permission to `produce` or `consume` from a kafka topic. The diagram below shows the high level architecture.
+The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. There is also a method to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` from a kafka topic. The diagram below shows the high level architecture.
 
 ![MSK Provisioned High level architecture](../../../website/static/img/msk-provisioned.png)
 
@@ -38,10 +38,18 @@ The construct allows you to provide your own VPC that was created outside the CD
 
 [example msk provisioned bring your own vpc](./examples/msk-provisioned-bring-vpc.lit.ts)
 
+
+### Create a cluster with mTLS authentication
+
+The construct allows you to provide create a cluster with mTLS, below is a code snippet showing the configuration. Below you will find an example usage. 
+
+
+[example msk provisioned bring your own vpc](./examples/msk-provisioned-create-cluster-mtls.lit.ts)
+
 ### setTopic
 
-This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
-The topic is defined by the property type called `MskTopic`. Below you can see the definition of the topic as well as an example of use.
+This method allows you to create, update or delete an ACL. Its backend uses [kafkajs](https://kafka.js.org/).
+The topic is defined by the property type called `MskTopic`. Below you can see the definition of the ACL as well as a usage. 
 
 ```json
 {
@@ -53,21 +61,42 @@ The topic is defined by the property type called `MskTopic`. Below you can see t
 }
 ```
 
-[example msk serverless default](./examples/msk-serverless-setTopic.lit.ts)
+Dependeding on the authentication type that is set in the cluster, you need to put the right parameter in authentication, for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. The example below uses IAM as authentication.
+
+[example msk provisiond setTopic](./examples/msk-provisioned-set-topic.lit.ts)
+
+### setACL
+
+This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
+The topic is defined by the property type called `MskACL`. This method should be used only when the cluster authentication is set to `mTLS`. Below you can see the definition of the topic as well as an example of use.
+
+```json
+{
+    resourceType: <AclResourceTypes>,
+    resourceName: <String>,
+    resourcePatternType: <ResourcePatternTypes>,
+    principal: <String>,
+    host: <String>,
+    operation: <AclOperationTypes>,
+    permissionType: <AclPermissionTypes>,
+}
+```
+
+[example msk provisiond setACL](./examples/msk-provisioned-set-acl.lit.ts)
 
 ### grantProduce
 
 This method allows to grant a `Principal` the rights to write to a kafka topic.
-The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+In case of IAM authentication the method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided. For mTLS authentication, the method apply an ACL for the provided `Common Name` that allows it to write to the topic. 
 
 
-[example msk serverless grantProduce](./examples/msk-serverless-grantProduce.lit.ts)
+[example msk provisioned grantProduce](./examples/msk-provisioned-grant-produce.lit.ts)
 
 ### grantConsume
 This method allows to grant a `Principal` the rights to read to a kafka topic.
-The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
+In case of IAM authentication the method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided. For mTLS authentication, the method apply an ACL for the provided `Common Name` that allows it to read from the topic.
 
-[example msk serverless grantProduce](./examples/msk-serverless-grantConsume.lit.ts)
+[example msk provisioned grantConsume](./examples/msk-provisioned-grant-consume.lit.ts)
 
 [//]: # (streaming.msk-serverless)
 # MSK Serverless
@@ -116,7 +145,7 @@ The topic is defined by the property type called `MskTopic`. Below you can see t
 }
 ```
 
-[example msk serverless default](./examples/msk-serverless-setTopic.lit.ts)
+[example msk serverless default](./examples/msk-serverless-set-topic.lit.ts)
 
 ### grantProduce
 
@@ -124,19 +153,21 @@ This method allows to grant a `Principal` the rights to write to a kafka topic.
 The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
 
 
-[example msk serverless grantProduce](./examples/msk-serverless-grantProduce.lit.ts)
+[example msk serverless grantProduce](./examples/msk-serverless-grant-produce.lit.ts)
 
 ### grantConsume
 This method allows to grant a `Principal` the rights to read to a kafka topic.
 The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
 
-[example msk serverless grantProduce](./examples/msk-serverless-grantConsume.lit.ts)
+[example msk serverless grantProduce](./examples/msk-serverless-grant-consume.lit.ts)
 
 [//]: # (streaming.kafka-api)
 # Kafka Api - Bring your own cluster
 
-A construct to support bring your own cluster and perform CRUD operations for ACLs and Topics. 
+A construct to support bring your own cluster and perform Create/Update/Delete operations for ACLs and Topics. The constructs support both MSK Serverless and MSK Provisioned. 
 
 ## Overview
+
+The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#provider-framework) to deploy a custom resource to manage `topics`, and in case of `mTLS` authentication deploys also a custom resource to manage `ACLs`.
 
 [example kafka api](./examples/kafka-api-default.lit.ts)
