@@ -88,14 +88,19 @@ export class DataVpc extends Construct {
       throw new Error(`The VPC netmask should be at least 28, netmask provided is ${vpcMask}`);
     }
 
+
     // Calculate subnet masks based on VPC's mask
     const publicSubnetMask = vpcMask + 4;
     const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
+    let defaultNumberOfNat = 
+      Stack.of(this).availabilityZones.length >3 ? 
+      3 : Stack.of(this).availabilityZones.length;
+
     this.vpc = new Vpc(scope, 'Vpc', {
       ipAddresses: IpAddresses.cidr(props.vpcCidr),
       maxAzs: 3,
-      natGateways: 3,
+      natGateways: props.natGateways ?? defaultNumberOfNat,
       subnetConfiguration: [
         {
           cidrMask: publicSubnetMask,

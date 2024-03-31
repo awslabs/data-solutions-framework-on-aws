@@ -47,4 +47,10 @@ export interface DataVpcProps {
    * @default None
    */
   readonly clientVpnEndpointProps?: DataVpcClientVpnEndpointProps;
+
+  /**
+   * Number of NAT Gateways
+   * @default 3 or the AZs defined in the context
+   */
+  readonly natGateways?: number;
 }
