@@ -93,9 +93,9 @@ export class DataVpc extends Construct {
     const publicSubnetMask = vpcMask + 4;
     const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
-    let defaultNumberOfNat = 
-      Stack.of(this).availabilityZones.length >3 ? 
-      3 : Stack.of(this).availabilityZones.length;
+    let defaultNumberOfNat =
+      Stack.of(this).availabilityZones.length >3 ?
+        3 : Stack.of(this).availabilityZones.length;
 
     this.vpc = new Vpc(scope, 'Vpc', {
       ipAddresses: IpAddresses.cidr(props.vpcCidr),

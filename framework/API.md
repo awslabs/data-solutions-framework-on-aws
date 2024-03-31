@@ -9682,6 +9682,7 @@ const dataVpcProps: utils.DataVpcProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogKey">flowLogKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used to encrypt the VPC Flow Logs in the CloudWatch Log Group. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRetention">flowLogRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | The retention period to apply to VPC Flow Logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.flowLogRole">flowLogRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used to send the VPC Flow Logs in CloudWatch. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.natGateways">natGateways</a></code> | <code>number</code> | Number of NAT Gateways. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 
 ---
@@ -9757,6 +9758,19 @@ The IAM Role used to send the VPC Flow Logs in CloudWatch.
 The role must be configured as described in the AWS VPC Flow Log documentation.
 
 > [https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html#flow-logs-iam-role)
+
+---
+
+##### `natGateways`<sup>Optional</sup> <a name="natGateways" id="@cdklabs/aws-data-solutions-framework.utils.DataVpcProps.property.natGateways"></a>
+
+```typescript
+public readonly natGateways: number;
+```
+
+- *Type:* number
+- *Default:* 3 or the AZs defined in the context
+
+Number of NAT Gateways.
 
 ---
 

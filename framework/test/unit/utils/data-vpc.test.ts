@@ -159,7 +159,6 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
 });
 
 
-
 describe('With DESTROY removal policy and global data removal unset, the construct and # NAT Gateway', () => {
 
   const app = new App();
