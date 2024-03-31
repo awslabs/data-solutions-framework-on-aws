@@ -28,14 +28,14 @@ const msk = new MskProvisioned(stack, 'cluster', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-msk.setTopic(stack, 'topicProvisioned', Authentitcation.IAM, [{
+msk.setTopic(stack, 'topicProvisioned', Authentitcation.IAM, {
   topic: 'provisioned',
   numPartitions: 1,
   replicationFactor: 1,
-}], cdk.RemovalPolicy.DESTROY, false, 1500);
+}, cdk.RemovalPolicy.DESTROY, false, 1500);
 
-new cdk.CfnOutput(stack, 'MskServerlessCluster', {
-  value: msk.mskProvisionedCluster.attrArn,
+new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
+  value: msk.cluster.attrArn,
 });
 
 
@@ -50,7 +50,7 @@ beforeAll(async() => {
 
 it('MSK provisioned successfully', async () => {
   // THEN
-  expect(deployResult.MskServerlessCluster).toContain('arn:aws:kafka:');
+  expect(deployResult.MskProvisionedCluster).toContain('arn:aws:kafka:');
 });
 
 afterAll(async () => {
