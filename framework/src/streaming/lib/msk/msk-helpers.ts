@@ -128,6 +128,10 @@ export function mskAclAdminProviderSetup(
     sourceSecurityGroupId: lambdaProviderSecurityGroup.securityGroupId,
   });
 
+  if (!secret.secretFullArn) {
+    throw new Error('Secret need to be in full arn format, use "Secret.fromSecretCompleteArn" method');
+  }
+
   //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
   const lambdaPolicy = [
     new PolicyStatement({
@@ -149,7 +153,6 @@ export function mskAclAdminProviderSetup(
       ],
     }),
   ];
-
 
   //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicymskAclAdminCr', {
