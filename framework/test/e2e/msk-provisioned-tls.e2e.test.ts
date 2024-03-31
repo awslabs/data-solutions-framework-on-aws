@@ -8,11 +8,11 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
+import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { TestStack } from './test-stack';
 import { Authentitcation, ClientAuthentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
 import { Utils } from '../../src/utils';
-import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
-import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 
 jest.setTimeout(10000000);
 
@@ -25,8 +25,8 @@ const { stack } = testStack;
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 let certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
-    stack, 'certificateAuthority',
-    `arn:aws:acm-pca:eu-west-1:${testStack.stack.account}:certificate-authority/9206cda5-e629-4eed-89ad-61c93e696737`);
+  stack, 'certificateAuthority',
+  `arn:aws:acm-pca:eu-west-1:${testStack.stack.account}:certificate-authority/9206cda5-e629-4eed-89ad-61c93e696737`);
 
 const msk = new MskProvisioned(stack, 'cluster', {
   clusterName: `cluster${Utils.generateHash(stack.stackName).slice(0, 3)}`,
@@ -40,8 +40,8 @@ const msk = new MskProvisioned(stack, 'cluster', {
   certificateDefinition: {
     adminPrincipal: 'admin',
     aclAdminPrincipal: 'User:CN=dsfe2e',
-    secretCertificate: Secret.fromSecretNameV2(stack, 'aclTlsCert', 'dsf/msk/e2e-tls-dXuccy')
-  }
+    secretCertificate: Secret.fromSecretNameV2(stack, 'aclTlsCert', 'dsf/msk/e2e-tls-dXuccy'),
+  },
 });
 
 msk.setTopic(stack, 'topicProvisioned', Authentitcation.MTLS, {
