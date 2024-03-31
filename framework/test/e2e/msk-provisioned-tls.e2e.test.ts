@@ -40,7 +40,7 @@ const msk = new MskProvisioned(stack, 'cluster', {
   certificateDefinition: {
     adminPrincipal: 'admin',
     aclAdminPrincipal: 'User:CN=dsfe2e',
-    secretCertificate: Secret.fromSecretNameV2(stack, 'aclTlsCert', 'dsf/msk/e2e-tls-dXuccy'),
+    secretCertificate: Secret.fromSecretCompleteArn(stack, 'aclTlsCert', `arn:aws:secretsmanager:eu-west-1:${testStack.stack.account}:secret:dsf/msk/e2e-tls-dXuccy`),
   },
 });
 
