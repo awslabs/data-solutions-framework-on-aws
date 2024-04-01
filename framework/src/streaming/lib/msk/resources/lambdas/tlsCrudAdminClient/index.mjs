@@ -32,25 +32,29 @@ export const onEventHandler = async (event) => {
     //Cleaning the private key and cert and put them in PEM format
     //This is to avoid having malformed certificate and keys passed by the user
     //Error can be like "error:0480006C:PEM routines::no start line"
-    
-    let cleanedString = removeSpacesAndNewlines(secret.cert);
-    
-    const regexCert = /(?<=BEGINCERTIFICATE-----)(.*?)(?=-----ENDCERTIFICATE-----)/gs;
-    const matchCert = cleanedString.match(regexCert);
-    
-    cleanedString = matchCert[0].trim(); // Trim any leading/trailing spaces
-    const pemCertificate = formatToPEM(cleanedString, '-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----');
+
+    const certificates = extractCertificatesFromSecretCertObject(secret.cert);
+
+    let formatedCertPem;
+
+    for (let cert in certificates) {
+        let appendNewLine = cert < certificates.length-1 ? true : false;
+        
+        if (!formatedCertPem) {
+            formatedCertPem = formatToPEM(certificates[cert], '-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----', appendNewLine);
+        } else {
+            formatedCertPem += formatToPEM(certificates[cert], '-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----', appendNewLine);
+        }
+    }
 
     let cleanedStringKey = removeSpacesAndNewlines(secret.key);
     
     const regexKey = /(?<=BEGINRSAPRIVATEKEY-----)(.*?)(?=-----ENDRSAPRIVATEKEY-----)/gs;
     const matchKey = cleanedStringKey.match(regexKey);
 
-    cleanedString = matchKey[0].trim(); // Trim any leading/trailing spaces
-    const privateKey = formatToPEM(cleanedString, '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----');
+    cleanedStringKey = matchKey[0].trim(); // Trim any leading/trailing spaces
+    const privateKey = formatToPEM(cleanedStringKey, '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----');
 
-
-    //console.log(JSON.parse(responseSecretManager.SecretString).cert);
 
     const client = new KafkaClient();
     const input = {
@@ -71,7 +75,7 @@ export const onEventHandler = async (event) => {
         ssl: {
             rejectUnauthorized: true,
             key: privateKey,
-            cert: pemCertificate
+            cert: formatedCertPem
         },
         logLevel: logLevelProp,
     });
@@ -111,7 +115,7 @@ export const onEventHandler = async (event) => {
 }
 
 
-function formatToPEM(certData, begin, end) {
+function formatToPEM(certData, begin, end, appendNewLine) {
     
     const maxLength = 64;
 
@@ -119,7 +123,11 @@ function formatToPEM(certData, begin, end) {
     for (let i = 0; i < certData.length; i += maxLength) {
         pemCert += certData.substring(i, i + maxLength) + '\n';
     }
-    pemCert += end;
+    if(appendNewLine) {
+        pemCert += end +'\n';
+    } else {
+        pemCert += end;
+    }
 
     return pemCert;
 }
@@ -127,4 +135,16 @@ function formatToPEM(certData, begin, end) {
 function removeSpacesAndNewlines(inputString) {
     // Using regular expressions to remove spaces and newline characters
     return inputString.replace(/[\s\n]/g, '');
+}
+
+function extractCertificatesFromSecretCertObject(pemData) {
+    
+    const cleanedPemData = removeSpacesAndNewlines(pemData);
+    const regex = /-----BEGINCERTIFICATE-----(.*?)-----ENDCERTIFICATE-----/gs;
+    const certificates = [];
+    let match;
+    while ((match = regex.exec(cleanedPemData)) !== null) {
+        certificates.push(match[1].trim());
+    }
+    return certificates;
 }
