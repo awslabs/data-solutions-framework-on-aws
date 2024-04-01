@@ -1,15 +1,15 @@
 [//]: # (streaming.msk-provisioned)
 # MSK Provisioned
 
-An MSK Provisioned cluster with helpers to manage topics and IAM permissions
+An MSK Provisioned cluster with helpers to manage topics, ACLs and IAM permissions.
 
 ## Overview
 
-The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. There is also a method to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` from a kafka topic. The diagram below shows the high level architecture.
+The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. The construct use IAM as authentication method if none is provided. It is also methods to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` to/from a kafka topic. The diagram below shows the high level architecture.
 
 ![MSK Provisioned High level architecture](../../../website/static/img/msk-provisioned.png)
 
-The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for that is attached to the brokers.
+The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group that is attached to the brokers.
 
 ### Construct cluster setup
 
