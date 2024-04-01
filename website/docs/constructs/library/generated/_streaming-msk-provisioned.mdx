@@ -2,15 +2,15 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-An MSK Provisioned cluster with helpers to manage topics and IAM permissions
+An MSK Provisioned cluster with helpers to manage topics, ACLs and IAM permissions.
 
 ## Overview
 
-The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. There is also a method to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` from a kafka topic. The diagram below shows the high level architecture.
+The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. The construct use IAM as authentication method if none is provided. It is also methods to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` to/from a kafka topic. The diagram below shows the high level architecture.
 
 ![MSK Provisioned High level architecture](../../../../static/img/msk-provisioned.png)
 
-The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for that is attached to the brokers.
+The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group that is attached to the brokers.
 
 ### Construct cluster setup
 
@@ -31,15 +31,7 @@ Below you can find an example of creating an MSK Provisioned configuration with 
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const msk = new MskProvisioned(stack, 'cluster', {
-  clusterName: 'my-cluster',
-  vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
-  numberOfBrokerNodes: 2,
-  mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M5_LARGE,
-  kafkaVersion: KafkaVersion.V3_4_0,
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
-  kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
-});
+const msk = new MskProvisioned(stack, 'cluster');
   ```
   
   ```mdx-code-block
@@ -48,15 +40,7 @@ const msk = new MskProvisioned(stack, 'cluster', {
   <TabItem value="python" label="Python">
 
   ```python
-msk = MskProvisioned(stack, "cluster",
-    cluster_name="my-cluster",
-    vpc_subnets=cdk.aws_ec2.SubnetSelection(subnet_type=SubnetType.PRIVATE_WITH_EGRESS),
-    number_of_broker_nodes=2,
-    msk_brokerinstance_type=MskBrokerInstanceType.KAFKA_M5_LARGE,
-    kafka_version=KafkaVersion.V3_4_0,
-    removal_policy=cdk.RemovalPolicy.DESTROY,
-    kafka_client_log_level=KafkaClientLogLevel.DEBUG
-)
+msk = MskProvisioned(stack, "cluster")
   ```
 
   </TabItem>
