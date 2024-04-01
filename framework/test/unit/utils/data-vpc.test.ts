@@ -152,9 +152,14 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
       DeletionPolicy: 'Delete',
     });
   });
+
+  test('should create 2 NAT Gateways', () => {
+    template.resourceCountIs('AWS::EC2::NatGateway', 2);
+  });
 });
 
-describe('With DESTROY removal policy and global data removal unset, the construct ', () => {
+
+describe('With DESTROY removal policy and global data removal unset, the construct and # NAT Gateway', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -162,6 +167,7 @@ describe('With DESTROY removal policy and global data removal unset, the constru
   const dataVpc = new DataVpc(stack, 'DataVpc', {
     vpcCidr: '10.0.0.0/16',
     removalPolicy: RemovalPolicy.DESTROY,
+    natGateways: 1,
   });
 
   dataVpc.tagVpc('test-tag', 'test-value');
@@ -184,5 +190,9 @@ describe('With DESTROY removal policy and global data removal unset, the constru
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
     });
+  });
+
+  test('should create 1 NAT Gateways', () => {
+    template.resourceCountIs('AWS::EC2::NatGateway', 1);
   });
 });

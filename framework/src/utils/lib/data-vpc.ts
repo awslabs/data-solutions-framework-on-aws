@@ -88,14 +88,23 @@ export class DataVpc extends Construct {
       throw new Error(`The VPC netmask should be at least 28, netmask provided is ${vpcMask}`);
     }
 
+
     // Calculate subnet masks based on VPC's mask
     const publicSubnetMask = vpcMask + 4;
     const privateSubnetMask = publicSubnetMask + 2; // twice as large as public subnet
 
+    // Calculate the number of NAT gateways based on the number of AZs in the region.
+    // CDK has default behaviour, if region is not detect at synth time it will limit to two AZs
+    // But if a region is detect we might have 4 or 6 AZs
+    // We need to limit to 3 NATs as default since the MAX AZ is 3
+    let defaultNumberOfNat =
+      Stack.of(this).availabilityZones.length >3 ?
+        3 : Stack.of(this).availabilityZones.length;
+
     this.vpc = new Vpc(scope, 'Vpc', {
       ipAddresses: IpAddresses.cidr(props.vpcCidr),
       maxAzs: 3,
-      natGateways: 3,
+      natGateways: props.natGateways ?? defaultNumberOfNat,
       subnetConfiguration: [
         {
           cidrMask: publicSubnetMask,
