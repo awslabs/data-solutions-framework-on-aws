@@ -200,7 +200,7 @@ describe('custom vpc configuration', () => {
         ],
         SubnetIds: [
           {
-            Ref: 'VpcPrivateSubnet1Subnet536B997A',
+            Ref: 'OpenSearchDataVpcPrivateSubnet1Subnet528A300C',
           },
         ],
       },
