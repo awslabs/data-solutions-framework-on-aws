@@ -13,7 +13,6 @@ import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
-
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
@@ -437,7 +436,8 @@ export class MskProvisioned extends TrackedConstruct {
       if (!props.allowEveryoneIfNoAclFound) {
 
         [this.cloudwatchlogApplyConfigurationLambda, this.roleApplyConfigurationLambda, this.securityGroupApplyConfigurationLambda]
-        = this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls);
+        = this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls, this.brokerAtRestEncryptionKey);
+
       }
     }
 
@@ -695,7 +695,8 @@ export class MskProvisioned extends TrackedConstruct {
   private setClusterConfiguration(
     cluster: CfnCluster,
     configuration: ClusterConfigurationInfo,
-    aclsResources: CustomResource[]) : [
+    aclsResources: CustomResource[],
+    brokerAtRestEncryptionKey: IKey) : [
       ILogGroup,
       IRole,
       ISecurityGroup
@@ -729,6 +730,12 @@ export class MskProvisioned extends TrackedConstruct {
         resources: [
           configuration.arn,
           cluster.attrArn,
+        ],
+      }),
+      new PolicyStatement({
+        actions: ['kms:CreateGrant', 'kms:DescribeKey'],
+        resources: [
+          brokerAtRestEncryptionKey.keyArn,
         ],
       }),
     ];
