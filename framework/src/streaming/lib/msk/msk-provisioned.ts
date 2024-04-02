@@ -108,6 +108,8 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly iamAcl: boolean;
   private readonly crPrincipal?: string;
   private aclOperationCr?: CustomResource;
+  private aclDeleteTopic?: CustomResource;
+  private aclCreateTopic?: CustomResource;
   private readonly deploymentClusterVersion;
   private readonly kafkaApi: KafkaApi;
 
@@ -431,7 +433,9 @@ export class MskProvisioned extends TrackedConstruct {
 
       //We isolate this operation so that all subsqueent ACL operations add a dependency on this first one
       //This aclOperationCr allow the lambda to apply other ACLs.
-      this.aclOperationCr = crAcls[0];
+      this.aclOperationCr = crAcls[1];
+      this.aclDeleteTopic = crAcls[3];
+      this.aclCreateTopic = crAcls[2];
 
       if (!props.allowEveryoneIfNoAclFound) {
 
@@ -505,10 +509,8 @@ export class MskProvisioned extends TrackedConstruct {
 
     if (this.inClusterAcl) {
       cr.node.addDependency(this.aclOperationCr!);
-    }
-
-    if (this.inClusterAcl) {
-      cr.node.addDependency(this.aclOperationCr!);
+      cr.node.addDependency(this.aclDeleteTopic!);
+      cr.node.addDependency(this.aclCreateTopic!);
     }
 
     cr.node.addDependency(this.cluster);
