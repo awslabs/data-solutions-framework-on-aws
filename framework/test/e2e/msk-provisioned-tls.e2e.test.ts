@@ -38,7 +38,7 @@ const msk = new MskProvisioned(stack, 'cluster', {
   kafkaVersion: MSK_DEFAULT_VERSION,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
   certificateDefinition: {
-    adminPrincipal: 'admin',
+    adminPrincipal: 'User:CN=admin',
     aclAdminPrincipal: 'User:CN=dsfe2e',
     secretCertificate: Secret.fromSecretCompleteArn(stack, 'aclTlsCert', `arn:aws:secretsmanager:eu-west-1:${testStack.stack.account}:secret:dsf/msk/e2e-tls-dXuccy`),
   },
