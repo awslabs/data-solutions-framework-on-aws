@@ -152,7 +152,16 @@ export class MskProvisioned extends TrackedConstruct {
         vpcCidr: '10.0.0.0/16',
       }).vpc;
     } else {
-      this.vpc = props.vpc;
+
+      if(!props.vpc.vpcId &&
+        !props.vpc.vpcCidrBlock &&
+        !props.vpc.availabilityZones &&
+        !props.vpc.publicSubnets &&
+        !props.vpc.privateSubnets) {
+          throw Error ('VPC requires the following attributes: "vpcId", "vpcCidrBlock", "availabilityZones", "publicSubnets", "privateSubnets" ')
+        }
+        
+        this.vpc = props.vpc;
     }
 
     //if vpcSubnets is pass without VPC throw error or if vpc is passed without vpcSubnets throw error
