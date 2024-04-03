@@ -70,13 +70,13 @@ export class KafkaApi extends TrackedConstruct {
     this.clusterArn = props.clusterArn;
     this.tlsCertifacateSecret = props.certficateSecret;
 
-    if(!props.vpc.vpcId ||
+    if (!props.vpc.vpcId ||
       !props.vpc.vpcCidrBlock ||
       !props.vpc.availabilityZones ||
       !props.vpc.publicSubnets ||
       !props.vpc.privateSubnets) {
-        throw Error ('VPC requires the following attributes: "vpcId", "vpcCidrBlock", "availabilityZones", "publicSubnets", "privateSubnets" ')
-      }
+      throw Error ('VPC requires the following attributes: "vpcId", "vpcCidrBlock", "availabilityZones", "publicSubnets", "privateSubnets" ');
+    }
 
     if (props.clientAuthentication.tlsProps) {
 

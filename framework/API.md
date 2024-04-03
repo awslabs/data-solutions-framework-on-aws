@@ -3961,6 +3961,8 @@ the topic to which the principal can produce data.
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
 
+The client authentication to use when grant on resource.
+
 ---
 
 ###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume.parameter.principal"></a>
@@ -4012,6 +4014,8 @@ the topic to which the principal can produce data.
 ###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.clientAuthentication"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
+
+The client authentication to use when grant on resource.
 
 ---
 
@@ -4112,6 +4116,8 @@ the CDK id for Topic.
 ###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic.parameter.clientAuthentication"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
+
+The client authentication to use when creating the Topic.
 
 ---
 
@@ -4255,6 +4261,14 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda">cloudwatchlogApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.clusterConfiguration">clusterConfiguration</a></code> | <code>aws-cdk-lib.aws_msk.CfnConfiguration</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrLambdaRole">mskIamACrudAdminCrLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerFunction">mskIamACrudAdminCrOnEventHandlerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerLogGroup">mskIamACrudAdminCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrSecurityGroup">mskIamACrudAdminCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrLambdaRole">mskInClusterAclCrLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrOnEventHandlerFunction">mskInClusterAclCrOnEventHandlerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrOnEventHandlerLogGroup">mskInClusterAclCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrSecurityGroup">mskInClusterAclCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleApplyConfigurationLambda">roleApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda">securityGroupApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 
@@ -4399,6 +4413,86 @@ public readonly clusterConfiguration: CfnConfiguration;
 ```
 
 - *Type:* aws-cdk-lib.aws_msk.CfnConfiguration
+
+---
+
+##### `mskIamACrudAdminCrLambdaRole`<sup>Optional</sup> <a name="mskIamACrudAdminCrLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrLambdaRole"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrLambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `mskIamACrudAdminCrOnEventHandlerFunction`<sup>Optional</sup> <a name="mskIamACrudAdminCrOnEventHandlerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerFunction"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrOnEventHandlerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+---
+
+##### `mskIamACrudAdminCrOnEventHandlerLogGroup`<sup>Optional</sup> <a name="mskIamACrudAdminCrOnEventHandlerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerLogGroup"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrOnEventHandlerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `mskIamACrudAdminCrSecurityGroup`<sup>Optional</sup> <a name="mskIamACrudAdminCrSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskIamACrudAdminCrSecurityGroup"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+---
+
+##### `mskInClusterAclCrLambdaRole`<sup>Optional</sup> <a name="mskInClusterAclCrLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrLambdaRole"></a>
+
+```typescript
+public readonly mskInClusterAclCrLambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `mskInClusterAclCrOnEventHandlerFunction`<sup>Optional</sup> <a name="mskInClusterAclCrOnEventHandlerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrOnEventHandlerFunction"></a>
+
+```typescript
+public readonly mskInClusterAclCrOnEventHandlerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+---
+
+##### `mskInClusterAclCrOnEventHandlerLogGroup`<sup>Optional</sup> <a name="mskInClusterAclCrOnEventHandlerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrOnEventHandlerLogGroup"></a>
+
+```typescript
+public readonly mskInClusterAclCrOnEventHandlerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `mskInClusterAclCrSecurityGroup`<sup>Optional</sup> <a name="mskInClusterAclCrSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrSecurityGroup"></a>
+
+```typescript
+public readonly mskInClusterAclCrSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 ---
 
