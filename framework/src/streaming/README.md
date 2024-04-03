@@ -5,11 +5,11 @@ An MSK Provisioned cluster with helpers to manage topics, ACLs and IAM permissio
 
 ## Overview
 
-The construct creates an MSK Serverless Cluster, with the latest Kafka version in MSK as default. You can change the dafaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. The construct use IAM as authentication method if none is provided. It is also methods to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` to/from a kafka topic. The diagram below shows the high level architecture.
+The construct creates an MSK Provisioned Cluster, with the latest Kafka version in MSK as default. You can change the defaults by passing your own parameters as a Resource property to construct initializer. The construct support creating clusters with mTLS, IAM or both as authentication methods. The construct use IAM as authentication as default method if none is provided. It offers methods to manage topics and ACLs. Last, it also provides methods to grant an existing principal (ie IAM Role or IAM User or CN -Common Name-) with the permission to `produce` or `consume` to/from a kafka topic. The diagram below shows the high level architecture.
 
 ![MSK Provisioned High level architecture](../../../website/static/img/msk-provisioned.png)
 
-The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group that is attached to the brokers.
+The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluster or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group that is attached to the brokers.
 
 ### Construct cluster setup
 
@@ -17,7 +17,7 @@ The construct sets up a dedicated security group for Zookeeper as advised in the
 
 ### Interacting with cluster
 
-The construct has the following interfaces, you will usage examples in the new sections:
+The construct has the following methods, you will usage examples in the new sections:
 
     *  setTopic: Perform create, update, and delete operations on Topics
     *  setACL: Perform create, update, and delete operations on ACL
@@ -41,7 +41,7 @@ The construct allows you to provide your own VPC that was created outside the CD
 
 ### Create a cluster with mTLS authentication
 
-The construct allows you to provide create a cluster with mTLS, below is a code snippet showing the configuration. Below you will find an example usage.
+The construct allows you to create a cluster with mTLS, below is a code snippet showing the configuration.
 
 When using MSK with mTLS the constructs requires a principal that is assigned to the custom resources that manage ACLs and Topics. The certificate and private key are expected to be in a secret managed by [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html). The secret needs to be in the format defined below and stored a `JSON Key/value` and not `Plaintext` in the Secret. The construct grants the lambda that supports the Custom Resource read access to the secret as an `Identity based policy`.
 
@@ -52,7 +52,7 @@ When using MSK with mTLS the constructs requires a principal that is assigned to
     }
 ```
 
-[example msk provisioned bring your own vpc](./examples/msk-provisioned-create-cluster-mtls.lit.ts)
+[example msk provisioned with mTLS](./examples/msk-provisioned-create-cluster-mtls.lit.ts)
 
 ### setTopic
 
