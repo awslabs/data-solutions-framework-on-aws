@@ -3,10 +3,10 @@
 
 import { Context, TrackedConstruct, TrackedConstructProps } from "../../../utils";
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import { QuickSightSubscriptionProps } from './quicksight-subscription-props';
+import { QuickSightSubscriptionProps, QuickSightAuthenticationMethod } from './quicksight-subscription-props';
 import { Construct } from 'constructs';
 import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRole, ManagedPolicy, PolicyDocument, Role , ServicePrincipal, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
+import { IRole,  PolicyDocument, Role , ServicePrincipal, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 
@@ -115,7 +115,7 @@ export class QuickSightSubscription extends TrackedConstruct{
     this.adminGroup = props.adminGroup;
     this.authorGroup = props.authorGroup;
     this.readerGroup = props.readerGroup;
-    this.identityRegion = props.identityRegion;
+    this.identityRegion = props.identityRegion;    
 
     this.policyActions = [
       "quicksight:Subscribe",
@@ -138,7 +138,7 @@ export class QuickSightSubscription extends TrackedConstruct{
       "sso:DescribeRegisteredRegions" 
     ]
 
-    if (props.authenticationMethod != 'IAM_IDENTITY_CENTER') {
+    if (props.authenticationMethod != QuickSightAuthenticationMethod.IAM_IDENTITY_CENTER) {
       this.policyActions = this.policyActions.concat(
         [
           "ds:AuthorizeApplication",
@@ -154,10 +154,7 @@ export class QuickSightSubscription extends TrackedConstruct{
     }
     
     this.executionRole = new Role(this, 'Role', {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
-      ],
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),      
       inlinePolicies: {
         QuickSightSubscription: new PolicyDocument({
           statements : [
@@ -171,7 +168,7 @@ export class QuickSightSubscription extends TrackedConstruct{
       } 
     });
 
-    const timeout = props.executionTimeout || Duration.minutes(5);
+    const timeout = props.executionTimeout ?? Duration.minutes(5);
 
     const provider = new DsfProvider(this, 'CrProvider', {
       providerName: 'QuickSightSubscriptionProvider',
@@ -201,7 +198,7 @@ export class QuickSightSubscription extends TrackedConstruct{
           IDENTITY_REGION: props.identityRegion
         },
       },      
-      queryInterval: Duration.seconds(1),
+      queryInterval: Duration.seconds(10),
       removalPolicy: this.removalPolicy,
     });
 
