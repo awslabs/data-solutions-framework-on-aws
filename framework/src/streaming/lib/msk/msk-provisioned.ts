@@ -98,17 +98,17 @@ export class MskProvisioned extends TrackedConstruct {
   public readonly mskIamACrudAdminCrLambdaRole?: IRole;
   public readonly mskIamACrudAdminCrOnEventHandlerLogGroup?: ILogGroup;
   public readonly mskIamACrudAdminCrOnEventHandlerFunction?: IFunction;
-  public readonly mskIamACrudAdminCrSecurityGroup?: ISecurityGroup [];
+  public readonly mskIamACrudAdminCrSecurityGroup?: ISecurityGroup[];
 
   public readonly mskInClusterAclCrLambdaRole?: IRole;
   public readonly mskInClusterAclCrOnEventHandlerLogGroup?: ILogGroup;
   public readonly mskInClusterAclCrOnEventHandlerFunction?: IFunction;
-  public readonly mskInClusterAclCrSecurityGroup?: ISecurityGroup [];
+  public readonly mskInClusterAclCrSecurityGroup?: ISecurityGroup[];
 
   public readonly updateConnectivityLambdaRole?: IRole;
   public readonly updateConnectivityLogGroup?: ILogGroup;
   public readonly updateConnectivityFunction?: Function;
-  public readonly updateConnectivitySecurityGroup?: ISecurityGroup [];
+  public readonly updateConnectivitySecurityGroup?: ISecurityGroup[];
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly region: string;
@@ -161,7 +161,7 @@ export class MskProvisioned extends TrackedConstruct {
         !props.vpc.availabilityZones ||
         !props.vpc.publicSubnets ||
         !props.vpc.privateSubnets) {
-        throw Error ('VPC requires the following attributes: "vpcId", "vpcCidrBlock", "availabilityZones", "publicSubnets", "privateSubnets" ');
+        throw Error('VPC requires the following attributes: "vpcId", "vpcCidrBlock", "availabilityZones", "publicSubnets", "privateSubnets" ');
       }
 
       this.vpc = props.vpc;
@@ -392,40 +392,13 @@ export class MskProvisioned extends TrackedConstruct {
       executeAfter: [this.cluster],
     });
 
-
-    //Update the connectivity of the cluster
-
-    if (props?.vpcConnectivity) {
-      [
-        this.updateConnectivityFunction,
-        this.updateConnectivityLambdaRole,
-        this.updateConnectivityLogGroup,
-        this.updateConnectivitySecurityGroup,
-      ] =
-        updateClusterConnectivity (
-          this,
-          this.cluster,
-          this.vpc,
-          this.subnetSelectionIds,
-          this.removalPolicy,
-          this.brokerAtRestEncryptionKey,
-          props?.vpcConnectivity);
-
-      this.updateClusterConnectivityTrigger = new Trigger(this, 'UpdateVpcConnectivityTrigger', {
-        handler: this.updateConnectivityFunction,
-        timeout: Duration.minutes(10),
-        invocationType: InvocationType.REQUEST_RESPONSE,
-        executeAfter: [this.cluster],
-      });
-    }
-
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
       clusterName: this.cluster.clusterName,
       clusterArn: this.cluster.attrArn,
       certficateSecret: props?.certificateDefinition?.secretCertificate,
       brokerSecurityGroup: this.connections.securityGroups[0],
-      clientAuthentication: props?.clientAuthentication ?? ClientAuthentication.sasl( { iam: true }),
+      clientAuthentication: props?.clientAuthentication ?? ClientAuthentication.sasl({ iam: true }),
       kafkaClientLogLevel: props?.kafkaClientLogLevel,
     });
 
@@ -435,7 +408,7 @@ export class MskProvisioned extends TrackedConstruct {
     // This will be used for CRUD on Topics
     if (this.iamAcl) {
 
-      this.bootstrapBrokerStringIam = this.getBootstrapBrokers ('BootstrapBrokerStringSaslIam');
+      this.bootstrapBrokerStringIam = this.getBootstrapBrokers('BootstrapBrokerStringSaslIam');
 
       this.mskIamACrudAdminCrLambdaRole = this.kafkaApi.mskIamACrudAdminCrLambdaRole;
       this.mskIamACrudAdminCrOnEventHandlerLogGroup = this.kafkaApi.mskIamACrudAdminCrOnEventHandlerLogGroup;
@@ -452,7 +425,7 @@ export class MskProvisioned extends TrackedConstruct {
         throw new Error('TLS Authentication requires a certificate definition');
       }
 
-      this.bootstrapBrokerStringTls = this.getBootstrapBrokers ('BootstrapBrokerStringTls');
+      this.bootstrapBrokerStringTls = this.getBootstrapBrokers('BootstrapBrokerStringTls');
 
       this.mskInClusterAclCrLambdaRole = this.kafkaApi.mskInClusterAclCrLambdaRole;
       this.mskInClusterAclCrOnEventHandlerLogGroup = this.kafkaApi.mskInClusterAclCrOnEventHandlerLogGroup;
@@ -499,9 +472,37 @@ export class MskProvisioned extends TrackedConstruct {
       this.aclCreateTopic = crAcls[2];
 
       if (!props.allowEveryoneIfNoAclFound) {
+        
+        let trigger: Trigger;
 
-        [this.cloudwatchlogApplyConfigurationLambda, this.roleApplyConfigurationLambda, this.securityGroupApplyConfigurationLambda]
-        = this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls, this.brokerAtRestEncryptionKey);
+        [this.cloudwatchlogApplyConfigurationLambda, this.roleApplyConfigurationLambda, this.securityGroupApplyConfigurationLambda, trigger]
+          = this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls, this.brokerAtRestEncryptionKey);
+
+        //Update the connectivity of the cluster
+
+        if (props?.vpcConnectivity) {
+          [
+            this.updateConnectivityFunction,
+            this.updateConnectivityLambdaRole,
+            this.updateConnectivityLogGroup,
+            this.updateConnectivitySecurityGroup,
+          ] =
+            updateClusterConnectivity(
+              this,
+              this.cluster,
+              this.vpc,
+              this.subnetSelectionIds,
+              this.removalPolicy,
+              this.brokerAtRestEncryptionKey,
+              props?.vpcConnectivity);
+
+          this.updateClusterConnectivityTrigger = new Trigger(this, 'UpdateVpcConnectivityTrigger', {
+            handler: this.updateConnectivityFunction,
+            timeout: Duration.minutes(10),
+            invocationType: InvocationType.REQUEST_RESPONSE,
+            executeAfter: [trigger],
+          });
+        }
 
       }
     }
@@ -559,7 +560,7 @@ export class MskProvisioned extends TrackedConstruct {
     topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
-    timeout?: number) : CustomResource {
+    timeout?: number): CustomResource {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = this.kafkaApi.setTopic(
@@ -599,7 +600,7 @@ export class MskProvisioned extends TrackedConstruct {
     clientAuthentication: Authentitcation,
     principal: IPrincipal | string,
     host?: string,
-    removalPolicy?: RemovalPolicy) : CustomResource | undefined {
+    removalPolicy?: RemovalPolicy): CustomResource | undefined {
 
     return this.kafkaApi.grantProduce(
       id,
@@ -629,7 +630,7 @@ export class MskProvisioned extends TrackedConstruct {
     clientAuthentication: Authentitcation,
     principal: IPrincipal | string,
     host?: string,
-    removalPolicy?: RemovalPolicy) : CustomResource | undefined {
+    removalPolicy?: RemovalPolicy): CustomResource | undefined {
 
     return this.kafkaApi.grantConsume(
       id,
@@ -707,7 +708,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALTER,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     this.aclOperationCr = aclOperation;
@@ -723,7 +724,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CLUSTER_ACTION,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     //Set the ACL to allow the principal used by CR
@@ -737,7 +738,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CREATE,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     let aclTopicDelete = this.setAcl(this, 'aclTopicDelete', {
@@ -749,7 +750,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.DELETE,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     let aclTopicUpdate = this.setAcl(this, 'aclTopicUpdate', {
@@ -761,7 +762,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALTER_CONFIGS,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     //Set the ACL for Admin principal
@@ -774,7 +775,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CLUSTER_ACTION,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     let adminAclTopic = this.setAcl(this, 'adminAclTopic', {
@@ -786,7 +787,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALL,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
     let adminAclGroup = this.setAcl(this, 'adminAclGroup', {
@@ -798,7 +799,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALL,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY,
+      RemovalPolicy.DESTROY,
     );
 
 
@@ -821,10 +822,11 @@ export class MskProvisioned extends TrackedConstruct {
     cluster: CfnCluster,
     configuration: ClusterConfigurationInfo,
     aclsResources: CustomResource[],
-    brokerAtRestEncryptionKey: IKey) : [
+    brokerAtRestEncryptionKey: IKey): [
       ILogGroup,
       IRole,
-      ISecurityGroup
+      ISecurityGroup,
+      Trigger,
     ] {
 
     const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(this, 'setClusterConfigurationLambdaSecurityGroup', {
@@ -897,21 +899,21 @@ export class MskProvisioned extends TrackedConstruct {
       securityGroups: [setClusterConfigurationLambdaSecurityGroup],
     });
 
-    let executeAfter: Construct [] = [];
+    let executeAfter: Construct[] = [];
     executeAfter.push(...aclsResources);
 
     if (this.updateClusterConnectivityTrigger) {
       executeAfter.push(this.updateClusterConnectivityTrigger);
     }
 
-    new Trigger(this, 'UpdateMskConfiguration', {
+    const trigger = new Trigger(this, 'UpdateMskConfiguration', {
       handler: func,
       timeout: Duration.minutes(10),
       invocationType: InvocationType.REQUEST_RESPONSE,
       executeAfter: aclsResources,
     });
 
-    return [lambdaCloudwatchLogUpdateConfiguration, lambdaRole, setClusterConfigurationLambdaSecurityGroup];
+    return [lambdaCloudwatchLogUpdateConfiguration, lambdaRole, setClusterConfigurationLambdaSecurityGroup, trigger];
 
   }
 
