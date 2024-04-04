@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RemovalPolicy } from 'aws-cdk-lib';
+import { RemovalPolicy, Size } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 
@@ -47,10 +47,24 @@ export interface PySparkApplicationPackageProps {
   readonly artifactsBucket?: IBucket;
 
   /**
-   * The IAM Role used by the Lambda function. Additional permissions would be granted to this role such as S3 Bucket permissions.
+   * The IAM Role used by the Lambda function to upload assets (entrypoint and dependencies). Additional permissions would be granted to this role such as S3 Bucket permissions.
    * @default - A new Role would be created with least privilege permissions
    */
   readonly assetUploadRole?: IRole;
+
+  /**
+   * The memory size (in MiB) used by the Lambda function to upload and unzip the assets (entrypoint and dependencies).
+   * If you are deploying large files, you will need to increase this number accordingly.
+   * @default - 512 MB
+   */
+  readonly assetUploadMemorySize?: number;
+
+  /**
+   * The ephemeral storage size used by the Lambda function to upload and unzip the assets (entrypoint and dependencies).
+   * If you are deploying large files, you will need to increase this number accordingly.
+   * @default - 1024 MB
+   */
+  readonly assetUploadStorageSize?: Size;
 
   /**
    * The removal policy when deleting the CDK resource.

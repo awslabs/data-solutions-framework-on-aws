@@ -9,6 +9,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Aws, BundlingOutput, DockerImage, RemovalPolicy, Size } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import { PySparkApplicationPackageProps } from './pyspark-application-package-props';
+import { AccessLogsBucket } from '../../../storage';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 
@@ -67,6 +68,11 @@ export class PySparkApplicationPackage extends TrackedConstruct {
   public readonly assetUploadManagedPolicy: IManagedPolicy;
 
   /**
+   * The access logs bucket to log accesses on the artifacts bucket
+   */
+  public readonly artifactsAccessLogsBucket?: AccessLogsBucket;
+
+  /**
    * @param {Construct} scope the Scope of the CDK Construct
    * @param {string} id the ID of the CDK Construct
    * @param props {@link PySparkApplicationPackageProps}
@@ -83,6 +89,9 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     const entrypointFileName = path.basename(props.entrypointPath);
     const entrypointDirectory = path.dirname(props.entrypointPath);
+
+    const memoryLimit = props.assetUploadMemorySize || 512;
+    const ephemeralStorageSize = props.assetUploadStorageSize || Size.mebibytes(1024);
 
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
 
@@ -109,12 +118,17 @@ export class PySparkApplicationPackage extends TrackedConstruct {
 
     if (!props.artifactsBucket) {
 
+      this.artifactsAccessLogsBucket = new AccessLogsBucket(this, 'AccessLogsBucket', {
+        removalPolicy: props?.removalPolicy,
+      });
+
       artifactsBucket = new Bucket(this, 'ArtifactBucket', {
         encryption: BucketEncryption.S3_MANAGED,
         enforceSSL: true,
         removalPolicy: removalPolicy,
         autoDeleteObjects: removalPolicy === RemovalPolicy.DESTROY,
-        serverAccessLogsPrefix: 'access-logs',
+        serverAccessLogsBucket: this.artifactsAccessLogsBucket,
+        serverAccessLogsPrefix: 'access-logs/',
       });
     } else {
       artifactsBucket = props.artifactsBucket!;
@@ -136,7 +150,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           path: props.dependenciesFolder,
           bundling: {
             image: DockerImage.fromBuild(props.dependenciesFolder),
-            outputType: BundlingOutput.ARCHIVED,
+            outputType: BundlingOutput.NOT_ARCHIVED,
             command: [
               'sh',
               '-c',
@@ -157,15 +171,15 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           ],
           destinationBucket: artifactsBucket!,
           destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}`,
-          memoryLimit: 512,
-          ephemeralStorageSize: Size.mebibytes(1000),
+          memoryLimit,
+          ephemeralStorageSize,
           prune: false,
-          extract: false,
+          extract: true,
           role: this.assetUploadRole,
           retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,
         });
 
-        this.venvArchiveUri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${venvArchiveFileName}`);
+        this.venvArchiveUri = emrDepsArtifacts.deployedBucket.s3UrlForObject(`${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}/${venvArchiveFileName}#environment`);
       }
     }
 
@@ -195,8 +209,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       ],
       destinationBucket: artifactsBucket!,
       destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}`,
-      memoryLimit: 512,
-      ephemeralStorageSize: Size.mebibytes(1000),
+      memoryLimit,
+      ephemeralStorageSize,
       prune: false,
       role: this.assetUploadRole,
       retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,

@@ -197,7 +197,7 @@ export abstract class SparkJob extends TrackedConstruct {
       });
     }
 
-    return `s3://${this.s3LogBucket.bucketName}/${s3LogPrefix}`;
+    return `s3://${this.s3LogBucket.bucketName}/${s3LogPrefix ||''}`;
   }
 
   /**

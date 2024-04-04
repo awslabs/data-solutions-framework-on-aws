@@ -32,10 +32,11 @@ describe('With minimal configuration, the construct', () => {
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('should create an artifact bucket with encryption and builtin access logs storage', () => {
+  test('should create an artifact bucket with encryption and external access logs storage', () => {
     template.hasResourceProperties('AWS::S3::Bucket', {
       LoggingConfiguration: {
-        LogFilePrefix: 'access-logs',
+        DestinationBucketName: { Ref: Match.stringLikeRegexp('PySparkPackerAccessLogsBucket.*') },
+        LogFilePrefix: 'access-logs/',
       },
       BucketEncryption: {
         ServerSideEncryptionConfiguration: [
@@ -53,25 +54,6 @@ describe('With minimal configuration, the construct', () => {
     template.hasResource('AWS::S3::Bucket', {
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
-    });
-  });
-
-  test('should create an artifact bucket with encryption and builtin access logs storage', () => {
-    template.hasResource('AWS::S3::Bucket', {
-      Properties: Match.objectLike({
-        LoggingConfiguration: {
-          LogFilePrefix: 'access-logs',
-        },
-        BucketEncryption: {
-          ServerSideEncryptionConfiguration: [
-            {
-              ServerSideEncryptionByDefault: {
-                SSEAlgorithm: 'AES256',
-              },
-            },
-          ],
-        },
-      }),
     });
   });
 
@@ -268,7 +250,7 @@ describe('With minimal configuration, the construct', () => {
       DestinationBucketName: {
         Ref: Match.stringLikeRegexp('.*ArtifactBucket.*'),
       },
-      Extract: false,
+      // Extract: false,
       DestinationBucketKeyPrefix: `emr-artifacts/${appName}`,
     });
   });

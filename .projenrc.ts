@@ -263,8 +263,8 @@ const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
-    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
-    "black"
+    "black",
+    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
   pythonExec: 'python3',
   venvOptions: {

@@ -5,7 +5,8 @@ from pyspark.sql import *
 from pyspark.sql.functions import lit, col
 from pyspark.sql.types import StringType
 import os
-
+from great_expectations.profile.basic_dataset_profiler import BasicDatasetProfiler
+from great_expectations.dataset.sparkdf_dataset import SparkDFDataset
 
 def aggregate_trip_distance(df):
     return df.groupBy("trip_distance").count()
@@ -16,18 +17,25 @@ def combine_taxi_types(green_df, yellow_df):
         yellow_df.withColumn("taxi_type", lit("yellow"))
     )
 
+def profile(df): 
+    expectation_suite, validation_result = BasicDatasetProfiler.profile(SparkDFDataset(df.limit(1000)))
+    return validation_result
 
 if __name__ == "__main__":
-    source_location = os.environ["SOURCE_LOCATION"]
-    target_location = os.environ["TARGET_LOCATION"]
+    yellow_source = os.environ["YELLOW_SOURCE"]
+    green_source = os.environ["GREEN_SOURCE"]
+    target_database = os.environ["TARGET_DB"]
+    target_table = os.environ['TARGET_TABLE']
+
     spark = SparkSession.builder.getOrCreate()
-    green_df = spark.read.parquet(f"{source_location}/green*")
-    yellow_df = spark.read.parquet(f"{source_location}/yellow*")
+    green_df = spark.read.parquet(f"{green_source}/*")
+    yellow_df = spark.read.parquet(f"{yellow_source}/*")
 
     green_agg_df = aggregate_trip_distance(green_df)
     yellow_agg_df = aggregate_trip_distance(yellow_df)
 
     combined_df = combine_taxi_types(green_agg_df, yellow_agg_df)
-    combined_df.write.partitionBy("taxi_type").mode("overwrite").parquet(
-        f"{target_location}/nyc_taxis/agg_trip_distance/"
-    )
+    combined_df.write.mode("overwrite").saveAsTable(f"{target_database}.{target_table}")
+
+    quality_results = profile(combined_df)
+    print(quality_results)

@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from src.agg_trip_distance import aggregate_trip_distance, combine_taxi_types
+from src.agg_trip_distance import aggregate_trip_distance, combine_taxi_types, profile
 from pyspark.sql import SparkSession
 
 
@@ -35,3 +35,6 @@ def test():
 
     combined_df = combine_taxi_types(green_agg_df, yellow_agg_df)
     assert combined_df.count() == 6
+
+    quality_results = profile(combined_df)
+    assert quality_results.statistics["success_percent"] > 90
