@@ -240,7 +240,7 @@ export function updateClusterConnectivity (
 
   const func = new Function(scope, 'UpdateVpcConnectivityFunction', {
     handler: 'index.onEventHandler',
-    code: Code.fromAsset(join(__dirname, './resources/lambdas/updateConfiguration')),
+    code: Code.fromAsset(join(__dirname, './resources/lambdas/updateConnectivity')),
     runtime: Runtime.NODEJS_20_X,
     environment: {
       MSK_CLUSTER_ARN: cluster.attrArn,
