@@ -4271,6 +4271,10 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrSecurityGroup">mskInClusterAclCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleApplyConfigurationLambda">roleApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda">securityGroupApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.Function</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityLambdaRole">updateConnectivityLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivitySecurityGroup">updateConnectivitySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
 
 ---
 
@@ -4513,6 +4517,46 @@ public readonly securityGroupApplyConfigurationLambda: ISecurityGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+---
+
+##### `updateConnectivityFunction`<sup>Optional</sup> <a name="updateConnectivityFunction" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityFunction"></a>
+
+```typescript
+public readonly updateConnectivityFunction: Function;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.Function
+
+---
+
+##### `updateConnectivityLambdaRole`<sup>Optional</sup> <a name="updateConnectivityLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityLambdaRole"></a>
+
+```typescript
+public readonly updateConnectivityLambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `updateConnectivityLogGroup`<sup>Optional</sup> <a name="updateConnectivityLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityLogGroup"></a>
+
+```typescript
+public readonly updateConnectivityLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `updateConnectivitySecurityGroup`<sup>Optional</sup> <a name="updateConnectivitySecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivitySecurityGroup"></a>
+
+```typescript
+public readonly updateConnectivitySecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 ---
 
