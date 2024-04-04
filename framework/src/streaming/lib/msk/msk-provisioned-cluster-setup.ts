@@ -5,6 +5,7 @@ import { join } from 'path';
 import { Duration, FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { Code, Runtime, Function } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
@@ -177,6 +178,7 @@ export function updateClusterConnectivity (
   vpc: IVpc,
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
+  brokerAtRestEncryptionKey: IKey,
   vpcConnectivity?: VpcClientAuthentication) :
   [
     Function,
@@ -196,6 +198,12 @@ export function updateClusterConnectivity (
       actions: ['kafka:UpdateConnectivity'],
       resources: [
         cluster.attrArn,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kms:CreateGrant', 'kms:DescribeKey'],
+      resources: [
+        brokerAtRestEncryptionKey.keyArn,
       ],
     }),
     new PolicyStatement({

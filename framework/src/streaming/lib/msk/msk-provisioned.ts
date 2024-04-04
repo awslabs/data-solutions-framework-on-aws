@@ -402,7 +402,14 @@ export class MskProvisioned extends TrackedConstruct {
         this.updateConnectivityLogGroup,
         this.updateConnectivitySecurityGroup,
       ] =
-        updateClusterConnectivity (this, this.cluster, this.vpc, this.subnetSelectionIds, this.removalPolicy, props?.vpcConnectivity);
+        updateClusterConnectivity (
+          this,
+          this.cluster,
+          this.vpc,
+          this.subnetSelectionIds,
+          this.removalPolicy,
+          this.brokerAtRestEncryptionKey,
+          props?.vpcConnectivity);
 
       this.updateClusterConnectivityTrigger = new Trigger(this, 'UpdateVpcConnectivityTrigger', {
         handler: this.updateConnectivityFunction,
