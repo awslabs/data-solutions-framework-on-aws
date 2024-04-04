@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { KafkaClient, 
-  UpdateClusterConfigurationCommand, 
-  DescribeClusterCommand, 
-  DescribeConfigurationCommand } from "@aws-sdk/client-kafka";
+import {
+  KafkaClient,
+  UpdateConnectivityCommand,
+  DescribeClusterCommand
+} from "@aws-sdk/client-kafka";
 
 // Handler functions
 export const onEventHandler = async (event) => {
@@ -22,23 +23,29 @@ export const onEventHandler = async (event) => {
 
   const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
 
-  const inputConfiguration = { // DescribeConfigurationRequest
-    Arn: process.env.MSK_CONFIGURATION_ARN, // required
-  };
-
-  commandKafka = new DescribeConfigurationCommand(inputConfiguration);
-  
-  responseKafka = await clientKafka.send(commandKafka);
-
-  const latestRevision = responseKafka.LatestRevision.Revision;
-
   const input = { // UpdateClusterConfigurationRequest
     ClusterArn: process.env.MSK_CLUSTER_ARN, // required
-    ConfigurationInfo: { // ConfigurationInfo
-      Arn: process.env.MSK_CONFIGURATION_ARN, // required
-      Revision: latestRevision // required
-    },
-    CurrentVersion: currentVersion // required
+    CurrentVersion: currentVersion, // required
+    ConnectivityInfo: { // ConnectivityInfo
+      PublicAccess: { // PublicAccess
+        Type: "DISABLED",
+      },
+      VpcConnectivity: { // VpcConnectivity
+        ClientAuthentication: { // VpcConnectivityClientAuthentication
+          Sasl: { // VpcConnectivitySasl
+            Scram: { // VpcConnectivityScram
+              Enabled: false,
+            },
+            Iam: { // VpcConnectivityIam
+              Enabled: process.env.IAM === "undefined" ? false : true,
+            },
+          },
+          Tls: { // VpcConnectivityTls
+            Enabled: process.env.TLS === "undefined" ? false : true,
+          },
+        },
+      },
+    }
   };
 
   console.log(input);
