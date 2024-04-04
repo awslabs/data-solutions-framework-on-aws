@@ -1,5 +1,5 @@
 {
-    "name": "msk-zookeeper-security-group-update",
+    "name": "update-cluster-configuration",
     "version": "0.1.0",
     "dependencies": {
         "@aws-sdk/client-kafka": "^3.521.0"

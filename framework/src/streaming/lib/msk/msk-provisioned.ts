@@ -25,6 +25,7 @@ import {
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an MSK Provisioned cluster
@@ -32,7 +33,7 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from
  *
  * @example
  *
- * const msk = new MskProvisioned(stack, 'cluster');
+ * const msk = new MskProvisioned(MyStack, 'cluster');
  *
  */
 export class MskProvisioned extends TrackedConstruct {
@@ -107,7 +108,7 @@ export class MskProvisioned extends TrackedConstruct {
 
   public readonly updateConnectivityLambdaRole?: IRole;
   public readonly updateConnectivityLogGroup?: ILogGroup;
-  public readonly updateConnectivityFunction?: Function;
+  public readonly updateConnectivityFunction?: IFunction;
   public readonly updateConnectivitySecurityGroup?: ISecurityGroup[];
 
   private readonly removalPolicy: RemovalPolicy;
@@ -480,12 +481,7 @@ export class MskProvisioned extends TrackedConstruct {
         //Update the connectivity of the cluster
 
         if (props?.vpcConnectivity) {
-          [
-            this.updateConnectivityFunction,
-            this.updateConnectivityLambdaRole,
-            this.updateConnectivityLogGroup,
-            this.updateConnectivitySecurityGroup,
-          ] =
+          let updateConnectivityProvider: DsfProvider =
             updateClusterConnectivity(
               this,
               this.cluster,
@@ -495,12 +491,19 @@ export class MskProvisioned extends TrackedConstruct {
               this.brokerAtRestEncryptionKey,
               props?.vpcConnectivity);
 
-          new Trigger(this, 'UpdateVpcConnectivityTrigger', {
-            handler: this.updateConnectivityFunction,
-            timeout: Duration.minutes(10),
-            invocationType: InvocationType.REQUEST_RESPONSE,
-            executeAfter: [trigger],
+
+          this.updateConnectivityFunction = updateConnectivityProvider.onEventHandlerFunction;
+          this.updateConnectivityLambdaRole = updateConnectivityProvider.onEventHandlerRole;
+          this.updateConnectivityLogGroup = updateConnectivityProvider.onEventHandlerLogGroup;
+          this.updateConnectivitySecurityGroup = updateConnectivityProvider.securityGroups;
+
+          let updateConnectivityProviderCr: CustomResource = new CustomResource ( this, 'updateConnectivityProviderCr', {
+            serviceToken: updateConnectivityProvider.serviceToken,
+            resourceType: 'Custom::UpdateVpcConnectivity',
           });
+
+          updateConnectivityProviderCr.node.addDependency(trigger);
+
         }
 
       }
@@ -601,7 +604,7 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy): CustomResource | undefined {
 
-    return this.kafkaApi.grantProduce(
+    const cr = this.kafkaApi.grantProduce(
       id,
       topicName,
       clientAuthentication,
@@ -609,6 +612,14 @@ export class MskProvisioned extends TrackedConstruct {
       host,
       removalPolicy,
     );
+
+    if (this.inClusterAcl && cr) {
+      cr.node.addDependency(this.aclOperationCr!);
+      cr.node.addDependency(this.aclDeleteTopic!);
+      cr.node.addDependency(this.aclCreateTopic!);
+    }
+
+    return cr;
   }
 
   /**
@@ -631,13 +642,21 @@ export class MskProvisioned extends TrackedConstruct {
     host?: string,
     removalPolicy?: RemovalPolicy): CustomResource | undefined {
 
-    return this.kafkaApi.grantConsume(
+    const cr = this.kafkaApi.grantConsume(
       id,
       topicName,
       clientAuthentication,
       principal,
       host,
       removalPolicy);
+
+    if (this.inClusterAcl && cr) {
+      cr.node.addDependency(this.aclOperationCr!);
+      cr.node.addDependency(this.aclDeleteTopic!);
+      cr.node.addDependency(this.aclCreateTopic!);
+    }
+
+    return cr;
   }
 
   public putClusterPolicy(policy: string, id: string, currentVersion?: string) {
@@ -803,6 +822,9 @@ export class MskProvisioned extends TrackedConstruct {
 
 
     aclBroker.node.addDependency(aclOperation);
+    aclTopicCreate.node.addDependency(aclOperation);
+    aclTopicCreate.node.addDependency(aclOperation);
+
 
     aclsResources.push(aclBroker);
     aclsResources.push(aclOperation);
