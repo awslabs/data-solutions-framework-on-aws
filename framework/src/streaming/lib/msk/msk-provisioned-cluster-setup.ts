@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { join } from 'path';
+import * as path from 'path';
 import { Duration, FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
-import { Code, Runtime, Function } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
@@ -14,6 +13,7 @@ import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 import { Construct } from 'constructs';
 import { BrokerLogging, ClientAuthentication, VpcClientAuthentication } from './msk-provisioned-props-utils';
 import { Utils } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * @internal
@@ -179,13 +179,7 @@ export function updateClusterConnectivity (
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
-  vpcConnectivity?: VpcClientAuthentication) :
-  [
-    Function,
-    IRole,
-    ILogGroup,
-    ISecurityGroup [],
-  ] {
+  vpcConnectivity?: VpcClientAuthentication) : DsfProvider {
 
   const lambdaPolicy = [
     new PolicyStatement({
@@ -246,25 +240,41 @@ export function updateClusterConnectivity (
 
   logGroupUpdateConnectivityLambda.grantWrite(roleUpdateConnectivityLambda);
 
-  const func = new Function(scope, 'UpdateVpcConnectivityFunction', {
-    handler: 'index.onEventHandler',
-    code: Code.fromAsset(join(__dirname, './resources/lambdas/updateConnectivity')),
-    runtime: Runtime.NODEJS_20_X,
-    environment: {
-      MSK_CLUSTER_ARN: cluster.attrArn,
-      REGION: Stack.of(scope).region,
-      IAM: String(vpcConnectivity?.saslProps?.iam),
-      TLS: String(vpcConnectivity?.tlsProps?.tls),
+  const provider = new DsfProvider(scope, 'UpdateVpcConnectivityProvider', {
+    providerName: 'update-connectivity',
+    onEventHandlerDefinition: {
+      handler: 'index.onEventHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConnectivity/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+      environment: {
+        MSK_CLUSTER_ARN: cluster.attrArn,
+        REGION: Stack.of(scope).region,
+        IAM: String(vpcConnectivity?.saslProps?.iam),
+        TLS: String(vpcConnectivity?.tlsProps?.tls),
+      },
     },
-    role: roleUpdateConnectivityLambda,
-    timeout: Duration.seconds(30),
+    isCompleteHandlerDefinition: {
+      handler: 'index.isCompleteHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConnectivity/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+      environment: {
+        MSK_CLUSTER_ARN: cluster.attrArn,
+        REGION: Stack.of(scope).region,
+        IAM: String(vpcConnectivity?.saslProps?.iam),
+        TLS: String(vpcConnectivity?.tlsProps?.tls),
+      },
+    },
     vpc: vpc,
-    vpcSubnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-    logGroup: logGroupUpdateConnectivityLambda,
+    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
     securityGroups: [securityGroupUpdateConnectivity],
+    removalPolicy,
+    queryTimeout: Duration.minutes(45),
+    queryInterval: Duration.seconds(30),
   });
 
-  return [func, roleUpdateConnectivityLambda, logGroupUpdateConnectivityLambda, [securityGroupUpdateConnectivity]];
+  return provider;
 }
 
 export function getVpcPermissions(scope: Construct, securityGroup: ISecurityGroup, subnets: string[], id: string): ManagedPolicy {
