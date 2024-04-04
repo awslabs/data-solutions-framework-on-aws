@@ -3917,8 +3917,10 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.deleteClusterPolicy">deleteClusterPolicy</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.putClusterPolicy">putClusterPolicy</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setAcl">setAcl</a></code> | Creates a topic in the Msk Cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
@@ -3932,6 +3934,12 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `deleteClusterPolicy` <a name="deleteClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.deleteClusterPolicy"></a>
+
+```typescript
+public deleteClusterPolicy(): void
+```
 
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
 
@@ -4038,6 +4046,30 @@ the host to which the principal can produce data.
 ###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce.parameter.removalPolicy"></a>
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+##### `putClusterPolicy` <a name="putClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.putClusterPolicy"></a>
+
+```typescript
+public putClusterPolicy(policy: string, id: string, currentVersion?: string): void
+```
+
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.putClusterPolicy.parameter.policy"></a>
+
+- *Type:* string
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.putClusterPolicy.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `currentVersion`<sup>Optional</sup> <a name="currentVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.putClusterPolicy.parameter.currentVersion"></a>
+
+- *Type:* string
 
 ---
 
