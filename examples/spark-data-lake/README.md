@@ -1,23 +1,6 @@
 # Spark Data Lake example 
 
-In this example, we build a Data Lake and process aggregations from the NY taxi dataset with Spark application. This `README` is a step-by-step deployment guide. You can read more details about this example solution in the [documentation](https://awslabs.github.io/data-solutions-framework-on-aws/)
-
-We are using a self-contained application where developers can manage both business code (Spark code in `./spark` folder), and the infrastructure code (AWS CDK code in `./infra` folder).
-
-The business code is a simple **PySpark** application packaged in a common Python project following the [best practices](https://packaging.python.org/en/latest/tutorials/packaging-projects/):
- * A `pyproject.toml` file is used to install internal (packages defined in the code structure) and external dependencies (libraries from PyPi).
- * An `src` folder containing business code organized in Python packages (`__init__.py` files).
- * A `test` folder containing the unit tests run via `pytest .` command from the root folder of the Spark project. You can use the [EMR Vscode toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonEMR.emr-tools) to locally test the application on an EMR local runtime.
-
-The infrastructure code is an AWS CDK application using the DSF on AWS library to create the required resources. It contains 2 CDK stacks:
- * An **application stack** which provisions the Data Lake, data catalog, and the Spark runtime resources via the following constructs:
-   * A `DataLakeStorage` 
-   * A `DataCatalogDatatabse`
-   * A `SparkEmrServerlessRuntime`
-   * A `SparkEmrServerlessJob`
- * A **CICD stack** which provisions a CICD Pipeline to manage the application development lifecycle via the following constructs:
-   * A `SparkEmrCICDPipeline`
-   * A `ApplicationStackFactory`
+In this example, we build a Data Lake and process aggregations from the NY taxi dataset with Spark application. This `README` is a step-by-step deployment guide. You can read more details about this example solution in the [documentation](https://awslabs.github.io/data-solutions-framework-on-aws/docs/examples/spark-data-lake)
 
 ## Pre-requisite
 
@@ -27,7 +10,7 @@ The infrastructure code is an AWS CDK application using the DSF on AWS library t
 
 ```bash
 cdk bootstrap \
---profile staging \
+--profile <YOUR_AWS_PROFILE> \
 --trust <CICD_ACCOUNT_ID> \
 --cloudformation-execution-policies “POLICY_ARN” \
 aws://<STAGING_ACCOUNT_ID>/<REGION>
@@ -89,12 +72,22 @@ pip install -r requirements.txt
 1. Deploy the CICD pipeline stack:
 
 ```
-cdk deploy CICDPipelineStack
+cdk deploy CICDPipeline
 ```
 
-1. Add the CICD pipeline Git repository as a remote. The command is provided by the `CICDPipelineStack` as an output. Then push the code to the repository:
+1. Add the CICD pipeline Git repository as a remote. The command is provided by the `CICDPipeline` stack as an output. Then push the code to the repository:
 
 ```bash
 git remote add demo codecommit::<REGION>://SparkTest
 git push demo
 ```
+
+## Cleaning up resources 
+
+1. Delete the `CICDPipeline` stack
+   
+```
+cdk destroy CICDPipeline
+```
+
+2. From the console, delete CloudFormation stacks created by the CICD Pipeline 

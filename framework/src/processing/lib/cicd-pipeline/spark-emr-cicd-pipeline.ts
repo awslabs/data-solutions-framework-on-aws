@@ -98,7 +98,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       `chmod -R o+w $(pwd)/${sparkPath}`,
       `docker run -i -v $(pwd)/${sparkPath}:/home/hadoop/ -e AWS_REGION=$AWS_REGION -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e DISABLE_SSL=true --rm --name pytest ${sparkImage} sh -c \"export PATH=$PATH:/home/hadoop/.local/bin && export PYTHONPATH=$PYTHONPATH:/usr/lib/spark/python/lib/py4j-src.zip:/usr/lib/spark/python && python3 -m pip install pytest . && python3 -m pytest\"`,
       `cd ${cdkPath}`,
-      'npm install -g aws-cdk',
+      'npm install -g aws-cdk esbuild',
     ];
 
     // Build the list of commands depending on the runtime

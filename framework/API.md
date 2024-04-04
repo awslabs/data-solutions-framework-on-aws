@@ -4323,6 +4323,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadManagedPolicy">assetUploadManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The IAM Managed Policy used by the custom resource for the assets deployment. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the BucketDeployment to upload the artifacts to an s3 bucket. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.entrypointUri">entrypointUri</a></code> | <code>string</code> | The location (generally it's an S3 URI) where the entry point is saved. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsAccessLogsBucket">artifactsAccessLogsBucket</a></code> | <code>@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket</code> | The access logs bucket to log accesses on the artifacts bucket. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.sparkVenvConf">sparkVenvConf</a></code> | <code>string</code> | The Spark Config containing the configuration of virtual environment archive with all dependencies. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.venvArchiveUri">venvArchiveUri</a></code> | <code>string</code> | The location (generally an S3 URI) where the archive of the Python virtual environment with all dependencies is stored. |
 
@@ -4390,6 +4391,18 @@ public readonly entrypointUri: string;
 The location (generally it's an S3 URI) where the entry point is saved.
 
 You can pass this location to your Spark job.
+
+---
+
+##### `artifactsAccessLogsBucket`<sup>Optional</sup> <a name="artifactsAccessLogsBucket" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackage.property.artifactsAccessLogsBucket"></a>
+
+```typescript
+public readonly artifactsAccessLogsBucket: AccessLogsBucket;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket
+
+The access logs bucket to log accesses on the artifacts bucket.
 
 ---
 

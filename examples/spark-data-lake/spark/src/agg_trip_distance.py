@@ -22,19 +22,20 @@ def profile(df):
     return validation_result
 
 if __name__ == "__main__":
-    source_location = os.environ["SOURCE_LOCATION"]
-    target_location = os.environ["TARGET_LOCATION"]
+    yellow_source = os.environ["YELLOW_SOURCE"]
+    green_source = os.environ["GREEN_SOURCE"]
+    target_database = os.environ["TARGET_DB"]
+    target_table = os.environ['TARGET_TABLE']
+
     spark = SparkSession.builder.getOrCreate()
-    green_df = spark.read.parquet(f"{source_location}/green*")
-    yellow_df = spark.read.parquet(f"{source_location}/yellow*")
+    green_df = spark.read.parquet(f"{green_source}/*")
+    yellow_df = spark.read.parquet(f"{yellow_source}/*")
 
     green_agg_df = aggregate_trip_distance(green_df)
     yellow_agg_df = aggregate_trip_distance(yellow_df)
 
     combined_df = combine_taxi_types(green_agg_df, yellow_agg_df)
-    combined_df.write.partitionBy("taxi_type").mode("overwrite").parquet(
-        f"{target_location}/nyc_taxis/agg_trip_distance/"
-    )
+    combined_df.write.mode("overwrite").saveAsTable(f"{target_database}.{target_table}")
 
     quality_results = profile(combined_df)
-    quality_results.save_json(f"{target_location}/nyc_taxis/agg_trip_distance_quality_results.json")
+    print(quality_results)
