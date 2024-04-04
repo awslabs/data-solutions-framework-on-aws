@@ -3870,7 +3870,7 @@ A construct to create an MSK Provisioned cluster.
 *Example*
 
 ```typescript
-const msk = new MskProvisioned(stack, 'cluster');
+const msk = new dsf.streaming.MskProvisioned(MyStack, 'cluster');
 ```
 
 
@@ -4637,6 +4637,13 @@ public readonly MSK_DEFAULT_VERSION: KafkaVersion;
 A construct to create an MSK Serverless cluster.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
+
+*Example*
+
+```typescript
+const msk = new dsf.streaming.MskServerless(MyStack, 'cluster');
+```
+
 
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskServerless.Initializer"></a>
 
