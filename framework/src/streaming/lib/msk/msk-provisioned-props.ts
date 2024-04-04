@@ -21,6 +21,7 @@ import {
   MskBrokerInstanceType,
   ResourcePatternTypes,
   StorageMode,
+  VpcClientAuthentication,
 } from './msk-provisioned-props-utils';
 
 export interface MskProvisionedProps {
@@ -118,10 +119,16 @@ export interface MskProvisionedProps {
   readonly clientAuthentication?: ClientAuthentication;
 
   /**
-      * What to do when this resource is deleted from a stack.
-      *
-      * @default RemovalPolicy.RETAIN
-      */
+    * VPC connection control settings for brokers
+    * Defines all client authentication information for VpcConnectivity.
+    */
+  readonly vpcConnectivity?: VpcClientAuthentication;
+
+  /**
+    * What to do when this resource is deleted from a stack.
+    *
+    * @default RemovalPolicy.RETAIN
+    */
   readonly removalPolicy?: RemovalPolicy;
 
 

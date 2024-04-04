@@ -18,7 +18,7 @@ import { SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnConfiguration } from 'aws-cdk-lib/aws-msk/lib';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentitcation, ClientAuthentication, KafkaClientLogLevel, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes } from '../../../src/streaming/lib/msk';
+import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentitcation, ClientAuthentication, KafkaClientLogLevel, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes, VpcClientAuthentication } from '../../../src/streaming/lib/msk';
 import { DataVpc } from '../../../src/utils';
 
 
@@ -65,6 +65,23 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
       BrokerNodeGroupInfo: Match.objectLike({
         InstanceType: 'kafka.m5.large',
         StorageInfo: { EBSStorageInfo: { VolumeSize: 100 } },
+        ConnectivityInfo: {
+          PublicAccess: {
+            Type: 'DISABLED',
+          },
+          VpcConnectivity: {
+            ClientAuthentication: {
+              Tls: {
+                Enabled: false,
+              },
+              Sasl: {
+                Iam: {
+                  Enabled: false,
+                },
+              },
+            },
+          },
+        },
       }),
       KafkaVersion: '3.5.1',
       NumberOfBrokerNodes: 2,
@@ -150,6 +167,9 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
         certificateAuthorities: [certificateAuthority],
       },
     ),
+    vpcConnectivity: VpcClientAuthentication.sasl({
+      iam: true,
+    }),
     removalPolicy: RemovalPolicy.DESTROY,
     certificateDefinition: {
       adminPrincipal: 'User:CN=Admin',
@@ -196,6 +216,23 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     template.hasResourceProperties('AWS::MSK::Cluster', {
       BrokerNodeGroupInfo: Match.objectLike({
         InstanceType: 'kafka.m7g.large',
+        ConnectivityInfo: {
+          PublicAccess: {
+            Type: 'DISABLED',
+          },
+          VpcConnectivity: {
+            ClientAuthentication: {
+              Tls: {
+                Enabled: false,
+              },
+              Sasl: {
+                Iam: {
+                  Enabled: true,
+                },
+              },
+            },
+          },
+        },
       }),
     });
   });

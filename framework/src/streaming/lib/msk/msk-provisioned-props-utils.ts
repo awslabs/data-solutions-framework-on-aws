@@ -461,6 +461,58 @@ export class ClientAuthentication {
   ) {}
 }
 
+/**
+ * TLS authentication properties
+ */
+export interface VpcTlsAuthProps {
+  /**
+   * enable TLS authentication.
+   *
+   * @default - none
+   */
+  readonly tls?: boolean;
+}
+
+/**
+ * SASL + TLS authentication properties
+ */
+export interface SaslVpcTlsAuthProps extends SaslAuthProps, VpcTlsAuthProps { }
+
+/**
+ * Configuration properties for VPC client authentication.
+ */
+export class VpcClientAuthentication {
+  /**
+   * SASL authentication
+   */
+  public static sasl(props: SaslAuthProps): VpcClientAuthentication {
+    return new VpcClientAuthentication(props, undefined);
+  }
+
+  /**
+   * TLS authentication
+   */
+  public static tls(props: VpcTlsAuthProps): VpcClientAuthentication {
+    return new VpcClientAuthentication(undefined, props);
+  }
+
+  /**
+   * SASL + TLS authentication
+   */
+  public static saslTls(saslTlsProps: SaslVpcTlsAuthProps): VpcClientAuthentication {
+    return new VpcClientAuthentication(saslTlsProps, saslTlsProps);
+  }
+
+  /**
+   * @param saslProps - properties for SASL authentication
+   * @param tlsProps - properties for TLS authentication
+   */
+  private constructor(
+    public readonly saslProps?: SaslAuthProps,
+    public readonly tlsProps?: VpcTlsAuthProps,
+  ) {}
+}
+
 export enum Authentitcation {
   IAM = 'iam',
   MTLS = 'mTLS',
