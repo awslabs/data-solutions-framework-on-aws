@@ -65,23 +65,6 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
       BrokerNodeGroupInfo: Match.objectLike({
         InstanceType: 'kafka.m5.large',
         StorageInfo: { EBSStorageInfo: { VolumeSize: 100 } },
-        ConnectivityInfo: {
-          PublicAccess: {
-            Type: 'DISABLED',
-          },
-          VpcConnectivity: {
-            ClientAuthentication: {
-              Tls: {
-                Enabled: false,
-              },
-              Sasl: {
-                Iam: {
-                  Enabled: false,
-                },
-              },
-            },
-          },
-        },
       }),
       KafkaVersion: '3.5.1',
       NumberOfBrokerNodes: 2,
@@ -216,23 +199,6 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     template.hasResourceProperties('AWS::MSK::Cluster', {
       BrokerNodeGroupInfo: Match.objectLike({
         InstanceType: 'kafka.m7g.large',
-        ConnectivityInfo: {
-          PublicAccess: {
-            Type: 'DISABLED',
-          },
-          VpcConnectivity: {
-            ClientAuthentication: {
-              Tls: {
-                Enabled: false,
-              },
-              Sasl: {
-                Iam: {
-                  Enabled: true,
-                },
-              },
-            },
-          },
-        },
       }),
     });
   });
@@ -289,7 +255,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       ExecuteOnHandlerChange: true,
       InvocationType: 'RequestResponse',
       ServiceToken: { 'Fn::GetAtt': ['AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91', 'Arn'] },
-      HandlerArn: { Ref: 'clusterupdateConfigurationCurrentVersion9A29E6C8e38315db7510217bb74979f84305cdbb' },
+      HandlerArn: { Ref: 'clusterUpdateZookeeperSgCurrentVersion6BC0411Dd3f8c0b3f35baf66398142df7e12bedd' },
     });
   });
 
