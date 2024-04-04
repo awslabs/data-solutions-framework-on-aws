@@ -36,10 +36,7 @@ const onCreate = async (event) => {
 
   console.log(event);
 
-  switch (event.RequestType) {
-    
-    case 'Update':
-    case 'Delete':
+  if (event.RequestType == 'Update' || event.RequestType == 'Delete'){
       return {
         IsComplete : true,
       }
@@ -76,6 +73,13 @@ const onCreate = async (event) => {
 export const isCompleteHandler = async (event) => {
   console.info('isCompleteHandler Invocation');
   console.info(event);
+
+  case 'Update':
+  case 'Delete':
+      return {
+        IsComplete : true,
+      }
+  }
 
   const inputKafka = {
     ClusterArn: process.env.MSK_CLUSTER_ARN,
