@@ -472,7 +472,7 @@ export class MskProvisioned extends TrackedConstruct {
       this.aclCreateTopic = crAcls[2];
 
       if (!props.allowEveryoneIfNoAclFound) {
-        
+
         let trigger: Trigger;
 
         [this.cloudwatchlogApplyConfigurationLambda, this.roleApplyConfigurationLambda, this.securityGroupApplyConfigurationLambda, trigger]
@@ -708,7 +708,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALTER,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     this.aclOperationCr = aclOperation;
@@ -724,7 +724,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CLUSTER_ACTION,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     //Set the ACL to allow the principal used by CR
@@ -738,7 +738,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CREATE,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     let aclTopicDelete = this.setAcl(this, 'aclTopicDelete', {
@@ -750,7 +750,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.DELETE,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     let aclTopicUpdate = this.setAcl(this, 'aclTopicUpdate', {
@@ -762,7 +762,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALTER_CONFIGS,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     //Set the ACL for Admin principal
@@ -775,7 +775,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.CLUSTER_ACTION,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     let adminAclTopic = this.setAcl(this, 'adminAclTopic', {
@@ -787,7 +787,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALL,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
     let adminAclGroup = this.setAcl(this, 'adminAclGroup', {
@@ -799,7 +799,7 @@ export class MskProvisioned extends TrackedConstruct {
       operation: AclOperationTypes.ALL,
       permissionType: AclPermissionTypes.ALLOW,
     },
-      RemovalPolicy.DESTROY,
+    RemovalPolicy.DESTROY,
     );
 
 

@@ -121,6 +121,8 @@ export interface MskProvisionedProps {
   /**
     * VPC connection control settings for brokers
     * Defines all client authentication information for VpcConnectivity.
+    * When vpcConnectivity and you provide your own Msk Congifuration
+    * You must set `allow.everyone.if.no.acl.found` to `false`
     */
   readonly vpcConnectivity?: VpcClientAuthentication;
 
