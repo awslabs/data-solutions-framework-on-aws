@@ -49,7 +49,7 @@ export const onEventHandler = async (event) => {
   };
 
   console.log(input);
-  commandKafka = new UpdateClusterConfigurationCommand(input);
+  commandKafka = new UpdateConnectivityCommand(input);
   responseKafka = await clientKafka.send(commandKafka);
 
   console.log(responseKafka);
