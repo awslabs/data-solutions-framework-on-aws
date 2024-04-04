@@ -17,6 +17,8 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../..
  * @see https://awslabs.github.io/data-solutions-framework-on-aws/
  *
  * @example
+ *
+ * const msk = new dsf.streaming.MskServerless(MyStack, 'cluster');
  */
 export class MskServerless extends TrackedConstruct {
 

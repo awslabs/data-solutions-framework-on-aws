@@ -33,7 +33,7 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
  *
  * @example
  *
- * const msk = new MskProvisioned(MyStack, 'cluster');
+ * const msk = new dsf.streaming.MskProvisioned(MyStack, 'cluster');
  *
  */
 export class MskProvisioned extends TrackedConstruct {
