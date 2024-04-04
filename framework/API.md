@@ -11622,6 +11622,9 @@ public readonly vpcConnectivity: VpcClientAuthentication;
 
 VPC connection control settings for brokers Defines all client authentication information for VpcConnectivity.
 
+When vpcConnectivity and you provide your own Msk Congifuration
+You must set `allow.everyone.if.no.acl.found` to `false`
+
 ---
 
 ##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets"></a>
