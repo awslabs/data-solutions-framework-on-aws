@@ -125,7 +125,6 @@ export class MskProvisioned extends TrackedConstruct {
   private aclCreateTopic?: CustomResource;
   private readonly deploymentClusterVersion;
   private readonly kafkaApi: KafkaApi;
-  private updateClusterConnectivityTrigger?: Trigger;
   private readonly clusterVpcConnectivity?: VpcClientAuthentication;
 
   /**
@@ -496,7 +495,7 @@ export class MskProvisioned extends TrackedConstruct {
               this.brokerAtRestEncryptionKey,
               props?.vpcConnectivity);
 
-          this.updateClusterConnectivityTrigger = new Trigger(this, 'UpdateVpcConnectivityTrigger', {
+          new Trigger(this, 'UpdateVpcConnectivityTrigger', {
             handler: this.updateConnectivityFunction,
             timeout: Duration.minutes(10),
             invocationType: InvocationType.REQUEST_RESPONSE,
@@ -899,18 +898,11 @@ export class MskProvisioned extends TrackedConstruct {
       securityGroups: [setClusterConfigurationLambdaSecurityGroup],
     });
 
-    let executeAfter: Construct[] = [];
-    executeAfter.push(...aclsResources);
-
-    if (this.updateClusterConnectivityTrigger) {
-      executeAfter.push(this.updateClusterConnectivityTrigger);
-    }
-
     const trigger = new Trigger(this, 'UpdateMskConfiguration', {
       handler: func,
       timeout: Duration.minutes(10),
       invocationType: InvocationType.REQUEST_RESPONSE,
-      executeAfter: aclsResources,
+      executeAfter: [...aclsResources],
     });
 
     return [lambdaCloudwatchLogUpdateConfiguration, lambdaRole, setClusterConfigurationLambdaSecurityGroup, trigger];
