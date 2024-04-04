@@ -21,7 +21,7 @@ import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermi
 import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
-  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation, ClientAuthentication,
+  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation, ClientAuthentication, VpcClientAuthentication,
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
@@ -126,6 +126,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly deploymentClusterVersion;
   private readonly kafkaApi: KafkaApi;
   private updateClusterConnectivityTrigger?: Trigger;
+  private readonly clusterVpcConnectivity?: VpcClientAuthentication;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -165,6 +166,8 @@ export class MskProvisioned extends TrackedConstruct {
 
       this.vpc = props.vpc;
     }
+
+    this.clusterVpcConnectivity = props?.vpcConnectivity;
 
     //if vpcSubnets is pass without VPC throw error or if vpc is passed without vpcSubnets throw error
     if (props?.vpcSubnets && !props?.vpc || !props?.vpcSubnets && props?.vpc) {
@@ -628,6 +631,58 @@ export class MskProvisioned extends TrackedConstruct {
       principal,
       host,
       removalPolicy);
+  }
+
+  public putClusterPolicy(policy: string, id: string, currentVersion?: string) {
+
+    if (!this.clusterVpcConnectivity) {
+      throw Error('PutClusterPolicy is Vpc Connectiviy is not setup');
+    }
+
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
+    let clusterBootstrapBrokers = new AwsCustomResource(this, `PutClusterPolicy${id}`, {
+      onUpdate: {
+        service: 'Kafka',
+        action: 'putClusterPolicy',
+        parameters: {
+          ClusterArn: this.cluster.attrArn,
+          CurrentVersion: currentVersion,
+          Policy: policy,
+        },
+      },
+      policy: AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [this.cluster.attrArn],
+      }),
+      installLatestAwsSdk: false,
+    });
+
+    clusterBootstrapBrokers.node.addDependency(this.cluster);
+
+  }
+
+  public deleteClusterPolicy() {
+
+    if (!this.clusterVpcConnectivity) {
+      throw Error('PutClusterPolicy is Vpc Connectiviy is not setup');
+    }
+
+    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
+    let clusterBootstrapBrokers = new AwsCustomResource(this, 'DeleteClusterPolicy', {
+      onUpdate: {
+        service: 'Kafka',
+        action: 'deleteClusterPolicy',
+        parameters: {
+          ClusterArn: this.cluster.attrArn,
+        },
+      },
+      policy: AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [this.cluster.attrArn],
+      }),
+      installLatestAwsSdk: false,
+    });
+
+    clusterBootstrapBrokers.node.addDependency(this.cluster);
+
   }
 
   private setAcls(props: MskProvisionedProps): CustomResource[] {
