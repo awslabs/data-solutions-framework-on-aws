@@ -255,6 +255,23 @@ export class MskProvisioned extends TrackedConstruct {
       kafkaVersion: this.deploymentClusterVersion.version,
       numberOfBrokerNodes: this.numberOfBrokerNodes,
       brokerNodeGroupInfo: {
+        connectivityInfo: {
+          publicAccess: {
+            type: 'DISABLED',
+          },
+          vpcConnectivity: {
+            clientAuthentication: {
+              tls: {
+                enabled: props?.vpcConnectivity?.tlsProps?.tls ? true : false,
+              },
+              sasl: {
+                iam: {
+                  enabled: props?.vpcConnectivity?.saslProps?.iam ? true : false,
+                },
+              },
+            },
+          },
+        },
         instanceType: `kafka.${this.mskBrokerinstanceType.instance.toString()}`,
         clientSubnets: this.subnetSelectionIds,
         securityGroups: this.connections.securityGroups.map(

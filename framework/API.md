@@ -11319,6 +11319,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode</code> | This controls storage mode for supported storage tiers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcConnectivity">vpcConnectivity</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication</code> | VPC connection control settings for brokers Defines all client authentication information for VpcConnectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Where to place the nodes within the VPC. |
 
 ---
@@ -11532,6 +11533,18 @@ public readonly vpc: IVpc;
 Defines the virtual networking environment for this cluster.
 
 Must have at least 2 subnets in two different AZs.
+
+---
+
+##### `vpcConnectivity`<sup>Optional</sup> <a name="vpcConnectivity" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.vpcConnectivity"></a>
+
+```typescript
+public readonly vpcConnectivity: VpcClientAuthentication;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication
+
+VPC connection control settings for brokers Defines all client authentication information for VpcConnectivity.
 
 ---
 
@@ -12991,6 +13004,53 @@ public readonly certificateAuthorities: ICertificateAuthority[];
 - *Default:* none
 
 List of ACM Certificate Authorities to enable TLS authentication.
+
+---
+
+### SaslVpcTlsAuthProps <a name="SaslVpcTlsAuthProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps"></a>
+
+SASL + TLS authentication properties.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const saslVpcTlsAuthProps: streaming.msk.SaslVpcTlsAuthProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps.property.iam">iam</a></code> | <code>boolean</code> | Enable IAM access control. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps.property.tls">tls</a></code> | <code>boolean</code> | enable TLS authentication. |
+
+---
+
+##### `iam`<sup>Optional</sup> <a name="iam" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps.property.iam"></a>
+
+```typescript
+public readonly iam: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Enable IAM access control.
+
+---
+
+##### `tls`<sup>Optional</sup> <a name="tls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps.property.tls"></a>
+
+```typescript
+public readonly tls: boolean;
+```
+
+- *Type:* boolean
+- *Default:* none
+
+enable TLS authentication.
 
 ---
 
@@ -14481,6 +14541,39 @@ List of ACM Certificate Authorities to enable TLS authentication.
 
 ---
 
+### VpcTlsAuthProps <a name="VpcTlsAuthProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps"></a>
+
+TLS authentication properties.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const vpcTlsAuthProps: streaming.msk.VpcTlsAuthProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps.property.tls">tls</a></code> | <code>boolean</code> | enable TLS authentication. |
+
+---
+
+##### `tls`<sup>Optional</sup> <a name="tls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps.property.tls"></a>
+
+```typescript
+public readonly tls: boolean;
+```
+
+- *Type:* boolean
+- *Default:* none
+
+enable TLS authentication.
+
+---
+
 ## Classes <a name="Classes" id="Classes"></a>
 
 ### ApplicationStackFactory <a name="ApplicationStackFactory" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory"></a>
@@ -15518,6 +15611,103 @@ the string to convert to PascalCase.
 
 ---
 
+
+
+### VpcClientAuthentication <a name="VpcClientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication"></a>
+
+Configuration properties for VPC client authentication.
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.sasl">sasl</a></code> | SASL authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.saslTls">saslTls</a></code> | SASL + TLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.tls">tls</a></code> | TLS authentication. |
+
+---
+
+##### `sasl` <a name="sasl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.sasl"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.VpcClientAuthentication.sasl(props: SaslAuthProps)
+```
+
+SASL authentication.
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.sasl.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps
+
+---
+
+##### `saslTls` <a name="saslTls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.saslTls"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.VpcClientAuthentication.saslTls(saslTlsProps: SaslVpcTlsAuthProps)
+```
+
+SASL + TLS authentication.
+
+###### `saslTlsProps`<sup>Required</sup> <a name="saslTlsProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.saslTls.parameter.saslTlsProps"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.SaslVpcTlsAuthProps
+
+---
+
+##### `tls` <a name="tls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.tls"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.VpcClientAuthentication.tls(props: VpcTlsAuthProps)
+```
+
+TLS authentication.
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.tls.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.property.saslProps">saslProps</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps</code> | - properties for SASL authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.property.tlsProps">tlsProps</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps</code> | - properties for TLS authentication. |
+
+---
+
+##### `saslProps`<sup>Optional</sup> <a name="saslProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.property.saslProps"></a>
+
+```typescript
+public readonly saslProps: SaslAuthProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.SaslAuthProps
+
+properties for SASL authentication.
+
+---
+
+##### `tlsProps`<sup>Optional</sup> <a name="tlsProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.VpcClientAuthentication.property.tlsProps"></a>
+
+```typescript
+public readonly tlsProps: VpcTlsAuthProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.VpcTlsAuthProps
+
+properties for TLS authentication.
+
+---
 
 
 
