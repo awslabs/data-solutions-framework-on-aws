@@ -10298,7 +10298,9 @@ const pySparkApplicationPackageProps: processing.PySparkApplicationPackageProps 
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.applicationName">applicationName</a></code> | <code>string</code> | The name of the PySpark application. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.entrypointPath">entrypointPath</a></code> | <code>string</code> | The source path in the code base where the entrypoint is stored. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.artifactsBucket">artifactsBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 bucket where to upload the artifacts of the Spark Job This is where the entry point and archive of the virtual environment will be stored. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda function. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadMemorySize">assetUploadMemorySize</a></code> | <code>number</code> | The memory size (in MiB) used by the Lambda function to upload and unzip the assets (entrypoint and dependencies). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole">assetUploadRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda function to upload assets (entrypoint and dependencies). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadStorageSize">assetUploadStorageSize</a></code> | <code>aws-cdk-lib.Size</code> | The ephemeral storage size used by the Lambda function to upload and unzip the assets (entrypoint and dependencies). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.dependenciesFolder">dependenciesFolder</a></code> | <code>string</code> | The source directory where `requirements.txt` or `pyproject.toml` file is stored. These files are used to install external AND internal Python packages. If your PySpark application has more than one Python file, you need to [package your Python project](https://packaging.python.org/en/latest/tutorials/packaging-projects/). This location must also contain a `Dockerfile` that can [create a virtual environment and build an archive](https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/using-python-libraries.html#building-python-virtual-env). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.venvArchivePath">venvArchivePath</a></code> | <code>string</code> | The path of the Python virtual environment archive generated in the Docker container. |
@@ -10346,6 +10348,21 @@ The S3 bucket where to upload the artifacts of the Spark Job This is where the e
 
 ---
 
+##### `assetUploadMemorySize`<sup>Optional</sup> <a name="assetUploadMemorySize" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadMemorySize"></a>
+
+```typescript
+public readonly assetUploadMemorySize: number;
+```
+
+- *Type:* number
+- *Default:* 512 MB
+
+The memory size (in MiB) used by the Lambda function to upload and unzip the assets (entrypoint and dependencies).
+
+If you are deploying large files, you will need to increase this number accordingly.
+
+---
+
 ##### `assetUploadRole`<sup>Optional</sup> <a name="assetUploadRole" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadRole"></a>
 
 ```typescript
@@ -10355,9 +10372,24 @@ public readonly assetUploadRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 - *Default:* A new Role would be created with least privilege permissions
 
-The IAM Role used by the Lambda function.
+The IAM Role used by the Lambda function to upload assets (entrypoint and dependencies).
 
 Additional permissions would be granted to this role such as S3 Bucket permissions.
+
+---
+
+##### `assetUploadStorageSize`<sup>Optional</sup> <a name="assetUploadStorageSize" id="@cdklabs/aws-data-solutions-framework.processing.PySparkApplicationPackageProps.property.assetUploadStorageSize"></a>
+
+```typescript
+public readonly assetUploadStorageSize: Size;
+```
+
+- *Type:* aws-cdk-lib.Size
+- *Default:* 1024 MB
+
+The ephemeral storage size used by the Lambda function to upload and unzip the assets (entrypoint and dependencies).
+
+If you are deploying large files, you will need to increase this number accordingly.
 
 ---
 

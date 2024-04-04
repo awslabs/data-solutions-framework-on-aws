@@ -90,6 +90,9 @@ export class PySparkApplicationPackage extends TrackedConstruct {
     const entrypointFileName = path.basename(props.entrypointPath);
     const entrypointDirectory = path.dirname(props.entrypointPath);
 
+    const memoryLimit = props.assetUploadMemorySize || 512;
+    const ephemeralStorageSize = props.assetUploadStorageSize || Size.mebibytes(1024);
+
     let s3DeploymentLambdaPolicyStatement: PolicyStatement[] = [];
 
     s3DeploymentLambdaPolicyStatement.push(new PolicyStatement({
@@ -168,8 +171,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
           ],
           destinationBucket: artifactsBucket!,
           destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}`,
-          memoryLimit: 512,
-          ephemeralStorageSize: Size.mebibytes(1000),
+          memoryLimit,
+          ephemeralStorageSize,
           prune: false,
           extract: true,
           role: this.assetUploadRole,
@@ -206,8 +209,8 @@ export class PySparkApplicationPackage extends TrackedConstruct {
       ],
       destinationBucket: artifactsBucket!,
       destinationKeyPrefix: `${PySparkApplicationPackage.ARTIFACTS_PREFIX}/${props.applicationName}`,
-      memoryLimit: 512,
-      ephemeralStorageSize: Size.mebibytes(1000),
+      memoryLimit,
+      ephemeralStorageSize,
       prune: false,
       role: this.assetUploadRole,
       retainOnDelete: removalPolicy === RemovalPolicy.RETAIN,

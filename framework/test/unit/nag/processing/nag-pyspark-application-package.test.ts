@@ -31,7 +31,7 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C512MiB1000MiB/Resource',
+  '/Stack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C512MiB1024MiB/Resource',
   [{ id: 'AwsSolutions-L1', reason: 'The lambda is provided by the Asset L2 construct and we can\'t upgrade the runtime' }],
 );
 
