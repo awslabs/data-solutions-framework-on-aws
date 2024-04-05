@@ -6,3 +6,5 @@ export * from './msk-serverless-props';
 export * from './msk-provisioned';
 export * from './msk-provisioned-props';
 export * from './msk-provisioned-props-utils';
+export * from './kafka-api';
+export * from './kafka-api-props';

@@ -43,9 +43,9 @@ export interface MskProvisionedProps {
   readonly numberOfBrokerNodes?: number;
 
   /**
-      * Defines the virtual networking environment for this cluster.
-      * Must have at least 2 subnets in two different AZs.
-      */
+    * Defines the virtual networking environment for this cluster.
+    * Must have at least 2 subnets in two different AZs.
+    */
   readonly vpc?: IVpc;
 
   /**
