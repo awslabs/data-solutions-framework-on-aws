@@ -64,22 +64,6 @@ const onCreate = async (event) => {
 
 }
 
-// Handler functions
-const onDelete = async (event) => {
-
-  console.log(event);
-
-  const inputKafka = {
-    ClusterArn: process.env.MSK_CLUSTER_ARN,
-  };
-
-  let commandKafka = new DeleteVpcConnectionCommand(inputKafka);
-  let responseKafka = await clientKafka.send(commandKafka);
-
-  console.log(responseKafka);
-
-}
-
 export const isCompleteHandler = async (event) => {
   console.info('isCompleteHandler Invocation');
   console.info(event);
