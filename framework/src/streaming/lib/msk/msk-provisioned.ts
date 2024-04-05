@@ -72,14 +72,7 @@ export class MskProvisioned extends TrackedConstruct {
    * The VPC created by the construct or the one passed to it
    */
   public readonly vpc: IVpc;
-  /**
-   * The connection string to brokers when using IAM authentication
-   */
-  public readonly bootstrapBrokerStringIam?: string;
-  /**
-   * The connection string to brokers when using TLS authentication
-   */
-  public readonly bootstrapBrokerStringTls?: string;
+  
   /**
    * The KMS CMK key created by the construct for the brokers
    * When no KMS key is passed
@@ -408,8 +401,6 @@ export class MskProvisioned extends TrackedConstruct {
     // This will be used for CRUD on Topics
     if (this.iamAcl) {
 
-      this.bootstrapBrokerStringIam = this.getBootstrapBrokers('BootstrapBrokerStringSaslIam');
-
       this.mskIamACrudAdminCrLambdaRole = this.kafkaApi.mskIamACrudAdminCrLambdaRole;
       this.mskIamACrudAdminCrOnEventHandlerLogGroup = this.kafkaApi.mskIamACrudAdminCrOnEventHandlerLogGroup;
       this.mskIamACrudAdminCrOnEventHandlerFunction = this.kafkaApi.mskIamACrudAdminCrOnEventHandlerFunction;
@@ -424,8 +415,6 @@ export class MskProvisioned extends TrackedConstruct {
       if (!props?.certificateDefinition) {
         throw new Error('TLS Authentication requires a certificate definition');
       }
-
-      this.bootstrapBrokerStringTls = this.getBootstrapBrokers('BootstrapBrokerStringTls');
 
       this.mskInClusterAclCrLambdaRole = this.kafkaApi.mskInClusterAclCrLambdaRole;
       this.mskInClusterAclCrOnEventHandlerLogGroup = this.kafkaApi.mskInClusterAclCrOnEventHandlerLogGroup;
@@ -934,10 +923,25 @@ export class MskProvisioned extends TrackedConstruct {
     return [lambdaCloudwatchLogUpdateConfiguration, lambdaRole, setClusterConfigurationLambdaSecurityGroup, trigger];
 
   }
+  /**
+   * Method to get bootstrap broker connection string
+   * @param authentication 
+   * @returns 
+   */
+  public getBootstrapBrokers(authentication: Authentitcation): string {
 
-  private getBootstrapBrokers(responseField: string): string {
+    let responseField: string;
+
+    if(authentication == Authentitcation.IAM) {
+      responseField = "BootstrapBrokerStringSaslIam";
+    } 
+    
+    if (authentication == Authentitcation.MTLS) {
+      responseField = "BootstrapBrokerStringTls";
+    } 
+
     // eslint-disable-next-line local-rules/no-tokens-in-construct-id
-    let clusterBootstrapBrokers = new AwsCustomResource(this, `BootstrapBrokers${responseField}`, {
+    let clusterBootstrapBrokers = new AwsCustomResource(this, `BootstrapBrokers${responseField!}`, {
       onUpdate: {
         service: 'Kafka',
         action: 'getBootstrapBrokers',
@@ -954,7 +958,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     clusterBootstrapBrokers.node.addDependency(this.cluster);
 
-    return clusterBootstrapBrokers.getResponseField(responseField);
+    return clusterBootstrapBrokers.getResponseField(responseField!);
 
   }
 
