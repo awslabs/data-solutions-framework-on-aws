@@ -500,6 +500,10 @@ export class MskProvisioned extends TrackedConstruct {
           let updateConnectivityProviderCr: CustomResource = new CustomResource ( this, 'updateConnectivityProviderCr', {
             serviceToken: updateConnectivityProvider.serviceToken,
             resourceType: 'Custom::UpdateVpcConnectivity',
+            properties: {
+              Iam: props.vpcConnectivity.saslProps?.iam == true ? true : false,
+              Tls: props.vpcConnectivity.tlsProps?.tls == true ? true : false,
+            },
           });
 
           updateConnectivityProviderCr.node.addDependency(trigger);
