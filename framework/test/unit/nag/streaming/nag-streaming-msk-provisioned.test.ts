@@ -93,8 +93,6 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/stack/cluster/KafkaApi/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/Resource',
     '/stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource',
     '/stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource',
-    '/stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
-    '/stack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource',
   ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },

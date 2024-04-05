@@ -72,7 +72,7 @@ export class MskProvisioned extends TrackedConstruct {
    * The VPC created by the construct or the one passed to it
    */
   public readonly vpc: IVpc;
-  
+
   /**
    * The KMS CMK key created by the construct for the brokers
    * When no KMS key is passed
@@ -925,20 +925,20 @@ export class MskProvisioned extends TrackedConstruct {
   }
   /**
    * Method to get bootstrap broker connection string
-   * @param authentication 
-   * @returns 
+   * @param authentication
+   * @returns
    */
   public getBootstrapBrokers(authentication: Authentitcation): string {
 
     let responseField: string;
 
-    if(authentication == Authentitcation.IAM) {
-      responseField = "BootstrapBrokerStringSaslIam";
-    } 
-    
+    if (authentication == Authentitcation.IAM) {
+      responseField = 'BootstrapBrokerStringSaslIam';
+    }
+
     if (authentication == Authentitcation.MTLS) {
-      responseField = "BootstrapBrokerStringTls";
-    } 
+      responseField = 'BootstrapBrokerStringTls';
+    }
 
     // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     let clusterBootstrapBrokers = new AwsCustomResource(this, `BootstrapBrokers${responseField!}`, {

@@ -4402,6 +4402,7 @@ the ID of the CDK Construct.
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.deleteClusterPolicy">deleteClusterPolicy</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.getBootstrapBrokers">getBootstrapBrokers</a></code> | Method to get bootstrap broker connection string. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.putClusterPolicy">putClusterPolicy</a></code> | *No description.* |
@@ -4424,6 +4425,20 @@ Returns a string representation of this construct.
 ```typescript
 public deleteClusterPolicy(): void
 ```
+
+##### `getBootstrapBrokers` <a name="getBootstrapBrokers" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.getBootstrapBrokers"></a>
+
+```typescript
+public getBootstrapBrokers(authentication: Authentitcation): string
+```
+
+Method to get bootstrap broker connection string.
+
+###### `authentication`<sup>Required</sup> <a name="authentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.getBootstrapBrokers.parameter.authentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
+
+---
 
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.grantConsume"></a>
 
@@ -4771,8 +4786,6 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleUpdateZookepeerLambda">roleUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupUpdateZookepeerLambda">securityGroupUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC created by the construct or the one passed to it. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam">bootstrapBrokerStringIam</a></code> | <code>string</code> | The connection string to brokers when using IAM authentication. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls">bootstrapBrokerStringTls</a></code> | <code>string</code> | The connection string to brokers when using TLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerCloudWatchLogGroup">brokerCloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda">cloudwatchlogApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
@@ -4869,30 +4882,6 @@ public readonly vpc: IVpc;
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
 The VPC created by the construct or the one passed to it.
-
----
-
-##### `bootstrapBrokerStringIam`<sup>Optional</sup> <a name="bootstrapBrokerStringIam" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringIam"></a>
-
-```typescript
-public readonly bootstrapBrokerStringIam: string;
-```
-
-- *Type:* string
-
-The connection string to brokers when using IAM authentication.
-
----
-
-##### `bootstrapBrokerStringTls`<sup>Optional</sup> <a name="bootstrapBrokerStringTls" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.bootstrapBrokerStringTls"></a>
-
-```typescript
-public readonly bootstrapBrokerStringTls: string;
-```
-
-- *Type:* string
-
-The connection string to brokers when using TLS authentication.
 
 ---
 
