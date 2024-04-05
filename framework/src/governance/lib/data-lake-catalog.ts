@@ -70,9 +70,9 @@ export class DataLakeCatalog extends TrackedConstruct {
     const bronzeDatabaseName = props.databaseName ? `${extractedBronzeBucketName}_${props.databaseName}` : extractedBronzeBucketName;
     const silverDatabaseName = props.databaseName ? `${extractedSilverBucketName}_${props.databaseName}` : extractedSilverBucketName;
     const goldDatabaseName = props.databaseName ? `${extractedGoldBucketName}_${props.databaseName}` : extractedGoldBucketName;
-    const bronzeLocationPrefix = props.databaseName || bronzeDatabaseName;
-    const silverLocationPrefix = props.databaseName || silverDatabaseName;
-    const goldLocationPrefix = props.databaseName || goldDatabaseName;
+    const bronzeLocationPrefix = props.databaseName || extractedBronzeBucketName;
+    const silverLocationPrefix = props.databaseName || extractedSilverBucketName;
+    const goldLocationPrefix = props.databaseName || extractedGoldBucketName;
 
     this.bronzeCatalogDatabase = new DataCatalogDatabase(this, 'BronzeCatalogDatabase', {
       locationBucket: props.dataLakeStorage.bronzeBucket,
