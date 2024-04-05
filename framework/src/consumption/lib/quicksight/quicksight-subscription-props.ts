@@ -11,8 +11,8 @@ import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 export interface QuickSightSubscriptionProps {
 
   /**
-   * The name of your Amazon QuickSight account. 
-   * This name is unique over all of Amazon Web Services, and it appears only when users sign in. 
+   * The name of your Amazon QuickSight account.
+   * This name is unique over all of Amazon Web Services, and it appears only when users sign in.
    * You can't change AccountName value after the Amazon QuickSight account is created.
    */
   readonly accountName: string;
@@ -27,7 +27,7 @@ export interface QuickSightSubscriptionProps {
   *  @default - ENTERPRISE is used as default.
   */
   readonly edition: QuickSightEdition;
-  
+
   /**
    * The Amazon Web Services account ID of the account that you're using to create your Amazon QuickSight account.
    */
@@ -87,5 +87,5 @@ export enum QuickSightAuthenticationMethod {
 }
 
 export enum QuickSightEdition {
-    ENTERPRISE = 'ENTERPRISE',
+  ENTERPRISE = 'ENTERPRISE',
 }

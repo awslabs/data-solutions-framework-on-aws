@@ -1,17 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Context, TrackedConstruct, TrackedConstructProps } from "../../../utils";
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import { QuickSightSubscriptionProps, QuickSightAuthenticationMethod } from './quicksight-subscription-props';
-import { Construct } from 'constructs';
 import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRole,  PolicyDocument, Role , ServicePrincipal, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
-import { ILogGroup } from 'aws-cdk-lib/aws-logs';
+import { IRole, PolicyDocument, Role, ServicePrincipal, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import { QuickSightSubscriptionProps } from './quicksight-subscription-props';
+import { QuickSightSubscriptionProps, QuickSightAuthenticationMethod } from './quicksight-subscription-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -118,7 +113,7 @@ export class QuickSightSubscription extends TrackedConstruct {
     this.adminGroup = props.adminGroup;
     this.authorGroup = props.authorGroup;
     this.readerGroup = props.readerGroup;
-    this.identityRegion = props.identityRegion;    
+    this.identityRegion = props.identityRegion;
 
     this.policyActions = [
       'quicksight:Subscribe',
@@ -157,7 +152,7 @@ export class QuickSightSubscription extends TrackedConstruct {
     }
 
     this.executionRole = new Role(this, 'Role', {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),      
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       inlinePolicies: {
         QuickSightSubscription: new PolicyDocument({
           statements: [
@@ -200,7 +195,7 @@ export class QuickSightSubscription extends TrackedConstruct {
           EDITION: props.edition,
           IDENTITY_REGION: props.identityRegion,
         },
-      },      
+      },
       queryInterval: Duration.seconds(10),
       removalPolicy: this.removalPolicy,
     });

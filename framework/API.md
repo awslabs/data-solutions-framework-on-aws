@@ -10731,10 +10731,10 @@ const quickSightSubscriptionProps: consumption.QuickSightSubscriptionProps = { .
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.accountName">accountName</a></code> | <code>string</code> | The name of your Amazon QuickSight account. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.adminGroup">adminGroup</a></code> | <code>string[]</code> | The admin group associated with your Active Directory or IAM Identity Center account. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authenticationMethod">authenticationMethod</a></code> | <code>string</code> | The method that you want to use to authenticate your Amazon QuickSight account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authenticationMethod">authenticationMethod</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod</code> | The method that you want to use to authenticate your Amazon QuickSight account. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authorGroup">authorGroup</a></code> | <code>string[]</code> | The author group associated with your IAM Identity Center account. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.awsAccountId">awsAccountId</a></code> | <code>string</code> | The Amazon Web Services account ID of the account that you're using to create your Amazon QuickSight account. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.edition">edition</a></code> | <code>string</code> | The edition of Amazon QuickSight that you want your account to have. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.edition">edition</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.QuickSightEdition</code> | The edition of Amazon QuickSight that you want your account to have. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.identityRegion">identityRegion</a></code> | <code>string</code> | The region to use as main QuickSight region (used to store configuration and identities info). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.notificationEmail">notificationEmail</a></code> | <code>string</code> | The email address that you want Amazon QuickSight to send notifications to regarding your Amazon QuickSight account or Amazon QuickSight subscription. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.readerGroup">readerGroup</a></code> | <code>string[]</code> | The reader group associated with your IAM Identity Center account. |
@@ -10776,10 +10776,10 @@ the only supported authentication method of the new Amazon QuickSight account
 ##### `authenticationMethod`<sup>Required</sup> <a name="authenticationMethod" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.authenticationMethod"></a>
 
 ```typescript
-public readonly authenticationMethod: string;
+public readonly authenticationMethod: QuickSightAuthenticationMethod;
 ```
 
-- *Type:* string
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod
 
 The method that you want to use to authenticate your Amazon QuickSight account.
 
@@ -10814,10 +10814,10 @@ The Amazon Web Services account ID of the account that you're using to create yo
 ##### `edition`<sup>Required</sup> <a name="edition" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightSubscriptionProps.property.edition"></a>
 
 ```typescript
-public readonly edition: string;
+public readonly edition: QuickSightEdition;
 ```
 
-- *Type:* string
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.QuickSightEdition
 - *Default:* ENTERPRISE is used as default.
 
 The edition of Amazon QuickSight that you want your account to have.
@@ -13692,6 +13692,48 @@ Default Node Instances for OpenSearch cluster.
 
 
 ##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+### QuickSightAuthenticationMethod <a name="QuickSightAuthenticationMethod" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod.IAM_IDENTITY_CENTER">IAM_IDENTITY_CENTER</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod.IAM_AND_QUICKSIGHT">IAM_AND_QUICKSIGHT</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod.IAM_ONLY">IAM_ONLY</a></code> | *No description.* |
+
+---
+
+##### `IAM_IDENTITY_CENTER` <a name="IAM_IDENTITY_CENTER" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod.IAM_IDENTITY_CENTER"></a>
+
+---
+
+
+##### `IAM_AND_QUICKSIGHT` <a name="IAM_AND_QUICKSIGHT" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod.IAM_AND_QUICKSIGHT"></a>
+
+---
+
+
+##### `IAM_ONLY` <a name="IAM_ONLY" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightAuthenticationMethod.IAM_ONLY"></a>
+
+---
+
+
+### QuickSightEdition <a name="QuickSightEdition" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightEdition"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.QuickSightEdition.ENTERPRISE">ENTERPRISE</a></code> | *No description.* |
+
+---
+
+##### `ENTERPRISE` <a name="ENTERPRISE" id="@cdklabs/aws-data-solutions-framework.consumption.QuickSightEdition.ENTERPRISE"></a>
 
 ---
 
