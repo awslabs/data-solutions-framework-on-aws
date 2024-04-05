@@ -321,9 +321,11 @@ export class KafkaApi extends TrackedConstruct {
   }
 
   /**
-       * internal method only
-       * @param cluster
-       */
+    * @internal
+    *
+    * internal method only
+    * @param cluster
+    */
   public _initiallizeCluster (cluster: CfnServerlessCluster | CfnCluster) {
     this.cluster = cluster;
   }
