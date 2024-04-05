@@ -20,17 +20,55 @@ export interface KafkaApiProps {
    */
   readonly removalPolicy?: RemovalPolicy;
 
+  /**
+    * The physical name of the cluster.
+    */
   readonly clusterName: string;
 
+
+  /**
+    * The ARN of the cluster
+    */
   readonly clusterArn: string;
 
+  /**
+    * The AWS security groups to associate with the elastic network interfaces in order to specify who can
+    * connect to and communicate with the Amazon MSK cluster.
+    */
   readonly brokerSecurityGroup: ISecurityGroup;
 
+  /**
+    * Defines the virtual networking environment for this cluster.
+    * Must have at least 2 subnets in two different AZs.
+    */
   readonly vpc: IVpc;
 
+  /**
+     * This is the TLS certificate of the Principal that is used by
+     * the CDK custom resource which set ACLs and Topics.
+     * The secret in AWS secrets manager must be a JSON in the following format
+     * {
+     *  "key" : "PRIVATE-KEY",
+     *  "cert" : "CERTIFICATE"
+     * }
+     *
+     * You can use the following utility to generate the certificates
+     * https://github.com/aws-samples/amazon-msk-client-authentication
+    */
   readonly certficateSecret?: ISecret;
 
+  /**
+    * Configuration properties for client authentication.
+    * MSK supports using private TLS certificates or SASL/SCRAM to authenticate the identity of clients.
+    *
+    * @default - IAM is used
+    */
   readonly clientAuthentication: ClientAuthentication;
 
+  /**
+    * The log level for the lambda that support the Custom Resource
+    * for both Managing ACLs and Topics.
+    * @default INFO
+    */
   readonly kafkaClientLogLevel?: KafkaClientLogLevel;
 }

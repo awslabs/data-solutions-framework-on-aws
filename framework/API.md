@@ -3861,6 +3861,490 @@ The security group for Client VPN Endpoint.
 ---
 
 
+### KafkaApi <a name="KafkaApi" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi"></a>
+
+A construct to create an MSK Serverless cluster.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+new streaming.msk.KafkaApi(scope: Construct, id: string, props: KafkaApiProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setAcl">setAcl</a></code> | Creates a topic in the Msk Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume"></a>
+
+```typescript
+public grantConsume(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+```
+
+Grant a principal the right to consume data from a topic.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume.parameter.id"></a>
+
+- *Type:* string
+
+the CDK resource id.
+
+---
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can produce data.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
+
+The client authentication to use when grant on resource.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume.parameter.principal"></a>
+
+- *Type:* string | aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the produce to.
+
+---
+
+###### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume.parameter.host"></a>
+
+- *Type:* string
+
+the host to which the principal can produce data.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantConsume.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce"></a>
+
+```typescript
+public grantProduce(id: string, topicName: string, clientAuthentication: Authentitcation, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+```
+
+Grant a principal to produce data to a topic.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce.parameter.id"></a>
+
+- *Type:* string
+
+the CDK resource id.
+
+---
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can produce data.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
+
+The client authentication to use when grant on resource.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce.parameter.principal"></a>
+
+- *Type:* string | aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the produce to.
+
+---
+
+###### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce.parameter.host"></a>
+
+- *Type:* string
+
+the host to which the principal can produce data.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.grantProduce.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setAcl"></a>
+
+```typescript
+public setAcl(scope: Construct, id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
+```
+
+Creates a topic in the Msk Cluster.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setAcl.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the stack where Topic will be created.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setAcl.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setAcl.parameter.aclDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Acl
+
+the Kafka Acl definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setAcl.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic"></a>
+
+```typescript
+public setTopic(scope: Construct, id: string, clientAuthentication: Authentitcation, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
+```
+
+Creates a topic in the Msk Cluster.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the stack where Topic will be created.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.Authentitcation
+
+The client authentication to use when creating the Topic.
+
+---
+
+###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.topicDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.MskTopic
+
+the Kafka topic definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.waitForLeaders"></a>
+
+- *Type:* boolean
+
+If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+
+---
+
+###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.setTopic.parameter.timeout"></a>
+
+- *Type:* number
+
+The time in ms to wait for a topic to be completely created on the controller node.
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.isConstruct"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.msk.KafkaApi.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrLambdaRole">mskIamACrudAdminCrLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrOnEventHandlerFunction">mskIamACrudAdminCrOnEventHandlerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrOnEventHandlerLogGroup">mskIamACrudAdminCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrSecurityGroup">mskIamACrudAdminCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminProviderToken">mskIamACrudAdminProviderToken</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclAdminProviderToken">mskInClusterAclAdminProviderToken</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrLambdaRole">mskInClusterAclCrLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrOnEventHandlerFunction">mskInClusterAclCrOnEventHandlerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrOnEventHandlerLogGroup">mskInClusterAclCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrSecurityGroup">mskInClusterAclCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `mskIamACrudAdminCrLambdaRole`<sup>Optional</sup> <a name="mskIamACrudAdminCrLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrLambdaRole"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrLambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `mskIamACrudAdminCrOnEventHandlerFunction`<sup>Optional</sup> <a name="mskIamACrudAdminCrOnEventHandlerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrOnEventHandlerFunction"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrOnEventHandlerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+---
+
+##### `mskIamACrudAdminCrOnEventHandlerLogGroup`<sup>Optional</sup> <a name="mskIamACrudAdminCrOnEventHandlerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrOnEventHandlerLogGroup"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrOnEventHandlerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `mskIamACrudAdminCrSecurityGroup`<sup>Optional</sup> <a name="mskIamACrudAdminCrSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminCrSecurityGroup"></a>
+
+```typescript
+public readonly mskIamACrudAdminCrSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+---
+
+##### `mskIamACrudAdminProviderToken`<sup>Optional</sup> <a name="mskIamACrudAdminProviderToken" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskIamACrudAdminProviderToken"></a>
+
+```typescript
+public readonly mskIamACrudAdminProviderToken: string;
+```
+
+- *Type:* string
+
+---
+
+##### `mskInClusterAclAdminProviderToken`<sup>Optional</sup> <a name="mskInClusterAclAdminProviderToken" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclAdminProviderToken"></a>
+
+```typescript
+public readonly mskInClusterAclAdminProviderToken: string;
+```
+
+- *Type:* string
+
+---
+
+##### `mskInClusterAclCrLambdaRole`<sup>Optional</sup> <a name="mskInClusterAclCrLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrLambdaRole"></a>
+
+```typescript
+public readonly mskInClusterAclCrLambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `mskInClusterAclCrOnEventHandlerFunction`<sup>Optional</sup> <a name="mskInClusterAclCrOnEventHandlerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrOnEventHandlerFunction"></a>
+
+```typescript
+public readonly mskInClusterAclCrOnEventHandlerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+---
+
+##### `mskInClusterAclCrOnEventHandlerLogGroup`<sup>Optional</sup> <a name="mskInClusterAclCrOnEventHandlerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrOnEventHandlerLogGroup"></a>
+
+```typescript
+public readonly mskInClusterAclCrOnEventHandlerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+---
+
+##### `mskInClusterAclCrSecurityGroup`<sup>Optional</sup> <a name="mskInClusterAclCrSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.mskInClusterAclCrSecurityGroup"></a>
+
+```typescript
+public readonly mskInClusterAclCrSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApi.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### MskProvisioned <a name="MskProvisioned" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned"></a>
 
 A construct to create an MSK Provisioned cluster.
@@ -11306,6 +11790,148 @@ public readonly tags: {[ key: string ]: string};
 - *Default:* none
 
 The tags assigned to the Virtual Cluster.
+
+---
+
+### KafkaApiProps <a name="KafkaApiProps" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps"></a>
+
+Properties for the `KafkaApi` construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const kafkaApiProps: streaming.msk.KafkaApiProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.clusterArn">clusterArn</a></code> | <code>string</code> | The ARN of the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.certficateSecret">certficateSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+
+---
+
+##### `brokerSecurityGroup`<sup>Required</sup> <a name="brokerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.brokerSecurityGroup"></a>
+
+```typescript
+public readonly brokerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster.
+
+---
+
+##### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.clientAuthentication"></a>
+
+```typescript
+public readonly clientAuthentication: ClientAuthentication;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication
+- *Default:* IAM is used
+
+Configuration properties for client authentication.
+
+MSK supports using private TLS certificates or SASL/SCRAM to authenticate the identity of clients.
+
+---
+
+##### `clusterArn`<sup>Required</sup> <a name="clusterArn" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.clusterArn"></a>
+
+```typescript
+public readonly clusterArn: string;
+```
+
+- *Type:* string
+
+The ARN of the cluster.
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+The physical name of the cluster.
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+Defines the virtual networking environment for this cluster.
+
+Must have at least 2 subnets in two different AZs.
+
+---
+
+##### `certficateSecret`<sup>Optional</sup> <a name="certficateSecret" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.certficateSecret"></a>
+
+```typescript
+public readonly certficateSecret: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics.
+
+The secret in AWS secrets manager must be a JSON in the following format
+{
+ "key" : "PRIVATE-KEY",
+ "cert" : "CERTIFICATE"
+}
+
+You can use the following utility to generate the certificates
+https://github.com/aws-samples/amazon-msk-client-authentication
+
+---
+
+##### `kafkaClientLogLevel`<sup>Optional</sup> <a name="kafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.kafkaClientLogLevel"></a>
+
+```typescript
+public readonly kafkaClientLogLevel: KafkaClientLogLevel;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel
+- *Default:* INFO
+
+The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaApiProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
