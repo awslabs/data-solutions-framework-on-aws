@@ -4,7 +4,8 @@
 import {
   KafkaClient,
   UpdateConnectivityCommand,
-  DescribeClusterCommand
+  DescribeClusterCommand,
+  DeleteVpcConnectionCommand
 } from "@aws-sdk/client-kafka";
 
 
@@ -19,12 +20,12 @@ export const onEventHandler =  async (event) => {
 
   switch (event.RequestType) {
     case 'Create':
-      let result = await onCreate(event);
-      return result;
-
     case 'Update':
+      let createResult = await onCreate(event);
+      return createResult;
+
     case 'Delete':
-      return {}
+      return {};
 
     default:
       throw new Error(`invalid request type: ${event.RequestType}`);
@@ -35,12 +36,6 @@ export const onEventHandler =  async (event) => {
 const onCreate = async (event) => {
 
   console.log(event);
-
-  if (event.RequestType == 'Delete'){
-      return {
-        IsComplete : true,
-      }
-  }
 
   const inputKafka = {
     ClusterArn: process.env.MSK_CLUSTER_ARN,
@@ -58,7 +53,7 @@ const onCreate = async (event) => {
     }
   } else {
     const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
-    await updateCluster(currentVersion);
+    await updateCluster(currentVersion, event);
 
     return {
       Data : {
@@ -78,7 +73,7 @@ export const isCompleteHandler = async (event) => {
     return {
       IsComplete : true,
     }
-}
+  }
 
   const inputKafka = {
     ClusterArn: process.env.MSK_CLUSTER_ARN,
@@ -93,7 +88,7 @@ export const isCompleteHandler = async (event) => {
     }
   } else {
     const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
-    await updateCluster(currentVersion);
+    await updateCluster(currentVersion, event);
 
     return {
       IsComplete : true
@@ -102,8 +97,10 @@ export const isCompleteHandler = async (event) => {
 
 }
 
-async function updateCluster (currentVersion) {
+async function updateCluster (currentVersion, event) {
   
+  console.log(event.ResourceProperties.Iam);
+  console.log(event.ResourceProperties.Tls);
 
   const input = { // UpdateClusterConfigurationRequest
     ClusterArn: process.env.MSK_CLUSTER_ARN, // required
@@ -119,11 +116,11 @@ async function updateCluster (currentVersion) {
               Enabled: false,
             },
             Iam: { // VpcConnectivityIam
-              Enabled: process.env.IAM === "undefined" ? false : true,
+              Enabled: event.ResourceProperties.Iam == "true" ? true : false,
             },
           },
           Tls: { // VpcConnectivityTls
-            Enabled: process.env.TLS === "undefined" ? false : true,
+            Enabled: event.ResourceProperties.Tls == "true" ? true : false,
           },
         },
       },
