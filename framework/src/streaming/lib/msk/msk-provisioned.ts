@@ -255,7 +255,7 @@ export class MskProvisioned extends TrackedConstruct {
       this.brokerAtRestEncryptionKey,
       props?.clusterName ?? 'default-msk-provisioned');
 
-    this.cluster = new CustomResource(this, 'ClusterCr', {
+    this.cluster = new CustomResource(this, 'MskCluster', {
       serviceToken: clusterProvider.serviceToken,
       resourceType: 'Custom::MskCluster',
       properties: {
