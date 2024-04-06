@@ -188,7 +188,7 @@ export function manageCluster (
 
   const lambdaPolicy = [
     new PolicyStatement({
-      actions: ['kafka:DescribeCluster'],
+      actions: ['kafka:DescribeCluster', 'kafka:UpdateSecurity'],
       resources: [
         `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
       ],
@@ -202,7 +202,7 @@ export function manageCluster (
     new PolicyStatement({
       actions: ['kafka:DeleteCluster'],
       resources: [
-       `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/`,
+       `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
       ],
     }),
     new PolicyStatement({
@@ -304,15 +304,28 @@ export function manageCluster (
       depsLockFilePath: path.join(__dirname, './resources/lambdas/manageCluster/package-lock.json'),
       entryFile: path.join(__dirname, './resources/lambdas/manageCluster/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
+      bundling: {
+        nodeModules: [
+          'lodash',
+        ]
+      }
     },
     isCompleteHandlerDefinition: {
       handler: 'index.isCompleteHandler',
       depsLockFilePath: path.join(__dirname, './resources/lambdas/manageCluster/package-lock.json'),
       entryFile: path.join(__dirname, './resources/lambdas/manageCluster/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
+      bundling: {
+        nodeModules: [
+          'lodash',
+        ]
+      }
     },
+    vpc: vpc,
+    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+    securityGroups: [securityGroupUpdateConnectivity],
     removalPolicy,
-    queryTimeout: Duration.minutes(45),
+    queryTimeout: Duration.minutes(59),
     queryInterval: Duration.minutes(1),
   });
 
@@ -420,7 +433,7 @@ export function updateClusterConnectivity (
     subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
     securityGroups: [securityGroupUpdateConnectivity],
     removalPolicy,
-    queryTimeout: Duration.minutes(45),
+    queryTimeout: Duration.minutes(59),
     queryInterval: Duration.seconds(30),
   });
 
