@@ -45,21 +45,17 @@ const onCreate = async (event) => {
 
   if (responseKafka.ClusterInfo.State !== "ACTIVE") {
     return {
-      Data : {
-        clusterState: responseKafka.ClusterInfo.State,
-        IsComplete : false,
-      }
-    }
+      IsPreviousUpdateRunning: true,
+      UpdateVpcConnectivity: false,
+    };
   } else {
     const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
     await updateCluster(currentVersion, event);
 
     return {
-      Data : {
-        clusterState: responseKafka.ClusterInfo.State,
-        IsComplete : true,
-      }
-    }
+      IsPreviousUpdateRunning: false,
+      UpdateVpcConnectivity: true,
+    };
   }
 
 }
@@ -81,16 +77,30 @@ export const isCompleteHandler = async (event) => {
   let commandKafka = new DescribeClusterCommand(inputKafka);
   let responseKafka = await clientKafka.send(commandKafka);
 
-  if (responseKafka.ClusterInfo.State !== "ACTIVE") {
+  if (responseKafka.ClusterInfo.State !== "ACTIVE" && event.IsPreviousUpdateRunning) {
     return {
+      UpdateVpcConnectivity: false,
       IsComplete: false,
     }
-  } else {
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.IsPreviousUpdateRunning) {
     const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
     await updateCluster(currentVersion, event);
 
     return {
+      UpdateVpcConnectivity: true,
+      IsPreviousUpdateRunning: false,
+      IsComplete : false,
+    }
+  } else if (responseKafka.ClusterInfo.State == "FAILED") {
+    throw new Error("Cluster is in FAIL state");
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.UpdateVpcConnectivity == true) {
+    return {
       IsComplete : true
+    }
+  }
+  else {
+    return {
+      IsComplete : false,
     }
   }
 
