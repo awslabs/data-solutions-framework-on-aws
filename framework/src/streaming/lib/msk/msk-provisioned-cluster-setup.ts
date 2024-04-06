@@ -196,7 +196,13 @@ export function manageCluster (
     new PolicyStatement({
       actions: ['kafka:CreateClusterV2'],
       resources: [
-       '*'
+       '*',
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kafka:DeleteCluster'],
+      resources: [
+       '*',
       ],
     }),
     new PolicyStatement({
@@ -223,12 +229,13 @@ export function manageCluster (
     new PolicyStatement({
       actions: [ 
         'ec2:DescribeVpcs', 
-      'ec2:DescribeVpcEndpoints', 
-      'ec2:DescribeVpcAttribute', 
-      'ec2:DescribeSecurityGroups', 
-      'ec2:DeleteVpcEndpoints',
-      'ec2:CreateVpcEndpoint',
-      'ec2:CreateTags'],
+        'ec2:DescribeVpcEndpoints', 
+        'ec2:DescribeVpcAttribute', 
+        'ec2:DescribeSecurityGroups', 
+        'ec2:DeleteVpcEndpoints',
+        'ec2:CreateVpcEndpoint',
+        'ec2:CreateTags',
+    ],
       resources: ['*'],
     }),
     new PolicyStatement({
