@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { Duration, FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CustomResource, Duration, FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
@@ -26,7 +25,7 @@ export function monitoringSetup(
   scope: Construct,
   id: string,
   removalPolicy: RemovalPolicy,
-  brokerLoggingProps?: BrokerLogging): [CfnCluster.LoggingInfoProperty, ILogGroup?] {
+  brokerLoggingProps?: BrokerLogging): [any, ILogGroup?] {
 
 
   const loggingBucket = brokerLoggingProps?.s3?.bucket;
@@ -99,20 +98,20 @@ export function monitoringSetup(
   }
 
   const loggingInfo = {
-    brokerLogs: {
-      cloudWatchLogs: {
-        enabled: createBrokerLogGroup ? createBrokerLogGroup : brokerLoggingProps?.cloudwatchLogGroup !== undefined,
-        logGroup: createBrokerLogGroup ? brokerLogGroup!.logGroupName : brokerLoggingProps?.cloudwatchLogGroup?.logGroupName,
+    BrokerLogs: {
+      CloudWatchLogs: {
+        Enabled: createBrokerLogGroup ? createBrokerLogGroup : brokerLoggingProps?.cloudwatchLogGroup !== undefined,
+        LogGroup: createBrokerLogGroup ? brokerLogGroup!.logGroupName : brokerLoggingProps?.cloudwatchLogGroup?.logGroupName,
       },
-      firehose: {
-        enabled: brokerLoggingProps?.firehoseDeliveryStreamName !==
-          undefined,
-        deliveryStream: brokerLoggingProps?.firehoseDeliveryStreamName,
+      Firehose: {
+        Enabled: brokerLoggingProps?.firehoseDeliveryStreamName !==
+          undefined ? true : false,
+        DeliveryStream: brokerLoggingProps?.firehoseDeliveryStreamName,
       },
-      s3: {
-        enabled: loggingBucket !== undefined,
-        bucket: loggingBucket?.bucketName,
-        prefix: brokerLoggingProps?.s3?.prefix,
+      S3: {
+        Enabled: loggingBucket !== undefined ? true : false,
+        Bucket: loggingBucket?.bucketName,
+        Prefix: brokerLoggingProps?.s3?.prefix,
       },
     },
   };
@@ -130,7 +129,7 @@ export function monitoringSetup(
 
 export function clientAuthenticationSetup(
   clientAuthenticationProps?: ClientAuthentication):
-  [CfnCluster.ClientAuthenticationProperty, boolean, boolean] {
+  [any, boolean, boolean] {
 
   let clientAuthentication;
 
@@ -139,11 +138,12 @@ export function clientAuthenticationSetup(
 
   if (clientAuthenticationProps?.tlsProps && clientAuthenticationProps?.saslProps?.iam) {
     clientAuthentication = {
-      sasl: { iam: { enabled: clientAuthenticationProps.saslProps.iam } },
-      tls: {
-        certificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities?.map(
+      Sasl: { Iam: { Enabled: clientAuthenticationProps.saslProps.iam }, Scram: { Enabled: false } },
+      Tls: {
+        CertificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities?.map(
           (ca) => ca.certificateAuthorityArn,
         ),
+        Enabled: true,
       },
     };
     inClusterAcl = true;
@@ -152,16 +152,17 @@ export function clientAuthenticationSetup(
     clientAuthenticationProps?.tlsProps?.certificateAuthorities !== undefined
   ) {
     clientAuthentication = {
-      tls: {
-        certificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities.map(
+      Tls: {
+        CertificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities.map(
           (ca) => ca.certificateAuthorityArn,
         ),
+        Enabled: true,
       },
     };
     inClusterAcl = true;
   } else {
     clientAuthentication = {
-      sasl: { iam: { enabled: true } },
+      Sasl: { Iam: { Enabled: true }, Scram: { Enabled: false } },
     };
     iamAcl = true;
   }
@@ -172,9 +173,151 @@ export function clientAuthenticationSetup(
 /**
  * @internal
  */
+export function manageCluster (
+  scope :Construct,
+  vpc: IVpc,
+  subnetSelectionIds: string[],
+  removalPolicy: RemovalPolicy,
+  brokerAtRestEncryptionKey: IKey,
+  clusterName: string,
+  ) : DsfProvider {
+
+  let region = Stack.of(scope).region;
+  let account = Stack.of(scope).account;
+  let partition = Stack.of(scope).partition;
+
+  const lambdaPolicy = [
+    new PolicyStatement({
+      actions: ['kafka:DescribeCluster'],
+      resources: [
+        `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kafka:CreateClusterV2'],
+      resources: [
+       '*'
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kms:CreateGrant', 'kms:DescribeKey'],
+      resources: [
+        brokerAtRestEncryptionKey.keyArn,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['ec2:DescribeRouteTables', 'ec2:DescribeSubnets'],
+      resources: ['*'],
+      conditions: {
+        StringEquals: {
+          'ec2:Region': [
+            Stack.of(scope).region,
+          ],
+        },
+      },
+    }),
+    new PolicyStatement({
+      actions: [ 'iam:AttachRolePolicy', 'iam:CreateServiceLinkedRole', 'iam:PutRolePolicy' ],
+      resources: ['*'],
+    }),
+    new PolicyStatement({
+      actions: [ 
+        'ec2:DescribeVpcs', 
+      'ec2:DescribeVpcEndpoints', 
+      'ec2:DescribeVpcAttribute', 
+      'ec2:DescribeSecurityGroups', 
+      'ec2:DeleteVpcEndpoints',
+      'ec2:CreateVpcEndpoint',
+      'ec2:CreateTags'],
+      resources: ['*'],
+    }),
+    new PolicyStatement({
+      actions: [
+        'acm-pca:GetCertificateAuthorityCertificate'
+      ],
+      resources: ['*'],
+    }),
+    new PolicyStatement({
+      actions: ['iam:PassRole'],
+      resources: ['*'],
+      conditions: {
+        StringEquals: {
+          "iam:PassedToService": "kafka.amazonaws.com"
+        }
+      }
+    }),
+    new PolicyStatement({
+      actions: [
+        "logs:CreateLogDelivery",
+    		"logs:GetLogDelivery",
+    		"logs:UpdateLogDelivery",
+    		"logs:DeleteLogDelivery",
+    		"logs:ListLogDeliveries",
+    		"logs:PutResourcePolicy",
+    		"logs:DescribeResourcePolicies",
+    		"logs:DescribeLogGroups",
+    		"S3:GetBucketPolicy",
+    		"firehose:TagDeliveryStream"
+      ],
+      resources: ['*'],
+    }),
+  ];
+
+  //Attach policy to IAM Role
+  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'ManageClusterLambdaExecutionRolePolicy', {
+    statements: lambdaPolicy,
+    description: 'Policy for managing MSK cluster',
+  });
+
+  let securityGroupUpdateConnectivity = new SecurityGroup(scope, 'ManageClusterLambdaSecurityGroup', {
+    vpc: vpc,
+    allowAllOutbound: true,
+  });
+
+  const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(scope,
+    securityGroupUpdateConnectivity,
+    subnetSelectionIds,
+    'vpcPolicyLambdaManageCluster');
+
+  let roleUpdateConnectivityLambda = new Role(scope, 'ManageClusterLambdaExecutionRole', {
+    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+  });
+
+  roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
+  roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
+
+  const logGroupUpdateConnectivityLambda = createLogGroup(scope, 'ManageClusterLambdaLogGroup', removalPolicy);
+
+  logGroupUpdateConnectivityLambda.grantWrite(roleUpdateConnectivityLambda);
+
+  const provider = new DsfProvider(scope, 'ManageClusterProvider', {
+    providerName: 'update-connectivity',
+    onEventHandlerDefinition: {
+      handler: 'index.onEventHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/manageCluster/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/manageCluster/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+    },
+    isCompleteHandlerDefinition: {
+      handler: 'index.isCompleteHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/manageCluster/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/manageCluster/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+    },
+    removalPolicy,
+    queryTimeout: Duration.minutes(45),
+    queryInterval: Duration.minutes(1),
+  });
+
+  return provider;
+}
+
+/**
+ * @internal
+ */
 export function updateClusterConnectivity (
   scope :Construct,
-  cluster: CfnCluster,
+  cluster: CustomResource,
   vpc: IVpc,
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
@@ -185,13 +328,13 @@ export function updateClusterConnectivity (
     new PolicyStatement({
       actions: ['kafka:DescribeCluster'],
       resources: [
-        cluster.attrArn,
+        cluster.getAttString('Arn'),
       ],
     }),
     new PolicyStatement({
       actions: ['kafka:UpdateConnectivity'],
       resources: [
-        cluster.attrArn,
+        cluster.getAttString('Arn'),
       ],
     }),
     new PolicyStatement({
@@ -248,7 +391,7 @@ export function updateClusterConnectivity (
       entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
-        MSK_CLUSTER_ARN: cluster.attrArn,
+        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
         REGION: Stack.of(scope).region,
         IAM: String(vpcConnectivity?.saslProps?.iam),
         TLS: String(vpcConnectivity?.tlsProps?.tls),
@@ -260,7 +403,7 @@ export function updateClusterConnectivity (
       entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
-        MSK_CLUSTER_ARN: cluster.attrArn,
+        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
         REGION: Stack.of(scope).region,
         IAM: String(vpcConnectivity?.saslProps?.iam),
         TLS: String(vpcConnectivity?.tlsProps?.tls),
