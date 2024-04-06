@@ -202,7 +202,7 @@ export function manageCluster (
     new PolicyStatement({
       actions: ['kafka:DeleteCluster'],
       resources: [
-       '*',
+       `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/`,
       ],
     }),
     new PolicyStatement({

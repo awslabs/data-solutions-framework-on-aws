@@ -113,9 +113,12 @@ const onCreate = async (event) => {
         BrokerLogs: {
           S3: {
             Enabled: event.ResourceProperties.loggingInfo.BrokerLogs.S3.Enabled == "true" ? true : false,
+            Bucket: event.ResourceProperties.loggingInfo.BrokerLogs.S3.Bucket,
+            Prefix: event.ResourceProperties.loggingInfo.BrokerLogs.S3.Prefix
           },
           Firehose: {
             Enabled: event.ResourceProperties.loggingInfo.BrokerLogs.Firehose.Enabled == "true" ? true : false,
+            DeliveryStream: event.ResourceProperties.loggingInfo.BrokerLogs.Firehose.DeliveryStream 
           },
           CloudWatchLogs: {
             LogGroup: event.ResourceProperties.loggingInfo.BrokerLogs.CloudWatchLogs.LogGroup,
