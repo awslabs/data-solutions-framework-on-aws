@@ -11,13 +11,13 @@ import { IPrincipal, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincip
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
-import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
+import { CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
-import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity } from './msk-provisioned-cluster-setup';
+import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, manageCluster } from './msk-provisioned-cluster-setup';
 import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
@@ -67,7 +67,7 @@ export class MskProvisioned extends TrackedConstruct {
   /**
    * The MSK cluster created by the construct
    */
-  public readonly cluster: CfnCluster;
+  public readonly cluster: CustomResource;
   /**
    * The VPC created by the construct or the one passed to it
    */
@@ -202,38 +202,37 @@ export class MskProvisioned extends TrackedConstruct {
       this.brokerAtRestEncryptionKey = props.ebsStorageInfo.encryptionKey;
     }
 
-    const encryptionAtRest = {
-      dataVolumeKmsKeyId:
-        this.brokerAtRestEncryptionKey.keyId,
-    };
-
-
     this.mskBrokerinstanceType = props?.mskBrokerinstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
 
     const openMonitoring =
       props?.monitoring?.enablePrometheusJmxExporter ||
         props?.monitoring?.enablePrometheusNodeExporter
         ? {
-          prometheus: {
-            jmxExporter: props.monitoring?.enablePrometheusJmxExporter
-              ? { enabledInBroker: true }
-              : undefined,
-            nodeExporter: props.monitoring
+          Prometheus: {
+            JmxExporter: props.monitoring?.enablePrometheusJmxExporter
+              ? { EnabledInBroker: true }
+              : { EnabledInBroker: false },
+            NodeExporter: props.monitoring
               ?.enablePrometheusNodeExporter
-              ? { enabledInBroker: true }
-              : undefined,
+              ? { EnabledInBroker: true }
+              : { EnabledInBroker: false },
           },
         }
-        : undefined;
+        : {
+          Prometheus: {
+            JmxExporter: { EnabledInBroker: false },
+            NodeExporter: { EnabledInBroker: false },
+          },
+        };
 
     this.inClusterAcl = false;
     this.iamAcl = false;
 
-    let clientAuthentication: CfnCluster.ClientAuthenticationProperty;
+    let clientAuthentication;
 
     [clientAuthentication, this.inClusterAcl, this.iamAcl] = clientAuthenticationSetup(props?.clientAuthentication);
 
-    let loggingInfo: CfnCluster.LoggingInfoProperty;
+    let loggingInfo;
 
     [loggingInfo, this.brokerCloudWatchLogGroup] = monitoringSetup(this, id, this.removalPolicy, props?.logging);
 
@@ -248,38 +247,50 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.deploymentClusterVersion = props?.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
 
-    this.cluster = new CfnCluster(this, 'mskProvisionedCluster', {
-      clusterName: props?.clusterName ?? 'default-msk-provisioned',
-      kafkaVersion: this.deploymentClusterVersion.version,
-      numberOfBrokerNodes: this.numberOfBrokerNodes,
-      brokerNodeGroupInfo: {
-        instanceType: `kafka.${this.mskBrokerinstanceType.instance.toString()}`,
-        clientSubnets: this.subnetSelectionIds,
-        securityGroups: this.connections.securityGroups.map(
-          (group) => group.securityGroupId,
-        ),
-        storageInfo: {
-          ebsStorageInfo: {
-            volumeSize: volumeSize,
+    let clusterProvider = manageCluster(
+      this,
+      this.vpc,
+      this.subnetSelectionIds,
+      this.removalPolicy,
+      this.brokerAtRestEncryptionKey,
+      props?.clusterName ?? 'default-msk-provisioned');
+
+    this.cluster = new CustomResource(this, 'ClusterCr', {
+      serviceToken: clusterProvider.serviceToken,
+      resourceType: 'Custom::MskCluster',
+      properties: {
+        clusterName: props?.clusterName ?? 'default-msk-provisioned',
+        kafkaVersion: this.deploymentClusterVersion.version,
+        numberOfBrokerNodes: this.numberOfBrokerNodes,
+        brokerNodeGroupInfo: {
+          InstanceType: `kafka.${this.mskBrokerinstanceType.instance.toString()}`,
+          BrokerAZDistribution: "DEFAULT",
+          ClientSubnets: this.subnetSelectionIds,
+          SecurityGroups: this.connections.securityGroups.map(
+            (group) => group.securityGroupId,
+          ),
+          StorageInfo: {
+            EbsStorageInfo: {
+              VolumeSize: volumeSize,
+            },
           },
         },
-      },
-      encryptionInfo: {
-        encryptionAtRest,
-        encryptionInTransit: {
-          inCluster: true,
-          clientBroker: 'TLS',
+        encryptionInfo: {
+          EncryptionAtRest: {
+            DataVolumeKmsKeyId: this.brokerAtRestEncryptionKey.keyId,
+          },
+          EncryptionInTransit: {
+            InCluster: true,
+            ClientBroker: 'TLS',
+          },
         },
+        enhancedMonitoring: props?.monitoring?.clusterMonitoringLevel ? props?.monitoring?.clusterMonitoringLevel : 'DEFAULT',
+        openMonitoring: openMonitoring,
+        storageMode: props?.storageMode ? props?.storageMode : 'LOCAL',
+        loggingInfo: loggingInfo,
+        clientAuthentication: clientAuthentication,
       },
-      enhancedMonitoring: props?.monitoring?.clusterMonitoringLevel,
-      openMonitoring: openMonitoring,
-      storageMode: props?.storageMode,
-      loggingInfo: loggingInfo,
-      clientAuthentication: clientAuthentication,
     });
-
-    this.cluster.applyRemovalPolicy(this.removalPolicy);
-
 
     //The section below address a best practice to change the zookeper security group
     //To an indepenedent one
@@ -295,13 +306,13 @@ export class MskProvisioned extends TrackedConstruct {
       vpc: this.vpc,
     });
 
-    this.cluster.node.addDependency(zooKeeperSecurityGroup);
+    //this.cluster.node.addDependency(zooKeeperSecurityGroup);
 
     const lambdaPolicy = [
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
         resources: [
-          this.cluster.attrArn,
+          this.cluster.getAttString('Arn'),
         ],
       }),
       new PolicyStatement({
@@ -342,7 +353,7 @@ export class MskProvisioned extends TrackedConstruct {
       allowAllOutbound: true,
     });
 
-    this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
+    //this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
 
     const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(this,
       this.securityGroupUpdateZookepeerLambda,
@@ -365,7 +376,7 @@ export class MskProvisioned extends TrackedConstruct {
       code: Code.fromAsset(join(__dirname, './resources/lambdas/zooKeeperSecurityGroupUpdate')),
       runtime: Runtime.NODEJS_20_X,
       environment: {
-        MSK_CLUSTER_ARN: this.cluster.attrArn,
+        MSK_CLUSTER_ARN: this.cluster.getAttString('Arn'),
         REGION: this.region,
         VPC_ID: this.vpc.vpcId,
         SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
@@ -387,8 +398,8 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
-      clusterName: this.cluster.clusterName,
-      clusterArn: this.cluster.attrArn,
+      clusterName: this.cluster.getAttString('ClusterName'),
+      clusterArn: this.cluster.getAttString('Arn'),
       certficateSecret: props?.certificateDefinition?.secretCertificate,
       brokerSecurityGroup: this.connections.securityGroups[0],
       clientAuthentication: props?.clientAuthentication ?? ClientAuthentication.sasl({ iam: true }),
@@ -531,8 +542,6 @@ export class MskProvisioned extends TrackedConstruct {
       cr.node.addDependency(this.aclOperationCr!);
     }
 
-    cr.node.addDependency(this.cluster);
-
     return cr;
   }
 
@@ -572,8 +581,6 @@ export class MskProvisioned extends TrackedConstruct {
       cr.node.addDependency(this.aclDeleteTopic!);
       cr.node.addDependency(this.aclCreateTopic!);
     }
-
-    cr.node.addDependency(this.cluster);
 
     return cr;
   }
@@ -664,13 +671,13 @@ export class MskProvisioned extends TrackedConstruct {
         service: 'Kafka',
         action: 'putClusterPolicy',
         parameters: {
-          ClusterArn: this.cluster.attrArn,
+          ClusterArn: this.cluster.getAttString('Arn'),
           CurrentVersion: currentVersion,
           Policy: policy,
         },
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.cluster.attrArn],
+        resources: [this.cluster.getAttString('Arn')],
       }),
       installLatestAwsSdk: false,
     });
@@ -691,11 +698,11 @@ export class MskProvisioned extends TrackedConstruct {
         service: 'Kafka',
         action: 'deleteClusterPolicy',
         parameters: {
-          ClusterArn: this.cluster.attrArn,
+          ClusterArn: this.cluster.getAttString('Arn'),
         },
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.cluster.attrArn],
+        resources: [this.cluster.getAttString('Arn')],
       }),
       installLatestAwsSdk: false,
     });
@@ -816,7 +823,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     aclBroker.node.addDependency(aclOperation);
     aclTopicCreate.node.addDependency(aclOperation);
-    aclTopicCreate.node.addDependency(aclOperation);
+    aclTopicDelete.node.addDependency(aclOperation);
 
 
     aclsResources.push(aclBroker);
@@ -833,7 +840,7 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   private setClusterConfiguration(
-    cluster: CfnCluster,
+    cluster: CustomResource,
     configuration: ClusterConfigurationInfo,
     aclsResources: CustomResource[],
     brokerAtRestEncryptionKey: IKey): [
@@ -857,7 +864,7 @@ export class MskProvisioned extends TrackedConstruct {
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
         resources: [
-          cluster.attrArn,
+          cluster.getAttString('Arn'),
         ],
       }),
       new PolicyStatement({
@@ -870,7 +877,7 @@ export class MskProvisioned extends TrackedConstruct {
         actions: ['kafka:UpdateClusterConfiguration'],
         resources: [
           configuration.arn,
-          cluster.attrArn,
+          cluster.getAttString('Arn'),
         ],
       }),
       new PolicyStatement({
@@ -903,7 +910,7 @@ export class MskProvisioned extends TrackedConstruct {
       runtime: Runtime.NODEJS_20_X,
       environment: {
         MSK_CONFIGURATION_ARN: configuration.arn,
-        MSK_CLUSTER_ARN: cluster.attrArn,
+        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
       },
       role: lambdaRole,
       timeout: Duration.seconds(20),
@@ -946,12 +953,12 @@ export class MskProvisioned extends TrackedConstruct {
         service: 'Kafka',
         action: 'getBootstrapBrokers',
         parameters: {
-          ClusterArn: this.cluster.attrArn,
+          ClusterArn: this.cluster.getAttString('Arn'),
         },
         physicalResourceId: PhysicalResourceId.of('BootstrapBrokers'),
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.cluster.attrArn],
+        resources: [this.cluster.getAttString('Arn')],
       }),
       installLatestAwsSdk: false,
     });
