@@ -87,6 +87,8 @@ export const isCompleteHandler = async (event) => {
       IsComplete: false,
     };
   } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.currentVersion  != responseKafka.ClusterInfo.CurrentVersion) {
+    console.log("=====Cluster Connectivity Update Completed =====");
+    
     return {
       IsComplete : true
     };
