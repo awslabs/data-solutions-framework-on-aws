@@ -8,9 +8,11 @@ import {
   DeleteClusterCommand
 } from "@aws-sdk/client-kafka";
 
+import { onUpdate } from './updateCluster.mjs';
 
 const clientKafka = new KafkaClient();
 
+let describeClusterResult;
 
 // Handler functions
 export const onEventHandler = async (event) => {
@@ -20,20 +22,31 @@ export const onEventHandler = async (event) => {
 
   switch (event.RequestType) {
     case 'Create':
+
       console.log(JSON.stringify(event, null, 2));
       console.log(JSON.stringify(event.ResourceProperties, null, 2));
       let result = await onCreate(event);
+
       return {
         PhysicalResourceId: result.ClusterArn,
       };
+
     case 'Update':
+
+      describeClusterResult = await describeCluster(clientKafka, event.PhysicalResourceId);
+
+      if (describeClusterResult.ClusterInfo.State == "ACTIVE") {
+        await onUpdate(clientKafka, event);
+        return {};
+      } else {
+        throw new Error(`Cluster is not in active state, cluster state is ${describeClusterResult.ClusterInfo.State}, cannot apply update`);
+      }
 
     case 'Delete':
 
       const inputKafka = {
         ClusterArn: event.PhysicalResourceId,
       };
-
 
       let commandKafka = new DescribeClusterCommand(inputKafka);
       let responseKafka = await clientKafka.send(commandKafka);
@@ -49,8 +62,6 @@ export const onEventHandler = async (event) => {
       return {
         PhysicalResourceId: response.ClusterArn,
       }
-
-
 
     default:
       throw new Error(`invalid request type: ${event.RequestType}`);
@@ -145,24 +156,49 @@ export const isCompleteHandler = async (event) => {
   console.info('isCompleteHandler Invocation');
   console.info(event);
 
-  const inputKafka = {
-    ClusterArn: event.PhysicalResourceId,
-  };
+  if (event.RequestType == "Update") {
 
-  try {
+    describeClusterResult = await describeCluster(clientKafka, event.PhysicalResourceId);
 
-    let commandKafka = new DescribeClusterCommand(inputKafka);
-    let responseKafka = await clientKafka.send(commandKafka);
+    if (describeClusterResult.ClusterInfo.State == "ACTIVE") {
 
-    if (responseKafka.ClusterInfo.State == "ACTIVE") {
       return {
         IsComplete: true,
         Data: {
-          Arn: responseKafka.ClusterInfo.ClusterArn,
-          ClusterName: responseKafka.ClusterInfo.ClusterName,
+          Arn: describeClusterResult.ClusterInfo.ClusterArn,
+          ClusterName: describeClusterResult.ClusterInfo.ClusterName,
         }
       }
-    } else if (responseKafka.ClusterInfo.State == "FAILED") {
+
+    } else if (describeClusterResult.ClusterInfo.State == "UPDATING") {
+      return {
+        IsComplete: false,
+      }
+    }
+    else if (describeClusterResult.ClusterInfo.State == "FAILED") {
+      throw new Error("Cluster in failed state");
+    }
+    else {
+      return {
+        IsComplete: false,
+      }
+    }
+
+  }
+
+  try {
+
+    describeClusterResult = await describeCluster(clientKafka, event.PhysicalResourceId);
+
+    if (describeClusterResult.ClusterInfo.State == "ACTIVE") {
+      return {
+        IsComplete: true,
+        Data: {
+          Arn: describeClusterResult.ClusterInfo.ClusterArn,
+          ClusterName: describeClusterResult.ClusterInfo.ClusterName,
+        }
+      }
+    } else if (describeClusterResult.ClusterInfo.State == "FAILED") {
       throw new Error("Cluster in failed state");
     } else {
       return {
@@ -182,4 +218,18 @@ export const isCompleteHandler = async (event) => {
     }
   }
 
+}
+
+async function describeCluster(clientKafka, clusterArn) {
+
+  const input = {
+    ClusterArn: clusterArn,
+  };
+
+  const command = new DescribeClusterCommand(input);
+  const response = await clientKafka.send(command);
+
+  console.log(response);
+
+  return response;
 }
