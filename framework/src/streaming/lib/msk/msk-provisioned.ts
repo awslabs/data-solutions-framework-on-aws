@@ -421,7 +421,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     //If TLS or SASL/SCRAM (once implemented)
     //Set up the CR that will set the ACL using the Certs or Username/Password
-    if (clientAuthentication.tls) {
+    if (clientAuthentication.Tls) {
 
       if (!props?.certificateDefinition) {
         throw new Error('TLS Authentication requires a certificate definition');
