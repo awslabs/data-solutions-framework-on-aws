@@ -4782,7 +4782,7 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerAtRestEncryptionKey">brokerAtRestEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key created by the construct for the brokers When no KMS key is passed. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogUpdateZookepeerLambda">cloudwatchlogUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | The MSK cluster created by the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.CustomResource</code> | The MSK cluster created by the construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleUpdateZookepeerLambda">roleUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupUpdateZookepeerLambda">securityGroupUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC created by the construct or the one passed to it. |
@@ -4844,10 +4844,10 @@ public readonly cloudwatchlogUpdateZookepeerLambda: ILogGroup;
 ##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster"></a>
 
 ```typescript
-public readonly cluster: CfnCluster;
+public readonly cluster: CustomResource;
 ```
 
-- *Type:* aws-cdk-lib.aws_msk.CfnCluster
+- *Type:* aws-cdk-lib.CustomResource
 
 The MSK cluster created by the construct.
 

@@ -7,7 +7,7 @@ import { ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, IRole } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
-import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { KafkaApiProps } from './kafka-api-props';
@@ -48,7 +48,7 @@ export class KafkaApi extends TrackedConstruct {
   private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly tlsCertifacateSecret?: ISecret;
   private readonly clusterArn: string;
-  private cluster?: CfnCluster | CfnServerlessCluster;
+  private cluster?:  CfnServerlessCluster | CustomResource;
 
 
   /**
@@ -326,7 +326,7 @@ export class KafkaApi extends TrackedConstruct {
     * internal method only
     * @param cluster
     */
-  public _initiallizeCluster (cluster: CfnServerlessCluster | CfnCluster) {
+  public _initiallizeCluster (cluster: CfnServerlessCluster | CustomResource) {
     this.cluster = cluster;
   }
 

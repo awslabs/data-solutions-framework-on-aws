@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy, Stack, Aws, Fn } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, Aws, Fn, CustomResource } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, ISecurityGroup, CfnSecurityGroupIngress } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { CfnCluster, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
@@ -16,7 +16,7 @@ export function mskIamCrudProviderSetup(
   vpc: IVpc,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string,
-  clusterName: string) : DsfProvider {
+  clusterName: string): DsfProvider {
 
   let account = Stack.of(scope).account;
   let region = Stack.of(scope).region;
@@ -112,7 +112,7 @@ export function mskAclAdminProviderSetup(
   vpc: IVpc,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string,
-  secret: ISecret) : DsfProvider {
+  secret: ISecret): DsfProvider {
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskAclAdminCr', {
     vpc,
@@ -185,23 +185,37 @@ export function mskAclAdminProviderSetup(
 
 }
 
-export function grantConsumeIam (
+export function grantConsumeIam(
   topicName: string,
   principal: IPrincipal,
-  cluster?: CfnCluster | CfnServerlessCluster,
+  cluster?: CfnServerlessCluster | CustomResource,
   clusterArn?: string) {
 
   let clusterUuid = undefined;
   let clusterName = undefined;
-  let _clusterArn = cluster?.attrArn ?? clusterArn;
+  let _clusterArn = undefined;
 
-  if (cluster) {
+
+  if (cluster instanceof CfnServerlessCluster) {
+    _clusterArn = cluster.attrArn;
+  } else if (cluster instanceof CustomResource) {
+    _clusterArn = cluster.getAttString('Arn');
+  } else {
+    _clusterArn = clusterArn;
+  }
+
+  //Check the type of cluster
+  if (cluster instanceof CfnServerlessCluster) {
     clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
     clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
+  } else if (cluster instanceof CustomResource) {
+    clusterName = Fn.select(1, Fn.split('/', cluster.getAttString('Arn')));
+    clusterUuid = Fn.select(2, Fn.split('/', cluster.getAttString('Arn')));
   } else {
     clusterName = clusterArn?.split('/')[1];
     clusterUuid = clusterArn?.split('/')[2];
   }
+
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
       'kafka-cluster:Connect',
@@ -235,19 +249,32 @@ export function grantConsumeIam (
 
 }
 
-export function grantProduceIam (
+export function grantProduceIam(
   topicName: string,
   principal: IPrincipal,
-  cluster?: CfnCluster | CfnServerlessCluster,
+  cluster?: CfnServerlessCluster | CustomResource,
   clusterArn?: string) {
 
   let clusterUuid = undefined;
   let clusterName = undefined;
-  let _clusterArn = cluster?.attrArn ?? clusterArn;
+  let _clusterArn = undefined;
 
-  if (cluster) {
+
+  if (cluster instanceof CfnServerlessCluster) {
+    _clusterArn = cluster.attrArn;
+  } else if (cluster instanceof CustomResource) {
+    _clusterArn = cluster.getAttString('Arn');
+  } else {
+    _clusterArn = clusterArn;
+  }
+
+  //Check the type of cluster
+  if (cluster instanceof CfnServerlessCluster) {
     clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
     clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
+  } else if (cluster instanceof CustomResource) {
+    clusterName = Fn.select(1, Fn.split('/', cluster.getAttString('Arn')));
+    clusterUuid = Fn.select(2, Fn.split('/', cluster.getAttString('Arn')));
   } else {
     clusterName = clusterArn?.split('/')[1];
     clusterUuid = clusterArn?.split('/')[2];
