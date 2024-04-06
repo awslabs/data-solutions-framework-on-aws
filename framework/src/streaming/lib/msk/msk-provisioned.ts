@@ -306,7 +306,7 @@ export class MskProvisioned extends TrackedConstruct {
       vpc: this.vpc,
     });
 
-    //this.cluster.node.addDependency(zooKeeperSecurityGroup);
+    this.cluster.node.addDependency(zooKeeperSecurityGroup);
 
     const lambdaPolicy = [
       new PolicyStatement({
@@ -542,6 +542,8 @@ export class MskProvisioned extends TrackedConstruct {
       cr.node.addDependency(this.aclOperationCr!);
     }
 
+    cr.node.addDependency(this.cluster);
+
     return cr;
   }
 
@@ -581,6 +583,8 @@ export class MskProvisioned extends TrackedConstruct {
       cr.node.addDependency(this.aclDeleteTopic!);
       cr.node.addDependency(this.aclCreateTopic!);
     }
+
+    cr.node.addDependency(this.cluster);
 
     return cr;
   }
