@@ -77,15 +77,15 @@ const onCreate = async (event) => {
       ClientAuthentication: {
         Sasl: {
           Iam: {
-            Enabled: event.ResourceProperties.clientAuthentication.Sasl.Iam.Enabled == "true" ? true : false,
+            Enabled: event.ResourceProperties.clientAuthentication.Sasl?.Iam?.Enabled == "true" ? true : false,
           },
           Scram: {
-            Enabled: event.ResourceProperties.clientAuthentication.Sasl.Scram.Enabled == "true" ? true : false,
+            Enabled: event.ResourceProperties.clientAuthentication.Sasl?.Scram?.Enabled == "true" ? true : false,
           }
         },
         Tls: {
           CertificateAuthorityArnList: event.ResourceProperties.clientAuthentication.Tls.CertificateAuthorityArnList,
-          Enabled: event.ResourceProperties.clientAuthentication.Tls.Enabled == "true" ? true : false,
+          Enabled: event.ResourceProperties.clientAuthentication.Tls?.Enabled == "true" ? true : false,
         }
       },
       EncryptionInfo: {
@@ -112,13 +112,13 @@ const onCreate = async (event) => {
       LoggingInfo: {
         BrokerLogs: {
           S3: {
-            Enabled: event.ResourceProperties.loggingInfo.BrokerLogs.S3.Enabled == "true" ? true : false,
-            Bucket: event.ResourceProperties.loggingInfo.BrokerLogs.S3.Bucket,
-            Prefix: event.ResourceProperties.loggingInfo.BrokerLogs.S3.Prefix
+            Enabled: event.ResourceProperties.loggingInfo.BrokerLogs.S3?.Enabled == "true" ? true : false,
+            Bucket: event.ResourceProperties.loggingInfo.BrokerLogs.S3?.Bucket == undefined ? undefined : event.ResourceProperties.loggingInfo.BrokerLogs.S3.Bucket,
+            Prefix: event.ResourceProperties.loggingInfo.BrokerLogs.S3?.Prefix == undefined ? undefined : event.ResourceProperties.loggingInfo.BrokerLogs.S3.Prefix,
           },
           Firehose: {
-            Enabled: event.ResourceProperties.loggingInfo.BrokerLogs.Firehose.Enabled == "true" ? true : false,
-            DeliveryStream: event.ResourceProperties.loggingInfo.BrokerLogs.Firehose.DeliveryStream 
+            Enabled: event.ResourceProperties.loggingInfo.BrokerLogs.Firehose?.Enabled == "true" ? true : false,
+            DeliveryStream: event.ResourceProperties.loggingInfo.BrokerLogs?.Firehose.DeliveryStream == undefined ? undefined : event.ResourceProperties.loggingInfo.BrokerLogs.Firehose.DeliveryStream,
           },
           CloudWatchLogs: {
             LogGroup: event.ResourceProperties.loggingInfo.BrokerLogs.CloudWatchLogs.LogGroup,
