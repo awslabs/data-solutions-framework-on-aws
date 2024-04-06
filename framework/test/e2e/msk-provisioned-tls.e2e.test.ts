@@ -51,7 +51,7 @@ msk.setTopic(stack, 'topicProvisioned', Authentitcation.MTLS, {
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
-  value: msk.cluster.attrArn,
+  value: msk.cluster.getAttString('Arn'),
 });
 
 
