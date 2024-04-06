@@ -434,7 +434,7 @@ export function updateClusterConnectivity (
     securityGroups: [securityGroupUpdateConnectivity],
     removalPolicy,
     queryTimeout: Duration.minutes(59),
-    queryInterval: Duration.seconds(30),
+    queryInterval: Duration.minutes(1),
   });
 
   return provider;

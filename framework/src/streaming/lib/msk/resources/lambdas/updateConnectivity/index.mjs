@@ -43,18 +43,21 @@ const onCreate = async (event) => {
   let commandKafka = new DescribeClusterCommand(inputKafka);
   let responseKafka = await clientKafka.send(commandKafka);
 
+  const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
+
   if (responseKafka.ClusterInfo.State !== "ACTIVE") {
+    console.log(currentVersion);
     return {
       IsPreviousUpdateRunning: true,
-      UpdateVpcConnectivity: false,
+      currentVersion: currentVersion,
     };
   } else {
-    const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
+    console.log(currentVersion);
     await updateCluster(currentVersion, event);
 
     return {
       IsPreviousUpdateRunning: false,
-      UpdateVpcConnectivity: true,
+      currentVersion: currentVersion,
     };
   }
 
@@ -76,32 +79,34 @@ export const isCompleteHandler = async (event) => {
 
   let commandKafka = new DescribeClusterCommand(inputKafka);
   let responseKafka = await clientKafka.send(commandKafka);
+  console.log(responseKafka.ClusterInfo.CurrentVersion);
 
   if (responseKafka.ClusterInfo.State !== "ACTIVE" && event.IsPreviousUpdateRunning) {
     return {
-      UpdateVpcConnectivity: false,
+      IsPreviousUpdateRunning: true,
       IsComplete: false,
-    }
-  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.IsPreviousUpdateRunning) {
-    const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
-    await updateCluster(currentVersion, event);
-
-    return {
-      UpdateVpcConnectivity: true,
-      IsPreviousUpdateRunning: false,
-      IsComplete : false,
-    }
-  } else if (responseKafka.ClusterInfo.State == "FAILED") {
-    throw new Error("Cluster is in FAIL state");
-  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.UpdateVpcConnectivity == true) {
+    };
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.currentVersion  != responseKafka.ClusterInfo.CurrentVersion) {
     return {
       IsComplete : true
-    }
+    };
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.IsPreviousUpdateRunning) {
+    const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
+    
+    await updateCluster(currentVersion, event);
+    console.log("=====after applying update=====");
+    console.log(currentVersion);
+    return {
+      IsPreviousUpdateRunning: false,
+      IsComplete : false,
+    };
+  } else if (responseKafka.ClusterInfo.State == "FAILED") {
+    throw new Error("Cluster is in FAIL state");
   }
   else {
     return {
       IsComplete : false,
-    }
+    };
   }
 
 }
