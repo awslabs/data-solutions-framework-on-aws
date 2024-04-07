@@ -4,7 +4,8 @@
 import {
   KafkaClient,
   UpdateConnectivityCommand,
-  DescribeClusterCommand
+  DescribeClusterCommand,
+  DescribeClusterOperationV2Command
 } from "@aws-sdk/client-kafka";
 
 
@@ -47,18 +48,12 @@ const onCreate = async (event) => {
 
   if (responseKafka.ClusterInfo.State !== "ACTIVE") {
     console.log(currentVersion);
-    return {
-      IsPreviousUpdateRunning: true,
-      currentVersion: currentVersion,
-    };
+    return {};
   } else {
     console.log(currentVersion);
     await updateCluster(currentVersion, event);
 
-    return {
-      IsPreviousUpdateRunning: false,
-      currentVersion: currentVersion,
-    };
+    return {};
   }
 
 }
@@ -81,25 +76,37 @@ export const isCompleteHandler = async (event) => {
   let responseKafka = await clientKafka.send(commandKafka);
   console.log(responseKafka.ClusterInfo.CurrentVersion);
 
-  if (responseKafka.ClusterInfo.State !== "ACTIVE" && event.IsPreviousUpdateRunning) {
+  let lastTriggeredClusterOperation = "NO_RUNNING_OPERATION";
+
+  if (responseKafka.ClusterInfo?.ActiveOperationArn) {
+    const inputClusterOperation = { // DescribeClusterOperationV2Request
+      ClusterOperationArn: responseKafka.ClusterInfo.ActiveOperationArn, // required
+    };
+    const command = new DescribeClusterOperationV2Command(inputClusterOperation);
+    
+    const responseDescribeClusterOperation = await clientKafka.send(command);
+  
+    lastTriggeredClusterOperation = responseDescribeClusterOperation.ClusterOperationInfo.OperationType;
+  }
+  
+
+  if (responseKafka.ClusterInfo.State !== "ACTIVE") {
     return {
-      IsPreviousUpdateRunning: true,
       IsComplete: false,
     };
-  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.currentVersion  != responseKafka.ClusterInfo.CurrentVersion) {
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && lastTriggeredClusterOperation == "UPDATE_CONNECTIVITY") {
     console.log("=====Cluster Connectivity Update Completed =====");
     
     return {
       IsComplete : true
     };
-  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && event.IsPreviousUpdateRunning) {
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && lastTriggeredClusterOperation != "UPDATE_CONNECTIVITY") {
     const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
     
     await updateCluster(currentVersion, event);
-    console.log("=====after applying update=====");
+    console.log("=====Cluster Connectivity Update Started=====");
     console.log(currentVersion);
     return {
-      IsPreviousUpdateRunning: false,
       IsComplete : false,
     };
   } else if (responseKafka.ClusterInfo.State == "FAILED") {

@@ -360,6 +360,10 @@ export function updateClusterConnectivity (
       ],
     }),
     new PolicyStatement({
+      actions: ['kafka:DescribeClusterOperationV2'],
+      resources: ['*'],
+    }),
+    new PolicyStatement({
       actions: ['kms:CreateGrant', 'kms:DescribeKey'],
       resources: [
         brokerAtRestEncryptionKey.keyArn,
