@@ -120,6 +120,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly deploymentClusterVersion;
   private readonly kafkaApi: KafkaApi;
   private readonly clusterVpcConnectivity?: VpcClientAuthentication;
+  private readonly placeClusterHandlerInVpc?: boolean;
 
   /**
      * Constructs a new instance of the EmrEksCluster construct.
@@ -161,6 +162,7 @@ export class MskProvisioned extends TrackedConstruct {
     }
 
     this.clusterVpcConnectivity = props?.vpcConnectivity;
+    this.placeClusterHandlerInVpc = props?.placeClusterHandlerInVpc ?? true;
 
     //if vpcSubnets is pass without VPC throw error or if vpc is passed without vpcSubnets throw error
     if (props?.vpcSubnets && !props?.vpc || !props?.vpcSubnets && props?.vpc) {
@@ -253,7 +255,8 @@ export class MskProvisioned extends TrackedConstruct {
       this.subnetSelectionIds,
       this.removalPolicy,
       this.brokerAtRestEncryptionKey,
-      props?.clusterName ?? 'default-msk-provisioned');
+      props?.clusterName ?? 'default-msk-provisioned',
+      this.placeClusterHandlerInVpc);
 
     this.cluster = new CustomResource(this, 'MskCluster', {
       serviceToken: clusterProvider.serviceToken,
@@ -383,10 +386,10 @@ export class MskProvisioned extends TrackedConstruct {
       },
       role: this.roleUpdateZookepeerLambda,
       timeout: Duration.seconds(30),
-      vpc: this.vpc,
-      vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+      vpc: this.placeClusterHandlerInVpc ? this.vpc : undefined,
+      vpcSubnets: this.placeClusterHandlerInVpc ? this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
       logGroup: this.cloudwatchlogUpdateZookepeerLambda,
-      securityGroups: [this.securityGroupUpdateZookepeerLambda],
+      securityGroups: this.placeClusterHandlerInVpc ? [this.securityGroupUpdateZookepeerLambda] : undefined,
     });
 
     new Trigger(this, 'UpdateZookeeperSgTrigger', {
@@ -489,7 +492,8 @@ export class MskProvisioned extends TrackedConstruct {
               this.subnetSelectionIds,
               this.removalPolicy,
               this.brokerAtRestEncryptionKey,
-              props?.vpcConnectivity);
+              props.vpcConnectivity,
+              this.placeClusterHandlerInVpc);
 
 
           this.updateConnectivityFunction = updateConnectivityProvider.onEventHandlerFunction;

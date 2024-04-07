@@ -12013,6 +12013,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MonitoringConfiguration</code> | Cluster monitoring configuration. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.mskBrokerinstanceType">mskBrokerinstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.numberOfBrokerNodes">numberOfBrokerNodes</a></code> | <code>number</code> | Number of Apache Kafka brokers deployed in each Availability Zone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.placeClusterHandlerInVpc">placeClusterHandlerInVpc</a></code> | <code>boolean</code> | If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | What to do when this resource is deleted from a stack. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.StorageMode</code> | This controls storage mode for supported storage tiers. |
@@ -12176,6 +12177,18 @@ public readonly numberOfBrokerNodes: number;
 - *Default:* 1
 
 Number of Apache Kafka brokers deployed in each Availability Zone.
+
+---
+
+##### `placeClusterHandlerInVpc`<sup>Optional</sup> <a name="placeClusterHandlerInVpc" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.placeClusterHandlerInVpc"></a>
+
+```typescript
+public readonly placeClusterHandlerInVpc: boolean;
+```
+
+- *Type:* boolean
+
+If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc.
 
 ---
 

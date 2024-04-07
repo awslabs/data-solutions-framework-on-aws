@@ -180,6 +180,7 @@ export function manageCluster (
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
   clusterName: string,
+  placeClusterHandlerInVpc?: boolean, 
   ) : DsfProvider {
 
   let region = Stack.of(scope).region;
@@ -321,9 +322,9 @@ export function manageCluster (
         ]
       }
     },
-    vpc: vpc,
-    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-    securityGroups: [securityGroupUpdateConnectivity],
+    vpc: placeClusterHandlerInVpc ? vpc : undefined,
+    subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
+    securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
     removalPolicy,
     queryTimeout: Duration.minutes(59),
     queryInterval: Duration.minutes(1),
@@ -342,7 +343,8 @@ export function updateClusterConnectivity (
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
-  vpcConnectivity?: VpcClientAuthentication) : DsfProvider {
+  vpcConnectivity: VpcClientAuthentication,
+  placeClusterHandlerInVpc?: boolean) : DsfProvider {
 
   const lambdaPolicy = [
     new PolicyStatement({
@@ -413,8 +415,6 @@ export function updateClusterConnectivity (
       environment: {
         MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
         REGION: Stack.of(scope).region,
-        IAM: String(vpcConnectivity?.saslProps?.iam),
-        TLS: String(vpcConnectivity?.tlsProps?.tls),
       },
     },
     isCompleteHandlerDefinition: {
@@ -429,9 +429,9 @@ export function updateClusterConnectivity (
         TLS: String(vpcConnectivity?.tlsProps?.tls),
       },
     },
-    vpc: vpc,
-    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-    securityGroups: [securityGroupUpdateConnectivity],
+    vpc: placeClusterHandlerInVpc ? vpc : undefined,
+    subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
+    securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
     removalPolicy,
     queryTimeout: Duration.minutes(59),
     queryInterval: Duration.minutes(1),
