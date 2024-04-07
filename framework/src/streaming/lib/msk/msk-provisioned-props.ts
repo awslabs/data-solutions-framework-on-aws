@@ -158,6 +158,10 @@ export interface MskProvisionedProps {
      */
   readonly kafkaClientLogLevel?: KafkaClientLogLevel;
 
+  /**
+   * If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc.
+   */
+  readonly placeClusterHandlerInVpc?: boolean;
 }
 
 /**
