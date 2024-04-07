@@ -89,8 +89,9 @@ export const isCompleteHandler = async (event) => {
     lastTriggeredClusterOperation = responseDescribeClusterOperation.ClusterOperationInfo.OperationType;
   }
   
-
-  if (responseKafka.ClusterInfo.State !== "ACTIVE") {
+  if (responseKafka.ClusterInfo.State == "FAILED") {
+    throw new Error("Cluster is in FAIL state");
+  } else if (responseKafka.ClusterInfo.State !== "ACTIVE") {
     return {
       IsComplete: false,
     };
@@ -106,13 +107,6 @@ export const isCompleteHandler = async (event) => {
     await updateCluster(currentVersion, event);
     console.log("=====Cluster Connectivity Update Started=====");
     console.log(currentVersion);
-    return {
-      IsComplete : false,
-    };
-  } else if (responseKafka.ClusterInfo.State == "FAILED") {
-    throw new Error("Cluster is in FAIL state");
-  }
-  else {
     return {
       IsComplete : false,
     };
