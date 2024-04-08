@@ -5,7 +5,7 @@ import {
   KafkaClient,
   UpdateConnectivityCommand,
   DescribeClusterCommand,
-  DescribeClusterOperationV2Command
+  ListClusterOperationsV2Command
 } from "@aws-sdk/client-kafka";
 
 
@@ -13,7 +13,7 @@ const clientKafka = new KafkaClient();
 
 
 // Handler functions
-export const onEventHandler =  async (event) => {
+export const onEventHandler = async (event) => {
 
   console.info('======Recieved for Event=======');
   console.info(event);
@@ -62,9 +62,9 @@ export const isCompleteHandler = async (event) => {
   console.info('isCompleteHandler Invocation');
   console.info(event);
 
-  if (event.RequestType == 'Delete'){
+  if (event.RequestType == 'Delete') {
     return {
-      IsComplete : true,
+      IsComplete: true,
     }
   }
 
@@ -72,50 +72,58 @@ export const isCompleteHandler = async (event) => {
     ClusterArn: process.env.MSK_CLUSTER_ARN,
   };
 
+  const response = await clientKafka.send(new ListClusterOperationsV2Command(inputKafka));
+
+  // Filter operations that have completed successfully
+  const completedOperations = response.ClusterOperationInfoList.filter(operation => operation.OperationState === 'UPDATE_COMPLETE');
+
+  // Sort completed operations by completion time
+  const sortedOperations = completedOperations.sort((a, b) => {
+    return new Date(b.OperationEndTime).getTime() - new Date(a.OperationEndTime).getTime();
+  });
+
+  // Retrieve the latest completed operation
+  const latestCompletedOperation = sortedOperations[0];
+
+  let updateConnectivityCompleted = false;
+
+  console.log(latestCompletedOperation);
+
+  if (latestCompletedOperation?.OperationType == 'UPDATE_CONNECTIVITY') {
+    updateConnectivityCompleted = true;
+  }
+
   let commandKafka = new DescribeClusterCommand(inputKafka);
   let responseKafka = await clientKafka.send(commandKafka);
   console.log(responseKafka.ClusterInfo.CurrentVersion);
 
-  let lastTriggeredClusterOperation = "NO_RUNNING_OPERATION";
-
-  if (responseKafka.ClusterInfo?.ActiveOperationArn) {
-    const inputClusterOperation = { // DescribeClusterOperationV2Request
-      ClusterOperationArn: responseKafka.ClusterInfo.ActiveOperationArn, // required
-    };
-    const command = new DescribeClusterOperationV2Command(inputClusterOperation);
-    
-    const responseDescribeClusterOperation = await clientKafka.send(command);
-  
-    lastTriggeredClusterOperation = responseDescribeClusterOperation.ClusterOperationInfo.OperationType;
-  }
-  
   if (responseKafka.ClusterInfo.State == "FAILED") {
     throw new Error("Cluster is in FAIL state");
   } else if (responseKafka.ClusterInfo.State !== "ACTIVE") {
     return {
       IsComplete: false,
     };
-  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && lastTriggeredClusterOperation == "UPDATE_CONNECTIVITY") {
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && updateConnectivityCompleted) {
     console.log("=====Cluster Connectivity Update Completed =====");
-    
+
     return {
-      IsComplete : true
+      IsComplete: true
     };
-  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && lastTriggeredClusterOperation != "UPDATE_CONNECTIVITY") {
+  } else if (responseKafka.ClusterInfo.State == "ACTIVE" && !updateConnectivityCompleted) {
     const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
-    
+
     await updateCluster(currentVersion, event);
     console.log("=====Cluster Connectivity Update Started=====");
     console.log(currentVersion);
     return {
-      IsComplete : false,
+      IsComplete: false,
     };
   }
 
 }
 
-async function updateCluster (currentVersion, event) {
-  
+async function updateCluster(currentVersion, event) {
+
   console.log(event.ResourceProperties.Iam);
   console.log(event.ResourceProperties.Tls);
 
