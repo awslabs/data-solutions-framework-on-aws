@@ -252,14 +252,12 @@ export class MskBrokerInstanceType {
 export interface EbsStorageInfo {
   /**
    * The size in GiB of the EBS volume for the data drive on each broker node.
-   *
    * @default 1000
    */
   readonly volumeSize?: number;
 
   /**
    * The AWS KMS key for encrypting data at rest.
-   *
    * @default Uses AWS managed CMK (aws/kafka)
    */
   readonly encryptionKey?: IKey;
@@ -299,7 +297,6 @@ export interface ClusterConfigurationInfo {
 
 /**
  * The level of monitoring for the MSK cluster
- *
  * @see https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html#metrics-details
  */
 export enum ClusterMonitoringLevel {
@@ -330,23 +327,19 @@ export enum ClusterMonitoringLevel {
 export interface MonitoringConfiguration {
   /**
    * Specifies the level of monitoring for the MSK cluster.
-   *
    * @default DEFAULT
    */
   readonly clusterMonitoringLevel?: ClusterMonitoringLevel;
 
   /**
    * Indicates whether you want to enable or disable the JMX Exporter.
-   *
    * @default false
    */
   readonly enablePrometheusJmxExporter?: boolean;
 
   /**
    * Indicates whether you want to enable or disable the Prometheus Node Exporter.
-   *
    * You can use the Prometheus Node Exporter to get CPU and disk metrics for the broker nodes.
-   *
    * @default false
    */
   readonly enablePrometheusNodeExporter?: boolean;
@@ -358,21 +351,18 @@ export interface MonitoringConfiguration {
 export interface BrokerLogging {
   /**
    * The Kinesis Data Firehose delivery stream that is the destination for broker logs.
-   *
    * @default - disabled
    */
   readonly firehoseDeliveryStreamName?: string;
 
   /**
    * The CloudWatch Logs group that is the destination for broker logs.
-   *
    * @default - disabled
    */
   readonly cloudwatchLogGroup?: ILogGroup;
 
   /**
    * Details of the Amazon S3 destination for broker logs.
-   *
    * @default - disabled
    */
   readonly s3?: S3LoggingConfiguration;
@@ -389,7 +379,6 @@ export interface S3LoggingConfiguration {
 
   /**
    * The S3 prefix that is the destination for broker logs.
-   *
    * @default - no prefix
    */
   readonly prefix?: string;
@@ -402,7 +391,6 @@ export interface SaslAuthProps {
 
   /**
    * Enable IAM access control.
-   *
    * @default true
    */
   readonly iam?: boolean;
@@ -415,7 +403,6 @@ export interface SaslAuthProps {
 export interface TlsAuthProps {
   /**
    * List of ACM Certificate Authorities to enable TLS authentication.
-   *
    * @default - none
    */
   readonly certificateAuthorities?: ICertificateAuthority[];
@@ -467,7 +454,6 @@ export class ClientAuthentication {
 export interface VpcTlsAuthProps {
   /**
    * enable TLS authentication.
-   *
    * @default - none
    */
   readonly tls?: boolean;

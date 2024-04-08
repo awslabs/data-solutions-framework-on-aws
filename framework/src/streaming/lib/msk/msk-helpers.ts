@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy, Stack, Aws, Fn, CustomResource } from 'aws-cdk-lib';
+import { RemovalPolicy, Aws, Fn, CustomResource, Arn, ArnFormat } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, ISecurityGroup, CfnSecurityGroupIngress } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
@@ -15,11 +15,9 @@ export function mskIamCrudProviderSetup(
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
   brokerSecurityGroup: ISecurityGroup,
-  clusterArn: string,
-  clusterName: string): DsfProvider {
+  clusterArn: string): DsfProvider {
 
-  let account = Stack.of(scope).account;
-  let region = Stack.of(scope).region;
+  const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
     vpc,
@@ -46,7 +44,7 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:DescribeClusterV2',
       ],
       resources: [
-        `arn:aws:kafka:${region}:${account}:cluster/${clusterName}/*`,
+        `${clusterArn}/*`,
       ],
     }),
     new PolicyStatement({
@@ -57,13 +55,13 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:DeleteTopic',
       ],
       resources: [
-        `arn:aws:kafka:${region}:${account}:topic/${clusterName}/*`,
+        `arn:aws:kafka:${arn.region}:${arn.account}:topic/${arn.resourceName}/*`,
       ],
     }),
     new PolicyStatement({
       actions: ['kafka-cluster:AlterGroup', 'kafka-cluster:DescribeGroup'],
       resources: [
-        `arn:aws:kafka:${region}:${account}:group/${clusterName}/*`,
+        `arn:aws:kafka:${arn.region}:${arn.account}:group/${arn.resourceName}/*`,
       ],
     }),
     new PolicyStatement({
@@ -195,7 +193,6 @@ export function grantConsumeIam(
   let clusterName = undefined;
   let _clusterArn = undefined;
 
-
   if (cluster instanceof CfnServerlessCluster) {
     _clusterArn = cluster.attrArn;
   } else if (cluster instanceof CustomResource) {
@@ -203,9 +200,11 @@ export function grantConsumeIam(
   } else {
     _clusterArn = clusterArn;
   }
+  const arn = Arn.split(_clusterArn!, ArnFormat.SLASH_RESOURCE_NAME);
 
   //Check the type of cluster
   if (cluster instanceof CfnServerlessCluster) {
+    clusterName = arn.resourceName;
     clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
     clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
   } else if (cluster instanceof CustomResource) {

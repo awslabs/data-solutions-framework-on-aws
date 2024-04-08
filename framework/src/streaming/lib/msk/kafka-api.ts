@@ -19,7 +19,6 @@ import {
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an MSK Serverless cluster
@@ -29,21 +28,42 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
  */
 export class KafkaApi extends TrackedConstruct {
 
+  /**
+   * The IAM Role used by the Custom Resource provider when MSK is using IAM authentication
+   */
+  public readonly mskIamRole?: IRole;
+  /**
+   * The Cloudwatch Log Group used by the Custom Resource provider when MSK is using IAM authentication
+   */
+  public readonly mskIamLogGroup?: ILogGroup;
+  /**
+   * The Lambda function used by the Custom Resource provider when MSK is using IAM authentication
+   */
+  public readonly mskIamFunction?: IFunction;
+  /**
+   * The Security Group used by the Custom Resource provider when MSK is using IAM authentication
+   */
+  public readonly mskIamSecurityGroup?: ISecurityGroup [];
 
-  public readonly mskIamACrudAdminProviderToken?: string;
-  public readonly mskIamACrudAdminCrLambdaRole?: IRole;
-  public readonly mskIamACrudAdminCrOnEventHandlerLogGroup?: ILogGroup;
-  public readonly mskIamACrudAdminCrOnEventHandlerFunction?: IFunction;
-  public readonly mskIamACrudAdminCrSecurityGroup?: ISecurityGroup [];
+  /**
+   * The IAM Role used by the Custom Resource provider when MSK is using mTLS authentication
+   */
+  public readonly mskAclRole?: IRole;
+  /**
+   * The Cloudwatch Log Group used by the Custom Resource provider when MSK is using mTLS authentication
+   */
+  public readonly mskAclLogGroup?: ILogGroup;
+  /**
+   * The Lambda function used by the Custom Resource provider when MSK is using mTLS authentication
+   */
+  public readonly mskAclFunction?: IFunction;
+  /**
+   * The Security Group used by the Custom Resource provider when MSK is using mTLS authentication
+   */
+  public readonly mskAclSecurityGroup?: ISecurityGroup [];
 
-  public readonly mskInClusterAclAdminProviderToken?: string;
-  public readonly mskInClusterAclCrLambdaRole?: IRole;
-  public readonly mskInClusterAclCrOnEventHandlerLogGroup?: ILogGroup;
-  public readonly mskInClusterAclCrOnEventHandlerFunction?: IFunction;
-  public readonly mskInClusterAclCrSecurityGroup?: ISecurityGroup [];
-
-  private readonly mskInClusterAclAdminProvider?: DsfProvider;
-  private readonly mskIamACrudAdminProvider?: DsfProvider;
+  private readonly mskAclServiceToken?: string;
+  private readonly mskIamServiceToken?: string;
   private readonly removalPolicy: RemovalPolicy;
   private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly tlsCertifacateSecret?: ISecret;
@@ -66,7 +86,7 @@ export class KafkaApi extends TrackedConstruct {
     super(scope, id, trackedConstructProps);
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
-    this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.INFO;
+    this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN;
     this.clusterArn = props.clusterArn;
     this.tlsCertifacateSecret = props.certficateSecret;
 
@@ -80,7 +100,7 @@ export class KafkaApi extends TrackedConstruct {
 
     if (props.clientAuthentication.tlsProps) {
 
-      this.mskInClusterAclAdminProvider = mskAclAdminProviderSetup(
+      const mskAclProvider = mskAclAdminProviderSetup(
         this,
         this.removalPolicy,
         props.vpc,
@@ -89,43 +109,41 @@ export class KafkaApi extends TrackedConstruct {
         props.certficateSecret!,
       );
 
-      this.mskInClusterAclAdminProviderToken = this.mskInClusterAclAdminProvider.serviceToken;
-      this.mskInClusterAclCrLambdaRole = this.mskInClusterAclAdminProvider.onEventHandlerRole;
-      this.mskInClusterAclCrOnEventHandlerLogGroup = this.mskInClusterAclAdminProvider.onEventHandlerLogGroup;
-      this.mskInClusterAclCrOnEventHandlerFunction = this.mskInClusterAclAdminProvider.onEventHandlerFunction;
-      this.mskInClusterAclCrSecurityGroup = this.mskInClusterAclAdminProvider.securityGroups;
+      this.mskAclServiceToken = mskAclProvider.serviceToken;
+      this.mskAclRole = mskAclProvider.onEventHandlerRole;
+      this.mskAclLogGroup = mskAclProvider.onEventHandlerLogGroup;
+      this.mskAclFunction = mskAclProvider.onEventHandlerFunction;
+      this.mskAclSecurityGroup = mskAclProvider.securityGroups;
     }
 
     if ( props.clientAuthentication.saslProps) {
 
-      this.mskIamACrudAdminProvider = mskIamCrudProviderSetup(
+      const mskIamProvider = mskIamCrudProviderSetup(
         this,
         this.removalPolicy,
         props.vpc,
         props.brokerSecurityGroup,
         props.clusterArn,
-        props.clusterName,
       );
 
-      this.mskIamACrudAdminProviderToken = this.mskIamACrudAdminProvider.serviceToken;
-      this.mskIamACrudAdminCrLambdaRole = this.mskIamACrudAdminProvider.onEventHandlerRole;
-      this.mskIamACrudAdminCrOnEventHandlerLogGroup = this.mskIamACrudAdminProvider.onEventHandlerLogGroup;
-      this.mskIamACrudAdminCrOnEventHandlerFunction = this.mskIamACrudAdminProvider.onEventHandlerFunction;
-      this.mskIamACrudAdminCrSecurityGroup = this.mskIamACrudAdminProvider.securityGroups;
-
+      this.mskIamServiceToken = mskIamProvider.serviceToken;
+      this.mskIamRole = mskIamProvider.onEventHandlerRole;
+      this.mskIamLogGroup = mskIamProvider.onEventHandlerLogGroup;
+      this.mskIamFunction = mskIamProvider.onEventHandlerFunction;
+      this.mskIamSecurityGroup = mskIamProvider.securityGroups;
     }
 
   }
 
   /**
-    * Creates a topic in the Msk Cluster
-    *
-    * @param {Construct} scope the scope of the stack where Topic will be created
-    * @param {string} id the CDK id for Topic
-    * @param {Acl} aclDefinition the Kafka Acl definition
-    * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-    * @returns {CustomResource} The MskAcl custom resource created
-    */
+   * Creates a topic in the Msk Cluster
+   *
+   * @param {Construct} scope the scope of the stack where Topic will be created
+   * @param {string} id the CDK id for Topic
+   * @param {Acl} aclDefinition the Kafka Acl definition
+   * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+   * @returns {CustomResource} The MskAcl custom resource created
+   */
   public setAcl(
     scope: Construct,
     id: string,
@@ -134,7 +152,7 @@ export class KafkaApi extends TrackedConstruct {
   ): CustomResource {
 
     const cr = new CustomResource(scope, id, {
-      serviceToken: this.mskInClusterAclAdminProviderToken!,
+      serviceToken: this.mskAclServiceToken!,
       properties: {
         logLevel: this.kafkaClientLogLevel,
         secretArn: this.tlsCertifacateSecret?.secretArn,
@@ -156,17 +174,17 @@ export class KafkaApi extends TrackedConstruct {
   }
 
   /**
-    * Creates a topic in the Msk Cluster
-    *
-    * @param {Construct} scope the scope of the stack where Topic will be created
-    * @param {string} id the CDK id for Topic
-    * @param {Authentitcation} clientAuthentication The client authentication to use when creating the Topic
-    * @param {MskTopic} topicDefinition the Kafka topic definition
-    * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-    * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
-    * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
-    * @returns {CustomResource} The MskTopic custom resource created
-    */
+   * Creates a topic in the Msk Cluster
+   *
+   * @param {Construct} scope the scope of the stack where Topic will be created
+   * @param {string} id the CDK id for Topic
+   * @param {Authentitcation} clientAuthentication The client authentication to use when creating the Topic
+   * @param {MskTopic} topicDefinition the Kafka topic definition
+   * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+   * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
+   * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
+   * @returns {CustomResource} The MskTopic custom resource created
+   */
   public setTopic(
     scope: Construct,
     id: string,
@@ -180,9 +198,9 @@ export class KafkaApi extends TrackedConstruct {
     let region = Stack.of(scope).region;
 
     if (clientAuthentication === Authentitcation.IAM) {
-      serviceToken = this.mskIamACrudAdminProviderToken!;
+      serviceToken = this.mskIamServiceToken!;
     } else {
-      serviceToken = this.mskInClusterAclAdminProviderToken!;
+      serviceToken = this.mskAclServiceToken!;
     }
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
@@ -205,16 +223,16 @@ export class KafkaApi extends TrackedConstruct {
   }
 
   /**
-    * Grant a principal to produce data to a topic
-    * @param {string} id the CDK resource id
-    * @param {string} topicName the topic to which the principal can produce data
-    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
-    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-    * @param {string} host the host to which the principal can produce data.
-    * @param {RemovalPolicy} removalPolicy
-    * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to write in the topic is created and returned,
-    *          you can use it to add dependency on it.
-    */
+   * Grant a principal to produce data to a topic
+   * @param {string} id the CDK resource id
+   * @param {string} topicName the topic to which the principal can produce data
+   * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
+   * @param {IPrincipal | string } principal the IAM principal to grand the produce to
+   * @param {string} host the host to which the principal can produce data.
+   * @param {RemovalPolicy} removalPolicy
+   * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to write in the topic is created and returned,
+   *          you can use it to add dependency on it.
+   */
   public grantProduce(
     id: string,
     topicName: string,
@@ -264,17 +282,17 @@ export class KafkaApi extends TrackedConstruct {
   }
 
   /**
-    * Grant a principal the right to consume data from a topic
-    *
-    * @param {string} id the CDK resource id
-    * @param {string} topicName the topic to which the principal can produce data
-    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
-    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-    * @param {string} host the host to which the principal can produce data.
-    * @param {RemovalPolicy} removalPolicy
-    * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
-    *          you can use it to add dependency on it.
-    */
+   * Grant a principal the right to consume data from a topic
+   *
+   * @param {string} id the CDK resource id
+   * @param {string} topicName the topic to which the principal can produce data
+   * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
+   * @param {IPrincipal | string } principal the IAM principal to grand the produce to
+   * @param {string} host the host to which the principal can produce data.
+   * @param {RemovalPolicy} removalPolicy
+   * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
+   *          you can use it to add dependency on it.
+   */
   public grantConsume(
     id: string,
     topicName: string,
@@ -321,13 +339,12 @@ export class KafkaApi extends TrackedConstruct {
   }
 
   /**
-    * @internal
-    *
-    * internal method only
-    * @param cluster
-    */
+   * @internal
+   *
+   * internal method only
+   * @param cluster
+   */
   public _initiallizeCluster (cluster: CfnServerlessCluster | CustomResource) {
     this.cluster = cluster;
   }
-
 }

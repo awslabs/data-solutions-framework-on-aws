@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, ClientAuthentication, KafkaClientLogLevel, ResourcePatternTypes } from '../lib/msk';
+import { Authentitcation, ClientAuthentication, KafkaClientLogLevel } from '../lib/msk';
 import { KafkaApi } from '../lib/msk/kafka-api';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -13,7 +13,6 @@ const stack = new cdk.Stack(app, 'MskProvisionedDsf');
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 
-/// !show
 let certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
   stack, 'certificateAuthority',
   'arn:aws:acm-pca:eu-west-1:12345678912:certificate-authority/dummy-ca'
@@ -43,16 +42,7 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
   },),
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
+
+/// !show
+kafkaApi.grantProduce('consume', 'foo', Authentitcation.MTLS, 'User:Cn=bar');
 /// !hide
-
-kafkaApi.setAcl(stack, 'acl', {
-  resourceType: AclResourceTypes.TOPIC,
-  resourceName: 'topic-1',
-  resourcePatternType: ResourcePatternTypes.LITERAL,
-  principal: 'User:Cn=MyUser',
-  host: '*',
-  operation: AclOperationTypes.CREATE,
-  permissionType: AclPermissionTypes.ALLOW,
-},
-cdk.RemovalPolicy.DESTROY);
-

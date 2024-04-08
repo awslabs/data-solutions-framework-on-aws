@@ -13,7 +13,6 @@ const stack = new cdk.Stack(app, 'MskProvisionedDsf');
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 
-/// !show
 let certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
   stack, 'certificateAuthority',
   'arn:aws:acm-pca:eu-west-1:12345678912:certificate-authority/dummy-ca'
@@ -43,16 +42,19 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
   },),
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
+
+
+/// !show
+kafkaApi.setAcl(stack, 'acl', 
+  {
+    resourceType: AclResourceTypes.TOPIC,
+    resourceName: 'topic-1',
+    resourcePatternType: ResourcePatternTypes.LITERAL,
+    principal: 'User:Cn=MyUser',
+    host: '*',
+    operation: AclOperationTypes.CREATE,
+    permissionType: AclPermissionTypes.ALLOW,
+  },
+  cdk.RemovalPolicy.DESTROY
+);
 /// !hide
-
-kafkaApi.setAcl(stack, 'acl', {
-  resourceType: AclResourceTypes.TOPIC,
-  resourceName: 'topic-1',
-  resourcePatternType: ResourcePatternTypes.LITERAL,
-  principal: 'User:Cn=MyUser',
-  host: '*',
-  operation: AclOperationTypes.CREATE,
-  permissionType: AclPermissionTypes.ALLOW,
-},
-cdk.RemovalPolicy.DESTROY);
-
