@@ -62,7 +62,7 @@ We can now install DSF on AWS:
     
     # requirements.txt:
     ...
-    cdklabs.aws_data_solutions_framework==1.0.0
+    cdklabs.aws_data_solutions_framework
     ...
 
     # Then you can install CDK app requirements:
