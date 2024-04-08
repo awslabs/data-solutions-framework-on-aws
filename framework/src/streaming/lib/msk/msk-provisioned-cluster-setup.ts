@@ -360,8 +360,8 @@ export function updateClusterConnectivity (
       ],
     }),
     new PolicyStatement({
-      actions: ['kafka:DescribeClusterOperationV2'],
-      resources: ['*'],
+      actions: ['kafka:ListClusterOperationsV2'],
+      resources: [cluster.getAttString('Arn')],
     }),
     new PolicyStatement({
       actions: ['kms:CreateGrant', 'kms:DescribeKey'],
