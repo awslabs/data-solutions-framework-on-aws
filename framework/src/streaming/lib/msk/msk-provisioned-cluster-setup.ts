@@ -10,7 +10,7 @@ import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
-import { BrokerLogging, ClientAuthentication, VpcClientAuthentication } from './msk-provisioned-props-utils';
+import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo, VpcClientAuthentication } from './msk-provisioned-props-utils';
 import { Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -429,8 +429,113 @@ export function updateClusterConnectivity (
       environment: {
         MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
         REGION: Stack.of(scope).region,
-        IAM: String(vpcConnectivity?.saslProps?.iam),
-        TLS: String(vpcConnectivity?.tlsProps?.tls),
+      },
+    },
+    vpc: placeClusterHandlerInVpc ? vpc : undefined,
+    subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
+    securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
+    removalPolicy,
+    queryTimeout: Duration.minutes(59),
+    queryInterval: Duration.minutes(1),
+  });
+
+  return provider;
+}
+
+
+/**
+ * @internal
+ */
+export function applyClusterConfiguration (
+  scope :Construct,
+  cluster: CustomResource,
+  vpc: IVpc,
+  subnetSelectionIds: string[],
+  removalPolicy: RemovalPolicy,
+  brokerAtRestEncryptionKey: IKey,
+  configuration: ClusterConfigurationInfo,
+  placeClusterHandlerInVpc?: boolean) : DsfProvider {
+
+    const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(scope, 'setClusterConfigurationLambdaSecurityGroup', {
+      vpc: vpc,
+      allowAllOutbound: true,
+    });
+
+    const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(scope,
+      setClusterConfigurationLambdaSecurityGroup,
+      subnetSelectionIds,
+      'vpcPolicyLambdaSetClusterConfiguration');
+
+    const lambdaPolicy = [
+      new PolicyStatement({
+        actions: ['kafka:DescribeCluster'],
+        resources: [
+          cluster.getAttString('Arn'),
+        ],
+      }),
+      new PolicyStatement({
+        actions: ['kafka:DescribeConfiguration'],
+        resources: [
+          configuration.arn,
+        ],
+      }),
+      new PolicyStatement({
+        actions: ['kafka:UpdateClusterConfiguration'],
+        resources: [
+          configuration.arn,
+          cluster.getAttString('Arn'),
+        ],
+      }),
+      new PolicyStatement({
+        actions: ['kms:CreateGrant', 'kms:DescribeKey'],
+        resources: [
+          brokerAtRestEncryptionKey.keyArn,
+        ],
+      }),
+    ];
+
+  //Attach policy to IAM Role
+  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'SetClusterConfigurationLambdaExecutionRolePolicy', {
+    statements: lambdaPolicy,
+    description: 'Policy for modifying security group for MSK zookeeper',
+  });
+
+  let securityGroupUpdateConnectivity = new SecurityGroup(scope, 'SetClusterConfigurationLambdaSecurityGroup', {
+    vpc: vpc,
+    allowAllOutbound: true,
+  });
+
+  let roleUpdateConnectivityLambda = new Role(scope, 'SetClusterConfigurationLambdaExecutionRole', {
+    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+  });
+
+  roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
+  roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
+
+  const logGroupUpdateConnectivityLambda = createLogGroup(scope, 'SetClusterConfigurationLambdaLogGroup', removalPolicy);
+
+  logGroupUpdateConnectivityLambda.grantWrite(roleUpdateConnectivityLambda);
+
+  const provider = new DsfProvider(scope, 'SetClusterConfigurationProvider', {
+    providerName: 'set-cluster-configuration',
+    onEventHandlerDefinition: {
+      handler: 'index.onEventHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConnectivity/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+      environment: {
+        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
+        REGION: Stack.of(scope).region,
+      },
+    },
+    isCompleteHandlerDefinition: {
+      handler: 'index.isCompleteHandler',
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConfiguration/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/updateConfiguration/index.mjs'),
+      managedPolicy: lambdaExecutionRolePolicy,
+      environment: {
+        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
+        REGION: Stack.of(scope).region,
       },
     },
     vpc: placeClusterHandlerInVpc ? vpc : undefined,
