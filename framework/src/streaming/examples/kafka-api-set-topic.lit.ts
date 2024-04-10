@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Authentitcation, ClientAuthentication, KafkaClientLogLevel } from '../lib/msk';
+import { Authentication, ClientAuthentication, KafkaClientLogLevel } from '../lib/msk';
 import { KafkaApi } from '../lib/msk/kafka-api';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -47,7 +47,7 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
 
 /// !show
 kafkaApi.setTopic(stack, 'topic1',
-  Authentitcation.IAM, 
+  Authentication.IAM, 
   {
     topic: 'topic1',
     numPartitions: 3,

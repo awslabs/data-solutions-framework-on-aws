@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Authentitcation, ClientAuthentication, KafkaClientLogLevel } from '../lib/msk';
+import { Authentication, ClientAuthentication, KafkaClientLogLevel } from '../lib/msk';
 import { KafkaApi } from '../lib/msk/kafka-api';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -44,5 +44,5 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
 });
 
 /// !show
-kafkaApi.grantProduce('consume', 'foo', Authentitcation.MTLS, 'User:Cn=bar');
+kafkaApi.grantProduce('consume', 'foo', Authentication.MTLS, 'User:Cn=bar');
 /// !hide

@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy, Aws, Fn, CustomResource, Arn, ArnFormat } from 'aws-cdk-lib';
-import { SecurityGroup, SubnetType, IVpc, ISecurityGroup, CfnSecurityGroupIngress } from 'aws-cdk-lib/aws-ec2';
+import { RemovalPolicy, Arn, ArnFormat } from 'aws-cdk-lib';
+import { SecurityGroup, IVpc, ISecurityGroup, CfnSecurityGroupIngress, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
@@ -14,17 +13,18 @@ export function mskIamCrudProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
+  subnets: SelectedSubnets,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string): DsfProvider {
 
   const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
 
-  let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
+  const lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'MskIamSecurityGroup', {
     vpc,
   });
 
   //Allow only the security group of lambda to broker
-  const allowMskIamPort = new CfnSecurityGroupIngress(scope, 'allowMskIamPort', {
+  const allowMskIamPort = new CfnSecurityGroupIngress(scope, 'AllowMskIamPortIngress', {
     groupId: brokerSecurityGroup.securityGroupId,
     description: 'Allow MSK IAM Ports',
     ipProtocol: 'tcp',
@@ -42,9 +42,12 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:AlterCluster',
         'kafka-cluster:DescribeCluster',
         'kafka-cluster:DescribeClusterV2',
+        'kafka:GetBootstrapBrokers',
+        'kafka:DescribeClusterV2',
+        'kafka:CreateVpcConnection',
       ],
       resources: [
-        `${clusterArn}/*`,
+        clusterArn,
       ],
     }),
     new PolicyStatement({
@@ -59,28 +62,24 @@ export function mskIamCrudProviderSetup(
       ],
     }),
     new PolicyStatement({
-      actions: ['kafka-cluster:AlterGroup', 'kafka-cluster:DescribeGroup'],
+      actions: [
+        'kafka-cluster:AlterGroup',
+        'kafka-cluster:DescribeGroup',
+      ],
       resources: [
         `arn:aws:kafka:${arn.region}:${arn.account}:group/${arn.resourceName}/*`,
-      ],
-    }),
-    new PolicyStatement({
-      actions: ['kafka:GetBootstrapBrokers', 'kafka:DescribeClusterV2', 'kafka:CreateVpcConnection'],
-      resources: [
-        clusterArn,
       ],
     }),
   ];
 
 
   //Attach policy to IAM Role
-  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicy', {
+  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'MskIamProviderPolicy', {
     statements: lambdaPolicy,
-    description: 'Policy for emr containers CR to create managed endpoint',
   });
 
-  const provider = new DsfProvider(scope, 'MskCrudProvider', {
-    providerName: 'msk-crud-provider',
+  const provider = new DsfProvider(scope, 'MskIamProvider', {
+    providerName: 'msk-iam-provider',
     onEventHandlerDefinition: {
       handler: 'index.onEventHandler',
       depsLockFilePath: path.join(__dirname, './resources/lambdas/crudIam/package-lock.json'),
@@ -93,8 +92,8 @@ export function mskIamCrudProviderSetup(
         ],
       },
     },
-    vpc: vpc,
-    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+    vpc,
+    subnets,
     securityGroups: [lambdaProviderSecurityGroup],
     removalPolicy,
   });
@@ -108,16 +107,17 @@ export function mskAclAdminProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
+  subnets: SelectedSubnets,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string,
   secret: ISecret): DsfProvider {
 
-  let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'mskAclAdminCr', {
+  let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'MskAclSecurityGroup', {
     vpc,
   });
 
-  //Allow only the security group of lambda to broker
-  const allowMskTlsPort = new CfnSecurityGroupIngress(scope, 'allowMskTlsPort', {
+  // Allow only the security group of lambda to broker
+  const allowMskTlsPort = new CfnSecurityGroupIngress(scope, 'AllowMskTlsPortIngress', {
     groupId: brokerSecurityGroup.securityGroupId,
     description: 'Allow MSK TLS Ports',
     ipProtocol: 'tcp',
@@ -130,7 +130,7 @@ export function mskAclAdminProviderSetup(
     throw new Error('Secret need to be in full arn format, use "Secret.fromSecretCompleteArn" method');
   }
 
-  //The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
+  // The policy allowing the MskTopic custom resource to create call Msk for CRUD operations on topic // GetBootstrapBrokers
   const lambdaPolicy = [
     new PolicyStatement({
       actions: ['kafka:DescribeCluster'],
@@ -152,13 +152,12 @@ export function mskAclAdminProviderSetup(
     }),
   ];
 
-  //Attach policy to IAM Role
-  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'LambdaExecutionRolePolicymskAclAdminCr', {
+  // Attach policy to IAM Role
+  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'MskAclProviderPolicy', {
     statements: lambdaPolicy,
-    description: 'Policy for emr containers CR to create managed endpoint',
   });
 
-  const provider = new DsfProvider(scope, 'MskAclAdminProvider', {
+  const provider = new DsfProvider(scope, 'MskAclProvider', {
     providerName: 'msk-acl-admin-provider',
     onEventHandlerDefinition: {
       handler: 'index.onEventHandler',
@@ -171,8 +170,8 @@ export function mskAclAdminProviderSetup(
         ],
       },
     },
-    vpc: vpc,
-    subnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+    vpc,
+    subnets,
     securityGroups: [lambdaProviderSecurityGroup],
     removalPolicy,
   });
@@ -183,44 +182,16 @@ export function mskAclAdminProviderSetup(
 
 }
 
-export function grantConsumeIam(
-  topicName: string,
-  principal: IPrincipal,
-  cluster?: CfnServerlessCluster | CustomResource,
-  clusterArn?: string) {
+export function grantConsumeIam(topicName: string, principal: IPrincipal, clusterArn: string) {
 
-  let clusterUuid = undefined;
-  let clusterName = undefined;
-  let _clusterArn = undefined;
-
-  if (cluster instanceof CfnServerlessCluster) {
-    _clusterArn = cluster.attrArn;
-  } else if (cluster instanceof CustomResource) {
-    _clusterArn = cluster.getAttString('Arn');
-  } else {
-    _clusterArn = clusterArn;
-  }
-  const arn = Arn.split(_clusterArn!, ArnFormat.SLASH_RESOURCE_NAME);
-
-  //Check the type of cluster
-  if (cluster instanceof CfnServerlessCluster) {
-    clusterName = arn.resourceName;
-    clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
-    clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-  } else if (cluster instanceof CustomResource) {
-    clusterName = Fn.select(1, Fn.split('/', cluster.getAttString('Arn')));
-    clusterUuid = Fn.select(2, Fn.split('/', cluster.getAttString('Arn')));
-  } else {
-    clusterName = clusterArn?.split('/')[1];
-    clusterUuid = clusterArn?.split('/')[2];
-  }
+  const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
       'kafka-cluster:Connect',
     ],
     resources: [
-      _clusterArn!,
+      clusterArn,
     ],
   }));
 
@@ -231,7 +202,7 @@ export function grantConsumeIam(
         'kafka-cluster:DescribeTopic',
       ],
       resources: [
-        `arn:${Aws.PARTITION}:kafka:${Aws.REGION}:${Aws.ACCOUNT_ID}:topic/${clusterName}/${clusterUuid}/${topicName}`,
+        `arn:${arn.partition}:kafka:${arn.region}:${arn.account}:topic/${arn.resourceName}/${topicName}`,
       ],
     }));
 
@@ -242,42 +213,15 @@ export function grantConsumeIam(
         'kafka-cluster:DescribeGroup',
       ],
       resources: [
-        `arn:${Aws.PARTITION}:kafka:${Aws.REGION}:${Aws.ACCOUNT_ID}:topic/${clusterName}/${clusterUuid}/*`,
+        `arn:${arn.partition}:kafka:${arn.region}:${arn.account}:group/${arn.resourceName}/*`,
       ],
     }));
 
 }
 
-export function grantProduceIam(
-  topicName: string,
-  principal: IPrincipal,
-  cluster?: CfnServerlessCluster | CustomResource,
-  clusterArn?: string) {
+export function grantProduceIam(topicName: string, principal: IPrincipal, clusterArn: string) {
 
-  let clusterUuid = undefined;
-  let clusterName = undefined;
-  let _clusterArn = undefined;
-
-
-  if (cluster instanceof CfnServerlessCluster) {
-    _clusterArn = cluster.attrArn;
-  } else if (cluster instanceof CustomResource) {
-    _clusterArn = cluster.getAttString('Arn');
-  } else {
-    _clusterArn = clusterArn;
-  }
-
-  //Check the type of cluster
-  if (cluster instanceof CfnServerlessCluster) {
-    clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
-    clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-  } else if (cluster instanceof CustomResource) {
-    clusterName = Fn.select(1, Fn.split('/', cluster.getAttString('Arn')));
-    clusterUuid = Fn.select(2, Fn.split('/', cluster.getAttString('Arn')));
-  } else {
-    clusterName = clusterArn?.split('/')[1];
-    clusterUuid = clusterArn?.split('/')[2];
-  }
+  const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
@@ -285,7 +229,7 @@ export function grantProduceIam(
       'kafka-cluster:WriteDataIdempotently',
     ],
     resources: [
-      _clusterArn!,
+      clusterArn,
     ],
   }));
 
@@ -296,7 +240,7 @@ export function grantProduceIam(
         'kafka-cluster:DescribeTopic',
       ],
       resources: [
-        `arn:${Aws.PARTITION}:kafka:${Aws.REGION}:${Aws.ACCOUNT_ID}:topic/${clusterName}/${clusterUuid}/${topicName}`,
+        `arn:${arn.partition}:kafka:${arn.region}:${arn.account}:topic/${arn.resourceName}/${topicName}`,
       ],
     }));
 }

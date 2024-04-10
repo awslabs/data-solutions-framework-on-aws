@@ -499,7 +499,7 @@ export class VpcClientAuthentication {
   ) {}
 }
 
-export enum Authentitcation {
+export enum Authentication {
   IAM = 'iam',
   MTLS = 'mTLS',
 }

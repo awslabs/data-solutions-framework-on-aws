@@ -1,1 +1,1 @@
-export * as msk from './lib/msk';
+export * from './lib/msk';

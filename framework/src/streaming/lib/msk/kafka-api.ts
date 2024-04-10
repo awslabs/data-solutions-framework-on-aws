@@ -3,11 +3,10 @@
 
 import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
 
-import { ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, IRole } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
-import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { KafkaApiProps } from './kafka-api-props';
@@ -15,7 +14,7 @@ import { grantConsumeIam, grantProduceIam, mskIamCrudProviderSetup, mskAclAdminP
 import { Acl, KafkaClientLogLevel } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
-  Authentitcation,
+  Authentication,
 } from './msk-provisioned-props-utils';
 import { MskTopic } from './msk-serverless-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
@@ -68,8 +67,6 @@ export class KafkaApi extends TrackedConstruct {
   private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly tlsCertifacateSecret?: ISecret;
   private readonly clusterArn: string;
-  private cluster?:  CfnServerlessCluster | CustomResource;
-
 
   /**
    * Constructs a new instance of the EmrEksCluster construct.
@@ -104,6 +101,7 @@ export class KafkaApi extends TrackedConstruct {
         this,
         this.removalPolicy,
         props.vpc,
+        props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
         props.brokerSecurityGroup,
         props.clusterArn,
         props.certficateSecret!,
@@ -122,6 +120,7 @@ export class KafkaApi extends TrackedConstruct {
         this,
         this.removalPolicy,
         props.vpc,
+        props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
         props.brokerSecurityGroup,
         props.clusterArn,
       );
@@ -178,7 +177,7 @@ export class KafkaApi extends TrackedConstruct {
    *
    * @param {Construct} scope the scope of the stack where Topic will be created
    * @param {string} id the CDK id for Topic
-   * @param {Authentitcation} clientAuthentication The client authentication to use when creating the Topic
+   * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
    * @param {MskTopic} topicDefinition the Kafka topic definition
    * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
    * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
@@ -188,7 +187,7 @@ export class KafkaApi extends TrackedConstruct {
   public setTopic(
     scope: Construct,
     id: string,
-    clientAuthentication: Authentitcation,
+    clientAuthentication: Authentication,
     topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
@@ -197,7 +196,7 @@ export class KafkaApi extends TrackedConstruct {
     let serviceToken: string;
     let region = Stack.of(scope).region;
 
-    if (clientAuthentication === Authentitcation.IAM) {
+    if (clientAuthentication === Authentication.IAM) {
       serviceToken = this.mskIamServiceToken!;
     } else {
       serviceToken = this.mskAclServiceToken!;
@@ -236,12 +235,12 @@ export class KafkaApi extends TrackedConstruct {
   public grantProduce(
     id: string,
     topicName: string,
-    clientAuthentication: Authentitcation,
+    clientAuthentication: Authentication,
     principal: IPrincipal | string,
     host?: string,
     removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
-    if (clientAuthentication === Authentitcation.IAM) {
+    if (clientAuthentication === Authentication.IAM) {
 
       //Check if principal is not a string
       if (typeof principal == 'string') {
@@ -251,7 +250,6 @@ export class KafkaApi extends TrackedConstruct {
       grantProduceIam(
         topicName,
         principal as IPrincipal,
-        this.cluster,
         this.clusterArn);
 
       return undefined;
@@ -296,12 +294,12 @@ export class KafkaApi extends TrackedConstruct {
   public grantConsume(
     id: string,
     topicName: string,
-    clientAuthentication: Authentitcation,
+    clientAuthentication: Authentication,
     principal: IPrincipal | string,
     host?: string,
     removalPolicy?: RemovalPolicy) : CustomResource | undefined {
 
-    if (clientAuthentication === Authentitcation.IAM) {
+    if (clientAuthentication === Authentication.IAM) {
 
       //Check if principal is not a string
       if (typeof principal == 'string') {
@@ -311,7 +309,7 @@ export class KafkaApi extends TrackedConstruct {
       grantConsumeIam(
         topicName,
         principal as IPrincipal,
-        this.cluster);
+        this.clusterArn);
 
       return undefined;
 
@@ -336,15 +334,5 @@ export class KafkaApi extends TrackedConstruct {
 
       return cr;
     }
-  }
-
-  /**
-   * @internal
-   *
-   * internal method only
-   * @param cluster
-   */
-  public _initiallizeCluster (cluster: CfnServerlessCluster | CustomResource) {
-    this.cluster = cluster;
   }
 }
