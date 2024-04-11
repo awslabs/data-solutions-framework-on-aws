@@ -5,7 +5,6 @@ import {
   KafkaClient,
   UpdateConnectivityCommand,
   DescribeClusterCommand,
-  ListClusterOperationsV2Command
 } from "@aws-sdk/client-kafka";
 
 
@@ -94,7 +93,7 @@ export const isCompleteHandler = async (event) => {
 
   let commandKafka = new DescribeClusterCommand(inputKafka);
   let responseKafka = await clientKafka.send(commandKafka);
-  console.log(responseKafka.ClusterInfo.CurrentVersion);
+  
 
   if(responseKafka.ClusterInfo.State == "UPDATING" ) {
     return {

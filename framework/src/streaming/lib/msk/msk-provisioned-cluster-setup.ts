@@ -355,10 +355,6 @@ export function updateClusterConnectivity (
       ],
     }),
     new PolicyStatement({
-      actions: ['kafka:ListClusterOperationsV2'],
-      resources: [cluster.getAttString('Arn')],
-    }),
-    new PolicyStatement({
       actions: ['kms:CreateGrant', 'kms:DescribeKey'],
       resources: [
         brokerAtRestEncryptionKey.keyArn,
@@ -380,7 +376,7 @@ export function updateClusterConnectivity (
   //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'UpdateVpcConnectivityLambdaExecutionRolePolicy', {
     statements: lambdaPolicy,
-    description: 'Policy for modifying security group for MSK zookeeper',
+    description: 'Policy for modifying security group for MSK VPC connectivity',
   });
 
   let securityGroupUpdateConnectivity = new SecurityGroup(scope, 'UpdateVpcConnectivityLambdaSecurityGroup', {

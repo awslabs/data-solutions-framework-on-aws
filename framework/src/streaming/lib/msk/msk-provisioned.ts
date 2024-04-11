@@ -499,7 +499,7 @@ export class MskProvisioned extends TrackedConstruct {
         //Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
           serviceToken: applyClusterConfigurationProvider.serviceToken,
-          resourceType: 'Custom::MskApplyClusterConfiguration',
+          resourceType: 'Custom::MskSetClusterConfiguration',
           properties: {
             MskConfigurationArn: clusterConfigurationInfo.arn,
             MskConfigurationRevision: clusterConfigurationInfo.revision,
