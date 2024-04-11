@@ -294,10 +294,6 @@ export function manageCluster (
   roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
   roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
 
-  const logGroupUpdateConnectivityLambda = createLogGroup(scope, 'ManageClusterLambdaLogGroup', removalPolicy);
-
-  logGroupUpdateConnectivityLambda.grantWrite(roleUpdateConnectivityLambda);
-
   const provider = new DsfProvider(scope, 'ManageClusterProvider', {
     providerName: 'update-connectivity',
     onEventHandlerDefinition: {
@@ -515,7 +511,6 @@ export function applyClusterConfiguration (
       entryFile: path.join(__dirname, './resources/lambdas/updateConfiguration/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
-        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
         REGION: Stack.of(scope).region,
       },
     },
@@ -525,7 +520,6 @@ export function applyClusterConfiguration (
       entryFile: path.join(__dirname, './resources/lambdas/updateConfiguration/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
-        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
         REGION: Stack.of(scope).region,
       },
     },

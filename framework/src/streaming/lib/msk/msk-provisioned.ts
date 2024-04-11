@@ -499,7 +499,12 @@ export class MskProvisioned extends TrackedConstruct {
         //Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
           serviceToken: applyClusterConfigurationProvider.serviceToken,
-          resourceType: 'Custom::MskApplyClusterConfiguration'
+          resourceType: 'Custom::MskApplyClusterConfiguration',
+          properties: {
+            MskConfigurationArn: clusterConfigurationInfo.arn,
+            MskConfigurationRevision: clusterConfigurationInfo.revision,
+            MskClusterArn: this.cluster.getAttString('Arn')
+          }
         });
 
         applyClusterConfigurationCustomResource.node.addDependency(this.cluster);
