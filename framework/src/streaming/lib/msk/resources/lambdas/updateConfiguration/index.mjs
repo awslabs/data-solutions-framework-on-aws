@@ -19,7 +19,7 @@ export const onEventHandler = async (event) => {
     case 'Create':
     case 'Update':
       await onCreate(event);
-      return {};
+      break;
 
     case 'Delete':
       return {
@@ -75,6 +75,12 @@ export const onCreate = async (event) => {
 export const isCompleteHandler = async (event) => {
   console.info('isCompleteHandler Invocation');
   console.info(event);
+
+  if (event.RequestType == 'Delete') {
+    return {
+      IsComplete: true,
+    }
+  }
 
   const inputKafka = {
     ClusterArn: event.ResourceProperties.MskClusterArn,

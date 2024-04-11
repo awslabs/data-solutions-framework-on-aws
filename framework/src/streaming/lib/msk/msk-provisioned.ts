@@ -533,6 +533,7 @@ export class MskProvisioned extends TrackedConstruct {
             properties: {
               Iam: props.vpcConnectivity.saslProps?.iam == true ? true : false,
               Tls: props.vpcConnectivity.tlsProps?.tls == true ? true : false,
+              MskClusterArn: this.cluster.getAttString('Arn'),
             },
           });
 
