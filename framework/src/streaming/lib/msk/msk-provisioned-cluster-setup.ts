@@ -322,7 +322,7 @@ export function manageCluster (
     subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
     securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
     removalPolicy,
-    queryTimeout: Duration.minutes(59),
+    queryTimeout: Duration.hours(24),
     queryInterval: Duration.minutes(1),
   });
 
