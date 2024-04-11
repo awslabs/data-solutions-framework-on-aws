@@ -6,8 +6,34 @@ import { KafkaClient,
   DescribeClusterCommand, 
   DescribeConfigurationCommand } from "@aws-sdk/client-kafka";
 
-// Handler functions
+
+
+  // Handler functions
 export const onEventHandler = async (event) => {
+
+  console.info('======Recieved for Event=======');
+  console.info(event);
+
+  switch (event.RequestType) {
+    case 'Create':
+    case 'Update':
+      await onCreate(event);
+      return {};
+
+    case 'Delete':
+      return {
+        IsComplete: true
+      };
+
+    default:
+      throw new Error(`invalid request type: ${event.RequestType}`);
+  }
+}
+
+
+
+// Handler functions
+export const onCreate = async (event) => {
 
   console.log(event);
 
@@ -46,5 +72,36 @@ export const onEventHandler = async (event) => {
   responseKafka = await clientKafka.send(commandKafka);
 
   console.log(responseKafka);
+
+}
+
+
+export const isCompleteHandler = async (event) => {
+  console.info('isCompleteHandler Invocation');
+  console.info(event);
+
+  const inputKafka = {
+    ClusterArn: process.env.MSK_CLUSTER_ARN,
+  };
+
+  let commandKafka = new DescribeClusterCommand(inputKafka);
+  let responseKafka = await clientKafka.send(commandKafka);
+  console.log(responseKafka.ClusterInfo.CurrentVersion);
+
+  if(responseKafka.ClusterInfo.State == "UPDATING" ) {
+    return {
+      IsComplete: false,
+    };
+  } if(responseKafka.ClusterInfo.State == "ACTIVE" ) {
+    return {
+      IsComplete: true,
+    };
+  } else if (responseKafka.ClusterInfo.State == "FAILED") {
+    throw new Error("Cluster is in FAIL state");
+  } else {
+    return {
+      IsComplete: false,
+    };
+  }
 
 }

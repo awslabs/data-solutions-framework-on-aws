@@ -78,7 +78,7 @@ export class KafkaApi extends TrackedConstruct {
       throw Error ('VPC requires the following attributes: "vpcId", "vpcCidrBlock", "availabilityZones", "publicSubnets", "privateSubnets" ');
     }
 
-    if (props.clientAuthentication.tlsProps) {
+    if (props.clientAuthentication.tlsProps?.certificateAuthorities) {
 
       this.mskInClusterAclAdminProvider = mskAclAdminProviderSetup(
         this,
@@ -96,7 +96,7 @@ export class KafkaApi extends TrackedConstruct {
       this.mskInClusterAclCrSecurityGroup = this.mskInClusterAclAdminProvider.securityGroups;
     }
 
-    if ( props.clientAuthentication.saslProps) {
+    if ( props.clientAuthentication.saslProps?.iam) {
 
       this.mskIamACrudAdminProvider = mskIamCrudProviderSetup(
         this,

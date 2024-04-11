@@ -17,7 +17,7 @@ import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from '
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
-import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, manageCluster } from './msk-provisioned-cluster-setup';
+import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, manageCluster, applyClusterConfiguration } from './msk-provisioned-cluster-setup';
 import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
@@ -84,7 +84,8 @@ export class MskProvisioned extends TrackedConstruct {
   public readonly securityGroupUpdateZookepeerLambda: ISecurityGroup;
   public readonly cloudwatchlogApplyConfigurationLambda?: ILogGroup;
   public readonly roleApplyConfigurationLambda?: IRole;
-  public readonly securityGroupApplyConfigurationLambda?: ISecurityGroup;
+  public readonly securityGroupApplyConfigurationLambda?: ISecurityGroup[];
+  public readonly applyConfigurationLambdaFunction?: IFunction;
   public readonly clusterConfiguration?: CfnConfiguration;
   public readonly brokerSecurityGroup?: ISecurityGroup;
   public readonly brokerCloudWatchLogGroup?: ILogGroup;
@@ -249,6 +250,11 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.deploymentClusterVersion = props?.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
 
+
+    //We need to create our own CR to manage cluster lifecycle
+    //Because MSK does not support mutating the cluster with Cloudformation and API
+    //Creating the cluster L1 construct and then mutating the cluster with MSK API 
+    //break the update through Cloudformation L1
     let clusterProvider = manageCluster(
       this,
       this.vpc,
@@ -476,13 +482,29 @@ export class MskProvisioned extends TrackedConstruct {
 
       if (!props.allowEveryoneIfNoAclFound) {
 
-        let trigger: Trigger;
+        let applyClusterConfigurationProvider: DsfProvider = applyClusterConfiguration(this,
+          this.cluster,
+          this.vpc,
+          this.subnetSelectionIds,
+          this.removalPolicy,
+          this.brokerAtRestEncryptionKey,
+          clusterConfigurationInfo,
+          this.placeClusterHandlerInVpc );
 
-        [this.cloudwatchlogApplyConfigurationLambda, this.roleApplyConfigurationLambda, this.securityGroupApplyConfigurationLambda, trigger]
-          = this.setClusterConfiguration(this.cluster, clusterConfigurationInfo, crAcls, this.brokerAtRestEncryptionKey);
+        this.cloudwatchlogApplyConfigurationLambda  = applyClusterConfigurationProvider.isCompleteHandlerLog;
+        this.roleApplyConfigurationLambda = applyClusterConfigurationProvider.isCompleteHandlerRole;
+        this.securityGroupApplyConfigurationLambda = applyClusterConfigurationProvider.securityGroups;
+        this.applyConfigurationLambdaFunction = applyClusterConfigurationProvider.isCompleteHandlerFunction;
+
+        //Update cluster configuration
+        let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
+          serviceToken: applyClusterConfigurationProvider.serviceToken,
+          resourceType: 'Custom::MskApplyClusterConfiguration'
+        });
+
+        applyClusterConfigurationCustomResource.node.addDependency(this.cluster);
 
         //Update the connectivity of the cluster
-
         if (props?.vpcConnectivity) {
           let updateConnectivityProvider: DsfProvider =
             updateClusterConnectivity(
@@ -492,7 +514,6 @@ export class MskProvisioned extends TrackedConstruct {
               this.subnetSelectionIds,
               this.removalPolicy,
               this.brokerAtRestEncryptionKey,
-              props.vpcConnectivity,
               this.placeClusterHandlerInVpc);
 
 
@@ -510,7 +531,7 @@ export class MskProvisioned extends TrackedConstruct {
             },
           });
 
-          updateConnectivityProviderCr.node.addDependency(trigger);
+          updateConnectivityProviderCr.node.addDependency(applyClusterConfigurationCustomResource);
 
         }
 
@@ -847,97 +868,6 @@ export class MskProvisioned extends TrackedConstruct {
 
   }
 
-  private setClusterConfiguration(
-    cluster: CustomResource,
-    configuration: ClusterConfigurationInfo,
-    aclsResources: CustomResource[],
-    brokerAtRestEncryptionKey: IKey): [
-      ILogGroup,
-      IRole,
-      ISecurityGroup,
-      Trigger,
-    ] {
-
-    const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(this, 'setClusterConfigurationLambdaSecurityGroup', {
-      vpc: this.vpc,
-      allowAllOutbound: true,
-    });
-
-    const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(this,
-      setClusterConfigurationLambdaSecurityGroup,
-      this.subnetSelectionIds,
-      'vpcPolicyLambdaSetClusterConfiguration');
-
-    const lambdaPolicy = [
-      new PolicyStatement({
-        actions: ['kafka:DescribeCluster'],
-        resources: [
-          cluster.getAttString('Arn'),
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['kafka:DescribeConfiguration'],
-        resources: [
-          configuration.arn,
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['kafka:UpdateClusterConfiguration'],
-        resources: [
-          configuration.arn,
-          cluster.getAttString('Arn'),
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['kms:CreateGrant', 'kms:DescribeKey'],
-        resources: [
-          brokerAtRestEncryptionKey.keyArn,
-        ],
-      }),
-    ];
-
-    //Attach policy to IAM Role
-    const lambdaExecutionRolePolicy = new ManagedPolicy(this, 'LambdaExecutionRolePolicyUpdateConfiguration', {
-      statements: lambdaPolicy,
-      description: 'Policy for Updating configuration of MSK cluster',
-    });
-
-    const lambdaCloudwatchLogUpdateConfiguration = createLogGroup(this, 'LambdaCloudwatchLogUpdateConfiguration', this.removalPolicy);
-
-    let lambdaRole: Role = new Role(this, 'LambdaExecutionRoleUpdateConfiguration', {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-    });
-
-    lambdaRole.addManagedPolicy(vpcPolicyLambda);
-    lambdaRole.addManagedPolicy(lambdaExecutionRolePolicy);
-    lambdaCloudwatchLogUpdateConfiguration.grantWrite(lambdaRole);
-
-    const func = new Function(this, 'updateConfiguration', {
-      handler: 'index.onEventHandler',
-      code: Code.fromAsset(join(__dirname, './resources/lambdas/updateConfiguration')),
-      runtime: Runtime.NODEJS_20_X,
-      environment: {
-        MSK_CONFIGURATION_ARN: configuration.arn,
-        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
-      },
-      role: lambdaRole,
-      timeout: Duration.seconds(20),
-      logGroup: lambdaCloudwatchLogUpdateConfiguration,
-      vpc: this.vpc,
-      vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-      securityGroups: [setClusterConfigurationLambdaSecurityGroup],
-    });
-
-    const trigger = new Trigger(this, 'UpdateMskConfiguration', {
-      handler: func,
-      timeout: Duration.minutes(10),
-      invocationType: InvocationType.REQUEST_RESPONSE,
-      executeAfter: [...aclsResources],
-    });
-
-    return [lambdaCloudwatchLogUpdateConfiguration, lambdaRole, setClusterConfigurationLambdaSecurityGroup, trigger];
-
-  }
   /**
    * Method to get bootstrap broker connection string
    * @param authentication

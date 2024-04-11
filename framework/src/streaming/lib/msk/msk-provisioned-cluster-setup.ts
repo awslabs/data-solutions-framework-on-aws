@@ -10,7 +10,7 @@ import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
-import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo, VpcClientAuthentication } from './msk-provisioned-props-utils';
+import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-provisioned-props-utils';
 import { Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -343,7 +343,6 @@ export function updateClusterConnectivity (
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
-  vpcConnectivity: VpcClientAuthentication,
   placeClusterHandlerInVpc?: boolean) : DsfProvider {
 
   const lambdaPolicy = [
@@ -404,10 +403,6 @@ export function updateClusterConnectivity (
 
   roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
   roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
-
-  const logGroupUpdateConnectivityLambda = createLogGroup(scope, 'UpdateVpcConnectivityLambdaLogGroup', removalPolicy);
-
-  logGroupUpdateConnectivityLambda.grantWrite(roleUpdateConnectivityLambda);
 
   const provider = new DsfProvider(scope, 'UpdateVpcConnectivityProvider', {
     providerName: 'update-connectivity',
@@ -497,7 +492,7 @@ export function applyClusterConfiguration (
   //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'SetClusterConfigurationLambdaExecutionRolePolicy', {
     statements: lambdaPolicy,
-    description: 'Policy for modifying security group for MSK zookeeper',
+    description: 'Policy for modifying MSK cluster configuration',
   });
 
   let securityGroupUpdateConnectivity = new SecurityGroup(scope, 'SetClusterConfigurationLambdaSecurityGroup', {
@@ -512,16 +507,12 @@ export function applyClusterConfiguration (
   roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
   roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
 
-  const logGroupUpdateConnectivityLambda = createLogGroup(scope, 'SetClusterConfigurationLambdaLogGroup', removalPolicy);
-
-  logGroupUpdateConnectivityLambda.grantWrite(roleUpdateConnectivityLambda);
-
   const provider = new DsfProvider(scope, 'SetClusterConfigurationProvider', {
     providerName: 'set-cluster-configuration',
     onEventHandlerDefinition: {
       handler: 'index.onEventHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConnectivity/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
+      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConfiguration/package-lock.json'),
+      entryFile: path.join(__dirname, './resources/lambdas/updateConfiguration/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
         MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
