@@ -4045,18 +4045,10 @@ Retrieve DSF package.json version.
 ##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl"></a>
 
 ```typescript
-public setAcl(scope: Construct, id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
+public setAcl(id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
 ```
 
 Creates a topic in the Msk Cluster.
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
-the scope of the stack where Topic will be created.
-
----
 
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl.parameter.id"></a>
 
@@ -4085,18 +4077,10 @@ Wether to keep the ACL or delete it when removing the resource from the Stack {@
 ##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setTopic"></a>
 
 ```typescript
-public setTopic(scope: Construct, id: string, clientAuthentication: Authentication, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
+public setTopic(id: string, clientAuthentication: Authentication, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
 ```
 
 Creates a topic in the Msk Cluster.
-
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setTopic.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
-the scope of the stack where Topic will be created.
-
----
 
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setTopic.parameter.id"></a>
 
@@ -10645,7 +10629,7 @@ const kafkaApiProps: streaming.KafkaApiProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.certficateSecret">certficateSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 
 ---
 
@@ -10711,6 +10695,7 @@ public readonly certficateSecret: ISecret;
 
 This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics.
 
+It must be provided if the cluster is using mTLS authentication.
 The secret in AWS secrets manager must be a JSON in the following format
 {
  "key" : "PRIVATE-KEY",
@@ -10729,7 +10714,7 @@ public readonly kafkaClientLogLevel: KafkaClientLogLevel;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel
-- *Default:* INFO
+- *Default:* WARN
 
 The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
 
@@ -10754,10 +10739,10 @@ Otherwise the removalPolicy is reverted to RETAIN.
 ##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.subnets"></a>
 
 ```typescript
-public readonly subnets: SelectedSubnets;
+public readonly subnets: SubnetSelection;
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
 - *Default:* One private subnet with egress is used per AZ.
 
 The subnets where the Custom Resource Lambda Function would be created in.

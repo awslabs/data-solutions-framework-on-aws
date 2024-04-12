@@ -45,7 +45,7 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
 });
 /// !hide
 
-kafkaApi.setAcl(stack, 'acl', {
+kafkaApi.setAcl('acl', {
   resourceType: AclResourceTypes.TOPIC,
   resourceName: 'topic-1',
   resourcePatternType: ResourcePatternTypes.LITERAL,

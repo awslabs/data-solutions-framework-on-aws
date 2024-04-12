@@ -46,7 +46,7 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
 
 
 /// !show
-kafkaApi.setTopic(stack, 'topic1',
+kafkaApi.setTopic('topic1',
   Authentication.IAM, 
   {
     topic: 'topic1',

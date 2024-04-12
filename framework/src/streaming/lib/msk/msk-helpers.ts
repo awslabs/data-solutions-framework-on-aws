@@ -3,21 +3,48 @@
 
 import * as path from 'path';
 import { RemovalPolicy, Arn, ArnFormat } from 'aws-cdk-lib';
-import { SecurityGroup, IVpc, ISecurityGroup, CfnSecurityGroupIngress, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, IVpc, ISecurityGroup, CfnSecurityGroupIngress, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
+
+/**
+ * Properties for the `MskTopic`
+ * As defined in `ITopicConfig` in [KafkaJS](https://kafka.js.org/docs/admin) SDK
+ */
+export interface MskTopic {
+  readonly topic: string;
+  readonly numPartitions?: number; // default: -1 (uses broker `num.partitions` configuration)
+  readonly replicationFactor?: number; // default: -1 (uses broker `default.replication.factor` configuration)
+  readonly replicaAssignment?: {[key: string]: any}[]; // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
+  readonly configEntries?: {[key: string]: any}[]; // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+}
+
+function parseMskArn(stringArn: string): { partition: string; region: string; account: string; clusterName: string; clusterUuid: string } {
+
+  // We are using this ARN format as a workaround to extract both MSK cluster name and MSK cluster UUID
+  const arn = Arn.split(stringArn, ArnFormat.SLASH_RESOURCE_SLASH_RESOURCE_NAME);
+
+  return {
+    partition: arn.partition!,
+    region: arn.region!,
+    account: arn.account!,
+    clusterName: arn.resource,
+    clusterUuid: arn.resourceName!,
+  };
+}
+
 export function mskIamCrudProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
-  subnets: SelectedSubnets,
+  subnets: SubnetSelection,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string): DsfProvider {
 
-  const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
+  const { partition, region, account, clusterName, clusterUuid } = parseMskArn(clusterArn);
 
   const lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'MskIamSecurityGroup', {
     vpc,
@@ -58,7 +85,7 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:DeleteTopic',
       ],
       resources: [
-        `arn:aws:kafka:${arn.region}:${arn.account}:topic/${arn.resourceName}/*`,
+        `arn:${partition}:kafka:${region}:${account}:topic/${clusterName}/${clusterUuid}/*`,
       ],
     }),
     new PolicyStatement({
@@ -67,7 +94,7 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:DescribeGroup',
       ],
       resources: [
-        `arn:aws:kafka:${arn.region}:${arn.account}:group/${arn.resourceName}/*`,
+        `arn:${partition}:kafka:${region}:${account}:group/${clusterName}/${clusterUuid}/*`,
       ],
     }),
   ];
@@ -107,7 +134,7 @@ export function mskAclAdminProviderSetup(
   scope: Construct,
   removalPolicy: RemovalPolicy,
   vpc: IVpc,
-  subnets: SelectedSubnets,
+  subnets: SubnetSelection,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string,
   secret: ISecret): DsfProvider {
@@ -184,7 +211,7 @@ export function mskAclAdminProviderSetup(
 
 export function grantConsumeIam(topicName: string, principal: IPrincipal, clusterArn: string) {
 
-  const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
+  const { partition, region, account, clusterName, clusterUuid } = parseMskArn(clusterArn);
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
@@ -202,7 +229,7 @@ export function grantConsumeIam(topicName: string, principal: IPrincipal, cluste
         'kafka-cluster:DescribeTopic',
       ],
       resources: [
-        `arn:${arn.partition}:kafka:${arn.region}:${arn.account}:topic/${arn.resourceName}/${topicName}`,
+        `arn:${partition}:kafka:${region}:${account}:topic/${clusterName}/${clusterUuid}/${topicName}`,
       ],
     }));
 
@@ -213,7 +240,7 @@ export function grantConsumeIam(topicName: string, principal: IPrincipal, cluste
         'kafka-cluster:DescribeGroup',
       ],
       resources: [
-        `arn:${arn.partition}:kafka:${arn.region}:${arn.account}:group/${arn.resourceName}/*`,
+        `arn:${partition}:kafka:${region}:${account}:group/${clusterName}/${clusterUuid}/*`,
       ],
     }));
 
@@ -221,7 +248,7 @@ export function grantConsumeIam(topicName: string, principal: IPrincipal, cluste
 
 export function grantProduceIam(topicName: string, principal: IPrincipal, clusterArn: string) {
 
-  const arn = Arn.split(clusterArn, ArnFormat.SLASH_RESOURCE_NAME);
+  const { partition, region, account, clusterName, clusterUuid } = parseMskArn(clusterArn);
 
   principal.addToPrincipalPolicy(new PolicyStatement({
     actions: [
@@ -240,7 +267,7 @@ export function grantProduceIam(topicName: string, principal: IPrincipal, cluste
         'kafka-cluster:DescribeTopic',
       ],
       resources: [
-        `arn:${arn.partition}:kafka:${arn.region}:${arn.account}:topic/${arn.resourceName}/${topicName}`,
+        `arn:${partition}:kafka:${region}:${account}:topic/${clusterName}/${clusterUuid}/${topicName}`,
       ],
     }));
 }

@@ -8,16 +8,17 @@
 * @group unit/streaming/kafka-api
 */
 
-import { Stack, App } from 'aws-cdk-lib';
+import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
+import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Authentication, ClientAuthentication, KafkaApi } from '../../../src/streaming';
 
 
-describe('Using default KafkaApi configuration should ', () => {
+describe('Using default KafkaApi configuration with MSK provisioned and IAM and mTLS authentication should ', () => {
 
   const app = new App();
   const stack = new Stack(app, 'Stack');
@@ -37,8 +38,30 @@ describe('Using default KafkaApi configuration should ', () => {
 
   const secret = Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:region:XXXXXX:secret:dsf/mycert-foobar');
 
+  const cluster = new CfnCluster(stack, 'MyCluster', {
+    clientAuthentication: {
+      sasl: {
+        iam: {
+          enabled: true,
+        },
+      },
+      tls: {
+        enabled: true,
+        certificateAuthorityArnList: [certificateAuthority.certificateAuthorityArn],
+      },
+    },
+    brokerNodeGroupInfo: {
+      clientSubnets: vpc.privateSubnets.map(s => s.subnetId),
+      instanceType: 'kafka.m5large',
+      securityGroups: [brokerSecurityGroup.securityGroupId],
+    },
+    clusterName: 'XXXXXX',
+    kafkaVersion: '3.5.1',
+    numberOfBrokerNodes: 3,
+  });
+
   const kafkaApi = new KafkaApi(stack, 'KafkaApi', {
-    clusterArn: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+    clusterArn: cluster.attrArn,
     brokerSecurityGroup,
     vpc,
     certficateSecret: secret,
@@ -48,14 +71,14 @@ describe('Using default KafkaApi configuration should ', () => {
     }),
   });
 
-  kafkaApi.setTopic(stack, 'topic1',
+  kafkaApi.setTopic('topic1',
     Authentication.IAM,
     {
       topic: 'topic1',
     },
   );
 
-  kafkaApi.setTopic(stack, 'topic2',
+  kafkaApi.setTopic('topic2',
     Authentication.MTLS,
     {
       topic: 'topic2',
@@ -145,7 +168,9 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka:CreateVpcConnection',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+            Resource: {
+              'Fn::GetAtt': ['MyCluster', 'Arn'],
+            },
           },
           {
             Action: [
@@ -155,7 +180,119 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka-cluster:DeleteTopic',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:topic/MyCluster/xxxx-xxxxx-xxxx/*',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':topic/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/*',
+                ],
+              ],
+            },
           },
           {
             Action: [
@@ -163,7 +300,119 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka-cluster:DescribeGroup',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:group/MyCluster/xxxx-xxxxx-xxxx/*',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':group/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/*',
+                ],
+              ],
+            },
           },
         ],
       },
@@ -177,7 +426,9 @@ describe('Using default KafkaApi configuration should ', () => {
           {
             Action: 'kafka:DescribeCluster',
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+            Resource: {
+              'Fn::GetAtt': ['MyCluster', 'Arn'],
+            },
           },
           {
             Action: 'kafka:GetBootstrapBrokers',
@@ -308,7 +559,7 @@ describe('Using default KafkaApi configuration should ', () => {
     });
   });
 
-  test('should create the ACL for consumer', () => {
+  test('should create the ACL for producer', () => {
     template.hasResourceProperties('Custom::MskAcl', {
       ServiceToken: {
         'Fn::GetAtt': [
@@ -321,7 +572,9 @@ describe('Using default KafkaApi configuration should ', () => {
       region: {
         Ref: 'AWS::Region',
       },
-      mskClusterArn: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+      mskClusterArn: {
+        'Fn::GetAtt': ['MyCluster', 'Arn'],
+      },
       resourceType: 2,
       resourcePatternType: 3,
       resourceName: 'topic1',
@@ -345,7 +598,9 @@ describe('Using default KafkaApi configuration should ', () => {
       region: {
         Ref: 'AWS::Region',
       },
-      mskClusterArn: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+      mskClusterArn: {
+        'Fn::GetAtt': ['MyCluster', 'Arn'],
+      },
       resourceType: 2,
       resourcePatternType: 3,
       resourceName: 'topic1',
@@ -366,7 +621,9 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka-cluster:WriteDataIdempotently',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+            Resource: {
+              'Fn::GetAtt': ['MyCluster', 'Arn'],
+            },
           },
           {
             Action: [
@@ -374,7 +631,119 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka-cluster:DescribeTopic',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:topic/MyCluster/xxxx-xxxxx-xxxx/topic1',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':topic/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/topic1',
+                ],
+              ],
+            },
           },
         ],
       },
@@ -392,7 +761,9 @@ describe('Using default KafkaApi configuration should ', () => {
           {
             Action: 'kafka-cluster:Connect',
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:cluster/MyCluster/xxxx-xxxxx-xxxx',
+            Resource: {
+              'Fn::GetAtt': ['MyCluster', 'Arn'],
+            },
           },
           {
             Action: [
@@ -400,7 +771,119 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka-cluster:DescribeTopic',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:topic/MyCluster/xxxx-xxxxx-xxxx/topic1',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':topic/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/topic1',
+                ],
+              ],
+            },
           },
           {
             Action: [
@@ -408,7 +891,119 @@ describe('Using default KafkaApi configuration should ', () => {
               'kafka-cluster:DescribeGroup',
             ],
             Effect: 'Allow',
-            Resource: 'arn:aws:kafka:region:XXXXXX:group/MyCluster/xxxx-xxxxx-xxxx/*',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':group/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/*',
+                ],
+              ],
+            },
           },
         ],
       },
@@ -416,6 +1011,216 @@ describe('Using default KafkaApi configuration should ', () => {
       Roles: [
         'consumer',
       ],
+    });
+  });
+});
+
+describe('Using custom KafkaApi configuration with MSK serverless and DELETE removal policy should ', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const brokerSecurityGroup = SecurityGroup.fromSecurityGroupId(stack, 'sg', 'sg-1234');
+  const vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
+    vpcId: 'XXXXXXXX',
+    availabilityZones: ['us-east-1a'],
+    vpcCidrBlock: '10.0.0.0/16',
+    privateSubnetIds: ['XXXXXXXX', 'YYYYYYYY'],
+  });
+
+  const certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
+    stack, 'certificateAuthority',
+    'arn:aws:acm-pca:region:XXXXXX:certificate-authority/my-ca',
+  );
+
+  const secret = Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:region:XXXXXX:secret:dsf/mycert-foobar');
+
+  const cluster = new CfnCluster(stack, 'MyCluster', {
+    clientAuthentication: {
+      sasl: {
+        iam: {
+          enabled: true,
+        },
+      },
+      tls: {
+        enabled: true,
+        certificateAuthorityArnList: [certificateAuthority.certificateAuthorityArn],
+      },
+    },
+    brokerNodeGroupInfo: {
+      clientSubnets: vpc.privateSubnets.map(s => s.subnetId),
+      instanceType: 'kafka.m5large',
+      securityGroups: [brokerSecurityGroup.securityGroupId],
+    },
+    clusterName: 'XXXXXX',
+    kafkaVersion: '3.5.1',
+    numberOfBrokerNodes: 3,
+  });
+
+  const kafkaApi = new KafkaApi(stack, 'KafkaApi', {
+    clusterArn: cluster.attrArn,
+    brokerSecurityGroup,
+    vpc,
+    certficateSecret: secret,
+    clientAuthentication: ClientAuthentication.saslTls({
+      iam: true,
+      certificateAuthorities: [certificateAuthority],
+    }),
+  });
+
+  kafkaApi.setTopic('topic1',
+    Authentication.IAM,
+    {
+      topic: 'topic1',
+      numPartitions: 1,
+      replicationFactor: 1,
+      replicaAssignment: [{ partition: 0, replicas: [0, 1] }],
+      configEntries: [{ name: 'cleanup.policy', value: 'compact' }],
+    },
+    RemovalPolicy.DESTROY,
+  );
+
+  kafkaApi.grantConsume('topic1TlsConsumerGrant', 'topic1', Authentication.MTLS, 'Cn=foo', RemovalPolicy.DESTROY);
+
+  const template = Template.fromStack(stack, {});
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create proper topic definition', () => {
+    template.hasResourceProperties('Custom::MskTopic', {
+      ServiceToken: {
+        'Fn::GetAtt': [
+          Match.stringLikeRegexp('KafkaApiMskIamProviderCustomResourceProviderframeworkonEvent.*'),
+          'Arn',
+        ],
+      },
+      logLevel: 'WARN',
+      topics: Match.arrayWith([
+        Match.objectLike({
+          topic: 'topic1',
+          numPartitions: 1,
+          replicationFactor: 1,
+          replicaAssignment: [
+            {
+              partition: 0,
+              replicas: [
+                0,
+                1,
+              ],
+            },
+          ],
+          configEntries: [
+            {
+              name: 'cleanup.policy',
+              value: 'compact',
+            },
+          ],
+        }),
+      ]),
+    });
+  });
+
+  test('should create resources reveted back to RETAIN removal policy', () => {
+    template.allResources('AWS::Logs::LogGroup', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+
+    template.allResources('Custom::MskTopic', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+
+    template.allResources('Custom::MskAcl', {
+      UpdateReplacePolicy: 'Retain',
+      DeletionPolicy: 'Retain',
+    });
+  });
+});
+
+describe('Using global removal policy and DELETE construct removal policy ', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Set context value for global data removal policy
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  const brokerSecurityGroup = SecurityGroup.fromSecurityGroupId(stack, 'sg', 'sg-1234');
+  const vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
+    vpcId: 'XXXXXXXX',
+    availabilityZones: ['us-east-1a'],
+    vpcCidrBlock: '10.0.0.0/16',
+    privateSubnetIds: ['XXXXXXXX', 'YYYYYYYY'],
+  });
+
+  const certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
+    stack, 'certificateAuthority',
+    'arn:aws:acm-pca:region:XXXXXX:certificate-authority/my-ca',
+  );
+
+  const secret = Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:region:XXXXXX:secret:dsf/mycert-foobar');
+
+  const cluster = new CfnCluster(stack, 'MyCluster', {
+    clientAuthentication: {
+      sasl: {
+        iam: {
+          enabled: true,
+        },
+      },
+      tls: {
+        enabled: true,
+        certificateAuthorityArnList: [certificateAuthority.certificateAuthorityArn],
+      },
+    },
+    brokerNodeGroupInfo: {
+      clientSubnets: vpc.privateSubnets.map(s => s.subnetId),
+      instanceType: 'kafka.m5large',
+      securityGroups: [brokerSecurityGroup.securityGroupId],
+    },
+    clusterName: 'XXXXXX',
+    kafkaVersion: '3.5.1',
+    numberOfBrokerNodes: 3,
+  });
+
+  const kafkaApi = new KafkaApi(stack, 'KafkaApi', {
+    clusterArn: cluster.attrArn,
+    brokerSecurityGroup,
+    vpc,
+    certficateSecret: secret,
+    clientAuthentication: ClientAuthentication.saslTls({
+      iam: true,
+      certificateAuthorities: [certificateAuthority],
+    }),
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  kafkaApi.setTopic('topic1',
+    Authentication.IAM,
+    {
+      topic: 'topic1',
+    },
+    RemovalPolicy.DESTROY,
+  );
+
+  kafkaApi.grantConsume('topic1TlsConsumerGrant', 'topic1', Authentication.MTLS, 'Cn=foo', RemovalPolicy.DESTROY);
+
+  const template = Template.fromStack(stack, {});
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create resources with DELETE removal policy', () => {
+    template.allResources('AWS::Logs::LogGroup', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::MskTopic', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
+    });
+
+    template.allResources('Custom::MskAcl', {
+      UpdateReplacePolicy: 'Delete',
+      DeletionPolicy: 'Delete',
     });
   });
 });

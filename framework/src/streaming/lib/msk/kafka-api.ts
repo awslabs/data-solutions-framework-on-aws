@@ -11,12 +11,10 @@ import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { KafkaApiProps } from './kafka-api-props';
 import { grantConsumeIam, grantProduceIam, mskIamCrudProviderSetup, mskAclAdminProviderSetup } from './msk-helpers';
-import { Acl, KafkaClientLogLevel } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
-  Authentication,
-} from './msk-provisioned-props-utils';
-import { MskTopic } from './msk-serverless-props';
+  Authentication, Acl, KafkaClientLogLevel, MskTopic,
+} from './msk-utils';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
@@ -136,26 +134,23 @@ export class KafkaApi extends TrackedConstruct {
 
   /**
    * Creates a topic in the Msk Cluster
-   *
-   * @param {Construct} scope the scope of the stack where Topic will be created
    * @param {string} id the CDK id for Topic
    * @param {Acl} aclDefinition the Kafka Acl definition
    * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
    * @returns {CustomResource} The MskAcl custom resource created
    */
   public setAcl(
-    scope: Construct,
     id: string,
     aclDefinition: Acl,
     removalPolicy?: RemovalPolicy,
   ): CustomResource {
 
-    const cr = new CustomResource(scope, id, {
+    const cr = new CustomResource(this, id, {
       serviceToken: this.mskAclServiceToken!,
       properties: {
         logLevel: this.kafkaClientLogLevel,
         secretArn: this.tlsCertifacateSecret?.secretArn,
-        region: Stack.of(scope).region,
+        region: Stack.of(this).region,
         mskClusterArn: this.clusterArn,
         resourceType: aclDefinition.resourceType,
         resourcePatternType: aclDefinition.resourcePatternType,
@@ -166,7 +161,7 @@ export class KafkaApi extends TrackedConstruct {
         permissionType: aclDefinition.permissionType,
       },
       resourceType: 'Custom::MskAcl',
-      removalPolicy: removalPolicy,
+      removalPolicy: Context.revertRemovalPolicy(this, removalPolicy),
     });
 
     return cr;
@@ -174,8 +169,6 @@ export class KafkaApi extends TrackedConstruct {
 
   /**
    * Creates a topic in the Msk Cluster
-   *
-   * @param {Construct} scope the scope of the stack where Topic will be created
    * @param {string} id the CDK id for Topic
    * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
    * @param {MskTopic} topicDefinition the Kafka topic definition
@@ -185,7 +178,6 @@ export class KafkaApi extends TrackedConstruct {
    * @returns {CustomResource} The MskTopic custom resource created
    */
   public setTopic(
-    scope: Construct,
     id: string,
     clientAuthentication: Authentication,
     topicDefinition: MskTopic,
@@ -194,7 +186,7 @@ export class KafkaApi extends TrackedConstruct {
     timeout?: number) : CustomResource {
 
     let serviceToken: string;
-    let region = Stack.of(scope).region;
+    let region = Stack.of(this).region;
 
     if (clientAuthentication === Authentication.IAM) {
       serviceToken = this.mskIamServiceToken!;
@@ -203,7 +195,7 @@ export class KafkaApi extends TrackedConstruct {
     }
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
-    const cr = new CustomResource(scope, id, {
+    const cr = new CustomResource(this, id, {
       serviceToken: serviceToken,
       properties: {
         logLevel: this.kafkaClientLogLevel,
@@ -215,7 +207,7 @@ export class KafkaApi extends TrackedConstruct {
         mskClusterArn: this.clusterArn,
       },
       resourceType: 'Custom::MskTopic',
-      removalPolicy: removalPolicy ?? RemovalPolicy.RETAIN,
+      removalPolicy: Context.revertRemovalPolicy(this, removalPolicy),
     });
 
     return cr;
@@ -261,7 +253,7 @@ export class KafkaApi extends TrackedConstruct {
         throw Error('principal must not be of type IPrincipal');
       }
 
-      const cr = this.setAcl(this, id, {
+      const cr = this.setAcl(id, {
         resourceType: AclResourceTypes.TOPIC,
         resourceName: topicName,
         resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -270,7 +262,7 @@ export class KafkaApi extends TrackedConstruct {
         operation: AclOperationTypes.WRITE,
         permissionType: AclPermissionTypes.ALLOW,
       },
-      removalPolicy ?? RemovalPolicy.DESTROY,
+      Context.revertRemovalPolicy(this, removalPolicy),
       );
 
       return cr;
@@ -281,7 +273,6 @@ export class KafkaApi extends TrackedConstruct {
 
   /**
    * Grant a principal the right to consume data from a topic
-   *
    * @param {string} id the CDK resource id
    * @param {string} topicName the topic to which the principal can produce data
    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
@@ -320,16 +311,17 @@ export class KafkaApi extends TrackedConstruct {
         throw Error('principal must not be of type IPrincipal');
       }
 
-      const cr = this.setAcl(this, id, {
-        resourceType: AclResourceTypes.TOPIC,
-        resourceName: topicName,
-        resourcePatternType: ResourcePatternTypes.LITERAL,
-        principal: principal as string,
-        host: host ?? '*',
-        operation: AclOperationTypes.READ,
-        permissionType: AclPermissionTypes.ALLOW,
-      },
-      removalPolicy ?? RemovalPolicy.DESTROY,
+      const cr = this.setAcl(id,
+        {
+          resourceType: AclResourceTypes.TOPIC,
+          resourceName: topicName,
+          resourcePatternType: ResourcePatternTypes.LITERAL,
+          principal: principal as string,
+          host: host ?? '*',
+          operation: AclOperationTypes.READ,
+          permissionType: AclPermissionTypes.ALLOW,
+        },
+        removalPolicy ?? RemovalPolicy.DESTROY,
       );
 
       return cr;

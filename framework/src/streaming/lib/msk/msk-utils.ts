@@ -7,6 +7,7 @@ import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 
+
 /**
  * Kafka cluster version
  */
@@ -554,3 +555,39 @@ export enum ResourcePatternTypes {
 }
 
 export const MSK_DEFAULT_VERSION: KafkaVersion = KafkaVersion.V3_5_1;
+/**
+ * Kakfa ACL
+ * This is similar to the object used by `kafkajs`, for more information see this [link](https://kafka.js.org/docs/admin#create-acl)
+ */
+export interface Acl {
+  readonly principal: string;
+  readonly host: string;
+  readonly operation: AclOperationTypes;
+  readonly permissionType: AclPermissionTypes;
+  readonly resourceType: AclResourceTypes;
+  readonly resourceName: string;
+  readonly resourcePatternType: ResourcePatternTypes;
+}
+
+/**
+ * Properties for the `MskTopic`
+ * As defined in `ITopicConfig` in [KafkaJS](https://kafka.js.org/docs/admin) SDK
+ */
+export interface MskTopic {
+  readonly topic: string;
+  readonly numPartitions?: number; // default: -1 (uses broker `num.partitions` configuration)
+  readonly replicationFactor?: number; // default: -1 (uses broker `default.replication.factor` configuration)
+  readonly replicaAssignment?: {[key: string]: any}[]; // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
+  readonly configEntries?: {[key: string]: any}[]; // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+}
+
+
+/**
+ * The CDK Custom resources uses KafkaJs
+ * This enum allow you to set the log level
+ */
+export enum KafkaClientLogLevel {
+  WARN = 'WARN',
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+}

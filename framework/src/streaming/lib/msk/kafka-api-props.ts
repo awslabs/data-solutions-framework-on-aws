@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { ISecurityGroup, IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
-import { KafkaClientLogLevel } from './msk-provisioned-props';
-import { ClientAuthentication } from './msk-provisioned-props-utils';
+import { KafkaClientLogLevel, ClientAuthentication } from './msk-utils';
 
 /**
  * Properties for the `KafkaApi` construct
@@ -40,11 +39,12 @@ export interface KafkaApiProps {
    * The subnets where the Custom Resource Lambda Function would be created in.
    * @default - One private subnet with egress is used per AZ.
    */
-  readonly subnets?: SelectedSubnets;
+  readonly subnets?: SubnetSelection;
 
   /**
    * This is the TLS certificate of the Principal that is used by
    * the CDK custom resource which set ACLs and Topics.
+   * It must be provided if the cluster is using mTLS authentication.
    * The secret in AWS secrets manager must be a JSON in the following format
    * {
    *  "key" : "PRIVATE-KEY",
@@ -65,7 +65,7 @@ export interface KafkaApiProps {
   /**
    * The log level for the lambda that support the Custom Resource
    * for both Managing ACLs and Topics.
-   * @default INFO
+   * @default WARN
    */
   readonly kafkaClientLogLevel?: KafkaClientLogLevel;
 }

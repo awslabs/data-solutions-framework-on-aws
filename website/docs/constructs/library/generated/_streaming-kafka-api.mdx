@@ -108,7 +108,7 @@ Dependeding on the authentication type that is set in the cluster, you need to p
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-kafkaApi.setTopic(stack, 'topic1',
+kafkaApi.setTopic('topic1',
   Authentication.IAM,
   {
     topic: 'topic1',
@@ -125,7 +125,7 @@ kafkaApi.setTopic(stack, 'topic1',
   <TabItem value="python" label="Python">
 
   ```python
-kafka_api.set_topic(stack, "topic1", Authentication.IAM, MskTopic(
+kafka_api.set_topic("topic1", Authentication.IAM, MskTopic(
     topic="topic1",
     num_partitions=3,
     replication_factor=1
@@ -156,7 +156,7 @@ The topic is defined by the property type called `MskACL`. This method should be
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-kafkaApi.setAcl(stack, 'acl',
+kafkaApi.setAcl('acl',
   {
     resourceType: AclResourceTypes.TOPIC,
     resourceName: 'topic-1',
@@ -176,7 +176,7 @@ kafkaApi.setAcl(stack, 'acl',
   <TabItem value="python" label="Python">
 
   ```python
-kafka_api.set_acl(stack, "acl", Acl(
+kafka_api.set_acl("acl", Acl(
     resource_type=AclResourceTypes.TOPIC,
     resource_name="topic-1",
     resource_pattern_type=ResourcePatternTypes.LITERAL,
