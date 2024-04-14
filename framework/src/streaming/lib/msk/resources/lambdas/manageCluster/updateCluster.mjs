@@ -27,6 +27,8 @@ function compareOldNewObject(oldObject, newObject, attribute) {
       console.log(`Change detected in ${attribute}`);
       return { attribute: attribute, newObjectAttribute: newObjectAttribute };
     }
+  } else {
+    console.log(`The attibute "${attribute}" is not in object`);
   }
 
   // Return null if no changes or if ClientAuthentication properties don't exist in both objects
@@ -61,9 +63,9 @@ export async function onUpdate(clientKafka, event) {
   const clusterAttributeList = [
     'clientAuthentication',
     'numberOfBrokerNodes',
-    'InstanceType',
     'storageMode',
-    'StorageInfo',
+    'brokerNodeGroupInfo.StorageInfo.EbsStorageInfo',
+    'brokerNodeGroupInfo.InstanceType',
     'loggingInfo',
     'openMonitoring',
     'enhancedMonitoring'];
@@ -75,8 +77,9 @@ export async function onUpdate(clientKafka, event) {
   // if its more than one change we need to fail
   // MSK does not support updating more than one attribute at a time
   const numberOfChanges = updatedAttributes.filter(updatedAttribute => typeof updatedAttribute === 'object' && updatedAttribute !== null).length;
-
+  
   if (numberOfChanges == 0) {
+    console.log('No change detected');
     return null;
   }
   else if (numberOfChanges > 1) {
@@ -144,18 +147,17 @@ export async function onUpdate(clientKafka, event) {
     const response = await clientKafka.send(command);
 
     console.log(response);
-  } else if (updatedAttributes[indexObject].attribute == 'InstanceType') {
+  } else if (updatedAttributes[indexObject].attribute == 'brokerNodeGroupInfo.InstanceType') {
 
-    let result = updatedAttributes[indexObject].newObjectAttribute;
+    let newObjectAttribute = updatedAttributes[indexObject].newObjectAttribute;
 
     const input = { // UpdateBrokerTypeRequest
       ClusterArn: clusterArn, // required
       CurrentVersion: currentVersion, // required
-      TargetInstanceType: result.InstanceType, // required
+      TargetInstanceType: newObjectAttribute, // required
     };
     const command = new UpdateBrokerTypeCommand(input);
     const response = await clientKafka.send(command);
-
 
   } else if (
     updatedAttributes[indexObject].attribute == 'openMonitoring' ||
@@ -198,10 +200,24 @@ export async function onUpdate(clientKafka, event) {
     const response = await clientKafka.send(command);
 
   } else if ( 
-    updatedAttributes[indexObject].attribute == 'storageMode' ||
-    updatedAttributes[indexObject].attribute == 'StorageInfo') {
+    updatedAttributes[indexObject].attribute == 'storageMode') {
 
-
+      const input = { // UpdateStorageRequest
+        ClusterArn: clusterArn, // required
+        CurrentVersion: currentVersion, // required
+        StorageMode:  updatedAttributes[indexObject].newObjectAttribute //"LOCAL" || "TIERED",
+      };
+      const command = new UpdateStorageCommand(input);
+      const response = await clientKafka.send(command);
+    
+  } else if ( updatedAttributes[indexObject].attribute == 'brokerNodeGroupInfo.StorageInfo.EbsStorageInfo') {
+    const input = { // UpdateStorageRequest
+      ClusterArn: clusterArn, // required
+      CurrentVersion: currentVersion, // required
+      VolumeSizeGB: parseInt(updatedAttributes[indexObject].newObjectAttribute.VolumeSize),
+    };
+    const command = new UpdateStorageCommand(input);
+    const response = await clientKafka.send(command);
   }
 
 }
