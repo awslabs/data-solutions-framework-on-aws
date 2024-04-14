@@ -198,7 +198,7 @@ export function manageCluster (
     new PolicyStatement({
       actions: ['kafka:CreateClusterV2'],
       resources: [
-       '*',
+        `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
       ],
     }),
     new PolicyStatement({

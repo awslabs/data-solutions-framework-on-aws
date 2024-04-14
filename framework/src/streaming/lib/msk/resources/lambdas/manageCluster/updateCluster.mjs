@@ -60,6 +60,8 @@ async function getCurrentVersion(clientKafka, event) {
 
 export async function onUpdate(clientKafka, event) {
 
+
+  //TODO Add support for upgrading kafka cluster
   const clusterAttributeList = [
     'clientAuthentication',
     'numberOfBrokerNodes',
@@ -129,7 +131,7 @@ export async function onUpdate(clientKafka, event) {
     const command = new UpdateSecurityCommand(input);
 
     console.log(JSON.stringify(input, null, 2));
-    let response = await clientKafka.send(command);
+    const response = await clientKafka.send(command);
 
   } else if (updatedAttributes[indexObject].attribute == 'numberOfBrokerNodes') {
 
