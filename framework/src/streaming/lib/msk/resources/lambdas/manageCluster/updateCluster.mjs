@@ -129,7 +129,7 @@ export async function onUpdate(clientKafka, event) {
     const command = new UpdateSecurityCommand(input);
 
     console.log(JSON.stringify(input, null, 2));
-    response = await clientKafka.send(command);
+    let response = await clientKafka.send(command);
 
   } else if (updatedAttributes[indexObject].attribute == 'numberOfBrokerNodes') {
 
