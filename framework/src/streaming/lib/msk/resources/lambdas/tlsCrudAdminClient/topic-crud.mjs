@@ -40,7 +40,7 @@ export async function topicCrudOnEvent (event, admin) {
 
             try {
                 
-                let updatedTopics = []; 
+                let updatedTopics = [];
 
                 event.ResourceProperties.topics.forEach (topic => {
                     updatedTopics.push({

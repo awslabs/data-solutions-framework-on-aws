@@ -156,6 +156,11 @@ export const isCompleteHandler = async (event) => {
   console.info('isCompleteHandler Invocation');
   console.info(event);
 
+  //Update and Create/Delete are different cases for MSK
+  //When a cluster is deleted there is no "DELETED" state
+  //If we describe a cluster that is already delete we will get a "not found exception"
+  //We catch it and return `isComplete:true`
+
   if (event.RequestType == "Update") {
 
     describeClusterResult = await describeCluster(clientKafka, event.PhysicalResourceId);

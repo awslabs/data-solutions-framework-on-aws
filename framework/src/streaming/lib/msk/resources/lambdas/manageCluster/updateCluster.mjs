@@ -130,13 +130,16 @@ export async function onUpdate(clientKafka, event) {
 
   } else if (updatedAttributes[indexObject].attribute == 'numberOfBrokerNodes') {
 
-    let result = updatedAttributes[indexObject].newObjectAttribute;
+    const targetNumberOfBrokerNodes = parseInt(updatedAttributes[indexObject].newObjectAttribute);
 
     const input = { // UpdateBrokerCountRequest
       ClusterArn: clusterArn, // required
       CurrentVersion: currentVersion, // required
-      TargetNumberOfBrokerNodes: parseInt(result.numberOfBrokerNodes), // required
+      TargetNumberOfBrokerNodes: targetNumberOfBrokerNodes, // required
     };
+
+    console.log(input);
+
     const command = new UpdateBrokerCountCommand(input);
     const response = await clientKafka.send(command);
 
