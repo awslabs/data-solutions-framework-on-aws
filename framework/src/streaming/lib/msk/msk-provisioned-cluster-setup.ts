@@ -180,7 +180,8 @@ export function manageCluster (
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
   clusterName: string,
-  placeClusterHandlerInVpc?: boolean, 
+  placeClusterHandlerInVpc?: boolean,
+  privateCaArns?: string [],
   ) : DsfProvider {
 
   let region = Stack.of(scope).region;
@@ -240,12 +241,6 @@ export function manageCluster (
       resources: ['*'],
     }),
     new PolicyStatement({
-      actions: [
-        'acm-pca:GetCertificateAuthorityCertificate'
-      ],
-      resources: ['*'],
-    }),
-    new PolicyStatement({
       actions: ['iam:PassRole'],
       resources: ['*'],
       conditions: {
@@ -270,6 +265,13 @@ export function manageCluster (
       resources: ['*'],
     }),
   ];
+
+  if (privateCaArns) {
+    lambdaPolicy.push(new PolicyStatement({
+      actions: ['acm-pca:GetCertificateAuthorityCertificate'],
+      resources: privateCaArns,
+    }));
+  }
 
   //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'ManageClusterLambdaExecutionRolePolicy', {

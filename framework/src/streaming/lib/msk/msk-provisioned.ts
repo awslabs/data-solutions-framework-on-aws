@@ -255,6 +255,8 @@ export class MskProvisioned extends TrackedConstruct {
     //Because MSK does not support mutating the cluster with Cloudformation and API
     //Creating the cluster L1 construct and then mutating the cluster with MSK API 
     //break the update through Cloudformation L1
+
+    let privateCaArns  = props?.clientAuthentication?.tlsProps?.certificateAuthorities?.map( (privateCa) => { return privateCa.certificateAuthorityArn });
     let clusterProvider = manageCluster(
       this,
       this.vpc,
@@ -262,7 +264,9 @@ export class MskProvisioned extends TrackedConstruct {
       this.removalPolicy,
       this.brokerAtRestEncryptionKey,
       props?.clusterName ?? 'default-msk-provisioned',
-      this.placeClusterHandlerInVpc);
+      this.placeClusterHandlerInVpc,
+      privateCaArns
+    );
 
     this.cluster = new CustomResource(this, 'MskCluster', {
       serviceToken: clusterProvider.serviceToken,
