@@ -11,7 +11,7 @@
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
-import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, Subnet, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -1061,6 +1061,7 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
     clusterArn: cluster.attrArn,
     brokerSecurityGroup,
     vpc,
+    subnets: SubnetSelection(),
     certficateSecret: secret,
     clientAuthentication: ClientAuthentication.saslTls({
       iam: true,
