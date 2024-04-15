@@ -138,7 +138,7 @@ export class KafkaApi extends TrackedConstruct {
    * Creates a topic in the Msk Cluster
    * @param {string} id the CDK id for Topic
    * @param {Acl} aclDefinition the Kafka Acl definition
-   * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+   * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack. @default - RemovalPolicy.RETAIN
    * @returns {CustomResource} The MskAcl custom resource created
    */
   public setAcl(
@@ -174,9 +174,9 @@ export class KafkaApi extends TrackedConstruct {
    * @param {string} id the CDK id for Topic
    * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
    * @param {MskTopic} topicDefinition the Kafka topic definition
-   * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+   * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack. @default - RemovalPolicy.RETAIN
    * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
-   * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
+   * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default - 5000
    * @returns {CustomResource} The MskTopic custom resource created
    */
   public setTopic(
@@ -221,8 +221,8 @@ export class KafkaApi extends TrackedConstruct {
    * @param {string} topicName the topic to which the principal can produce data
    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-   * @param {string} host the host to which the principal can produce data.
-   * @param {RemovalPolicy} removalPolicy
+   * @param {string} host the host to which the principal can produce data. @default - * is used
+   * @param {RemovalPolicy} removalPolicy the removal policy to apply to the grant. @default - RETAIN is used
    * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to write in the topic is created and returned,
    *          you can use it to add dependency on it.
    */
@@ -279,8 +279,8 @@ export class KafkaApi extends TrackedConstruct {
    * @param {string} topicName the topic to which the principal can produce data
    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-   * @param {string} host the host to which the principal can produce data.
-   * @param {RemovalPolicy} removalPolicy
+   * @param {string} host the host to which the principal can produce data. @default - * is used
+   * @param {RemovalPolicy} removalPolicy the removal policy to apply to the grant. @default - RETAIN is used
    * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
    *          you can use it to add dependency on it.
    */
