@@ -272,7 +272,7 @@ export class MskProvisioned extends TrackedConstruct {
       serviceToken: clusterProvider.serviceToken,
       resourceType: 'Custom::MskCluster',
       properties: {
-        clusterName: props?.clusterName ?? 'default-msk-provisioned',
+        clusterName: props?.clusterName ?? 'default-msk-provisioned-dsf',
         kafkaVersion: this.deploymentClusterVersion.version,
         numberOfBrokerNodes: this.numberOfBrokerNodes,
         brokerNodeGroupInfo: {

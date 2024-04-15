@@ -70,7 +70,8 @@ export async function onUpdate(clientKafka, event) {
     'brokerNodeGroupInfo.InstanceType',
     'loggingInfo',
     'openMonitoring',
-    'enhancedMonitoring'];
+    'enhancedMonitoring',
+    'kafkaVersion'];
 
   // We need to find the attributes that were changed in the update
   let updatedAttributes = clusterAttributeList.map((clusterAttribute) => compareOldNewObject(event.OldResourceProperties, event.ResourceProperties, clusterAttribute));
@@ -142,8 +143,6 @@ export async function onUpdate(clientKafka, event) {
       CurrentVersion: currentVersion, // required
       TargetNumberOfBrokerNodes: targetNumberOfBrokerNodes, // required
     };
-
-    console.log(input);
 
     const command = new UpdateBrokerCountCommand(input);
     const response = await clientKafka.send(command);
@@ -217,6 +216,14 @@ export async function onUpdate(clientKafka, event) {
       ClusterArn: clusterArn, // required
       CurrentVersion: currentVersion, // required
       VolumeSizeGB: parseInt(updatedAttributes[indexObject].newObjectAttribute.VolumeSize),
+    };
+    const command = new UpdateStorageCommand(input);
+    const response = await clientKafka.send(command);
+  } else if ( updatedAttributes[indexObject].attribute == 'kafkaVersion') {
+    const input = { // UpdateStorageRequest
+      ClusterArn: clusterArn, // required
+      CurrentVersion: currentVersion, // required
+      KafkaVersion: updatedAttributes[indexObject].newObjectAttribute,
     };
     const command = new UpdateStorageCommand(input);
     const response = await clientKafka.send(command);
