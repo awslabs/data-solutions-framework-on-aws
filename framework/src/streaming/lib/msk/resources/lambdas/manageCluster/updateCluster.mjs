@@ -229,7 +229,7 @@ export async function onUpdate(clientKafka, event) {
     };
 
     const command = new UpdateClusterKafkaVersionCommand(input);
-    const response = await client.send(command);
+    const response = await clientKafka.send(command);
   }
 
 }

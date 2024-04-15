@@ -30,6 +30,6 @@ const msk = new MskProvisioned(stack, 'cluster', {
 });
 
 new cdk.CfnOutput(stack, 'mskArn', {
-    value: msk.cluster.getAttString('Arn'),
+    value: msk.cluster.attrArn,
 });
 /// !hide

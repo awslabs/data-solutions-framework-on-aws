@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { RemovalPolicy, Stack, Aws, Fn, CustomResource } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, Aws, Fn } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetType, IVpc, ISecurityGroup, CfnSecurityGroupIngress } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { CfnServerlessCluster, CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
@@ -188,7 +188,7 @@ export function mskAclAdminProviderSetup(
 export function grantConsumeIam(
   topicName: string,
   principal: IPrincipal,
-  cluster?: CfnServerlessCluster | CustomResource,
+  cluster?: CfnServerlessCluster | CfnCluster,
   clusterArn?: string) {
 
   let clusterUuid = undefined;
@@ -196,21 +196,16 @@ export function grantConsumeIam(
   let _clusterArn = undefined;
 
 
-  if (cluster instanceof CfnServerlessCluster) {
+  if (cluster instanceof CfnServerlessCluster || cluster instanceof CfnCluster) {
     _clusterArn = cluster.attrArn;
-  } else if (cluster instanceof CustomResource) {
-    _clusterArn = cluster.getAttString('Arn');
   } else {
     _clusterArn = clusterArn;
   }
 
   //Check the type of cluster
-  if (cluster instanceof CfnServerlessCluster) {
+  if (cluster instanceof CfnServerlessCluster || cluster instanceof CfnCluster) {
     clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
     clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-  } else if (cluster instanceof CustomResource) {
-    clusterName = Fn.select(1, Fn.split('/', cluster.getAttString('Arn')));
-    clusterUuid = Fn.select(2, Fn.split('/', cluster.getAttString('Arn')));
   } else {
     clusterName = clusterArn?.split('/')[1];
     clusterUuid = clusterArn?.split('/')[2];
@@ -252,7 +247,7 @@ export function grantConsumeIam(
 export function grantProduceIam(
   topicName: string,
   principal: IPrincipal,
-  cluster?: CfnServerlessCluster | CustomResource,
+  cluster?: CfnServerlessCluster | CfnCluster,
   clusterArn?: string) {
 
   let clusterUuid = undefined;
@@ -260,21 +255,16 @@ export function grantProduceIam(
   let _clusterArn = undefined;
 
 
-  if (cluster instanceof CfnServerlessCluster) {
+  if (cluster instanceof CfnServerlessCluster || cluster instanceof CfnCluster) {
     _clusterArn = cluster.attrArn;
-  } else if (cluster instanceof CustomResource) {
-    _clusterArn = cluster.getAttString('Arn');
   } else {
     _clusterArn = clusterArn;
   }
 
   //Check the type of cluster
-  if (cluster instanceof CfnServerlessCluster) {
+  if (cluster instanceof CfnServerlessCluster || cluster instanceof CfnCluster) {
     clusterName = Fn.select(1, Fn.split('/', cluster.attrArn));
     clusterUuid = Fn.select(2, Fn.split('/', cluster.attrArn));
-  } else if (cluster instanceof CustomResource) {
-    clusterName = Fn.select(1, Fn.split('/', cluster.getAttString('Arn')));
-    clusterUuid = Fn.select(2, Fn.split('/', cluster.getAttString('Arn')));
   } else {
     clusterName = clusterArn?.split('/')[1];
     clusterUuid = clusterArn?.split('/')[2];
