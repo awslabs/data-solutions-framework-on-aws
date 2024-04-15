@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { CustomResource, Duration, FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Duration, FeatureFlags, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
@@ -13,6 +13,7 @@ import { Construct } from 'constructs';
 import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-provisioned-props-utils';
 import { Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
+import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 
 /**
  * @internal
@@ -98,20 +99,20 @@ export function monitoringSetup(
   }
 
   const loggingInfo = {
-    BrokerLogs: {
-      CloudWatchLogs: {
-        Enabled: createBrokerLogGroup ? createBrokerLogGroup : brokerLoggingProps?.cloudwatchLogGroup !== undefined,
-        LogGroup: createBrokerLogGroup ? brokerLogGroup!.logGroupName : brokerLoggingProps?.cloudwatchLogGroup?.logGroupName,
+    brokerLogs: {
+      cloudWatchLogs: {
+        enabled: createBrokerLogGroup ? createBrokerLogGroup : brokerLoggingProps?.cloudwatchLogGroup !== undefined,
+        logGroup: createBrokerLogGroup ? brokerLogGroup!.logGroupName : brokerLoggingProps?.cloudwatchLogGroup?.logGroupName,
       },
-      Firehose: {
-        Enabled: brokerLoggingProps?.firehoseDeliveryStreamName !==
-          undefined ? true : false,
-        DeliveryStream: brokerLoggingProps?.firehoseDeliveryStreamName,
+      firehose: {
+        enabled: brokerLoggingProps?.firehoseDeliveryStreamName !==
+          undefined,
+        deliveryStream: brokerLoggingProps?.firehoseDeliveryStreamName,
       },
-      S3: {
-        Enabled: loggingBucket !== undefined ? true : false,
-        Bucket: loggingBucket?.bucketName,
-        Prefix: brokerLoggingProps?.s3?.prefix,
+      s3: {
+        enabled: loggingBucket !== undefined,
+        bucket: loggingBucket?.bucketName,
+        prefix: brokerLoggingProps?.s3?.prefix,
       },
     },
   };
@@ -138,12 +139,12 @@ export function clientAuthenticationSetup(
 
   if (clientAuthenticationProps?.tlsProps && clientAuthenticationProps?.saslProps?.iam) {
     clientAuthentication = {
-      Sasl: { Iam: { Enabled: clientAuthenticationProps.saslProps.iam }, Scram: { Enabled: false } },
-      Tls: {
-        CertificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities?.map(
+      sasl: { iam: { enabled: clientAuthenticationProps.saslProps.iam }, scram: { enabled: false } },
+      tls: {
+        certificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities?.map(
           (ca) => ca.certificateAuthorityArn,
         ),
-        Enabled: true,
+        enabled: true,
       },
     };
     inClusterAcl = true;
@@ -152,17 +153,17 @@ export function clientAuthenticationSetup(
     clientAuthenticationProps?.tlsProps?.certificateAuthorities !== undefined
   ) {
     clientAuthentication = {
-      Tls: {
-        CertificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities.map(
+      tls: {
+        certificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities.map(
           (ca) => ca.certificateAuthorityArn,
         ),
-        Enabled: true,
+        enabled: true,
       },
     };
     inClusterAcl = true;
   } else {
     clientAuthentication = {
-      Sasl: { Iam: { Enabled: true }, Scram: { Enabled: false } },
+      sasl: { iam: { enabled: true }, scram: { enabled: false } },
     };
     iamAcl = true;
   }
@@ -336,7 +337,7 @@ export function manageCluster (
  */
 export function updateClusterConnectivity (
   scope :Construct,
-  cluster: CustomResource,
+  cluster: CfnCluster,
   vpc: IVpc,
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
@@ -347,13 +348,13 @@ export function updateClusterConnectivity (
     new PolicyStatement({
       actions: ['kafka:DescribeCluster'],
       resources: [
-        cluster.getAttString('Arn'),
+        cluster.attrArn,
       ],
     }),
     new PolicyStatement({
       actions: ['kafka:UpdateConnectivity'],
       resources: [
-        cluster.getAttString('Arn'),
+        cluster.attrArn,
       ],
     }),
     new PolicyStatement({
@@ -406,7 +407,7 @@ export function updateClusterConnectivity (
       entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
-        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
+        MSK_CLUSTER_ARN: cluster.attrArn,
         REGION: Stack.of(scope).region,
       },
     },
@@ -416,7 +417,7 @@ export function updateClusterConnectivity (
       entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
       managedPolicy: lambdaExecutionRolePolicy,
       environment: {
-        MSK_CLUSTER_ARN: cluster.getAttString('Arn'),
+        MSK_CLUSTER_ARN: cluster.attrArn,
         REGION: Stack.of(scope).region,
       },
     },
@@ -437,7 +438,7 @@ export function updateClusterConnectivity (
  */
 export function applyClusterConfiguration (
   scope :Construct,
-  cluster: CustomResource,
+  cluster: CfnCluster,
   vpc: IVpc,
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
@@ -459,7 +460,7 @@ export function applyClusterConfiguration (
       new PolicyStatement({
         actions: ['kafka:DescribeCluster'],
         resources: [
-          cluster.getAttString('Arn'),
+          cluster.attrArn,
         ],
       }),
       new PolicyStatement({
@@ -472,7 +473,7 @@ export function applyClusterConfiguration (
         actions: ['kafka:UpdateClusterConfiguration'],
         resources: [
           configuration.arn,
-          cluster.getAttString('Arn'),
+          cluster.attrArn,
         ],
       }),
       new PolicyStatement({

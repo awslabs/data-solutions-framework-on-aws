@@ -162,6 +162,11 @@ export interface MskProvisionedProps {
    * If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc.
    */
   readonly placeClusterHandlerInVpc?: boolean;
+
+    /**
+   * 
+   */
+    readonly currentVersion?: string;
 }
 
 /**
@@ -204,6 +209,7 @@ export interface AclAdminProps {
      * https://github.com/aws-samples/amazon-msk-client-authentication
     */
   readonly secretCertificate: ISecret;
+
 }
 
 /**
