@@ -5,6 +5,7 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { KafkaClientLogLevel, ClientAuthentication } from './msk-utils';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 
 /**
  * Properties for the `KafkaApi` construct
@@ -18,6 +19,20 @@ export interface KafkaApiProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * The IAM role to pass to mTLS lambda handler
+   * This role must be able to be assumed with `lambda.amazonaws.com` service principal
+   *
+   */
+  readonly mtlsHandlerRole?: IRole;
+
+  /**
+   * The IAM role to pass to IAM authentication lambda handler
+   * This role must be able to be assumed with `lambda.amazonaws.com` service principal
+   *
+   */
+  readonly iamHandlerRole?: IRole;
 
   /**
    * The ARN of the cluster

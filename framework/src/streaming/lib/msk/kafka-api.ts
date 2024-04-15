@@ -103,6 +103,7 @@ export class KafkaApi extends TrackedConstruct {
         props.brokerSecurityGroup,
         props.clusterArn,
         props.certficateSecret!,
+        props.mtlsHandlerRole,
       );
 
       this.mskAclServiceToken = mskAclProvider.serviceToken;
@@ -121,6 +122,7 @@ export class KafkaApi extends TrackedConstruct {
         props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
         props.brokerSecurityGroup,
         props.clusterArn,
+        props.iamHandlerRole,
       );
 
       this.mskIamServiceToken = mskIamProvider.serviceToken;
