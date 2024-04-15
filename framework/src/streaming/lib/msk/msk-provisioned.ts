@@ -45,14 +45,12 @@ export class MskProvisioned extends TrackedConstruct {
     id: string,
     name: string,
     serverPropertiesFilePath: string,
-    kafkaVersions: KafkaVersion[],
+    kafkaVersions?: KafkaVersion[],
     configurationDescription?: string,
     latestRevision?: CfnConfiguration.LatestRevisionProperty): CfnConfiguration {
 
-    let versions: string[] = [];
-
-    kafkaVersions.forEach((kafkaVersion: KafkaVersion) => { versions.push(kafkaVersion.version); });
-
+    let versions: string[] | undefined = kafkaVersions?.map((kafkaVersion: KafkaVersion) =>  kafkaVersion.version ) ?? undefined;
+    
     const data = readFileSync(serverPropertiesFilePath, 'utf8');
 
     return new CfnConfiguration(scope, id, {
@@ -458,7 +456,6 @@ export class MskProvisioned extends TrackedConstruct {
             //Name of a configuration is required
             `dsfconfiguration${Utils.generateHash(Stack.of(this).stackName).slice(0, 3)}`,
             join(__dirname, './resources/cluster-config-msk-provisioned'),
-            [this.deploymentClusterVersion],
           );
 
         this.cluster.node.addDependency(this.clusterConfiguration);

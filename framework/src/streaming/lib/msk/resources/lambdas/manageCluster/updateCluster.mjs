@@ -5,7 +5,8 @@ import {
   UpdateBrokerCountCommand,
   UpdateBrokerTypeCommand,
   UpdateMonitoringCommand,
-  UpdateStorageCommand
+  UpdateStorageCommand,
+  UpdateClusterKafkaVersionCommand
 } from "@aws-sdk/client-kafka";
 
 function compareOldNewObject(oldObject, newObject, attribute) {
@@ -220,13 +221,15 @@ export async function onUpdate(clientKafka, event) {
     const command = new UpdateStorageCommand(input);
     const response = await clientKafka.send(command);
   } else if ( updatedAttributes[indexObject].attribute == 'kafkaVersion') {
-    const input = { // UpdateStorageRequest
+
+    const input = { // UpdateClusterKafkaVersionRequest
       ClusterArn: clusterArn, // required
       CurrentVersion: currentVersion, // required
-      KafkaVersion: updatedAttributes[indexObject].newObjectAttribute,
+      TargetKafkaVersion: updatedAttributes[indexObject].newObjectAttribute, // required
     };
-    const command = new UpdateStorageCommand(input);
-    const response = await clientKafka.send(command);
+
+    const command = new UpdateClusterKafkaVersionCommand(input);
+    const response = await client.send(command);
   }
 
 }

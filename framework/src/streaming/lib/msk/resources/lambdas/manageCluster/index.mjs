@@ -95,7 +95,7 @@ const onCreate = async (event) => {
           }
         },
         Tls: {
-          CertificateAuthorityArnList: event.ResourceProperties.clientAuthentication.Tls.CertificateAuthorityArnList,
+          CertificateAuthorityArnList: event.ResourceProperties.clientAuthentication.Tls?.CertificateAuthorityArnList,
           Enabled: event.ResourceProperties.clientAuthentication.Tls?.Enabled == "true" ? true : false,
         }
       },

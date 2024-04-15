@@ -190,7 +190,7 @@ export function manageCluster (
 
   const lambdaPolicy = [
     new PolicyStatement({
-      actions: ['kafka:DescribeCluster', 'kafka:UpdateSecurity', 'kafka:UpdateBrokerCount', 'kafka:UpdateStorage', 'kafka:UpdateBrokerType', 'kafka:UpdateMonitoring'],
+      actions: ['kafka:DescribeCluster', 'kafka:UpdateSecurity', 'kafka:UpdateBrokerCount', 'kafka:UpdateStorage', 'kafka:UpdateBrokerType', 'kafka:UpdateMonitoring', 'kafka:UpdateClusterKafkaVersion'],
       resources: [
         `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
       ],
