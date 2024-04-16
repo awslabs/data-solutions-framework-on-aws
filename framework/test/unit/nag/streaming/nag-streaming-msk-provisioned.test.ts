@@ -55,6 +55,14 @@ NagSuppressions.addResourceSuppressionsByPath(
   [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is scoped with IAM conditions' }],
 );
 
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  [
+    '/stack/cluster/SetClusterConfigurationProvider/VpcPolicy/Resource',
+    '/stack/cluster/vpcPolicyLambdaUpdateVpcConnectivity/Resource',
+  ],
+  [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is scoped with IAM conditions for VPC' }],
+);
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
@@ -93,6 +101,32 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/stack/cluster/KafkaApi/MskAclAdminProvider/CustomResourceProvider/framework-onEvent/Resource',
     '/stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource',
     '/stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CleanUpProvider/framework-onEvent/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-onEvent/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-isComplete/ServiceRole/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-isComplete/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-isComplete/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-onTimeout/ServiceRole/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-onTimeout/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/framework-onTimeout/Resource',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider/waiter-state-machine/Role/DefaultPolicy/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/VpcPolicy/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CleanUpProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CleanUpProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CleanUpProvider/framework-onEvent/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onEvent/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-isComplete/ServiceRole/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-isComplete/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-isComplete/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onTimeout/ServiceRole/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onTimeout/ServiceRole/DefaultPolicy/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/waiter-state-machine/Role/DefaultPolicy/Resource',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onTimeout/Resource',
   ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },
@@ -101,6 +135,11 @@ NagSuppressions.addResourceSuppressionsByPath(
   ],
   true,
 );
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/stack/cluster/UpdateVpcConnectivityLambdaExecutionRolePolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is scoped with IAM conditions' }]);
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,

@@ -17,7 +17,7 @@ import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from '
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
-import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, manageCluster, applyClusterConfiguration } from './msk-provisioned-cluster-setup';
+import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, applyClusterConfiguration } from './msk-provisioned-cluster-setup';
 import { Acl, MskProvisionedProps } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
@@ -49,8 +49,8 @@ export class MskProvisioned extends TrackedConstruct {
     configurationDescription?: string,
     latestRevision?: CfnConfiguration.LatestRevisionProperty): CfnConfiguration {
 
-    let versions: string[] | undefined = kafkaVersions?.map((kafkaVersion: KafkaVersion) =>  kafkaVersion.version ) ?? undefined;
-    
+    let versions: string[] | undefined = kafkaVersions?.map((kafkaVersion: KafkaVersion) => kafkaVersion.version) ?? undefined;
+
     const data = readFileSync(serverPropertiesFilePath, 'utf8');
 
     return new CfnConfiguration(scope, id, {
@@ -248,26 +248,6 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.deploymentClusterVersion = props?.kafkaVersion ?? MskProvisioned.MSK_DEFAULT_VERSION;
 
-
-    //We need to create our own CR to manage cluster lifecycle
-    //Because MSK does not support mutating the cluster with Cloudformation and API
-    //Creating the cluster L1 construct and then mutating the cluster with MSK API 
-    //break the update through Cloudformation L1
-
-    let privateCaArns  = props?.clientAuthentication?.tlsProps?.certificateAuthorities?.map( (privateCa) => { return privateCa.certificateAuthorityArn });
-    let clusterProvider = manageCluster(
-      this,
-      this.vpc,
-      this.subnetSelectionIds,
-      this.removalPolicy,
-      this.brokerAtRestEncryptionKey,
-      props?.clusterName ?? 'default-msk-provisioned',
-      this.placeClusterHandlerInVpc,
-      privateCaArns
-    );
-
-    console.log(clusterProvider);
-
     this.cluster = new CfnCluster(this, 'mskProvisionedCluster', {
       clusterName: props?.clusterName ?? 'default-msk-provisioned',
       kafkaVersion: this.deploymentClusterVersion.version,
@@ -449,15 +429,32 @@ export class MskProvisioned extends TrackedConstruct {
       this.removalPolicy,
       this.brokerAtRestEncryptionKey,
       clusterConfigurationInfo,
-      this.placeClusterHandlerInVpc );
+      this.placeClusterHandlerInVpc);
 
-    this.cloudwatchlogApplyConfigurationLambda  = applyClusterConfigurationProvider.isCompleteHandlerLog;
+    this.cloudwatchlogApplyConfigurationLambda = applyClusterConfigurationProvider.isCompleteHandlerLog;
     this.roleApplyConfigurationLambda = applyClusterConfigurationProvider.isCompleteHandlerRole;
     this.securityGroupApplyConfigurationLambda = applyClusterConfigurationProvider.securityGroups;
     this.applyConfigurationLambdaFunction = applyClusterConfigurationProvider.isCompleteHandlerFunction;
 
+
+    let updateConnectivityProvider: DsfProvider =
+      updateClusterConnectivity(
+        this,
+        this.cluster,
+        this.vpc,
+        this.subnetSelectionIds,
+        this.removalPolicy,
+        this.brokerAtRestEncryptionKey,
+        this.placeClusterHandlerInVpc);
+
+
+    this.updateConnectivityFunction = updateConnectivityProvider.onEventHandlerFunction;
+    this.updateConnectivityLambdaRole = updateConnectivityProvider.onEventHandlerRole;
+    this.updateConnectivityLogGroup = updateConnectivityProvider.onEventHandlerLogGroup;
+    this.updateConnectivitySecurityGroup = updateConnectivityProvider.securityGroups;
+
     //Set the CR resource that are used by IAM credentials auth CR
-    // Create 
+    //Applly the cluster configuration if provided and the cluster is created without mTLS auth
     if (this.iamAcl) {
 
       this.mskIamACrudAdminCrLambdaRole = this.kafkaApi.mskIamACrudAdminCrLambdaRole;
@@ -465,7 +462,9 @@ export class MskProvisioned extends TrackedConstruct {
       this.mskIamACrudAdminCrOnEventHandlerFunction = this.kafkaApi.mskIamACrudAdminCrOnEventHandlerFunction;
       this.mskIamACrudAdminCrSecurityGroup = this.kafkaApi.mskIamACrudAdminCrSecurityGroup;
 
-      if (!this.inClusterAcl) {
+      if (!this.inClusterAcl && clusterConfigurationInfo) {
+
+        console.log(!this.inClusterAcl);
 
         //Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
@@ -474,18 +473,36 @@ export class MskProvisioned extends TrackedConstruct {
           properties: {
             MskConfigurationArn: clusterConfigurationInfo.arn,
             MskConfigurationRevision: clusterConfigurationInfo.revision,
-            MskClusterArn: this.cluster.attrArn
-          }
+            MskClusterArn: this.cluster.attrArn,
+          },
         });
 
         applyClusterConfigurationCustomResource.node.addDependency(this.cluster);
+
+        if (props?.vpcConnectivity && !props.vpcConnectivity.tlsProps?.tls) {
+
+
+          let updateConnectivityProviderCr: CustomResource = new CustomResource(this, 'updateConnectivityProviderCr', {
+            serviceToken: updateConnectivityProvider.serviceToken,
+            resourceType: 'Custom::UpdateVpcConnectivity',
+            properties: {
+              Iam: props.vpcConnectivity.saslProps?.iam == true ? true : false,
+              Tls: props.vpcConnectivity.tlsProps?.tls == true ? true : false,
+              MskClusterArn: this.cluster.attrArn,
+            },
+          });
+
+          updateConnectivityProviderCr.node.addDependency(applyClusterConfigurationCustomResource);
+
+        }
       }
+
 
     }
 
     //If TLS or SASL/SCRAM (once implemented)
     //Set up the CR that will set the ACL using the Certs or Username/Password
-    if (clientAuthentication.Tls) {
+    if (clientAuthentication.tls) {
 
       if (!props?.certificateDefinition) {
         throw new Error('TLS Authentication requires a certificate definition');
@@ -509,20 +526,6 @@ export class MskProvisioned extends TrackedConstruct {
 
       if (!props.allowEveryoneIfNoAclFound) {
 
-        let applyClusterConfigurationProvider: DsfProvider = applyClusterConfiguration(this,
-          this.cluster,
-          this.vpc,
-          this.subnetSelectionIds,
-          this.removalPolicy,
-          this.brokerAtRestEncryptionKey,
-          clusterConfigurationInfo,
-          this.placeClusterHandlerInVpc );
-
-        this.cloudwatchlogApplyConfigurationLambda  = applyClusterConfigurationProvider.isCompleteHandlerLog;
-        this.roleApplyConfigurationLambda = applyClusterConfigurationProvider.isCompleteHandlerRole;
-        this.securityGroupApplyConfigurationLambda = applyClusterConfigurationProvider.securityGroups;
-        this.applyConfigurationLambdaFunction = applyClusterConfigurationProvider.isCompleteHandlerFunction;
-
         //Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
           serviceToken: applyClusterConfigurationProvider.serviceToken,
@@ -530,31 +533,18 @@ export class MskProvisioned extends TrackedConstruct {
           properties: {
             MskConfigurationArn: clusterConfigurationInfo.arn,
             MskConfigurationRevision: clusterConfigurationInfo.revision,
-            MskClusterArn: this.cluster.attrArn
-          }
+            MskClusterArn: this.cluster.attrArn,
+          },
         });
 
         applyClusterConfigurationCustomResource.node.addDependency(this.cluster);
 
         //Update the connectivity of the cluster
         if (props?.vpcConnectivity) {
-          let updateConnectivityProvider: DsfProvider =
-            updateClusterConnectivity(
-              this,
-              this.cluster,
-              this.vpc,
-              this.subnetSelectionIds,
-              this.removalPolicy,
-              this.brokerAtRestEncryptionKey,
-              this.placeClusterHandlerInVpc);
 
+          console.log('update vpc connectivity');
 
-          this.updateConnectivityFunction = updateConnectivityProvider.onEventHandlerFunction;
-          this.updateConnectivityLambdaRole = updateConnectivityProvider.onEventHandlerRole;
-          this.updateConnectivityLogGroup = updateConnectivityProvider.onEventHandlerLogGroup;
-          this.updateConnectivitySecurityGroup = updateConnectivityProvider.securityGroups;
-
-          let updateConnectivityProviderCr: CustomResource = new CustomResource ( this, 'updateConnectivityProviderCr', {
+          let updateConnectivityProviderCr: CustomResource = new CustomResource(this, 'updateConnectivityProviderCr', {
             serviceToken: updateConnectivityProvider.serviceToken,
             resourceType: 'Custom::UpdateVpcConnectivity',
             properties: {

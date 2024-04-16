@@ -4730,7 +4730,7 @@ Any object.
 ```typescript
 import { streaming } from '@cdklabs/aws-data-solutions-framework'
 
-streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: string, name: string, serverPropertiesFilePath: string, kafkaVersions: KafkaVersion[], configurationDescription?: string, latestRevision?: LatestRevisionProperty)
+streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: string, name: string, serverPropertiesFilePath: string, kafkaVersions?: KafkaVersion[], configurationDescription?: string, latestRevision?: LatestRevisionProperty)
 ```
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.scope"></a>
@@ -4757,7 +4757,7 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 
 ---
 
-###### `kafkaVersions`<sup>Required</sup> <a name="kafkaVersions" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.kafkaVersions"></a>
+###### `kafkaVersions`<sup>Optional</sup> <a name="kafkaVersions" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.createCLusterConfiguration.parameter.kafkaVersions"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion[]
 
@@ -4782,10 +4782,11 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerAtRestEncryptionKey">brokerAtRestEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key created by the construct for the brokers When no KMS key is passed. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogUpdateZookepeerLambda">cloudwatchlogUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.CustomResource</code> | The MSK cluster created by the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | The MSK cluster created by the construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleUpdateZookepeerLambda">roleUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupUpdateZookepeerLambda">securityGroupUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC created by the construct or the one passed to it. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.applyConfigurationLambdaFunction">applyConfigurationLambdaFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerCloudWatchLogGroup">brokerCloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda">cloudwatchlogApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
@@ -4799,7 +4800,7 @@ streaming.msk.MskProvisioned.createCLusterConfiguration(scope: Construct, id: st
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrOnEventHandlerLogGroup">mskInClusterAclCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.mskInClusterAclCrSecurityGroup">mskInClusterAclCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.roleApplyConfigurationLambda">roleApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda">securityGroupApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda">securityGroupApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityLambdaRole">updateConnectivityLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
@@ -4844,10 +4845,10 @@ public readonly cloudwatchlogUpdateZookepeerLambda: ILogGroup;
 ##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.cluster"></a>
 
 ```typescript
-public readonly cluster: CustomResource;
+public readonly cluster: CfnCluster;
 ```
 
-- *Type:* aws-cdk-lib.CustomResource
+- *Type:* aws-cdk-lib.aws_msk.CfnCluster
 
 The MSK cluster created by the construct.
 
@@ -4882,6 +4883,16 @@ public readonly vpc: IVpc;
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
 The VPC created by the construct or the one passed to it.
+
+---
+
+##### `applyConfigurationLambdaFunction`<sup>Optional</sup> <a name="applyConfigurationLambdaFunction" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.applyConfigurationLambdaFunction"></a>
+
+```typescript
+public readonly applyConfigurationLambdaFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
 
 ---
 
@@ -5018,10 +5029,10 @@ public readonly roleApplyConfigurationLambda: IRole;
 ##### `securityGroupApplyConfigurationLambda`<sup>Optional</sup> <a name="securityGroupApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisioned.property.securityGroupApplyConfigurationLambda"></a>
 
 ```typescript
-public readonly securityGroupApplyConfigurationLambda: ISecurityGroup;
+public readonly securityGroupApplyConfigurationLambda: ISecurityGroup[];
 ```
 
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 ---
 
@@ -12006,6 +12017,7 @@ const mskProvisionedProps: streaming.msk.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClientAuthentication</code> | Configuration properties for client authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.currentVersion">currentVersion</a></code> | <code>string</code> | This parameter is required after executing the first `cdk deploy` It is the version of the MSK cluster that was deployed in the previous `cdk deploy` The cluster might fail in the subsequent updates if it is not set This parameter is obtained by running the following command `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | The version of Apache Kafka. |
@@ -12085,6 +12097,18 @@ public readonly configurationInfo: ClusterConfigurationInfo;
 - *Default:* none
 
 The Amazon MSK configuration to use for the cluster.
+
+---
+
+##### `currentVersion`<sup>Optional</sup> <a name="currentVersion" id="@cdklabs/aws-data-solutions-framework.streaming.msk.MskProvisionedProps.property.currentVersion"></a>
+
+```typescript
+public readonly currentVersion: string;
+```
+
+- *Type:* string
+
+This parameter is required after executing the first `cdk deploy` It is the version of the MSK cluster that was deployed in the previous `cdk deploy` The cluster might fail in the subsequent updates if it is not set This parameter is obtained by running the following command `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`.
 
 ---
 
@@ -15604,6 +15628,7 @@ cluster version number.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_3_2">V3_3_2</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.3.2. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_4_0">V3_4_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.4.0. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_5_1">V3_5_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.5.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_6_0">V3_6_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion</code> | Kafka version 3.5.1. |
 
 ---
 
@@ -15855,6 +15880,18 @@ Kafka version 3.4.0.
 
 ```typescript
 public readonly V3_5_1: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion
+
+Kafka version 3.5.1.
+
+---
+
+##### `V3_6_0`<sup>Required</sup> <a name="V3_6_0" id="@cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion.property.V3_6_0"></a>
+
+```typescript
+public readonly V3_6_0: KafkaVersion;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.msk.KafkaVersion

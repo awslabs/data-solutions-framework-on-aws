@@ -7,13 +7,13 @@ import { ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
 import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-provisioned-props-utils';
 import { Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 
 /**
  * @internal
@@ -130,7 +130,7 @@ export function monitoringSetup(
 
 export function clientAuthenticationSetup(
   clientAuthenticationProps?: ClientAuthentication):
-  [any, boolean, boolean] {
+  [CfnCluster.ClientAuthenticationProperty, boolean, boolean] {
 
   let clientAuthentication;
 
@@ -150,7 +150,7 @@ export function clientAuthenticationSetup(
     inClusterAcl = true;
     iamAcl = true;
   } else if (
-    clientAuthenticationProps?.tlsProps?.certificateAuthorities !== undefined
+    clientAuthenticationProps?.tlsProps?.certificateAuthorities
   ) {
     clientAuthentication = {
       tls: {
@@ -169,167 +169,6 @@ export function clientAuthenticationSetup(
   }
 
   return [clientAuthentication, inClusterAcl, iamAcl];
-}
-
-/**
- * @internal
- */
-export function manageCluster (
-  scope :Construct,
-  vpc: IVpc,
-  subnetSelectionIds: string[],
-  removalPolicy: RemovalPolicy,
-  brokerAtRestEncryptionKey: IKey,
-  clusterName: string,
-  placeClusterHandlerInVpc?: boolean,
-  privateCaArns?: string [],
-  ) : DsfProvider {
-
-  let region = Stack.of(scope).region;
-  let account = Stack.of(scope).account;
-  let partition = Stack.of(scope).partition;
-
-  const lambdaPolicy = [
-    new PolicyStatement({
-      actions: ['kafka:DescribeCluster', 'kafka:UpdateSecurity', 'kafka:UpdateBrokerCount', 'kafka:UpdateStorage', 'kafka:UpdateBrokerType', 'kafka:UpdateMonitoring', 'kafka:UpdateClusterKafkaVersion'],
-      resources: [
-        `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
-      ],
-    }),
-    new PolicyStatement({
-      actions: ['kafka:CreateClusterV2'],
-      resources: [
-        `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
-      ],
-    }),
-    new PolicyStatement({
-      actions: ['kafka:DeleteCluster'],
-      resources: [
-       `arn:${partition}:kafka:${region}:${account}:cluster/${clusterName}/*`,
-      ],
-    }),
-    new PolicyStatement({
-      actions: ['kms:CreateGrant', 'kms:DescribeKey'],
-      resources: [
-        brokerAtRestEncryptionKey.keyArn,
-      ],
-    }),
-    new PolicyStatement({
-      actions: ['ec2:DescribeRouteTables', 'ec2:DescribeSubnets'],
-      resources: ['*'],
-      conditions: {
-        StringEquals: {
-          'ec2:Region': [
-            Stack.of(scope).region,
-          ],
-        },
-      },
-    }),
-    new PolicyStatement({
-      actions: [ 'iam:AttachRolePolicy', 'iam:CreateServiceLinkedRole', 'iam:PutRolePolicy' ],
-      resources: ['*'],
-    }),
-    new PolicyStatement({
-      actions: [ 
-        'ec2:DescribeVpcs', 
-        'ec2:DescribeVpcEndpoints', 
-        'ec2:DescribeVpcAttribute', 
-        'ec2:DescribeSecurityGroups', 
-        'ec2:DeleteVpcEndpoints',
-        'ec2:CreateVpcEndpoint',
-        'ec2:CreateTags',
-    ],
-      resources: ['*'],
-    }),
-    new PolicyStatement({
-      actions: ['iam:PassRole'],
-      resources: ['*'],
-      conditions: {
-        StringEquals: {
-          "iam:PassedToService": "kafka.amazonaws.com"
-        }
-      }
-    }),
-    new PolicyStatement({
-      actions: [
-        "logs:CreateLogDelivery",
-    		"logs:GetLogDelivery",
-    		"logs:UpdateLogDelivery",
-    		"logs:DeleteLogDelivery",
-    		"logs:ListLogDeliveries",
-    		"logs:PutResourcePolicy",
-    		"logs:DescribeResourcePolicies",
-    		"logs:DescribeLogGroups",
-    		"S3:GetBucketPolicy",
-    		"firehose:TagDeliveryStream"
-      ],
-      resources: ['*'],
-    }),
-  ];
-
-  if (privateCaArns) {
-    lambdaPolicy.push(new PolicyStatement({
-      actions: ['acm-pca:GetCertificateAuthorityCertificate'],
-      resources: privateCaArns,
-    }));
-  }
-
-  //Attach policy to IAM Role
-  const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'ManageClusterLambdaExecutionRolePolicy', {
-    statements: lambdaPolicy,
-    description: 'Policy for managing MSK cluster',
-  });
-
-  let securityGroupUpdateConnectivity = new SecurityGroup(scope, 'ManageClusterLambdaSecurityGroup', {
-    vpc: vpc,
-    allowAllOutbound: true,
-  });
-
-  const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(scope,
-    securityGroupUpdateConnectivity,
-    subnetSelectionIds,
-    'vpcPolicyLambdaManageCluster');
-
-  let roleUpdateConnectivityLambda = new Role(scope, 'ManageClusterLambdaExecutionRole', {
-    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-  });
-
-  roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
-  roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
-
-  const provider = new DsfProvider(scope, 'ManageClusterProvider', {
-    providerName: 'update-connectivity',
-    onEventHandlerDefinition: {
-      handler: 'index.onEventHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/manageCluster/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/manageCluster/index.mjs'),
-      managedPolicy: lambdaExecutionRolePolicy,
-      bundling: {
-        nodeModules: [
-          'lodash',
-        ]
-      }
-    },
-    isCompleteHandlerDefinition: {
-      handler: 'index.isCompleteHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/manageCluster/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/manageCluster/index.mjs'),
-      managedPolicy: lambdaExecutionRolePolicy,
-      bundling: {
-        nodeModules: [
-          'lodash',
-        ]
-      }
-    },
-    vpc: placeClusterHandlerInVpc ? vpc : undefined,
-    subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
-    securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
-    removalPolicy,
-    queryTimeout: Duration.hours(24),
-    queryInterval: Duration.minutes(1),
-  });
-
-  return provider;
 }
 
 /**
@@ -446,43 +285,43 @@ export function applyClusterConfiguration (
   configuration: ClusterConfigurationInfo,
   placeClusterHandlerInVpc?: boolean) : DsfProvider {
 
-    const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(scope, 'setClusterConfigurationLambdaSecurityGroup', {
-      vpc: vpc,
-      allowAllOutbound: true,
-    });
+  const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(scope, 'setClusterConfigurationLambdaSecurityGroup', {
+    vpc: vpc,
+    allowAllOutbound: true,
+  });
 
-    const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(scope,
-      setClusterConfigurationLambdaSecurityGroup,
-      subnetSelectionIds,
-      'vpcPolicyLambdaSetClusterConfiguration');
+  const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(scope,
+    setClusterConfigurationLambdaSecurityGroup,
+    subnetSelectionIds,
+    'vpcPolicyLambdaSetClusterConfiguration');
 
-    const lambdaPolicy = [
-      new PolicyStatement({
-        actions: ['kafka:DescribeCluster'],
-        resources: [
-          cluster.attrArn,
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['kafka:DescribeConfiguration'],
-        resources: [
-          configuration.arn,
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['kafka:UpdateClusterConfiguration'],
-        resources: [
-          configuration.arn,
-          cluster.attrArn,
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['kms:CreateGrant', 'kms:DescribeKey'],
-        resources: [
-          brokerAtRestEncryptionKey.keyArn,
-        ],
-      }),
-    ];
+  const lambdaPolicy = [
+    new PolicyStatement({
+      actions: ['kafka:DescribeCluster'],
+      resources: [
+        cluster.attrArn,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kafka:DescribeConfiguration'],
+      resources: [
+        configuration.arn,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kafka:UpdateClusterConfiguration'],
+      resources: [
+        configuration.arn,
+        cluster.attrArn,
+      ],
+    }),
+    new PolicyStatement({
+      actions: ['kms:CreateGrant', 'kms:DescribeKey'],
+      resources: [
+        brokerAtRestEncryptionKey.keyArn,
+      ],
+    }),
+  ];
 
   //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'SetClusterConfigurationLambdaExecutionRolePolicy', {

@@ -48,7 +48,7 @@ export class KafkaApi extends TrackedConstruct {
   private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly tlsCertifacateSecret?: ISecret;
   private readonly clusterArn: string;
-  private cluster?:  CfnServerlessCluster | CfnCluster;
+  private cluster?: CfnServerlessCluster | CfnCluster;
 
 
   /**

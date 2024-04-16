@@ -163,10 +163,14 @@ export interface MskProvisionedProps {
    */
   readonly placeClusterHandlerInVpc?: boolean;
 
-    /**
-   * 
+  /**
+   * This parameter is required after executing the first `cdk deploy`
+   * It is the version of the MSK cluster that was deployed in the previous `cdk deploy`
+   * The cluster might fail in the subsequent updates if it is not set
+   * This parameter is obtained by running the following command
+   * `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`
    */
-    readonly currentVersion?: string;
+  readonly currentVersion?: string;
 }
 
 /**
