@@ -81,7 +81,7 @@ export class KafkaApi extends TrackedConstruct {
     super(scope, id, trackedConstructProps);
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
-    this.kafkaClientLogLevel = props.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN;
+    this.kafkaClientLogLevel = props?.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN;
     this.clusterArn = props.clusterArn;
     this.tlsCertifacateSecret = props.certficateSecret;
 
@@ -202,7 +202,7 @@ export class KafkaApi extends TrackedConstruct {
       properties: {
         logLevel: this.kafkaClientLogLevel,
         secretArn: this.tlsCertifacateSecret?.secretArn,
-        topics: [topicDefinition],
+        topic: topicDefinition,
         waitForLeaders: waitForLeaders,
         timeout: timeout,
         region: region,

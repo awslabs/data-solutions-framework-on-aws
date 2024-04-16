@@ -590,4 +590,5 @@ export enum KafkaClientLogLevel {
   WARN = 'WARN',
   DEBUG = 'DEBUG',
   INFO = 'INFO',
+  ERROR = 'ERROR',
 }

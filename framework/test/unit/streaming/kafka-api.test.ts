@@ -11,7 +11,7 @@
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
-import { SecurityGroup, Subnet, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, Vpc, Subnet } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -532,12 +532,9 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
         ],
       },
       logLevel: 'WARN',
-      topics: Match.arrayWith([
-        Match.objectLike({
-          topic: 'topic1',
-        },
-        ),
-      ]),
+      topic: Match.objectLike({
+        topic: 'topic1',
+      }),
     });
   });
 
@@ -550,12 +547,9 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
         ],
       },
       logLevel: 'WARN',
-      topics: Match.arrayWith([
-        Match.objectLike({
-          topic: 'topic2',
-        },
-        ),
-      ]),
+      topic: Match.objectLike({
+        topic: 'topic2',
+      }),
     });
   });
 
@@ -1061,7 +1055,7 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
     clusterArn: cluster.attrArn,
     brokerSecurityGroup,
     vpc,
-    subnets: SubnetSelection(),
+    subnets: { subnets: [Subnet.fromSubnetId(stack, 'subnet', 'YYYYYYYY')] },
     certficateSecret: secret,
     clientAuthentication: ClientAuthentication.saslTls({
       iam: true,
@@ -1086,6 +1080,24 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
   const template = Template.fromStack(stack, {});
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
+  test('should deploy the DsfProvider in the VPC and subnets', () => {
+    template.hasResourceProperties('AWS::Lambda::Function', {
+      VpcConfig: {
+        SecurityGroupIds: [
+          {
+            'Fn::GetAtt': [
+              Match.stringLikeRegexp('KafkaApiMskIamSecurityGroup.*'),
+              'GroupId',
+            ],
+          },
+        ],
+        SubnetIds: [
+          'YYYYYYYY',
+        ],
+      },
+    });
+  });
+
   test('should create proper topic definition', () => {
     template.hasResourceProperties('Custom::MskTopic', {
       ServiceToken: {
@@ -1095,28 +1107,26 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
         ],
       },
       logLevel: 'WARN',
-      topics: Match.arrayWith([
-        Match.objectLike({
-          topic: 'topic1',
-          numPartitions: 1,
-          replicationFactor: 1,
-          replicaAssignment: [
-            {
-              partition: 0,
-              replicas: [
-                0,
-                1,
-              ],
-            },
-          ],
-          configEntries: [
-            {
-              name: 'cleanup.policy',
-              value: 'compact',
-            },
-          ],
-        }),
-      ]),
+      topic: Match.objectLike({
+        topic: 'topic1',
+        numPartitions: 1,
+        replicationFactor: 1,
+        replicaAssignment: [
+          {
+            partition: 0,
+            replicas: [
+              0,
+              1,
+            ],
+          },
+        ],
+        configEntries: [
+          {
+            name: 'cleanup.policy',
+            value: 'compact',
+          },
+        ],
+      }),
     });
   });
 

@@ -1,11 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-    Kafka,
-    logLevel
-} from "kafkajs"
-
+import { Kafka } from "kafkajs"
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { aclCrudOnEvent } from "./acl-crud.mjs";
@@ -15,8 +11,6 @@ import { topicCrudOnEvent } from "./topic-crud.mjs";
 export const onEventHandler = async (event) => {
 
     console.log(event);
-
-    const logLevelProp = event.ResourceProperties.logLevel == 'DEBUG' ? logLevel.DEBUG : logLevel.INFO;
 
     const clientSecretManager = new SecretsManagerClient();
 
@@ -77,12 +71,12 @@ export const onEventHandler = async (event) => {
             key: privateKey,
             cert: formatedCertPem
         },
-        logLevel: logLevelProp,
+        logLevel: event.ResourceProperties.logLevel,
     });
 
     const admin = kafka.admin();
 
-    console.info('======Recieved Event=======');
+    console.info('======Received Event=======');
 
     // If the principal is set to REPLACE-WITH-BOOTSTRAP, 
     // we need to replace it with the broker FQDN prefix with a wildcard
@@ -97,12 +91,12 @@ export const onEventHandler = async (event) => {
 
     switch(event.ResourceType) {
         case "Custom::MskAcl":
-            console.log("Event for ACL receive");
+            console.log("Event for ACL received");
             const responseAcl = await aclCrudOnEvent(event, admin);
             console.log(responseAcl);
             break;
         case "Custom::MskTopic":
-            console.log("Event for Topic receive");
+            console.log("Event for Topic received");
             const responseTopic = await topicCrudOnEvent(event, admin);
             console.log(responseTopic);
             break;
@@ -111,7 +105,6 @@ export const onEventHandler = async (event) => {
             throw new Error(`invalid resource type: ${event.ResourceType}`);
     }
 
-    
 }
 
 

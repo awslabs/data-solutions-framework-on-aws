@@ -1,154 +1,173 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Kafka } from "kafkajs";
+import { Kafka, logLevel } from "kafkajs";
 import { generateAuthToken } from "aws-msk-iam-sasl-signer-js";
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka"; 
 
 async function oauthBearerTokenProvider(region) {
-    // Uses AWS Default Credentials Provider Chain to fetch credentials
-    const authTokenResponse = await generateAuthToken({ region });
-    return {
-        value: authTokenResponse.token
-    }
+  // Uses AWS Default Credentials Provider Chain to fetch credentials
+  const authTokenResponse = await generateAuthToken({ region });
+  return {
+    value: authTokenResponse.token
+  }
 }
 
 // Handler functions
 export const onEventHandler = async (event) => {
+  
+  console.log(event);
+  
+  let level;
+  switch (event.ResourceProperties.logLevel) {
+    case 'INFO':
+      level = logLevel.INFO;
+    case 'WARN':
+      level = logLevel.WARN;
+    case 'ERROR':
+      level = logLevel.ERROR;
+    case 'DEBUG':
+      level = logLevel.DEBUG;
+  }
 
-    console.log(event);
-
-    const client = new KafkaClient();
-    const input = {
-        ClusterArn: event.ResourceProperties.mskClusterArn,
-      };
+  const client = new KafkaClient();
+  const input = {
+    ClusterArn: event.ResourceProperties.mskClusterArn,
+  };
+  
+  const command = new GetBootstrapBrokersCommand(input);
+  const response = await client.send(command);
+  
+  const brokerUrl = response.BootstrapBrokerStringSaslIam.split(',');
+  
+  let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
+  
+  const kafka = new Kafka({
+    clientId: `client-CR-${clusterName}`,
+    brokers: brokerUrl,
+    ssl: true,
+    sasl: {
+      mechanism: 'oauthbearer',
+      oauthBearerProvider: () => oauthBearerTokenProvider(event.ResourceProperties.region)
+    },
+    logLevel: level,
+  });
+  
+  const admin = kafka.admin();
+  
+  console.info('======Received Event=======');
+  console.info(event);
+  
+  switch (event.RequestType) {
+    case 'Create':
     
-    const command = new GetBootstrapBrokersCommand(input);
-    const response = await client.send(command);
-
-    const brokerUrl = response.BootstrapBrokerStringSaslIam.split(',');
-
-    let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
-
-    const kafka = new Kafka({
-        clientId: `client-CR-${clusterName}`,
-        brokers: brokerUrl,
-        ssl: true,
-        sasl: {
-            mechanism: 'oauthbearer',
-            oauthBearerProvider: () => oauthBearerTokenProvider(event.ResourceProperties.region)
+      console.log(event.ResourceProperties.topic);
+      
+      try {
+        const result = await admin.createTopics({
+          validateOnly: false,
+          waitForLeaders: event.ResourceProperties.waitForLeaders,
+          timeout: event.ResourceProperties.timeout,
+          topics: [event.ResourceProperties.topic],
+        });
+        
+        await admin.disconnect();
+        console.log(`Topic created: ${result}`);
+        if ( result == false ) {
+          throw new Error(`Error creating topic: ${event.ResourceProperties.topic}`);
         }
-    });
-
-    const admin = kafka.admin();
-
-    console.info('======Recieved Event=======');
-    console.info(event);
-
-    switch (event.RequestType) {
-        case 'Create':
-
-            console.log(event.ResourceProperties.topics);
-
-            try {
-
-                let kafkaResponse = await admin.createTopics({
-                    validateOnly: false,
-                    waitForLeaders: event.ResourceProperties.waitForLeaders,
-                    timeout: event.ResourceProperties.timeout,
-                    topics: event.ResourceProperties.topics,
-                });
+        break;
+        
+      }
+      catch (error) {
+        await admin.disconnect();
+        console.log(`Error creating topic: ${error}`);
+        throw new Error(`Error creating topic: ${event.ResourceProperties.topic}. Error ${error}`);
+      }
     
-                console.log(kafkaResponse);
+    case 'Update':
     
-                await admin.disconnect();
-                
-                return { 
-                    "Data": {
-                        "kafkaResponse": kafkaResponse
-                    }
-                  };
+      console.info(event.ResourceProperties.topic);
 
-            }
-            catch (error) {
-                await admin.disconnect();
+      const oldTopic = event.OldResourceProperties.topic;
+      const newTopic = event.ResourceProperties.topic;
 
-                throw new Error(`Error creating topics: ${event.ResourceProperties.topics}. Error ${error}`);
-            }
+      if ( newTopic.numPartitions > oldTopic.numPartitions ) {
 
-        case 'Update':
+        try {
+          
+          const result = await admin.createPartitions({
+            validateOnly: false,
+            timeout: event.ResourceProperties.timeout,
+            topicPartitions: [{
+              topic: newTopic.topic,
+              count: newTopic.numPartitions,
+              assignments: undefined
+            }],
+          });
+          
+          console.log(`Topic partition count update: ${result}`);
+          break;
+          
+        }
+        catch (error) {
+          await admin.disconnect();
+          console.log(`Error updating topic number of partitions: ${error}`);
+          throw new Error(`Error updating topic number of partitions: ${event.ResourceProperties.topic}. Error ${error}`);
+        }
+      } else if ( newTopic.numPartitions < oldTopic.numPartitions ) {
+        throw new Error(`Error updating topics: number of partitions can't be decreased`);
+      }
 
-            console.info(event.RequestType);
-            console.info(event.ResourceProperties.topics);
+      if (newTopic.replicationFactor > oldTopic.replicationFactor) {
+        if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
+          throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
+        }
+      }
 
-            try {
-                
-                let updatedTopics = []; 
+      if  (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
+        try {
+          const result = await admin.alterPartitionRebalancing({
+            validateOnly: false,
+            timeout: event.ResourceProperties.timeout,
+            topics: [{
+              topic: newTopic.topic,
+              partitions: newTopic.replicaAssignment,
+            }],
+          });
 
-                event.ResourceProperties.topics.forEach (topic => {
-                    updatedTopics.push({
-                        topic: topic.topic,
-                        count: topic.numPartitions,
-                        assignments: undefined
-                    });
-                });
-
-                await admin.createPartitions({
-                    validateOnly: false,
-                    timeout: event.ResourceProperties.timeout,
-                    topicPartitions: updatedTopics,
-                });
+          console.log(`Topic replication factor update: ${result}`);
+          break;
+        }
+        catch (error) {
+          await admin.disconnect();
+          console.log(`Error updating topic replication factor: ${error}`);
+          throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
+        }
+      }
     
-                await admin.disconnect();
-                
-                return { 
-                    "Data": {
-                        "kafkaResponse": true
-                    }
-                  };
-
-            }
-            catch (error) {
-                await admin.disconnect();
-
-                throw new Error(`Error updating topics: ${event.ResourceProperties.topics}. Error ${error}`);
-            }
-
-        case 'Delete':
-
-            console.info('======Received for Event Delete Topic=======');
-            
-            console.log(event.ResourceProperties.topics);
-
-            let topics = []; 
-            
-            event.ResourceProperties.topics.forEach (topic => {
-                topics.push(topic.topic);
-            });
-
-            
-            try {
-                await admin.deleteTopics({
-                    timeout: event.ResourceProperties.timeout,
-                    topics: topics,
-                });
-
-                await admin.disconnect();
-
-                return { 
-                    "Data": {
-                        "kafkaResponse": true
-                    }
-                  };
-            }
-            catch (error) {
-                await admin.disconnect();
-
-                throw new Error(`Error deleting topics: ${topics}. Error ${error}`);
-
-            }
-
-        default:
-            throw new Error(`invalid request type: ${event.RequestType}`);
-    }
+    case 'Delete':
+    
+      console.log(event.ResourceProperties.topic);
+      
+      try {
+        const result = await admin.deleteTopics({
+          timeout: event.ResourceProperties.timeout,
+          topics: [event.ResourceProperties.topic.topic],
+        });
+        
+        await admin.disconnect();
+        console.log(`Topic deleted: ${result}`);
+        break;
+      }
+      catch (error) {
+        await admin.disconnect();
+        console.log(`Error deleting topic: ${error}`);
+        throw new Error(`Error deleting topics: ${topics}. Error ${error}`);
+        
+      }
+      
+    default:
+      throw new Error(`invalid request type: ${event.RequestType}`);
+  }
 }

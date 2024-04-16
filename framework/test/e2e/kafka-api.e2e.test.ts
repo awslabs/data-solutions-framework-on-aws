@@ -8,7 +8,6 @@
  */
 
 
-
 import { App, RemovalPolicy, CfnOutput } from 'aws-cdk-lib';
 
 import { TestStack } from './test-stack';

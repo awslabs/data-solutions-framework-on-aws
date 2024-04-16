@@ -19,17 +19,11 @@ export async function aclCrudOnEvent (event, admin) {
                     }
                 ];
 
-                let kafkaResponse = await admin.createAcls({ acl });
-
-                console.log(kafkaResponse);
+                await admin.createAcls({ acl });
 
                 await admin.disconnect();
 
-                return {
-                    "Data": {
-                        "kafkaResponse": kafkaResponse
-                    }
-                };
+                break;
 
             }
             catch (error) {
@@ -56,16 +50,11 @@ export async function aclCrudOnEvent (event, admin) {
 
                 console.log(acl);
 
-                let kafkaResponse = await admin.createAcls({ acl });
-
-                console.log(kafkaResponse);
+                await admin.createAcls({ acl });
 
                 await admin.disconnect();
-                return {
-                    "Data": {
-                        "kafkaResponse": true
-                    }
-                };
+
+                break;
             }
             catch (error) {
                 await admin.disconnect();
@@ -92,8 +81,6 @@ export async function aclCrudOnEvent (event, admin) {
                 console.log(acl);
 
                 let kafkaResponse = await admin.deleteAcls({ filters: acl })
-
-                console.log(kafkaResponse);
 
                 let errorCode = kafkaResponse.filterResponses[0].errorCode;
 

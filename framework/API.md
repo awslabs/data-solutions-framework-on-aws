@@ -3978,6 +3978,8 @@ the host to which the principal can produce data.
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
+the removal policy to apply to the grant.
+
 ---
 
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantProduce"></a>
@@ -4032,6 +4034,8 @@ the host to which the principal can produce data.
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
+the removal policy to apply to the grant.
+
 ---
 
 ##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.retrieveVersion"></a>
@@ -4070,7 +4074,7 @@ the Kafka Acl definition.
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
-Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+Wether to keep the ACL or delete it when removing the resource from the Stack.
 
 ---
 
@@ -4110,7 +4114,7 @@ the Kafka topic definition.
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
-Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+Wether to keep the topic or delete it when removing the resource from the Stack.
 
 ---
 
@@ -10627,7 +10631,9 @@ const kafkaApiProps: streaming.KafkaApiProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.clusterArn">clusterArn</a></code> | <code>string</code> | The ARN of the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.certficateSecret">certficateSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.mtlsHandlerRole">mtlsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to mTLS lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 
@@ -10707,6 +10713,18 @@ https://github.com/aws-samples/amazon-msk-client-authentication
 
 ---
 
+##### `iamHandlerRole`<sup>Optional</sup> <a name="iamHandlerRole" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.iamHandlerRole"></a>
+
+```typescript
+public readonly iamHandlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal.
+
+---
+
 ##### `kafkaClientLogLevel`<sup>Optional</sup> <a name="kafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.kafkaClientLogLevel"></a>
 
 ```typescript
@@ -10717,6 +10735,18 @@ public readonly kafkaClientLogLevel: KafkaClientLogLevel;
 - *Default:* WARN
 
 The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
+
+---
+
+##### `mtlsHandlerRole`<sup>Optional</sup> <a name="mtlsHandlerRole" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.mtlsHandlerRole"></a>
+
+```typescript
+public readonly mtlsHandlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role to pass to mTLS lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal.
 
 ---
 
@@ -15460,6 +15490,7 @@ The CDK Custom resources uses KafkaJs This enum allow you to set the log level.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel.WARN">WARN</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel.DEBUG">DEBUG</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel.INFO">INFO</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel.ERROR">ERROR</a></code> | *No description.* |
 
 ---
 
@@ -15474,6 +15505,11 @@ The CDK Custom resources uses KafkaJs This enum allow you to set the log level.
 
 
 ##### `INFO` <a name="INFO" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel.INFO"></a>
+
+---
+
+
+##### `ERROR` <a name="ERROR" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel.ERROR"></a>
 
 ---
 

@@ -3,9 +3,9 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { KafkaClientLogLevel, ClientAuthentication } from './msk-utils';
-import { IRole } from 'aws-cdk-lib/aws-iam';
 
 /**
  * Properties for the `KafkaApi` construct
