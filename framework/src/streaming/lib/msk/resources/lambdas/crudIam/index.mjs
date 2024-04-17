@@ -22,12 +22,19 @@ export const onEventHandler = async (event) => {
   switch (event.ResourceProperties.logLevel) {
     case 'INFO':
       level = logLevel.INFO;
+      break;
     case 'WARN':
       level = logLevel.WARN;
+      break;
     case 'ERROR':
       level = logLevel.ERROR;
+      break;
     case 'DEBUG':
       level = logLevel.DEBUG;
+      break;
+    default:
+      console.log("Unknown Log Level");
+      throw new Error(`invalid log level: ${event.ResourceProperties.logLevel}`);
   }
   
   const client = new KafkaClient();
