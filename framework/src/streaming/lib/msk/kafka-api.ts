@@ -14,6 +14,7 @@ import { grantConsumeIam, grantProduceIam, mskIamCrudProviderSetup, mskAclAdminP
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
   Authentication, Acl, KafkaClientLogLevel, MskTopic,
+  MskClusterType,
 } from './msk-utils';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
@@ -65,6 +66,7 @@ export class KafkaApi extends TrackedConstruct {
   private readonly kafkaClientLogLevel: KafkaClientLogLevel;
   private readonly tlsCertifacateSecret?: ISecret;
   private readonly clusterArn: string;
+  private readonly clusterType: MskClusterType;
 
   /**
    * Constructs a new instance of the EmrEksCluster construct.
@@ -84,6 +86,7 @@ export class KafkaApi extends TrackedConstruct {
     this.kafkaClientLogLevel = props?.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN;
     this.clusterArn = props.clusterArn;
     this.tlsCertifacateSecret = props.certficateSecret;
+    this.clusterType = props.clusterType;
 
     if (!props.vpc.vpcId ||
       !props.vpc.vpcCidrBlock ||
@@ -190,6 +193,11 @@ export class KafkaApi extends TrackedConstruct {
     let serviceToken: string;
     let region = Stack.of(this).region;
 
+    if (this.clusterType === MskClusterType.SERVERLESS &&
+          (topicDefinition.replicaAssignment !== undefined || topicDefinition.replicationFactor !== undefined)) {
+      throw new Error("The topic definition is incorrect: MSK Serverless doesn't support replication factor and replication assignments");
+    }
+
     if (clientAuthentication === Authentication.IAM) {
       serviceToken = this.mskIamServiceToken!;
     } else {
@@ -207,6 +215,7 @@ export class KafkaApi extends TrackedConstruct {
         timeout: timeout,
         region: region,
         mskClusterArn: this.clusterArn,
+        mskClusterType: this.clusterType,
       },
       resourceType: 'Custom::MskTopic',
       removalPolicy: Context.revertRemovalPolicy(this, removalPolicy),

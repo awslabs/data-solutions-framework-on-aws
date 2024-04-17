@@ -569,21 +569,41 @@ export interface Acl {
   readonly resourcePatternType: ResourcePatternTypes;
 }
 
+
 /**
  * Properties for the `MskTopic`
  * As defined in `ITopicConfig` in [KafkaJS](https://kafka.js.org/docs/admin) SDK
  */
 export interface MskTopic {
+  /**
+   * The name of the topic
+   */
   readonly topic: string;
-  readonly numPartitions?: number; // default: -1 (uses broker `num.partitions` configuration)
-  readonly replicationFactor?: number; // default: -1 (uses broker `default.replication.factor` configuration)
-  readonly replicaAssignment?: {[key: string]: any}[]; // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
-  readonly configEntries?: {[key: string]: any}[]; // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
+  /**
+   * The number of partitions in the topic
+   */
+  readonly numPartitions: number;
+  /**
+   * The replication factor of the partitions.
+   * This parameter should not be provided for MSK Serverless.
+   * @default - For MSK Serverless, the number of AZ. For MSK Provisioned, the cluster default configuration.
+   */
+  readonly replicationFactor?: number;
+  /**
+   * The partitions assignment to brokers. For example [{ "partition": 0, "replicas": [0,1,2] }].
+   * This parameter should not be provided for MSK Serverless.
+   * @default - no assignement is done
+   */
+  readonly replicaAssignment?: {[key: string]: any}[];
+  /**
+   * The topic level configurations.
+   * @default - no configuration is used
+   */
+  readonly configEntries?: {[key: string]: any}[];
 }
 
-
 /**
- * The CDK Custom resources uses KafkaJs
+ * The CDK Custom resources uses KafkaJs.
  * This enum allow you to set the log level
  */
 export enum KafkaClientLogLevel {
@@ -591,4 +611,12 @@ export enum KafkaClientLogLevel {
   DEBUG = 'DEBUG',
   INFO = 'INFO',
   ERROR = 'ERROR',
+}
+
+/**
+ * Enum for MSK cluster types
+ */
+export enum MskClusterType {
+  PROVISIONED = 'PROVISIONED',
+  SERVERLESS = 'SERVERLESS',
 }

@@ -63,6 +63,18 @@ export const onEventHandler = async (event) => {
 
     let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
 
+    let level;
+    switch (event.ResourceProperties.logLevel) {
+      case 'INFO':
+        level = logLevel.INFO;
+      case 'WARN':
+        level = logLevel.WARN;
+      case 'ERROR':
+        level = logLevel.ERROR;
+      case 'DEBUG':
+        level = logLevel.DEBUG;
+    }
+
     const kafka = new Kafka({
         clientId: `client-CR-${clusterName}`,
         brokers: brokerUrls,
@@ -71,7 +83,7 @@ export const onEventHandler = async (event) => {
             key: privateKey,
             cert: formatedCertPem
         },
-        logLevel: event.ResourceProperties.logLevel,
+        logLevel: level,
     });
 
     const admin = kafka.admin();

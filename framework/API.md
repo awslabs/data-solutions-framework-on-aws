@@ -10629,6 +10629,7 @@ const kafkaApiProps: streaming.KafkaApiProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClientAuthentication</code> | Configuration properties for client authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.clusterArn">clusterArn</a></code> | <code>string</code> | The ARN of the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.clusterType">clusterType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskClusterType</code> | The type of MSK cluster(provisioned or serverless). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.certficateSecret">certficateSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
@@ -10674,6 +10675,18 @@ public readonly clusterArn: string;
 - *Type:* string
 
 The ARN of the cluster.
+
+---
+
+##### `clusterType`<sup>Required</sup> <a name="clusterType" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.clusterType"></a>
+
+```typescript
+public readonly clusterType: MskClusterType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskClusterType
+
+The type of MSK cluster(provisioned or serverless).
 
 ---
 
@@ -10858,11 +10871,23 @@ const mskTopic: streaming.MskTopic = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.topic">topic</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries">configEntries</a></code> | <code>{[ key: string ]: any}[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.numPartitions">numPartitions</a></code> | <code>number</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicaAssignment">replicaAssignment</a></code> | <code>{[ key: string ]: any}[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicationFactor">replicationFactor</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.numPartitions">numPartitions</a></code> | <code>number</code> | The number of partitions in the topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.topic">topic</a></code> | <code>string</code> | The name of the topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries">configEntries</a></code> | <code>{[ key: string ]: any}[]</code> | The topic level configurations. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicaAssignment">replicaAssignment</a></code> | <code>{[ key: string ]: any}[]</code> | The partitions assignment to brokers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicationFactor">replicationFactor</a></code> | <code>number</code> | The replication factor of the partitions. |
+
+---
+
+##### `numPartitions`<sup>Required</sup> <a name="numPartitions" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.numPartitions"></a>
+
+```typescript
+public readonly numPartitions: number;
+```
+
+- *Type:* number
+
+The number of partitions in the topic.
 
 ---
 
@@ -10874,6 +10899,8 @@ public readonly topic: string;
 
 - *Type:* string
 
+The name of the topic.
+
 ---
 
 ##### `configEntries`<sup>Optional</sup> <a name="configEntries" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries"></a>
@@ -10883,16 +10910,9 @@ public readonly configEntries: {[ key: string ]: any}[];
 ```
 
 - *Type:* {[ key: string ]: any}[]
+- *Default:* no configuration is used
 
----
-
-##### `numPartitions`<sup>Optional</sup> <a name="numPartitions" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.numPartitions"></a>
-
-```typescript
-public readonly numPartitions: number;
-```
-
-- *Type:* number
+The topic level configurations.
 
 ---
 
@@ -10903,6 +10923,12 @@ public readonly replicaAssignment: {[ key: string ]: any}[];
 ```
 
 - *Type:* {[ key: string ]: any}[]
+- *Default:* no assignement is done
+
+The partitions assignment to brokers.
+
+For example [{ "partition": 0, "replicas": [0,1,2] }].
+This parameter should not be provided for MSK Serverless.
 
 ---
 
@@ -10913,6 +10939,11 @@ public readonly replicationFactor: number;
 ```
 
 - *Type:* number
+- *Default:* For MSK Serverless, the number of AZ. For MSK Provisioned, the cluster default configuration.
+
+The replication factor of the partitions.
+
+This parameter should not be provided for MSK Serverless.
 
 ---
 
@@ -15481,7 +15512,9 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 ### KafkaClientLogLevel <a name="KafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel"></a>
 
-The CDK Custom resources uses KafkaJs This enum allow you to set the log level.
+The CDK Custom resources uses KafkaJs.
+
+This enum allow you to set the log level
 
 #### Members <a name="Members" id="Members"></a>
 
@@ -15527,6 +15560,29 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 ---
 
 ##### `V0_32_1` <a name="V0_32_1" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1"></a>
+
+---
+
+
+### MskClusterType <a name="MskClusterType" id="@cdklabs/aws-data-solutions-framework.streaming.MskClusterType"></a>
+
+Enum for MSK cluster types.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskClusterType.PROVISIONED">PROVISIONED</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskClusterType.SERVERLESS">SERVERLESS</a></code> | *No description.* |
+
+---
+
+##### `PROVISIONED` <a name="PROVISIONED" id="@cdklabs/aws-data-solutions-framework.streaming.MskClusterType.PROVISIONED"></a>
+
+---
+
+
+##### `SERVERLESS` <a name="SERVERLESS" id="@cdklabs/aws-data-solutions-framework.streaming.MskClusterType.SERVERLESS"></a>
 
 ---
 

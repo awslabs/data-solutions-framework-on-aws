@@ -33,6 +33,7 @@ let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
 const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
   vpc: vpc,
   clusterArn: 'arn:aws:kafka:eu-west-1:12345678912:cluster/byo-msk/dummy-5cf3-42d5-aece-dummmy-2',
+  clusterType: MskClusterType.PROVISIONED,
   brokerSecurityGroup: SecurityGroup.fromSecurityGroupId(stack, 'brokerSecurityGroup', 'sg-98237412hsa'),
   certficateSecret: secret,
   clientAuthentication: ClientAuthentication.saslTls({
@@ -64,6 +65,7 @@ vpc = Vpc.from_vpc_attributes(stack, "vpc",
 kafka_api = KafkaApi(stack, "kafkaApi",
     vpc=vpc,
     cluster_arn="arn:aws:kafka:eu-west-1:12345678912:cluster/byo-msk/dummy-5cf3-42d5-aece-dummmy-2",
+    cluster_type=MskClusterType.PROVISIONED,
     broker_security_group=SecurityGroup.from_security_group_id(stack, "brokerSecurityGroup", "sg-98237412hsa"),
     certficate_secret=secret,
     client_authentication=ClientAuthentication.sasl_tls(

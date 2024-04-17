@@ -29,7 +29,7 @@ export const onEventHandler = async (event) => {
     case 'DEBUG':
       level = logLevel.DEBUG;
   }
-
+  
   const client = new KafkaClient();
   const input = {
     ClusterArn: event.ResourceProperties.mskClusterArn,
@@ -41,6 +41,7 @@ export const onEventHandler = async (event) => {
   const brokerUrl = response.BootstrapBrokerStringSaslIam.split(',');
   
   let clusterName = event.ResourceProperties.mskClusterArn.split('/')[1];
+  const mskClusterType = event.ResourceProperties.mskClusterType;
   
   const kafka = new Kafka({
     clientId: `client-CR-${clusterName}`,
@@ -106,7 +107,8 @@ export const onEventHandler = async (event) => {
             }],
           });
           
-          console.log(`Topic partition count update: ${result}`);
+          await admin.disconnect();
+          console.log(`Topic partition count updated: ${result}`);
           break;
           
         }
@@ -118,31 +120,31 @@ export const onEventHandler = async (event) => {
       } else if ( newTopic.numPartitions < oldTopic.numPartitions ) {
         throw new Error(`Error updating topics: number of partitions can't be decreased`);
       }
-
-      if (newTopic.replicationFactor > oldTopic.replicationFactor) {
-        if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
-          throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
-        }
-      }
-
-      if  (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
-        try {
-          const result = await admin.alterPartitionRebalancing({
-            validateOnly: false,
-            timeout: event.ResourceProperties.timeout,
-            topics: [{
-              topic: newTopic.topic,
-              partitions: newTopic.replicaAssignment,
-            }],
-          });
-
-          console.log(`Topic replication factor update: ${result}`);
-          break;
-        }
-        catch (error) {
-          await admin.disconnect();
-          console.log(`Error updating topic replication factor: ${error}`);
-          throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
+    
+      if (mskClusterType === 'PROVISIONED') {
+        if (newTopic.replicationFactor > oldTopic.replicationFactor) {
+          if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
+            throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
+          } else {
+            try {
+              const result = await admin.alterPartitionReassignments({
+                validateOnly: false,
+                timeout: event.ResourceProperties.timeout,
+                topics: [{
+                  topic: newTopic.topic,
+                  partitions: newTopic.replicaAssignment,
+                }],
+              });
+    
+              console.log(`Topic replication factor updated: ${result}`);
+              break;
+            }
+            catch (error) {
+              await admin.disconnect();
+              console.log(`Error updating topic replication factor: ${error}`);
+              throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
+            }
+          }
         }
       }
     
@@ -162,6 +164,10 @@ export const onEventHandler = async (event) => {
       }
       catch (error) {
         await admin.disconnect();
+        if (e.message.includes('topics is not defined')) {
+          console.log('Topic is not defined, skipping...');
+          break;
+        }
         console.log(`Error deleting topic: ${error}`);
         throw new Error(`Error deleting topics: ${topics}. Error ${error}`);
         

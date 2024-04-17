@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Authentication, ClientAuthentication, KafkaClientLogLevel } from '../lib/msk';
+import { Authentication, ClientAuthentication, KafkaClientLogLevel, MskClusterType } from '../lib/msk';
 import { KafkaApi } from '../lib/msk/kafka-api';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -34,6 +34,7 @@ let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
 const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
   vpc: vpc,
   clusterArn: 'arn:aws:kafka:eu-west-1:12345678912:cluster/byo-msk/dummy-5cf3-42d5-aece-dummmy-2',
+  clusterType: MskClusterType.PROVISIONED,
   brokerSecurityGroup: SecurityGroup.fromSecurityGroupId(stack, 'brokerSecurityGroup', 'sg-98237412hsa'),
   certficateSecret: secret,
   clientAuthentication: ClientAuthentication.saslTls({

@@ -16,7 +16,7 @@ import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { Authentication, ClientAuthentication, KafkaApi } from '../../../../src/streaming';
+import { Authentication, ClientAuthentication, KafkaApi, MskClusterType } from '../../../../src/streaming';
 
 
 const app = new App();
@@ -61,6 +61,7 @@ const cluster = new CfnCluster(stack, 'MyCluster', {
 
 const kafkaApi = new KafkaApi(stack, 'KafkaApi', {
   clusterArn: cluster.attrArn,
+  clusterType: MskClusterType.PROVISIONED,
   brokerSecurityGroup,
   vpc,
   certficateSecret: secret,
@@ -74,6 +75,7 @@ kafkaApi.setTopic('topic1',
   Authentication.IAM,
   {
     topic: 'topic1',
+    numPartitions: 1,
   },
 );
 
@@ -81,6 +83,7 @@ kafkaApi.setTopic('topic2',
   Authentication.MTLS,
   {
     topic: 'topic2',
+    numPartitions: 2,
   },
 );
 

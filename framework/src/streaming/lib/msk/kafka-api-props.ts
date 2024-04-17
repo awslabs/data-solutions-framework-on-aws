@@ -5,7 +5,7 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
-import { KafkaClientLogLevel, ClientAuthentication } from './msk-utils';
+import { KafkaClientLogLevel, ClientAuthentication, MskClusterType } from './msk-utils';
 
 /**
  * Properties for the `KafkaApi` construct
@@ -38,6 +38,11 @@ export interface KafkaApiProps {
    * The ARN of the cluster
    */
   readonly clusterArn: string;
+
+  /**
+   * The type of MSK cluster(provisioned or serverless)
+   */
+  readonly clusterType: MskClusterType;
 
   /**
    * The AWS security groups to associate with the elastic network interfaces in order to specify who can

@@ -1,22 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-async function parseTopic(topic) {
-  const numPartitions = topic.numPartitions ?
-  parseInt(topic.numPartitions) : undefined;
-
-  const replicationFactor = topic.replicationFactor ?
-    parseInt(topic.replicationFactor) : undefined;
-
-  return {
-    topic: topic.topic,
-    numPartitions,
-    replicationFactor,
-    replicaAssignment: topic.replicaAssignment,
-    configEntries: topic.configEntries
-  }
-}
-
 export async function topicCrudOnEvent (event, admin) {
   switch (event.RequestType) {
     case 'Create':
@@ -29,11 +13,14 @@ export async function topicCrudOnEvent (event, admin) {
           validateOnly: false,
           waitForLeaders: event.ResourceProperties.waitForLeaders,
           timeout: event.ResourceProperties.timeout,
-          topics: [parseTopic(event.ResourceProperties.topic)],
+          topics: [event.ResourceProperties.topic],
         });
         
         await admin.disconnect();
         console.log(`Topic created: ${result}`);
+        if ( result == false ) {
+          throw new Error(`Error creating topic: ${event.ResourceProperties.topic}`);
+        }
         break;
         
       }
@@ -50,27 +37,56 @@ export async function topicCrudOnEvent (event, admin) {
       const oldTopic = parseTopic(event.oldResourceProperties.topic);
       const newTopic = parseTopic(event.ResourceProperties.topic);
 
-      try {
-        
-        const result = await admin.createPartitions({
-          validateOnly: false,
-          timeout: event.ResourceProperties.timeout,
-          topicPartitions: [{
-            topic: newTopic.topic,
-            count: newTopic.numPartitions,
-            assignments: undefined
-          }],
-        });
-        
-        await admin.disconnect();
-        console.log(`Topic updated: ${result}`);
-        break;
-        
+      if ( newTopic.numPartitions > oldTopic.numPartitions ) {
+        try {
+          
+          const result = await admin.createPartitions({
+            validateOnly: false,
+            timeout: event.ResourceProperties.timeout,
+            topicPartitions: [{
+              topic: newTopic.topic,
+              count: newTopic.numPartitions,
+              assignments: undefined
+            }],
+          });
+          
+          await admin.disconnect();
+          console.log(`Topic partition count updated: ${result}`);
+          break;
+          
+        }
+        catch (error) {
+          await admin.disconnect();
+          console.log(`Error updating topic number of partitions: ${error}`);
+          throw new Error(`Error updating topic number of partitions: ${event.ResourceProperties.topic}. Error ${error}`);
+        }
+      } else if ( newTopic.numPartitions < oldTopic.numPartitions ) {
+        throw new Error(`Error updating topics: number of partitions can't be decreased`);
       }
-      catch (error) {
-        await admin.disconnect();
-        console.log(`Error updating topic: ${error}`);
-        throw new Error(`Error updating topics: ${event.ResourceProperties.topic}. Error ${error}`);
+      
+      if (newTopic.replicationFactor > oldTopic.replicationFactor) {
+        if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
+          throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
+        } else {
+          try {
+            const result = await admin.alterPartitionReassignments({
+              validateOnly: false,
+              timeout: event.ResourceProperties.timeout,
+              topics: [{
+                topic: newTopic.topic,
+                partitions: newTopic.replicaAssignment,
+              }],
+            });
+  
+            console.log(`Topic replication factor updated: ${result}`);
+            break;
+          }
+          catch (error) {
+            await admin.disconnect();
+            console.log(`Error updating topic replication factor: ${error}`);
+            throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
+          }
+        }
       }
       
     case 'Delete':
