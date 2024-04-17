@@ -713,7 +713,8 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
     cr.node.addDependency(this.eksCluster);
-
+    cr.node.addDependency(this.eksCluster.albController?.node.findChild('Resource')!);
+    
     return cr;
   }
 }
