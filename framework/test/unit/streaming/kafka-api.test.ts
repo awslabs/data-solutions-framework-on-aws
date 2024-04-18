@@ -156,271 +156,123 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
     });
   });
 
-  // test('should create the proper IAM policy to interact with MSK via IAM authentication', () => {
-  //   template.hasResourceProperties('AWS::IAM::ManagedPolicy', {
-  //     PolicyDocument: {
-  //       Statement: [
-  //         {
-  //           Action: [
-  //             'kafka-cluster:Connect',
-  //             'kafka-cluster:AlterCluster',
-  //             'kafka-cluster:DescribeCluster',
-  //             'kafka-cluster:DescribeClusterV2',
-  //             'kafka:GetBootstrapBrokers',
-  //             'kafka:DescribeClusterV2',
-  //             'kafka:CreateVpcConnection',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::GetAtt': ['MyCluster', 'Arn'],
-  //           },
-  //         },
-  //         {
-  //           Action: [
-  //             'kafka-cluster:CreateTopic',
-  //             'kafka-cluster:DescribeTopic',
-  //             'kafka-cluster:AlterTopic',
-  //             'kafka-cluster:DeleteTopic',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::Join': [
-  //               '',
-  //               [
-  //                 'arn:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':kafka:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     3,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':',
-  //                 {
-  //                   'Fn::Select': [
-  //                     4,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':topic/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     2,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/*',
-  //               ],
-  //             ],
-  //           },
-  //         },
-  //         {
-  //           Action: [
-  //             'kafka-cluster:AlterGroup',
-  //             'kafka-cluster:DescribeGroup',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::Join': [
-  //               '',
-  //               [
-  //                 'arn:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':kafka:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     3,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':',
-  //                 {
-  //                   'Fn::Select': [
-  //                     4,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':group/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     2,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/*',
-  //               ],
-  //             ],
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   });
-  // });
+  test('should create the proper IAM policy to interact with MSK via IAM authentication', () => {
+    template.hasResourceProperties('AWS::IAM::ManagedPolicy', {
+      PolicyDocument: {
+        Statement: [
+          {
+            Action: [
+              'kafka-cluster:Connect',
+              'kafka:GetBootstrapBrokers',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::GetAtt': [
+                'MyCluster',
+                'Arn',
+              ],
+            },
+          },
+          {
+            Action: [
+              'kafka-cluster:CreateTopic',
+              'kafka-cluster:DescribeTopic',
+              'kafka-cluster:AlterTopic',
+              'kafka-cluster:DeleteTopic',
+              'kafka-cluster:DescribeTopicDynamicConfiguration',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':topic/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/*',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+    });
+  });
 
   test('should create the proper IAM policy to interact with MSK via mTLS authentication', () => {
     template.hasResourceProperties('AWS::IAM::ManagedPolicy', {
@@ -610,408 +462,333 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
     });
   });
 
-  // test('should create proper IAM policy for granting producer permissions', () => {
-  //   template.hasResourceProperties('AWS::IAM::Policy', {
-  //     PolicyDocument: {
-  //       Statement: [
-  //         {
-  //           Action: [
-  //             'kafka-cluster:Connect',
-  //             'kafka-cluster:WriteDataIdempotently',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::GetAtt': ['MyCluster', 'Arn'],
-  //           },
-  //         },
-  //         {
-  //           Action: [
-  //             'kafka-cluster:WriteData',
-  //             'kafka-cluster:DescribeTopic',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::Join': [
-  //               '',
-  //               [
-  //                 'arn:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':kafka:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     3,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':',
-  //                 {
-  //                   'Fn::Select': [
-  //                     4,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':topic/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     2,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/topic1',
-  //               ],
-  //             ],
-  //           },
-  //         },
-  //       ],
-  //     },
-  //     PolicyName: Match.stringLikeRegexp('iamProducerRolePolicy.*'),
-  //     Roles: [
-  //       'producer',
-  //     ],
-  //   });
-  // });
+  test('should create proper IAM policy for granting producer permissions', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: [
+          {
+            Action: [
+              'kafka-cluster:Connect',
+              'kafka-cluster:WriteDataIdempotently',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::GetAtt': [
+                'MyCluster',
+                'Arn',
+              ],
+            },
+          },
+          {
+            Action: [
+              'kafka-cluster:WriteData',
+              'kafka-cluster:DescribeTopic',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':topic/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/topic1',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      PolicyName: Match.stringLikeRegexp('iamProducerRolePolicy.*'),
+      Roles: [
+        'producer',
+      ],
+    });
+  });
 
-  // test('should create proper IAM policy for granting consumer permissions', () => {
-  //   template.hasResourceProperties('AWS::IAM::Policy', {
-  //     PolicyDocument: {
-  //       Statement: [
-  //         {
-  //           Action: 'kafka-cluster:Connect',
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::GetAtt': ['MyCluster', 'Arn'],
-  //           },
-  //         },
-  //         {
-  //           Action: [
-  //             'kafka-cluster:ReadData',
-  //             'kafka-cluster:DescribeTopic',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::Join': [
-  //               '',
-  //               [
-  //                 'arn:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':kafka:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     3,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':',
-  //                 {
-  //                   'Fn::Select': [
-  //                     4,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':topic/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     2,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/topic1',
-  //               ],
-  //             ],
-  //           },
-  //         },
-  //         {
-  //           Action: [
-  //             'kafka-cluster:AlterGroup',
-  //             'kafka-cluster:DescribeGroup',
-  //           ],
-  //           Effect: 'Allow',
-  //           Resource: {
-  //             'Fn::Join': [
-  //               '',
-  //               [
-  //                 'arn:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':kafka:',
-  //                 {
-  //                   'Fn::Select': [
-  //                     3,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':',
-  //                 {
-  //                   'Fn::Select': [
-  //                     4,
-  //                     {
-  //                       'Fn::Split': [
-  //                         ':',
-  //                         {
-  //                           'Fn::GetAtt': [
-  //                             'MyCluster',
-  //                             'Arn',
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 ':group/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     1,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/',
-  //                 {
-  //                   'Fn::Select': [
-  //                     2,
-  //                     {
-  //                       'Fn::Split': [
-  //                         '/',
-  //                         {
-  //                           'Fn::Select': [
-  //                             5,
-  //                             {
-  //                               'Fn::Split': [
-  //                                 ':',
-  //                                 {
-  //                                   'Fn::GetAtt': [
-  //                                     'MyCluster',
-  //                                     'Arn',
-  //                                   ],
-  //                                 },
-  //                               ],
-  //                             },
-  //                           ],
-  //                         },
-  //                       ],
-  //                     },
-  //                   ],
-  //                 },
-  //                 '/*',
-  //               ],
-  //             ],
-  //           },
-  //         },
-  //       ],
-  //     },
-  //     PolicyName: Match.stringLikeRegexp('iamConsumerRolePolicy.*'),
-  //     Roles: [
-  //       'consumer',
-  //     ],
-  //   });
-  // });
+  test('should create proper IAM policy for granting consumer permissions', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: [
+          {
+            Action: 'kafka-cluster:Connect',
+            Effect: 'Allow',
+            Resource: {
+              'Fn::GetAtt': [
+                'MyCluster',
+                'Arn',
+              ],
+            },
+          },
+          {
+            Action: [
+              'kafka-cluster:ReadData',
+              'kafka-cluster:DescribeTopic',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':topic/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/topic1',
+                ],
+              ],
+            },
+          },
+          {
+            Action: [
+              'kafka-cluster:AlterGroup',
+              'kafka-cluster:DescribeGroup',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':group/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/*',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      PolicyName: Match.stringLikeRegexp('iamConsumerRolePolicy.*'),
+      Roles: [
+        'consumer',
+      ],
+    });
+  });
 });
 
 describe('Using custom KafkaApi configuration with MSK serverless and DELETE removal policy should ', () => {
