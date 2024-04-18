@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Kafka } from "kafkajs"
+import { Kafka, logLevel } from "kafkajs"
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { aclCrudOnEvent } from "./acl-crud.mjs";
@@ -81,6 +81,8 @@ export const onEventHandler = async (event) => {
       console.log("Unknown Log Level");
       throw new Error(`invalid log level: ${event.ResourceProperties.logLevel}`);
   }
+
+  console.log('loglevel: '+ level);
   
   const kafka = new Kafka({
     clientId: `client-CR-${clusterName}`,
