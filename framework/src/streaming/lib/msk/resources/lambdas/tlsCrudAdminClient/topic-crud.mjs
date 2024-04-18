@@ -34,8 +34,8 @@ export async function topicCrudOnEvent (event, admin) {
     
       console.info(event.ResourceProperties.topic);
       
-      const oldTopic = parseTopic(event.oldResourceProperties.topic);
-      const newTopic = parseTopic(event.ResourceProperties.topic);
+      const oldTopic = event.oldResourceProperties.topic;
+      const newTopic = event.ResourceProperties.topic;
 
       if ( newTopic.numPartitions > oldTopic.numPartitions ) {
         try {
