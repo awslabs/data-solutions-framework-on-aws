@@ -33,11 +33,12 @@ export async function topicCrudOnEvent (event, admin) {
     case 'Update':
     
       console.info(event.ResourceProperties.topic);
-      
-      const oldTopic = event.oldResourceProperties.topic;
+
+      const oldTopic = event.OldResourceProperties.topic;
       const newTopic = event.ResourceProperties.topic;
 
       if ( newTopic.numPartitions > oldTopic.numPartitions ) {
+        console.log("creating new partitions...")
         try {
           
           const result = await admin.createPartitions({
@@ -50,10 +51,7 @@ export async function topicCrudOnEvent (event, admin) {
             }],
           });
           
-          await admin.disconnect();
           console.log(`Topic partition count updated: ${result}`);
-          break;
-          
         }
         catch (error) {
           await admin.disconnect();
@@ -61,6 +59,7 @@ export async function topicCrudOnEvent (event, admin) {
           throw new Error(`Error updating topic number of partitions: ${event.ResourceProperties.topic}. Error ${error}`);
         }
       } else if ( newTopic.numPartitions < oldTopic.numPartitions ) {
+        await admin.disconnect();
         throw new Error(`Error updating topics: number of partitions can't be decreased`);
       }
       
@@ -68,17 +67,19 @@ export async function topicCrudOnEvent (event, admin) {
         if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
           throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
         } else {
+          console.log("updating partitions assignment...")
           try {
             const result = await admin.alterPartitionReassignments({
               validateOnly: false,
               timeout: event.ResourceProperties.timeout,
               topics: [{
                 topic: newTopic.topic,
-                partitions: newTopic.replicaAssignment,
+                partitionAssignment: newTopic.replicaAssignment,
               }],
             });
   
             console.log(`Topic replication factor updated: ${result}`);
+            await admin.disconnect();
             break;
           }
           catch (error) {
@@ -105,12 +106,16 @@ export async function topicCrudOnEvent (event, admin) {
       }
       catch (error) {
         await admin.disconnect();
+        if (e.message.includes('topics is not defined')) {
+          console.log('Topic is not defined, skipping...');
+          break;
+        }
         console.log(`Error deleting topic: ${error}`);
         throw new Error(`Error deleting topics: ${topics}. Error ${error}`);
         
       }
       
     default:
-    throw new Error(`invalid request type: ${event.RequestType}`);
+      throw new Error(`invalid request type: ${event.RequestType}`);
   }
 }
