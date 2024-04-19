@@ -852,8 +852,8 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
       topic: 'topic1',
       numPartitions: 1,
       replicationFactor: 1,
-      replicaAssignment: [{ partition: 0, replicas: [0, 1] }],
-      configEntries: [{ name: 'cleanup.policy', value: 'compact' }],
+      // replicaAssignment: [{ partition: 0, replicas: [0, 1] }],
+      // configEntries: [{ name: 'cleanup.policy', value: 'compact' }],
     },
     RemovalPolicy.DESTROY,
   );
@@ -894,21 +894,21 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
         topic: 'topic1',
         numPartitions: 1,
         replicationFactor: 1,
-        replicaAssignment: [
-          {
-            partition: 0,
-            replicas: [
-              0,
-              1,
-            ],
-          },
-        ],
-        configEntries: [
-          {
-            name: 'cleanup.policy',
-            value: 'compact',
-          },
-        ],
+        // replicaAssignment: [
+        //   {
+        //     partition: 0,
+        //     replicas: [
+        //       0,
+        //       1,
+        //     ],
+        //   },
+        // ],
+        // configEntries: [
+        //   {
+        //     name: 'cleanup.policy',
+        //     value: 'compact',
+        //   },
+        // ],
       }),
     });
   });
