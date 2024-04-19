@@ -193,8 +193,8 @@ export class KafkaApi extends TrackedConstruct {
     let serviceToken: string;
     let region = Stack.of(this).region;
 
-    if (this.clusterType === MskClusterType.SERVERLESS &&
-          (topicDefinition.replicaAssignment !== undefined || topicDefinition.replicationFactor !== undefined)) {
+    if (this.clusterType === MskClusterType.SERVERLESS && topicDefinition.replicationFactor !== undefined) {
+      // (topicDefinition.replicaAssignment !== undefined || topicDefinition.replicationFactor !== undefined)) {
       throw new Error("The topic definition is incorrect: MSK Serverless doesn't support replication factor and replication assignments");
     }
 

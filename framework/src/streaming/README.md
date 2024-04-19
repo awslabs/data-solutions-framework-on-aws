@@ -11,7 +11,7 @@ The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com
 
 :::warning
 
-THe construct needs to be deployed in the same region as the MSK cluster
+The construct needs to be deployed in the same region as the MSK cluster.
 
 :::
 
@@ -52,21 +52,25 @@ cat tmp/private_key.pem
 ### setTopic
 
 This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
-The topic is defined by the property type called `MskTopic`. Below you can see the definition of the ACL as well as a usage. 
+The topic is defined by the property type called `MskTopic`. Below you can see the definition of the topic. 
 
 ```json
 {
     topic: <String>,
     numPartitions: <Number>,     // default: -1 (uses broker `num.partitions` configuration)
     replicationFactor: <Number>, // default: -1 (uses broker `default.replication.factor` configuration)
-    replicaAssignment: <Array>,  // Example: [{ partition: 0, replicas: [0,1,2] }] - default: []
-    configEntries: <Array>       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
 }
 ```
 
-Dependeding on the authentication type that is set in the cluster, you need to put the right parameter in authentication, for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. The example below uses IAM as authentication.
+Dependeding on the authentication type used in the cluster, you need to put the right parameter in authentication, for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. The example below uses IAM as authentication.
 
 [example msk provisiond setTopic](./examples/kafka-api-set-topic.lit.ts)
+
+:::warning
+
+Only the number of partitions can be updated after the creation of the topic.
+
+:::
 
 ### setACL
 

@@ -10873,8 +10873,6 @@ const mskTopic: streaming.MskTopic = { ... }
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.numPartitions">numPartitions</a></code> | <code>number</code> | The number of partitions in the topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.topic">topic</a></code> | <code>string</code> | The name of the topic. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries">configEntries</a></code> | <code>{[ key: string ]: any}[]</code> | The topic level configurations. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicaAssignment">replicaAssignment</a></code> | <code>{[ key: string ]: any}[]</code> | The partitions assignment to brokers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicationFactor">replicationFactor</a></code> | <code>number</code> | The replication factor of the partitions. |
 
 ---
@@ -10903,35 +10901,6 @@ The name of the topic.
 
 ---
 
-##### `configEntries`<sup>Optional</sup> <a name="configEntries" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries"></a>
-
-```typescript
-public readonly configEntries: {[ key: string ]: any}[];
-```
-
-- *Type:* {[ key: string ]: any}[]
-- *Default:* no configuration is used
-
-The topic level configurations.
-
----
-
-##### `replicaAssignment`<sup>Optional</sup> <a name="replicaAssignment" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicaAssignment"></a>
-
-```typescript
-public readonly replicaAssignment: {[ key: string ]: any}[];
-```
-
-- *Type:* {[ key: string ]: any}[]
-- *Default:* no assignement is done
-
-The partitions assignment to brokers.
-
-For example [{ "partition": 0, "replicas": [0,1,2] }].
-This parameter should not be provided for MSK Serverless.
-
----
-
 ##### `replicationFactor`<sup>Optional</sup> <a name="replicationFactor" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicationFactor"></a>
 
 ```typescript
@@ -10943,6 +10912,7 @@ public readonly replicationFactor: number;
 
 The replication factor of the partitions.
 
+This parameter cannot be updated after the creation of the topic.
 This parameter should not be provided for MSK Serverless.
 
 ---

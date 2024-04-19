@@ -79,7 +79,6 @@ export const onEventHandler = async (event) => {
           topics: [event.ResourceProperties.topic],
         });
         
-        await admin.disconnect();
         console.log(`Topic created: ${result}`);
         if ( result == false ) {
           throw new Error(`Error creating topic: ${event.ResourceProperties.topic}`);
@@ -88,7 +87,6 @@ export const onEventHandler = async (event) => {
         
       }
       catch (error) {
-        await admin.disconnect();
         console.log(`Error creating topic: ${error}`);
         throw new Error(`Error creating topic: ${event.ResourceProperties.topic}. Error ${error}`);
       }
@@ -117,43 +115,49 @@ export const onEventHandler = async (event) => {
           console.log(`Topic partition count updated: ${result}`);
         }
         catch (error) {
-          await admin.disconnect();
           console.log(`Error updating topic number of partitions: ${error}`);
           throw new Error(`Error updating topic number of partitions: ${event.ResourceProperties.topic}. Error ${error}`);
         }
       } else if ( newTopic.numPartitions < oldTopic.numPartitions ) {
-        await admin.disconnect();
         throw new Error(`Error updating topics: number of partitions can't be decreased`);
       }
     
-      if (mskClusterType === 'PROVISIONED') {
-        if (newTopic.replicationFactor > oldTopic.replicationFactor) {
-          if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
-            throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
-          } else {
-            console.log("updating partitions assignment...")
-            try {
-              const result = await admin.alterPartitionReassignments({
-                validateOnly: false,
-                timeout: event.ResourceProperties.timeout,
-                topics: [{
-                  topic: newTopic.topic,
-                  partitionAssignment: newTopic.replicaAssignment,
-                }],
-              });
+      // if (newTopic.replicationFactor > oldTopic.replicationFactor || newTopic.replicaAssignment !== oldTopic.replicaAssignment) {
+      //   console.log(`Error updating topics: replication factor update is not supported`);
+      // }
+
+      // if (newTopic.configEntries !== oldTopic.configEntries) {
+      //   console.log(`Error updating topics: configuration entries update is not supported`);
+      // }
+
+      // if (mskClusterType === 'PROVISIONED') {
+      //   if (newTopic.replicationFactor > oldTopic.replicationFactor || newTopic.replicaAssignment !== oldTopic.replicaAssignment) {
+      //     if (newTopic.replicaAssignment === oldTopic.replicaAssignment) {
+      //       throw new Error(`Error updating topics: replication can only be increased by providing replicas assignment`);
+      //     } else {
+      //       console.log("updating partitions assignment...")
+      //       try {
+      //         const result = await admin.alterPartitionReassignments({
+      //           validateOnly: false,
+      //           timeout: event.ResourceProperties.timeout,
+      //           topics: [{
+      //             topic: newTopic.topic,
+      //             partitionAssignment: newTopic.replicaAssignment,
+      //           }],
+      //         });
     
-              console.log(`Topic replication factor updated: ${result}`);
-              await admin.disconnect();
-              break;
-            }
-            catch (error) {
-              await admin.disconnect();
-              console.log(`Error updating topic replication factor: ${error}`);
-              throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
-            }
-          }
-        }
-      }
+      //         console.log(`Topic replication factor updated: ${result}`);
+      //         await admin.disconnect();
+      //         break;
+      //       }
+      //       catch (error) {
+      //         await admin.disconnect();
+      //         console.log(`Error updating topic replication factor: ${error}`);
+      //         throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
+      //       }
+      //     }
+      //   }
+      // }
     
     case 'Delete':
     
@@ -165,18 +169,18 @@ export const onEventHandler = async (event) => {
           topics: [event.ResourceProperties.topic.topic],
         });
         
-        await admin.disconnect();
         console.log(`Topic deleted: ${result}`);
         break;
       }
       catch (error) {
-        await admin.disconnect();
-        if (e.message.includes('topics is not defined')) {
+        console.log(`Error deleting topic: ${error.errorMessage}`);
+        console.log(`Error deleting topic: ${error.message}`);
+        if (error.errorMessage.includes('topics is not defined')) {
           console.log('Topic is not defined, skipping...');
           break;
         }
         console.log(`Error deleting topic: ${error}`);
-        throw new Error(`Error deleting topics: ${topics}. Error ${error}`);
+        throw new Error(`Error deleting topics: ${event.ResourceProperties.topic}. Error ${error}`);
         
       }
       

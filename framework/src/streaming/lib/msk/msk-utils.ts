@@ -584,22 +584,24 @@ export interface MskTopic {
    */
   readonly numPartitions: number;
   /**
-   * The replication factor of the partitions.
+   * The replication factor of the partitions. This parameter cannot be updated after the creation of the topic.
    * This parameter should not be provided for MSK Serverless.
    * @default - For MSK Serverless, the number of AZ. For MSK Provisioned, the cluster default configuration.
    */
   readonly replicationFactor?: number;
-  /**
-   * The partitions assignment to brokers. For example [{ "partition": 0, "replicas": [0,1,2] }].
-   * This parameter should not be provided for MSK Serverless.
-   * @default - no assignement is done
-   */
-  readonly replicaAssignment?: {[key: string]: any}[];
-  /**
-   * The topic level configurations.
-   * @default - no configuration is used
-   */
-  readonly configEntries?: {[key: string]: any}[];
+  // /**
+  //  * The partitions assignment to brokers. For example [{ "partition": 0, "replicas": [0,1,2] }].
+  //  * This parameter cannot be updated after the creation of the topic.
+  //  * This parameter should not be provided for MSK Serverless.
+  //  * @default - no assignement is done
+  //  */
+  // readonly replicaAssignment?: {[key: string]: any}[];
+  // /**
+  //  * The topic level configurations.
+  //  * This parameter cannot be updated after the creation of the topic.
+  //  * @default - no configuration is used
+  //  */
+  // readonly configEntries?: {[key: string]: any}[];
 }
 
 /**

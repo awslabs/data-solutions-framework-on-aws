@@ -94,7 +94,7 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
   kafkaApi.grantProduce('topic1TlsProducerGrant', 'topic1', Authentication.MTLS, 'Cn=bar');
 
   const template = Template.fromStack(stack, {});
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a security group for the DsfProvider with IAM authentication to Kafka', () => {
     template.hasResourceProperties('AWS::EC2::SecurityGroup', Match.objectLike({
