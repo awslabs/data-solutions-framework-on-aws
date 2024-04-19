@@ -70,6 +70,9 @@
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/utils/examples/resources lib/utils/examples"
         },
         {
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/streaming/lib/msk/resources lib/streaming/lib/msk"
+        },
+        {
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/processing/lib/spark-runtime/emr-containers/resources lib/processing/lib/spark-runtime/emr-containers"
         },
         {

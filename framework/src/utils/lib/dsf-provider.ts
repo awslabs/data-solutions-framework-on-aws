@@ -176,6 +176,7 @@ export class DsfProvider extends Construct {
       }
     }
 
+
     const customResourceProvider = new Provider (this, 'CustomResourceProvider', {
       onEventHandler: this.onEventHandlerFunction,
       isCompleteHandler: this.isCompleteHandlerFunction ?? undefined,
@@ -196,7 +197,6 @@ export class DsfProvider extends Construct {
 
     // Scope down the `isCompleteHandlerFunction` to be called
     // Only by the function created by the Provider
-
     if (this.isCompleteHandlerFunction) {
       let frameworkOnIsCompleteFunction = customResourceProvider.node.findChild('framework-isComplete') as Function;
 

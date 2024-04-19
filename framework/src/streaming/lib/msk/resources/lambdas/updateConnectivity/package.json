@@ -1,0 +1,7 @@
+{
+    "name": "update-cluster-vpc-connectivity",
+    "version": "0.1.0",
+    "dependencies": {
+        "@aws-sdk/client-kafka": "^3.521.0"
+    }
+}

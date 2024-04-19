@@ -6,3 +6,4 @@ export * as governance from './governance';
 export * as processing from './processing';
 export * as utils from './utils';
 export * as consumption from './consumption';
+export * as streaming from './streaming';
