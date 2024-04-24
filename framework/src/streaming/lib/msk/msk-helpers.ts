@@ -92,6 +92,14 @@ export function mskIamCrudProviderSetup(
           'aws-msk-iam-sasl-signer-js',
           'kafkajs',
         ],
+        commandHooks: {
+          afterBundling: () => [],
+          beforeBundling: () => [
+            // Manually force esbuild to be installed for bundling to work properly
+            'npx esbuild --version',
+          ],
+          beforeInstall: () => [],
+        },
       },
       iamRole: iamHandlerRole,
     },
@@ -172,6 +180,14 @@ export function mskAclAdminProviderSetup(
         nodeModules: [
           'kafkajs',
         ],
+        commandHooks: {
+          afterBundling: () => [],
+          beforeBundling: () => [
+            // Manually force esbuild to be installed for bundling to work properly
+            'npx esbuild --version',
+          ],
+          beforeInstall: () => [],
+        },
       },
       iamRole: mtlsHandlerRole,
     },
