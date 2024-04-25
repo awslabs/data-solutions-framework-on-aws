@@ -74,10 +74,10 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
   test('Verify topic definition', () => {
     template.hasResourceProperties('Custom::MskTopic', {
       topic: Match.objectLike({
-          topic: 'topic1',
-          numPartitions: 3,
-        },
-        ),
+        topic: 'topic1',
+        numPartitions: 3,
+      },
+      ),
     });
   });
 

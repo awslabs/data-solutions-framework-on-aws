@@ -139,7 +139,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   ['/stack/cluster/KafkaApi/MskAclProvider/VpcPolicy/Resource',
-  '/stack/cluster/KafkaApi/MskIamProvider/VpcPolicy/Resource'],
+    '/stack/cluster/KafkaApi/MskIamProvider/VpcPolicy/Resource'],
   [{ id: 'AwsSolutions-IAM5', reason: 'Wild card is scoped with IAM conditions' }],
 );
 

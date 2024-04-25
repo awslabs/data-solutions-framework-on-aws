@@ -87,11 +87,11 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
   test('Verify topic definition', () => {
     template.hasResourceProperties('Custom::MskTopic', {
       topic: Match.objectLike({
-          topic: 'topic1',
-          numPartitions: 3,
-          replicationFactor: 1,
-        },
-        ),
+        topic: 'topic1',
+        numPartitions: 3,
+        replicationFactor: 1,
+      },
+      ),
     });
   });
 
@@ -215,11 +215,11 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
   test('Verify topic definition', () => {
     template.hasResourceProperties('Custom::MskTopic', {
       topic: Match.objectLike({
-          topic: 'topic1',
-          numPartitions: 3,
-          replicationFactor: 1,
-        },
-        )
+        topic: 'topic1',
+        numPartitions: 3,
+        replicationFactor: 1,
+      },
+      ),
     });
   });
 
