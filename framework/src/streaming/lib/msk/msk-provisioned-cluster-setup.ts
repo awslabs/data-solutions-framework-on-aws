@@ -11,9 +11,9 @@ import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
-import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-provisioned-props-utils';
 import { Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
+import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-utils';
 
 /**
  * @internal
@@ -142,7 +142,7 @@ export function clientAuthenticationSetup(
       sasl: { iam: { enabled: clientAuthenticationProps.saslProps.iam }, scram: { enabled: false } },
       tls: {
         certificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities?.map(
-          (ca) => ca.certificateAuthorityArn,
+          (ca: any) => ca.certificateAuthorityArn,
         ),
         enabled: true,
       },
@@ -155,7 +155,7 @@ export function clientAuthenticationSetup(
     clientAuthentication = {
       tls: {
         certificateAuthorityArnList: clientAuthenticationProps?.tlsProps?.certificateAuthorities.map(
-          (ca) => ca.certificateAuthorityArn,
+          (ca: any) => ca.certificateAuthorityArn,
         ),
         enabled: true,
       },
