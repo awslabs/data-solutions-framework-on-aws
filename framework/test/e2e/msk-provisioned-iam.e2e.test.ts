@@ -9,7 +9,7 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { TestStack } from './test-stack';
-import { Authentitcation, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
+import { Authentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
 import { Utils } from '../../src/utils';
 
 jest.setTimeout(10000000);
@@ -28,14 +28,14 @@ const msk = new MskProvisioned(stack, 'cluster', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-msk.setTopic(stack, 'topicProvisioned', Authentitcation.IAM, {
+msk.setTopic('topicProvisioned', Authentication.IAM, {
   topic: 'provisioned',
   numPartitions: 1,
   replicationFactor: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
-  value: msk.cluster.getAttString('Arn'),
+  value: msk.cluster.attrArn,
 });
 
 

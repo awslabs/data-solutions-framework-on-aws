@@ -11,7 +11,7 @@ import * as cdk from 'aws-cdk-lib';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { TestStack } from './test-stack';
-import { Authentitcation, ClientAuthentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
+import { Authentication, ClientAuthentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
 import { Utils } from '../../src/utils';
 
 jest.setTimeout(10000000);
@@ -44,14 +44,14 @@ const msk = new MskProvisioned(stack, 'cluster', {
   },
 });
 
-msk.setTopic(stack, 'topicProvisioned', Authentitcation.MTLS, {
+msk.setTopic('topicProvisioned', Authentication.MTLS, {
   topic: 'provisioned',
   numPartitions: 1,
   replicationFactor: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
-  value: msk.cluster.getAttString('Arn'),
+  value: msk.cluster.attrArn,
 });
 
 

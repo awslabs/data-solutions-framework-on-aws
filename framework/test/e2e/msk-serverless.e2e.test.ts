@@ -47,7 +47,7 @@ const consumerRole = new Role(stack, 'consumerRole', {
 
 msk.grantConsume('topic1', consumerRole);
 
-msk.addTopic(stack, 'topicServerelss', {
+msk.addTopic('topicServerelss', {
   topic: 'serverless',
   numPartitions: 1,
   replicationFactor: 1,
