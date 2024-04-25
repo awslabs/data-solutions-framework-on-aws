@@ -71,9 +71,5 @@ it('MSK provisioned successfully', async () => {
 });
 
 afterAll(async () => {
-  //We need to wait for about 15min for the cluster to finish updating after applying a new
-  //MSK configuration, else the delete will fail
-  await new Promise(resolve => setTimeout(resolve, 900000));
-
   await testStack.destroy();
 }, 10000000);
