@@ -11,9 +11,9 @@ import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { S3_CREATE_DEFAULT_LOGGING_POLICY } from 'aws-cdk-lib/cx-api';
 
 import { Construct } from 'constructs';
+import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-utils';
 import { Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
-import { BrokerLogging, ClientAuthentication, ClusterConfigurationInfo } from './msk-utils';
 
 /**
  * @internal
