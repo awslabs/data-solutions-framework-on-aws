@@ -15,7 +15,6 @@ import { SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { TestStack } from './test-stack';
-import { OpenSearchCluster } from '../../src/consumption/index';
 import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, ClientAuthentication, KafkaApi, KafkaClientLogLevel, MskClusterType, ResourcePatternTypes } from '../../src/streaming';
 import { DataVpc } from '../../src/utils';
 
@@ -95,6 +94,7 @@ const mskApi = new KafkaApi(stack, 'kafkaApi', {
   }),
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
   clusterType: MskClusterType.PROVISIONED,
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 mskApi.setAcl('acl1',
