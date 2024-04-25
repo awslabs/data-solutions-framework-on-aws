@@ -71,7 +71,7 @@ const cfnCluster = new CfnCluster(stack, 'MyCfnCluster', {
   encryptionInfo: {
     encryptionInTransit: {
       clientBroker: 'TLS',
-      inCluster: false,
+      inCluster: true,
     },
   },
 
