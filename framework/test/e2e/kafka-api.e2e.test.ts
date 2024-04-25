@@ -4,7 +4,7 @@
 /**
  * E2E test for the KafkaApi construct
  *
- * @group e2e/streaming/kafka-api
+ *
  */
 
 
