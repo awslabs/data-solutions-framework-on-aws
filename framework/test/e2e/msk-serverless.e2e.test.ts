@@ -50,7 +50,6 @@ msk.grantConsume('topic1', consumerRole);
 msk.addTopic('topicServerelss', {
   topic: 'serverless',
   numPartitions: 1,
-  replicationFactor: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 new cdk.CfnOutput(stack, 'MskServerlessCluster', {
