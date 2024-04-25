@@ -47,7 +47,7 @@ const cfnCluster = new CfnCluster(stack, 'MyCfnCluster', {
     securityGroups: [brokerSecurityGroup.securityGroupId],
   },
   clusterName: 'clusterName',
-  kafkaVersion: 'kafkaVersion',
+  kafkaVersion: '3.5.1',
   numberOfBrokerNodes: 2,
 
   // the properties below are optional
