@@ -23,5 +23,5 @@ let topic: MskTopic =  {
   replicationFactor: 1,
 }
 
-msk.addTopic(stack, 'topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
+msk.addTopic('topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
 /// !hide

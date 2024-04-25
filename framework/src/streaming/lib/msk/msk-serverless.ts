@@ -8,10 +8,9 @@ import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
-import { Authentitcation, ClientAuthentication } from './msk-provisioned-props-utils';
 import { MskServerlessProps } from './msk-serverless-props';
+import { Authentication, MskClusterType, MskTopic, ClientAuthentication } from './msk-utils';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { MskClusterType, MskTopic } from './msk-utils';
 
 /**
  * A construct to create an MSK Serverless cluster
@@ -116,7 +115,6 @@ export class MskServerless extends TrackedConstruct {
   /**
    * Creates a topic in the Msk Serverless
    *
-   * @param {Construct} scope the scope of the stack where Topic will be created
    * @param {string} id the CDK id for Topic
    * @param {MskTopic []} topicDefinition the Kafka topic definition
    * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
@@ -125,7 +123,6 @@ export class MskServerless extends TrackedConstruct {
    */
 
   public addTopic(
-    scope: Construct,
     id: string,
     topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
@@ -134,9 +131,8 @@ export class MskServerless extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = this.kafkaApi.setTopic(
-      scope,
       id,
-      Authentitcation.IAM,
+      Authentication.IAM,
       topicDefinition,
       removalPolicy,
       waitForLeaders,
@@ -156,7 +152,7 @@ export class MskServerless extends TrackedConstruct {
     this.kafkaApi.grantProduce(
       'N/A',
       topicName,
-      Authentitcation.IAM,
+      Authentication.IAM,
       principal);
 
   }
@@ -172,7 +168,7 @@ export class MskServerless extends TrackedConstruct {
     this.kafkaApi.grantConsume(
       'N/A',
       topicName,
-      Authentitcation.IAM,
+      Authentication.IAM,
       principal);
 
   }

@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentitcation, ClientAuthentication, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes } from '../lib/msk';
+import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentication, ClientAuthentication, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes } from '../lib/msk';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 
@@ -37,10 +37,10 @@ let certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
   });
 
 /// !show
-msk.grantConsume('consume', 'foo', Authentitcation.MTLS, 'User:Cn=MyUser');
+msk.grantConsume('consume', 'foo', Authentication.MTLS, 'User:Cn=MyUser');
 /// !hide
 
-msk.setAcl(stack, 'acl', {
+msk.setAcl('acl', {
     resourceType: AclResourceTypes.TOPIC,
     resourceName: 'topic-1',
     resourcePatternType: ResourcePatternTypes.LITERAL,

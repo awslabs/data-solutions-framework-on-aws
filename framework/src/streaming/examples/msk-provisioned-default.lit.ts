@@ -12,7 +12,7 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 const msk = new MskProvisioned(stack, 'cluster');
 /// !hide
 
-msk.setAcl(stack, 'acl', {
+msk.setAcl('acl', {
     resourceType: AclResourceTypes.TOPIC,
     resourceName: 'topic-1',
     resourcePatternType: ResourcePatternTypes.LITERAL,

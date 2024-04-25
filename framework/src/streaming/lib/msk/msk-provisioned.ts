@@ -18,12 +18,12 @@ import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
 import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, applyClusterConfiguration } from './msk-provisioned-cluster-setup';
-import { Acl, MskProvisionedProps } from './msk-provisioned-props';
+import { MskProvisionedProps } from './msk-provisioned-props';
 import {
   AclOperationTypes, AclPermissionTypes, AclResourceTypes, ResourcePatternTypes,
-  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, Authentitcation, ClientAuthentication, VpcClientAuthentication,
-} from './msk-provisioned-props-utils';
-import { MskTopic } from './msk-serverless-props';
+  KafkaVersion, MskBrokerInstanceType, ClusterConfigurationInfo, ClientAuthentication, VpcClientAuthentication,
+  Acl, Authentication, MskClusterType, MskTopic,
+} from './msk-utils';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -385,15 +385,13 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,
-      clusterName: this.cluster.clusterName,
       clusterArn: this.cluster.attrArn,
       certficateSecret: props?.certificateDefinition?.secretCertificate,
       brokerSecurityGroup: this.connections.securityGroups[0],
       clientAuthentication: props?.clientAuthentication ?? ClientAuthentication.sasl({ iam: true }),
       kafkaClientLogLevel: props?.kafkaClientLogLevel,
+      clusterType: MskClusterType.PROVISIONED,
     });
-
-    this.kafkaApi._initiallizeCluster(this.cluster);
 
     // Create the configuration
     let clusterConfigurationInfo: ClusterConfigurationInfo;
@@ -457,10 +455,10 @@ export class MskProvisioned extends TrackedConstruct {
     //Applly the cluster configuration if provided and the cluster is created without mTLS auth
     if (this.iamAcl) {
 
-      this.mskIamACrudAdminCrLambdaRole = this.kafkaApi.mskIamACrudAdminCrLambdaRole;
-      this.mskIamACrudAdminCrOnEventHandlerLogGroup = this.kafkaApi.mskIamACrudAdminCrOnEventHandlerLogGroup;
-      this.mskIamACrudAdminCrOnEventHandlerFunction = this.kafkaApi.mskIamACrudAdminCrOnEventHandlerFunction;
-      this.mskIamACrudAdminCrSecurityGroup = this.kafkaApi.mskIamACrudAdminCrSecurityGroup;
+      this.mskIamACrudAdminCrLambdaRole = this.kafkaApi.mskAclRole;
+      this.mskIamACrudAdminCrOnEventHandlerLogGroup = this.kafkaApi.mskAclLogGroup;
+      this.mskIamACrudAdminCrOnEventHandlerFunction = this.kafkaApi.mskAclFunction;
+      this.mskIamACrudAdminCrSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
 
       if (!this.inClusterAcl && clusterConfigurationInfo) {
 
@@ -508,10 +506,10 @@ export class MskProvisioned extends TrackedConstruct {
         throw new Error('TLS Authentication requires a certificate definition');
       }
 
-      this.mskInClusterAclCrLambdaRole = this.kafkaApi.mskInClusterAclCrLambdaRole;
-      this.mskInClusterAclCrOnEventHandlerLogGroup = this.kafkaApi.mskInClusterAclCrOnEventHandlerLogGroup;
-      this.mskInClusterAclCrOnEventHandlerFunction = this.kafkaApi.mskInClusterAclCrOnEventHandlerFunction;
-      this.mskInClusterAclCrSecurityGroup = this.kafkaApi.mskInClusterAclCrSecurityGroup;
+      this.mskInClusterAclCrLambdaRole = this.kafkaApi.mskAclRole;
+      this.mskInClusterAclCrOnEventHandlerLogGroup = this.kafkaApi.mskAclLogGroup;
+      this.mskInClusterAclCrOnEventHandlerFunction = this.kafkaApi.mskAclFunction;
+      this.mskInClusterAclCrSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
 
       //Update cluster configuration as a last step before handing the cluster to customer.
       //This will set `allow.everyone.if.no.acl.found` to `false`
@@ -567,14 +565,12 @@ export class MskProvisioned extends TrackedConstruct {
   /**
     * Creates a topic in the Msk Cluster
     *
-    * @param {Construct} scope the scope of the stack where Topic will be created
     * @param {string} id the CDK id for Topic
     * @param {Acl} aclDefinition the Kafka Acl definition
     * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
     * @returns {CustomResource} The MskAcl custom resource created
     */
   public setAcl(
-    scope: Construct,
     id: string,
     aclDefinition: Acl,
     removalPolicy?: RemovalPolicy,
@@ -584,7 +580,7 @@ export class MskProvisioned extends TrackedConstruct {
       throw Error('Setting ACLs is only supported with TLS and SASL/SCRAM');
     }
 
-    const cr = this.kafkaApi.setAcl(scope, id, aclDefinition, removalPolicy);
+    const cr = this.kafkaApi.setAcl(id, aclDefinition, removalPolicy);
 
     if (aclDefinition.principal !== this.crPrincipal && this.inClusterAcl) {
       cr.node.addDependency(this.aclOperationCr!);
@@ -598,9 +594,8 @@ export class MskProvisioned extends TrackedConstruct {
   /**
     * Creates a topic in the Msk Cluster
     *
-    * @param {Construct} scope the scope of the stack where Topic will be created
     * @param {string} id the CDK id for Topic
-    * @param {Authentitcation} clientAuthentication The client authentication to use when creating the Topic
+    * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
     * @param {MskTopic} topicDefinition the Kafka topic definition
     * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
     * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
@@ -608,9 +603,8 @@ export class MskProvisioned extends TrackedConstruct {
     * @returns {CustomResource} The MskTopic custom resource created
     */
   public setTopic(
-    scope: Construct,
     id: string,
-    clientAuthentication: Authentitcation,
+    clientAuthentication: Authentication,
     topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
@@ -618,7 +612,6 @@ export class MskProvisioned extends TrackedConstruct {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = this.kafkaApi.setTopic(
-      scope,
       id,
       clientAuthentication,
       topicDefinition,
@@ -651,7 +644,7 @@ export class MskProvisioned extends TrackedConstruct {
   public grantProduce(
     id: string,
     topicName: string,
-    clientAuthentication: Authentitcation,
+    clientAuthentication: Authentication,
     principal: IPrincipal | string,
     host?: string,
     removalPolicy?: RemovalPolicy): CustomResource | undefined {
@@ -689,7 +682,7 @@ export class MskProvisioned extends TrackedConstruct {
   public grantConsume(
     id: string,
     topicName: string,
-    clientAuthentication: Authentitcation,
+    clientAuthentication: Authentication,
     principal: IPrincipal | string,
     host?: string,
     removalPolicy?: RemovalPolicy): CustomResource | undefined {
@@ -769,7 +762,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     //Set the ACL to allow the principal used by CR
     //to add other ACLs
-    let aclOperation = this.setAcl(this, 'aclOperation', {
+    let aclOperation = this.setAcl('aclOperation', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -785,7 +778,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     //Set the ACL to allow for the brokers
 
-    let aclBroker = this.setAcl(this, 'aclBroker', {
+    let aclBroker = this.setAcl('aclBroker', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -799,7 +792,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     //Set the ACL to allow the principal used by CR
     //to perform CRUD operations on Topics
-    let aclTopicCreate = this.setAcl(this, 'aclTopicCreate', {
+    let aclTopicCreate = this.setAcl('aclTopicCreate', {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -811,7 +804,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    let aclTopicDelete = this.setAcl(this, 'aclTopicDelete', {
+    let aclTopicDelete = this.setAcl('aclTopicDelete', {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -823,7 +816,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    let aclTopicUpdate = this.setAcl(this, 'aclTopicUpdate', {
+    let aclTopicUpdate = this.setAcl('aclTopicUpdate', {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -836,7 +829,7 @@ export class MskProvisioned extends TrackedConstruct {
     );
 
     //Set the ACL for Admin principal
-    let adminAclCluster = this.setAcl(this, 'adminAclCluster', {
+    let adminAclCluster = this.setAcl('adminAclCluster', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -848,7 +841,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    let adminAclTopic = this.setAcl(this, 'adminAclTopic', {
+    let adminAclTopic = this.setAcl('adminAclTopic', {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -860,7 +853,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    let adminAclGroup = this.setAcl(this, 'adminAclGroup', {
+    let adminAclGroup = this.setAcl('adminAclGroup', {
       resourceType: AclResourceTypes.GROUP,
       resourceName: '*',
       resourcePatternType: ResourcePatternTypes.LITERAL,
@@ -896,15 +889,15 @@ export class MskProvisioned extends TrackedConstruct {
    * @param authentication
    * @returns
    */
-  public getBootstrapBrokers(authentication: Authentitcation): string {
+  public getBootstrapBrokers(authentication: Authentication): string {
 
     let responseField: string;
 
-    if (authentication == Authentitcation.IAM) {
+    if (authentication == Authentication.IAM) {
       responseField = 'BootstrapBrokerStringSaslIam';
     }
 
-    if (authentication == Authentitcation.MTLS) {
+    if (authentication == Authentication.MTLS) {
       responseField = 'BootstrapBrokerStringTls';
     }
 

@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentitcation, KafkaClientLogLevel, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes } from '../lib/msk';
+import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentication, KafkaClientLogLevel, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes } from '../lib/msk';
 
 
 const app = new cdk.App();
@@ -20,15 +20,15 @@ const msk = new MskProvisioned(stack, 'cluster', {
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
 
-msk.setTopic(stack, 'topic1',
-  Authentitcation.IAM, {
+msk.setTopic('topic1',
+  Authentication.IAM, {
     topic: 'topic1',
     numPartitions: 3,
     replicationFactor: 1,
   }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 /// !show
-msk.setAcl(stack, 'acl', {
+msk.setAcl('acl', {
     resourceType: AclResourceTypes.TOPIC,
     resourceName: 'topic-1',
     resourcePatternType: ResourcePatternTypes.LITERAL,

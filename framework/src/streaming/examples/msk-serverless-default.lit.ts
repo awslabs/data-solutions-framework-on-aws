@@ -16,7 +16,7 @@ new cdk.CfnOutput(stack, 'mskArn', {
 });
 /// !hide
 
-msk.addTopic(stack, 'topic1', {
+msk.addTopic('topic1', {
   topic: 'topic1',
   numPartitions: 3,
   replicationFactor: 1,

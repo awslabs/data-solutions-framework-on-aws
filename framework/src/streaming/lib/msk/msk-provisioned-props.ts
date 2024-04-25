@@ -18,7 +18,8 @@ import {
   MskBrokerInstanceType,
   StorageMode,
   VpcClientAuthentication,
-} from './msk-provisioned-props-utils';
+  KafkaClientLogLevel,
+} from './msk-utils';
 
 export interface MskProvisionedProps {
   /**
