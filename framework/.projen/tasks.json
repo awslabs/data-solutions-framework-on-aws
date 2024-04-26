@@ -79,6 +79,9 @@
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/redshift/resources lib/consumption/lib/redshift"
         },
         {
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/quicksight/resources lib/consumption/lib/quicksight"
+        },
+        {
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/opensearch/resources lib/consumption/lib/opensearch"
         }
       ]
