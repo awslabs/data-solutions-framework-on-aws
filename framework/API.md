@@ -13600,6 +13600,7 @@ const mskServerlessProps: streaming.MskServerlessProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpcConfigs">vpcConfigs</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]</code> | *No description.* |
@@ -13613,6 +13614,19 @@ public readonly clusterName: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `kafkaClientLogLevel`<sup>Optional</sup> <a name="kafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.kafkaClientLogLevel"></a>
+
+```typescript
+public readonly kafkaClientLogLevel: KafkaClientLogLevel;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel
+- *Default:* WARN
+
+The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
 
 ---
 
