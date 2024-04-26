@@ -69,8 +69,8 @@ export interface RedshiftDataProps {
   readonly removalPolicy?: RemovalPolicy;
 
   /**
-   * If this parameter is provided, the data access execution security group would be added to the interface VPC endpoint's security group.
-   * This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`
+   * If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group.
+   * This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`.
    * @default - No security group ingress rule would be created.
    */
   readonly existingInterfaceVPCEndpoint?: IInterfaceVpcEndpoint;

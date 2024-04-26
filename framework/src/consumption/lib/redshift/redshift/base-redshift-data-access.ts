@@ -28,11 +28,17 @@ export abstract class BaseRedshiftDataAccess extends TrackedConstruct {
    * The created Redshift Data API interface vpc endpoint when deployed in a VPC
    */
   public readonly vpcEndpoint?: IInterfaceVpcEndpoint;
+
   protected readonly removalPolicy: RemovalPolicy;
+
   constructor(scope: Construct, id: string, props: RedshiftDataProps, trackedConstructProps: any) {
+
     super(scope, id, trackedConstructProps);
+
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
     this.vpcEndpoint?.applyRemovalPolicy(this.removalPolicy);
+
     if (props.vpc && props.subnets) {
       this.customResourceSecurityGroup = new SecurityGroup(this, 'CrSecurityGroup', {
         vpc: props.vpc,
@@ -67,13 +73,13 @@ export abstract class BaseRedshiftDataAccess extends TrackedConstruct {
 
     if (props.clusterId) {
       return {
-        targetArn: `arn:aws:redshift:${currentStack.region}:${currentStack.account}:cluster:${props.clusterId}`,
+        targetArn: `arn:${currentStack.partition}:redshift:${currentStack.region}:${currentStack.account}:cluster:${props.clusterId}`,
         targetType: 'provisioned',
         targetId: props.clusterId,
       };
     } else if (props.workgroupId) {
       return {
-        targetArn: `arn:aws:redshift-serverless:${currentStack.region}:${currentStack.account}:workgroup/${props.workgroupId}`,
+        targetArn: `arn:${currentStack.partition}:redshift-serverless:${currentStack.region}:${currentStack.account}:workgroup/${props.workgroupId}`,
         targetType: 'serverless',
         targetId: props.workgroupId,
       };

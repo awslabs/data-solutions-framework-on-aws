@@ -21,28 +21,55 @@ import { RedshiftData } from '../redshift-data';
  * Creates an asynchronous custom resource to manage the data sharing lifecycle for
  * both data producers and data consumers. This also covers both same account and cross account access.
  *
+ * @exampleMetadata fixture=vpc-secret
  * @example
- * const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'RedshiftNamespace', {
- *    name: "default",
- *    dbName: 'defaultdb',
+ * const redshiftAdminSecret = Secret.fromSecretPartialArn(this, 'RedshiftAdminCredentials', 'arn:aws:secretsmanager:us-east-1:XXXXXXXX:secret:YYYYYYYY');
+ *
+ * const redshiftVpc = Vpc.fromLookup(this, 'RedshiftVpc', {
+ *   vpcId: 'XXXXXXXX',
  * });
  *
- * const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
- *    name: "redshift-workgroup",
- *    namespace: namespace,
+ * const dataAccess = new dsf.consumption.RedshiftData(this, 'RedshiftDataAccess', {
+ *   workgroupId: 'XXXXXXXXXXXXXXX',
+ *   secret: redshiftAdminSecret,
+ *   vpc: redshiftVpc,
+ *   subnets: redshiftVpc.selectSubnets({
+ *     subnetGroupName: 'YYYYYYYY'
+ *   }),
+ *   createInterfaceVpcEndpoint: true,
+ *   executionTimeout: Duration.minutes(10),
  * });
  *
- * const dataSharing = workgroup.dataSharing('producer-data-sharing', true)
- * const newShare = sharing.createShare("tpcds-share", "sample_data_dev", "sharetpcds", "tpcds", ["tpcds.customer", "tpcds.item", "tpcds.inventory"])
- * const grant = sharing.grant("GrantDataShare", {
- *   databaseName: "test",
- *   dataShareName: "sharetpcds",
- *   dataShareArn: newShare.getAttString("dataShareArn"),
- *   accountId: "123456789012",
- *   autoAuthorized: true
- * })
+ * const dataShare = new dsf.consumption.RedshiftDataSharing(this, 'RedshiftDataShare', {
+ *   redshiftData: dataAccess,
+ *   workgroupId: 'XXXXXXXXXXXXXXX',
+ *   secret: redshiftAdminSecret,
+ *   vpc: redshiftVpc,
+ *   subnets: redshiftVpc.selectSubnets({
+ *     subnetGroupName: 'YYYYYYYY'
+ *   }),
+ *   createInterfaceVpcEndpoint: true,
+ *   executionTimeout: Duration.minutes(10),
+ * });
  *
- * grant.node.addDependency(newShare)
+ *  const share = dataShare.createShare('ProducerShare', 'default', 'example_share', 'public', ['public.customers']);
+ *
+ *  const grantToConsumer = dataShare.grant('GrantToConsumer', {
+ *    dataShareName: 'example_share',
+ *    databaseName: 'default',
+ *    autoAuthorized: true,
+ *    accountId: "<CONSUMER_ACCOUNT_ID>",
+ *    dataShareArn: '<DATASHARE_ARN>',
+ *  });
+ *
+ * dataShare.createDatabaseFromShare('ProducerShare', {
+ *   consumerNamespaceArn: '',
+ *   newDatabaseName: 'db_from_share',
+ *   databaseName: 'default',
+ *   dataShareName: 'example_share',
+ *   dataShareArn: '<DATASHARE_ARN>',
+ *   accountId: "<PRODUCER_ACCOUNT_ID>",
+ * });
  */
 export class RedshiftDataSharing extends BaseRedshiftDataAccess {
   /**
@@ -154,6 +181,7 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
 
   /**
    * Create a new datashare
+   * @param id the CDK ID of the resource
    * @param databaseName The name of the database to connect to
    * @param dataShareName The name of the datashare
    * @param schema The schema to add in the datashare
@@ -185,6 +213,7 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
 
   /**
    * Create a datashare grant to a namespace if it's in the same account, or to another account
+   * @param id the CDK ID of the resource
    * @param props `RedshiftDataSharingGrantProps`
    * @returns `RedshiftDataSharingGrantedProps`
    */
@@ -212,7 +241,7 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
         throw new Error('For cross account grants, `dataShareArn` is required');
       }
       // eslint-disable-next-line local-rules/no-tokens-in-construct-id
-      shareAuthorization = new AwsCustomResource(this, `${id}-authorization`, {
+      shareAuthorization = new AwsCustomResource(this, `${id}Authorization`, {
         onCreate: {
           service: 'redshift',
           action: 'authorizeDataShare',
@@ -251,6 +280,7 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
    * Consume datashare by creating a new database pointing to the share.
    * If datashare is coming from a different account, setting `autoAssociate` to true
    * automatically associates the datashare to the cluster before the new database is created.
+   * @param id the CDK ID of the resource
    * @param props `RedshiftDataSharingCreateDbProps`
    * @returns `CustomResource`
    */
@@ -289,7 +319,7 @@ export class RedshiftDataSharing extends BaseRedshiftDataAccess {
       }
 
       // eslint-disable-next-line local-rules/no-tokens-in-construct-id
-      associateDataShare = new AwsCustomResource(this, `${id}-associateDataShare`, {
+      associateDataShare = new AwsCustomResource(this, `${id}AssociateDataShare`, {
         onCreate: {
           service: 'redshift',
           action: 'associateDataShareConsumer',

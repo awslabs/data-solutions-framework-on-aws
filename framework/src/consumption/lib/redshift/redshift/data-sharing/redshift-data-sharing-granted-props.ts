@@ -8,12 +8,12 @@ import { AwsCustomResource } from 'aws-cdk-lib/custom-resources';
  */
 export interface RedshiftDataSharingGrantedProps {
   /**
-     * The resource associated with the grant command
-     */
+   * The resource associated with the grant command
+   */
   readonly resource: CustomResource;
 
   /**
-     * If auto-authorization is turned on, this is the resource associated with the action
-     */
+   * If auto-authorization is turned on, this is the resource associated with the action
+   */
   readonly shareAuthorizationResource?: AwsCustomResource;
 }

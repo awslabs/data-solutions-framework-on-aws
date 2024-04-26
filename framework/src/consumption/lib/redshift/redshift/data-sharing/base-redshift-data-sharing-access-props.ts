@@ -6,7 +6,7 @@
  */
 export interface BaseRedshiftDataSharingAccessProps {
   /**
-   * The name of the database to connect to and run the lifecycle command on.
+   * The name of the Redshift database used in the data sharing.
    */
   readonly databaseName: string;
 
@@ -16,26 +16,25 @@ export interface BaseRedshiftDataSharingAccessProps {
   readonly dataShareName: string;
 
   /**
-   * The ARN of the datashare. This is required for any action that is cross account
+   * The ARN of the datashare. This is required for any action that is cross account.
+   * @default - No data share ARN is used.
    */
   readonly dataShareArn?: string;
 
   /**
-   * For Grants
-   * This is the consumer namespace that are in the same account as the producer.
+   * For single account grants, this is the consumer namespace ID.
    * For cross-account grants, `namespaceId` is ignored.
    *
-   * For Consumers
-   * This pertains to the producer's namespace ID. This is required for both same or cross account scenarios.
+   * For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
+   * @default - No namespace ID is used.
    */
   readonly namespaceId?: string;
 
   /**
-   * For Grants
-   * This is the consumer account that you're granting cross account access.
+   * For cross-account grants, this is the consumer account ID.
    *
-   * For Consumers
-   * This pertains to the producer's account. This is only used if producer is a different account.
+   * For cross-account consumers, this is the producer account ID.
+   * @default - No account ID is used.
    */
   readonly accountId?: string;
 }

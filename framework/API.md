@@ -5846,27 +5846,53 @@ This also covers both same account and cross account access.
 *Example*
 
 ```typescript
-const namespace = new dsf.consumption.RedshiftServerlessNamespace(this, 'RedshiftNamespace', {
-   name: "default",
-   dbName: 'defaultdb',
+const redshiftAdminSecret = Secret.fromSecretPartialArn(this, 'RedshiftAdminCredentials', 'arn:aws:secretsmanager:us-east-1:XXXXXXXX:secret:YYYYYYYY');
+
+const redshiftVpc = Vpc.fromLookup(this, 'RedshiftVpc', {
+  vpcId: 'XXXXXXXX',
 });
 
-const workgroup = new dsf.consumption.RedshiftServerlessWorkgroup(this, "RedshiftWorkgroup", {
-   name: "redshift-workgroup",
-   namespace: namespace,
+const dataAccess = new dsf.consumption.RedshiftData(this, 'RedshiftDataAccess', {
+  workgroupId: 'XXXXXXXXXXXXXXX',
+  secret: redshiftAdminSecret,
+  vpc: redshiftVpc,
+  subnets: redshiftVpc.selectSubnets({
+    subnetGroupName: 'YYYYYYYY'
+  }),
+  createInterfaceVpcEndpoint: true,
+  executionTimeout: Duration.minutes(10),
 });
 
-const dataSharing = workgroup.dataSharing('producer-data-sharing', true)
-const newShare = sharing.createShare("tpcds-share", "sample_data_dev", "sharetpcds", "tpcds", ["tpcds.customer", "tpcds.item", "tpcds.inventory"])
-const grant = sharing.grant("GrantDataShare", {
-  databaseName: "test",
-  dataShareName: "sharetpcds",
-  dataShareArn: newShare.getAttString("dataShareArn"),
-  accountId: "123456789012",
-  autoAuthorized: true
-})
+const dataShare = new dsf.consumption.RedshiftDataSharing(this, 'RedshiftDataShare', {
+  redshiftData: dataAccess,
+  workgroupId: 'XXXXXXXXXXXXXXX',
+  secret: redshiftAdminSecret,
+  vpc: redshiftVpc,
+  subnets: redshiftVpc.selectSubnets({
+    subnetGroupName: 'YYYYYYYY'
+  }),
+  createInterfaceVpcEndpoint: true,
+  executionTimeout: Duration.minutes(10),
+});
 
-grant.node.addDependency(newShare)
+ const share = dataShare.createShare('ProducerShare', 'default', 'example_share', 'public', ['public.customers']);
+
+ const grantToConsumer = dataShare.grant('GrantToConsumer', {
+   dataShareName: 'example_share',
+   databaseName: 'default',
+   autoAuthorized: true,
+   accountId: "<CONSUMER_ACCOUNT_ID>",
+   dataShareArn: '<DATASHARE_ARN>',
+ });
+
+dataShare.createDatabaseFromShare('ProducerShare', {
+  consumerNamespaceArn: '',
+  newDatabaseName: 'db_from_share',
+  databaseName: 'default',
+  dataShareName: 'example_share',
+  dataShareArn: '<DATASHARE_ARN>',
+  accountId: "<PRODUCER_ACCOUNT_ID>",
+});
 ```
 
 
@@ -5947,6 +5973,8 @@ automatically associates the datashare to the cluster before the new database is
 
 - *Type:* string
 
+the CDK ID of the resource.
+
 ---
 
 ###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createDatabaseFromShare.parameter.props"></a>
@@ -5968,6 +5996,8 @@ Create a new datashare.
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare.parameter.id"></a>
 
 - *Type:* string
+
+the CDK ID of the resource.
 
 ---
 
@@ -6016,6 +6046,8 @@ Create a datashare grant to a namespace if it's in the same account, or to anoth
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.grant.parameter.id"></a>
 
 - *Type:* string
+
+the CDK ID of the resource.
 
 ---
 
@@ -6722,6 +6754,8 @@ Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
 
 - *Type:* string
 
+The CDK ID of the resource.
+
 ---
 
 ###### `createVpcEndpoint`<sup>Optional</sup> <a name="createVpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createVpcEndpoint"></a>
@@ -6787,6 +6821,8 @@ automatically associates the datashare to the cluster before the new database is
 
 - *Type:* string
 
+The CDK ID of the resource.
+
 ---
 
 ###### `newDatabaseName`<sup>Required</sup> <a name="newDatabaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare.parameter.newDatabaseName"></a>
@@ -6835,6 +6871,8 @@ Create a new datashare.
 
 - *Type:* string
 
+The CDK ID of the resource.
+
 ---
 
 ###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare.parameter.databaseName"></a>
@@ -6882,6 +6920,8 @@ Create a datashare grant to a namespace if it's in the same account, or to anoth
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare.parameter.id"></a>
 
 - *Type:* string
+
+The CDK ID of the resource.
 
 ---
 
@@ -10340,11 +10380,11 @@ const baseRedshiftDataSharingAccessProps: consumption.BaseRedshiftDataSharingAcc
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database to connect to and run the lifecycle command on. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the Redshift database used in the data sharing. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.accountId">accountId</a></code> | <code>string</code> | For Grants This is the consumer account that you're granting cross account access. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.accountId">accountId</a></code> | <code>string</code> | For cross-account grants, this is the consumer account ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the datashare. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For Grants This is the consumer namespace that are in the same account as the producer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored. |
 
 ---
 
@@ -10356,7 +10396,7 @@ public readonly databaseName: string;
 
 - *Type:* string
 
-The name of the database to connect to and run the lifecycle command on.
+The name of the Redshift database used in the data sharing.
 
 ---
 
@@ -10379,11 +10419,11 @@ public readonly accountId: string;
 ```
 
 - *Type:* string
+- *Default:* No account ID is used.
 
-For Grants This is the consumer account that you're granting cross account access.
+For cross-account grants, this is the consumer account ID.
 
-For Consumers
-This pertains to the producer's account. This is only used if producer is a different account.
+For cross-account consumers, this is the producer account ID.
 
 ---
 
@@ -10394,10 +10434,11 @@ public readonly dataShareArn: string;
 ```
 
 - *Type:* string
+- *Default:* No data share ARN is used.
 
 The ARN of the datashare.
 
-This is required for any action that is cross account
+This is required for any action that is cross account.
 
 ---
 
@@ -10408,13 +10449,11 @@ public readonly namespaceId: string;
 ```
 
 - *Type:* string
+- *Default:* No namespace ID is used.
 
-For Grants This is the consumer namespace that are in the same account as the producer.
+For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored.
 
-For cross-account grants, `namespaceId` is ignored.
-
-For Consumers
-This pertains to the producer's namespace ID. This is required for both same or cross account scenarios.
+For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
 
 ---
 
@@ -12417,7 +12456,7 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.existingInterfaceVPCEndpoint">existingInterfaceVPCEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | If this parameter is provided, the data access execution security group would be added to the interface VPC endpoint's security group. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.existingInterfaceVPCEndpoint">existingInterfaceVPCEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
@@ -12488,9 +12527,9 @@ public readonly existingInterfaceVPCEndpoint: IInterfaceVpcEndpoint;
 - *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
 - *Default:* No security group ingress rule would be created.
 
-If this parameter is provided, the data access execution security group would be added to the interface VPC endpoint's security group.
+If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group.
 
-This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`
+This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`.
 
 ---
 
@@ -12629,11 +12668,11 @@ const redshiftDataSharingCreateDbProps: consumption.RedshiftDataSharingCreateDbP
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database to connect to and run the lifecycle command on. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the Redshift database used in the data sharing. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.accountId">accountId</a></code> | <code>string</code> | For Grants This is the consumer account that you're granting cross account access. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.accountId">accountId</a></code> | <code>string</code> | For cross-account grants, this is the consumer account ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the datashare. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For Grants This is the consumer namespace that are in the same account as the producer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.newDatabaseName">newDatabaseName</a></code> | <code>string</code> | For consumers, the data share would be located in this database that would be created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.consumerNamespaceArn">consumerNamespaceArn</a></code> | <code>string</code> | The namespace of the consumer, necessary for cross-account data shares. |
 
@@ -12647,7 +12686,7 @@ public readonly databaseName: string;
 
 - *Type:* string
 
-The name of the database to connect to and run the lifecycle command on.
+The name of the Redshift database used in the data sharing.
 
 ---
 
@@ -12670,11 +12709,11 @@ public readonly accountId: string;
 ```
 
 - *Type:* string
+- *Default:* No account ID is used.
 
-For Grants This is the consumer account that you're granting cross account access.
+For cross-account grants, this is the consumer account ID.
 
-For Consumers
-This pertains to the producer's account. This is only used if producer is a different account.
+For cross-account consumers, this is the producer account ID.
 
 ---
 
@@ -12685,10 +12724,11 @@ public readonly dataShareArn: string;
 ```
 
 - *Type:* string
+- *Default:* No data share ARN is used.
 
 The ARN of the datashare.
 
-This is required for any action that is cross account
+This is required for any action that is cross account.
 
 ---
 
@@ -12699,13 +12739,11 @@ public readonly namespaceId: string;
 ```
 
 - *Type:* string
+- *Default:* No namespace ID is used.
 
-For Grants This is the consumer namespace that are in the same account as the producer.
+For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored.
 
-For cross-account grants, `namespaceId` is ignored.
-
-For Consumers
-This pertains to the producer's namespace ID. This is required for both same or cross account scenarios.
+For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
 
 ---
 
@@ -12794,11 +12832,11 @@ const redshiftDataSharingGrantProps: consumption.RedshiftDataSharingGrantProps =
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the database to connect to and run the lifecycle command on. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the Redshift database used in the data sharing. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.accountId">accountId</a></code> | <code>string</code> | For Grants This is the consumer account that you're granting cross account access. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.accountId">accountId</a></code> | <code>string</code> | For cross-account grants, this is the consumer account ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the datashare. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For Grants This is the consumer namespace that are in the same account as the producer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.autoAuthorized">autoAuthorized</a></code> | <code>boolean</code> | If set to `true`, cross-account grants would automatically be authorized. |
 
 ---
@@ -12811,7 +12849,7 @@ public readonly databaseName: string;
 
 - *Type:* string
 
-The name of the database to connect to and run the lifecycle command on.
+The name of the Redshift database used in the data sharing.
 
 ---
 
@@ -12834,11 +12872,11 @@ public readonly accountId: string;
 ```
 
 - *Type:* string
+- *Default:* No account ID is used.
 
-For Grants This is the consumer account that you're granting cross account access.
+For cross-account grants, this is the consumer account ID.
 
-For Consumers
-This pertains to the producer's account. This is only used if producer is a different account.
+For cross-account consumers, this is the producer account ID.
 
 ---
 
@@ -12849,10 +12887,11 @@ public readonly dataShareArn: string;
 ```
 
 - *Type:* string
+- *Default:* No data share ARN is used.
 
 The ARN of the datashare.
 
-This is required for any action that is cross account
+This is required for any action that is cross account.
 
 ---
 
@@ -12863,13 +12902,11 @@ public readonly namespaceId: string;
 ```
 
 - *Type:* string
+- *Default:* No namespace ID is used.
 
-For Grants This is the consumer namespace that are in the same account as the producer.
+For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored.
 
-For cross-account grants, `namespaceId` is ignored.
-
-For Consumers
-This pertains to the producer's namespace ID. This is required for both same or cross account scenarios.
+For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
 
 ---
 
@@ -12883,6 +12920,8 @@ public readonly autoAuthorized: boolean;
 - *Default:* cross-account grants should be authorized manually
 
 If set to `true`, cross-account grants would automatically be authorized.
+
+See https://docs.aws.amazon.com/redshift/latest/dg/consumer-account-admin.html
 
 ---
 
@@ -12906,7 +12945,7 @@ const redshiftDataSharingProps: consumption.RedshiftDataSharingProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.existingInterfaceVPCEndpoint">existingInterfaceVPCEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | If this parameter is provided, the data access execution security group would be added to the interface VPC endpoint's security group. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.existingInterfaceVPCEndpoint">existingInterfaceVPCEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
@@ -12978,9 +13017,9 @@ public readonly existingInterfaceVPCEndpoint: IInterfaceVpcEndpoint;
 - *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
 - *Default:* No security group ingress rule would be created.
 
-If this parameter is provided, the data access execution security group would be added to the interface VPC endpoint's security group.
+If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group.
 
-This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`
+This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`.
 
 ---
 

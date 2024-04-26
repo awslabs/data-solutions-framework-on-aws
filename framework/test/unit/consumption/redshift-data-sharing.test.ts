@@ -218,14 +218,14 @@ describe('With cross account sharing, the construct ', () => {
             '{"service":"redshift","action":"authorizeDataShare","parameters":{"DataShareArn":"',
             {
               'Fn::GetAtt': [
-                'RedshiftWorkgroupdatasharingNewShare90550BC0',
+                Match.stringLikeRegexp('RedshiftWorkgroupDataSharingNewShare.*'),
                 'dataShareArn',
               ],
             },
             '","ConsumerIdentifier":"222222222222"},"physicalResourceId":{"id":"AuthorizeDataShare-222222222222-',
             {
               'Fn::GetAtt': [
-                'RedshiftWorkgroupdatasharingNewShare90550BC0',
+                Match.stringLikeRegexp('RedshiftWorkgroupDataSharingNewShare.*'),
                 'dataShareArn',
               ],
             },
@@ -240,7 +240,7 @@ describe('With cross account sharing, the construct ', () => {
             '{"service":"redshift","action":"deauthorizeDataShare","parameters":{"DataShareArn":"',
             {
               'Fn::GetAtt': [
-                'RedshiftWorkgroupdatasharingNewShare90550BC0',
+                Match.stringLikeRegexp('RedshiftWorkgroupDataSharingNewShare.*'),
                 'dataShareArn',
               ],
             },

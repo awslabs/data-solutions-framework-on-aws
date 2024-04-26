@@ -146,6 +146,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
 
   /**
    * Create a new datashare
+   * @param id The CDK ID of the resource
    * @param databaseName The name of the database to connect to
    * @param dataShareName The name of the datashare
    * @param schema The schema to add in the datashare
@@ -153,7 +154,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
    * @returns `RedshiftNewShareProps`
    */
   public createShare(id: string, databaseName: string, dataShareName: string, schema: string, tables: string[]): RedshiftNewShareProps {
-    const sharing = this.dataSharing('data-sharing', true);
+    const sharing = this.dataSharing('DataSharing', true);
     const newShare = sharing.createShare(id, databaseName, dataShareName, schema, tables);
     this.existingShares[dataShareName] = newShare;
 
@@ -162,6 +163,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
 
   /**
    * Create a datashare grant to a namespace if it's in the same account, or to another account
+   * @param id The CDK ID of the resource
    * @param dataShareDetails The details of the datashare
    * @param consumerNamespaceId The namespace of the consumer that you're sharing to. Either namespace or account Id must be provided.
    * @param consumerAccountId The account ID of the consumer that you're sharing to. Either namespace or account Id must be provided.
@@ -170,7 +172,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
    */
   public grantAccessToShare(id: string, dataShareDetails: RedshiftNewShareProps, consumerNamespaceId?: string
     , consumerAccountId?: string, autoAuthorized?: boolean): RedshiftDataSharingGrantedProps {
-    const sharing = this.dataSharing('data-sharing', true);
+    const sharing = this.dataSharing('DataSharing', true);
     return sharing.grant(id, {
       databaseName: dataShareDetails.databaseName,
       dataShareName: dataShareDetails.dataShareName,
@@ -185,6 +187,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
    * Consume datashare by creating a new database pointing to the share.
    * If datashare is coming from a different account, setting `autoAssociate` to true
    * automatically associates the datashare to the cluster before the new database is created.
+   * @param id The CDK ID of the resource
    * @param newDatabaseName The name of the database that would be created from the data share
    * @param producerDataShareName The name of the data share from producer
    * @param producerNamespaceId The producer cluster namespace
@@ -194,7 +197,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
   public createDatabaseFromShare(id: string, newDatabaseName: string, producerDataShareName: string
     , producerNamespaceId?: string, producerAccountId?: string): RedshiftDataSharingCreateDbFromShareProps {
     const currentStack = Stack.of(this);
-    const sharing = this.dataSharing('data-sharing', true);
+    const sharing = this.dataSharing('DataSharing', true);
     const producerDataShareArn = `arn:aws:redshift:${currentStack.region}:${producerAccountId}:datashare:${producerNamespaceId}/${producerDataShareName}`;
     return sharing.createDatabaseFromShare(id, {
       databaseName: this.namespace.dbName,
@@ -242,6 +245,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
 
   /**
    * Creates an instance of `RedshiftData` to send custom SQLs to the workgroup
+   * @param id The CDK ID of the resource
    * @param createVpcEndpoint if set to true, create interface VPC endpoint for Redshift Data API
    * @param existingInterfaceVPCEndpoint if `createVpcEndpoint` is false, and if this is populated,
    * then the Lambda function's security group would be added in the existing VPC endpoint's security group.
@@ -269,6 +273,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
 
   /**
    * Creates an instance of `RedshiftDataSharing` to manage the workgroup's data sharing.
+   * @param id The CDK ID of the resource
    * @param createVpcEndpoint if set to true, create interface VPC endpoint for Redshift Data API
    * @param existingInterfaceVPCEndpoint if `createVpcEndpoint` is false, and if this is populated,
    * then the Lambda function's security group would be added in the existing VPC endpoint's security group.
@@ -276,7 +281,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
    */
   private dataSharing(id: string, createVpcEndpoint?: boolean, existingInterfaceVPCEndpoint?: IInterfaceVpcEndpoint): RedshiftDataSharing {
     if (!this.redshiftDataSharing) {
-      const dataAccess = this.accessData(`${id}-dataAccess`, createVpcEndpoint, existingInterfaceVPCEndpoint);
+      const dataAccess = this.accessData(`${id}DataAccess`, createVpcEndpoint, existingInterfaceVPCEndpoint);
       this.redshiftDataSharing = new RedshiftDataSharing(this, id, {
         secret: this.namespace.adminSecret,
         secretKey: this.namespace.adminSecretKey,
@@ -299,7 +304,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
    * Initialize Security Groups.
    * Convert `SecurityGroup[]` into array of security group ids.
    * Also create a primary security group that clients can use to add ingress rules.
-   * @param props `RedshiftServerlessWorkgroupProps`
+   * @param extraSecurityGroups The list of extra security groups
    * @returns `SecurityGroupDetails`
    */
   private initSecurityGroup(extraSecurityGroups?: ISecurityGroup[]): SecurityGroupDetails {

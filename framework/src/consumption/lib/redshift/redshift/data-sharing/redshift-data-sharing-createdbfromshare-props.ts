@@ -9,12 +9,12 @@ import { AwsCustomResource } from 'aws-cdk-lib/custom-resources';
  */
 export interface RedshiftDataSharingCreateDbFromShareProps {
   /**
-     * The resource associated with the create database command
-     */
+   * The resource associated with the create database command
+   */
   readonly resource: CustomResource;
 
   /**
-     * If auto-association is turned on, this is the resource associated with the action
-     */
+   * If auto-association is turned on, this is the resource associated with the action
+   */
   readonly associateDataShareResource?: AwsCustomResource;
 }
