@@ -13,13 +13,22 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
 function parseMskArn(stringArn: string): { partition: string; region: string; account: string; clusterNameUuid: string } {
 
   // We are using this ARN format as a workaround to extract both MSK cluster name and MSK cluster UUID
-  const arn = Arn.split(stringArn, ArnFormat.SLASH_RESOURCE_SLASH_RESOURCE_NAME);
+  const arn = Arn.split(stringArn, ArnFormat.SLASH_RESOURCE_NAME);
+
+  let clusterNameUuid: string;
+
+  if ( stringArn.includes('Token[TOKEN')) {
+    clusterNameUuid = `${arn.resourceName!}/${Arn.split(stringArn, ArnFormat.SLASH_RESOURCE_SLASH_RESOURCE_NAME).resourceName!}`;
+  } else {
+    clusterNameUuid = Arn.split(stringArn, ArnFormat.SLASH_RESOURCE_SLASH_RESOURCE_NAME).resourceName!;
+
+  }
 
   return {
     partition: arn.partition!,
     region: arn.region!,
     account: arn.account!,
-    clusterNameUuid: arn.resourceName!,
+    clusterNameUuid: clusterNameUuid,
   };
 }
 
@@ -73,7 +82,6 @@ export function mskIamCrudProviderSetup(
       ],
     }),
   ];
-
 
   //Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'MskIamProviderPolicy', {

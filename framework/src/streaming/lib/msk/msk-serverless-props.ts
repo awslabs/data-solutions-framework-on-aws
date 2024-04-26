@@ -4,6 +4,7 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { IVpc } from 'aws-cdk-lib/aws-ec2';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { KafkaClientLogLevel } from './msk-utils';
 
 /**
  * Properties for the `MskServerlessCluster` construct
@@ -23,4 +24,11 @@ export interface MskServerlessProps {
   readonly vpcConfigs?: CfnServerlessCluster.VpcConfigProperty [];
 
   readonly vpc?: IVpc;
+
+  /**
+     * The log level for the lambda that support the Custom Resource
+     * for both Managing ACLs and Topics.
+     * @default WARN
+     */
+  readonly kafkaClientLogLevel?: KafkaClientLogLevel;
 }

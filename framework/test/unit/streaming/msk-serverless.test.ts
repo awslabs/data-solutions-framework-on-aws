@@ -161,6 +161,33 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
                   ':topic/',
                   {
                     'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'clusterCfnServerlessCluster0DEE6630',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
                       2,
                       {
                         'Fn::Split': [
@@ -252,6 +279,33 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
                     ],
                   },
                   ':group/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'clusterCfnServerlessCluster0DEE6630',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
                   {
                     'Fn::Select': [
                       2,
@@ -370,6 +424,33 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
                     ],
                   },
                   ':topic/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'clusterCfnServerlessCluster0DEE6630',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
                   {
                     'Fn::Select': [
                       2,

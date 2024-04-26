@@ -9,7 +9,7 @@ import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
 import { MskServerlessProps } from './msk-serverless-props';
-import { Authentication, MskClusterType, MskTopic, ClientAuthentication } from './msk-utils';
+import { Authentication, MskClusterType, MskTopic, ClientAuthentication, KafkaClientLogLevel } from './msk-utils';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
@@ -107,6 +107,7 @@ export class MskServerless extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
       clientAuthentication: ClientAuthentication.sasl( { iam: true }),
       clusterType: MskClusterType.SERVERLESS,
+      kafkaClientLogLevel: props?.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN,
     });
 
   }

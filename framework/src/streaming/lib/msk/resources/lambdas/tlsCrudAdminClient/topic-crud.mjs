@@ -24,8 +24,8 @@ export async function topicCrudOnEvent (event, admin) {
         
       }
       catch (error) {
-        console.log(`Error creating topic: ${error}`);
-        throw new Error(`Error creating topic: ${event.ResourceProperties.topic}. Error ${error}`);
+        console.log(`Error creating topic: ${JSON.stringify(error)}`);
+        throw new Error(`Error creating topic: ${event.ResourceProperties.topic}. Error ${JSON.stringify(error)}`);
       }
     
     case 'Update':
@@ -52,8 +52,8 @@ export async function topicCrudOnEvent (event, admin) {
           console.log(`Topic partition count updated: ${result}`);
         }
         catch (error) {
-          console.log(`Error updating topic number of partitions: ${error}`);
-          throw new Error(`Error updating topic number of partitions: ${event.ResourceProperties.topic}. Error ${error}`);
+          console.log(`Error updating topic number of partitions: ${JSON.stringify(error)}`);
+          throw new Error(`Error updating topic number of partitions: ${event.ResourceProperties.topic}. Error ${JSON.stringify(error)}`);
         }
       } else if ( newTopic.numPartitions < oldTopic.numPartitions ) {
         throw new Error(`Error updating topics: number of partitions can't be decreased`);
@@ -88,8 +88,8 @@ export async function topicCrudOnEvent (event, admin) {
       //     }
       //     catch (error) {
       //       await admin.disconnect();
-      //       console.log(`Error updating topic replication factor: ${error}`);
-      //       throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${error}`);
+      //       console.log(`Error updating topic replication factor: ${JSON.stringify(error)}`);
+      //       throw new Error(`Error updating topic replication factor: ${event.ResourceProperties.topic}. Error ${JSON.stringify(error)}`);
       //     }
       //   }
       // }
@@ -114,8 +114,8 @@ export async function topicCrudOnEvent (event, admin) {
           console.log('Topic is not defined, skipping...');
           break;
         }
-        console.log(`Error deleting topic: ${error}`);
-        throw new Error(`Error deleting topics: ${event.ResourceProperties.topic}. Error ${error}`);
+        console.log(`Error deleting topic: ${JSON.stringify(error)}`);
+        throw new Error(`Error deleting topics: ${event.ResourceProperties.topic}. Error ${JSON.stringify(error)}`);
         
       }
       

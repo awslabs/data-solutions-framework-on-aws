@@ -10,8 +10,8 @@
 import * as cdk from 'aws-cdk-lib';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { MskServerless } from '../../src/streaming/lib/msk';
-import { DataVpc } from '../../src/utils';
+import { KafkaClientLogLevel, MskServerless } from '../../src/streaming/lib/msk';
+import { DataVpc, Utils } from '../../src/utils';
 
 jest.setTimeout(10000000);
 
@@ -30,7 +30,7 @@ let vpc = new DataVpc(stack, 'vpc', {
 });
 
 const msk = new MskServerless(stack, 'cluster', {
-  clusterName: 'e2e-cluster-serverless',
+  clusterName: `cluster-serverless${Utils.generateHash(stack.stackName).slice(0, 3)}`,
   vpcConfigs: [
     {
       subnetIds: vpc.vpc.privateSubnets.map((s) => s.subnetId),
@@ -39,6 +39,7 @@ const msk = new MskServerless(stack, 'cluster', {
   ],
   vpc: vpc.vpc,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
+  kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
 
 const consumerRole = new Role(stack, 'consumerRole', {
@@ -48,7 +49,7 @@ const consumerRole = new Role(stack, 'consumerRole', {
 msk.grantConsume('topic1', consumerRole);
 
 msk.addTopic('topicServerelss', {
-  topic: 'serverless',
+  topic: 'dummy',
   numPartitions: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
