@@ -16,7 +16,7 @@ jest.setTimeout(10000000);
 
 // GIVEN
 const app = new cdk.App();
-const testStack = new TestStack('MskProvisionedTestStack', app);
+const testStack = new TestStack('MskProvisionedIamTestStack', app);
 const { stack } = testStack;
 
 
