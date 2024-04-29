@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
+import { IInterfaceVpcEndpoint, IVpc, SelectedSubnets } from 'aws-cdk-lib/aws-ec2';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 
@@ -67,4 +67,11 @@ export interface RedshiftDataProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group.
+   * This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`.
+   * @default - No security group ingress rule would be created.
+   */
+  readonly existingInterfaceVPCEndpoint?: IInterfaceVpcEndpoint;
 }

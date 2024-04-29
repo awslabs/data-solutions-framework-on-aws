@@ -2863,6 +2863,202 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### BaseRedshiftDataAccess <a name="BaseRedshiftDataAccess" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess"></a>
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+new consumption.BaseRedshiftDataAccess(scope: Construct, id: string, props: RedshiftDataProps, trackedConstructProps: any)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.trackedConstructProps">trackedConstructProps</a></code> | <code>any</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps
+
+---
+
+##### `trackedConstructProps`<sup>Required</sup> <a name="trackedConstructProps" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.Initializer.parameter.trackedConstructProps"></a>
+
+- *Type:* any
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.isConstruct"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+consumption.BaseRedshiftDataAccess.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.customResourceSecurityGroup"></a>
+
+```typescript
+public readonly customResourceSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the Custom Resource when deployed in a VPC.
+
+---
+
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.vpcEndpoint"></a>
+
+```typescript
+public readonly vpcEndpoint: IInterfaceVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
+
+The created Redshift Data API interface vpc endpoint when deployed in a VPC.
+
+---
+
+##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.vpcEndpointSecurityGroup"></a>
+
+```typescript
+public readonly vpcEndpointSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the VPC Endpoint when deployed in a VPC.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataAccess.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -5003,6 +5199,7 @@ new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataPr
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole">assignDbRolesToIAMRole</a></code> | Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.createDbRole">createDbRole</a></code> | Creates a new DB role. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantDbAllPrivilegesToRole">grantDbAllPrivilegesToRole</a></code> | Grants both read and write permissions on all the tables in the `schema` to the DB role. |
@@ -5010,7 +5207,6 @@ new consumption.RedshiftData(scope: Construct, id: string, props: RedshiftDataPr
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.grantSchemaReadToRole">grantSchemaReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.mergeToTargetTable">mergeToTargetTable</a></code> | Run the `MERGE` query using simplified mode. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL">runCustomSQL</a></code> | Runs a custom SQL. |
 
 ---
@@ -5022,6 +5218,14 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
 
 ##### `assignDbRolesToIAMRole` <a name="assignDbRolesToIAMRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.assignDbRolesToIAMRole"></a>
 
@@ -5331,14 +5535,6 @@ Default is `id`
 
 ---
 
-##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.retrieveVersion"></a>
-
-```typescript
-public retrieveVersion(): any
-```
-
-Retrieve DSF package.json version.
-
 ##### `runCustomSQL` <a name="runCustomSQL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.runCustomSQL"></a>
 
 ```typescript
@@ -5428,20 +5624,19 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.dataAccessTargetProps">dataAccessTargetProps</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps</code> | Contains normalized details of the target Redshift cluster/workgroup for data access. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Data API execution. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data API status checks. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API status checks. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.submitFunction">submitFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data submission. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.submitLogGroup">submitLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data API submission. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.taggingManagedPolicy">taggingManagedPolicy</a></code> | <code>aws-cdk-lib.aws_iam.IManagedPolicy</code> | The managed IAM policy allowing IAM Role to retrieve tag information. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetArn">targetArn</a></code> | <code>string</code> | The ARN of the target cluster or workgroup. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetId">targetId</a></code> | <code>string</code> | The ID of the target cluster or workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the S3 data copy cleaning up lambda. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data cleaning up lambda. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the S3 data copy cleaning up lambda. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
 
 ---
 
@@ -5454,6 +5649,54 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup"></a>
+
+```typescript
+public readonly customResourceSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the Custom Resource when deployed in a VPC.
+
+---
+
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint"></a>
+
+```typescript
+public readonly vpcEndpoint: IInterfaceVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
+
+The created Redshift Data API interface vpc endpoint when deployed in a VPC.
+
+---
+
+##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup"></a>
+
+```typescript
+public readonly vpcEndpointSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the VPC Endpoint when deployed in a VPC.
+
+---
+
+##### `dataAccessTargetProps`<sup>Required</sup> <a name="dataAccessTargetProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.dataAccessTargetProps"></a>
+
+```typescript
+public readonly dataAccessTargetProps: RedshiftDataAccessTargetProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps
+
+Contains normalized details of the target Redshift cluster/workgroup for data access.
 
 ---
 
@@ -5529,30 +5772,6 @@ The managed IAM policy allowing IAM Role to retrieve tag information.
 
 ---
 
-##### `targetArn`<sup>Required</sup> <a name="targetArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetArn"></a>
-
-```typescript
-public readonly targetArn: string;
-```
-
-- *Type:* string
-
-The ARN of the target cluster or workgroup.
-
----
-
-##### `targetId`<sup>Required</sup> <a name="targetId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.targetId"></a>
-
-```typescript
-public readonly targetId: string;
-```
-
-- *Type:* string
-
-The ID of the target cluster or workgroup.
-
----
-
 ##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.cleanUpFunction"></a>
 
 ```typescript
@@ -5589,42 +5808,6 @@ The IAM Role for the the S3 data copy cleaning up lambda.
 
 ---
 
-##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.customResourceSecurityGroup"></a>
-
-```typescript
-public readonly customResourceSecurityGroup: ISecurityGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
-
-The Security Group used by the Custom Resource when deployed in a VPC.
-
----
-
-##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpoint"></a>
-
-```typescript
-public readonly vpcEndpoint: InterfaceVpcEndpoint;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint
-
-The created Redshift Data API interface vpc endpoint when deployed in a VPC.
-
----
-
-##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.vpcEndpointSecurityGroup"></a>
-
-```typescript
-public readonly vpcEndpointSecurityGroup: ISecurityGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
-
-The Security Group used by the VPC Endpoint when deployed in a VPC.
-
----
-
 #### Constants <a name="Constants" id="Constants"></a>
 
 | **Name** | **Type** | **Description** |
@@ -5645,6 +5828,473 @@ public readonly DSF_OWNED_TAG: string;
 ---
 
 ##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftData.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### RedshiftDataSharing <a name="RedshiftDataSharing" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing"></a>
+
+Creates an asynchronous custom resource to manage the data sharing lifecycle for both data producers and data consumers.
+
+This also covers both same account and cross account access.
+
+*Example*
+
+```typescript
+const redshiftAdminSecret = Secret.fromSecretPartialArn(this, 'RedshiftAdminCredentials', 'arn:aws:secretsmanager:us-east-1:XXXXXXXX:secret:YYYYYYYY');
+
+const redshiftVpc = Vpc.fromLookup(this, 'RedshiftVpc', {
+  vpcId: 'XXXXXXXX',
+});
+
+const dataAccess = new dsf.consumption.RedshiftData(this, 'RedshiftDataAccess', {
+  workgroupId: 'XXXXXXXXXXXXXXX',
+  secret: redshiftAdminSecret,
+  vpc: redshiftVpc,
+  subnets: redshiftVpc.selectSubnets({
+    subnetGroupName: 'YYYYYYYY'
+  }),
+  createInterfaceVpcEndpoint: true,
+  executionTimeout: Duration.minutes(10),
+});
+
+const dataShare = new dsf.consumption.RedshiftDataSharing(this, 'RedshiftDataShare', {
+  redshiftData: dataAccess,
+  workgroupId: 'XXXXXXXXXXXXXXX',
+  secret: redshiftAdminSecret,
+  vpc: redshiftVpc,
+  subnets: redshiftVpc.selectSubnets({
+    subnetGroupName: 'YYYYYYYY'
+  }),
+  createInterfaceVpcEndpoint: true,
+  executionTimeout: Duration.minutes(10),
+});
+
+ const share = dataShare.createShare('ProducerShare', 'default', 'example_share', 'public', ['public.customers']);
+
+ const grantToConsumer = dataShare.grant('GrantToConsumer', {
+   dataShareName: 'example_share',
+   databaseName: 'default',
+   autoAuthorized: true,
+   accountId: "<CONSUMER_ACCOUNT_ID>",
+   dataShareArn: '<DATASHARE_ARN>',
+ });
+
+dataShare.createDatabaseFromShare('ProducerShare', {
+  consumerNamespaceArn: '',
+  newDatabaseName: 'db_from_share',
+  databaseName: 'default',
+  dataShareName: 'example_share',
+  dataShareArn: '<DATASHARE_ARN>',
+  accountId: "<PRODUCER_ACCOUNT_ID>",
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+new consumption.RedshiftDataSharing(scope: Construct, id: string, props: RedshiftDataSharingProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createDatabaseFromShare">createDatabaseFromShare</a></code> | Consume datashare by creating a new database pointing to the share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare">createShare</a></code> | Create a new datashare. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.grant">grant</a></code> | Create a datashare grant to a namespace if it's in the same account, or to another account. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+##### `createDatabaseFromShare` <a name="createDatabaseFromShare" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createDatabaseFromShare"></a>
+
+```typescript
+public createDatabaseFromShare(id: string, props: RedshiftDataSharingCreateDbProps): RedshiftDataSharingCreateDbFromShareProps
+```
+
+Consume datashare by creating a new database pointing to the share.
+
+If datashare is coming from a different account, setting `autoAssociate` to true
+automatically associates the datashare to the cluster before the new database is created.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createDatabaseFromShare.parameter.id"></a>
+
+- *Type:* string
+
+the CDK ID of the resource.
+
+---
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createDatabaseFromShare.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps
+
+`RedshiftDataSharingCreateDbProps`.
+
+---
+
+##### `createShare` <a name="createShare" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare"></a>
+
+```typescript
+public createShare(id: string, databaseName: string, dataShareName: string, schema: string, tables: string[]): RedshiftNewShareProps
+```
+
+Create a new datashare.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare.parameter.id"></a>
+
+- *Type:* string
+
+the CDK ID of the resource.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to connect to.
+
+---
+
+###### `dataShareName`<sup>Required</sup> <a name="dataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare.parameter.dataShareName"></a>
+
+- *Type:* string
+
+The name of the datashare.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare.parameter.schema"></a>
+
+- *Type:* string
+
+The schema to add in the datashare.
+
+---
+
+###### `tables`<sup>Required</sup> <a name="tables" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.createShare.parameter.tables"></a>
+
+- *Type:* string[]
+
+The list of tables that would be included in the datashare.
+
+This must follow the format: `<schema>.<tableName>`
+
+---
+
+##### `grant` <a name="grant" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.grant"></a>
+
+```typescript
+public grant(id: string, props: RedshiftDataSharingGrantProps): RedshiftDataSharingGrantedProps
+```
+
+Create a datashare grant to a namespace if it's in the same account, or to another account.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.grant.parameter.id"></a>
+
+- *Type:* string
+
+the CDK ID of the resource.
+
+---
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.grant.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps
+
+`RedshiftDataSharingGrantProps`.
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.isConstruct"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+consumption.RedshiftDataSharing.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.customResourceSecurityGroup">customResourceSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the Custom Resource when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.vpcEndpoint">vpcEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | The created Redshift Data API interface vpc endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.vpcEndpointSecurityGroup">vpcEndpointSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The Security Group used by the VPC Endpoint when deployed in a VPC. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.dataAccessTargetProps">dataAccessTargetProps</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps</code> | Contains normalized details of the target Redshift cluster/workgroup for data access. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Data API execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data Sharing status checks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data Sharing status checks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.submitFunction">submitFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Data Sharing submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.submitLogGroup">submitLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data Sharing submission. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.cleanUpFunction">cleanUpFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for the cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.cleanUpLogGroup">cleanUpLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the Redshift Data Sharing cleaning up lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.cleanUpRole">cleanUpRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the the cleaning up lambda. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `customResourceSecurityGroup`<sup>Optional</sup> <a name="customResourceSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.customResourceSecurityGroup"></a>
+
+```typescript
+public readonly customResourceSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the Custom Resource when deployed in a VPC.
+
+---
+
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.vpcEndpoint"></a>
+
+```typescript
+public readonly vpcEndpoint: IInterfaceVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
+
+The created Redshift Data API interface vpc endpoint when deployed in a VPC.
+
+---
+
+##### `vpcEndpointSecurityGroup`<sup>Optional</sup> <a name="vpcEndpointSecurityGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.vpcEndpointSecurityGroup"></a>
+
+```typescript
+public readonly vpcEndpointSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The Security Group used by the VPC Endpoint when deployed in a VPC.
+
+---
+
+##### `dataAccessTargetProps`<sup>Required</sup> <a name="dataAccessTargetProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.dataAccessTargetProps"></a>
+
+```typescript
+public readonly dataAccessTargetProps: RedshiftDataAccessTargetProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps
+
+Contains normalized details of the target Redshift cluster/workgroup for data access.
+
+---
+
+##### `executionRole`<sup>Required</sup> <a name="executionRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.executionRole"></a>
+
+```typescript
+public readonly executionRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the Redshift Data API execution.
+
+---
+
+##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.statusFunction"></a>
+
+```typescript
+public readonly statusFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the Redshift Data Sharing status checks.
+
+---
+
+##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.statusLogGroup"></a>
+
+```typescript
+public readonly statusLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the Redshift Data Sharing status checks.
+
+---
+
+##### `submitFunction`<sup>Required</sup> <a name="submitFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.submitFunction"></a>
+
+```typescript
+public readonly submitFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the Redshift Data Sharing submission.
+
+---
+
+##### `submitLogGroup`<sup>Required</sup> <a name="submitLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.submitLogGroup"></a>
+
+```typescript
+public readonly submitLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the Redshift Data Sharing submission.
+
+---
+
+##### `cleanUpFunction`<sup>Optional</sup> <a name="cleanUpFunction" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.cleanUpFunction"></a>
+
+```typescript
+public readonly cleanUpFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function for the cleaning up lambda.
+
+---
+
+##### `cleanUpLogGroup`<sup>Optional</sup> <a name="cleanUpLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.cleanUpLogGroup"></a>
+
+```typescript
+public readonly cleanUpLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the Redshift Data Sharing cleaning up lambda.
+
+---
+
+##### `cleanUpRole`<sup>Optional</sup> <a name="cleanUpRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.cleanUpRole"></a>
+
+```typescript
+public readonly cleanUpRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the the cleaning up lambda.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharing.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -6077,6 +6727,9 @@ new consumption.RedshiftServerlessWorkgroup(scope: Construct, id: string, props:
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData">accessData</a></code> | Creates an instance of `RedshiftData` to send custom SQLs to the workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables">catalogTables</a></code> | Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare">createDatabaseFromShare</a></code> | Consume datashare by creating a new database pointing to the share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare">createShare</a></code> | Create a new datashare. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare">grantAccessToShare</a></code> | Create a datashare grant to a namespace if it's in the same account, or to another account. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
@@ -6092,7 +6745,7 @@ Returns a string representation of this construct.
 ##### `accessData` <a name="accessData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData"></a>
 
 ```typescript
-public accessData(id: string, createVpcEndpoint?: boolean): RedshiftData
+public accessData(id: string, createVpcEndpoint?: boolean, existingInterfaceVPCEndpoint?: IInterfaceVpcEndpoint): RedshiftData
 ```
 
 Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
@@ -6101,6 +6754,8 @@ Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
 
 - *Type:* string
 
+The CDK ID of the resource.
+
 ---
 
 ###### `createVpcEndpoint`<sup>Optional</sup> <a name="createVpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.createVpcEndpoint"></a>
@@ -6108,6 +6763,14 @@ Creates an instance of `RedshiftData` to send custom SQLs to the workgroup.
 - *Type:* boolean
 
 if set to true, create interface VPC endpoint for Redshift Data API.
+
+---
+
+###### `existingInterfaceVPCEndpoint`<sup>Optional</sup> <a name="existingInterfaceVPCEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData.parameter.existingInterfaceVPCEndpoint"></a>
+
+- *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
+
+if `createVpcEndpoint` is false, and if this is populated, then the Lambda function's security group would be added in the existing VPC endpoint's security group.
 
 ---
 
@@ -6140,6 +6803,159 @@ The name of the Glue Database to create.
 - *Type:* string
 
 The path of Redshift tables to crawl.
+
+---
+
+##### `createDatabaseFromShare` <a name="createDatabaseFromShare" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare"></a>
+
+```typescript
+public createDatabaseFromShare(id: string, newDatabaseName: string, producerDataShareName: string, producerNamespaceId?: string, producerAccountId?: string): RedshiftDataSharingCreateDbFromShareProps
+```
+
+Consume datashare by creating a new database pointing to the share.
+
+If datashare is coming from a different account, setting `autoAssociate` to true
+automatically associates the datashare to the cluster before the new database is created.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare.parameter.id"></a>
+
+- *Type:* string
+
+The CDK ID of the resource.
+
+---
+
+###### `newDatabaseName`<sup>Required</sup> <a name="newDatabaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare.parameter.newDatabaseName"></a>
+
+- *Type:* string
+
+The name of the database that would be created from the data share.
+
+---
+
+###### `producerDataShareName`<sup>Required</sup> <a name="producerDataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare.parameter.producerDataShareName"></a>
+
+- *Type:* string
+
+The name of the data share from producer.
+
+---
+
+###### `producerNamespaceId`<sup>Optional</sup> <a name="producerNamespaceId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare.parameter.producerNamespaceId"></a>
+
+- *Type:* string
+
+The producer cluster namespace.
+
+---
+
+###### `producerAccountId`<sup>Optional</sup> <a name="producerAccountId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare.parameter.producerAccountId"></a>
+
+- *Type:* string
+
+The producer account ID.
+
+Required for cross account shares.
+
+---
+
+##### `createShare` <a name="createShare" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare"></a>
+
+```typescript
+public createShare(id: string, databaseName: string, dataShareName: string, schema: string, tables: string[]): RedshiftNewShareProps
+```
+
+Create a new datashare.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare.parameter.id"></a>
+
+- *Type:* string
+
+The CDK ID of the resource.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to connect to.
+
+---
+
+###### `dataShareName`<sup>Required</sup> <a name="dataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare.parameter.dataShareName"></a>
+
+- *Type:* string
+
+The name of the datashare.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare.parameter.schema"></a>
+
+- *Type:* string
+
+The schema to add in the datashare.
+
+---
+
+###### `tables`<sup>Required</sup> <a name="tables" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare.parameter.tables"></a>
+
+- *Type:* string[]
+
+The list of tables that would be included in the datashare.
+
+This must follow the format: `<schema>.<tableName>`
+
+---
+
+##### `grantAccessToShare` <a name="grantAccessToShare" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare"></a>
+
+```typescript
+public grantAccessToShare(id: string, dataShareDetails: RedshiftNewShareProps, consumerNamespaceId?: string, consumerAccountId?: string, autoAuthorized?: boolean): RedshiftDataSharingGrantedProps
+```
+
+Create a datashare grant to a namespace if it's in the same account, or to another account.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare.parameter.id"></a>
+
+- *Type:* string
+
+The CDK ID of the resource.
+
+---
+
+###### `dataShareDetails`<sup>Required</sup> <a name="dataShareDetails" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare.parameter.dataShareDetails"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps
+
+The details of the datashare.
+
+---
+
+###### `consumerNamespaceId`<sup>Optional</sup> <a name="consumerNamespaceId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare.parameter.consumerNamespaceId"></a>
+
+- *Type:* string
+
+The namespace of the consumer that you're sharing to.
+
+Either namespace or account Id must be provided.
+
+---
+
+###### `consumerAccountId`<sup>Optional</sup> <a name="consumerAccountId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare.parameter.consumerAccountId"></a>
+
+- *Type:* string
+
+The account ID of the consumer that you're sharing to.
+
+Either namespace or account Id must be provided.
+
+---
+
+###### `autoAuthorized`<sup>Optional</sup> <a name="autoAuthorized" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare.parameter.autoAuthorized"></a>
+
+- *Type:* boolean
 
 ---
 
@@ -6198,6 +7014,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.cfnResource">cfnResource</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup</code> | The created Redshift Serverless Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.connections">connections</a></code> | <code>aws-cdk-lib.aws_ec2.Connections</code> | Connections used by Workgroup security group. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.existingShares">existingShares</a></code> | <code>{[ key: string ]: @cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps}</code> | Index of existing shares. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.glueConnection">glueConnection</a></code> | <code>aws-cdk-lib.aws_glue.CfnConnection</code> | The Glue Connection associated with the workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.namespace">namespace</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The associated Redshift Serverless Namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.primarySecurityGroup">primarySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The primary EC2 Security Group associated with the Redshift Serverless Workgroup. |
@@ -6241,6 +7058,18 @@ public readonly connections: Connections;
 Connections used by Workgroup security group.
 
 Used this to enable access from clients connecting to the workgroup
+
+---
+
+##### `existingShares`<sup>Required</sup> <a name="existingShares" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.property.existingShares"></a>
+
+```typescript
+public readonly existingShares: {[ key: string ]: RedshiftNewShareProps};
+```
+
+- *Type:* {[ key: string ]: @cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps}
+
+Index of existing shares.
 
 ---
 
@@ -9535,6 +10364,99 @@ The state of the Workgroup.
 
 ---
 
+### BaseRedshiftDataSharingAccessProps <a name="BaseRedshiftDataSharingAccessProps" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps"></a>
+
+The base interface for the different data sharing lifecycle properties.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const baseRedshiftDataSharingAccessProps: consumption.BaseRedshiftDataSharingAccessProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the Redshift database used in the data sharing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.accountId">accountId</a></code> | <code>string</code> | For cross-account grants, this is the consumer account ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the datashare. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored. |
+
+---
+
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.databaseName"></a>
+
+```typescript
+public readonly databaseName: string;
+```
+
+- *Type:* string
+
+The name of the Redshift database used in the data sharing.
+
+---
+
+##### `dataShareName`<sup>Required</sup> <a name="dataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.dataShareName"></a>
+
+```typescript
+public readonly dataShareName: string;
+```
+
+- *Type:* string
+
+The name of the data share.
+
+---
+
+##### `accountId`<sup>Optional</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.accountId"></a>
+
+```typescript
+public readonly accountId: string;
+```
+
+- *Type:* string
+- *Default:* No account ID is used.
+
+For cross-account grants, this is the consumer account ID.
+
+For cross-account consumers, this is the producer account ID.
+
+---
+
+##### `dataShareArn`<sup>Optional</sup> <a name="dataShareArn" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.dataShareArn"></a>
+
+```typescript
+public readonly dataShareArn: string;
+```
+
+- *Type:* string
+- *Default:* No data share ARN is used.
+
+The ARN of the datashare.
+
+This is required for any action that is cross account.
+
+---
+
+##### `namespaceId`<sup>Optional</sup> <a name="namespaceId" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps.property.namespaceId"></a>
+
+```typescript
+public readonly namespaceId: string;
+```
+
+- *Type:* string
+- *Default:* No namespace ID is used.
+
+For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored.
+
+For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
+
+---
+
 ### BrokerLogging <a name="BrokerLogging" id="@cdklabs/aws-data-solutions-framework.streaming.BrokerLogging"></a>
 
 Configuration details related to broker logs.
@@ -11464,6 +12386,56 @@ This is the output path used in the `venv-pack -o` command in your Dockerfile.
 
 ---
 
+### RedshiftDataAccessTargetProps <a name="RedshiftDataAccessTargetProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftDataAccessTargetProps: consumption.RedshiftDataAccessTargetProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.property.targetArn">targetArn</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.property.targetId">targetId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.property.targetType">targetType</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `targetArn`<sup>Required</sup> <a name="targetArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.property.targetArn"></a>
+
+```typescript
+public readonly targetArn: string;
+```
+
+- *Type:* string
+
+---
+
+##### `targetId`<sup>Required</sup> <a name="targetId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.property.targetId"></a>
+
+```typescript
+public readonly targetId: string;
+```
+
+- *Type:* string
+
+---
+
+##### `targetType`<sup>Required</sup> <a name="targetType" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataAccessTargetProps.property.targetType"></a>
+
+```typescript
+public readonly targetType: string;
+```
+
+- *Type:* string
+
+---
+
 ### RedshiftDataProps <a name="RedshiftDataProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps"></a>
 
 The properties for the `RedshiftData` construct.
@@ -11484,6 +12456,7 @@ const redshiftDataProps: consumption.RedshiftDataProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.existingInterfaceVPCEndpoint">existingInterfaceVPCEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
@@ -11542,6 +12515,21 @@ public readonly executionTimeout: Duration;
 - *Default:* 5mins
 
 The timeout for the query execution.
+
+---
+
+##### `existingInterfaceVPCEndpoint`<sup>Optional</sup> <a name="existingInterfaceVPCEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataProps.property.existingInterfaceVPCEndpoint"></a>
+
+```typescript
+public readonly existingInterfaceVPCEndpoint: IInterfaceVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
+- *Default:* No security group ingress rule would be created.
+
+If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group.
+
+This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`.
 
 ---
 
@@ -11616,6 +12604,605 @@ public readonly workgroupId: string;
 The `workgroupId` for the Redshift Serverless Workgroup to query.
 
 It must be configured if the `clusterId` is not.
+
+---
+
+### RedshiftDataSharingCreateDbFromShareProps <a name="RedshiftDataSharingCreateDbFromShareProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbFromShareProps"></a>
+
+Return interface after creating a new database from data share.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbFromShareProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftDataSharingCreateDbFromShareProps: consumption.RedshiftDataSharingCreateDbFromShareProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbFromShareProps.property.resource">resource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The resource associated with the create database command. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbFromShareProps.property.associateDataShareResource">associateDataShareResource</a></code> | <code>aws-cdk-lib.custom_resources.AwsCustomResource</code> | If auto-association is turned on, this is the resource associated with the action. |
+
+---
+
+##### `resource`<sup>Required</sup> <a name="resource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbFromShareProps.property.resource"></a>
+
+```typescript
+public readonly resource: CustomResource;
+```
+
+- *Type:* aws-cdk-lib.CustomResource
+
+The resource associated with the create database command.
+
+---
+
+##### `associateDataShareResource`<sup>Optional</sup> <a name="associateDataShareResource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbFromShareProps.property.associateDataShareResource"></a>
+
+```typescript
+public readonly associateDataShareResource: AwsCustomResource;
+```
+
+- *Type:* aws-cdk-lib.custom_resources.AwsCustomResource
+
+If auto-association is turned on, this is the resource associated with the action.
+
+---
+
+### RedshiftDataSharingCreateDbProps <a name="RedshiftDataSharingCreateDbProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps"></a>
+
+Properties for data sharing consumer.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftDataSharingCreateDbProps: consumption.RedshiftDataSharingCreateDbProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the Redshift database used in the data sharing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.accountId">accountId</a></code> | <code>string</code> | For cross-account grants, this is the consumer account ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the datashare. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.newDatabaseName">newDatabaseName</a></code> | <code>string</code> | For consumers, the data share would be located in this database that would be created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.consumerNamespaceArn">consumerNamespaceArn</a></code> | <code>string</code> | The namespace of the consumer, necessary for cross-account data shares. |
+
+---
+
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.databaseName"></a>
+
+```typescript
+public readonly databaseName: string;
+```
+
+- *Type:* string
+
+The name of the Redshift database used in the data sharing.
+
+---
+
+##### `dataShareName`<sup>Required</sup> <a name="dataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.dataShareName"></a>
+
+```typescript
+public readonly dataShareName: string;
+```
+
+- *Type:* string
+
+The name of the data share.
+
+---
+
+##### `accountId`<sup>Optional</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.accountId"></a>
+
+```typescript
+public readonly accountId: string;
+```
+
+- *Type:* string
+- *Default:* No account ID is used.
+
+For cross-account grants, this is the consumer account ID.
+
+For cross-account consumers, this is the producer account ID.
+
+---
+
+##### `dataShareArn`<sup>Optional</sup> <a name="dataShareArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.dataShareArn"></a>
+
+```typescript
+public readonly dataShareArn: string;
+```
+
+- *Type:* string
+- *Default:* No data share ARN is used.
+
+The ARN of the datashare.
+
+This is required for any action that is cross account.
+
+---
+
+##### `namespaceId`<sup>Optional</sup> <a name="namespaceId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.namespaceId"></a>
+
+```typescript
+public readonly namespaceId: string;
+```
+
+- *Type:* string
+- *Default:* No namespace ID is used.
+
+For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored.
+
+For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
+
+---
+
+##### `newDatabaseName`<sup>Required</sup> <a name="newDatabaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.newDatabaseName"></a>
+
+```typescript
+public readonly newDatabaseName: string;
+```
+
+- *Type:* string
+
+For consumers, the data share would be located in this database that would be created.
+
+---
+
+##### `consumerNamespaceArn`<sup>Optional</sup> <a name="consumerNamespaceArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingCreateDbProps.property.consumerNamespaceArn"></a>
+
+```typescript
+public readonly consumerNamespaceArn: string;
+```
+
+- *Type:* string
+
+The namespace of the consumer, necessary for cross-account data shares.
+
+---
+
+### RedshiftDataSharingGrantedProps <a name="RedshiftDataSharingGrantedProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantedProps"></a>
+
+Return interface after granting access to consumer.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantedProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftDataSharingGrantedProps: consumption.RedshiftDataSharingGrantedProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantedProps.property.resource">resource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The resource associated with the grant command. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantedProps.property.shareAuthorizationResource">shareAuthorizationResource</a></code> | <code>aws-cdk-lib.custom_resources.AwsCustomResource</code> | If auto-authorization is turned on, this is the resource associated with the action. |
+
+---
+
+##### `resource`<sup>Required</sup> <a name="resource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantedProps.property.resource"></a>
+
+```typescript
+public readonly resource: CustomResource;
+```
+
+- *Type:* aws-cdk-lib.CustomResource
+
+The resource associated with the grant command.
+
+---
+
+##### `shareAuthorizationResource`<sup>Optional</sup> <a name="shareAuthorizationResource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantedProps.property.shareAuthorizationResource"></a>
+
+```typescript
+public readonly shareAuthorizationResource: AwsCustomResource;
+```
+
+- *Type:* aws-cdk-lib.custom_resources.AwsCustomResource
+
+If auto-authorization is turned on, this is the resource associated with the action.
+
+---
+
+### RedshiftDataSharingGrantProps <a name="RedshiftDataSharingGrantProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps"></a>
+
+Properties for data sharing grants.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftDataSharingGrantProps: consumption.RedshiftDataSharingGrantProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.databaseName">databaseName</a></code> | <code>string</code> | The name of the Redshift database used in the data sharing. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.accountId">accountId</a></code> | <code>string</code> | For cross-account grants, this is the consumer account ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the datashare. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.namespaceId">namespaceId</a></code> | <code>string</code> | For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.autoAuthorized">autoAuthorized</a></code> | <code>boolean</code> | If set to `true`, cross-account grants would automatically be authorized. |
+
+---
+
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.databaseName"></a>
+
+```typescript
+public readonly databaseName: string;
+```
+
+- *Type:* string
+
+The name of the Redshift database used in the data sharing.
+
+---
+
+##### `dataShareName`<sup>Required</sup> <a name="dataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.dataShareName"></a>
+
+```typescript
+public readonly dataShareName: string;
+```
+
+- *Type:* string
+
+The name of the data share.
+
+---
+
+##### `accountId`<sup>Optional</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.accountId"></a>
+
+```typescript
+public readonly accountId: string;
+```
+
+- *Type:* string
+- *Default:* No account ID is used.
+
+For cross-account grants, this is the consumer account ID.
+
+For cross-account consumers, this is the producer account ID.
+
+---
+
+##### `dataShareArn`<sup>Optional</sup> <a name="dataShareArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.dataShareArn"></a>
+
+```typescript
+public readonly dataShareArn: string;
+```
+
+- *Type:* string
+- *Default:* No data share ARN is used.
+
+The ARN of the datashare.
+
+This is required for any action that is cross account.
+
+---
+
+##### `namespaceId`<sup>Optional</sup> <a name="namespaceId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.namespaceId"></a>
+
+```typescript
+public readonly namespaceId: string;
+```
+
+- *Type:* string
+- *Default:* No namespace ID is used.
+
+For single account grants, this is the consumer namespace ID. For cross-account grants, `namespaceId` is ignored.
+
+For consumers, this is the producer namespace ID. It is required for both single and cross account data sharing.
+
+---
+
+##### `autoAuthorized`<sup>Optional</sup> <a name="autoAuthorized" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingGrantProps.property.autoAuthorized"></a>
+
+```typescript
+public readonly autoAuthorized: boolean;
+```
+
+- *Type:* boolean
+- *Default:* cross-account grants should be authorized manually
+
+If set to `true`, cross-account grants would automatically be authorized.
+
+See https://docs.aws.amazon.com/redshift/latest/dg/consumer-account-admin.html
+
+---
+
+### RedshiftDataSharingProps <a name="RedshiftDataSharingProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps"></a>
+
+Properties for the `RedshiftDataSharing` construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftDataSharingProps: consumption.RedshiftDataSharingProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.secret">secret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.clusterId">clusterId</a></code> | <code>string</code> | The name of the Redshift provisioned to query. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.createInterfaceVpcEndpoint">createInterfaceVpcEndpoint</a></code> | <code>boolean</code> | If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.executionTimeout">executionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout for the query execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.existingInterfaceVPCEndpoint">existingInterfaceVPCEndpoint</a></code> | <code>aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint</code> | If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.secretKey">secretKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SelectedSubnets</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.workgroupId">workgroupId</a></code> | <code>string</code> | The `workgroupId` for the Redshift Serverless Workgroup to query. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.redshiftData">redshiftData</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftData</code> | Instance of `RedshiftData` construct. |
+
+---
+
+##### `secret`<sup>Required</sup> <a name="secret" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.secret"></a>
+
+```typescript
+public readonly secret: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+The Secrets Manager Secret containing the admin credentials for the Redshift cluster / namespace.
+
+---
+
+##### `clusterId`<sup>Optional</sup> <a name="clusterId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.clusterId"></a>
+
+```typescript
+public readonly clusterId: string;
+```
+
+- *Type:* string
+- *Default:* The `workgroupId` is used
+
+The name of the Redshift provisioned to query.
+
+It must be configured if the `workgroupId` is not.
+
+---
+
+##### `createInterfaceVpcEndpoint`<sup>Optional</sup> <a name="createInterfaceVpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.createInterfaceVpcEndpoint"></a>
+
+```typescript
+public readonly createInterfaceVpcEndpoint: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+If set to true, create the Redshift Data Interface VPC Endpoint in the configured VPC/Subnets.
+
+---
+
+##### `executionTimeout`<sup>Optional</sup> <a name="executionTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.executionTimeout"></a>
+
+```typescript
+public readonly executionTimeout: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+- *Default:* 5mins
+
+The timeout for the query execution.
+
+---
+
+##### `existingInterfaceVPCEndpoint`<sup>Optional</sup> <a name="existingInterfaceVPCEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.existingInterfaceVPCEndpoint"></a>
+
+```typescript
+public readonly existingInterfaceVPCEndpoint: IInterfaceVpcEndpoint;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
+- *Default:* No security group ingress rule would be created.
+
+If this parameter is provided, the data access execution security group would be granted inbound to the interface VPC endpoint's security group.
+
+This is assuming that the `createInterfaceVpcEndpoint` parameter is `false`.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `secretKey`<sup>Optional</sup> <a name="secretKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.secretKey"></a>
+
+```typescript
+public readonly secretKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* no secret key is used
+
+The KMS Key used to encrypt the admin credentials for the Redshift cluster / namespace.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SelectedSubnets;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SelectedSubnets
+- *Default:* No subnets are used. The Custom Resource runs in the Redshift service team subnets.
+
+The subnets where the Custom Resource Lambda Function would be created in.
+
+A Redshift Data API Interface VPC Endpoint is created in the subnets.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* No VPC is used. The Custom Resource runs in the Redshift service team VPC
+
+The VPC where the Custom Resource Lambda Function would be created in.
+
+A Redshift Data API Interface VPC Endpoint is created in the VPC.
+
+---
+
+##### `workgroupId`<sup>Optional</sup> <a name="workgroupId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.workgroupId"></a>
+
+```typescript
+public readonly workgroupId: string;
+```
+
+- *Type:* string
+- *Default:* The `clusterId` is used
+
+The `workgroupId` for the Redshift Serverless Workgroup to query.
+
+It must be configured if the `clusterId` is not.
+
+---
+
+##### `redshiftData`<sup>Required</sup> <a name="redshiftData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftDataSharingProps.property.redshiftData"></a>
+
+```typescript
+public readonly redshiftData: RedshiftData;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.RedshiftData
+
+Instance of `RedshiftData` construct.
+
+---
+
+### RedshiftNewShareProps <a name="RedshiftNewShareProps" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps"></a>
+
+Redshift new data share details.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const redshiftNewShareProps: consumption.RedshiftNewShareProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.databaseName">databaseName</a></code> | <code>string</code> | The database name where the share belongs to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.dataShareArn">dataShareArn</a></code> | <code>string</code> | The ARN of the data share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.dataShareName">dataShareName</a></code> | <code>string</code> | The name of the data share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.newShareCustomResource">newShareCustomResource</a></code> | <code>aws-cdk-lib.CustomResource</code> | The custom resource related to the management of the data share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.producerArn">producerArn</a></code> | <code>string</code> | The ARN of the producer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.producerNamespace">producerNamespace</a></code> | <code>string</code> | The namespace ID of the producer. |
+
+---
+
+##### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.databaseName"></a>
+
+```typescript
+public readonly databaseName: string;
+```
+
+- *Type:* string
+
+The database name where the share belongs to.
+
+---
+
+##### `dataShareArn`<sup>Required</sup> <a name="dataShareArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.dataShareArn"></a>
+
+```typescript
+public readonly dataShareArn: string;
+```
+
+- *Type:* string
+
+The ARN of the data share.
+
+---
+
+##### `dataShareName`<sup>Required</sup> <a name="dataShareName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.dataShareName"></a>
+
+```typescript
+public readonly dataShareName: string;
+```
+
+- *Type:* string
+
+The name of the data share.
+
+---
+
+##### `newShareCustomResource`<sup>Required</sup> <a name="newShareCustomResource" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.newShareCustomResource"></a>
+
+```typescript
+public readonly newShareCustomResource: CustomResource;
+```
+
+- *Type:* aws-cdk-lib.CustomResource
+
+The custom resource related to the management of the data share.
+
+---
+
+##### `producerArn`<sup>Required</sup> <a name="producerArn" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.producerArn"></a>
+
+```typescript
+public readonly producerArn: string;
+```
+
+- *Type:* string
+
+The ARN of the producer.
+
+---
+
+##### `producerNamespace`<sup>Required</sup> <a name="producerNamespace" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftNewShareProps.property.producerNamespace"></a>
+
+```typescript
+public readonly producerNamespace: string;
+```
+
+- *Type:* string
+
+The namespace ID of the producer.
 
 ---
 

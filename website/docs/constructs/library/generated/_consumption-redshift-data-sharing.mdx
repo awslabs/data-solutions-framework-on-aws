@@ -1,0 +1,236 @@
+[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/consumption)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The `RedshiftDataSharing` construct allows [Redshift data sharing](https://docs.aws.amazon.com/redshift/latest/dg/datashare-overview.html) management for both producers and consumers.
+
+## Overview
+
+The `RedshiftDataSharing` construct provides the following functionality:
+
+- Create a new data share
+- Grants access to the data share to another Redshift namespace or to another AWS account (provides auto data share authorization for cross-account grants)
+- Create a database from the data share (and for cross-account grants, auto association of the data share to the consumer's Redshift Namespace)
+
+## Usage
+
+Single account data sharing:
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleRedshiftDataSharingSameAccountStack extends Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id)
+
+    const dbName = 'defaultdb';
+
+    const producerNamespace = new RedshiftServerlessNamespace(this, 'ProducerNamespace', {
+        name: 'producer-namespace',
+        dbName
+    });
+
+    const producerWorkgroup = new RedshiftServerlessWorkgroup(this, 'ProducerRSWorkgroup', {
+        name: 'producer-workgroup',
+        namespace: producerNamespace
+    });
+
+    const consumerNamespace = new RedshiftServerlessNamespace(this, 'ConsumerNamespace', {
+        name: 'consumer-namespace',
+        dbName
+    });
+
+    const consumerWorkgroup = new RedshiftServerlessWorkgroup(this, 'ConsumerRSWorkgroup', {
+        name: 'consumer-workgroup',
+        namespace: consumerNamespace
+    });
+
+    const shareName = 'testshare';
+
+    const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
+    const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
+
+    const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
+    newShare.newShareCustomResource.node.addDependency(createCustomersTable);
+
+    const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, consumerNamespace.namespaceId)
+
+    grantToConsumer.resource.node.addDependency(newShare);
+    grantToConsumer.resource.node.addDependency(consumerNamespace);
+
+    const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare', 'db_from_share', shareName, producerNamespace.namespaceId)
+
+    consumeShare.resource.node.addDependency(grantToConsumer);
+  }
+}
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleRedshiftDataSharingSameAccountStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        db_name = "defaultdb"
+
+        producer_namespace = RedshiftServerlessNamespace(self, "ProducerNamespace",
+            name="producer-namespace",
+            db_name=db_name
+        )
+
+        producer_workgroup = RedshiftServerlessWorkgroup(self, "ProducerRSWorkgroup",
+            name="producer-workgroup",
+            namespace=producer_namespace
+        )
+
+        consumer_namespace = RedshiftServerlessNamespace(self, "ConsumerNamespace",
+            name="consumer-namespace",
+            db_name=db_name
+        )
+
+        consumer_workgroup = RedshiftServerlessWorkgroup(self, "ConsumerRSWorkgroup",
+            name="consumer-workgroup",
+            namespace=consumer_namespace
+        )
+
+        share_name = "testshare"
+
+        producer_data_access = producer_workgroup.access_data("ProducerDataAccess")
+        create_customers_table = producer_data_access.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
+
+        new_share = producer_workgroup.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
+        new_share.new_share_custom_resource.node.add_dependency(create_customers_table)
+
+        grant_to_consumer = producer_workgroup.grant_access_to_share("GrantToConsumer", new_share, consumer_namespace.namespace_id)
+
+        grant_to_consumer.resource.node.add_dependency(new_share)
+        grant_to_consumer.resource.node.add_dependency(consumer_namespace)
+
+        consume_share = consumer_workgroup.create_database_from_share("consume-datashare", "db_from_share", share_name, producer_namespace.namespace_id)
+
+        consume_share.resource.node.add_dependency(grant_to_consumer)
+  ```
+
+  </TabItem>
+</Tabs>
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleRedshiftDataSharingCrossAccountAStack extends Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id)
+
+    const dbName = 'defaultdb';
+
+    const producerNamespace = new RedshiftServerlessNamespace(this, 'ProducerNamespace', {
+        name: 'producer-namespace',
+        dbName
+    });
+
+    const producerWorkgroup = new RedshiftServerlessWorkgroup(this, 'ProducerRSWorkgroup', {
+        name: 'producer-workgroup',
+        namespace: producerNamespace
+    });
+
+    const shareName = 'testshare';
+
+    const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
+    const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
+
+    const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
+    newShare.newShareCustomResource.node.addDependency(createCustomersTable);
+
+    const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, undefined, "<CONSUMER-ACCOUNT-ID>", true);
+
+    grantToConsumer.resource.node.addDependency(newShare);
+  }
+}
+
+class ExampleRedshiftDataSharingCrossAccountBStack extends Stack {
+    constructor(scope: Construct, id: string) {
+      super(scope, id)
+
+      const dbName = 'defaultdb';
+
+      const consumerNamespace = new RedshiftServerlessNamespace(this, 'ConsumerNamespace', {
+          name: 'consumer-namespace',
+          dbName
+      });
+
+      const consumerWorkgroup = new RedshiftServerlessWorkgroup(this, 'ConsumerRSWorkgroup', {
+          name: 'consumer-workgroup',
+          namespace: consumerNamespace
+      });
+
+      const shareName = 'testshare';
+
+      consumerWorkgroup.createDatabaseFromShare('consume-datashare', "db_from_share", shareName, "<PRODUCER NAMESPACE>", "<PRODUCER ACCOUNT>")
+    }
+  }
+  ```
+  
+  ```mdx-code-block
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleRedshiftDataSharingCrossAccountAStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        db_name = "defaultdb"
+
+        producer_namespace = RedshiftServerlessNamespace(self, "ProducerNamespace",
+            name="producer-namespace",
+            db_name=db_name
+        )
+
+        producer_workgroup = RedshiftServerlessWorkgroup(self, "ProducerRSWorkgroup",
+            name="producer-workgroup",
+            namespace=producer_namespace
+        )
+
+        share_name = "testshare"
+
+        producer_data_access = producer_workgroup.access_data("ProducerDataAccess")
+        create_customers_table = producer_data_access.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
+
+        new_share = producer_workgroup.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
+        new_share.new_share_custom_resource.node.add_dependency(create_customers_table)
+
+        grant_to_consumer = producer_workgroup.grant_access_to_share("GrantToConsumer", new_share, undefined, "<CONSUMER-ACCOUNT-ID>", True)
+
+        grant_to_consumer.resource.node.add_dependency(new_share)
+
+class ExampleRedshiftDataSharingCrossAccountBStack(Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        db_name = "defaultdb"
+
+        consumer_namespace = RedshiftServerlessNamespace(self, "ConsumerNamespace",
+            name="consumer-namespace",
+            db_name=db_name
+        )
+
+        consumer_workgroup = RedshiftServerlessWorkgroup(self, "ConsumerRSWorkgroup",
+            name="consumer-workgroup",
+            namespace=consumer_namespace
+        )
+
+        share_name = "testshare"
+
+        consumer_workgroup.create_database_from_share("consume-datashare", "db_from_share", share_name, "<PRODUCER NAMESPACE>", "<PRODUCER ACCOUNT>")
+  ```
+
+  </TabItem>
+</Tabs>
+
