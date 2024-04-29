@@ -77,7 +77,9 @@ The `RedshiftDataSharing` construct provides the following functionality:
 
 ## Usage
 
+Single account data sharing:
 [same account data shares](./examples/redshift-data-sharing-same-account.lit.ts)
+Cross-account data sharing:
 [cross account data shares](./examples/redshift-data-sharing-cross-account.lit.ts)
 
 [//]: # (consumption.athena-workgroup)
