@@ -324,6 +324,8 @@ export class OpenSearchCluster extends TrackedConstruct {
 
     //enable SAML authentication after adding lambda permissions to execute API calls later.
     const updateDomain = new AwsCustomResource(this, 'EnableInternalUserDatabaseCR', {
+      installLatestAwsSdk: false,
+      timeout: Duration.minutes(10),
       onCreate: {
         service: 'OpenSearch',
         action: 'updateDomainConfig',
