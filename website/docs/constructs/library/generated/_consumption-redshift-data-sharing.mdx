@@ -47,8 +47,7 @@ class ExampleRedshiftDataSharingSameAccountStack extends Stack {
 
     const shareName = 'testshare';
 
-    const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
-    const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
+    const createCustomersTable = producerWorkgroup.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
     const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
     newShare.newShareCustomResource.node.addDependency(createCustomersTable);
@@ -99,8 +98,7 @@ class ExampleRedshiftDataSharingSameAccountStack(Stack):
 
         share_name = "testshare"
 
-        producer_data_access = producer_workgroup.access_data("ProducerDataAccess")
-        create_customers_table = producer_data_access.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
+        create_customers_table = producer_workgroup.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
 
         new_share = producer_workgroup.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
         new_share.new_share_custom_resource.node.add_dependency(create_customers_table)
@@ -141,8 +139,7 @@ class ExampleRedshiftDataSharingCrossAccountAStack extends Stack {
 
     const shareName = 'testshare';
 
-    const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
-    const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
+    const createCustomersTable = producerWorkgroup.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
     const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
     newShare.newShareCustomResource.node.addDependency(createCustomersTable);
@@ -200,8 +197,7 @@ class ExampleRedshiftDataSharingCrossAccountAStack(Stack):
 
         share_name = "testshare"
 
-        producer_data_access = producer_workgroup.access_data("ProducerDataAccess")
-        create_customers_table = producer_data_access.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
+        create_customers_table = producer_workgroup.run_custom_sQL("CreateCustomerTable", db_name, "create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)", "drop table public.customers")
 
         new_share = producer_workgroup.create_share("producer-share", db_name, share_name, "public", ["public.customers"])
         new_share.new_share_custom_resource.node.add_dependency(create_customers_table)

@@ -6726,11 +6726,19 @@ new consumption.RedshiftServerlessWorkgroup(scope: Construct, id: string, props:
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData">accessData</a></code> | Creates an instance of `RedshiftData` to send custom SQLs to the workgroup. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.assignDbRolesToIAMRole">assignDbRolesToIAMRole</a></code> | Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.catalogTables">catalogTables</a></code> | Creates a new Glue data catalog database with a crawler using JDBC target type to connect to the Redshift Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDatabaseFromShare">createDatabaseFromShare</a></code> | Consume datashare by creating a new database pointing to the share. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDbRole">createDbRole</a></code> | Creates a new DB role. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createShare">createShare</a></code> | Create a new datashare. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantAccessToShare">grantAccessToShare</a></code> | Create a datashare grant to a namespace if it's in the same account, or to another account. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbAllPrivilegesToRole">grantDbAllPrivilegesToRole</a></code> | Grants both read and write permissions on all the tables in the `schema` to the DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbSchemaToRole">grantDbSchemaToRole</a></code> | Grants access to the schema to the DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantSchemaReadToRole">grantSchemaReadToRole</a></code> | Grants read permission on all the tables in the `schema` to the DB role. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData">ingestData</a></code> | Ingest data from S3 into a Redshift table. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable">mergeToTargetTable</a></code> | Run the `MERGE` query using simplified mode. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.runCustomSQL">runCustomSQL</a></code> | Runs a custom SQL. |
 
 ---
 
@@ -6742,7 +6750,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `accessData` <a name="accessData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData"></a>
+##### ~~`accessData`~~ <a name="accessData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.accessData"></a>
 
 ```typescript
 public accessData(id: string, createVpcEndpoint?: boolean, existingInterfaceVPCEndpoint?: IInterfaceVpcEndpoint): RedshiftData
@@ -6771,6 +6779,30 @@ if set to true, create interface VPC endpoint for Redshift Data API.
 - *Type:* aws-cdk-lib.aws_ec2.IInterfaceVpcEndpoint
 
 if `createVpcEndpoint` is false, and if this is populated, then the Lambda function's security group would be added in the existing VPC endpoint's security group.
+
+---
+
+##### `assignDbRolesToIAMRole` <a name="assignDbRolesToIAMRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.assignDbRolesToIAMRole"></a>
+
+```typescript
+public assignDbRolesToIAMRole(dbRoles: string[], targetRole: IRole): void
+```
+
+Assigns Redshift DB roles to IAM role vs the `RedshiftDbRoles` tag.
+
+###### `dbRoles`<sup>Required</sup> <a name="dbRoles" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.assignDbRolesToIAMRole.parameter.dbRoles"></a>
+
+- *Type:* string[]
+
+List of Redshift DB roles to assign to IAM role.
+
+---
+
+###### `targetRole`<sup>Required</sup> <a name="targetRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.assignDbRolesToIAMRole.parameter.targetRole"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role to assign the Redshift DB roles to.
 
 ---
 
@@ -6856,6 +6888,38 @@ The producer cluster namespace.
 The producer account ID.
 
 Required for cross account shares.
+
+---
+
+##### `createDbRole` <a name="createDbRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDbRole"></a>
+
+```typescript
+public createDbRole(id: string, databaseName: string, roleName: string): CustomResource
+```
+
+Creates a new DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDbRole.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDbRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.createDbRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The name of the role to create.
 
 ---
 
@@ -6959,6 +7023,258 @@ Either namespace or account Id must be provided.
 
 ---
 
+##### `grantDbAllPrivilegesToRole` <a name="grantDbAllPrivilegesToRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbAllPrivilegesToRole"></a>
+
+```typescript
+public grantDbAllPrivilegesToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants both read and write permissions on all the tables in the `schema` to the DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbAllPrivilegesToRole.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbAllPrivilegesToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbAllPrivilegesToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbAllPrivilegesToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
+##### `grantDbSchemaToRole` <a name="grantDbSchemaToRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbSchemaToRole"></a>
+
+```typescript
+public grantDbSchemaToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants access to the schema to the DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbSchemaToRole.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbSchemaToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbSchemaToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantDbSchemaToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
+##### `grantSchemaReadToRole` <a name="grantSchemaReadToRole" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantSchemaReadToRole"></a>
+
+```typescript
+public grantSchemaReadToRole(id: string, databaseName: string, schema: string, roleName: string): CustomResource
+```
+
+Grants read permission on all the tables in the `schema` to the DB role.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantSchemaReadToRole.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantSchemaReadToRole.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `schema`<sup>Required</sup> <a name="schema" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantSchemaReadToRole.parameter.schema"></a>
+
+- *Type:* string
+
+The schema where the tables are located in.
+
+---
+
+###### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.grantSchemaReadToRole.parameter.roleName"></a>
+
+- *Type:* string
+
+The DB role to grant the permissions to.
+
+---
+
+##### `ingestData` <a name="ingestData" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData"></a>
+
+```typescript
+public ingestData(id: string, databaseName: string, targetTable: string, sourceBucket: IBucket, sourcePrefix: string, ingestAdditionalOptions?: string, role?: IRole): CustomResource
+```
+
+Ingest data from S3 into a Redshift table.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `targetTable`<sup>Required</sup> <a name="targetTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.targetTable"></a>
+
+- *Type:* string
+
+The target table to load the data into.
+
+---
+
+###### `sourceBucket`<sup>Required</sup> <a name="sourceBucket" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.sourceBucket"></a>
+
+- *Type:* aws-cdk-lib.aws_s3.IBucket
+
+The bucket where the source data would be coming from.
+
+---
+
+###### `sourcePrefix`<sup>Required</sup> <a name="sourcePrefix" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.sourcePrefix"></a>
+
+- *Type:* string
+
+The location inside the bucket where the data would be ingested from.
+
+---
+
+###### `ingestAdditionalOptions`<sup>Optional</sup> <a name="ingestAdditionalOptions" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.ingestAdditionalOptions"></a>
+
+- *Type:* string
+
+Optional.
+
+Additional options to pass to the `COPY` command. For example, `delimiter '|'` or `ignoreheader 1`
+
+---
+
+###### `role`<sup>Optional</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.ingestData.parameter.role"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+Optional.
+
+The IAM Role to use to access the data in S3. If not provided, it would use the default IAM role configured in the Redshift Namespace
+
+---
+
+##### `mergeToTargetTable` <a name="mergeToTargetTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable"></a>
+
+```typescript
+public mergeToTargetTable(id: string, databaseName: string, sourceTable: string, targetTable: string, sourceColumnId?: string, targetColumnId?: string): CustomResource
+```
+
+Run the `MERGE` query using simplified mode.
+
+This command would do an upsert into the target table.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `sourceTable`<sup>Required</sup> <a name="sourceTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable.parameter.sourceTable"></a>
+
+- *Type:* string
+
+The source table name.
+
+Schema can also be included using the following format: `schemaName.tableName`
+
+---
+
+###### `targetTable`<sup>Required</sup> <a name="targetTable" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable.parameter.targetTable"></a>
+
+- *Type:* string
+
+The target table name.
+
+Schema can also be included using the following format: `schemaName.tableName`
+
+---
+
+###### `sourceColumnId`<sup>Optional</sup> <a name="sourceColumnId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable.parameter.sourceColumnId"></a>
+
+- *Type:* string
+
+The column in the source table that's used to determine whether the rows in the `sourceTable` can be matched with rows in the `targetTable`.
+
+Default is `id`
+
+---
+
+###### `targetColumnId`<sup>Optional</sup> <a name="targetColumnId" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.mergeToTargetTable.parameter.targetColumnId"></a>
+
+- *Type:* string
+
+The column in the target table that's used to determine whether the rows in the `sourceTable` can be matched with rows in the `targetTable`.
+
+Default is `id`
+
+---
+
 ##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.retrieveVersion"></a>
 
 ```typescript
@@ -6966,6 +7282,50 @@ public retrieveVersion(): any
 ```
 
 Retrieve DSF package.json version.
+
+##### `runCustomSQL` <a name="runCustomSQL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.runCustomSQL"></a>
+
+```typescript
+public runCustomSQL(id: string, databaseName: string, sql: string, deleteSql?: string): CustomResource
+```
+
+Runs a custom SQL.
+
+Once the custom resource finishes execution, the attribute `Data` contains an attribute `execId` which contains the Redshift Data API execution ID. You can then use this to retrieve execution results via the `GetStatementResult` API.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.runCustomSQL.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct ID.
+
+---
+
+###### `databaseName`<sup>Required</sup> <a name="databaseName" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.runCustomSQL.parameter.databaseName"></a>
+
+- *Type:* string
+
+The name of the database to run this command.
+
+---
+
+###### `sql`<sup>Required</sup> <a name="sql" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.runCustomSQL.parameter.sql"></a>
+
+- *Type:* string
+
+The sql to run.
+
+---
+
+###### `deleteSql`<sup>Optional</sup> <a name="deleteSql" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroup.runCustomSQL.parameter.deleteSql"></a>
+
+- *Type:* string
+
+Optional.
+
+The sql to run when this resource gets deleted
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 

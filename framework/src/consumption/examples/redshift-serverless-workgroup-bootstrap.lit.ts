@@ -29,11 +29,8 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
       namespace: namespace,
     })
 
-    // Initialize the Redshift Data API
-    const dataAccess = workgroup.accessData('DataApi', true)
-
     // Run a custom SQL to create a customer table
-    const createTable = dataAccess.runCustomSQL('CreateCustomerTable', "defaultdb", 
+    const createTable = workgroup.runCustomSQL('CreateCustomerTable', "defaultdb", 
       `
       CREATE TABLE customer(
         customer_id varchar(50), 
@@ -48,16 +45,16 @@ class ExampleRedshiftServerlessWorkgroupBootstrapStack extends Stack {
     );
 
     // Run a COPY command to load data into the customer table
-    const ingestion = dataAccess.ingestData('ExampleCopy', "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1");
+    const ingestion = workgroup.ingestData('ExampleCopy', "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1");
 
     // Add dependencies between Redshift Data API commands because CDK cannot infer them
     ingestion.node.addDependency(createTable);
 
     // Create an engineering role in the defaultdb
-    const dbRole = dataAccess.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
+    const dbRole = workgroup.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
 
     // Grant the engineering role full access to the public schema in the defaultdb
-    const dbSchema = dataAccess.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
+    const dbSchema = workgroup.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
 
     // Enforce dependencies
     dbSchema.node.addDependency(dbRole);

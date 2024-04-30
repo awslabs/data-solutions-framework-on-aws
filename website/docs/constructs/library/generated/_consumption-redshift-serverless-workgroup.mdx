@@ -77,11 +77,8 @@ The `RedshiftData` construct provides the following helpers for bootstrapping Re
       namespace: namespace,
     })
 
-    // Initialize the Redshift Data API
-    const dataAccess = workgroup.accessData('DataApi', true)
-
     // Run a custom SQL to create a customer table
-    const createTable = dataAccess.runCustomSQL('CreateCustomerTable', "defaultdb",
+    const createTable = workgroup.runCustomSQL('CreateCustomerTable', "defaultdb",
       `
       CREATE TABLE customer(
         customer_id varchar(50),
@@ -96,16 +93,16 @@ The `RedshiftData` construct provides the following helpers for bootstrapping Re
     );
 
     // Run a COPY command to load data into the customer table
-    const ingestion = dataAccess.ingestData('ExampleCopy', "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1");
+    const ingestion = workgroup.ingestData('ExampleCopy', "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1");
 
     // Add dependencies between Redshift Data API commands because CDK cannot infer them
     ingestion.node.addDependency(createTable);
 
     // Create an engineering role in the defaultdb
-    const dbRole = dataAccess.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
+    const dbRole = workgroup.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
 
     // Grant the engineering role full access to the public schema in the defaultdb
-    const dbSchema = dataAccess.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
+    const dbSchema = workgroup.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'public', 'engineering');
 
     // Enforce dependencies
     dbSchema.node.addDependency(dbRole);
@@ -122,11 +119,8 @@ workgroup = dsf.consumption.RedshiftServerlessWorkgroup(self, "DefaultRedshiftSe
     namespace=namespace
 )
 
-# Initialize the Redshift Data API
-data_access = workgroup.access_data("DataApi", True)
-
 # Run a custom SQL to create a customer table
-create_table = data_access.run_custom_sQL("CreateCustomerTable", "defaultdb", """
+create_table = workgroup.run_custom_sQL("CreateCustomerTable", "defaultdb", """
           CREATE TABLE customer(
             customer_id varchar(50),
             salutation varchar(5),
@@ -138,16 +132,16 @@ create_table = data_access.run_custom_sQL("CreateCustomerTable", "defaultdb", ""
           """, "drop table customer")
 
 # Run a COPY command to load data into the customer table
-ingestion = data_access.ingest_data("ExampleCopy", "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
+ingestion = workgroup.ingest_data("ExampleCopy", "defaultdb", "customer", bucket, "data-products/customer/", "csv ignoreheader 1")
 
 # Add dependencies between Redshift Data API commands because CDK cannot infer them
 ingestion.node.add_dependency(create_table)
 
 # Create an engineering role in the defaultdb
-db_role = data_access.create_db_role("EngineeringRole", "defaultdb", "engineering")
+db_role = workgroup.create_db_role("EngineeringRole", "defaultdb", "engineering")
 
 # Grant the engineering role full access to the public schema in the defaultdb
-db_schema = data_access.grant_db_schema_to_role("EngineeringGrant", "defaultdb", "public", "engineering")
+db_schema = workgroup.grant_db_schema_to_role("EngineeringGrant", "defaultdb", "public", "engineering")
 
 # Enforce dependencies
 db_schema.node.add_dependency(db_role)

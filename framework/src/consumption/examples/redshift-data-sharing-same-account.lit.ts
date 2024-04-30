@@ -30,8 +30,7 @@ class ExampleRedshiftDataSharingSameAccountStack extends Stack {
     
     const shareName = 'testshare';
 
-    const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess');
-    const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
+    const createCustomersTable = producerWorkgroup.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
     const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
     newShare.newShareCustomResource.node.addDependency(createCustomersTable);
