@@ -11,7 +11,9 @@ import { RedshiftServerlessNamespace, RedshiftServerlessWorkgroup } from '../../
  * E2E test for RedshiftDataSharing
  * @group e2e/consumption/redshift-data-sharing
  */
+
 jest.setTimeout(6000000);
+
 const app = new App();
 const testStack = new TestStack('RSDataSharingE2ETestStack', app);
 const { stack } = testStack;
@@ -108,24 +110,19 @@ newShare.newShareCustomResource.node.addDependency(createCustomersTable);
 const dataShareArn = newShare.dataShareArn;
 const producerArn = newShare.producerArn;
 
-const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', {
-  databaseName: dbName,
-  dataShareName: shareName,
-  dataShareArn,
-  namespaceId: consumerNamespace.namespaceId,
-});
+const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, consumerNamespace.namespaceId);
 
-grantToConsumer.node.addDependency(newShare);
-grantToConsumer.node.addDependency(consumerNamespace);
+grantToConsumer.resource.node.addDependency(newShare);
+grantToConsumer.resource.node.addDependency(consumerNamespace);
 
-const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare', {
-  databaseName: dbName,
-  dataShareName: shareName,
-  newDatabaseName: 'shared_db',
-  namespaceId: producerNamespace.namespaceId,
-});
+const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare',
+  dbName,
+  shareName,
+  'shared_db',
+  producerNamespace.namespaceId,
+);
 
-consumeShare.node.addDependency(grantToConsumer);
+consumeShare.resource.node.addDependency(grantToConsumer);
 
 const describeDataSharesForProducer = new AwsCustomResource(stack, 'DescribeDataSharesForProducer', {
   onCreate: {
