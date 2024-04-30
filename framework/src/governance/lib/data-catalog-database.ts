@@ -424,8 +424,8 @@ export class DataCatalogDatabase extends TrackedConstruct {
     return crawler;
   }
 
-  public generateTableStatistics (tableName: string,  role: IRole, securityConfiguration: any, sampleSize?: number) : AwsCustomResource {
-    return new AwsCustomResource(this, 'GenerateTableStatistics', {
+  public generateTableStatistics (id: string, tableName: string,  role: IRole, securityConfiguration: any, sampleSize?: number) : AwsCustomResource {
+    return new AwsCustomResource(this, id, {
       policy: AwsCustomResourcePolicy.fromSdkCalls({
         resources: [
           `arn:aws:glue:${Stack.of(this).region}:${Stack.of(this).account}:table/${this.databaseName}/${tableName}`,
