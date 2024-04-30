@@ -25,11 +25,10 @@ describe('With default configuration, the construct should', () => {
     namespace,
   });
 
-  workgroup.accessData('DataApi');
+  workgroup.runCustomSQL('DataApiCheck', 'defaultdb', 'select 1');
   workgroup.catalogTables('CatalogTables', 'default_test_db');
 
   const template = Template.fromStack(stack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('Create a DataVpc with corresponding resources', () => {
     template.hasResourceProperties('AWS::KMS::Key', {
@@ -147,12 +146,8 @@ describe('With default configuration, the construct should', () => {
   });
 
   test('create the Redshift Redshift Data API custom resource', () => {
-    template.hasResourceProperties('AWS::IAM::Role', {
-      ManagedPolicyArns: [
-        {
-          Ref: Match.stringLikeRegexp('DefaultWorkgroupDataApiCrProviderVpcPolicy.*'),
-        },
-      ],
+    template.hasResourceProperties('Custom::RedshiftDataSql', {
+      sql: Match.exact('select 1'),
     });
   });
 
@@ -251,7 +246,7 @@ describe('With custom configuration and global removal policy unset, the constru
     extraSecurityGroups,
   });
 
-  workgroup.accessData('DataApi', true);
+  // workgroup.accessData('DataApi', true);
 
   workgroup.catalogTables('DefaultDbCatalog', 'redshift_default_db', 'defaultdb/public/test%');
 
@@ -281,16 +276,6 @@ describe('With custom configuration and global removal policy unset, the constru
       },
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
-    });
-  });
-
-  test('Has data access custom resource', () => {
-    template.hasResourceProperties('AWS::Lambda::Function', {
-      Handler: Match.exact('index.onEventHandler'),
-    });
-
-    template.hasResourceProperties('AWS::Lambda::Function', {
-      Handler: Match.exact('index.isCompleteHandler'),
     });
   });
 
@@ -377,7 +362,6 @@ describe('With custom configuration and removal policy set to DESTROY, the const
     removalPolicy: RemovalPolicy.DESTROY,
   });
 
-  workgroup.accessData('DataApi');
   workgroup.catalogTables('CatalogTables', 'default_test_db');
 
   const template = Template.fromStack(stack);

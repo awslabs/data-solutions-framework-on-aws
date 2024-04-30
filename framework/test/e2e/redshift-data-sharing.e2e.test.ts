@@ -99,8 +99,7 @@ const consumerWorkgroup = new RedshiftServerlessWorkgroup(stack, 'ConsumerRSWork
 
 const shareName = 'testshare';
 
-const producerDataAccess = producerWorkgroup.accessData('ProducerDataAccess', true);
-const createCustomersTable = producerDataAccess.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
+const createCustomersTable = producerWorkgroup.runCustomSQL('CreateCustomerTable', dbName, 'create table public.customers (id varchar(100) not null, first_name varchar(50) not null, last_name varchar(50) not null, email varchar(100) not null)', 'drop table public.customers');
 
 const newShare = producerWorkgroup.createShare('producer-share', dbName, shareName, 'public', ['public.customers']);
 newShare.newShareCustomResource.node.addDependency(createCustomersTable);
@@ -108,24 +107,14 @@ newShare.newShareCustomResource.node.addDependency(createCustomersTable);
 const dataShareArn = newShare.dataShareArn;
 const producerArn = newShare.producerArn;
 
-const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', {
-  databaseName: dbName,
-  dataShareName: shareName,
-  dataShareArn,
-  namespaceId: consumerNamespace.namespaceId,
-});
+const grantToConsumer = producerWorkgroup.grantAccessToShare('GrantToConsumer', newShare, consumerNamespace.namespaceId, undefined, true);
 
-grantToConsumer.node.addDependency(newShare);
-grantToConsumer.node.addDependency(consumerNamespace);
+grantToConsumer.resource.node.addDependency(newShare.newShareCustomResource);
+grantToConsumer.resource.node.addDependency(consumerNamespace);
 
-const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare', {
-  databaseName: dbName,
-  dataShareName: shareName,
-  newDatabaseName: 'shared_db',
-  namespaceId: producerNamespace.namespaceId,
-});
+const consumeShare = consumerWorkgroup.createDatabaseFromShare('consume-datashare', 'shared_db', shareName, producerNamespace.namespaceId);
 
-consumeShare.node.addDependency(grantToConsumer);
+consumeShare.resource.node.addDependency(grantToConsumer.resource);
 
 const describeDataSharesForProducer = new AwsCustomResource(stack, 'DescribeDataSharesForProducer', {
   onCreate: {

@@ -75,11 +75,10 @@ const workgroup = new RedshiftServerlessWorkgroup(stack, 'RedshiftWorkgroup', {
   removalPolicy: RemovalPolicy.DESTROY,
 });
 
-const dataApi = workgroup.accessData('DataApi', true);
-const schema = dataApi.runCustomSQL('TestCustom', 'defaultdb', 'create schema testschema');
-const dbRole = dataApi.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
-const dbSchema = dataApi.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'testschema', 'engineering');
-const readSchema = dataApi.grantSchemaReadToRole('EngineeringGrantRead', 'defaultdb', 'public', 'engineering');
+const schema = workgroup.runCustomSQL('TestCustom', 'defaultdb', 'create schema testschema');
+const dbRole = workgroup.createDbRole('EngineeringRole', 'defaultdb', 'engineering');
+const dbSchema = workgroup.grantDbSchemaToRole('EngineeringGrant', 'defaultdb', 'testschema', 'engineering');
+const readSchema = workgroup.grantSchemaReadToRole('EngineeringGrantRead', 'defaultdb', 'public', 'engineering');
 
 dbSchema.node.addDependency(dbRole);
 dbSchema.node.addDependency(schema);
