@@ -1,0 +1,12 @@
+{
+    //"image": "dsf-devcontainer",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "runArgs": ["--privileged"],
+    "customizations": {
+      "vscode": {
+        "extensions": ["streetsidesoftware.code-spell-checker"]
+      }
+    }
+}
