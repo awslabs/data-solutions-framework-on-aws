@@ -4853,7 +4853,7 @@ The time in ms to wait for a topic to be completely created on the controller no
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration">createCLusterConfiguration</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration">createClusterConfiguration</a></code> | *No description.* |
 
 ---
 
@@ -4889,51 +4889,51 @@ Any object.
 
 ---
 
-##### `createCLusterConfiguration` <a name="createCLusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration"></a>
+##### `createClusterConfiguration` <a name="createClusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration"></a>
 
 ```typescript
 import { streaming } from '@cdklabs/aws-data-solutions-framework'
 
-streaming.MskProvisioned.createCLusterConfiguration(scope: Construct, id: string, name: string, serverPropertiesFilePath: string, kafkaVersions?: KafkaVersion[], configurationDescription?: string, latestRevision?: LatestRevisionProperty)
+streaming.MskProvisioned.createClusterConfiguration(scope: Construct, id: string, name: string, serverPropertiesFilePath: string, kafkaVersions?: KafkaVersion[], configurationDescription?: string, latestRevision?: LatestRevisionProperty)
 ```
 
-###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.scope"></a>
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.id"></a>
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.name"></a>
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.name"></a>
 
 - *Type:* string
 
 ---
 
-###### `serverPropertiesFilePath`<sup>Required</sup> <a name="serverPropertiesFilePath" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.serverPropertiesFilePath"></a>
+###### `serverPropertiesFilePath`<sup>Required</sup> <a name="serverPropertiesFilePath" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.serverPropertiesFilePath"></a>
 
 - *Type:* string
 
 ---
 
-###### `kafkaVersions`<sup>Optional</sup> <a name="kafkaVersions" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.kafkaVersions"></a>
+###### `kafkaVersions`<sup>Optional</sup> <a name="kafkaVersions" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.kafkaVersions"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion[]
 
 ---
 
-###### `configurationDescription`<sup>Optional</sup> <a name="configurationDescription" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.configurationDescription"></a>
+###### `configurationDescription`<sup>Optional</sup> <a name="configurationDescription" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.configurationDescription"></a>
 
 - *Type:* string
 
 ---
 
-###### `latestRevision`<sup>Optional</sup> <a name="latestRevision" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createCLusterConfiguration.parameter.latestRevision"></a>
+###### `latestRevision`<sup>Optional</sup> <a name="latestRevision" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.latestRevision"></a>
 
 - *Type:* aws-cdk-lib.aws_msk.CfnConfiguration.LatestRevisionProperty
 
@@ -4944,31 +4944,32 @@ streaming.MskProvisioned.createCLusterConfiguration(scope: Construct, id: string
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerAtRestEncryptionKey">brokerAtRestEncryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key created by the construct for the brokers When no KMS key is passed. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cloudwatchlogUpdateZookepeerLambda">cloudwatchlogUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | The MSK cluster created by the construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.roleUpdateZookepeerLambda">roleUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.securityGroupUpdateZookepeerLambda">securityGroupUpdateZookepeerLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC created by the construct or the one passed to it. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLambdaFunction">applyConfigurationLambdaFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerCloudWatchLogGroup">brokerCloudWatchLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda">cloudwatchlogApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.clusterConfiguration">clusterConfiguration</a></code> | <code>aws-cdk-lib.aws_msk.CfnConfiguration</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrLambdaRole">mskIamACrudAdminCrLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerFunction">mskIamACrudAdminCrOnEventHandlerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerLogGroup">mskIamACrudAdminCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrSecurityGroup">mskIamACrudAdminCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrLambdaRole">mskInClusterAclCrLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrOnEventHandlerFunction">mskInClusterAclCrOnEventHandlerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrOnEventHandlerLogGroup">mskInClusterAclCrOnEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrSecurityGroup">mskInClusterAclCrSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.roleApplyConfigurationLambda">roleApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.securityGroupApplyConfigurationLambda">securityGroupApplyConfigurationLambda</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLambdaRole">updateConnectivityLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivitySecurityGroup">updateConnectivitySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.encryptionAtRestKey">encryptionAtRestKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key for encrypting data within the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction">updateZookepeerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup">updateZookepeerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole">updateZookepeerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup">updateZookepeerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | THe Security Group associated to the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the MSK cluster is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationFunction">applyConfigurationFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLogGroup">applyConfigurationLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationRole">applyConfigurationRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationSecurityGroup">applyConfigurationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerLogGroup">brokerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch log group associated with brokers activity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group associated with the MSK brokers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.clusterConfiguration">clusterConfiguration</a></code> | <code>aws-cdk-lib.aws_msk.CfnConfiguration</code> | The MSK cluster configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminFunction">iamCrudAdminFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminLogGroup">iamCrudAdminLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminRole">iamCrudAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminSecurityGroup">iamCrudAdminSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclFunction">inClusterAclFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclLogGroup">inClusterAclLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclRole">inClusterAclRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclSecurityGroup">inClusterAclSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole">updateConnectivityRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivitySecurityGroup">updateConnectivitySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for updating MSK Connectivity. |
 
 ---
 
@@ -4984,28 +4985,6 @@ The tree node.
 
 ---
 
-##### `brokerAtRestEncryptionKey`<sup>Required</sup> <a name="brokerAtRestEncryptionKey" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerAtRestEncryptionKey"></a>
-
-```typescript
-public readonly brokerAtRestEncryptionKey: IKey;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.IKey
-
-The KMS CMK key created by the construct for the brokers When no KMS key is passed.
-
----
-
-##### `cloudwatchlogUpdateZookepeerLambda`<sup>Required</sup> <a name="cloudwatchlogUpdateZookepeerLambda" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cloudwatchlogUpdateZookepeerLambda"></a>
-
-```typescript
-public readonly cloudwatchlogUpdateZookepeerLambda: ILogGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_logs.ILogGroup
-
----
-
 ##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cluster"></a>
 
 ```typescript
@@ -5018,23 +4997,63 @@ The MSK cluster created by the construct.
 
 ---
 
-##### `roleUpdateZookepeerLambda`<sup>Required</sup> <a name="roleUpdateZookepeerLambda" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.roleUpdateZookepeerLambda"></a>
+##### `encryptionAtRestKey`<sup>Required</sup> <a name="encryptionAtRestKey" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.encryptionAtRestKey"></a>
 
 ```typescript
-public readonly roleUpdateZookepeerLambda: IRole;
+public readonly encryptionAtRestKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS CMK key for encrypting data within the cluster.
+
+---
+
+##### `updateZookepeerFunction`<sup>Required</sup> <a name="updateZookepeerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction"></a>
+
+```typescript
+public readonly updateZookepeerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerLogGroup`<sup>Required</sup> <a name="updateZookepeerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup"></a>
+
+```typescript
+public readonly updateZookepeerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerRole`<sup>Required</sup> <a name="updateZookepeerRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole"></a>
+
+```typescript
+public readonly updateZookepeerRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The IAM Role used by the Lambda responsible for updating Zookeeper.
+
 ---
 
-##### `securityGroupUpdateZookepeerLambda`<sup>Required</sup> <a name="securityGroupUpdateZookepeerLambda" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.securityGroupUpdateZookepeerLambda"></a>
+##### `updateZookepeerSecurityGroup`<sup>Required</sup> <a name="updateZookepeerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup"></a>
 
 ```typescript
-public readonly securityGroupUpdateZookepeerLambda: ISecurityGroup;
+public readonly updateZookepeerSecurityGroup: ISecurityGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+THe Security Group associated to the Lambda responsible for updating Zookeeper.
 
 ---
 
@@ -5046,27 +5065,67 @@ public readonly vpc: IVpc;
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
-The VPC created by the construct or the one passed to it.
+The VPC where the MSK cluster is deployed.
 
 ---
 
-##### `applyConfigurationLambdaFunction`<sup>Optional</sup> <a name="applyConfigurationLambdaFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLambdaFunction"></a>
+##### `applyConfigurationFunction`<sup>Optional</sup> <a name="applyConfigurationFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationFunction"></a>
 
 ```typescript
-public readonly applyConfigurationLambdaFunction: IFunction;
+public readonly applyConfigurationFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
+The Lambda function responsible for applying MSK configuration.
+
 ---
 
-##### `brokerCloudWatchLogGroup`<sup>Optional</sup> <a name="brokerCloudWatchLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerCloudWatchLogGroup"></a>
+##### `applyConfigurationLogGroup`<sup>Optional</sup> <a name="applyConfigurationLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLogGroup"></a>
 
 ```typescript
-public readonly brokerCloudWatchLogGroup: ILogGroup;
+public readonly applyConfigurationLogGroup: ILogGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration.
+
+---
+
+##### `applyConfigurationRole`<sup>Optional</sup> <a name="applyConfigurationRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationRole"></a>
+
+```typescript
+public readonly applyConfigurationRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the Lambda responsible for applying MSK configuration.
+
+---
+
+##### `applyConfigurationSecurityGroup`<sup>Optional</sup> <a name="applyConfigurationSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationSecurityGroup"></a>
+
+```typescript
+public readonly applyConfigurationSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for applying MSK configuration.
+
+---
+
+##### `brokerLogGroup`<sup>Optional</sup> <a name="brokerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerLogGroup"></a>
+
+```typescript
+public readonly brokerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch log group associated with brokers activity.
 
 ---
 
@@ -5078,15 +5137,7 @@ public readonly brokerSecurityGroup: ISecurityGroup;
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
----
-
-##### `cloudwatchlogApplyConfigurationLambda`<sup>Optional</sup> <a name="cloudwatchlogApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cloudwatchlogApplyConfigurationLambda"></a>
-
-```typescript
-public readonly cloudwatchlogApplyConfigurationLambda: ILogGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+The security group associated with the MSK brokers.
 
 ---
 
@@ -5098,105 +5149,103 @@ public readonly clusterConfiguration: CfnConfiguration;
 
 - *Type:* aws-cdk-lib.aws_msk.CfnConfiguration
 
----
-
-##### `mskIamACrudAdminCrLambdaRole`<sup>Optional</sup> <a name="mskIamACrudAdminCrLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrLambdaRole"></a>
-
-```typescript
-public readonly mskIamACrudAdminCrLambdaRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
+The MSK cluster configuration.
 
 ---
 
-##### `mskIamACrudAdminCrOnEventHandlerFunction`<sup>Optional</sup> <a name="mskIamACrudAdminCrOnEventHandlerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerFunction"></a>
+##### `iamCrudAdminFunction`<sup>Optional</sup> <a name="iamCrudAdminFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminFunction"></a>
 
 ```typescript
-public readonly mskIamACrudAdminCrOnEventHandlerFunction: IFunction;
+public readonly iamCrudAdminFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
+The Lambda function responsible for CRUD operations via IAM authentication.
+
 ---
 
-##### `mskIamACrudAdminCrOnEventHandlerLogGroup`<sup>Optional</sup> <a name="mskIamACrudAdminCrOnEventHandlerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrOnEventHandlerLogGroup"></a>
+##### `iamCrudAdminLogGroup`<sup>Optional</sup> <a name="iamCrudAdminLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminLogGroup"></a>
 
 ```typescript
-public readonly mskIamACrudAdminCrOnEventHandlerLogGroup: ILogGroup;
+public readonly iamCrudAdminLogGroup: ILogGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
----
-
-##### `mskIamACrudAdminCrSecurityGroup`<sup>Optional</sup> <a name="mskIamACrudAdminCrSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskIamACrudAdminCrSecurityGroup"></a>
-
-```typescript
-public readonly mskIamACrudAdminCrSecurityGroup: ISecurityGroup[];
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+The CloudWatch Log Group used by the Lambda responsible for CRUD operations via IAM authentication.
 
 ---
 
-##### `mskInClusterAclCrLambdaRole`<sup>Optional</sup> <a name="mskInClusterAclCrLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrLambdaRole"></a>
+##### `iamCrudAdminRole`<sup>Optional</sup> <a name="iamCrudAdminRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminRole"></a>
 
 ```typescript
-public readonly mskInClusterAclCrLambdaRole: IRole;
+public readonly iamCrudAdminRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The IAM role used by the Lambda responsible for CRUD operations via IAM authentication.
+
 ---
 
-##### `mskInClusterAclCrOnEventHandlerFunction`<sup>Optional</sup> <a name="mskInClusterAclCrOnEventHandlerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrOnEventHandlerFunction"></a>
+##### `iamCrudAdminSecurityGroup`<sup>Optional</sup> <a name="iamCrudAdminSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminSecurityGroup"></a>
 
 ```typescript
-public readonly mskInClusterAclCrOnEventHandlerFunction: IFunction;
+public readonly iamCrudAdminSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for CRUD operations via IAM authentication.
+
+---
+
+##### `inClusterAclFunction`<sup>Optional</sup> <a name="inClusterAclFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclFunction"></a>
+
+```typescript
+public readonly inClusterAclFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
+The Lambda function responsible for CRUD operations via mTLS authentication.
+
 ---
 
-##### `mskInClusterAclCrOnEventHandlerLogGroup`<sup>Optional</sup> <a name="mskInClusterAclCrOnEventHandlerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrOnEventHandlerLogGroup"></a>
+##### `inClusterAclLogGroup`<sup>Optional</sup> <a name="inClusterAclLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclLogGroup"></a>
 
 ```typescript
-public readonly mskInClusterAclCrOnEventHandlerLogGroup: ILogGroup;
+public readonly inClusterAclLogGroup: ILogGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
----
-
-##### `mskInClusterAclCrSecurityGroup`<sup>Optional</sup> <a name="mskInClusterAclCrSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.mskInClusterAclCrSecurityGroup"></a>
-
-```typescript
-public readonly mskInClusterAclCrSecurityGroup: ISecurityGroup[];
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication.
 
 ---
 
-##### `roleApplyConfigurationLambda`<sup>Optional</sup> <a name="roleApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.roleApplyConfigurationLambda"></a>
+##### `inClusterAclRole`<sup>Optional</sup> <a name="inClusterAclRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclRole"></a>
 
 ```typescript
-public readonly roleApplyConfigurationLambda: IRole;
+public readonly inClusterAclRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication.
+
 ---
 
-##### `securityGroupApplyConfigurationLambda`<sup>Optional</sup> <a name="securityGroupApplyConfigurationLambda" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.securityGroupApplyConfigurationLambda"></a>
+##### `inClusterAclSecurityGroup`<sup>Optional</sup> <a name="inClusterAclSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclSecurityGroup"></a>
 
 ```typescript
-public readonly securityGroupApplyConfigurationLambda: ISecurityGroup[];
+public readonly inClusterAclSecurityGroup: ISecurityGroup[];
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication.
 
 ---
 
@@ -5208,15 +5257,7 @@ public readonly updateConnectivityFunction: IFunction;
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
----
-
-##### `updateConnectivityLambdaRole`<sup>Optional</sup> <a name="updateConnectivityLambdaRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLambdaRole"></a>
-
-```typescript
-public readonly updateConnectivityLambdaRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
+The Lambda function responsible for updating MSK Connectivity.
 
 ---
 
@@ -5228,6 +5269,20 @@ public readonly updateConnectivityLogGroup: ILogGroup;
 
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
+The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity.
+
+---
+
+##### `updateConnectivityRole`<sup>Optional</sup> <a name="updateConnectivityRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole"></a>
+
+```typescript
+public readonly updateConnectivityRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the Lambda responsible for updating MSK Connectivity.
+
 ---
 
 ##### `updateConnectivitySecurityGroup`<sup>Optional</sup> <a name="updateConnectivitySecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivitySecurityGroup"></a>
@@ -5237,6 +5292,8 @@ public readonly updateConnectivitySecurityGroup: ISecurityGroup[];
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for updating MSK Connectivity.
 
 ---
 

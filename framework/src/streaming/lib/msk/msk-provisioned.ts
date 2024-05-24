@@ -40,7 +40,7 @@ export class MskProvisioned extends TrackedConstruct {
 
   public static readonly MSK_DEFAULT_VERSION: KafkaVersion = KafkaVersion.V3_5_1;
 
-  public static createCLusterConfiguration(
+  public static createClusterConfiguration(
     scope: Construct,
     id: string,
     name: string,
@@ -67,41 +67,112 @@ export class MskProvisioned extends TrackedConstruct {
    */
   public readonly cluster: CfnCluster;
   /**
-   * The VPC created by the construct or the one passed to it
+   * The VPC where the MSK cluster is deployed
    */
   public readonly vpc: IVpc;
 
   /**
-   * The KMS CMK key created by the construct for the brokers
-   * When no KMS key is passed
+   * The KMS CMK key for encrypting data within the cluster
    */
-  public readonly brokerAtRestEncryptionKey: IKey;
+  public readonly encryptionAtRestKey: IKey;
 
-  public readonly cloudwatchlogUpdateZookepeerLambda: ILogGroup;
-  public readonly roleUpdateZookepeerLambda: IRole;
-  public readonly securityGroupUpdateZookepeerLambda: ISecurityGroup;
-  public readonly cloudwatchlogApplyConfigurationLambda?: ILogGroup;
-  public readonly roleApplyConfigurationLambda?: IRole;
-  public readonly securityGroupApplyConfigurationLambda?: ISecurityGroup[];
-  public readonly applyConfigurationLambdaFunction?: IFunction;
-  public readonly clusterConfiguration?: CfnConfiguration;
-  public readonly brokerSecurityGroup?: ISecurityGroup;
-  public readonly brokerCloudWatchLogGroup?: ILogGroup;
+  /**
+   * The Lambda function responsible for updating Zookeeper
+   */
+  public readonly updateZookepeerFunction: IFunction;
+  /**
+   * The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper
+   */
+  public readonly updateZookepeerLogGroup: ILogGroup;
+  /**
+   * The IAM Role used by the Lambda responsible for updating Zookeeper
+   */
+  public readonly updateZookepeerRole: IRole;
+  /**
+   * THe Security Group associated to the Lambda responsible for updating Zookeeper
+   */
+  public readonly updateZookepeerSecurityGroup: ISecurityGroup;
 
-  public readonly mskIamACrudAdminCrLambdaRole?: IRole;
-  public readonly mskIamACrudAdminCrOnEventHandlerLogGroup?: ILogGroup;
-  public readonly mskIamACrudAdminCrOnEventHandlerFunction?: IFunction;
-  public readonly mskIamACrudAdminCrSecurityGroup?: ISecurityGroup[];
+  /**
+   * The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration
+   */
+  public readonly applyConfigurationLogGroup?: ILogGroup;
+  /**
+   * The IAM Role used by the Lambda responsible for applying MSK configuration
+   */
+  public readonly applyConfigurationRole?: IRole;
+  /**
+   * The Security Group used by the Lambda responsible for applying MSK configuration
+   */
+  public readonly applyConfigurationSecurityGroup?: ISecurityGroup[];
+  /**
+   * The Lambda function responsible for applying MSK configuration
+   */
+  public readonly applyConfigurationFunction?: IFunction;
 
-  public readonly mskInClusterAclCrLambdaRole?: IRole;
-  public readonly mskInClusterAclCrOnEventHandlerLogGroup?: ILogGroup;
-  public readonly mskInClusterAclCrOnEventHandlerFunction?: IFunction;
-  public readonly mskInClusterAclCrSecurityGroup?: ISecurityGroup[];
-
-  public readonly updateConnectivityLambdaRole?: IRole;
+  /**
+   * The IAM Role used by the Lambda responsible for updating MSK Connectivity
+   */
+  public readonly updateConnectivityRole?: IRole;
+  /**
+   * The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity
+   */
   public readonly updateConnectivityLogGroup?: ILogGroup;
+  /**
+   * The Lambda function responsible for updating MSK Connectivity
+   */
   public readonly updateConnectivityFunction?: IFunction;
+  /**
+   * The Security Group used by the Lambda responsible for updating MSK Connectivity
+   */
   public readonly updateConnectivitySecurityGroup?: ISecurityGroup[];
+
+  /**
+   * The MSK cluster configuration
+   */
+  public readonly clusterConfiguration?: CfnConfiguration;
+  /**
+   * The security group associated with the MSK brokers
+   */
+  public readonly brokerSecurityGroup?: ISecurityGroup;
+  /**
+   * The CloudWatch log group associated with brokers activity
+   */
+  public readonly brokerLogGroup?: ILogGroup;
+
+  /**
+   * The IAM role used by the Lambda responsible for CRUD operations via IAM authentication
+   */
+  public readonly iamCrudAdminRole?: IRole;
+  /**
+   * The CloudWatch Log Group used by the Lambda responsible for CRUD operations via IAM authentication
+   */
+  public readonly iamCrudAdminLogGroup?: ILogGroup;
+  /**
+   * The Lambda function responsible for CRUD operations via IAM authentication
+   */
+  public readonly iamCrudAdminFunction?: IFunction;
+  /**
+   * The Security Group used by the Lambda responsible for CRUD operations via IAM authentication
+   */
+  public readonly iamCrudAdminSecurityGroup?: ISecurityGroup[];
+
+  /**
+   * The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication
+   */
+  public readonly inClusterAclRole?: IRole;
+  /**
+   * The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication
+   */
+  public readonly inClusterAclLogGroup?: ILogGroup;
+  /**
+   * The Lambda function responsible for CRUD operations via mTLS authentication
+   */
+  public readonly inClusterAclFunction?: IFunction;
+  /**
+   * The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication
+   */
+  public readonly inClusterAclSecurityGroup?: ISecurityGroup[];
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly region: string;
@@ -146,6 +217,7 @@ export class MskProvisioned extends TrackedConstruct {
     if (!props?.vpc) {
       this.vpc = new DataVpc(scope, 'Vpc', {
         vpcCidr: '10.0.0.0/16',
+        removalPolicy: this.removalPolicy,
       }).vpc;
     } else {
 
@@ -163,13 +235,13 @@ export class MskProvisioned extends TrackedConstruct {
     this.clusterVpcConnectivity = props?.vpcConnectivity;
     this.placeClusterHandlerInVpc = props?.placeClusterHandlerInVpc ?? true;
 
-    //if vpcSubnets is pass without VPC throw error or if vpc is passed without vpcSubnets throw error
+    //if vpcSubnets is pass without VPC throw error
     if (props?.subnets && !props?.vpc || !props?.subnets && props?.vpc) {
       throw new Error('Need to pass both vpcSubnets and vpc');
     } else if (props?.subnets) {
       this.subnetSelectionIds = this.vpc.selectSubnets(props.subnets).subnetIds;
     } else {
-      this.subnetSelectionIds = this.vpc.privateSubnets.map((subnet) => subnet.subnetId);
+      this.subnetSelectionIds = this.vpc.selectSubnets().subnetIds;
     }
 
     this.connections = new Connections({
@@ -193,19 +265,19 @@ export class MskProvisioned extends TrackedConstruct {
 
     if (!props?.ebsStorage?.encryptionKey) {
 
-      this.brokerAtRestEncryptionKey = new Key(this, 'BrokerAtRestEncryptionKey', {
+      this.encryptionAtRestKey = new Key(this, 'BrokerAtRestEncryptionKey', {
         enableKeyRotation: true,
         description: `Encryption key for MSK broker at rest for cluster ${props?.clusterName ?? 'default-msk-provisioned'}`,
         removalPolicy: this.removalPolicy,
       });
 
     } else {
-      this.brokerAtRestEncryptionKey = props.ebsStorage.encryptionKey;
+      this.encryptionAtRestKey = props.ebsStorage.encryptionKey;
     }
 
     const encryptionAtRest = {
       dataVolumeKmsKeyId:
-        this.brokerAtRestEncryptionKey.keyId,
+        this.encryptionAtRestKey.keyId,
     };
 
     this.mskBrokerinstanceType = props?.brokerInstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
@@ -235,7 +307,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     let loggingInfo;
 
-    [loggingInfo, this.brokerCloudWatchLogGroup] = monitoringSetup(this, id, this.removalPolicy, props?.logging);
+    [loggingInfo, this.brokerLogGroup] = monitoringSetup(this, id, this.removalPolicy, props?.logging);
 
     //check the number of broker vs the number of AZs, it needs to be multiple
 
@@ -278,6 +350,8 @@ export class MskProvisioned extends TrackedConstruct {
       clientAuthentication: clientAuthentication,
       currentVersion: props?.currentVersion,
     });
+
+    this.cluster.applyRemovalPolicy(this.removalPolicy);
 
     //The section below address a best practice to change the zookeper security group
     //To an indepenedent one
@@ -335,7 +409,7 @@ export class MskProvisioned extends TrackedConstruct {
       description: 'Policy for modifying security group for MSK zookeeper',
     });
 
-    this.securityGroupUpdateZookepeerLambda = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
+    this.updateZookepeerSecurityGroup = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
       vpc: this.vpc,
       allowAllOutbound: true,
     });
@@ -343,22 +417,22 @@ export class MskProvisioned extends TrackedConstruct {
     //this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
 
     const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(this,
-      this.securityGroupUpdateZookepeerLambda,
+      this.updateZookepeerSecurityGroup,
       this.subnetSelectionIds,
       'vpcPolicyLambdaUpdateZookeeperSg');
 
-    this.roleUpdateZookepeerLambda = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
+    this.updateZookepeerRole = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
 
-    this.roleUpdateZookepeerLambda.addManagedPolicy(lambdaExecutionRolePolicy);
-    this.roleUpdateZookepeerLambda.addManagedPolicy(vpcPolicyLambda);
+    this.updateZookepeerRole.addManagedPolicy(lambdaExecutionRolePolicy);
+    this.updateZookepeerRole.addManagedPolicy(vpcPolicyLambda);
 
-    this.cloudwatchlogUpdateZookepeerLambda = createLogGroup(this, 'zookeeperLambdaLogGroup', this.removalPolicy);
+    this.updateZookepeerLogGroup = createLogGroup(this, 'zookeeperLambdaLogGroup', this.removalPolicy);
 
-    this.cloudwatchlogUpdateZookepeerLambda.grantWrite(this.roleUpdateZookepeerLambda);
+    this.updateZookepeerLogGroup.grantWrite(this.updateZookepeerRole);
 
-    const func = new Function(this, 'UpdateZookeeperSg', {
+    const updateZookepeerLambda = new Function(this, 'UpdateZookeeperSg', {
       handler: 'index.onEventHandler',
       code: Code.fromAsset(join(__dirname, './resources/lambdas/zooKeeperSecurityGroupUpdate')),
       runtime: Runtime.NODEJS_20_X,
@@ -368,16 +442,18 @@ export class MskProvisioned extends TrackedConstruct {
         VPC_ID: this.vpc.vpcId,
         SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
       },
-      role: this.roleUpdateZookepeerLambda,
+      role: this.updateZookepeerRole,
       timeout: Duration.seconds(30),
       vpc: this.placeClusterHandlerInVpc ? this.vpc : undefined,
       vpcSubnets: this.placeClusterHandlerInVpc ? this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
-      logGroup: this.cloudwatchlogUpdateZookepeerLambda,
-      securityGroups: this.placeClusterHandlerInVpc ? [this.securityGroupUpdateZookepeerLambda] : undefined,
+      logGroup: this.updateZookepeerLogGroup,
+      securityGroups: this.placeClusterHandlerInVpc ? [this.updateZookepeerSecurityGroup] : undefined,
     });
 
+    this.updateZookepeerFunction = updateZookepeerLambda;
+
     new Trigger(this, 'UpdateZookeeperSgTrigger', {
-      handler: func,
+      handler: updateZookepeerLambda,
       timeout: Duration.minutes(10),
       invocationType: InvocationType.REQUEST_RESPONSE,
       executeAfter: [this.cluster],
@@ -391,6 +467,7 @@ export class MskProvisioned extends TrackedConstruct {
       clientAuthentication: props?.clientAuthentication ?? ClientAuthentication.sasl({ iam: true }),
       kafkaClientLogLevel: props?.kafkaClientLogLevel,
       clusterType: MskClusterType.PROVISIONED,
+      removalPolicy: this.removalPolicy,
     });
 
     // Create the configuration
@@ -398,15 +475,14 @@ export class MskProvisioned extends TrackedConstruct {
 
     if (!props?.configuration) {
 
-      this.clusterConfiguration =
-        MskProvisioned.createCLusterConfiguration(
-          this, 'ClusterConfigDsf',
-          //This must be unique to avoid failing the stack creation
-          //If we create the construct twice
-          //Name of a configuration is required
-          `dsfconfiguration${Utils.generateHash(Stack.of(this).stackName).slice(0, 3)}`,
-          join(__dirname, './resources/cluster-config-msk-provisioned'),
-        );
+      this.clusterConfiguration = MskProvisioned.createClusterConfiguration(
+        this, 'ClusterConfig',
+        //This must be unique to avoid failing the stack creation
+        //If we create the construct twice
+        // Name of a configuration is required
+        `dsfconfiguration${Utils.generateUniqueHash(this, 'ClusterConfig')}`,
+        join(__dirname, './resources/cluster-config-msk-provisioned'),
+      );
 
       this.cluster.node.addDependency(this.clusterConfiguration);
 
@@ -414,25 +490,25 @@ export class MskProvisioned extends TrackedConstruct {
         arn: this.clusterConfiguration.attrArn,
         revision: this.clusterConfiguration.attrLatestRevisionRevision,
       };
-
     } else {
-
       clusterConfigurationInfo = props.configuration;
     }
 
-    let applyClusterConfigurationProvider: DsfProvider = applyClusterConfiguration(this,
+    let applyClusterConfigurationProvider: DsfProvider = applyClusterConfiguration(
+      this,
       this.cluster,
       this.vpc,
       this.subnetSelectionIds,
       this.removalPolicy,
-      this.brokerAtRestEncryptionKey,
+      this.encryptionAtRestKey,
       clusterConfigurationInfo,
-      this.placeClusterHandlerInVpc);
+      this.placeClusterHandlerInVpc,
+    );
 
-    this.cloudwatchlogApplyConfigurationLambda = applyClusterConfigurationProvider.isCompleteHandlerLog;
-    this.roleApplyConfigurationLambda = applyClusterConfigurationProvider.isCompleteHandlerRole;
-    this.securityGroupApplyConfigurationLambda = applyClusterConfigurationProvider.securityGroups;
-    this.applyConfigurationLambdaFunction = applyClusterConfigurationProvider.isCompleteHandlerFunction;
+    this.applyConfigurationLogGroup = applyClusterConfigurationProvider.isCompleteHandlerLog;
+    this.applyConfigurationRole = applyClusterConfigurationProvider.isCompleteHandlerRole;
+    this.applyConfigurationSecurityGroup = applyClusterConfigurationProvider.securityGroups;
+    this.applyConfigurationFunction = applyClusterConfigurationProvider.isCompleteHandlerFunction;
 
 
     let updateConnectivityProvider: DsfProvider =
@@ -442,12 +518,12 @@ export class MskProvisioned extends TrackedConstruct {
         this.vpc,
         this.subnetSelectionIds,
         this.removalPolicy,
-        this.brokerAtRestEncryptionKey,
+        this.encryptionAtRestKey,
         this.placeClusterHandlerInVpc);
 
 
     this.updateConnectivityFunction = updateConnectivityProvider.onEventHandlerFunction;
-    this.updateConnectivityLambdaRole = updateConnectivityProvider.onEventHandlerRole;
+    this.updateConnectivityRole = updateConnectivityProvider.onEventHandlerRole;
     this.updateConnectivityLogGroup = updateConnectivityProvider.onEventHandlerLogGroup;
     this.updateConnectivitySecurityGroup = updateConnectivityProvider.securityGroups;
 
@@ -455,14 +531,12 @@ export class MskProvisioned extends TrackedConstruct {
     //Applly the cluster configuration if provided and the cluster is created without mTLS auth
     if (this.iamAcl) {
 
-      this.mskIamACrudAdminCrLambdaRole = this.kafkaApi.mskAclRole;
-      this.mskIamACrudAdminCrOnEventHandlerLogGroup = this.kafkaApi.mskAclLogGroup;
-      this.mskIamACrudAdminCrOnEventHandlerFunction = this.kafkaApi.mskAclFunction;
-      this.mskIamACrudAdminCrSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
+      this.iamCrudAdminRole = this.kafkaApi.mskAclRole;
+      this.iamCrudAdminLogGroup = this.kafkaApi.mskAclLogGroup;
+      this.iamCrudAdminFunction = this.kafkaApi.mskAclFunction;
+      this.iamCrudAdminSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
 
       if (!this.inClusterAcl && clusterConfigurationInfo) {
-
-        console.log(!this.inClusterAcl);
 
         //Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
@@ -506,10 +580,10 @@ export class MskProvisioned extends TrackedConstruct {
         throw new Error('TLS Authentication requires a certificate definition');
       }
 
-      this.mskInClusterAclCrLambdaRole = this.kafkaApi.mskAclRole;
-      this.mskInClusterAclCrOnEventHandlerLogGroup = this.kafkaApi.mskAclLogGroup;
-      this.mskInClusterAclCrOnEventHandlerFunction = this.kafkaApi.mskAclFunction;
-      this.mskInClusterAclCrSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
+      this.inClusterAclRole = this.kafkaApi.mskAclRole;
+      this.inClusterAclLogGroup = this.kafkaApi.mskAclLogGroup;
+      this.inClusterAclFunction = this.kafkaApi.mskAclFunction;
+      this.inClusterAclSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
 
       // Update cluster configuration as a last step before handing the cluster to customer.
       // This will set `allow.everyone.if.no.acl.found` to `false`

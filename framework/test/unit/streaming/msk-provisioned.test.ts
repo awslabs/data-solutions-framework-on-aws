@@ -127,7 +127,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     'arn:aws:acm-pca:eu-west-1:123456789012:certificate-authority/aaaaaaaa-bbbb-454a-cccc-b454877f0d1b');
 
   let clusterConfiguration: CfnConfiguration =
-    MskProvisioned.createCLusterConfiguration(
+    MskProvisioned.createClusterConfiguration(
       stack, 'ClusterConfigDsf',
       'dsfconfiguration',
       join(__dirname, './resources/cluster-config-msk-provisioned'),
@@ -270,7 +270,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     'arn:aws:acm-pca:eu-west-1:123456789012:certificate-authority/aaaaaaaa-bbbb-454a-cccc-b454877f0d1b');
 
   let clusterConfiguration: CfnConfiguration =
-    MskProvisioned.createCLusterConfiguration(
+    MskProvisioned.createClusterConfiguration(
       stack, 'ClusterConfigDsf',
       'dsfconfiguration',
       join(__dirname, './resources/cluster-config-msk-provisioned'),
