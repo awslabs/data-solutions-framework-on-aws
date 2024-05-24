@@ -8,15 +8,9 @@ const stack = new cdk.Stack(app, 'DsfTestMskServerless');
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-
+/// !show
 const msk = new MskServerless(stack, 'cluster');
 
-new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.cluster.attrArn,
-});
-
-
-/// !show
 let topic: MskTopic =  {
   topic: 'topic1',
   numPartitions: 3,
@@ -25,3 +19,7 @@ let topic: MskTopic =  {
 
 msk.addTopic('topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
 /// !hide
+
+new cdk.CfnOutput(stack, 'mskArn', {
+  value: msk.cluster.attrArn,
+});

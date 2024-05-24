@@ -4580,7 +4580,7 @@ the ID of the CDK Construct.
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy">deleteClusterPolicy</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers">getBootstrapBrokers</a></code> | Method to get bootstrap broker connection string. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers">getBootstrapBrokers</a></code> | Method to get bootstrap broker connection string based on the authentication mode. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy">putClusterPolicy</a></code> | *No description.* |
@@ -4610,11 +4610,13 @@ public deleteClusterPolicy(): void
 public getBootstrapBrokers(authentication: Authentication): string
 ```
 
-Method to get bootstrap broker connection string.
+Method to get bootstrap broker connection string based on the authentication mode.
 
 ###### `authentication`<sup>Required</sup> <a name="authentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers.parameter.authentication"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+the authentication mode.
 
 ---
 
@@ -5334,7 +5336,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic">addTopic</a></code> | Creates a topic in the Msk Serverless. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic">addTopic</a></code> | Creates a topic in the MSK Serverless. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
@@ -5352,16 +5354,16 @@ Returns a string representation of this construct.
 ##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic"></a>
 
 ```typescript
-public addTopic(id: string, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): void
+public addTopic(id: string, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
 ```
 
-Creates a topic in the Msk Serverless.
+Creates a topic in the MSK Serverless.
 
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic.parameter.id"></a>
 
 - *Type:* string
 
-the CDK id for Topic.
+the CDK id for the topic.
 
 ---
 
@@ -5377,7 +5379,7 @@ the Kafka topic definition.
 
 - *Type:* aws-cdk-lib.RemovalPolicy
 
-Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+Wether to keep the topic or delete it when removing the resource from the Stack.
 
 ---
 
@@ -5385,7 +5387,7 @@ Wether to keep the topic or delete it when removing the resource from the Stack 
 
 - *Type:* boolean
 
-If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+Wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
 
 ---
 
@@ -5400,7 +5402,7 @@ The time in ms to wait for a topic to be completely created on the controller no
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume"></a>
 
 ```typescript
-public grantConsume(topicName: string, principal: IPrincipal): void
+public grantConsume(topicName: string, principal: IPrincipal): CustomResource
 ```
 
 Grant a principal the right to consume data from a topic.
@@ -5424,7 +5426,7 @@ the IAM principal to grand the consume action.
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce"></a>
 
 ```typescript
-public grantProduce(topicName: string, principal: IPrincipal): void
+public grantProduce(topicName: string, principal: IPrincipal): CustomResource
 ```
 
 Grant a principal to produce data to a topic.
@@ -5433,7 +5435,7 @@ Grant a principal to produce data to a topic.
 
 - *Type:* string
 
-the topic to which the principal can produce data.
+the name of the topic to grant producer permissions.
 
 ---
 
@@ -5441,7 +5443,7 @@ the topic to which the principal can produce data.
 
 - *Type:* aws-cdk-lib.aws_iam.IPrincipal
 
-the IAM principal to grand the produce to.
+the IAM principal to grand producer permissions.
 
 ---
 
@@ -13293,25 +13295,25 @@ const mskProvisionedProps: streaming.MskProvisionedProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.allowEveryoneIfNoAclFound">allowEveryoneIfNoAclFound</a></code> | <code>boolean</code> | if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.brokerInstanceType">brokerInstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps</code> | This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClientAuthentication</code> | Configuration properties for client authentication. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The physical name of the cluster. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configurationInfo">configurationInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK provisioned cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configuration">configuration</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.currentVersion">currentVersion</a></code> | <code>string</code> | This parameter is required after executing the first `cdk deploy` It is the version of the MSK cluster that was deployed in the previous `cdk deploy` The cluster might fail in the subsequent updates if it is not set This parameter is obtained by running the following command `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorageInfo">ebsStorageInfo</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorage">ebsStorage</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MonitoringConfiguration</code> | Cluster monitoring configuration. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.mskBrokerinstanceType">mskBrokerinstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.numberOfBrokerNodes">numberOfBrokerNodes</a></code> | <code>number</code> | Number of Apache Kafka brokers deployed in each Availability Zone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.numBrokerPerAz">numBrokerPerAz</a></code> | <code>number</code> | The number of Apache Kafka brokers deployed in each Availability Zone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.placeClusterHandlerInVpc">placeClusterHandlerInVpc</a></code> | <code>boolean</code> | If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | What to do when this resource is deleted from a stack. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.StorageMode</code> | This controls storage mode for supported storage tiers. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where to deploy the MSK Provisioned cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where to deploy the MSK Serverless cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpcConnectivity">vpcConnectivity</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.VpcClientAuthentication</code> | VPC connection control settings for brokers Defines all client authentication information for VpcConnectivity. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | Where to place the nodes within the VPC. |
 
 ---
 
@@ -13325,6 +13327,21 @@ public readonly allowEveryoneIfNoAclFound: boolean;
 - *Default:* false
 
 if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster.
+
+---
+
+##### `brokerInstanceType`<sup>Optional</sup> <a name="brokerInstanceType" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.brokerInstanceType"></a>
+
+```typescript
+public readonly brokerInstanceType: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType
+- *Default:* kafka.m5.large
+
+The EC2 instance type that you want Amazon MSK to use when it creates your brokers.
+
+> [https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types](https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types)
 
 ---
 
@@ -13362,15 +13379,16 @@ public readonly clusterName: string;
 ```
 
 - *Type:* string
+- *Default:* default-msk-provisioned
 
-The physical name of the cluster.
+The name of the MSK provisioned cluster.
 
 ---
 
-##### `configurationInfo`<sup>Optional</sup> <a name="configurationInfo" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configurationInfo"></a>
+##### `configuration`<sup>Optional</sup> <a name="configuration" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configuration"></a>
 
 ```typescript
-public readonly configurationInfo: ClusterConfigurationInfo;
+public readonly configuration: ClusterConfigurationInfo;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.ClusterConfigurationInfo
@@ -13392,10 +13410,10 @@ This parameter is required after executing the first `cdk deploy` It is the vers
 
 ---
 
-##### `ebsStorageInfo`<sup>Optional</sup> <a name="ebsStorageInfo" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorageInfo"></a>
+##### `ebsStorage`<sup>Optional</sup> <a name="ebsStorage" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorage"></a>
 
 ```typescript
-public readonly ebsStorageInfo: EbsStorageInfo;
+public readonly ebsStorage: EbsStorageInfo;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.EbsStorageInfo
@@ -13425,6 +13443,7 @@ public readonly kafkaVersion: KafkaVersion;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
+- *Default:* KafkaVersion.V3_5_1
 
 The version of Apache Kafka.
 
@@ -13456,31 +13475,16 @@ Cluster monitoring configuration.
 
 ---
 
-##### `mskBrokerinstanceType`<sup>Optional</sup> <a name="mskBrokerinstanceType" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.mskBrokerinstanceType"></a>
+##### `numBrokerPerAz`<sup>Optional</sup> <a name="numBrokerPerAz" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.numBrokerPerAz"></a>
 
 ```typescript
-public readonly mskBrokerinstanceType: MskBrokerInstanceType;
-```
-
-- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType
-- *Default:* kafka.m5.large
-
-The EC2 instance type that you want Amazon MSK to use when it creates your brokers.
-
-> [https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types](https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types)
-
----
-
-##### `numberOfBrokerNodes`<sup>Optional</sup> <a name="numberOfBrokerNodes" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.numberOfBrokerNodes"></a>
-
-```typescript
-public readonly numberOfBrokerNodes: number;
+public readonly numBrokerPerAz: number;
 ```
 
 - *Type:* number
 - *Default:* 1
 
-Number of Apache Kafka brokers deployed in each Availability Zone.
+The number of Apache Kafka brokers deployed in each Availability Zone.
 
 ---
 
@@ -13516,9 +13520,9 @@ public readonly securityGroups: ISecurityGroup[];
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
-- *Default:* create new security group
+- *Default:* create a new security group
 
-The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster.
+The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster.
 
 ---
 
@@ -13537,6 +13541,23 @@ This controls storage mode for supported storage tiers.
 
 ---
 
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* the Vpc default strategy if not specified.
+
+The subnets where to deploy the MSK Provisioned cluster.
+
+Amazon MSK distributes the broker nodes evenly across these subnets.
+The subnets must be in distinct Availability Zones.
+Client subnets can't be in Availability Zone us-east-1e.
+
+---
+
 ##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpc"></a>
 
 ```typescript
@@ -13544,8 +13565,9 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* A new VPC is created.
 
-Defines the virtual networking environment for this cluster.
+The VPC where to deploy the MSK Serverless cluster.
 
 Must have at least 2 subnets in two different AZs.
 
@@ -13566,23 +13588,6 @@ You must set `allow.everyone.if.no.acl.found` to `false`
 
 ---
 
-##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpcSubnets"></a>
-
-```typescript
-public readonly vpcSubnets: SubnetSelection;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
-- *Default:* the Vpc default strategy if not specified.
-
-Where to place the nodes within the VPC.
-
-Amazon MSK distributes the broker nodes evenly across the subnets that you specify.
-The subnets that you specify must be in distinct Availability Zones.
-Client subnets can't be in Availability Zone us-east-1e.
-
----
-
 ### MskServerlessProps <a name="MskServerlessProps" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps"></a>
 
 Properties for the `MskServerlessCluster` construct.
@@ -13599,11 +13604,12 @@ const mskServerlessProps: streaming.MskServerlessProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK Serverless cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpcConfigs">vpcConfigs</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where to deploy the MSK Serverless cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where to deploy the MSK Serverless cluster. |
 
 ---
 
@@ -13614,6 +13620,9 @@ public readonly clusterName: string;
 ```
 
 - *Type:* string
+- *Default:* default-msk-serverless
+
+The name of the MSK Serverless cluster.
 
 ---
 
@@ -13646,6 +13655,35 @@ Otherwise the removalPolicy is reverted to RETAIN.
 
 ---
 
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+- *Default:* create a new security group
+
+The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* the Vpc default strategy if not specified.
+
+The subnets where to deploy the MSK Serverless cluster.
+
+The subnets must be in distinct Availability Zones.
+Client subnets can't be in Availability Zone us-east-1e.
+
+---
+
 ##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpc"></a>
 
 ```typescript
@@ -13653,16 +13691,11 @@ public readonly vpc: IVpc;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* A new Vpc is created
 
----
+The VPC where to deploy the MSK Serverless cluster.
 
-##### `vpcConfigs`<sup>Optional</sup> <a name="vpcConfigs" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpcConfigs"></a>
-
-```typescript
-public readonly vpcConfigs: VpcConfigProperty[];
-```
-
-- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster.VpcConfigProperty[]
+The VPC must have at least 2 subnets in two different AZs.
 
 ---
 

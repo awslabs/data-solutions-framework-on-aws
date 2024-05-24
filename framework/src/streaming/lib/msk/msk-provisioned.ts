@@ -164,10 +164,10 @@ export class MskProvisioned extends TrackedConstruct {
     this.placeClusterHandlerInVpc = props?.placeClusterHandlerInVpc ?? true;
 
     //if vpcSubnets is pass without VPC throw error or if vpc is passed without vpcSubnets throw error
-    if (props?.vpcSubnets && !props?.vpc || !props?.vpcSubnets && props?.vpc) {
+    if (props?.subnets && !props?.vpc || !props?.subnets && props?.vpc) {
       throw new Error('Need to pass both vpcSubnets and vpc');
-    } else if (props?.vpcSubnets) {
-      this.subnetSelectionIds = this.vpc.selectSubnets(props.vpcSubnets).subnetIds;
+    } else if (props?.subnets) {
+      this.subnetSelectionIds = this.vpc.selectSubnets(props.subnets).subnetIds;
     } else {
       this.subnetSelectionIds = this.vpc.privateSubnets.map((subnet) => subnet.subnetId);
     }
@@ -183,7 +183,7 @@ export class MskProvisioned extends TrackedConstruct {
       ],
     });
 
-    const volumeSize = props?.ebsStorageInfo?.volumeSize ?? 100;
+    const volumeSize = props?.ebsStorage?.volumeSize ?? 100;
     // Minimum: 1 GiB, maximum: 16384 GiB
     if (volumeSize < 1 || volumeSize > 16384) {
       throw Error(
@@ -191,7 +191,7 @@ export class MskProvisioned extends TrackedConstruct {
       );
     }
 
-    if (!props?.ebsStorageInfo?.encryptionKey) {
+    if (!props?.ebsStorage?.encryptionKey) {
 
       this.brokerAtRestEncryptionKey = new Key(this, 'BrokerAtRestEncryptionKey', {
         enableKeyRotation: true,
@@ -200,7 +200,7 @@ export class MskProvisioned extends TrackedConstruct {
       });
 
     } else {
-      this.brokerAtRestEncryptionKey = props.ebsStorageInfo.encryptionKey;
+      this.brokerAtRestEncryptionKey = props.ebsStorage.encryptionKey;
     }
 
     const encryptionAtRest = {
@@ -208,7 +208,7 @@ export class MskProvisioned extends TrackedConstruct {
         this.brokerAtRestEncryptionKey.keyId,
     };
 
-    this.mskBrokerinstanceType = props?.mskBrokerinstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
+    this.mskBrokerinstanceType = props?.brokerInstanceType ?? MskBrokerInstanceType.KAFKA_M5_LARGE;
 
     const openMonitoring =
       props?.monitoring?.enablePrometheusJmxExporter ||
@@ -240,7 +240,7 @@ export class MskProvisioned extends TrackedConstruct {
     //check the number of broker vs the number of AZs, it needs to be multiple
 
     this.defaultNumberOfBrokerNodes = this.vpc.availabilityZones.length > 3 ? 3 : this.vpc.availabilityZones.length;
-    this.numberOfBrokerNodes = props?.numberOfBrokerNodes ?? this.defaultNumberOfBrokerNodes;
+    this.numberOfBrokerNodes = props?.numBrokerPerAz ?? this.defaultNumberOfBrokerNodes;
 
     if (this.numberOfBrokerNodes % this.vpc.availabilityZones.length) {
       throw Error('The number of broker nodes needs to be multiple of the number of AZs');
@@ -396,7 +396,7 @@ export class MskProvisioned extends TrackedConstruct {
     // Create the configuration
     let clusterConfigurationInfo: ClusterConfigurationInfo;
 
-    if (!props?.configurationInfo) {
+    if (!props?.configuration) {
 
       this.clusterConfiguration =
         MskProvisioned.createCLusterConfiguration(
@@ -417,7 +417,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     } else {
 
-      clusterConfigurationInfo = props.configurationInfo;
+      clusterConfigurationInfo = props.configuration;
     }
 
     let applyClusterConfigurationProvider: DsfProvider = applyClusterConfiguration(this,
@@ -511,20 +511,20 @@ export class MskProvisioned extends TrackedConstruct {
       this.mskInClusterAclCrOnEventHandlerFunction = this.kafkaApi.mskAclFunction;
       this.mskInClusterAclCrSecurityGroup = this.kafkaApi.mskAclSecurityGroup;
 
-      //Update cluster configuration as a last step before handing the cluster to customer.
-      //This will set `allow.everyone.if.no.acl.found` to `false`
-      //And will allow the provide set ACLs for the lambda CR to do CRUD operations on MSK for ACLs and Topics
+      // Update cluster configuration as a last step before handing the cluster to customer.
+      // This will set `allow.everyone.if.no.acl.found` to `false`
+      // And will allow the provide set ACLs for the lambda CR to do CRUD operations on MSK for ACLs and Topics
       const crAcls: CustomResource[] = this.setAcls(props);
 
-      //We isolate this operation so that all subsqueent ACL operations add a dependency on this first one
-      //This aclOperationCr allow the lambda to apply other ACLs.
+      // We isolate this operation so that all subsqueent ACL operations add a dependency on this first one
+      // This aclOperationCr allow the lambda to apply other ACLs.
       this.aclOperationCr = crAcls[1];
       this.aclDeleteTopic = crAcls[3];
       this.aclCreateTopic = crAcls[2];
 
       if (!props.allowEveryoneIfNoAclFound) {
 
-        //Update cluster configuration
+        // Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
           serviceToken: applyClusterConfigurationProvider.serviceToken,
           resourceType: 'Custom::MskSetClusterConfiguration',
@@ -537,10 +537,8 @@ export class MskProvisioned extends TrackedConstruct {
 
         applyClusterConfigurationCustomResource.node.addDependency(this.cluster);
 
-        //Update the connectivity of the cluster
+        // Update the connectivity of the cluster
         if (props?.vpcConnectivity) {
-
-          console.log('update vpc connectivity');
 
           let updateConnectivityProviderCr: CustomResource = new CustomResource(this, 'updateConnectivityProviderCr', {
             serviceToken: updateConnectivityProvider.serviceToken,
@@ -563,13 +561,12 @@ export class MskProvisioned extends TrackedConstruct {
 
 
   /**
-    * Creates a topic in the Msk Cluster
-    *
-    * @param {string} id the CDK id for Topic
-    * @param {Acl} aclDefinition the Kafka Acl definition
-    * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-    * @returns {CustomResource} The MskAcl custom resource created
-    */
+   * Creates a topic in the Msk Cluster
+   * @param {string} id the CDK id for Topic
+   * @param {Acl} aclDefinition the Kafka Acl definition
+   * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+   * @returns {CustomResource} The MskAcl custom resource created
+   */
   public setAcl(
     id: string,
     aclDefinition: Acl,
@@ -592,16 +589,16 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-    * Creates a topic in the Msk Cluster
-    *
-    * @param {string} id the CDK id for Topic
-    * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
-    * @param {MskTopic} topicDefinition the Kafka topic definition
-    * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-    * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
-    * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
-    * @returns {CustomResource} The MskTopic custom resource created
-    */
+   * Creates a topic in the Msk Cluster
+   *
+   * @param {string} id the CDK id for Topic
+   * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
+   * @param {MskTopic} topicDefinition the Kafka topic definition
+   * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
+   * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
+   * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
+   * @returns {CustomResource} The MskTopic custom resource created
+   */
   public setTopic(
     id: string,
     clientAuthentication: Authentication,
@@ -631,16 +628,16 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-    * Grant a principal to produce data to a topic
-    * @param {string} id the CDK resource id
-    * @param {string} topicName the topic to which the principal can produce data
-    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
-    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-    * @param {string} host the host to which the principal can produce data.
-    * @param {RemovalPolicy} removalPolicy
-    * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to write in the topic is created and returned,
-    *          you can use it to add dependency on it.
-    */
+   * Grant a principal to produce data to a topic
+   * @param {string} id the CDK resource id
+   * @param {string} topicName the topic to which the principal can produce data
+   * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
+   * @param {IPrincipal | string } principal the IAM principal to grand the produce to
+   * @param {string} host the host to which the principal can produce data.
+   * @param {RemovalPolicy} removalPolicy
+   * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to write in the topic is created and returned,
+   *          you can use it to add dependency on it.
+   */
   public grantProduce(
     id: string,
     topicName: string,
@@ -668,17 +665,17 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-    * Grant a principal the right to consume data from a topic
-    *
-    * @param {string} id the CDK resource id
-    * @param {string} topicName the topic to which the principal can produce data
-    * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
-    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-    * @param {string} host the host to which the principal can produce data.
-    * @param {RemovalPolicy} removalPolicy
-    * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
-    *          you can use it to add dependency on it.
-    */
+   * Grant a principal the right to consume data from a topic
+   *
+   * @param {string} id the CDK resource id
+   * @param {string} topicName the topic to which the principal can produce data
+   * @param {Authentitcation} clientAuthentication The client authentication to use when grant on resource
+   * @param {IPrincipal | string } principal the IAM principal to grand the produce to
+   * @param {string} host the host to which the principal can produce data.
+   * @param {RemovalPolicy} removalPolicy
+   * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
+   *          you can use it to add dependency on it.
+   */
   public grantConsume(
     id: string,
     topicName: string,
@@ -885,9 +882,9 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-   * Method to get bootstrap broker connection string
-   * @param authentication
-   * @returns
+   * Method to get bootstrap broker connection string based on the authentication mode
+   * @param authentication the authentication mode
+   * @returns the MSK bootstrap URL
    */
   public getBootstrapBrokers(authentication: Authentication): string {
 
@@ -922,5 +919,4 @@ export class MskProvisioned extends TrackedConstruct {
     return clusterBootstrapBrokers.getResponseField(responseField!);
 
   }
-
 }

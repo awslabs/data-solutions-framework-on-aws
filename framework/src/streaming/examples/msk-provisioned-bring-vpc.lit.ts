@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
-import { KafkaClientLogLevel, KafkaVersion, MskBrokerInstanceType, MskProvisioned } from '../lib/msk';
-import { SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { MskProvisioned } from '../lib/msk';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
 
 
 const app = new cdk.App();
@@ -21,15 +21,10 @@ let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
 const msk = new MskProvisioned(stack, 'cluster', {
     vpc: vpc,
     clusterName: 'my-cluster',
-    vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
-    numberOfBrokerNodes: 2,
-    mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M5_LARGE,
-    kafkaVersion: KafkaVersion.V3_4_0,
-    removalPolicy: cdk.RemovalPolicy.DESTROY,
-    kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+    subnets: vpc.selectSubnets(),
 });
+/// !hide
 
 new cdk.CfnOutput(stack, 'mskArn', {
     value: msk.cluster.attrArn,
 });
-/// !hide

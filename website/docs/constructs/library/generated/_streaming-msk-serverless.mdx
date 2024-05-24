@@ -25,10 +25,6 @@ Below you can find an example of creating an MSK Serverless configuration with t
 
   ```typescript
 const msk = new MskServerless(stack, 'cluster');
-
-new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.cluster.attrArn,
-});
   ```
   
   ```mdx-code-block
@@ -38,10 +34,6 @@ new cdk.CfnOutput(stack, 'mskArn', {
 
   ```python
 msk = MskServerless(stack, "cluster")
-
-cdk.CfnOutput(stack, "mskArn",
-    value=msk.cluster.attr_arn
-)
   ```
 
   </TabItem>
@@ -69,18 +61,10 @@ let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
 
 const msk = new MskServerless(stack, 'cluster', {
     clusterName: 'msk-byov',
-    vpcConfigs: [
-      {
-        subnetIds: vpc.privateSubnets.map((s) => s.subnetId),
-        securityGroups: [SecurityGroup.fromLookupByName(stack, 'brokerSecurityGroup', 'broker-sg', vpc).securityGroupId],
-      },
-    ],
+    securityGroups: [SecurityGroup.fromLookupByName(stack, 'brokerSecurityGroup', 'broker-sg', vpc)],
+    subnets: vpc.selectSubnets(),
     vpc: vpc,
   });
-
-new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.cluster.attrArn,
-});
   ```
   
   ```mdx-code-block
@@ -99,16 +83,9 @@ vpc = Vpc.from_vpc_attributes(stack, "vpc",
 
 msk = MskServerless(stack, "cluster",
     cluster_name="msk-byov",
-    vpc_configs=[cdk.aws_msk.CfnServerlessCluster.VpcConfigProperty(
-        subnet_ids=vpc.private_subnets.map((s) => s.subnetId),
-        security_groups=[SecurityGroup.from_lookup_by_name(stack, "brokerSecurityGroup", "broker-sg", vpc).security_group_id]
-    )
-    ],
+    security_groups=[SecurityGroup.from_lookup_by_name(stack, "brokerSecurityGroup", "broker-sg", vpc)],
+    subnets=vpc.select_subnets(),
     vpc=vpc
-)
-
-cdk.CfnOutput(stack, "mskArn",
-    value=msk.cluster.attr_arn
 )
   ```
 
@@ -133,6 +110,8 @@ The topic is defined by the property type called `MskTopic`. Below you can see t
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
+const msk = new MskServerless(stack, 'cluster');
+
 let topic: MskTopic =  {
   topic: 'topic1',
   numPartitions: 3,
@@ -148,6 +127,8 @@ msk.addTopic('topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
   <TabItem value="python" label="Python">
 
   ```python
+msk = MskServerless(stack, "cluster")
+
 topic = MskTopic(
     topic="topic1",
     num_partitions=3,
@@ -170,6 +151,8 @@ The method attachs an IAM policy as defined in the [AWS documentation](https://d
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
+const msk = new MskServerless(stack, 'cluster');
+
 let iamRole = Role.fromRoleName(stack, 'role', 'role');
 
 msk.grantProduce('topic1',iamRole);
@@ -181,6 +164,8 @@ msk.grantProduce('topic1',iamRole);
   <TabItem value="python" label="Python">
 
   ```python
+msk = MskServerless(stack, "cluster")
+
 iam_role = Role.from_role_name(stack, "role", "role")
 
 msk.grant_produce("topic1", iam_role)
@@ -197,7 +182,9 @@ The method attachs an IAM policy as defined in the [AWS documentation](https://d
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-let iamRole = Role.fromRoleName(stack, 'role', 'role');
+const msk = new MskServerless(stack, 'cluster');
+
+const iamRole = Role.fromRoleName(stack, 'role', 'role');
 
 msk.grantConsume('topic1',iamRole);
   ```
@@ -208,6 +195,8 @@ msk.grantConsume('topic1',iamRole);
   <TabItem value="python" label="Python">
 
   ```python
+msk = MskServerless(stack, "cluster")
+
 iam_role = Role.from_role_name(stack, "role", "role")
 
 msk.grant_consume("topic1", iam_role)

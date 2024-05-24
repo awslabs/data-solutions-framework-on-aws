@@ -8,6 +8,7 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
+import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming/lib/msk';
@@ -29,15 +30,13 @@ let vpc = new DataVpc(stack, 'vpc', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
+let securityGroup = SecurityGroup.fromSecurityGroupId(stack, 'securityGroup', vpc.vpc.vpcDefaultSecurityGroup);
+
 const msk = new MskServerless(stack, 'cluster', {
   clusterName: `cluster-serverless${Utils.generateHash(stack.stackName).slice(0, 3)}`,
-  vpcConfigs: [
-    {
-      subnetIds: vpc.vpc.privateSubnets.map((s) => s.subnetId),
-      securityGroups: [vpc.vpc.vpcDefaultSecurityGroup],
-    },
-  ],
   vpc: vpc.vpc,
+  subnets: vpc.vpc.selectSubnets(),
+  securityGroups: [securityGroup],
   removalPolicy: cdk.RemovalPolicy.DESTROY,
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });

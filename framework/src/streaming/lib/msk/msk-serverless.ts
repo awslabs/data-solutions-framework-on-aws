@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RemovalPolicy } from 'aws-cdk-lib';
-import { ISecurityGroup, IVpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { CustomResource, RemovalPolicy } from 'aws-cdk-lib';
+import { ISecurityGroup, IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal } from 'aws-cdk-lib/aws-iam';
 import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
@@ -58,27 +58,28 @@ export class MskServerless extends TrackedConstruct {
       this.vpc = props.vpc;
     }
 
-    if (props?.vpc && !props?.vpcConfigs || !props?.vpc && props?.vpcConfigs) {
-      throw new Error('Need to pass both vpcConfigs and vpc');
-    }
-
     let vpcConfigs;
 
-    if (!props?.vpcConfigs) {
-
+    if (!props?.securityGroups) {
       this.brokerSecurityGroup = new SecurityGroup(scope, 'mskCrudCrSg', {
         vpc: this.vpc,
       });
-
-      vpcConfigs = [
-        {
-          subnetIds: this.vpc.privateSubnets.map((s) => s.subnetId),
-          securityGroups: [this.brokerSecurityGroup.securityGroupId],
-        },
-      ];
-    } else {
-      vpcConfigs = props.vpcConfigs;
     }
+
+    let selectedSubnets :SubnetSelection;
+
+    if (!props?.subnets) {
+      selectedSubnets = this.vpc.selectSubnets();
+    } else {
+      selectedSubnets = this.vpc.selectSubnets(props.subnets);
+    }
+
+    vpcConfigs = [
+      {
+        subnetIds: selectedSubnets.subnets!.map((s) => s.subnetId),
+        securityGroups: this.brokerSecurityGroup ? [this.brokerSecurityGroup.securityGroupId] : props?.securityGroups?.map((s)=> s.securityGroupId),
+      },
+    ];
 
     //Security group dedicated to lambda CR
     this.lambdaSecurityGroup = new SecurityGroup(this, 'LambdaSecurityGroup', {
@@ -112,15 +113,15 @@ export class MskServerless extends TrackedConstruct {
 
   }
 
-
   /**
-   * Creates a topic in the Msk Serverless
+   * Creates a topic in the MSK Serverless
    *
-   * @param {string} id the CDK id for Topic
+   * @param {string} id the CDK id for the topic
    * @param {MskTopic []} topicDefinition the Kafka topic definition
-   * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-   * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
-   * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
+   * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack. @default - RemovalPolicy.RETAIN
+   * @param {boolean} waitForLeaders Wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
+   * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default - 5000
+   * @return the custom resource used to create the topic
    */
 
   public addTopic(
@@ -128,7 +129,7 @@ export class MskServerless extends TrackedConstruct {
     topicDefinition: MskTopic,
     removalPolicy?: RemovalPolicy,
     waitForLeaders?: boolean,
-    timeout?: number) {
+    timeout?: number): CustomResource {
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = this.kafkaApi.setTopic(
@@ -140,22 +141,23 @@ export class MskServerless extends TrackedConstruct {
       timeout);
 
     cr.node.addDependency(this.cluster);
+    return cr;
   }
 
   /**
    * Grant a principal to produce data to a topic
    *
-   * @param {string} topicName the topic to which the principal can produce data
-   * @param {IPrincipal} principal the IAM principal to grand the produce to
+   * @param {string} topicName the name of the topic to grant producer permissions
+   * @param {IPrincipal} principal the IAM principal to grand producer permissions
+   * @return the custom resource used to grant the producer permissions
    */
-  public grantProduce(topicName: string, principal: IPrincipal) {
+  public grantProduce(topicName: string, principal: IPrincipal): CustomResource | undefined {
 
-    this.kafkaApi.grantProduce(
+    return this.kafkaApi.grantProduce(
       'N/A',
       topicName,
       Authentication.IAM,
       principal);
-
   }
 
   /**
@@ -163,14 +165,14 @@ export class MskServerless extends TrackedConstruct {
    *
    * @param {string} topicName the topic to which the principal can consume data from.
    * @param {IPrincipal} principal the IAM principal to grand the consume action.
+   * @return the custom resource used to grant the consumer permissions
    */
-  public grantConsume(topicName: string, principal: IPrincipal) {
+  public grantConsume(topicName: string, principal: IPrincipal): CustomResource | undefined {
 
-    this.kafkaApi.grantConsume(
+    return this.kafkaApi.grantConsume(
       'N/A',
       topicName,
       Authentication.IAM,
       principal);
-
   }
 }

@@ -9,16 +9,14 @@ const stack = new cdk.Stack(app, 'DsfTestMskServerless');
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-
+/// !show
 const msk = new MskServerless(stack, 'cluster');
 
-new cdk.CfnOutput(stack, 'mskArn', {
-  value: msk.cluster.attrArn,
-});
-
-
-/// !show
 let iamRole = Role.fromRoleName(stack, 'role', 'role');
 
 msk.grantProduce('topic1',iamRole);
 /// !hide
+
+new cdk.CfnOutput(stack, 'mskArn', {
+  value: msk.cluster.attrArn,
+});

@@ -14,7 +14,6 @@ import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
-import { SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -138,9 +137,9 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
   const msk = new MskProvisioned(stack, 'cluster', {
     clusterName: 'cluster',
     vpc: vpc.vpc,
-    vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
-    numberOfBrokerNodes: 4,
-    mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
+    subnets: vpc.vpc.selectSubnets(),
+    numBrokerPerAz: 4,
+    brokerInstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
     kafkaVersion: KafkaVersion.V3_4_0,
     clientAuthentication: ClientAuthentication.saslTls(
       {
@@ -157,7 +156,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       aclAdminPrincipal: 'User:CN=aclAdmin',
       secretCertificate: Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:eu-west-1:123456789012:secret:dsf/mskCert-3UhUJJ'),
     },
-    configurationInfo: {
+    configuration: {
       arn: clusterConfiguration.attrArn,
       revision: clusterConfiguration.attrLatestRevisionRevision,
     },
@@ -281,9 +280,9 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
   const msk = new MskProvisioned(stack, 'cluster', {
     clusterName: 'cluster',
     vpc: vpc.vpc,
-    vpcSubnets: { subnetType: SubnetType.PRIVATE_WITH_EGRESS },
-    numberOfBrokerNodes: 4,
-    mskBrokerinstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
+    subnets: vpc.vpc.selectSubnets(),
+    numBrokerPerAz: 4,
+    brokerInstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
     kafkaVersion: KafkaVersion.V3_4_0,
     clientAuthentication: ClientAuthentication.saslTls(
       {
@@ -298,7 +297,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       secretCertificate: Secret.fromSecretCompleteArn(stack, 'secret', 'arn:aws:secretsmanager:eu-west-1:123456789012:secret:dsf/mskCert-3UhUJJ'),
     },
     kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
-    configurationInfo: {
+    configuration: {
       arn: clusterConfiguration.attrArn,
       revision: clusterConfiguration.attrLatestRevisionRevision,
     },

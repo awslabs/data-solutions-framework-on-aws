@@ -11,6 +11,7 @@
 
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 
 import { MskServerless } from '../../../src/streaming/lib/msk';
@@ -29,12 +30,8 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
 
   const msk = new MskServerless(stack, 'cluster', {
     clusterName: 'unit-test',
-    vpcConfigs: [
-      {
-        subnetIds: vpc.vpc.privateSubnets.map((s) => s.subnetId),
-        securityGroups: [vpc.vpc.vpcDefaultSecurityGroup],
-      },
-    ],
+    subnets: vpc.vpc.selectSubnets(),
+    securityGroups: [SecurityGroup.fromSecurityGroupId(stack, 'SecurityGroup', vpc.vpc.vpcDefaultSecurityGroup)],
     vpc: vpc.vpc,
   });
 

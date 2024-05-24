@@ -20,19 +20,15 @@ let vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
 
 const msk = new MskServerless(stack, 'cluster', {
     clusterName: 'msk-byov',
-    vpcConfigs: [
-      {
-        subnetIds: vpc.privateSubnets.map((s) => s.subnetId),
-        securityGroups: [SecurityGroup.fromLookupByName(stack, 'brokerSecurityGroup', 'broker-sg', vpc).securityGroupId],
-      },
-    ],
+    securityGroups: [SecurityGroup.fromLookupByName(stack, 'brokerSecurityGroup', 'broker-sg', vpc)],
+    subnets: vpc.selectSubnets(),
     vpc: vpc,
   });
-
+/// !hide
 new cdk.CfnOutput(stack, 'mskArn', {
   value: msk.cluster.attrArn,
 });
-/// !hide
+
 
 msk.addTopic('topic1', {
   topic: 'topic1',
