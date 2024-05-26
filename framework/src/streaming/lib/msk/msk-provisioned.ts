@@ -193,11 +193,11 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly placeClusterHandlerInVpc?: boolean;
 
   /**
-     * Constructs a new instance of the EmrEksCluster construct.
-     * @param {Construct} scope the Scope of the CDK Construct
-     * @param {string} id the ID of the CDK Construct
-     * @param {MskServerlessProps} props
-     */
+   * Constructs a new instance of the EmrEksCluster construct.
+   * @param {Construct} scope the Scope of the CDK Construct
+   * @param {string} id the ID of the CDK Construct
+   * @param {MskServerlessProps} props
+   */
   constructor(scope: Construct, id: string, props?: MskProvisionedProps) {
 
     const trackedConstructProps: TrackedConstructProps = {
@@ -309,7 +309,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     [loggingInfo, this.brokerLogGroup] = monitoringSetup(this, id, this.removalPolicy, props?.logging);
 
-    //check the number of broker vs the number of AZs, it needs to be multiple
+    // check the number of broker vs the number of AZs, it needs to be multiple
 
     this.defaultNumberOfBrokerNodes = this.vpc.availabilityZones.length > 3 ? 3 : this.vpc.availabilityZones.length;
     this.numberOfBrokerNodes = props?.numBrokerPerAz ?? this.defaultNumberOfBrokerNodes;
@@ -353,14 +353,14 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.cluster.applyRemovalPolicy(this.removalPolicy);
 
-    //The section below address a best practice to change the zookeper security group
-    //To an indepenedent one
-    //https://docs.aws.amazon.com/msk/latest/developerguide/zookeeper-security.html
+    // The section below address a best practice to change the zookeper security group
+    // To an indepenedent one
+    // https://docs.aws.amazon.com/msk/latest/developerguide/zookeeper-security.html
 
-    //The policy allowing to get zookeeper connection string
-    //List the ENIs associated to the zookeeper
-    //and get the security group associated to them
-    //And change the zookeeper security group
+    // The policy allowing to get zookeeper connection string
+    // List the ENIs associated to the zookeeper
+    // and get the security group associated to them
+    // And change the zookeeper security group
 
     let zooKeeperSecurityGroup: SecurityGroup = new SecurityGroup(this, 'ZookeeperSecurityGroup', {
       allowAllOutbound: false,
@@ -403,7 +403,7 @@ export class MskProvisioned extends TrackedConstruct {
       }),
     ];
 
-    //Attach policy to IAM Role
+    // Attach policy to IAM Role
     const lambdaExecutionRolePolicy = new ManagedPolicy(this, 'ZookeeperUpdateLambdaExecutionRolePolicy', {
       statements: lambdaPolicy,
       description: 'Policy for modifying security group for MSK zookeeper',
@@ -414,7 +414,7 @@ export class MskProvisioned extends TrackedConstruct {
       allowAllOutbound: true,
     });
 
-    //this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
+    // this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
 
     const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(this,
       this.updateZookepeerSecurityGroup,
@@ -477,8 +477,8 @@ export class MskProvisioned extends TrackedConstruct {
 
       this.clusterConfiguration = MskProvisioned.createClusterConfiguration(
         this, 'ClusterConfig',
-        //This must be unique to avoid failing the stack creation
-        //If we create the construct twice
+        // This must be unique to avoid failing the stack creation
+        // If we create the construct twice
         // Name of a configuration is required
         `dsfconfiguration${Utils.generateUniqueHash(this, 'ClusterConfig')}`,
         join(__dirname, './resources/cluster-config-msk-provisioned'),
@@ -527,8 +527,8 @@ export class MskProvisioned extends TrackedConstruct {
     this.updateConnectivityLogGroup = updateConnectivityProvider.onEventHandlerLogGroup;
     this.updateConnectivitySecurityGroup = updateConnectivityProvider.securityGroups;
 
-    //Set the CR resource that are used by IAM credentials auth CR
-    //Applly the cluster configuration if provided and the cluster is created without mTLS auth
+    // Set the CR resource that are used by IAM credentials auth CR
+    // Applly the cluster configuration if provided and the cluster is created without mTLS auth
     if (this.iamAcl) {
 
       this.iamCrudAdminRole = this.kafkaApi.mskAclRole;
@@ -538,7 +538,7 @@ export class MskProvisioned extends TrackedConstruct {
 
       if (!this.inClusterAcl && clusterConfigurationInfo) {
 
-        //Update cluster configuration
+        // Update cluster configuration
         let applyClusterConfigurationCustomResource: CustomResource = new CustomResource(this, 'applyClusterConfigurationCustomResource', {
           serviceToken: applyClusterConfigurationProvider.serviceToken,
           resourceType: 'Custom::MskSetClusterConfiguration',
@@ -572,8 +572,8 @@ export class MskProvisioned extends TrackedConstruct {
 
     }
 
-    //If TLS or SASL/SCRAM (once implemented)
-    //Set up the CR that will set the ACL using the Certs or Username/Password
+    // If TLS or SASL/SCRAM (once implemented)
+    // Set up the CR that will set the ACL using the Certs or Username/Password
     if (clientAuthentication.tls) {
 
       if (!props?.certificateDefinition) {
@@ -747,7 +747,7 @@ export class MskProvisioned extends TrackedConstruct {
    * @param {IPrincipal | string } principal the IAM principal to grand the produce to
    * @param {string} host the host to which the principal can produce data.
    * @param {RemovalPolicy} removalPolicy
-   * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
+   * @returns When MTLS is used as authentication, an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
    *          you can use it to add dependency on it.
    */
   public grantConsume(
@@ -831,8 +831,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     let aclsResources: CustomResource[] = [];
 
-    //Set the ACL to allow the principal used by CR
-    //to add other ACLs
+    // Set the ACL to allow the principal used by CR to add other ACLs
     let aclOperation = this.setAcl('aclOperation', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',
@@ -847,7 +846,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     this.aclOperationCr = aclOperation;
 
-    //Set the ACL to allow for the brokers
+    // Set the ACL to allow for the brokers
 
     let aclBroker = this.setAcl('aclBroker', {
       resourceType: AclResourceTypes.CLUSTER,
@@ -861,8 +860,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    //Set the ACL to allow the principal used by CR
-    //to perform CRUD operations on Topics
+    // Set the ACL to allow the principal used by CR to perform CRUD operations on Topics
     let aclTopicCreate = this.setAcl('aclTopicCreate', {
       resourceType: AclResourceTypes.TOPIC,
       resourceName: '*',
@@ -899,7 +897,7 @@ export class MskProvisioned extends TrackedConstruct {
     RemovalPolicy.DESTROY,
     );
 
-    //Set the ACL for Admin principal
+    // Set the ACL for Admin principal
     let adminAclCluster = this.setAcl('adminAclCluster', {
       resourceType: AclResourceTypes.CLUSTER,
       resourceName: 'kafka-cluster',

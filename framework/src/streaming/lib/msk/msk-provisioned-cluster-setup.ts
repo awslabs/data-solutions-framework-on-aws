@@ -215,7 +215,7 @@ export function updateClusterConnectivity (
     }),
   ];
 
-  //Attach policy to IAM Role
+  // Attach policy to IAM Role
   const lambdaExecutionRolePolicy = new ManagedPolicy(scope, 'UpdateVpcConnectivityLambdaExecutionRolePolicy', {
     statements: lambdaPolicy,
     description: 'Policy for modifying security group for MSK VPC connectivity',
@@ -250,22 +250,23 @@ export function updateClusterConnectivity (
         REGION: Stack.of(scope).region,
       },
     },
-    isCompleteHandlerDefinition: {
-      handler: 'index.isCompleteHandler',
-      depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConnectivity/package-lock.json'),
-      entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
-      managedPolicy: lambdaExecutionRolePolicy,
-      environment: {
-        MSK_CLUSTER_ARN: cluster.attrArn,
-        REGION: Stack.of(scope).region,
-      },
-    },
+    // We are making the update a fire and forget because it would break the custom resource timeout of 1 hour
+    // isCompleteHandlerDefinition: {
+    //   handler: 'index.isCompleteHandler',
+    //   depsLockFilePath: path.join(__dirname, './resources/lambdas/updateConnectivity/package-lock.json'),
+    //   entryFile: path.join(__dirname, './resources/lambdas/updateConnectivity/index.mjs'),
+    //   managedPolicy: lambdaExecutionRolePolicy,
+    //   environment: {
+    //     MSK_CLUSTER_ARN: cluster.attrArn,
+    //     REGION: Stack.of(scope).region,
+    //   },
+    // },
     vpc: placeClusterHandlerInVpc ? vpc : undefined,
     subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
     securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
     removalPolicy,
-    queryTimeout: Duration.minutes(59),
-    queryInterval: Duration.minutes(1),
+    // queryTimeout: Duration.minutes(59),
+    // queryInterval: Duration.minutes(1),
   });
 
   return provider;
