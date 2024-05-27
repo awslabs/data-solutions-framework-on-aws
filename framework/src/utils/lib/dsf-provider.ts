@@ -90,6 +90,7 @@ export class DsfProvider extends Construct {
 
     // If there is a managed policy to attach we do it
     if (props.onEventHandlerDefinition.managedPolicy) {
+
       this.onEventHandlerRole.addManagedPolicy(props.onEventHandlerDefinition.managedPolicy);
     }
 

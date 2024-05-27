@@ -29,7 +29,7 @@ export async function aclCrudOnEvent (event, admin) {
             catch (error) {
                 await admin.disconnect();
 
-                throw new Error(`Error applying ACL: ${event.ResourceProperties}. Error ${error}`);
+                throw new Error(`Error applying ACL: ${event.ResourceProperties}. Error ${JSON.stringify(error)}`);
             }
 
         case 'Update':
@@ -59,7 +59,7 @@ export async function aclCrudOnEvent (event, admin) {
             catch (error) {
                 await admin.disconnect();
 
-                throw new Error(`Error updating ACL: ${event.ResourceProperties}. Error ${error}`);
+                throw new Error(`Error updating ACL: ${event.ResourceProperties}. Error ${JSON.stringify(error)}`);
             }
 
         case 'Delete':
@@ -94,7 +94,7 @@ export async function aclCrudOnEvent (event, admin) {
             catch (error) {
                 await admin.disconnect();
 
-                throw new Error(`Error deleting ACL: ${event.ResourceProperties}. Error ${error}`);
+                throw new Error(`Error deleting ACL: ${event.ResourceProperties}. Error ${JSON.stringify(error)}`);
             }
 
         default:

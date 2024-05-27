@@ -6,15 +6,40 @@ import { KafkaClient,
   DescribeClusterCommand, 
   DescribeConfigurationCommand } from "@aws-sdk/client-kafka";
 
-// Handler functions
+const clientKafka = new KafkaClient();
+
+
+  // Handler functions
 export const onEventHandler = async (event) => {
+
+  console.info('======Recieved for Event=======');
+  console.info(event);
+
+  switch (event.RequestType) {
+    case 'Create':
+    case 'Update':
+      await onCreate(event);
+      break;
+
+    case 'Delete':
+      return {
+        IsComplete: true
+      };
+
+    default:
+      throw new Error(`invalid request type: ${event.RequestType}`);
+  }
+}
+
+
+
+// Handler functions
+export const onCreate = async (event) => {
 
   console.log(event);
 
-  const clientKafka = new KafkaClient();
-
   const inputKafka = {
-    ClusterArn: process.env.MSK_CLUSTER_ARN,
+    ClusterArn: event.ResourceProperties.MskClusterArn,
   };
 
   let commandKafka = new DescribeClusterCommand(inputKafka);
@@ -23,20 +48,17 @@ export const onEventHandler = async (event) => {
   const currentVersion = responseKafka.ClusterInfo.CurrentVersion;
 
   const inputConfiguration = { // DescribeConfigurationRequest
-    Arn: process.env.MSK_CONFIGURATION_ARN, // required
+    Arn: event.ResourceProperties.MskConfigurationArn, // required
   };
 
   commandKafka = new DescribeConfigurationCommand(inputConfiguration);
-  
-  responseKafka = await clientKafka.send(commandKafka);
 
-  const latestRevision = responseKafka.LatestRevision.Revision;
 
   const input = { // UpdateClusterConfigurationRequest
-    ClusterArn: process.env.MSK_CLUSTER_ARN, // required
+    ClusterArn: event.ResourceProperties.MskClusterArn, // required
     ConfigurationInfo: { // ConfigurationInfo
-      Arn: process.env.MSK_CONFIGURATION_ARN, // required
-      Revision: latestRevision // required
+      Arn: event.ResourceProperties.MskConfigurationArn, // required
+      Revision: Number(event.ResourceProperties.MskConfigurationRevision) // required
     },
     CurrentVersion: currentVersion // required
   };
@@ -46,5 +68,42 @@ export const onEventHandler = async (event) => {
   responseKafka = await clientKafka.send(commandKafka);
 
   console.log(responseKafka);
+
+}
+
+
+export const isCompleteHandler = async (event) => {
+  console.info('isCompleteHandler Invocation');
+  console.info(event);
+
+  if (event.RequestType == 'Delete') {
+    return {
+      IsComplete: true,
+    }
+  }
+
+  const inputKafka = {
+    ClusterArn: event.ResourceProperties.MskClusterArn,
+  };
+
+  let commandKafka = new DescribeClusterCommand(inputKafka);
+  let responseKafka = await clientKafka.send(commandKafka);
+  console.log(responseKafka.ClusterInfo.CurrentVersion);
+
+  if(responseKafka.ClusterInfo.State == "UPDATING" ) {
+    return {
+      IsComplete: false,
+    };
+  } if(responseKafka.ClusterInfo.State == "ACTIVE" ) {
+    return {
+      IsComplete: true,
+    };
+  } else if (responseKafka.ClusterInfo.State == "FAILED") {
+    throw new Error("Cluster is in FAIL state");
+  } else {
+    return {
+      IsComplete: false,
+    };
+  }
 
 }

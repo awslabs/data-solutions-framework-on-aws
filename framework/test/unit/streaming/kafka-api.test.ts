@@ -240,6 +240,33 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
                   ':topic/',
                   {
                     'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
                       2,
                       {
                         'Fn::Split': [
@@ -543,6 +570,33 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
                   ':topic/',
                   {
                     'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
                       2,
                       {
                         'Fn::Split': [
@@ -659,6 +713,33 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
                   ':topic/',
                   {
                     'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
                       2,
                       {
                         'Fn::Split': [
@@ -750,6 +831,33 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
                     ],
                   },
                   ':group/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
                   {
                     'Fn::Select': [
                       2,

@@ -4523,6 +4523,1139 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### MskProvisioned <a name="MskProvisioned" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned"></a>
+
+A construct to create an MSK Provisioned cluster.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
+
+*Example*
+
+```typescript
+const msk = new dsf.streaming.MskProvisioned(this, 'cluster');
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+new streaming.MskProvisioned(scope: Construct, id: string, props?: MskProvisionedProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy">deleteClusterPolicy</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers">getBootstrapBrokers</a></code> | Method to get bootstrap broker connection string based on the authentication mode. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy">putClusterPolicy</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl">setAcl</a></code> | Creates a topic in the Msk Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `deleteClusterPolicy` <a name="deleteClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy"></a>
+
+```typescript
+public deleteClusterPolicy(): void
+```
+
+##### `getBootstrapBrokers` <a name="getBootstrapBrokers" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers"></a>
+
+```typescript
+public getBootstrapBrokers(authentication: Authentication): string
+```
+
+Method to get bootstrap broker connection string based on the authentication mode.
+
+###### `authentication`<sup>Required</sup> <a name="authentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers.parameter.authentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+the authentication mode.
+
+---
+
+##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume"></a>
+
+```typescript
+public grantConsume(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+```
+
+Grant a principal the right to consume data from a topic.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.id"></a>
+
+- *Type:* string
+
+the CDK resource id.
+
+---
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can produce data.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The client authentication to use when grant on resource.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.principal"></a>
+
+- *Type:* string | aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the produce to.
+
+---
+
+###### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.host"></a>
+
+- *Type:* string
+
+the host to which the principal can produce data.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce"></a>
+
+```typescript
+public grantProduce(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+```
+
+Grant a principal to produce data to a topic.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.id"></a>
+
+- *Type:* string
+
+the CDK resource id.
+
+---
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can produce data.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The client authentication to use when grant on resource.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.principal"></a>
+
+- *Type:* string | aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the produce to.
+
+---
+
+###### `host`<sup>Optional</sup> <a name="host" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.host"></a>
+
+- *Type:* string
+
+the host to which the principal can produce data.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
+##### `putClusterPolicy` <a name="putClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy"></a>
+
+```typescript
+public putClusterPolicy(policy: string, id: string, currentVersion?: string): void
+```
+
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy.parameter.policy"></a>
+
+- *Type:* string
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `currentVersion`<sup>Optional</sup> <a name="currentVersion" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy.parameter.currentVersion"></a>
+
+- *Type:* string
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl"></a>
+
+```typescript
+public setAcl(id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
+```
+
+Creates a topic in the Msk Cluster.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `aclDefinition`<sup>Required</sup> <a name="aclDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl.parameter.aclDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Acl
+
+the Kafka Acl definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+##### `setTopic` <a name="setTopic" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic"></a>
+
+```typescript
+public setTopic(id: string, clientAuthentication: Authentication, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
+```
+
+Creates a topic in the Msk Cluster.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for Topic.
+
+---
+
+###### `clientAuthentication`<sup>Required</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The client authentication to use when creating the Topic.
+
+---
+
+###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic.parameter.topicDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskTopic
+
+the Kafka topic definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic.parameter.waitForLeaders"></a>
+
+- *Type:* boolean
+
+If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+
+---
+
+###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic.parameter.timeout"></a>
+
+- *Type:* number
+
+The time in ms to wait for a topic to be completely created on the controller node.
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration">createClusterConfiguration</a></code> | *No description.* |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.isConstruct"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.MskProvisioned.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+##### `createClusterConfiguration` <a name="createClusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.MskProvisioned.createClusterConfiguration(scope: Construct, id: string, name: string, serverPropertiesFilePath: string, kafkaVersions?: KafkaVersion[], configurationDescription?: string, latestRevision?: LatestRevisionProperty)
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.name"></a>
+
+- *Type:* string
+
+---
+
+###### `serverPropertiesFilePath`<sup>Required</sup> <a name="serverPropertiesFilePath" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.serverPropertiesFilePath"></a>
+
+- *Type:* string
+
+---
+
+###### `kafkaVersions`<sup>Optional</sup> <a name="kafkaVersions" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.kafkaVersions"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion[]
+
+---
+
+###### `configurationDescription`<sup>Optional</sup> <a name="configurationDescription" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.configurationDescription"></a>
+
+- *Type:* string
+
+---
+
+###### `latestRevision`<sup>Optional</sup> <a name="latestRevision" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.createClusterConfiguration.parameter.latestRevision"></a>
+
+- *Type:* aws-cdk-lib.aws_msk.CfnConfiguration.LatestRevisionProperty
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | The MSK cluster created by the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.encryptionAtRestKey">encryptionAtRestKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key for encrypting data within the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction">updateZookepeerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup">updateZookepeerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole">updateZookepeerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup">updateZookepeerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | THe Security Group associated to the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the MSK cluster is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationFunction">applyConfigurationFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLogGroup">applyConfigurationLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationRole">applyConfigurationRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationSecurityGroup">applyConfigurationSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for applying MSK configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerLogGroup">brokerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch log group associated with brokers activity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group associated with the MSK brokers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.clusterConfiguration">clusterConfiguration</a></code> | <code>aws-cdk-lib.aws_msk.CfnConfiguration</code> | The MSK cluster configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminFunction">iamCrudAdminFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminLogGroup">iamCrudAdminLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminRole">iamCrudAdminRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminSecurityGroup">iamCrudAdminSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for CRUD operations via IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclFunction">inClusterAclFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclLogGroup">inClusterAclLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclRole">inClusterAclRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclSecurityGroup">inClusterAclSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole">updateConnectivityRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivitySecurityGroup">updateConnectivitySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for updating MSK Connectivity. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cluster"></a>
+
+```typescript
+public readonly cluster: CfnCluster;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnCluster
+
+The MSK cluster created by the construct.
+
+---
+
+##### `encryptionAtRestKey`<sup>Required</sup> <a name="encryptionAtRestKey" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.encryptionAtRestKey"></a>
+
+```typescript
+public readonly encryptionAtRestKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS CMK key for encrypting data within the cluster.
+
+---
+
+##### `updateZookepeerFunction`<sup>Required</sup> <a name="updateZookepeerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction"></a>
+
+```typescript
+public readonly updateZookepeerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerLogGroup`<sup>Required</sup> <a name="updateZookepeerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup"></a>
+
+```typescript
+public readonly updateZookepeerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerRole`<sup>Required</sup> <a name="updateZookepeerRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole"></a>
+
+```typescript
+public readonly updateZookepeerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the Lambda responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerSecurityGroup`<sup>Required</sup> <a name="updateZookepeerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup"></a>
+
+```typescript
+public readonly updateZookepeerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+THe Security Group associated to the Lambda responsible for updating Zookeeper.
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+The VPC where the MSK cluster is deployed.
+
+---
+
+##### `applyConfigurationFunction`<sup>Optional</sup> <a name="applyConfigurationFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationFunction"></a>
+
+```typescript
+public readonly applyConfigurationFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for applying MSK configuration.
+
+---
+
+##### `applyConfigurationLogGroup`<sup>Optional</sup> <a name="applyConfigurationLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLogGroup"></a>
+
+```typescript
+public readonly applyConfigurationLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration.
+
+---
+
+##### `applyConfigurationRole`<sup>Optional</sup> <a name="applyConfigurationRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationRole"></a>
+
+```typescript
+public readonly applyConfigurationRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the Lambda responsible for applying MSK configuration.
+
+---
+
+##### `applyConfigurationSecurityGroup`<sup>Optional</sup> <a name="applyConfigurationSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationSecurityGroup"></a>
+
+```typescript
+public readonly applyConfigurationSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for applying MSK configuration.
+
+---
+
+##### `brokerLogGroup`<sup>Optional</sup> <a name="brokerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerLogGroup"></a>
+
+```typescript
+public readonly brokerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch log group associated with brokers activity.
+
+---
+
+##### `brokerSecurityGroup`<sup>Optional</sup> <a name="brokerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.brokerSecurityGroup"></a>
+
+```typescript
+public readonly brokerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The security group associated with the MSK brokers.
+
+---
+
+##### `clusterConfiguration`<sup>Optional</sup> <a name="clusterConfiguration" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.clusterConfiguration"></a>
+
+```typescript
+public readonly clusterConfiguration: CfnConfiguration;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnConfiguration
+
+The MSK cluster configuration.
+
+---
+
+##### `iamCrudAdminFunction`<sup>Optional</sup> <a name="iamCrudAdminFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminFunction"></a>
+
+```typescript
+public readonly iamCrudAdminFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for CRUD operations via IAM authentication.
+
+---
+
+##### `iamCrudAdminLogGroup`<sup>Optional</sup> <a name="iamCrudAdminLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminLogGroup"></a>
+
+```typescript
+public readonly iamCrudAdminLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for CRUD operations via IAM authentication.
+
+---
+
+##### `iamCrudAdminRole`<sup>Optional</sup> <a name="iamCrudAdminRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminRole"></a>
+
+```typescript
+public readonly iamCrudAdminRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used by the Lambda responsible for CRUD operations via IAM authentication.
+
+---
+
+##### `iamCrudAdminSecurityGroup`<sup>Optional</sup> <a name="iamCrudAdminSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.iamCrudAdminSecurityGroup"></a>
+
+```typescript
+public readonly iamCrudAdminSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for CRUD operations via IAM authentication.
+
+---
+
+##### `inClusterAclFunction`<sup>Optional</sup> <a name="inClusterAclFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclFunction"></a>
+
+```typescript
+public readonly inClusterAclFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for CRUD operations via mTLS authentication.
+
+---
+
+##### `inClusterAclLogGroup`<sup>Optional</sup> <a name="inClusterAclLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclLogGroup"></a>
+
+```typescript
+public readonly inClusterAclLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication.
+
+---
+
+##### `inClusterAclRole`<sup>Optional</sup> <a name="inClusterAclRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclRole"></a>
+
+```typescript
+public readonly inClusterAclRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication.
+
+---
+
+##### `inClusterAclSecurityGroup`<sup>Optional</sup> <a name="inClusterAclSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclSecurityGroup"></a>
+
+```typescript
+public readonly inClusterAclSecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication.
+
+---
+
+##### `updateConnectivityFunction`<sup>Optional</sup> <a name="updateConnectivityFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityFunction"></a>
+
+```typescript
+public readonly updateConnectivityFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for updating MSK Connectivity.
+
+---
+
+##### `updateConnectivityLogGroup`<sup>Optional</sup> <a name="updateConnectivityLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup"></a>
+
+```typescript
+public readonly updateConnectivityLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity.
+
+---
+
+##### `updateConnectivityRole`<sup>Optional</sup> <a name="updateConnectivityRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole"></a>
+
+```typescript
+public readonly updateConnectivityRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the Lambda responsible for updating MSK Connectivity.
+
+---
+
+##### `updateConnectivitySecurityGroup`<sup>Optional</sup> <a name="updateConnectivitySecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivitySecurityGroup"></a>
+
+```typescript
+public readonly updateConnectivitySecurityGroup: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The Security Group used by the Lambda responsible for updating MSK Connectivity.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.MSK_DEFAULT_VERSION">MSK_DEFAULT_VERSION</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+##### `MSK_DEFAULT_VERSION`<sup>Required</sup> <a name="MSK_DEFAULT_VERSION" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.MSK_DEFAULT_VERSION"></a>
+
+```typescript
+public readonly MSK_DEFAULT_VERSION: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
+
+---
+
+### MskServerless <a name="MskServerless" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless"></a>
+
+A construct to create an MSK Serverless cluster.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
+
+*Example*
+
+```typescript
+const msk = new dsf.streaming.MskServerless(this, 'cluster');
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+new streaming.MskServerless(scope: Construct, id: string, props?: MskServerlessProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic">addTopic</a></code> | Creates a topic in the MSK Serverless. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic"></a>
+
+```typescript
+public addTopic(id: string, topicDefinition: MskTopic, removalPolicy?: RemovalPolicy, waitForLeaders?: boolean, timeout?: number): CustomResource
+```
+
+Creates a topic in the MSK Serverless.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for the topic.
+
+---
+
+###### `topicDefinition`<sup>Required</sup> <a name="topicDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic.parameter.topicDefinition"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskTopic
+
+the Kafka topic definition.
+
+---
+
+###### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic.parameter.removalPolicy"></a>
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+Wether to keep the topic or delete it when removing the resource from the Stack.
+
+---
+
+###### `waitForLeaders`<sup>Optional</sup> <a name="waitForLeaders" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic.parameter.waitForLeaders"></a>
+
+- *Type:* boolean
+
+Wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE.
+
+---
+
+###### `timeout`<sup>Optional</sup> <a name="timeout" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic.parameter.timeout"></a>
+
+- *Type:* number
+
+The time in ms to wait for a topic to be completely created on the controller node.
+
+---
+
+##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume"></a>
+
+```typescript
+public grantConsume(topicName: string, principal: IPrincipal): CustomResource
+```
+
+Grant a principal the right to consume data from a topic.
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume.parameter.topicName"></a>
+
+- *Type:* string
+
+the topic to which the principal can consume data from.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand the consume action.
+
+---
+
+##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce"></a>
+
+```typescript
+public grantProduce(topicName: string, principal: IPrincipal): CustomResource
+```
+
+Grant a principal to produce data to a topic.
+
+###### `topicName`<sup>Required</sup> <a name="topicName" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce.parameter.topicName"></a>
+
+- *Type:* string
+
+the name of the topic to grant producer permissions.
+
+---
+
+###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce.parameter.principal"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IPrincipal
+
+the IAM principal to grand producer permissions.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.isConstruct"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+streaming.MskServerless.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.lambdaSecurityGroup">lambdaSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `cluster`<sup>Required</sup> <a name="cluster" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.cluster"></a>
+
+```typescript
+public readonly cluster: CfnServerlessCluster;
+```
+
+- *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `lambdaSecurityGroup`<sup>Required</sup> <a name="lambdaSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.lambdaSecurityGroup"></a>
+
+```typescript
+public readonly lambdaSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+---
+
+##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+---
+
+##### `brokerSecurityGroup`<sup>Optional</sup> <a name="brokerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup"></a>
+
+```typescript
+public readonly brokerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### OpenSearchCluster <a name="OpenSearchCluster" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster"></a>
 
 A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
@@ -9961,6 +11094,73 @@ public readonly resourceType: AclResourceTypes;
 
 ---
 
+### AclAdminProps <a name="AclAdminProps" id="@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps"></a>
+
+This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const aclAdminProps: streaming.AclAdminProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.property.aclAdminPrincipal">aclAdminPrincipal</a></code> | <code>string</code> | This Principal will be used by the CDK custom resource to set ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.property.adminPrincipal">adminPrincipal</a></code> | <code>string</code> | The Principal that will have administrator privilege in MSK The MSK construct does not have access to this principal Keep this principal in a secure storage and should be only used in case you put an ACL that lock MSK access. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.property.secretCertificate">secretCertificate</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
+
+---
+
+##### `aclAdminPrincipal`<sup>Required</sup> <a name="aclAdminPrincipal" id="@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.property.aclAdminPrincipal"></a>
+
+```typescript
+public readonly aclAdminPrincipal: string;
+```
+
+- *Type:* string
+
+This Principal will be used by the CDK custom resource to set ACLs and Topics.
+
+---
+
+##### `adminPrincipal`<sup>Required</sup> <a name="adminPrincipal" id="@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.property.adminPrincipal"></a>
+
+```typescript
+public readonly adminPrincipal: string;
+```
+
+- *Type:* string
+
+The Principal that will have administrator privilege in MSK The MSK construct does not have access to this principal Keep this principal in a secure storage and should be only used in case you put an ACL that lock MSK access.
+
+---
+
+##### `secretCertificate`<sup>Required</sup> <a name="secretCertificate" id="@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps.property.secretCertificate"></a>
+
+```typescript
+public readonly secretCertificate: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics.
+
+The secret in AWS secrets manager must be a JSON in the following format
+{
+ "key" : "PRIVATE-KEY",
+ "cert" : "CERTIFICATE"
+}
+
+You can use the following utility to generate the certificates
+https://github.com/aws-samples/amazon-msk-client-authentication
+
+---
+
 ### AnalyticsBucketProps <a name="AnalyticsBucketProps" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucketProps"></a>
 
 Properties for the `AnalyticsBucket` construct.
@@ -12134,6 +13334,427 @@ public readonly enablePrometheusNodeExporter: boolean;
 Indicates whether you want to enable or disable the Prometheus Node Exporter.
 
 You can use the Prometheus Node Exporter to get CPU and disk metrics for the broker nodes.
+
+---
+
+### MskProvisionedProps <a name="MskProvisionedProps" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const mskProvisionedProps: streaming.MskProvisionedProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.allowEveryoneIfNoAclFound">allowEveryoneIfNoAclFound</a></code> | <code>boolean</code> | if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.brokerInstanceType">brokerInstanceType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType</code> | The EC2 instance type that you want Amazon MSK to use when it creates your brokers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.brokerNumber">brokerNumber</a></code> | <code>number</code> | The number of Apache Kafka brokers deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.certificateDefinition">certificateDefinition</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.AclAdminProps</code> | This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clientAuthentication">clientAuthentication</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClientAuthentication</code> | Configuration properties for client authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK provisioned cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configuration">configuration</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.currentVersion">currentVersion</a></code> | <code>string</code> | This parameter is required after executing the first `cdk deploy` It is the version of the MSK cluster that was deployed in the previous `cdk deploy` The cluster might fail in the subsequent updates if it is not set This parameter is obtained by running the following command `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorage">ebsStorage</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | The version of Apache Kafka. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.monitoring">monitoring</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MonitoringConfiguration</code> | Cluster monitoring configuration. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.placeClusterHandlerInVpc">placeClusterHandlerInVpc</a></code> | <code>boolean</code> | If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | What to do when this resource is deleted from a stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.storageMode">storageMode</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.StorageMode</code> | This controls storage mode for supported storage tiers. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where to deploy the MSK Provisioned cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where to deploy the MSK Serverless cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpcConnectivity">vpcConnectivity</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.VpcClientAuthentication</code> | VPC connection control settings for brokers Defines all client authentication information for VpcConnectivity. |
+
+---
+
+##### `allowEveryoneIfNoAclFound`<sup>Optional</sup> <a name="allowEveryoneIfNoAclFound" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.allowEveryoneIfNoAclFound"></a>
+
+```typescript
+public readonly allowEveryoneIfNoAclFound: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+if set the to true the following Kafka configuration `allow.everyone.if.no.acl.found` is set to true. When no Cluster Configuration is passed The construct create a cluster configuration and set the following configuration to false and apply it to the cluster.
+
+---
+
+##### `brokerInstanceType`<sup>Optional</sup> <a name="brokerInstanceType" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.brokerInstanceType"></a>
+
+```typescript
+public readonly brokerInstanceType: MskBrokerInstanceType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType
+- *Default:* kafka.m5.large
+
+The EC2 instance type that you want Amazon MSK to use when it creates your brokers.
+
+> [https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types](https://docs.aws.amazon.com/msk/latest/developerguide/msk-create-cluster.html#broker-instance-types)
+
+---
+
+##### `brokerNumber`<sup>Optional</sup> <a name="brokerNumber" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.brokerNumber"></a>
+
+```typescript
+public readonly brokerNumber: number;
+```
+
+- *Type:* number
+- *Default:* 1 per availability zone.
+
+The number of Apache Kafka brokers deployed.
+
+It must be a multiple of the number of availability zones.
+
+---
+
+##### `certificateDefinition`<sup>Optional</sup> <a name="certificateDefinition" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.certificateDefinition"></a>
+
+```typescript
+public readonly certificateDefinition: AclAdminProps;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.AclAdminProps
+
+This Props allow you to define the principals that will be adminstartor as well as the principal that will be used by the CDK Custom resources to.
+
+---
+
+##### `clientAuthentication`<sup>Optional</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clientAuthentication"></a>
+
+```typescript
+public readonly clientAuthentication: ClientAuthentication;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.ClientAuthentication
+- *Default:* IAM is used
+
+Configuration properties for client authentication.
+
+MSK supports using private TLS certificates or SASL/SCRAM to authenticate the identity of clients.
+
+---
+
+##### `clusterName`<sup>Optional</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+- *Default:* default-msk-provisioned
+
+The name of the MSK provisioned cluster.
+
+---
+
+##### `configuration`<sup>Optional</sup> <a name="configuration" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configuration"></a>
+
+```typescript
+public readonly configuration: ClusterConfigurationInfo;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.ClusterConfigurationInfo
+- *Default:* none
+
+The Amazon MSK configuration to use for the cluster.
+
+---
+
+##### `currentVersion`<sup>Optional</sup> <a name="currentVersion" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.currentVersion"></a>
+
+```typescript
+public readonly currentVersion: string;
+```
+
+- *Type:* string
+
+This parameter is required after executing the first `cdk deploy` It is the version of the MSK cluster that was deployed in the previous `cdk deploy` The cluster might fail in the subsequent updates if it is not set This parameter is obtained by running the following command `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`.
+
+---
+
+##### `ebsStorage`<sup>Optional</sup> <a name="ebsStorage" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorage"></a>
+
+```typescript
+public readonly ebsStorage: EbsStorageInfo;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.EbsStorageInfo
+- *Default:* 100 GiB EBS volume
+
+Information about storage volumes attached to MSK broker nodes.
+
+---
+
+##### `kafkaClientLogLevel`<sup>Optional</sup> <a name="kafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaClientLogLevel"></a>
+
+```typescript
+public readonly kafkaClientLogLevel: KafkaClientLogLevel;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel
+- *Default:* INFO
+
+The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
+
+---
+
+##### `kafkaVersion`<sup>Optional</sup> <a name="kafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaVersion"></a>
+
+```typescript
+public readonly kafkaVersion: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
+- *Default:* KafkaVersion.V3_5_1
+
+The version of Apache Kafka.
+
+---
+
+##### `logging`<sup>Optional</sup> <a name="logging" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.logging"></a>
+
+```typescript
+public readonly logging: BrokerLogging;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.BrokerLogging
+- *Default:* A Cloudwatch log is created
+
+Configure your MSK cluster to send broker logs to different destination types.
+
+---
+
+##### `monitoring`<sup>Optional</sup> <a name="monitoring" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.monitoring"></a>
+
+```typescript
+public readonly monitoring: MonitoringConfiguration;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.MonitoringConfiguration
+- *Default:* DEFAULT monitoring level
+
+Cluster monitoring configuration.
+
+---
+
+##### `placeClusterHandlerInVpc`<sup>Optional</sup> <a name="placeClusterHandlerInVpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.placeClusterHandlerInVpc"></a>
+
+```typescript
+public readonly placeClusterHandlerInVpc: boolean;
+```
+
+- *Type:* boolean
+
+If set to true, the cluster handler functions will be placed in the private subnets of the cluster vpc.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+What to do when this resource is deleted from a stack.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+- *Default:* create a new security group
+
+The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster.
+
+---
+
+##### `storageMode`<sup>Optional</sup> <a name="storageMode" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.storageMode"></a>
+
+```typescript
+public readonly storageMode: StorageMode;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.StorageMode
+- *Default:* StorageMode.LOCAL
+
+This controls storage mode for supported storage tiers.
+
+> [https://docs.aws.amazon.com/msk/latest/developerguide/msk-tiered-storage.html](https://docs.aws.amazon.com/msk/latest/developerguide/msk-tiered-storage.html)
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* the private subnets with egress.
+
+The subnets where to deploy the MSK Provisioned cluster.
+
+Amazon MSK distributes the broker nodes evenly across these subnets.
+The subnets must be in distinct Availability Zones.
+Client subnets can't be in Availability Zone us-east-1e.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* A new VPC is created.
+
+The VPC where to deploy the MSK Serverless cluster.
+
+Must have at least 2 subnets in two different AZs.
+
+---
+
+##### `vpcConnectivity`<sup>Optional</sup> <a name="vpcConnectivity" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.vpcConnectivity"></a>
+
+```typescript
+public readonly vpcConnectivity: VpcClientAuthentication;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.VpcClientAuthentication
+
+VPC connection control settings for brokers Defines all client authentication information for VpcConnectivity.
+
+When vpcConnectivity and you provide your own Msk Congifuration
+You must set `allow.everyone.if.no.acl.found` to `false`
+
+---
+
+### MskServerlessProps <a name="MskServerlessProps" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps"></a>
+
+Properties for the `MskServerlessCluster` construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.Initializer"></a>
+
+```typescript
+import { streaming } from '@cdklabs/aws-data-solutions-framework'
+
+const mskServerlessProps: streaming.MskServerlessProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK Serverless cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where to deploy the MSK Serverless cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where to deploy the MSK Serverless cluster. |
+
+---
+
+##### `clusterName`<sup>Optional</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+- *Default:* default-msk-serverless
+
+The name of the MSK Serverless cluster.
+
+---
+
+##### `kafkaClientLogLevel`<sup>Optional</sup> <a name="kafkaClientLogLevel" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.kafkaClientLogLevel"></a>
+
+```typescript
+public readonly kafkaClientLogLevel: KafkaClientLogLevel;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel
+- *Default:* WARN
+
+The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+- *Default:* create a new security group
+
+The AWS security groups to associate with the elastic network interfaces of the Amazon MSK cluster.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* the Vpc default strategy if not specified.
+
+The subnets where to deploy the MSK Serverless cluster.
+
+The subnets must be in distinct Availability Zones.
+Client subnets can't be in Availability Zone us-east-1e.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerlessProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* A new Vpc is created
+
+The VPC where to deploy the MSK Serverless cluster.
+
+The VPC must have at least 2 subnets in two different AZs.
 
 ---
 
