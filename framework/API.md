@@ -4532,7 +4532,7 @@ A construct to create an MSK Provisioned cluster.
 *Example*
 
 ```typescript
-const msk = new dsf.streaming.MskProvisioned(MyStack, 'cluster');
+const msk = new dsf.streaming.MskProvisioned(this, 'cluster');
 ```
 
 
@@ -5346,7 +5346,7 @@ A construct to create an MSK Serverless cluster.
 *Example*
 
 ```typescript
-const msk = new dsf.streaming.MskServerless(MyStack, 'cluster');
+const msk = new dsf.streaming.MskServerless(this, 'cluster');
 ```
 
 

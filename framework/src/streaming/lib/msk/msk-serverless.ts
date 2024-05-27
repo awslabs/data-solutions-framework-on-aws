@@ -18,7 +18,7 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../..
  *
  * @example
  *
- * const msk = new dsf.streaming.MskServerless(MyStack, 'cluster');
+ * const msk = new dsf.streaming.MskServerless(this, 'cluster');
  */
 export class MskServerless extends TrackedConstruct {
 
