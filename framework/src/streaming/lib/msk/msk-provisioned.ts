@@ -241,7 +241,7 @@ export class MskProvisioned extends TrackedConstruct {
     } else if (props?.subnets) {
       this.subnetSelectionIds = this.vpc.selectSubnets(props.subnets).subnetIds;
     } else {
-      this.subnetSelectionIds = this.vpc.selectSubnets().subnetIds;
+      this.subnetSelectionIds = this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }).subnetIds;
     }
 
     this.connections = new Connections({
@@ -312,7 +312,7 @@ export class MskProvisioned extends TrackedConstruct {
     // check the number of broker vs the number of AZs, it needs to be multiple
 
     this.defaultNumberOfBrokerNodes = this.vpc.availabilityZones.length > 3 ? 3 : this.vpc.availabilityZones.length;
-    this.numberOfBrokerNodes = props?.numBrokerPerAz ?? this.defaultNumberOfBrokerNodes;
+    this.numberOfBrokerNodes = props?.brokerNumber ?? this.defaultNumberOfBrokerNodes;
 
     if (this.numberOfBrokerNodes % this.vpc.availabilityZones.length) {
       throw Error('The number of broker nodes needs to be multiple of the number of AZs');

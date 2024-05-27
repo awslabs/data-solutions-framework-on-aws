@@ -31,10 +31,11 @@ export interface MskProvisionedProps {
   readonly kafkaVersion?: KafkaVersion;
 
   /**
-   * The number of Apache Kafka brokers deployed in each Availability Zone.
-   * @default - 1
+   * The number of Apache Kafka brokers deployed.
+   * It must be a multiple of the number of availability zones.
+   * @default - 1 per availability zone.
    */
-  readonly numBrokerPerAz?: number;
+  readonly brokerNumber?: number;
 
   /**
    * The VPC where to deploy the MSK Serverless cluster.
@@ -48,7 +49,7 @@ export interface MskProvisionedProps {
    * Amazon MSK distributes the broker nodes evenly across these subnets.
    * The subnets must be in distinct Availability Zones.
    * Client subnets can't be in Availability Zone us-east-1e.
-   * @default - the Vpc default strategy if not specified.
+   * @default - the private subnets with egress.
    */
   readonly subnets?: SubnetSelection;
 

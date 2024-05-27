@@ -28,7 +28,7 @@ let certificateAuthority = CertificateAuthority.fromCertificateAuthorityArn(
 
 new MskProvisioned(stack, 'cluster', {
   clusterName: 'cluster',
-  numBrokerPerAz: 2,
+  brokerNumber: 2,
   kafkaVersion: KafkaVersion.V3_4_0,
   clientAuthentication: ClientAuthentication.saslTls(
     {

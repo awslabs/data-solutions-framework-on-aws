@@ -138,7 +138,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     clusterName: 'cluster',
     vpc: vpc.vpc,
     subnets: vpc.vpc.selectSubnets(),
-    numBrokerPerAz: 4,
+    brokerNumber: 4,
     brokerInstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
     kafkaVersion: KafkaVersion.V3_4_0,
     clientAuthentication: ClientAuthentication.saslTls(
@@ -281,7 +281,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     clusterName: 'cluster',
     vpc: vpc.vpc,
     subnets: vpc.vpc.selectSubnets(),
-    numBrokerPerAz: 4,
+    brokerNumber: 4,
     brokerInstanceType: MskBrokerInstanceType.KAFKA_M7G_LARGE,
     kafkaVersion: KafkaVersion.V3_4_0,
     clientAuthentication: ClientAuthentication.saslTls(
