@@ -90,6 +90,11 @@ const config = {
           label: 'GitHub',
           position: 'right',
         },
+        {
+          href: 'https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/v/1.7.0?lang=typescript',
+          label: 'API Reference',
+          position: 'right',
+        }
       ],
     },
     colorMode: {
