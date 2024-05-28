@@ -88,18 +88,19 @@ In `lib/dsf-example-stack.ts`
   import * as dsf from '@cdklabs/aws-data-solutions-framework';
   import { Key } from 'aws-cdk-lib/aws-kms';
   import { Policy, PolicyStatement} from 'aws-cdk-lib/aws-iam';
+  import { Construct } from 'constructs';
 
   export class DsfExampleStack extends cdk.Stack {
-    constructor(scope: cdk.Construt, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
-
-    const storage = new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-      encryptionKey: new Key(this, 'DataKey', {
+      
+      const storage = new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+        encryptionKey: new Key(this, 'DataKey', {
           enableKeyRotation: true,
           removalPolicy: cdk.RemovalPolicy.DESTROY
         }),
-    });
-  }
+      });
+    }
   ```
   
   ```mdx-code-block
