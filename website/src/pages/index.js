@@ -37,7 +37,7 @@ function HomepageHeader() {
             <Link
               className="button button--lg button-3d"
               style={{ padding: '0.8rem 1.8rem', fontSize: '1.3rem' }}
-              to="https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/v/1.7.0?lang=typescript"
+              to="https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/"
             >
               API Reference
             </Link>

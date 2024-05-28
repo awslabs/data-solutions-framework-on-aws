@@ -91,7 +91,7 @@ const config = {
           position: 'right',
         },
         {
-          href: 'https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/v/1.7.0?lang=typescript',
+          href: 'https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/',
           label: 'API Reference',
           position: 'right',
         }
