@@ -90,6 +90,11 @@ const config = {
           label: 'GitHub',
           position: 'right',
         },
+        {
+          href: 'https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/',
+          label: 'API Reference',
+          position: 'right',
+        }
       ],
     },
     colorMode: {

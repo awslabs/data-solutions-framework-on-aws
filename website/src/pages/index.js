@@ -8,28 +8,40 @@ import styles from './index.module.css';
 
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   // const currentTheme = document.documentElement.getAttribute('data-theme');  
 
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container" style={{textAlign: 'center'}}>
+      <div className="container" style={{ textAlign: 'center' }}>
         <div className="row">
-        <div className="col col--6">
-            <img id="logo" className="navLogo" src="img/adsf-logo-light.png" alt="Header image"/>
+          <div className="col col--6">
+            <img id="logo" className="navLogo" src="img/adsf-logo-light.png" alt="Header image" />
           </div>
           <div className="col col--6">
-              <img id="codeSample" className='navCodeExample' src="img/code-light.png" alt="Header image"/>
+            <img id="codeSample" className='navCodeExample' src="img/code-light.png" alt="Header image" />
           </div>
         </div>
         <p className='hero__subtitle'>{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--lg button-3d"
-            style={{padding: '0.8rem 1.8rem', fontSize: '1.3rem'}}
-            to="/docs/intro">
-            GET STARTED
-          </Link>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--lg button-3d"
+              style={{ padding: '0.8rem 1.8rem', fontSize: '1.3rem' }}
+              to="/docs/intro"
+            >
+              GET STARTED
+            </Link>
+          </div>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--lg button-3d"
+              style={{ padding: '0.8rem 1.8rem', fontSize: '1.3rem' }}
+              to="https://constructs.dev/packages/@cdklabs/aws-data-solutions-framework/"
+            >
+              API Reference
+            </Link>
+          </div>
         </div>
       </div>
     </header>
@@ -37,7 +49,7 @@ function HomepageHeader() {
 }
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
       title={`${siteConfig.title}`}
