@@ -1,4 +1,9 @@
-## Contributing to the Framework
+---
+sidebar_position: 1
+sidebar_label: Contributing to the framework
+---
+
+# Contributing to the Framework
 
 
 This is a TypeScript project managed by the [projen](https://github.com/projen/projen) tool. To contribute to the framework sub project, you need to have the following prerequisites:
