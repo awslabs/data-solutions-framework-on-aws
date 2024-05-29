@@ -12,7 +12,7 @@ This is a TypeScript project managed by the [projen](https://github.com/projen/p
 ### Prerequisites
 
 - Node.js v20
-
+- Yarn
 - Docker running locally
 
 
