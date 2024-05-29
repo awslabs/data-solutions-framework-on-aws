@@ -66,7 +66,7 @@ Now you're ready to start contributing to the framework sub project!
 1. Validate the changes in an AWS account
    1. Use the following code in a file in the e2e test folder and update corresponding values. **DO NOT COMMIT THIS FILE**
 
-    ```
+```
     /**
      * Testing my changes
      *
@@ -106,7 +106,7 @@ Now you're ready to start contributing to the framework sub project!
       expect(deployResult.MyOutput).toContain('<VALUE_TO_TEST>');
     });
 
-    ```
+```
 
    2. Deploy the stack
 
