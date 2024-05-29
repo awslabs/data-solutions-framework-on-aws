@@ -1,6 +1,35 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import _, { result } from 'lodash';
+
+function compareOldNewObject(oldObject, newObject, attribute) {
+
+  if (
+    _.get(oldObject, attribute) &&
+    _.get(newObject, attribute)
+  ) {
+
+    // Compare ClientAuthentication properties
+    const oldObjectAttribute = _.get(oldObject, attribute);
+    const newObjectAttribute = _.get(newObject, attribute);
+
+    // Check if there were any changes to ClientAuthentication
+    const objectAttributeChanged = _.isEqual(oldObjectAttribute, newObjectAttribute);
+
+    // If there were changes, return the ClientAuthentication of the new object
+    if (!objectAttributeChanged) {
+      console.log(`Change detected in ${attribute}`);
+      return { attribute: attribute, newObjectAttribute: newObjectAttribute };
+    }
+  } else {
+    console.log(`The attibute "${attribute}" is not in object`);
+  }
+
+  // Return null if no changes or if ClientAuthentication properties don't exist in both objects
+  return null;
+};
+
 export async function topicCrudOnEvent (event, admin) {
   switch (event.RequestType) {
     case 'Create':
@@ -32,8 +61,17 @@ export async function topicCrudOnEvent (event, admin) {
     
       console.info(event.ResourceProperties.topic);
 
+      const topicAttributeList = [
+        'retention.ms', 'retention.bytes', 'cleanup.policy', 'segment.bytes', 'max.messages.bytes'];
+
       const oldTopic = event.OldResourceProperties.topic;
       const newTopic = event.ResourceProperties.topic;
+
+      // We need to find the attributes that were changed in the update
+      if(newTopic.configEntries || oldTopic.configEntries) {
+        let updatedAttributes = topicAttributeList.map((topicAttribute) => compareOldNewObject(oldTopic.configEntries, newTopic.configEntries, topicAttribute));
+        console.log(updatedAttributes);
+      }
 
       if ( newTopic.numPartitions > oldTopic.numPartitions ) {
         console.log("creating new partitions...")
