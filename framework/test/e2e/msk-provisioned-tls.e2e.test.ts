@@ -50,6 +50,22 @@ msk.setTopic('topicProvisioned', Authentication.MTLS, {
   replicationFactor: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
+msk.setTopic('topicProvisioned', Authentication.MTLS, {
+  topic: 'configentries',
+  numPartitions: 1,
+  replicationFactor: 1,
+  configEntries: [
+    {
+      name: 'retention.ms',
+      value: '90000',
+    },
+    {
+      name: 'retention.bytes',
+      value: '90000',
+    },
+  ],
+}, cdk.RemovalPolicy.DESTROY, false, 1500);
+
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
   value: msk.cluster.attrArn,
 });
