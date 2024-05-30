@@ -1,34 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ConfigResourceTypes } from "kafkajs"
 
-import _, { result } from 'lodash';
-
-function compareOldNewObject(oldObject, newObject, attribute) {
-
-  if (
-    _.get(oldObject, attribute) &&
-    _.get(newObject, attribute)
-  ) {
-
-    // Compare ClientAuthentication properties
-    const oldObjectAttribute = _.get(oldObject, attribute);
-    const newObjectAttribute = _.get(newObject, attribute);
-
-    // Check if there were any changes to ClientAuthentication
-    const objectAttributeChanged = _.isEqual(oldObjectAttribute, newObjectAttribute);
-
-    // If there were changes, return the ClientAuthentication of the new object
-    if (!objectAttributeChanged) {
-      console.log(`Change detected in ${attribute}`);
-      return { attribute: attribute, newObjectAttribute: newObjectAttribute };
-    }
-  } else {
-    console.log(`The attibute "${attribute}" is not in object`);
+function getDifferentConfigEntries(oldEntries, newEntries) {
+  if (!oldEntries) {
+    return newEntries;
   }
 
-  // Return null if no changes or if ClientAuthentication properties don't exist in both objects
-  return null;
-};
+  const differentEntries = [];
+
+  for (const newEntry of newEntries) {
+    const oldEntry = oldEntries.find(entry => entry.name === newEntry.name);
+    if (!oldEntry || oldEntry.value !== newEntry.value) {
+      differentEntries.push(newEntry);
+    }
+  }
+
+  for (const oldEntry of oldEntries) {
+    const newEntry = newEntries.find(entry => entry.name === oldEntry.name);
+    if (!newEntry) {
+      differentEntries.push(oldEntry);
+    }
+  }
+
+  return differentEntries;
+}
+
+
 
 export async function topicCrudOnEvent (event, admin) {
   switch (event.RequestType) {
@@ -61,16 +59,34 @@ export async function topicCrudOnEvent (event, admin) {
     
       console.info(event.ResourceProperties.topic);
 
-      const topicAttributeList = [
-        'retention.ms', 'retention.bytes', 'cleanup.policy', 'segment.bytes', 'max.messages.bytes'];
-
       const oldTopic = event.OldResourceProperties.topic;
       const newTopic = event.ResourceProperties.topic;
+      let updatedConfigEntries = [];
 
       // We need to find the attributes that were changed in the update
       if(newTopic.configEntries || oldTopic.configEntries) {
-        let updatedAttributes = topicAttributeList.map((topicAttribute) => compareOldNewObject(oldTopic.configEntries, newTopic.configEntries, topicAttribute));
-        console.log(updatedAttributes);
+        updatedConfigEntries = getDifferentConfigEntries(oldTopic.configEntries, newTopic.configEntries);
+      }
+
+      console.log(updatedConfigEntries);
+
+      console.log("updating topic...");
+
+      console.log({
+        type: ConfigResourceTypes.TOPIC,
+        name: newTopic.topic,
+        configEntries: updatedConfigEntries
+    });
+
+      if(updatedConfigEntries) {
+        await admin.alterConfigs({
+          resources: [{
+              type: ConfigResourceTypes.TOPIC,
+              name: newTopic.topic,
+              configEntries: updatedConfigEntries
+          }]
+        });
+      
       }
 
       if ( newTopic.numPartitions > oldTopic.numPartitions ) {
@@ -88,6 +104,7 @@ export async function topicCrudOnEvent (event, admin) {
           });
           
           console.log(`Topic partition count updated: ${result}`);
+          
         }
         catch (error) {
           console.log(`Error updating topic number of partitions: ${JSON.stringify(error)}`);
@@ -131,6 +148,9 @@ export async function topicCrudOnEvent (event, admin) {
       //     }
       //   }
       // }
+
+      await admin.disconnect();
+      break;
       
     case 'Delete':
         
