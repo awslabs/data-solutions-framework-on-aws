@@ -50,7 +50,7 @@ msk.setTopic('topicProvisioned', Authentication.MTLS, {
   replicationFactor: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
-msk.setTopic('topicProvisioned', Authentication.MTLS, {
+msk.setTopic('topicConfigentries', Authentication.MTLS, {
   topic: 'configentries',
   numPartitions: 1,
   replicationFactor: 1,
