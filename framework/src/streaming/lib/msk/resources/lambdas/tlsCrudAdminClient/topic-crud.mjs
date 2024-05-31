@@ -1,5 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ConfigResourceTypes } from "kafkajs"
+
+function getDifferentConfigEntries(oldEntries, newEntries) {
+  if (!oldEntries) {
+    return newEntries;
+  }
+
+  const differentEntries = [];
+
+  for (const newEntry of newEntries) {
+    const oldEntry = oldEntries.find(entry => entry.name === newEntry.name);
+    if (!oldEntry || oldEntry.value !== newEntry.value) {
+      differentEntries.push(newEntry);
+    }
+  }
+
+  for (const oldEntry of oldEntries) {
+    const newEntry = newEntries.find(entry => entry.name === oldEntry.name);
+    if (!newEntry) {
+      differentEntries.push(oldEntry);
+    }
+  }
+
+  return differentEntries;
+}
+
+
 
 export async function topicCrudOnEvent (event, admin) {
   switch (event.RequestType) {
@@ -34,6 +61,33 @@ export async function topicCrudOnEvent (event, admin) {
 
       const oldTopic = event.OldResourceProperties.topic;
       const newTopic = event.ResourceProperties.topic;
+      let updatedConfigEntries = [];
+
+      // We need to find the attributes that were changed in the update
+      if(newTopic.configEntries || oldTopic.configEntries) {
+        updatedConfigEntries = getDifferentConfigEntries(oldTopic.configEntries, newTopic.configEntries);
+      }
+
+      console.log(updatedConfigEntries);
+
+      console.log("updating topic...");
+
+      console.log({
+        type: ConfigResourceTypes.TOPIC,
+        name: newTopic.topic,
+        configEntries: updatedConfigEntries
+    });
+
+      if(updatedConfigEntries) {
+        await admin.alterConfigs({
+          resources: [{
+              type: ConfigResourceTypes.TOPIC,
+              name: newTopic.topic,
+              configEntries: updatedConfigEntries
+          }]
+        });
+      
+      }
 
       if ( newTopic.numPartitions > oldTopic.numPartitions ) {
         console.log("creating new partitions...")
@@ -50,6 +104,7 @@ export async function topicCrudOnEvent (event, admin) {
           });
           
           console.log(`Topic partition count updated: ${result}`);
+          
         }
         catch (error) {
           console.log(`Error updating topic number of partitions: ${JSON.stringify(error)}`);
@@ -93,6 +148,9 @@ export async function topicCrudOnEvent (event, admin) {
       //     }
       //   }
       // }
+
+      await admin.disconnect();
+      break;
       
     case 'Delete':
         

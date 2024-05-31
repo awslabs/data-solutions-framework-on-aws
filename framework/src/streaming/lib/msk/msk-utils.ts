@@ -596,12 +596,12 @@ export interface MskTopic {
   //  * @default - no assignement is done
   //  */
   // readonly replicaAssignment?: {[key: string]: any}[];
-  // /**
-  //  * The topic level configurations.
-  //  * This parameter cannot be updated after the creation of the topic.
-  //  * @default - no configuration is used
-  //  */
-  // readonly configEntries?: {[key: string]: any}[];
+  /**
+   * The topic level configurations.
+   * This parameter cannot be updated after the creation of the topic.
+   * @default - no configuration is used
+   */
+  readonly configEntries?: {[key: string]: string}[];
 }
 
 /**
