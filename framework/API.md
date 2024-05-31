@@ -13776,7 +13776,7 @@ const mskTopic: streaming.MskTopic = { ... }
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.numPartitions">numPartitions</a></code> | <code>number</code> | The number of partitions in the topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.topic">topic</a></code> | <code>string</code> | The name of the topic. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries">configEntries</a></code> | <code>{[ key: string ]: any}[]</code> | The topic level configurations. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries">configEntries</a></code> | <code>{[ key: string ]: string}[]</code> | The topic level configurations. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.replicationFactor">replicationFactor</a></code> | <code>number</code> | The replication factor of the partitions. |
 
 ---
@@ -13808,10 +13808,10 @@ The name of the topic.
 ##### `configEntries`<sup>Optional</sup> <a name="configEntries" id="@cdklabs/aws-data-solutions-framework.streaming.MskTopic.property.configEntries"></a>
 
 ```typescript
-public readonly configEntries: {[ key: string ]: any}[];
+public readonly configEntries: {[ key: string ]: string}[];
 ```
 
-- *Type:* {[ key: string ]: any}[]
+- *Type:* {[ key: string ]: string}[]
 - *Default:* no configuration is used
 
 The topic level configurations.

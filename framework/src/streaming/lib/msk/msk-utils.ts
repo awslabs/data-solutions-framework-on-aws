@@ -601,7 +601,7 @@ export interface MskTopic {
    * This parameter cannot be updated after the creation of the topic.
    * @default - no configuration is used
    */
-  readonly configEntries?: {[key: string]: any}[];
+  readonly configEntries?: {[key: string]: string}[];
 }
 
 /**
