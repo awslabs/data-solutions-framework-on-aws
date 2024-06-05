@@ -136,7 +136,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
       name: catalogDbName,
       glueConnectionName: `glue-conn-${this.cfnResource.workgroupName}`,
       jdbcSecret: this.namespace.adminSecret,
-      jdbcSecretKMSKey: this.namespace.dataKey,
+      jdbcSecretKMSKey: this.namespace.adminSecretKey,
       jdbcPath: pathToCrawl,
       removalPolicy: this.removalPolicy,
     });
