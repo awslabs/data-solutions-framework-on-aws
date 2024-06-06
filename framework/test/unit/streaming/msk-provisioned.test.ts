@@ -50,8 +50,9 @@ describe('Create an MSK Provisioned cluster with a provided vpc and add topic as
       operation: AclOperationTypes.CREATE,
       permissionType: AclPermissionTypes.ALLOW,
     },
-    RemovalPolicy.DESTROY);
-  }).toThrow('Setting ACLs is only supported with TLS and SASL/SCRAM');
+    RemovalPolicy.DESTROY,
+    Authentication.MTLS);
+  }).toThrow('MTLS Authentication is not supported for this cluster');
 
   const template = Template.fromStack(stack, {});
 
@@ -179,7 +180,6 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     operation: AclOperationTypes.CREATE,
     permissionType: AclPermissionTypes.ALLOW,
   }, RemovalPolicy.DESTROY);
-
 
   const template = Template.fromStack(stack, {});
 

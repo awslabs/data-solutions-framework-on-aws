@@ -4059,7 +4059,7 @@ The security group for Client VPN Endpoint.
 
 ### KafkaApi <a name="KafkaApi" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi"></a>
 
-A construct to create an MSK Serverless cluster.
+A construct to create a Msk cluster.
 
 > [https://awslabs.github.io/data-solutions-framework-on-aws/](https://awslabs.github.io/data-solutions-framework-on-aws/)
 
@@ -4109,7 +4109,7 @@ the ID of the CDK Construct.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl">setAcl</a></code> | Creates a topic in the Msk Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl">setAcl</a></code> | Creates a ACL in the Msk Cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
 
 ---
@@ -4125,7 +4125,7 @@ Returns a string representation of this construct.
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantConsume"></a>
 
 ```typescript
-public grantConsume(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+public grantConsume(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy, customResourceAuthentication?: Authentication): CustomResource
 ```
 
 Grant a principal the right to consume data from a topic.
@@ -4178,10 +4178,18 @@ the removal policy to apply to the grant.
 
 ---
 
+###### `customResourceAuthentication`<sup>Optional</sup> <a name="customResourceAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantConsume.parameter.customResourceAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+This the authentication used by the custom resource that is creating the ACL.
+
+---
+
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantProduce"></a>
 
 ```typescript
-public grantProduce(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+public grantProduce(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy, customResourceAuthentication?: Authentication): CustomResource
 ```
 
 Grant a principal to produce data to a topic.
@@ -4234,6 +4242,14 @@ the removal policy to apply to the grant.
 
 ---
 
+###### `customResourceAuthentication`<sup>Optional</sup> <a name="customResourceAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.grantProduce.parameter.customResourceAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+This the authentication used by the custom resource that is creating the ACL.
+
+---
+
 ##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.retrieveVersion"></a>
 
 ```typescript
@@ -4245,16 +4261,16 @@ Retrieve DSF package.json version.
 ##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl"></a>
 
 ```typescript
-public setAcl(id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
+public setAcl(id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy, clientAuthentication?: Authentication): CustomResource
 ```
 
-Creates a topic in the Msk Cluster.
+Creates a ACL in the Msk Cluster.
 
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl.parameter.id"></a>
 
 - *Type:* string
 
-the CDK id for Topic.
+the CDK id for ACL.
 
 ---
 
@@ -4271,6 +4287,14 @@ the Kafka Acl definition.
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 Wether to keep the ACL or delete it when removing the resource from the Stack.
+
+---
+
+###### `clientAuthentication`<sup>Optional</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.setAcl.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The authentication used by the custom resource that is creating the ACL.
 
 ---
 
@@ -4294,7 +4318,7 @@ the CDK id for Topic.
 
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
 
-The client authentication to use when creating the Topic.
+The authentication used by the custom resource that creates the topic.
 
 ---
 
@@ -4585,7 +4609,7 @@ the ID of the CDK Construct.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy">putClusterPolicy</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl">setAcl</a></code> | Creates a topic in the Msk Cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl">setAcl</a></code> | Creates ACL in the Msk Cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setTopic">setTopic</a></code> | Creates a topic in the Msk Cluster. |
 
 ---
@@ -4623,7 +4647,7 @@ the authentication mode.
 ##### `grantConsume` <a name="grantConsume" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume"></a>
 
 ```typescript
-public grantConsume(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+public grantConsume(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy, customResourceAuthentication?: Authentication): CustomResource
 ```
 
 Grant a principal the right to consume data from a topic.
@@ -4674,10 +4698,18 @@ the host to which the principal can produce data.
 
 ---
 
+###### `customResourceAuthentication`<sup>Optional</sup> <a name="customResourceAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume.parameter.customResourceAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The authentication used by the custom resource that is creating the ACL.
+
+---
+
 ##### `grantProduce` <a name="grantProduce" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce"></a>
 
 ```typescript
-public grantProduce(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy): CustomResource
+public grantProduce(id: string, topicName: string, clientAuthentication: Authentication, principal: string | IPrincipal, host?: string, removalPolicy?: RemovalPolicy, customResourceAuthentication?: Authentication): CustomResource
 ```
 
 Grant a principal to produce data to a topic.
@@ -4728,6 +4760,14 @@ the host to which the principal can produce data.
 
 ---
 
+###### `customResourceAuthentication`<sup>Optional</sup> <a name="customResourceAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantProduce.parameter.customResourceAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The authentication used by the custom resource that is creating the ACL.
+
+---
+
 ##### `putClusterPolicy` <a name="putClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.putClusterPolicy"></a>
 
 ```typescript
@@ -4763,16 +4803,16 @@ Retrieve DSF package.json version.
 ##### `setAcl` <a name="setAcl" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl"></a>
 
 ```typescript
-public setAcl(id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy): CustomResource
+public setAcl(id: string, aclDefinition: Acl, removalPolicy?: RemovalPolicy, clientAuthentication?: Authentication): CustomResource
 ```
 
-Creates a topic in the Msk Cluster.
+Creates ACL in the Msk Cluster.
 
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl.parameter.id"></a>
 
 - *Type:* string
 
-the CDK id for Topic.
+the CDK id for ACL.
 
 ---
 
@@ -4789,6 +4829,14 @@ the Kafka Acl definition.
 - *Type:* aws-cdk-lib.RemovalPolicy
 
 Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}.
+
+---
+
+###### `clientAuthentication`<sup>Optional</sup> <a name="clientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.setAcl.parameter.clientAuthentication"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.Authentication
+
+The client authentication to use when creating the ACL.
 
 ---
 
@@ -17683,6 +17731,7 @@ cluster version number.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_3_2">V3_3_2</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.3.2. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_4_0">V3_4_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.4.0. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_5_1">V3_5_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.5.1. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_6_0">V3_6_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.6.0. |
 
 ---
 
@@ -17939,6 +17988,18 @@ public readonly V3_5_1: KafkaVersion;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
 
 Kafka version 3.5.1.
+
+---
+
+##### `V3_6_0`<sup>Required</sup> <a name="V3_6_0" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_6_0"></a>
+
+```typescript
+public readonly V3_6_0: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
+
+Kafka version 3.6.0.
 
 ---
 

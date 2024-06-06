@@ -4,8 +4,8 @@
 import { Kafka, logLevel } from "kafkajs"
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
-import { aclCrudOnEvent } from "./acl-crud.mjs";
-import { topicCrudOnEvent } from "./topic-crud.mjs";
+import { aclCrudOnEvent } from "../../shared/acl-crud.mjs";
+import { topicCrudOnEvent } from "../../shared/topic-crud.mjs";
 
 // Handler functions
 export const onEventHandler = async (event) => {
@@ -98,6 +98,7 @@ export const onEventHandler = async (event) => {
   const admin = kafka.admin();
   
   console.info('======Received Event=======');
+  console.info(event);
   
   // If the principal is set to REPLACE-WITH-BOOTSTRAP, 
   // we need to replace it with the broker FQDN prefix with a wildcard
