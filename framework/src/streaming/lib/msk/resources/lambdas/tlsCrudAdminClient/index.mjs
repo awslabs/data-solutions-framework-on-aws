@@ -4,8 +4,8 @@
 import { Kafka, logLevel } from "kafkajs"
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
-import { aclCrudOnEvent } from "../../shared/acl-crud.mjs";
-import { topicCrudOnEvent } from "../../shared/topic-crud.mjs";
+import { aclCrudOnEvent } from "./acl-crud.mjs";
+import { topicCrudOnEvent } from "./topic-crud.mjs";
 
 // Handler functions
 export const onEventHandler = async (event) => {

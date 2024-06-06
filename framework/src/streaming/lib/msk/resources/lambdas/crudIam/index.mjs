@@ -4,8 +4,8 @@
 import { Kafka, logLevel } from "kafkajs";
 import { generateAuthToken } from "aws-msk-iam-sasl-signer-js";
 import { KafkaClient, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka"; 
-import { aclCrudOnEvent } from "../../shared/acl-crud.mjs";
-import { topicCrudOnEvent } from "../../shared/topic-crud.mjs";
+import { aclCrudOnEvent } from "./acl-crud.mjs";
+import { topicCrudOnEvent } from "./topic-crud.mjs";
 
 async function oauthBearerTokenProvider(region) {
   // Uses AWS Default Credentials Provider Chain to fetch credentials
