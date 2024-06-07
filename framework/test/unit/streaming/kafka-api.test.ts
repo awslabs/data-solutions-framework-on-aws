@@ -165,6 +165,7 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
               'kafka-cluster:Connect',
               'kafka:GetBootstrapBrokers',
               'kafka:DescribeCluster',
+              'kafka-cluster:AlterCluster',
             ],
             Effect: 'Allow',
             Resource: {

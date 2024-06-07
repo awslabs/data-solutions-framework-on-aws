@@ -65,6 +65,7 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:Connect',
         'kafka:GetBootstrapBrokers',
         'kafka:DescribeCluster',
+        'kafka-cluster:AlterCluster',
       ],
       resources: [
         clusterArn,
