@@ -75,7 +75,14 @@ pip install -r requirements.txt
 }
 ```
 
-5. Set the environment variables for cross account deployments
+5. Uncomment these 2 lines in the `infra/app.py` file:
+
+```python
+    # region=os.environ["CDK_DEFAULT_REGION"],
+    # account=os.environ["CDK_DEFAULT_ACCOUNT"]
+```
+   
+6. Set the environment variables for cross account deployments
 
 ```bash
 export CDK_DEFAULT_REGION=<DEV_REGION>
