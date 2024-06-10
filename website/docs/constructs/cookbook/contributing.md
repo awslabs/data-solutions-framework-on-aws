@@ -81,7 +81,7 @@ Now you're ready to start contributing to the framework sub project!
     // GIVEN
     const app = new cdk.App();
     const stack = new Stack(app, 'MyStack');
-    const testStack = new TestStack('MskServerlessTestStack', app, stack);
+    const testStack = new TestStack('E2ETestStack', app, stack);
 
     stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
