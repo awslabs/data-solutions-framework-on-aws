@@ -4,9 +4,10 @@ In this example, we build a Data Lake and process aggregations from the NY taxi 
 
 ## Pre-requisite
 
-1. [Install the AWS CDK CLI](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
-2. [Bootstrap the CICD account](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap)
-3. [Bootstrap the staging and production accounts](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html#cdk-environment-bootstrapping) with a trust relationship from the CICD account
+1. Docker
+2. [Install the AWS CDK CLI](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
+3. [Bootstrap the CICD account](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap)
+4. [Bootstrap the staging and production accounts](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html#cdk-environment-bootstrapping) with a trust relationship from the CICD account
 
 ```bash
 cdk bootstrap \
@@ -25,6 +26,11 @@ aws://<STAGING_ACCOUNT_ID>/<REGION>
 cp -R ../spark-data-lake <MY_LOCAL_PATH>
 cd <MY_LOCAL_PATH>
 git init
+cat << EOF > .gitignore
+infra/cdk.out
+infra/.venv
+infra/stacks/__pycache__
+EOF
 ```
 
 2. Modify the `./infra/requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
@@ -69,17 +75,33 @@ pip install -r requirements.txt
 }
 ```
 
-1. Deploy the CICD pipeline stack:
+5. Uncomment these 2 lines in the `infra/app.py` file:
+
+```python
+    # region=os.environ["CDK_DEFAULT_REGION"],
+    # account=os.environ["CDK_DEFAULT_ACCOUNT"]
+```
+   
+6. Set the environment variables for cross account deployments
+
+```bash
+export CDK_DEFAULT_REGION=<DEV_REGION>
+export CDK_DEFAULT_ACCOUNT=<DEV_ACCOUNT_ID> 
+```
+
+6. Deploy the CICD pipeline stack:
 
 ```
 cdk deploy CICDPipeline
 ```
 
-1. Add the CICD pipeline Git repository as a remote. The command is provided by the `CICDPipeline` stack as an output. Then push the code to the repository:
+7. Add the CICD pipeline Git repository as a remote. The command is provided by the `CICDPipeline` stack as an output. Then push the code to the repository:
 
 ```bash
 git remote add demo codecommit::<REGION>://SparkTest
-git push demo
+git add .
+git commit -m 'initial commit'
+git push --set-upstream demo main
 ```
 
 ## Cleaning up resources 

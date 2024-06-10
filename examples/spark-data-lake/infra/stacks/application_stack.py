@@ -48,6 +48,7 @@ class ApplicationStack(Stack):
             source_bucket_region="us-east-1",
             target_bucket= storage.silver_bucket,
             target_bucket_prefix="yellow-trip-data/",
+            removal_policy=RemovalPolicy.DESTROY,
         )
 
         # Copy the the Green taxi data in the silver bucket of the data lake
@@ -59,6 +60,7 @@ class ApplicationStack(Stack):
             source_bucket_region="us-east-1",
             target_bucket= storage.silver_bucket,
             target_bucket_prefix="green-trip-data/",
+            removal_policy=RemovalPolicy.DESTROY,
         )
 
         # Create an execution role for the Spark job on EMR Serverless
