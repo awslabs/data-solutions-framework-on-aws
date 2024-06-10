@@ -17,6 +17,16 @@ msk.setTopic('topic1',
     topic: 'topic1',
     numPartitions: 3,
     replicationFactor: 1,
+    configEntries: [
+      {
+        name: 'retention.ms',
+        value: '90000',
+      },
+      {
+        name: 'retention.bytes',
+        value: '90000',
+      },
+    ],
   }, cdk.RemovalPolicy.DESTROY, false, 1500);
 /// !hide
 

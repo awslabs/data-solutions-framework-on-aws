@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, ClientAuthentication, KafkaClientLogLevel, MskClusterType, ResourcePatternTypes } from '../lib/msk';
+import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, ClientAuthentication, KafkaClientLogLevel, MskClusterType, ResourcePatternTypes, Authentication } from '../lib/msk';
 import { KafkaApi } from '../lib/msk/kafka-api';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -56,6 +56,7 @@ kafkaApi.setAcl('acl',
     operation: AclOperationTypes.CREATE,
     permissionType: AclPermissionTypes.ALLOW,
   },
-  cdk.RemovalPolicy.DESTROY
+  cdk.RemovalPolicy.DESTROY,
+  Authentication.MTLS
 );
 /// !hide

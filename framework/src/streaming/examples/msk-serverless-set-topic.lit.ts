@@ -15,6 +15,16 @@ let topic: MskTopic =  {
   topic: 'topic1',
   numPartitions: 3,
   replicationFactor: 1,
+  configEntries: [
+    {
+      name: 'retention.ms',
+      value: '90000',
+    },
+    {
+      name: 'retention.bytes',
+      value: '90000',
+    },
+  ],
 }
 
 msk.addTopic('topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
