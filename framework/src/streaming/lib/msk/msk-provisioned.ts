@@ -193,7 +193,7 @@ export class MskProvisioned extends TrackedConstruct {
   private readonly placeClusterHandlerInVpc?: boolean;
 
   /**
-   * Constructs a new instance of the MSK cluster construct.
+   * Constructs a new instance of the MSK Provisioned cluster construct.
    * @param {Construct} scope the Scope of the CDK Construct
    * @param {string} id the ID of the CDK Construct
    * @param {MskServerlessProps} props
@@ -636,11 +636,11 @@ export class MskProvisioned extends TrackedConstruct {
 
   /**
    * Creates ACL in the Msk Cluster
-   * @param {string} id the CDK id for ACL
+   * @param {string} id the CDK ID of the ACL
    * @param {Acl} aclDefinition the Kafka Acl definition
    * @param {RemovalPolicy} removalPolicy Wether to keep the ACL or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
-   * @param {Authentication} clientAuthentication The client authentication to use when creating the ACL @default Authentication.MTLS
-   * @returns {CustomResource} The MskAcl custom resource created
+   * @param {Authentication} clientAuthentication The authentication used by the Kafka API admin client to create the ACL @default - Authentication.MTLS
+   * @returns {CustomResource} The MskAcl custom resource created by the Kafka API admin client
    */
   public setAcl(
     id: string,
@@ -668,14 +668,13 @@ export class MskProvisioned extends TrackedConstruct {
 
   /**
    * Creates a topic in the Msk Cluster
-   *
-   * @param {string} id the CDK id for Topic
-   * @param {Authentication} clientAuthentication The client authentication to use when creating the Topic
+   * @param {string} id the CDK ID of the Topic
+   * @param {Authentication} clientAuthentication The authentication used by the Kafka API admin client to create the topic
    * @param {MskTopic} topicDefinition the Kafka topic definition
    * @param {RemovalPolicy} removalPolicy Wether to keep the topic or delete it when removing the resource from the Stack {@default RemovalPolicy.RETAIN}
    * @param {boolean} waitForLeaders If this is true it will wait until metadata for the new topics doesn't throw LEADER_NOT_AVAILABLE
    * @param {number} timeout The time in ms to wait for a topic to be completely created on the controller node @default 5000
-   * @returns {CustomResource} The MskTopic custom resource created
+   * @returns {CustomResource} The MskTopic custom resource created by the Kafka API admin client
    */
   public setTopic(
     id: string,
@@ -706,16 +705,15 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-   * Grant a principal to produce data to a topic
-   * @param {string} id the CDK resource id
-   * @param {string} topicName the topic to which the principal can produce data
-   * @param {Authentication} clientAuthentication The client authentication to use when grant on resource
-   * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-   * @param {string} host the host to which the principal can produce data.
-   * @param {RemovalPolicy} removalPolicy
-   * @param {Authentication} customResourceAuthentication The authentication used by the custom resource that is creating the ACL @default clientAuthentication
-   * @returns When MTLS is used as authentication an ACL is created using the MskAcl Custom resource to write in the topic is created and returned,
-   *          you can use it to add dependency on it.
+   * Grant a principal permissions to produce to a topic
+   * @param {string} id the CDK resource ID
+   * @param {string} topicName the target topic to grant produce permissions on
+   * @param {Authentication} clientAuthentication The authentication mode of the producer
+   * @param {IPrincipal | string } principal the principal receiving grant produce permissions
+   * @param {string} host the host of the producer.
+   * @param {RemovalPolicy} removalPolicy the removal policy to apply to the grant. @default - RETAIN is used
+   * @param {Authentication} customResourceAuthentication The authentication used by the Kafka API admin client to create the ACL @default - clientAuthentication (same authentication as the target producer)
+   * @returns The MskAcl custom resource for MTLS clientAuthentication. Nothing for IAM clientAuthentication
    */
   public grantProduce(
     id: string,
@@ -749,17 +747,15 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-   * Grant a principal the right to consume data from a topic
-   *
-   * @param {string} id the CDK resource id
-   * @param {string} topicName the topic to which the principal can produce data
-   * @param {Authentication} clientAuthentication The client authentication to use when grant on resource
-   * @param {IPrincipal | string } principal the IAM principal to grand the produce to
-   * @param {string} host the host to which the principal can produce data.
-   * @param {RemovalPolicy} removalPolicy
-   * @param {Authentication} customResourceAuthentication The authentication used by the custom resource that is creating the ACL @default clientAuthentication
-   * @returns When MTLS is used as authentication, an ACL is created using the MskAcl Custom resource to read from the topic is created and returned,
-   *          you can use it to add dependency on it.
+   * Grant a principal permissions to consume from a topic
+   * @param {string} id the CDK resource ID
+   * @param {string} topicName the target topic to grant consume permissions on
+   * @param {Authentication} clientAuthentication The authentication mode of the consumer
+   * @param {IPrincipal | string } principal the principal receiveing grant consume permissions
+   * @param {string} host the host of the consumer. @default - * is used
+   * @param {RemovalPolicy} removalPolicy the removal policy to apply to the grant. @default - RETAIN is used
+   * @param {Authentication} customResourceAuthentication The authentication used by the Kafka API admin client to create the ACL @default - clientAuthentication (same authentication as the target producer)
+   * @returns The MskAcl custom resource for MTLS clientAuthentication. Nothing for IAM clientAuthentication
    */
   public grantConsume(
     id: string,
@@ -795,7 +791,7 @@ export class MskProvisioned extends TrackedConstruct {
   public putClusterPolicy(policy: string, id: string, currentVersion?: string) {
 
     if (!this.clusterVpcConnectivity) {
-      throw Error('PutClusterPolicy is Vpc Connectiviy is not setup');
+      throw Error('Vpc Connectivity is not setup');
     }
 
     // eslint-disable-next-line local-rules/no-tokens-in-construct-id
@@ -825,7 +821,6 @@ export class MskProvisioned extends TrackedConstruct {
       throw Error('PutClusterPolicy is Vpc Connectiviy is not setup');
     }
 
-    // eslint-disable-next-line local-rules/no-tokens-in-construct-id
     let clusterBootstrapBrokers = new AwsCustomResource(this, 'DeleteClusterPolicy', {
       onUpdate: {
         service: 'Kafka',

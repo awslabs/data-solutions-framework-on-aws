@@ -11,15 +11,16 @@ import * as cdk from 'aws-cdk-lib';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { TestStack } from './test-stack';
-import { Authentication, ClientAuthentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
+import { ClientAuthentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
 import { Utils } from '../../src/utils';
 
 jest.setTimeout(10000000);
 
 // GIVEN
 const app = new cdk.App();
-const testStack = new TestStack('MskProvisionedTlsTestStack', app);
-const { stack } = testStack;
+const stack = new cdk.Stack(app, 'MskProvisionedTlsTestStack');
+const testStack = new TestStack('MskProvisionedTlsTestStack', app, stack);
+// const { stack } = testStack;
 
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
@@ -44,27 +45,137 @@ const msk = new MskProvisioned(stack, 'cluster', {
   },
 });
 
-msk.setTopic('topicProvisioned', Authentication.MTLS, {
-  topic: 'provisioned',
-  numPartitions: 1,
-  replicationFactor: 1,
-}, cdk.RemovalPolicy.DESTROY, false, 1500);
+// msk.setTopic('topicProvisionedMtls', Authentication.MTLS, {
+//   topic: 'provisionedMtls',
+//   numPartitions: 1,
+//   replicationFactor: 1,
+// }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
-msk.setTopic('topicConfigentries', Authentication.MTLS, {
-  topic: 'configentries',
-  numPartitions: 1,
-  replicationFactor: 1,
-  configEntries: [
-    {
-      name: 'retention.ms',
-      value: '90000',
-    },
-    {
-      name: 'retention.bytes',
-      value: '90000',
-    },
-  ],
-}, cdk.RemovalPolicy.DESTROY, false, 1500);
+// msk.setTopic('topicProvisionedIam', Authentication.IAM, {
+//   topic: 'provisionedIam',
+//   numPartitions: 1,
+//   replicationFactor: 1,
+// }, cdk.RemovalPolicy.DESTROY, false, 1500);
+
+// msk.setTopic('topicConfigentries', Authentication.MTLS, {
+//   topic: 'configentries',
+//   numPartitions: 1,
+//   replicationFactor: 1,
+//   configEntries: [
+//     {
+//       name: 'retention.ms',
+//       value: '90000',
+//     },
+//     {
+//       name: 'retention.bytes',
+//       value: '90000',
+//     },
+//   ],
+// }, cdk.RemovalPolicy.DESTROY, false, 1500);
+
+// msk.setAcl('AclMtls',
+//   {
+//     resourceType: AclResourceTypes.TOPIC,
+//     resourceName: 'provisionedIam',
+//     resourcePatternType: ResourcePatternTypes.LITERAL,
+//     principal: 'User:Cn=Toto',
+//     host: '*',
+//     operation: AclOperationTypes.CREATE,
+//     permissionType: AclPermissionTypes.ALLOW,
+//   },
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.MTLS,
+// );
+
+// msk.setAcl('AclIam',
+//   {
+//     resourceType: AclResourceTypes.TOPIC,
+//     resourceName: 'provisionedMtls',
+//     resourcePatternType: ResourcePatternTypes.LITERAL,
+//     principal: 'User:Cn=Toto',
+//     host: '*',
+//     operation: AclOperationTypes.CREATE,
+//     permissionType: AclPermissionTypes.ALLOW,
+//   },
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.IAM,
+// );
+
+// const kafkaClientRole = new Role(stack, 'producerRole', {
+//   assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
+// });
+
+// msk.grantProduce('grantIamProduceMtls',
+//   'provisionedIam',
+//   Authentication.IAM,
+//   kafkaClientRole,
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.MTLS,
+// );
+
+// msk.grantConsume('grantIamConsumeMtls',
+//   'provisionedMtls',
+//   Authentication.IAM,
+//   kafkaClientRole,
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.MTLS,
+// );
+
+// msk.grantProduce('grantIamProduceIam',
+//   'provisionedIam',
+//   Authentication.IAM,
+//   kafkaClientRole,
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.IAM,
+// );
+
+// msk.grantConsume('grantIamConsumeIam',
+//   'provisionedMtls',
+//   Authentication.IAM,
+//   kafkaClientRole,
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.IAM,
+// );
+
+// msk.grantProduce('grantMtlsProduceMtls',
+//   'provisionedIam',
+//   Authentication.MTLS,
+//   'User:Cn=Toto',
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.MTLS,
+// );
+
+// msk.grantConsume('grantMtlsConsumeMtls',
+//   'provisionedMtls',
+//   Authentication.MTLS,
+//   'User:Cn=Toto',
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.MTLS,
+// );
+
+// msk.grantProduce('grantMtlsProduceIam',
+//   'provisionedIam',
+//   Authentication.MTLS,
+//   'User:Cn=Toto',
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.IAM,
+// );
+
+// msk.grantConsume('grantMtlsConsumeIam',
+//   'provisionedMtls',
+//   Authentication.MTLS,
+//   'User:Cn=Toto',
+//   '*',
+//   cdk.RemovalPolicy.DESTROY,
+//   Authentication.IAM,
+// );
 
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
   value: msk.cluster.attrArn,
@@ -86,6 +197,6 @@ it('MSK provisioned successfully', async () => {
 
 });
 
-afterAll(async () => {
-  await testStack.destroy();
-}, 10000000);
+// afterAll(async () => {
+//   await testStack.destroy();
+// }, 10000000);
