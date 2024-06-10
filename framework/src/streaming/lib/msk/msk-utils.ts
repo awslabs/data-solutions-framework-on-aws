@@ -397,7 +397,7 @@ export interface SaslAuthProps {
 
   /**
    * Enable IAM access control.
-   * @default true
+   * @default - false
    */
   readonly iam?: boolean;
 
