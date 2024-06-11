@@ -1,15 +1,16 @@
 import { Construct } from "constructs";
-import { TrackedConstruct, TrackedConstructProps } from "../../../../utils";
+import { Context, TrackedConstruct, TrackedConstructProps } from "../../../../utils";
 import { DataZoneMSKConsumerAuthorizerProps } from "./datazone-msk-consumer-authorizer-props";
 import { Effect, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
-import { Duration } from "aws-cdk-lib";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Rule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { DataZoneAuthorizer } from "../datazone-authorizer";
 
 export class DataZoneMSKConsumerAuthorizer extends TrackedConstruct {
     readonly mskConsumerAuthorizerHandler: Function
+    private readonly removalPolicy: RemovalPolicy
 
     constructor(scope: Construct, id: string, props: DataZoneMSKConsumerAuthorizerProps) {
         const trackedConstructProps: TrackedConstructProps = {
@@ -17,7 +18,7 @@ export class DataZoneMSKConsumerAuthorizer extends TrackedConstruct {
         };
 
         super(scope, id, trackedConstructProps);
-
+        this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy)
         const mskConsumerAuthorizerHandlerRole = new Role(this, "MSKConsumerAuthorizerHandlerRole", {
             assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
             managedPolicies: [
@@ -38,6 +39,8 @@ export class DataZoneMSKConsumerAuthorizer extends TrackedConstruct {
             }
         })
 
+        mskConsumerAuthorizerHandlerRole.applyRemovalPolicy(this.removalPolicy)
+
         this.mskConsumerAuthorizerHandler = new Function(this, "MSKConsumerAuthorizerHandler", {
             runtime: Runtime.NODEJS_LATEST,
             handler: "index.handler",
@@ -51,7 +54,9 @@ export class DataZoneMSKConsumerAuthorizer extends TrackedConstruct {
             }
         })
 
-        new Rule(this, "MSKConsumerEBRule", {
+        this.mskConsumerAuthorizerHandler.applyRemovalPolicy(this.removalPolicy)
+
+        const consumerRule = new Rule(this, "MSKConsumerEBRule", {
             eventBus: props.consumerAuthorizerEventBus,
             eventPattern: {
                 source: [DataZoneAuthorizer.EVENT_SOURCE],
@@ -61,5 +66,7 @@ export class DataZoneMSKConsumerAuthorizer extends TrackedConstruct {
                 new LambdaFunction(this.mskConsumerAuthorizerHandler)
             ]
         })
+
+        consumerRule.applyRemovalPolicy(this.removalPolicy)
     }
 }

@@ -1,28 +1,33 @@
 import { Construct } from "constructs";
-import { TrackedConstruct, TrackedConstructProps } from "../../../utils";
+import { Context, TrackedConstruct, TrackedConstructProps } from "../../../utils";
 import { EventBus, Rule } from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import { AccountPrincipal, Effect, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
-import { Duration, Stack } from "aws-cdk-lib";
+import { Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { DataZoneAuthorizer } from "./datazone-authorizer";
 import { SubscriptionAssetTypeHandler } from "./subscription-asset-type-handler";
+import { DataZoneAuthorizerWorkflowProps } from "./datazone-authorizer-workflow-props";
 
 export class DataZoneAuthorizerWorkflow extends TrackedConstruct {
 
     readonly authorizerEventBus: EventBus
     readonly metadataCollectorHandler: Function
 
-    constructor(scope: Construct, id: string) {
+    private readonly removalPolicy: RemovalPolicy
+
+    constructor(scope: Construct, id: string, props: DataZoneAuthorizerWorkflowProps) {
         const trackedConstructProps: TrackedConstructProps = {
             trackingTag: DataZoneAuthorizerWorkflow.name,
         };
 
         super(scope, id, trackedConstructProps);
-
+        this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy)
         this.authorizerEventBus = new EventBus(this, "DataZoneAuthorizerEventBus", {
             eventBusName: `datazone-authorizer-${Stack.of(this).account}-workflow`
         })
+
+        this.authorizerEventBus.applyRemovalPolicy(this.removalPolicy)
 
         const metadataCollectorHandlerRole = new Role(this, "MetadataCollectorHandlerRole", {
             assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
@@ -56,6 +61,8 @@ export class DataZoneAuthorizerWorkflow extends TrackedConstruct {
             }
         })
 
+        metadataCollectorHandlerRole.applyRemovalPolicy(this.removalPolicy)
+
         this.metadataCollectorHandler = new Function(this, "MetadataCollectorHandler", {
             runtime: Runtime.NODEJS_LATEST,
             handler: "index.handler",
@@ -66,19 +73,36 @@ export class DataZoneAuthorizerWorkflow extends TrackedConstruct {
                 "AUTHORIZER_EVENT_BUS": this.authorizerEventBus.eventBusName
             }
         })
+
+        this.metadataCollectorHandler.applyRemovalPolicy(this.removalPolicy)
     }
 
-    public registerSubscriptionAssetTypeAuthorizationHandler(assetType: string, subscriptionAssetTypeHandler: SubscriptionAssetTypeHandler): Rule {
-        return new Rule(this, `Subscription-${assetType}-Handler`, {
+    public registerSubscriptionAssetTypeAuthorizationHandler(assetType: string, subscriptionAssetTypeHandler: SubscriptionAssetTypeHandler) {
+        const producerRule = new Rule(this, `Subscription-Producer-${assetType}-Handler`, {
             eventBus: this.authorizerEventBus,
             eventPattern: {
                 source: [DataZoneAuthorizer.EVENT_SOURCE],
                 detailType: [`Subscription ${assetType} Authorization`]
             },
             targets: [
-                new targets.LambdaFunction(subscriptionAssetTypeHandler.handler())
+                new targets.LambdaFunction(subscriptionAssetTypeHandler.producerHandler())
             ]
         })
+
+        producerRule.applyRemovalPolicy(this.removalPolicy)
+
+        // const consumerRule = new Rule(this, `Subscription-Consumer-${assetType}-Handler`, {
+        //     eventBus: this.authorizerEventBus,
+        //     eventPattern: {
+        //         source: [DataZoneAuthorizer.EVENT_SOURCE],
+        //         detailType: [`Subscription ${assetType} Authorization`]
+        //     },
+        //     targets: [
+        //         new targets.LambdaFunction(subscriptionAssetTypeHandler.consumerHandler())
+        //     ]
+        // })
+
+        // consumerRule.applyRemovalPolicy(this.removalPolicy)
     }
 
     public addEnvironment(envAccountId: string) {
@@ -103,9 +127,11 @@ export class DataZoneAuthorizerWorkflow extends TrackedConstruct {
             }
         })
 
+        role.applyRemovalPolicy(this.removalPolicy)
+
         this.authorizerEventBus.grantPutEventsTo(new AccountPrincipal(envAccountId))
 
-        new Rule(this, `EB-Forward-${envAccountId}-Rule`, {
+        const forwardRule = new Rule(this, `EB-Forward-${envAccountId}-Rule`, {
             eventBus: this.authorizerEventBus,
             eventPattern: {
                 source: [DataZoneAuthorizer.EVENT_SOURCE],
@@ -117,5 +143,7 @@ export class DataZoneAuthorizerWorkflow extends TrackedConstruct {
                 new targets.EventBus(EventBus.fromEventBusArn(this, `Target-${envAccountId}-EventBus`, targetEventBusArn), {role})
             ]
         })
+
+        forwardRule.applyRemovalPolicy(this.removalPolicy)
     }
 }
