@@ -1,15 +1,16 @@
 import { Construct } from "constructs";
-import { TrackedConstruct, TrackedConstructProps } from "../../../../utils";
+import { Context, TrackedConstruct, TrackedConstructProps } from "../../../../utils";
 import { DataZoneMSKProducerAuthorizerProps } from "./datazone-msk-producer-authorizer-props";
 import { Effect, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
-import { Duration } from "aws-cdk-lib";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Rule } from "aws-cdk-lib/aws-events";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { DataZoneAuthorizer } from "../datazone-authorizer";
 
 export class DataZoneMSKProducerAuthorizer extends TrackedConstruct {
     readonly mskProducerAuthorizerHandler: Function
+    private readonly removalPolicy: RemovalPolicy
 
     constructor(scope: Construct, id: string, props: DataZoneMSKProducerAuthorizerProps) {
         const trackedConstructProps: TrackedConstructProps = {
@@ -17,7 +18,7 @@ export class DataZoneMSKProducerAuthorizer extends TrackedConstruct {
         };
 
         super(scope, id, trackedConstructProps);
-
+        this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy)
         const mskProducerAuthorizerHandlerRole = new Role(this, "MSKProducerAuthorizerHandlerRole", {
             assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
             managedPolicies: [
@@ -39,6 +40,8 @@ export class DataZoneMSKProducerAuthorizer extends TrackedConstruct {
             }
         })
 
+        mskProducerAuthorizerHandlerRole.applyRemovalPolicy(this.removalPolicy)
+
         this.mskProducerAuthorizerHandler = new Function(this, "MSKProducerAuthorizerHandler", {
             runtime: Runtime.NODEJS_LATEST,
             handler: "index.handler",
@@ -47,7 +50,9 @@ export class DataZoneMSKProducerAuthorizer extends TrackedConstruct {
             timeout: Duration.seconds(5)
         })
 
-        new Rule(this, "MSKProducerEBRule", {
+        this.mskProducerAuthorizerHandler.applyRemovalPolicy(this.removalPolicy)
+
+        const producerRule = new Rule(this, "MSKProducerEBRule", {
             eventBus: props.producerAuthorizerEventBus,
             eventPattern: {
                 source: [DataZoneAuthorizer.EVENT_SOURCE],
@@ -57,5 +62,7 @@ export class DataZoneMSKProducerAuthorizer extends TrackedConstruct {
                 new LambdaFunction(this.mskProducerAuthorizerHandler)
             ]
         })
+
+        producerRule.applyRemovalPolicy(this.removalPolicy)
     }
 }
