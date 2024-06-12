@@ -165,6 +165,9 @@
         },
         {
           "exec": "lerna-projen copy-dist examples/opensearch-quickstart/undefined dist"
+        },
+        {
+          "exec": "lerna-projen copy-dist examples/redshift-quickstart/undefined dist"
         }
       ]
     },
