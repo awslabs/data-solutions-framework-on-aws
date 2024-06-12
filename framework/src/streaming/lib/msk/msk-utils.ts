@@ -122,6 +122,11 @@ export class KafkaVersion {
   public static readonly V3_5_1 = KafkaVersion.of('3.5.1');
 
   /**
+   * Kafka version 3.6.0
+   */
+  public static readonly V3_6_0 = KafkaVersion.of('3.6.0');
+
+  /**
    * Custom cluster version
    * @param version custom version number
    */
@@ -392,7 +397,7 @@ export interface SaslAuthProps {
 
   /**
    * Enable IAM access control.
-   * @default true
+   * @default - false
    */
   readonly iam?: boolean;
 

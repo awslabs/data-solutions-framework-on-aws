@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, MskProvisioned, ResourcePatternTypes } from '../lib/msk';
+import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, MskProvisioned, ResourcePatternTypes, Authentication } from '../lib/msk';
 
 
 const app = new cdk.App();
@@ -21,5 +21,7 @@ msk.setAcl('acl', {
     operation: AclOperationTypes.CREATE,
     permissionType: AclPermissionTypes.ALLOW,
   },
-  cdk.RemovalPolicy.DESTROY);
+  cdk.RemovalPolicy.DESTROY,
+  Authentication.IAM,
+);
 /// !hide

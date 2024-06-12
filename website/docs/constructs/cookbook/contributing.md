@@ -64,7 +64,13 @@ Now you're ready to start contributing to the framework sub project!
 ### Testing changes
 
 1. Validate the changes in an AWS account
-   1. Use the following code in a file in the e2e test folder and update corresponding values. **DO NOT COMMIT THIS FILE**
+   1. Use the following code in a file (Ex: `mytest.e2e.test.ts`) in the `framework/test/e2e` folder and update corresponding values. 
+   
+:::warning **DO NOT COMMIT THIS FILE**
+   
+This file used to iteratively test the construct during development should not be committed to the repository. Only standard e2e tests should be committed.
+
+:::
 
 ```typescript
     /**
@@ -80,8 +86,8 @@ Now you're ready to start contributing to the framework sub project!
 
     // GIVEN
     const app = new cdk.App();
-    const stack = new Stack(app, 'MyStack');
-    const testStack = new TestStack('MskServerkessTestStack', app, stack);
+    const stack = new Stack(app, 'E2eStack');
+    const testStack = new TestStack('E2eTestStack', app, stack);
 
     stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 

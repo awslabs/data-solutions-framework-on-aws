@@ -98,6 +98,7 @@ export const onEventHandler = async (event) => {
   const admin = kafka.admin();
   
   console.info('======Received Event=======');
+  console.info(event);
   
   // If the principal is set to REPLACE-WITH-BOOTSTRAP, 
   // we need to replace it with the broker FQDN prefix with a wildcard

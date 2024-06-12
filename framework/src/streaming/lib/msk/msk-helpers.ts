@@ -64,6 +64,8 @@ export function mskIamCrudProviderSetup(
       actions: [
         'kafka-cluster:Connect',
         'kafka:GetBootstrapBrokers',
+        'kafka:DescribeCluster',
+        'kafka-cluster:AlterCluster',
       ],
       resources: [
         clusterArn,
@@ -79,6 +81,15 @@ export function mskIamCrudProviderSetup(
       ],
       resources: [
         `arn:${partition}:kafka:${region}:${account}:topic/${clusterNameUuid}/*`,
+      ],
+    }),
+    new PolicyStatement({
+      actions: [
+        'kafka-cluster:AlterGroup',
+        'kafka-cluster:DescribeGroup',
+      ],
+      resources: [
+        `arn:${partition}:kafka:${region}:${account}:group/${clusterNameUuid}/*`,
       ],
     }),
   ];

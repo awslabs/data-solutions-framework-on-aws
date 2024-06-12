@@ -187,6 +187,16 @@ msk.setTopic('topic1',
     topic: 'topic1',
     numPartitions: 3,
     replicationFactor: 1,
+    configEntries: [
+      {
+        name: 'retention.ms',
+        value: '90000',
+      },
+      {
+        name: 'retention.bytes',
+        value: '90000',
+      },
+    ],
   }, cdk.RemovalPolicy.DESTROY, false, 1500);
   ```
   
@@ -199,7 +209,15 @@ msk.setTopic('topic1',
 msk.set_topic("topic1", Authentication.IAM, MskTopic(
     topic="topic1",
     num_partitions=3,
-    replication_factor=1
+    replication_factor=1,
+    config_entries=[{
+        "name": "retention.ms",
+        "value": "90000"
+    }, {
+        "name": "retention.bytes",
+        "value": "90000"
+    }
+    ]
 ), cdk.RemovalPolicy.DESTROY, False, 1500)
   ```
 
@@ -223,6 +241,8 @@ The topic is defined by the property type called `MskACL`. This method should be
 }
 ```
 
+You can authenticate to your cluster using IAM or mTLS to create ACLs. These ACLs will be used later by a client that will authenticate to your cluster using mTLS. Dependeding on the authentication type that you would like to use to create the ACL, you need to put the right parameter in `clientAuthentication`: for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. Default value is `Authentitcation.MTLS`. The example below uses IAM as authentication.
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -236,7 +256,9 @@ msk.setAcl('acl', {
     operation: AclOperationTypes.CREATE,
     permissionType: AclPermissionTypes.ALLOW,
   },
-  cdk.RemovalPolicy.DESTROY);
+  cdk.RemovalPolicy.DESTROY,
+  Authentication.IAM,
+);
   ```
   
   ```mdx-code-block
@@ -253,7 +275,7 @@ msk.set_acl("acl", Acl(
     host="*",
     operation=AclOperationTypes.CREATE,
     permission_type=AclPermissionTypes.ALLOW
-), cdk.RemovalPolicy.DESTROY)
+), cdk.RemovalPolicy.DESTROY, Authentication.IAM)
   ```
 
   </TabItem>

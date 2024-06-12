@@ -164,6 +164,8 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
             Action: [
               'kafka-cluster:Connect',
               'kafka:GetBootstrapBrokers',
+              'kafka:DescribeCluster',
+              'kafka-cluster:AlterCluster',
             ],
             Effect: 'Allow',
             Resource: {
@@ -238,6 +240,126 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
                     ],
                   },
                   ':topic/',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/',
+                  {
+                    'Fn::Select': [
+                      2,
+                      {
+                        'Fn::Split': [
+                          '/',
+                          {
+                            'Fn::Select': [
+                              5,
+                              {
+                                'Fn::Split': [
+                                  ':',
+                                  {
+                                    'Fn::GetAtt': [
+                                      'MyCluster',
+                                      'Arn',
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  '/*',
+                ],
+              ],
+            },
+          },
+          {
+            Action: [
+              'kafka-cluster:AlterGroup',
+              'kafka-cluster:DescribeGroup',
+            ],
+            Effect: 'Allow',
+            Resource: {
+              'Fn::Join': [
+                '',
+                [
+                  'arn:',
+                  {
+                    'Fn::Select': [
+                      1,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':kafka:',
+                  {
+                    'Fn::Select': [
+                      3,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':',
+                  {
+                    'Fn::Select': [
+                      4,
+                      {
+                        'Fn::Split': [
+                          ':',
+                          {
+                            'Fn::GetAtt': [
+                              'MyCluster',
+                              'Arn',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  ':group/',
                   {
                     'Fn::Select': [
                       1,

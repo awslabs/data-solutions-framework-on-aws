@@ -91,6 +91,8 @@ The topic is defined by the property type called `MskACL`. This method should be
 }
 ```
 
+You can authenticate to your cluster using IAM or mTLS to create ACLs. These ACLs will be used later by a client that will authenticate to your cluster using mTLS. Dependeding on the authentication type that you would like to use to create the ACL, you need to put the right parameter in `clientAuthentication`: for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. Default value is `Authentitcation.MTLS`. The example below uses IAM as authentication.
+
 [example msk provisiond setACL](./examples/msk-provisioned-set-acl.lit.ts)
 
 ### grantProduce
@@ -231,6 +233,7 @@ The topic is defined by the property type called `MskTopic`. Below you can see t
     topic: <String>,
     numPartitions: <Number>,     // default: -1 (uses broker `num.partitions` configuration)
     replicationFactor: <Number>, // default: -1 (uses broker `default.replication.factor` configuration)
+    configEntries: <Array>       // Example: [{ name: 'cleanup.policy', value: 'compact' }] - default: []
 }
 ```
 
@@ -247,7 +250,7 @@ Only the number of partitions can be updated after the creation of the topic.
 ### setACL
 
 This method allows you to create, update or delete an ACL. Its backend uses [kafkajs](https://kafka.js.org/).
-The topic is defined by the property type called `MskACL`. This method should be used only when the cluster authentication is set to `mTLS`. Below you can see the definition of the topic as well as an example of use.
+The topic is defined by the property type called `MskACL`. This method can be used when the cluster authentication is set to `mTLS` or `IAM`+`mTLS`. Below you can see the definition of the ACL as well as an example of use.
 
 ```json
 {
@@ -260,6 +263,8 @@ The topic is defined by the property type called `MskACL`. This method should be
     permissionType: <AclPermissionTypes>,
 }
 ```
+
+You can authenticate to your cluster using IAM or mTLS to create ACLs. These ACLs will be used later by a client that will authenticate to your cluster using mTLS. Dependeding on the authentication type that you would like to use to create the ACL, you need to put the right parameter in `clientAuthentication`: for mTLS use `Authentitcation.MTLS` and for IAM use `Authentitcation.IAM`. Default value is `Authentitcation.MTLS`. The example below uses mTLS as authentication.
 
 [example msk provisiond setACL](./examples/kafka-api-set-acl.lit.ts)
 
