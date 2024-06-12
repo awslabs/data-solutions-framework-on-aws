@@ -91,6 +91,14 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 true);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
+  'Stack/RedshiftData/CrProvider/CustomResourceProvider/waiter-state-machine/Resource',
+], [
+  { id: 'AwsSolutions-SF2', reason: 'Resource managed by L2 and not exposed as property by CDK' },
+  { id: 'AwsSolutions-SF1', reason: 'Resource managed by L2 and not exposed as property by CDK' },
+],
+true);
+
+NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/RedshiftData/ExecutionRole/Resource',
 ], [
   { id: 'AwsSolutions-IAM4', reason: 'The managed policy is required for the custom resource execution in private VPC' },
