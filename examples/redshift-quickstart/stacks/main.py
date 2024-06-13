@@ -60,7 +60,7 @@ class RedshiftStack(Stack):
         """
         namespace = dsf.consumption.RedshiftServerlessNamespace(self, 
                                                                 'Namespace', 
-                                                                db_name='mydatabase', 
+                                                                db_name='defaultdb', 
                                                                 name='test-namespace', 
                                                                 removal_policy=RemovalPolicy.DESTROY, 
                                                                 default_iam_role=lake_role
