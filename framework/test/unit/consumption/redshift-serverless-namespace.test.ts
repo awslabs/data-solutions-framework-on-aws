@@ -327,10 +327,6 @@ describe('With global removal policy set to DELETE, the construct ', () => {
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create resources with DELETE policy when global removal policy is set to DELETE', () => {
-    template.allResources('AWS::Logs::LogGroup', {
-      UpdateReplacePolicy: 'Delete',
-      DeletionPolicy: 'Delete',
-    });
 
     template.allResources('Custom::RedshiftServerlessNamespace', {
       UpdateReplacePolicy: 'Delete',

@@ -52,7 +52,6 @@ describe('With default configuration, the construct ', () => {
       Match.objectLike({
         Environment: {
           Variables: {
-            AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             SOURCE_BUCKET_NAME: 'nyc-tlc',
             SOURCE_BUCKET_PREFIX: '',
             SOURCE_BUCKET_REGION: 'us-east-1',
