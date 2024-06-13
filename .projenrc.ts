@@ -473,7 +473,7 @@ redshiftQuickstart.addTask('test:e2e', {
   exec: 'pytest -k e2e'
 });
 
-const redshiftQuickstartSynthTask = opensearchQuickstart.tasks.tryFind('synth:silent')!;
+const redshiftQuickstartSynthTask = redshiftQuickstart.tasks.tryFind('synth:silent')!;
 redshiftQuickstartSynthTask.reset();
 redshiftQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
 const buildRedshiftQuickstartTask = redshiftQuickstart.addTask('build-example', {
