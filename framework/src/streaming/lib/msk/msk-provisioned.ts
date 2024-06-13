@@ -79,19 +79,19 @@ export class MskProvisioned extends TrackedConstruct {
   /**
    * The Lambda function responsible for updating Zookeeper
    */
-  public readonly updateZookepeerFunction: IFunction;
+  public readonly updateZookepeerFunction?: IFunction;
   /**
    * The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper
    */
-  public readonly updateZookepeerLogGroup: ILogGroup;
+  public readonly updateZookepeerLogGroup?: ILogGroup;
   /**
    * The IAM Role used by the Lambda responsible for updating Zookeeper
    */
-  public readonly updateZookepeerRole: IRole;
+  public readonly updateZookepeerRole?: IRole;
   /**
    * THe Security Group associated to the Lambda responsible for updating Zookeeper
    */
-  public readonly updateZookepeerSecurityGroup: ISecurityGroup;
+  public readonly updateZookepeerSecurityGroup?: ISecurityGroup;
 
   /**
    * The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration
@@ -362,102 +362,105 @@ export class MskProvisioned extends TrackedConstruct {
     // and get the security group associated to them
     // And change the zookeeper security group
 
-    let zooKeeperSecurityGroup: SecurityGroup = new SecurityGroup(this, 'ZookeeperSecurityGroup', {
-      allowAllOutbound: false,
-      vpc: this.vpc,
-    });
+    if (!this.deploymentClusterVersion.version.endsWith('.kraft')) {
 
-    this.cluster.node.addDependency(zooKeeperSecurityGroup);
+      let zooKeeperSecurityGroup: SecurityGroup = new SecurityGroup(this, 'ZookeeperSecurityGroup', {
+        allowAllOutbound: false,
+        vpc: this.vpc,
+      });
 
-    const lambdaPolicy = [
-      new PolicyStatement({
-        actions: ['kafka:DescribeCluster'],
-        resources: [
-          this.cluster.attrArn,
-        ],
-      }),
-      new PolicyStatement({
-        actions: ['ec2:DescribeNetworkInterfaces'],
-        resources: ['*'],
-        conditions: {
-          StringEquals: {
-            'ec2:Region': [
-              Stack.of(this).region,
-            ],
+      this.cluster.node.addDependency(zooKeeperSecurityGroup);
+
+      const lambdaPolicy = [
+        new PolicyStatement({
+          actions: ['kafka:DescribeCluster'],
+          resources: [
+            this.cluster.attrArn,
+          ],
+        }),
+        new PolicyStatement({
+          actions: ['ec2:DescribeNetworkInterfaces'],
+          resources: ['*'],
+          conditions: {
+            StringEquals: {
+              'ec2:Region': [
+                Stack.of(this).region,
+              ],
+            },
           },
+        }),
+        new PolicyStatement({
+          actions: ['ec2:ModifyNetworkInterfaceAttribute'],
+          resources: ['*'],
+          conditions: {
+            StringEquals: {
+              'ec2:Region': [
+                Stack.of(this).region,
+              ],
+            },
+            ArnEquals: {
+              'ec2:Vpc': this.vpc.vpcArn,
+            },
+          },
+        }),
+      ];
+
+      // Attach policy to IAM Role
+      const lambdaExecutionRolePolicy = new ManagedPolicy(this, 'ZookeeperUpdateLambdaExecutionRolePolicy', {
+        statements: lambdaPolicy,
+        description: 'Policy for modifying security group for MSK zookeeper',
+      });
+
+      this.updateZookepeerSecurityGroup = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
+        vpc: this.vpc,
+        allowAllOutbound: true,
+      });
+
+      // this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
+
+      const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(this,
+        this.updateZookepeerSecurityGroup,
+        this.subnetSelectionIds,
+        'vpcPolicyLambdaUpdateZookeeperSg');
+
+      this.updateZookepeerRole = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
+        assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      });
+
+      this.updateZookepeerRole.addManagedPolicy(lambdaExecutionRolePolicy);
+      this.updateZookepeerRole.addManagedPolicy(vpcPolicyLambda);
+
+      this.updateZookepeerLogGroup = createLogGroup(this, 'zookeeperLambdaLogGroup', this.removalPolicy);
+
+      this.updateZookepeerLogGroup.grantWrite(this.updateZookepeerRole);
+
+      const updateZookepeerLambda = new Function(this, 'UpdateZookeeperSg', {
+        handler: 'index.onEventHandler',
+        code: Code.fromAsset(join(__dirname, './resources/lambdas/zooKeeperSecurityGroupUpdate')),
+        runtime: Runtime.NODEJS_20_X,
+        environment: {
+          MSK_CLUSTER_ARN: this.cluster.attrArn,
+          REGION: this.region,
+          VPC_ID: this.vpc.vpcId,
+          SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
         },
-      }),
-      new PolicyStatement({
-        actions: ['ec2:ModifyNetworkInterfaceAttribute'],
-        resources: ['*'],
-        conditions: {
-          StringEquals: {
-            'ec2:Region': [
-              Stack.of(this).region,
-            ],
-          },
-          ArnEquals: {
-            'ec2:Vpc': this.vpc.vpcArn,
-          },
-        },
-      }),
-    ];
+        role: this.updateZookepeerRole,
+        timeout: Duration.seconds(30),
+        vpc: this.placeClusterHandlerInVpc ? this.vpc : undefined,
+        vpcSubnets: this.placeClusterHandlerInVpc ? this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
+        logGroup: this.updateZookepeerLogGroup,
+        securityGroups: this.placeClusterHandlerInVpc ? [this.updateZookepeerSecurityGroup] : undefined,
+      });
 
-    // Attach policy to IAM Role
-    const lambdaExecutionRolePolicy = new ManagedPolicy(this, 'ZookeeperUpdateLambdaExecutionRolePolicy', {
-      statements: lambdaPolicy,
-      description: 'Policy for modifying security group for MSK zookeeper',
-    });
+      this.updateZookepeerFunction = updateZookepeerLambda;
 
-    this.updateZookepeerSecurityGroup = new SecurityGroup(this, 'ZookeeperUpdateLambdaSecurityGroup', {
-      vpc: this.vpc,
-      allowAllOutbound: true,
-    });
-
-    // this.cluster.node.addDependency(this.securityGroupUpdateZookepeerLambda);
-
-    const vpcPolicyLambda: ManagedPolicy = getVpcPermissions(this,
-      this.updateZookepeerSecurityGroup,
-      this.subnetSelectionIds,
-      'vpcPolicyLambdaUpdateZookeeperSg');
-
-    this.updateZookepeerRole = new Role(this, 'ZookeeperUpdateLambdaExecutionRole', {
-      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-    });
-
-    this.updateZookepeerRole.addManagedPolicy(lambdaExecutionRolePolicy);
-    this.updateZookepeerRole.addManagedPolicy(vpcPolicyLambda);
-
-    this.updateZookepeerLogGroup = createLogGroup(this, 'zookeeperLambdaLogGroup', this.removalPolicy);
-
-    this.updateZookepeerLogGroup.grantWrite(this.updateZookepeerRole);
-
-    const updateZookepeerLambda = new Function(this, 'UpdateZookeeperSg', {
-      handler: 'index.onEventHandler',
-      code: Code.fromAsset(join(__dirname, './resources/lambdas/zooKeeperSecurityGroupUpdate')),
-      runtime: Runtime.NODEJS_20_X,
-      environment: {
-        MSK_CLUSTER_ARN: this.cluster.attrArn,
-        REGION: this.region,
-        VPC_ID: this.vpc.vpcId,
-        SECURITY_GROUP_ID: zooKeeperSecurityGroup.securityGroupId,
-      },
-      role: this.updateZookepeerRole,
-      timeout: Duration.seconds(30),
-      vpc: this.placeClusterHandlerInVpc ? this.vpc : undefined,
-      vpcSubnets: this.placeClusterHandlerInVpc ? this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
-      logGroup: this.updateZookepeerLogGroup,
-      securityGroups: this.placeClusterHandlerInVpc ? [this.updateZookepeerSecurityGroup] : undefined,
-    });
-
-    this.updateZookepeerFunction = updateZookepeerLambda;
-
-    new Trigger(this, 'UpdateZookeeperSgTrigger', {
-      handler: updateZookepeerLambda,
-      timeout: Duration.minutes(10),
-      invocationType: InvocationType.REQUEST_RESPONSE,
-      executeAfter: [this.cluster],
-    });
+      new Trigger(this, 'UpdateZookeeperSgTrigger', {
+        handler: updateZookepeerLambda,
+        timeout: Duration.minutes(10),
+        invocationType: InvocationType.REQUEST_RESPONSE,
+        executeAfter: [this.cluster],
+      });
+    }
 
     this.kafkaApi = new KafkaApi(this, 'KafkaApi', {
       vpc: this.vpc,

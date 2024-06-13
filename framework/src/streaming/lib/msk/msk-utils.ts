@@ -127,6 +127,16 @@ export class KafkaVersion {
   public static readonly V3_6_0 = KafkaVersion.of('3.6.0');
 
   /**
+   * Kafka version 3.7.x
+   */
+  public static readonly V3_7_X = KafkaVersion.of('3.7.x');
+
+  /**
+   * Kafka version 3.7.x.kraft
+   */
+  public static readonly V3_7_X_KRAFT = KafkaVersion.of('3.7.x.kraft');
+
+  /**
    * Custom cluster version
    * @param version custom version number
    */
