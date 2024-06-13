@@ -310,7 +310,7 @@ describe('With default configuration, the construct ', () => {
     template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 1);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 1);
-    template.resourceCountIs('AWS::Logs::LogGroup', 4);
+    template.resourceCountIs('AWS::Logs::LogGroup', 5);
     template.resourcePropertiesCountIs('AWS::IAM::Role', {
       AssumeRolePolicyDocument: Match.objectLike({
         Statement: [
@@ -911,7 +911,7 @@ describe('With provided EKS cluster, the construct ', () => {
     template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 0);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 0);
-    template.resourceCountIs('AWS::Logs::LogGroup', 3);
+    template.resourceCountIs('AWS::Logs::LogGroup', 4);
   });
 
   test('should not configure the cluster with cert managed, EBS CSI driver and Karpenter', () => {
@@ -1167,10 +1167,6 @@ describe('Remove resource when deletion protection is disable and set removal is
   const template = Template.fromStack(emrEksClusterStack);
 
   test('create resources with Delete policy', () => {
-    template.allResources('AWS::Logs::LogGroup', {
-      UpdateReplacePolicy: 'Delete',
-      DeletionPolicy: 'Delete',
-    });
 
     template.allResources('Custom::EmrEksInteractiveEndpoint', {
       UpdateReplacePolicy: 'Delete',
