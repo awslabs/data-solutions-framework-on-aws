@@ -367,7 +367,7 @@ describe('Create an MSK Provisioned cluster using 3.7.X.Kraft version', () => {
     template.resourceCountIs('AWS::MSK::Cluster', 1);
   });
 
-  test('MSK cluster has default broker type', () => {
+  test('MSK cluster has 3.7.X.Kraft version', () => {
     template.hasResourceProperties('AWS::MSK::Cluster', {
       BrokerNodeGroupInfo: Match.objectLike({
         InstanceType: 'kafka.m5.large',
