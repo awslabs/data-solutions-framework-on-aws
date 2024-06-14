@@ -30,11 +30,11 @@ const msk = new MskProvisioned(stack, 'cluster', {
 
 
 for (let id = 1; id <= 20; id++) {
-  msk.setTopic(`topicProvisioned${id}`, Authentication.IAM, {
-    topic: `provisioned${id}`,
+  msk.setTopic(`topicProvisionedKraft${id}`, Authentication.IAM, {
+    topic: `topicProvisionedKraft${id}`,
     numPartitions: 1,
     replicationFactor: 1,
-  }, cdk.RemovalPolicy.DESTROY, false, 1500);
+  }, cdk.RemovalPolicy.DESTROY, true, 10000);
 }
 
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {

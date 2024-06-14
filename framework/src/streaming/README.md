@@ -59,7 +59,8 @@ When using MSK with mTLS the constructs requires a principal that is assigned to
 
 This method allows you to create, update or delete an ACL. Its backend uses [kafkajs](https://kafka.js.org/).
 The topic is defined by the property type called `MskTopic`. 
-If your MSK cluster uses KRaft mode rather than ZooKeeper, we encourage you to set to the parameter `waitForLeaders = true`.
+If your MSK cluster uses KRaft mode rather than ZooKeeper, we encourage you to set to the parameter `waitForLeaders = true` 
+and `timeout = 10000`. 
 Below you can see the definition of the topic as well as a usage. 
 
 ```json
@@ -148,7 +149,8 @@ The construct allows you to provide your own VPC that was created outside the CD
 
 This method allows you to create, update or delete a topic. Its backend uses [kafkajs](https://kafka.js.org/).
 The topic is defined by the property type called `MskTopic`. 
-If your MSK cluster uses KRaft mode rather than ZooKeeper, we encourage you to set to the parameter `waitForLeaders = true`.
+If your MSK cluster uses KRaft mode rather than ZooKeeper, we encourage you to set to the parameter `waitForLeaders = true` 
+and `timeout = 10000`. 
 Below you can see the definition of the topic as well as a usage.
 
 ```json
