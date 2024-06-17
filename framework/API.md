@@ -4998,10 +4998,6 @@ streaming.MskProvisioned.createClusterConfiguration(scope: Construct, id: string
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnCluster</code> | The MSK cluster created by the construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.encryptionAtRestKey">encryptionAtRestKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS CMK key for encrypting data within the cluster. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction">updateZookepeerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating Zookeeper. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup">updateZookepeerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole">updateZookepeerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating Zookeeper. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup">updateZookepeerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | THe Security Group associated to the Lambda responsible for updating Zookeeper. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the MSK cluster is deployed. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationFunction">applyConfigurationFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for applying MSK configuration. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.applyConfigurationLogGroup">applyConfigurationLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for applying MSK configuration. |
@@ -5022,6 +5018,10 @@ streaming.MskProvisioned.createClusterConfiguration(scope: Construct, id: string
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole">updateConnectivityRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating MSK Connectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivitySecurityGroup">updateConnectivitySecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for updating MSK Connectivity. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction">updateZookepeerFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup">updateZookepeerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole">updateZookepeerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating Zookeeper. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup">updateZookepeerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | THe Security Group associated to the Lambda responsible for updating Zookeeper. |
 
 ---
 
@@ -5058,54 +5058,6 @@ public readonly encryptionAtRestKey: IKey;
 - *Type:* aws-cdk-lib.aws_kms.IKey
 
 The KMS CMK key for encrypting data within the cluster.
-
----
-
-##### `updateZookepeerFunction`<sup>Required</sup> <a name="updateZookepeerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction"></a>
-
-```typescript
-public readonly updateZookepeerFunction: IFunction;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda.IFunction
-
-The Lambda function responsible for updating Zookeeper.
-
----
-
-##### `updateZookepeerLogGroup`<sup>Required</sup> <a name="updateZookepeerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup"></a>
-
-```typescript
-public readonly updateZookepeerLogGroup: ILogGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_logs.ILogGroup
-
-The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper.
-
----
-
-##### `updateZookepeerRole`<sup>Required</sup> <a name="updateZookepeerRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole"></a>
-
-```typescript
-public readonly updateZookepeerRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The IAM Role used by the Lambda responsible for updating Zookeeper.
-
----
-
-##### `updateZookepeerSecurityGroup`<sup>Required</sup> <a name="updateZookepeerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup"></a>
-
-```typescript
-public readonly updateZookepeerSecurityGroup: ISecurityGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
-
-THe Security Group associated to the Lambda responsible for updating Zookeeper.
 
 ---
 
@@ -5346,6 +5298,54 @@ public readonly updateConnectivitySecurityGroup: ISecurityGroup[];
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 The Security Group used by the Lambda responsible for updating MSK Connectivity.
+
+---
+
+##### `updateZookepeerFunction`<sup>Optional</sup> <a name="updateZookepeerFunction" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerFunction"></a>
+
+```typescript
+public readonly updateZookepeerFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerLogGroup`<sup>Optional</sup> <a name="updateZookepeerLogGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerLogGroup"></a>
+
+```typescript
+public readonly updateZookepeerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Lambda responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerRole`<sup>Optional</sup> <a name="updateZookepeerRole" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerRole"></a>
+
+```typescript
+public readonly updateZookepeerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the Lambda responsible for updating Zookeeper.
+
+---
+
+##### `updateZookepeerSecurityGroup`<sup>Optional</sup> <a name="updateZookepeerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateZookepeerSecurityGroup"></a>
+
+```typescript
+public readonly updateZookepeerSecurityGroup: ISecurityGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+THe Security Group associated to the Lambda responsible for updating Zookeeper.
 
 ---
 
@@ -17736,6 +17736,8 @@ cluster version number.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_4_0">V3_4_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.4.0. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_5_1">V3_5_1</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.5.1. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_6_0">V3_6_0</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.6.0. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_7_X">V3_7_X</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.7.x. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_7_X_KRAFT">V3_7_X_KRAFT</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | Kafka version 3.7.x.kraft. |
 
 ---
 
@@ -18004,6 +18006,30 @@ public readonly V3_6_0: KafkaVersion;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
 
 Kafka version 3.6.0.
+
+---
+
+##### `V3_7_X`<sup>Required</sup> <a name="V3_7_X" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_7_X"></a>
+
+```typescript
+public readonly V3_7_X: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
+
+Kafka version 3.7.x.
+
+---
+
+##### `V3_7_X_KRAFT`<sup>Required</sup> <a name="V3_7_X_KRAFT" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion.property.V3_7_X_KRAFT"></a>
+
+```typescript
+public readonly V3_7_X_KRAFT: KafkaVersion;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.streaming.KafkaVersion
+
+Kafka version 3.7.x.kraft.
 
 ---
 

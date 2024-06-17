@@ -26,7 +26,9 @@ function getDifferentConfigEntries(oldEntries, newEntries) {
   return differentEntries;
 }
 
-
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export async function topicCrudOnEvent (event, admin) {
   switch (event.RequestType) {
@@ -45,14 +47,28 @@ export async function topicCrudOnEvent (event, admin) {
         
         console.log(`Topic created: ${result}`);
         if ( result == false ) {
-          throw new Error(`Error creating topic: ${event.ResourceProperties.topic}`);
+          throw new Error(`Error creating topic: ${event.ResourceProperties.topic.topic}`);
         }
         break;
         
       }
       catch (error) {
+        // Temp workaround while KafkaJS fixes https://github.com/tulios/kafkajs/issues/815
+        if ( error.type == 'LEADER_NOT_AVAILABLE' || error.type == 'UNKNOWN_TOPIC_OR_PARTITION') {
+          // Wait a few seconds to get the metadata propagated when using MSK with KRaft mode
+          console.log("Waiting 5 seconds to get the metadata propagated and validate again");
+          await sleep(5000);
+          const allTopics = await admin.listTopics();
+          const topicExists = allTopics.includes(event.ResourceProperties.topic.topic);
+          if ( topicExists ) {
+            console.log(`Topic created: ${event.ResourceProperties.topic.topic}`);
+            break;
+          } else {
+            console.log(`Topic was not created: ${event.ResourceProperties.topic.topic}`);
+          }
+        }
         console.log(`Error creating topic: ${JSON.stringify(error)}`);
-        throw new Error(`Error creating topic: ${event.ResourceProperties.topic}. Error ${JSON.stringify(error)}`);
+        throw new Error(`Error creating topic: ${JSON.stringify(event.ResourceProperties.topic)}. Error ${JSON.stringify(error)}`);
       }
     
     case 'Update':

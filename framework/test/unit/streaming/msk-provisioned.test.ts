@@ -341,3 +341,41 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
 
 
 });
+
+describe('Create an MSK Provisioned cluster using 3.7.X.Kraft version', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  KafkaVersion.V3_7_X_KRAFT;
+
+  const msk = new MskProvisioned(stack, 'cluster', {
+    kafkaVersion: KafkaVersion.V3_7_X_KRAFT,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  msk.setTopic('topic1',
+    Authentication.IAM, {
+      topic: 'topic1',
+      numPartitions: 3,
+      replicationFactor: 1,
+    }, RemovalPolicy.DESTROY, false, 1500);
+
+  const template = Template.fromStack(stack, {});
+
+  test('MSK Serverless is created', () => {
+    template.resourceCountIs('AWS::MSK::Cluster', 1);
+  });
+
+  test('MSK cluster has 3.7.X.Kraft version', () => {
+    template.hasResourceProperties('AWS::MSK::Cluster', {
+      BrokerNodeGroupInfo: Match.objectLike({
+        InstanceType: 'kafka.m5.large',
+        StorageInfo: { EBSStorageInfo: { VolumeSize: 100 } },
+      }),
+      KafkaVersion: '3.7.x.kraft',
+      NumberOfBrokerNodes: 2,
+    });
+  });
+
+});
