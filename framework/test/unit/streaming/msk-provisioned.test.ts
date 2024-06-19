@@ -335,10 +335,9 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     });
   });
 
-  test('Verify there is only onr trigger, used for zookeeper', () => {
+  test('Verify there is only one trigger, used for zookeeper', () => {
     template.resourceCountIs('Custom::Trigger', 1);
   });
-
 
 });
 
@@ -376,6 +375,10 @@ describe('Create an MSK Provisioned cluster using 3.7.X.Kraft version', () => {
       KafkaVersion: '3.7.x.kraft',
       NumberOfBrokerNodes: 2,
     });
+  });
+
+  test('Verify there is no trigger, used for zookeeper', () => {
+    template.resourceCountIs('Custom::Trigger', 0);
   });
 
 });
