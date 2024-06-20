@@ -78,6 +78,7 @@ export function mskIamCrudProviderSetup(
         'kafka-cluster:AlterTopic',
         'kafka-cluster:DeleteTopic',
         'kafka-cluster:DescribeTopicDynamicConfiguration',
+        'kafka-cluster:AlterTopicDynamicConfiguration',
       ],
       resources: [
         `arn:${partition}:kafka:${region}:${account}:topic/${clusterNameUuid}/*`,
