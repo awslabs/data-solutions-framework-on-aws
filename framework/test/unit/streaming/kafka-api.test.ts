@@ -182,6 +182,7 @@ describe('Using default KafkaApi configuration with MSK provisioned and IAM and 
               'kafka-cluster:AlterTopic',
               'kafka-cluster:DeleteTopic',
               'kafka-cluster:DescribeTopicDynamicConfiguration',
+              'kafka-cluster:AlterTopicDynamicConfiguration',
             ],
             Effect: 'Allow',
             Resource: {
