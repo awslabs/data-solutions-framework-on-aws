@@ -11,7 +11,7 @@ In this example, we will be using DSF on AWS to quickly build an end-to-end data
 
 This example demonstrate a Database As Code approach where database and tables definitions are versioned in the infrastructure as code. The AWS CDK application using the DSF on AWS contains a single stack which provisions the Data Lake, data catalog, the Redshift Serverless and the DDL/DML to configure Redshift via the following constructs:
    * [`DataLakeStorage`](../constructs/library/02-Storage/03-data-lake-storage.mdx)
-   * [`DataLaekCatalog](../constructs/library/04-Governance/02-data-lake-catalog.mdx)
+   * [`DataLakeCatalog`](../constructs/library/04-Governance/02-data-lake-catalog.mdx)
    * [`RedshiftServerlessNamespace`](../constructs/library/05-Consumption/01-redshift-serverless-namespace.mdx)
    * [`RedshiftServerlessWorkgroup`](../constructs/library/05-Consumption/02-redshift-serverless-workgroup.mdx)
   
