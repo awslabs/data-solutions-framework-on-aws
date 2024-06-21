@@ -424,10 +424,10 @@ const buildOpensearchQuickstartTask = opensearchQuickstart.addTask('build-exampl
 });
 opensearchQuickstart.packageTask.spawn(buildOpensearchQuickstartTask);
 
-const redshiftQuickstart = new awscdk.AwsCdkPythonApp({
-  name: 'redshift-quickstart',
+const redshiftDataWarehouseExample = new awscdk.AwsCdkPythonApp({
+  name: 'redshift-data-warehouse-example',
   moduleName: 'stacks',
-  packageName: 'redshift-quickstart',
+  packageName: 'redshift-data-warehouse-example',
   version: '0.0.1',
   description: 'An example CDK app demonstrating the most common use cases for Data Solutions Framework on AWS',
   authorName: author,
@@ -435,7 +435,7 @@ const redshiftQuickstart = new awscdk.AwsCdkPythonApp({
   license,
 
   parent: rootProject,
-  outdir: 'examples/redshift-quickstart',
+  outdir: 'examples/redshift-data-warehouse-example',
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
@@ -456,34 +456,34 @@ const redshiftQuickstart = new awscdk.AwsCdkPythonApp({
   }
 });
 
-redshiftQuickstart.addGitIgnore('cdk.context.json');
-redshiftQuickstart.removeTask('deploy');
-redshiftQuickstart.removeTask('destroy');
-redshiftQuickstart.removeTask('diff');
-redshiftQuickstart.removeTask('watch');
-redshiftQuickstart.removeTask('synth');
-redshiftQuickstart.testTask.reset();
-redshiftQuickstart.postCompileTask.reset();
-redshiftQuickstart.addTask('test:unit', {
+redshiftDataWarehouseExample.addGitIgnore('cdk.context.json');
+redshiftDataWarehouseExample.removeTask('deploy');
+redshiftDataWarehouseExample.removeTask('destroy');
+redshiftDataWarehouseExample.removeTask('diff');
+redshiftDataWarehouseExample.removeTask('watch');
+redshiftDataWarehouseExample.removeTask('synth');
+redshiftDataWarehouseExample.testTask.reset();
+redshiftDataWarehouseExample.postCompileTask.reset();
+redshiftDataWarehouseExample.addTask('test:unit', {
   description: 'Run unit tests',
   exec: 'pytest -k "not e2e"'
 });
-redshiftQuickstart.addTask('test:e2e', {
+redshiftDataWarehouseExample.addTask('test:e2e', {
   description: 'Run end-to-end tests',
   exec: 'pytest -k e2e'
 });
 
-const redshiftQuickstartSynthTask = redshiftQuickstart.tasks.tryFind('synth:silent')!;
-redshiftQuickstartSynthTask.reset();
-redshiftQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
-const buildRedshiftQuickstartTask = redshiftQuickstart.addTask('build-example', {
+const redshiftDataWarehouseExampleSynthTask = redshiftDataWarehouseExample.tasks.tryFind('synth:silent')!;
+redshiftDataWarehouseExampleSynthTask.reset();
+redshiftDataWarehouseExampleSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
+const buildredshiftDataWarehouseExampleTask = redshiftDataWarehouseExample.addTask('build-example', {
   steps: [
     { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
 });
-redshiftQuickstart.packageTask.spawn(buildRedshiftQuickstartTask);
+redshiftDataWarehouseExample.packageTask.spawn(buildredshiftDataWarehouseExampleTask);
 
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
