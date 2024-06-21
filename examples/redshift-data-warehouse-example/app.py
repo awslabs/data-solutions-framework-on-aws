@@ -9,6 +9,6 @@ dev_env = Environment(
 )
 
 app = App()
-RedshiftStack(app, "redshift-quickstart-dev", env=dev_env)
+RedshiftStack(app, "RedshiftDataWarehouseExample", env=dev_env)
 
 app.synth()
