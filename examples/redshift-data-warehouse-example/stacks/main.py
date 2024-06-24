@@ -50,20 +50,9 @@ class RedshiftStack(Stack):
                              target_bucket_prefix='silver/amazon-review/'
                              )
         
-        trigger_silver_crawler = AwsCustomResource(self, 
-                                                   "TriggerSilverCrawler",
-                                                   on_update=AwsSdkCall(service="Glue",
-                                                                        action="startCrawler",
-                                                                        parameters={
-                                                                            "Name": data_catalog.silver_catalog_database.crawler.name,
-                                                                        },
-                                                                        physical_resource_id=PhysicalResourceId.of(Aws.STACK_ID)
-                                                                        ),
-                                                   policy=AwsCustomResourcePolicy.from_sdk_calls(
-                                                       resources=[f'arn:{Aws.PARTITION}:glue:{Aws.REGION}:{Aws.ACCOUNT_ID}:crawler/{data_catalog.silver_catalog_database.crawler.name}'],
-                                                   ))
-
-        trigger_silver_crawler.node.add_dependency(data_copy)
+        """Enforce a dependency to crawl/catalog data that is copied
+        """
+        data_catalog.node.add_dependency(data_copy)
 
         """Create an IAM role for Redshift to access the data lake and grant permissions
         """
