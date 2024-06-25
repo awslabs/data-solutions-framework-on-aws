@@ -87,7 +87,7 @@ class RedshiftStack(Stack):
                                                         iam_role default
                                                         catalog_id '{Aws.ACCOUNT_ID}'
                                                    ''',
-                                                   delete_sql='drop external schema silver cascade'
+                                                   delete_sql='drop schema silver'
                                                    )
         
         """Run a SQL script to create the gold layer using an incremental MV from the Data Lake
@@ -123,7 +123,10 @@ class RedshiftStack(Stack):
         """Create a data sharing for the customer table
         """
         data_share = workgroup.create_share('DataSharing', 'defaultdb', 'defaultdbshare', 'public', ['mv_product_analysis'])
+        data_share.new_share_custom_resource.node.add_dependency(refresh_mv)
 
+        """Create a Redshift Serverless namespace and workgroup for the consumer
+        """
 
         namespace2 = dsf.consumption.RedshiftServerlessNamespace(self,
                                                                  "Namespace2",
