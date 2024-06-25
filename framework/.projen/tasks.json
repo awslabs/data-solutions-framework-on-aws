@@ -273,7 +273,7 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/eslint,@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-local-rules,jest,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,node-libcurl,projen,rosetta,sync-request-curl,ts-jest,typescript,@types/js-yaml,js-yaml,semver,simple-base"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@aws-cdk/cli-lib-alpha,@aws-cdk/lambda-layer-kubectl-v27,@jest/globals,@types/eslint,@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-local-rules,jest,jest-runner-groups,jsii-diff,jsii-docgen,jsii-pacmak,jsii-rosetta,jsii,node-libcurl,projen,rosetta,sync-request-curl,ts-jest,typescript,@types/js-yaml,js-yaml,semver,simple-base"
         },
         {
           "exec": "yarn install --check-files"
