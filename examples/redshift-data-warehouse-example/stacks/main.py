@@ -29,13 +29,6 @@ class RedshiftStack(Stack):
                                                 removal_policy=RemovalPolicy.DESTROY
                                                 )
 
-        data_catalog = dsf.governance.DataLakeCatalog(self, 
-                                                      'DataCatalog', 
-                                                      data_lake_storage=data_lake, 
-                                                      removal_policy=RemovalPolicy.DESTROY
-                                                      )
-        data_catalog.silver_catalog_database.crawler.schedule = None
-
         """Copy some reference data from a public bucket in the Data Lake bronze layer
         """
         source_bucket = Bucket.from_bucket_name(self, 
@@ -48,18 +41,14 @@ class RedshiftStack(Stack):
                              source_bucket_prefix='data/amazon-reviews/', 
                              source_bucket_region='us-west-2', 
                              target_bucket=data_lake.silver_bucket,
-                             target_bucket_prefix='silver/amazon-review/'
+                             target_bucket_prefix='silver/amazon-reviews/'
                              )
-        
-        """Enforce a dependency to crawl/catalog data that is copied
-        """
-        data_catalog.node.add_dependency(data_copy)
 
         """Create an IAM role for Redshift to access the data lake and grant permissions
         """
         lake_role = Role(self, 'LakeRole', assumed_by=ServicePrincipal('redshift.amazonaws.com'))
         data_lake.silver_bucket.grant_read(lake_role)
-        data_catalog.silver_catalog_database.grant_read_only_access(lake_role)
+        # data_catalog.silver_catalog_database.grant_read_only_access(lake_role)
 
         """Create a Redshift Serverless namespace and workgroup
         """
@@ -77,19 +66,42 @@ class RedshiftStack(Stack):
                                                                 namespace=namespace, 
                                                                 removal_policy=RemovalPolicy.DESTROY
                                                                 ) 
-    
-        """Run a custom SQL to mount the Glue Data Catalog silver DB
-        """
-        data_lake_mount = workgroup.run_custom_sql('MountDataLake', 
-                                                   database_name='defaultdb', 
-                                                   sql=f'''
-                                                        create external schema silver 
-                                                        from data catalog database '{data_catalog.silver_catalog_database.database_name}' 
-                                                        iam_role default
-                                                        catalog_id '{Aws.ACCOUNT_ID}'
-                                                   ''',
-                                                   delete_sql='drop schema silver'
-                                                   )
+        
+        # Create table and ingest data
+        create_amazon_reviews_table = workgroup.run_custom_sql('CreateAmazonReviewsTable'
+                                                               , database_name='defaultdb'
+                                                               , sql=f'''
+                                                                    CREATE TABLE amazon_reviews (
+                                                                        marketplace character varying(16383) ENCODE lzo,
+                                                                        customer_id character varying(16383) ENCODE lzo,
+                                                                        review_id character varying(16383) ENCODE lzo,
+                                                                        product_id character varying(16383) ENCODE lzo,
+                                                                        product_parent character varying(16383) ENCODE lzo,
+                                                                        product_title character varying(16383) ENCODE lzo,
+                                                                        star_rating integer ENCODE az64,
+                                                                        helpful_votes integer ENCODE az64,
+                                                                        total_votes integer ENCODE az64,
+                                                                        vine character varying(16383) ENCODE lzo,
+                                                                        verified_purchase character varying(16383) ENCODE lzo,
+                                                                        review_headline character varying(max) ENCODE lzo,
+                                                                        review_body character varying(max) ENCODE lzo,
+                                                                        review_date date ENCODE az64,
+                                                                        year integer ENCODE az64
+                                                                    )
+                                                                    DISTSTYLE AUTO;
+                                                               '''
+                                                               , delete_sql='drop table amazon_reviews')
+        
+        # Ingest data using copy command
+        load_amazon_reviews_data = workgroup.ingest_data('amazon_reviews_ingest_data',
+                                                         'defaultdb',
+                                                         'amazon_reviews',
+                                                         data_lake.silver_bucket,
+                                                         'silver/amazon-reviews/',
+                                                         'FORMAT parquet')
+        
+        load_amazon_reviews_data.node.add_dependency(create_amazon_reviews_table)
+        load_amazon_reviews_data.node.add_dependency(data_copy)
         
         """Run a SQL script to create the gold layer using an incremental MV from the Data Lake
         """
@@ -101,7 +113,7 @@ class RedshiftStack(Stack):
                                                                 product_title,
                                                                 COUNT(1) AS review_total,
                                                                 SUM(star_rating) AS rating
-                                                            FROM silver.amazon_review
+                                                            FROM amazon_reviews
                                                             WHERE marketplace = 'US'
                                                             GROUP BY 1,2;''',
                                                      delete_sql='drop materialized view mv_product_analysis'
@@ -109,13 +121,13 @@ class RedshiftStack(Stack):
         
         """Ensure ordering and dependencies between SQL queries
         """
-        materialized_view.node.add_dependency(data_lake_mount)
+        materialized_view.node.add_dependency(load_amazon_reviews_data)
 
-        refresh_mv = workgroup.run_custom_sql('RefreshMvProductAnalysis',
-                                             database_name='defaultdb',
-                                             sql=f'''REFRESH MATERIALIZED VIEW mv_product_analysis''',
-                                             )
-        refresh_mv.node.add_dependency(materialized_view)
+        # refresh_mv = workgroup.run_custom_sql('RefreshMvProductAnalysis',
+        #                                      database_name='defaultdb',
+        #                                      sql=f'''REFRESH MATERIALIZED VIEW mv_product_analysis''',
+        #                                      )
+        # refresh_mv.node.add_dependency(materialized_view)
 
         """Create a Glue Catalog table for the materialized view data using a Glue crawler
         """
@@ -124,10 +136,7 @@ class RedshiftStack(Stack):
         """Create a data sharing for the customer table
         """
         data_share = workgroup.create_share('DataSharing', 'defaultdb', 'defaultdbshare', 'public', ['mv_product_analysis'])
-        data_share.new_share_custom_resource.node.add_dependency(refresh_mv)
-
-        """Create a Redshift Serverless namespace and workgroup for the consumer
-        """
+        data_share.new_share_custom_resource.node.add_dependency(materialized_view)
 
         namespace2 = dsf.consumption.RedshiftServerlessNamespace(self,
                                                                  "Namespace2",
