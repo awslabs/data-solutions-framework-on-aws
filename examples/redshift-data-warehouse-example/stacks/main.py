@@ -34,6 +34,7 @@ class RedshiftStack(Stack):
                                                       data_lake_storage=data_lake, 
                                                       removal_policy=RemovalPolicy.DESTROY
                                                       )
+        data_catalog.silver_catalog_database.crawler.schedule = None
 
         """Copy some reference data from a public bucket in the Data Lake bronze layer
         """
@@ -49,6 +50,21 @@ class RedshiftStack(Stack):
                              target_bucket=data_lake.silver_bucket,
                              target_bucket_prefix='silver/amazon-review/'
                              )
+        
+        trigger_silver_crawler = AwsCustomResource(self, 
+                                                   "TriggerSilverCrawler",
+                                                   on_update=AwsSdkCall(service="Glue",
+                                                                        action="startCrawler",
+                                                                        parameters={
+                                                                            "Name": data_catalog.silver_catalog_database.crawler.name,
+                                                                        },
+                                                                        physical_resource_id=PhysicalResourceId.of(Aws.STACK_ID)
+                                                                        ),
+                                                   policy=AwsCustomResourcePolicy.from_sdk_calls(
+                                                       resources=[f'arn:{Aws.PARTITION}:glue:{Aws.REGION}:{Aws.ACCOUNT_ID}:crawler/{data_catalog.silver_catalog_database.crawler.name}'],
+                                                   ))
+
+        trigger_silver_crawler.node.add_dependency(data_copy)
         
         """Enforce a dependency to crawl/catalog data that is copied
         """
