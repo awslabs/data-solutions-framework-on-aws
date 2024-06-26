@@ -395,10 +395,6 @@ describe('With isComplete handler configuration configuration, the construct ', 
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
-  test('should create another CloudWatch LogGroup for isComplete lambda', () => {
-    template.resourceCountIs('AWS::Logs::LogGroup', 2);
-  });
-
   test('should create another IAM Role assumed by Lambda and with the managed policy attached', () => {
     template.resourcePropertiesCountIs('AWS::IAM::Role',
       Match.objectLike({

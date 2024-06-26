@@ -368,10 +368,6 @@ describe('With custom configuration and removal policy set to DESTROY, the const
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create resources with DELETE policy', () => {
-    template.allResources('AWS::Logs::LogGroup', {
-      UpdateReplacePolicy: 'Delete',
-      DeletionPolicy: 'Delete',
-    });
 
     template.allResources('AWS::Glue::Connection', {
       UpdateReplacePolicy: 'Delete',

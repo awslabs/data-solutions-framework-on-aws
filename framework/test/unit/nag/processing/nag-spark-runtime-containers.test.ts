@@ -266,6 +266,15 @@ NagSuppressions.addResourceSuppressionsByPath(
   true,
 );
 
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, [
+  '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider/Provider/waiter-state-machine/Resource',
+  '/nagStack/InteractiveSessionProvider/CustomResourceProvider/waiter-state-machine/Resource',
+], [
+  { id: 'AwsSolutions-SF2', reason: 'Resource managed by L2 and not exposed as property by CDK' },
+  { id: 'AwsSolutions-SF1', reason: 'Resource managed by L2 and not exposed as property by CDK' },
+],
+true);
+
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(emrEksClusterStack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);

@@ -185,6 +185,14 @@ NagSuppressions.addResourceSuppressionsByPath(
   ],
 );
 
+NagSuppressions.addResourceSuppressionsByPath(stack, [
+  '/Stack/Provider/CustomResourceProvider/waiter-state-machine/Resource',
+], [
+  { id: 'AwsSolutions-SF2', reason: 'Resource managed by L2 and not exposed as property by CDK' },
+  { id: 'AwsSolutions-SF1', reason: 'Resource managed by L2 and not exposed as property by CDK' },
+],
+true);
+
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);
