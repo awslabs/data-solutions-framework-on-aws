@@ -2,12 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from aws_cdk import (
-    # Duration,
     RemovalPolicy,
-    Stack,
-    Aws
+    Stack
 )
-from aws_cdk.custom_resources import AwsCustomResource, AwsSdkCall, PhysicalResourceId, AwsCustomResourcePolicy
 from aws_cdk.aws_s3 import Bucket
 from aws_cdk.aws_iam import Role, ServicePrincipal
 from constructs import Construct
