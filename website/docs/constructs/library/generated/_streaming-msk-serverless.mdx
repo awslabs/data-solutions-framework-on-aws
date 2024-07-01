@@ -1,4 +1,6 @@
-[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/streaming)
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/streaming -->
+
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -26,8 +28,6 @@ Below you can find an example of creating an MSK Serverless configuration with t
   ```typescript
 const msk = new MskServerless(stack, 'cluster');
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -66,8 +66,6 @@ const msk = new MskServerless(stack, 'cluster', {
     vpc: vpc,
   });
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -134,8 +132,6 @@ let topic: MskTopic =  {
 msk.addTopic('topic1', topic, cdk.RemovalPolicy.DESTROY, false, 1500);
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -179,8 +175,6 @@ let iamRole = Role.fromRoleName(stack, 'role', 'role');
 msk.grantProduce('topic1',iamRole);
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -209,8 +203,6 @@ const iamRole = Role.fromRoleName(stack, 'role', 'role');
 
 msk.grantConsume('topic1',iamRole);
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">

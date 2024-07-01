@@ -62,8 +62,6 @@ for (let key in snippets) {
 ${typescript}
   \`\`\`
   
-  \`\`\`mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -92,7 +90,9 @@ for (let module in fullReadme) {
             let constructReadmeLines = constructReadme.split('\n');
             constructReadmeLines.shift(); // remove title
             constructReadme = constructReadmeLines.join('\n');
-            constructReadme = `[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/${module})
+            constructReadme = `<!-- This file is generated, do not modify directly, update the README.md in framework/src/${module} -->
+
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ${constructReadme}`;

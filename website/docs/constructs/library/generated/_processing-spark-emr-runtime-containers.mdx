@@ -1,4 +1,6 @@
-[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/processing)
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/processing -->
+
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -87,8 +89,6 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
       }
     }
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -199,8 +199,6 @@ The method configures the right Kubernetes RBAC as described [here](https://docs
     });
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -254,8 +252,6 @@ The usage example below shows how to provide these as CloudFormation output. The
       value: emrEksCluster.podTemplateS3LocationCriticalExecutor!,
     });
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -313,8 +309,6 @@ The execution role is the IAM role that is used by the Spark job to access AWS r
         });
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -368,8 +362,6 @@ The interactive endpoint provides the capability for interactive clients like Am
            value: interactiveSession.getAttString('arn'),
          });
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -449,8 +441,6 @@ The Grant Job Execution allow you to provide an IAM role the rights to start the
 
         SparkEmrContainersRuntime.grantStartJobExecution(startJobRole, [execRole.roleArn], virtualCluster.attrArn);
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">

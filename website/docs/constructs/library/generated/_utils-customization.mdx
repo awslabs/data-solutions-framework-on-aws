@@ -1,4 +1,6 @@
-[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/utils)
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/utils -->
+
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -32,8 +34,6 @@ new dsf.storage.DataLakeStorage(this, 'MyDataLakeStorage', {
     goldBucketArchiveDelay: 360,
 });
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -92,8 +92,6 @@ AWS CDK offers escape hatches to modify constructs that are encapsulated in DSF 
     ));
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -135,8 +133,6 @@ gold_bucket.add_to_resource_policy(aws_iam.PolicyStatement(
     }
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -172,8 +168,6 @@ cfn_bucket.accelerate_configuration = CfnBucket.AccelerateConfigurationProperty(
     // Override the CloudFormation property for transfer acceleration
     cfnBucket.addOverride('Properties.AccelerateConfiguration.AccelerationStatus', 'Enabled')
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
