@@ -20,16 +20,15 @@ The sections below will take you through the steps of creating the CDK applicati
 ```bash
 mkdir dsf-example && cd dsf-example
 ```
-
+```mdx-code-block
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
-  ```bash
-  cdk init app --language typescript
-  ```
-  
-  ```mdx-code-block
+    ```bash
+    cdk init app --language typescript
+    ```
   </TabItem>
+
   <TabItem value="python" label="Python">
 
     ```bash
@@ -45,16 +44,16 @@ mkdir dsf-example && cd dsf-example
 
 We can now install DSF on AWS:
 
+```mdx-code-block
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
   
-
-  ```bash
-  npm i @cdklabs/aws-data-solutions-framework --save
-  ```
-  
-  ```mdx-code-block
+    ```bash
+    npm i @cdklabs/aws-data-solutions-framework --save
+    ```
   </TabItem>
+
   <TabItem value="python" label="Python">
 
     ```bash
@@ -68,7 +67,6 @@ We can now install DSF on AWS:
     # Then you can install CDK app requirements:
     python -m pip install -r requirements.txt
     ```
-    
   </TabItem>
 </Tabs>
 ```
@@ -81,30 +79,29 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
-In `lib/dsf-example-stack.ts`
+    In `lib/dsf-example-stack.ts`
 
-  ```typescript
-  import * as cdk from 'aws-cdk-lib';
-  import * as dsf from '@cdklabs/aws-data-solutions-framework';
-  import { Key } from 'aws-cdk-lib/aws-kms';
-  import { Policy, PolicyStatement} from 'aws-cdk-lib/aws-iam';
-  import { Construct } from 'constructs';
+    ```typescript
+    import * as cdk from 'aws-cdk-lib';
+    import * as dsf from '@cdklabs/aws-data-solutions-framework';
+    import { Key } from 'aws-cdk-lib/aws-kms';
+    import { Policy, PolicyStatement} from 'aws-cdk-lib/aws-iam';
+    import { Construct } from 'constructs';
 
-  export class DsfExampleStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-      super(scope, id, props);
-      
-      const storage = new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
-        encryptionKey: new Key(this, 'DataKey', {
-          enableKeyRotation: true,
-          removalPolicy: cdk.RemovalPolicy.DESTROY
-        }),
-      });
-    }
-  ```
-  
-  ```mdx-code-block
+    export class DsfExampleStack extends cdk.Stack {
+      constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+        super(scope, id, props);
+        
+        const storage = new dsf.storage.AnalyticsBucket(this, 'AnalyticsBucket', {
+          encryptionKey: new Key(this, 'DataKey', {
+            enableKeyRotation: true,
+            removalPolicy: cdk.RemovalPolicy.DESTROY
+          }),
+        });
+      }
+    ```
   </TabItem>
+
   <TabItem value="python" label="Python">
 
     In `dsf_example/dsf_example_stack.py`
@@ -144,7 +141,6 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/
 ```mdx-code-block
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
-```
 
   In `lib/dsf-example-stack.ts`
   
@@ -220,19 +216,16 @@ Last we will output the ARNs for the role and EMR serverless app, the ID of the 
 ```mdx-code-block
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
-```
-  In `lib/dsf-example-stack.ts`
-  ```typescript
-
-  new cdk.CfnOutput(this, "EMRServerlessApplicationId", { value : runtimeServerless.application.attrApplicationId });
-  new cdk.CfnOutput(this, "EMRServerlessApplicationARN", { value : runtimeServerless.application.attrArn });
-  new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", { value : executionRole.roleArn });
-  new cdk.CfnOutput(this, "BucketURI", { value : `s3://${storage.bucketName}` });
-  
-  ```
-  
-  ```mdx-code-block
+    In `lib/dsf-example-stack.ts`
+    ```typescript
+    new cdk.CfnOutput(this, "EMRServerlessApplicationId", { value : runtimeServerless.application.attrApplicationId });
+    new cdk.CfnOutput(this, "EMRServerlessApplicationARN", { value : runtimeServerless.application.attrArn });
+    new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", { value : executionRole.roleArn });
+    new cdk.CfnOutput(this, "BucketURI", { value : `s3://${storage.bucketName}` });
+    
+    ```
   </TabItem>
+
   <TabItem value="python" label="Python">
 
     In `dsf_example/dsf_example_stack.py`
@@ -243,10 +236,9 @@ Last we will output the ARNs for the role and EMR serverless app, the ID of the 
     CfnOutput(self, "EMRServelessExecutionRoleARN", value=processing_exec_role.role_arn)
     CfnOutput(self, "BucketURI", value=f"s3://{storage.bucket_name}")
     ```
-    
   </TabItem>
 </Tabs>
-
+```
 ## Deploy the CDK app
 
 If this is the first time you deploy an AWS CDK app into an environment (account/region), you can install a “bootstrap stack”.

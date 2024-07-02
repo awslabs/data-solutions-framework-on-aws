@@ -1,4 +1,6 @@
-[//]: # (This file is generated, do not modify directly, update the README.md in framework/src/streaming)
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/streaming -->
+
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -43,8 +45,6 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
@@ -150,8 +150,6 @@ kafkaApi.setTopic('topic1',
 );
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -210,8 +208,6 @@ kafkaApi.setAcl('acl',
 );
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -243,8 +239,6 @@ In case of IAM authentication the method attaches an IAM policy as defined in th
 kafkaApi.grantProduce('consume', 'foo', Authentication.MTLS, 'User:Cn=bar');
   ```
   
-  ```mdx-code-block
-  
   </TabItem>
   <TabItem value="python" label="Python">
 
@@ -266,8 +260,6 @@ In case of IAM authentication the method attachs an IAM policy as defined in the
   ```typescript
 kafkaApi.grantConsume('consume', 'foo', Authentication.MTLS, 'User:Cn=bar');
   ```
-  
-  ```mdx-code-block
   
   </TabItem>
   <TabItem value="python" label="Python">
