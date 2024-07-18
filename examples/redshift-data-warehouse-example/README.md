@@ -28,7 +28,7 @@ cd redshift-data-warehouse-example
 2. Modify the `./requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
 
 ```
-aws-cdk-lib==2.114.1
+aws-cdk-lib
 constructs>=10.3.0, <11.0.0
 cdklabs.aws_data_solutions_framework
 ```

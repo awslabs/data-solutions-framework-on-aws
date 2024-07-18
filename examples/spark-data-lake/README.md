@@ -20,7 +20,7 @@ aws://<STAGING_ACCOUNT_ID>/<REGION>
 
 ## Getting started
 
-1. Download the Redshift Data Warehouse example from the Data Solutions Framework on AWS Github and unzip it:
+1. Download the Spark Data Lake example from the Data Solutions Framework on AWS Github and unzip it:
 
 ```bash
 curl -LJO https://github.com/awslabs/data-solutions-framework-on-aws/releases/latest/download/spark-data-lake-example.zip
@@ -31,7 +31,7 @@ cd spark-data-lake-example
 2. Modify the `./requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
 
 ```
-aws-cdk-lib==2.114.1
+aws-cdk-lib
 constructs>=10.3.0, <11.0.0
 cdklabs.aws_data_solutions_framework
 ```
