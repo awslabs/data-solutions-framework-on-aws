@@ -20,28 +20,23 @@ aws://<STAGING_ACCOUNT_ID>/<REGION>
 
 ## Getting started
 
-1. Copy the `spark-data-lake` folder somewhere else on your machine and initialize a new git repository:
+1. Download the Spark Data Lake example from the Data Solutions Framework on AWS Github and unzip it:
 
 ```bash
-cp -R ../spark-data-lake <MY_LOCAL_PATH>
-cd <MY_LOCAL_PATH>
-git init
-cat << EOF > .gitignore
-infra/cdk.out
-infra/.venv
-infra/stacks/__pycache__
-EOF
+curl -LJO https://github.com/awslabs/data-solutions-framework-on-aws/releases/latest/download/spark-data-lake-example.zip
+unzip spark-data-lake-example.zip -d spark-data-lake-example
+cd spark-data-lake-example
 ```
 
-2. Modify the `./infra/requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
+2. Modify the `./requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
 
 ```
-aws-cdk-lib==2.94.0
-constructs>=10.2.55, <11.0.0
+aws-cdk-lib
+constructs>=10.3.0, <11.0.0
 cdklabs.aws_data_solutions_framework
 ```
 
-2. From the `./infra` folder, create Python3 virtual environment and activate it:
+1. From the `./infra` folder, create Python3 virtual environment and activate it:
 
 ```bash
 cd infra
