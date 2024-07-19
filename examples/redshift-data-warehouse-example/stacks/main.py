@@ -45,7 +45,6 @@ class RedshiftStack(Stack):
         """
         lake_role = Role(self, 'LakeRole', assumed_by=ServicePrincipal('redshift.amazonaws.com'))
         data_lake.silver_bucket.grant_read(lake_role)
-        # data_catalog.silver_catalog_database.grant_read_only_access(lake_role)
 
         """Create a Redshift Serverless namespace and workgroup
         """
@@ -119,12 +118,6 @@ class RedshiftStack(Stack):
         """Ensure ordering and dependencies between SQL queries
         """
         materialized_view.node.add_dependency(load_amazon_reviews_data)
-
-        # refresh_mv = workgroup.run_custom_sql('RefreshMvProductAnalysis',
-        #                                      database_name='defaultdb',
-        #                                      sql=f'''REFRESH MATERIALIZED VIEW mv_product_analysis''',
-        #                                      )
-        # refresh_mv.node.add_dependency(materialized_view)
 
         """Create a Glue Catalog table for the materialized view data using a Glue crawler
         """
