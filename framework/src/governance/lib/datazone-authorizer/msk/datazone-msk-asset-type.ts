@@ -2,9 +2,11 @@ import { Construct } from "constructs";
 import { Context, TrackedConstruct, TrackedConstructProps } from "../../../../utils";
 import { DataZoneMSKAssetTypeProps } from "./datazone-msk-asset-type-props";
 import { RemovalPolicy } from "aws-cdk-lib";
-import { DataZoneCustomAssetType } from "../datazone-custom-asset-type";
+import { CustomAssetType, DataZoneCustomAssetTypeFactory } from "../datazone-custom-asset-type-factory";
 
 export class DataZoneMSKAssetType extends TrackedConstruct {
+    readonly mskCustomAssetType: CustomAssetType
+
     private readonly removalPolicy: RemovalPolicy
     constructor(scope: Construct, id: string, props: DataZoneMSKAssetTypeProps) {
         const trackedConstructProps: TrackedConstructProps = {
@@ -14,11 +16,11 @@ export class DataZoneMSKAssetType extends TrackedConstruct {
         super(scope, id, trackedConstructProps);
         this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy)
 
-        const dzCustomAssetTypeHandler: DataZoneCustomAssetType = props.dzCustomAssetTypeHandler || new DataZoneCustomAssetType(this, "DZCustomAssetTypeHandler", {
+        const dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory = props.dzCustomAssetTypeFactory || new DataZoneCustomAssetTypeFactory(this, "DZCustomAssetTypeHandler", {
             removalPolicy: this.removalPolicy
         })
 
-        dzCustomAssetTypeHandler.createCustomAssetType("MSKCustomAssetType", {
+        this.mskCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType("MSKCustomAssetType", {
             assetTypeName: "MSKAssetType",
             assetTypeDescription: "Custom asset type to support MSK data assets",
             domainId: props.domainId,
