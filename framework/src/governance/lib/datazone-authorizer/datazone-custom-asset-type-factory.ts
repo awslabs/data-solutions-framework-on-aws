@@ -7,7 +7,14 @@ import { CustomResource, Duration, RemovalPolicy } from "aws-cdk-lib";
 import { IFunction } from "aws-cdk-lib/aws-lambda";
 import { ILogGroup } from "aws-cdk-lib/aws-logs";
 
-export class DataZoneCustomAssetType extends TrackedConstruct {
+export interface CustomAssetType {
+    domainIdentifier: string
+    name: string
+    projectIdentifier: string
+    revision: string
+}
+
+export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
     /**
      * The CloudWatch Logs Log Group for the Redshift Serverless creation
      */
@@ -38,7 +45,7 @@ export class DataZoneCustomAssetType extends TrackedConstruct {
     private readonly removalPolicy: RemovalPolicy
     constructor(scope: Construct, id: string, props: DataZoneCustomAssetTypeProps) {
         const trackedConstructProps: TrackedConstructProps = {
-            trackingTag: DataZoneCustomAssetType.name,
+            trackingTag: DataZoneCustomAssetTypeFactory.name,
         };
 
         super(scope, id, trackedConstructProps);
@@ -91,8 +98,8 @@ export class DataZoneCustomAssetType extends TrackedConstruct {
         this.serviceToken = provider.serviceToken;
     }
 
-    public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAssetTypeProps): CustomResource {
-        return new CustomResource(this, id, {
+    public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAssetTypeProps): CustomAssetType {
+        const crResp = new CustomResource(this, id, {
             serviceToken: this.serviceToken,
             removalPolicy: this.removalPolicy,
             properties: {
@@ -103,5 +110,12 @@ export class DataZoneCustomAssetType extends TrackedConstruct {
                 assetTypeDescription: customAssetType.assetTypeDescription
             }
         })
+
+        return {
+            domainIdentifier: crResp.getAttString("domainId"),
+            name: crResp.getAttString("name"),
+            projectIdentifier: crResp.getAttString("owningProjectId"),
+            revision: crResp.getAttString("revision")
+        }
     }
 }
