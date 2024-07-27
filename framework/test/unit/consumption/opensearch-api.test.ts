@@ -32,7 +32,7 @@ describe('default configuration', () => {
 
   osCluster.addRoleMapping('role1', 'user1', 'group1');
   const template = Template.fromStack(stack);
-  
+
   test('should have OpenSearch domain', () => {
     template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
   });

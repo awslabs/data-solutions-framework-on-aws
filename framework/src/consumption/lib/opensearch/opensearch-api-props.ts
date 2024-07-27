@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RemovalPolicy } from "aws-cdk-lib";
-import { IVpc, SubnetSelection } from "aws-cdk-lib/aws-ec2";
-import { IRole } from "aws-cdk-lib/aws-iam";
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 
 /**
  * Configuration for the OpenSearch API.
  */
 export interface OpenSearchApiProps {
-  
+
   /**
    * The removal policy when deleting the CDK resource.
    * If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
@@ -22,7 +22,7 @@ export interface OpenSearchApiProps {
    * The IAM role to pass to IAM authentication lambda handler
    * This role must be able to be assumed with `lambda.amazonaws.com` service principal
    * @default - new IAMRole is created.
-   */  
+   */
   readonly iamHandlerRole?: IRole;
 
   /**
@@ -32,7 +32,7 @@ export interface OpenSearchApiProps {
    * @default - no VPC is used.
    */
   readonly vpc?: IVpc;
-  
+
   /**
    * The subnets where the Custom Resource Lambda Function would be created in.
    * Required if vpc parameter is provided.
@@ -42,12 +42,12 @@ export interface OpenSearchApiProps {
 
   /**
    * The OpenSearch Cluster or Serverless collection endpoint to connect to.
-   * if you provisoned your cluster using CDK 
-   * use domainEndpoint property of OpenSearch provisioned cluster or 
+   * if you provisoned your cluster using CDK
+   * use domainEndpoint property of OpenSearch provisioned cluster or
    * attrCollectionEndpoint property of OpenSearch Serverless collection.
    */
   readonly openSearchEndpoint : string;
-  
+
   /**
    * Type of OpenSearch cluster.
    */
@@ -62,6 +62,6 @@ export interface OpenSearchApiProps {
 
 
 export enum OpenSearchClusterType {
-  PROVISIONED = "provisioned",
-  SERVERLESS = "serverless"
+  PROVISIONED = 'provisioned',
+  SERVERLESS = 'serverless'
 }

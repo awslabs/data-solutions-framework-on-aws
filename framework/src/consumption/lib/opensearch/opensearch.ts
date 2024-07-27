@@ -10,11 +10,11 @@ import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Domain, DomainProps, IDomain, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
 import { AwsCustomResource, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
-import { OpenSearchClusterProps, OpenSearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
 import { OpenSearchApi } from './opensearch-api';
+import { OpenSearchClusterType } from './opensearch-api-props';
+import { OpenSearchClusterProps, OpenSearchNodes, OPENSEARCH_DEFAULT_VERSION } from './opensearch-props';
 import { Context, CreateServiceLinkedRole, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { ServiceLinkedRoleService } from '../../../utils/lib/service-linked-role-service';
-import { OpenSearchClusterType } from './opensearch-api-props';
 
 
 /**
@@ -81,7 +81,6 @@ export class OpenSearchCluster extends TrackedConstruct {
    */
   private removalPolicy: RemovalPolicy;
 
-  
 
   /**
    * Constructs a new instance of the OpenSearchCluster class
@@ -274,23 +273,22 @@ export class OpenSearchCluster extends TrackedConstruct {
         resources: [`arn:aws:es:${Aws.REGION}:${Aws.ACCOUNT_ID}:domain/${domain.domainName}/*`],
       }));
 
-    
 
     this.domain = domain;
 
     const samlAdminGroupId = props.samlMasterBackendRole;
 
-    this.openSearchApi = new OpenSearchApi(scope, 'OpenSearchApi', { 
-      openSearchEndpoint: this.domain.domainEndpoint, 
+    this.openSearchApi = new OpenSearchApi(scope, 'OpenSearchApi', {
+      openSearchEndpoint: this.domain.domainEndpoint,
       openSearchClusterType: OpenSearchClusterType.PROVISIONED,
-      iamHandlerRole:this.masterRole,
-      vpc:this.vpc,
+      iamHandlerRole: this.masterRole,
+      vpc: this.vpc,
       subnets: subnets,
       removalPolicy: this.removalPolicy,
-    })
+    });
 
-    this.openSearchApi.node.addDependency(this.domain);
-    
+    //this.openSearchApi.node.addDependency(this.domain);
+
     const allAccessRoleLambdaCr=this.openSearchApi.addRoleMapping('AllAccessRoleLambda', 'all_access', this.masterRole.roleArn, true);
     const allAccessRoleSamlCr=this.openSearchApi.addRoleMapping('AllAccessRoleSAML', 'all_access', samlAdminGroupId, true);
     allAccessRoleSamlCr.node.addDependency(allAccessRoleLambdaCr);
@@ -330,8 +328,10 @@ export class OpenSearchCluster extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
     updateDomain.node.addDependency(this.domain);
-    for (const aclCr of [allAccessRoleLambdaCr, allAccessRoleSamlCr, securityManagerRoleLambdaCr, securityManagerRoleSamlCr]) 
+    for (const aclCr of
+      [allAccessRoleLambdaCr, allAccessRoleSamlCr, securityManagerRoleLambdaCr, securityManagerRoleSamlCr]) {
       updateDomain.node.addDependency(aclCr);
+    }
   }
 
   /**
@@ -344,7 +344,7 @@ export class OpenSearchCluster extends TrackedConstruct {
    */
 
   public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string) : CustomResource {
-    return this.openSearchApi.callOpenSearchApi(id,apiPath,body,method);
+    return this.openSearchApi.callOpenSearchApi(id, apiPath, body, method);
   }
 
   /**
@@ -358,6 +358,6 @@ export class OpenSearchCluster extends TrackedConstruct {
    * @returns CustomResource object.
    */
   public addRoleMapping(id: string, name: string, role: string, persist:boolean=false) : CustomResource {
-    return this.openSearchApi.addRoleMapping(id, name, role, persist);  
+    return this.openSearchApi.addRoleMapping(id, name, role, persist);
   }
 }

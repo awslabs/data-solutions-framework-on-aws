@@ -5708,6 +5708,248 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### OpenSearchApi <a name="OpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi"></a>
+
+A construct to create an OpenSearch API client.
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+new consumption.OpenSearchApi(scope: Construct, id: string, props: OpenSearchApiProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.id">id</a></code> | <code>string</code> | unique ID for the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+unique ID for the construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping">addRoleMapping</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi">callOpenSearchApi</a></code> | Calls OpenSearch API using custom resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping"></a>
+
+```typescript
+public addRoleMapping(id: string, name: string, role: string, persist?: boolean): CustomResource
+```
+
+> [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.name"></a>
+
+- *Type:* string
+
+OpenSearch role name.
+
+---
+
+###### `role`<sup>Required</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.role"></a>
+
+- *Type:* string
+
+list of IAM roles.
+
+For IAM Identity center provide SAML group Id as a role
+
+---
+
+###### `persist`<sup>Optional</sup> <a name="persist" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.persist"></a>
+
+- *Type:* boolean
+
+Set to true if you want to prevent the roles to be ovewritten by subsequent PUT API calls.
+
+Default false.
+
+---
+
+##### `callOpenSearchApi` <a name="callOpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi"></a>
+
+```typescript
+public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string): CustomResource
+```
+
+Calls OpenSearch API using custom resource.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
+
+###### `apiPath`<sup>Required</sup> <a name="apiPath" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.apiPath"></a>
+
+- *Type:* string
+
+OpenSearch API path.
+
+---
+
+###### `body`<sup>Required</sup> <a name="body" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.body"></a>
+
+- *Type:* any
+
+OpenSearch API request body.
+
+---
+
+###### `method`<sup>Optional</sup> <a name="method" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.method"></a>
+
+- *Type:* string
+
+Opensearch API method,.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.isConstruct"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+consumption.OpenSearchApi.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### OpenSearchCluster <a name="OpenSearchCluster" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster"></a>
 
 A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
@@ -6029,6 +6271,354 @@ public readonly DSF_OWNED_TAG: string;
 ---
 
 ##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### OpenSearchServerlessCollection <a name="OpenSearchServerlessCollection" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection"></a>
+
+A construct to provision Amazon OpenSearch Serverless Collection and OpenSearch Dashboards.
+
+Uses SAML authentication.
+If OpenSearch Serverless Collection is deployed in vpc it is created using DataVpc construct,
+ClientVPNEndpoint will be provisioned automatically for secure access to OpenSearch Dashboards.
+
+*Example*
+
+```typescript
+ new dsf.consumption.OpenSearchServerlessCollection(this, 'ossCol',{
+    collection:'mycol',
+    samlMetadataContent:'<IdpMetadataXml>',
+    samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+    securityEncryptionPolicy:{
+      useAwsEncyptionKey:true
+    } as OpenSearchServerlessEncryptionPolicy,
+    removalPolicy:cdk.RemovalPolicy.DESTROY
+  } as OpenSearchServerlessCollectionProps);
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+new consumption.OpenSearchServerlessCollection(scope: Construct, id: string, props: OpenSearchServerlessCollectionProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the AWS CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the AWS CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps</code> | the OpenSearchCluster [properties]{@link OpenSearchClusterProps }. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the AWS CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the AWS CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps
+
+the OpenSearchCluster [properties]{@link OpenSearchClusterProps }.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.callOpenSearchApi">callOpenSearchApi</a></code> | Calls OpenSearch API using custom resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `callOpenSearchApi` <a name="callOpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.callOpenSearchApi"></a>
+
+```typescript
+public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string): CustomResource
+```
+
+Calls OpenSearch API using custom resource.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.callOpenSearchApi.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
+
+###### `apiPath`<sup>Required</sup> <a name="apiPath" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.callOpenSearchApi.parameter.apiPath"></a>
+
+- *Type:* string
+
+OpenSearch API path.
+
+---
+
+###### `body`<sup>Required</sup> <a name="body" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.callOpenSearchApi.parameter.body"></a>
+
+- *Type:* any
+
+OpenSearch API request body.
+
+---
+
+###### `method`<sup>Optional</sup> <a name="method" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.callOpenSearchApi.parameter.method"></a>
+
+- *Type:* string
+
+Opensearch API method,.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.isConstruct"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+consumption.OpenSearchServerlessCollection.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.collection">collection</a></code> | <code>aws-cdk-lib.aws_opensearchserverless.CfnCollection</code> | OpenSearch Serverless collection. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt data and logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.masterRole">masterRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM Role used to provision and configure OpenSearch domain. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.accessPolicy">accessPolicy</a></code> | <code>aws-cdk-lib.aws_opensearchserverless.CfnAccessPolicy</code> | OpenSearch Serverless collection accessPolicy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.encryptionPolicy">encryptionPolicy</a></code> | <code>aws-cdk-lib.aws_opensearchserverless.CfnSecurityPolicy</code> | OpenSearch Serverless collection encryptionPolicy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.lifecyclePolicy">lifecyclePolicy</a></code> | <code>aws-cdk-lib.aws_opensearchserverless.CfnLifecyclePolicy</code> | OpenSearch Serverless collection lifecyclePolicy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.networkPolicy">networkPolicy</a></code> | <code>aws-cdk-lib.aws_opensearchserverless.CfnSecurityPolicy</code> | OpenSearch Serverless collection networkPolicy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.securityConfig">securityConfig</a></code> | <code>aws-cdk-lib.aws_opensearchserverless.CfnSecurityConfig</code> | OpenSearch Serverless collection securityConfig. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | VPC OpenSearch Serverless is provisioned in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.vpcEndpoint">vpcEndpoint</a></code> | <code>string \| aws-cdk-lib.aws_opensearchserverless.CfnVpcEndpoint</code> | VPC OpenSearch Serverless VPC Endpoint. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `collection`<sup>Required</sup> <a name="collection" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.collection"></a>
+
+```typescript
+public readonly collection: CfnCollection;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchserverless.CfnCollection
+
+OpenSearch Serverless collection.
+
+---
+
+##### `encryptionKey`<sup>Required</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used to encrypt data and logs.
+
+---
+
+##### `masterRole`<sup>Required</sup> <a name="masterRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.masterRole"></a>
+
+```typescript
+public readonly masterRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+IAM Role used to provision and configure OpenSearch domain.
+
+---
+
+##### `accessPolicy`<sup>Optional</sup> <a name="accessPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.accessPolicy"></a>
+
+```typescript
+public readonly accessPolicy: CfnAccessPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchserverless.CfnAccessPolicy
+
+OpenSearch Serverless collection accessPolicy.
+
+---
+
+##### `encryptionPolicy`<sup>Optional</sup> <a name="encryptionPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.encryptionPolicy"></a>
+
+```typescript
+public readonly encryptionPolicy: CfnSecurityPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchserverless.CfnSecurityPolicy
+
+OpenSearch Serverless collection encryptionPolicy.
+
+---
+
+##### `lifecyclePolicy`<sup>Optional</sup> <a name="lifecyclePolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.lifecyclePolicy"></a>
+
+```typescript
+public readonly lifecyclePolicy: CfnLifecyclePolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchserverless.CfnLifecyclePolicy
+
+OpenSearch Serverless collection lifecyclePolicy.
+
+---
+
+##### `networkPolicy`<sup>Optional</sup> <a name="networkPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.networkPolicy"></a>
+
+```typescript
+public readonly networkPolicy: CfnSecurityPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchserverless.CfnSecurityPolicy
+
+OpenSearch Serverless collection networkPolicy.
+
+---
+
+##### `securityConfig`<sup>Optional</sup> <a name="securityConfig" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.securityConfig"></a>
+
+```typescript
+public readonly securityConfig: CfnSecurityConfig;
+```
+
+- *Type:* aws-cdk-lib.aws_opensearchserverless.CfnSecurityConfig
+
+OpenSearch Serverless collection securityConfig.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+
+VPC OpenSearch Serverless is provisioned in.
+
+---
+
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.vpcEndpoint"></a>
+
+```typescript
+public readonly vpcEndpoint: string | CfnVpcEndpoint;
+```
+
+- *Type:* string | aws-cdk-lib.aws_opensearchserverless.CfnVpcEndpoint
+
+VPC OpenSearch Serverless VPC Endpoint.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollection.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -13888,6 +14478,133 @@ This parameter should not be provided for MSK Serverless.
 
 ---
 
+### OpenSearchApiProps <a name="OpenSearchApiProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps"></a>
+
+Configuration for the OpenSearch API.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchApiProps: consumption.OpenSearchApiProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchClusterType">openSearchClusterType</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType</code> | Type of OpenSearch cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpoint">openSearchEndpoint</a></code> | <code>string</code> | The OpenSearch Cluster or Serverless collection endpoint to connect to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpointRegion">openSearchEndpointRegion</a></code> | <code>string</code> | AWS Region openSearchEndpoint is provisioned in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this construct. |
+
+---
+
+##### `openSearchClusterType`<sup>Required</sup> <a name="openSearchClusterType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchClusterType"></a>
+
+```typescript
+public readonly openSearchClusterType: OpenSearchClusterType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType
+
+Type of OpenSearch cluster.
+
+---
+
+##### `openSearchEndpoint`<sup>Required</sup> <a name="openSearchEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpoint"></a>
+
+```typescript
+public readonly openSearchEndpoint: string;
+```
+
+- *Type:* string
+
+The OpenSearch Cluster or Serverless collection endpoint to connect to.
+
+if you provisoned your cluster using CDK
+use domainEndpoint property of OpenSearch provisioned cluster or
+attrCollectionEndpoint property of OpenSearch Serverless collection.
+
+---
+
+##### `iamHandlerRole`<sup>Optional</sup> <a name="iamHandlerRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole"></a>
+
+```typescript
+public readonly iamHandlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* new IAMRole is created.
+
+The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal.
+
+---
+
+##### `openSearchEndpointRegion`<sup>Optional</sup> <a name="openSearchEndpointRegion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpointRegion"></a>
+
+```typescript
+public readonly openSearchEndpointRegion: string;
+```
+
+- *Type:* string
+- *Default:* same region as stack.
+
+AWS Region openSearchEndpoint is provisioned in.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* One private subnet with egress is used per AZ.
+
+The subnets where the Custom Resource Lambda Function would be created in.
+
+Required if vpc parameter is provided.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* no VPC is used.
+
+Defines the virtual networking environment for this construct.
+
+Typically should use same VPC as OpenSearch cluster or serverless collection.
+Must have at least 2 subnets in two different AZs.
+
+---
+
 ### OpenSearchClusterProps <a name="OpenSearchClusterProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps"></a>
 
 Simplified configuration for the OpenSearch Cluster.
@@ -14273,6 +14990,837 @@ public readonly warmInstanceType: number;
 The type of nodes for Ultra Warn nodes.
 
 > [OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT](OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT)
+
+---
+
+### OpenSearchServerlessAccessPolicy <a name="OpenSearchServerlessAccessPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy"></a>
+
+OpenSearch Serverless access policy configuration.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessAccessPolicy: consumption.OpenSearchServerlessAccessPolicy = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.rule">rule</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule[]</code> | The OpenSearch Serverless collection access policy rules. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.description">description</a></code> | <code>string</code> | The description of the OpenSearch Serverless collection access policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.name">name</a></code> | <code>string</code> | The name of the OpenSearch Serverless collection access policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.principal">principal</a></code> | <code>string \| aws-cdk-lib.aws_iam.IRole \| aws-cdk-lib.aws_iam.IUser[]</code> | The IAM role, IAM user or SAML federated user/group that can access the OpenSearch Serverless collection. |
+
+---
+
+##### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.rule"></a>
+
+```typescript
+public readonly rule: OpenSearchServerlessAccessPolicyRule[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule[]
+- *Default:* gives full access to the collection.
+
+The OpenSearch Serverless collection access policy rules.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+
+The description of the OpenSearch Serverless collection access policy.
+
+---
+
+##### `name`<sup>Optional</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the OpenSearch Serverless collection access policy.
+
+---
+
+##### `principal`<sup>Optional</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy.property.principal"></a>
+
+```typescript
+public readonly principal: string | IRole | IUser[];
+```
+
+- *Type:* string | aws-cdk-lib.aws_iam.IRole | aws-cdk-lib.aws_iam.IUser[]
+- *Default:* No principal is created.
+
+The IAM role, IAM user or SAML federated user/group that can access the OpenSearch Serverless collection.
+
+---
+
+### OpenSearchServerlessAccessPolicyRule <a name="OpenSearchServerlessAccessPolicyRule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule"></a>
+
+OpenSearch Serverless access policy rule item.
+
+> [https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-data-access.html](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-data-access.html)
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessAccessPolicyRule: consumption.OpenSearchServerlessAccessPolicyRule = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.property.permission">permission</a></code> | <code>string[]</code> | The list of permissions to allow for the resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.property.resource">resource</a></code> | <code>string[]</code> | The resource name, can include wildcards (*). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.property.resourceType">resourceType</a></code> | <code>string</code> | The resource type, either index or collection. |
+
+---
+
+##### `permission`<sup>Required</sup> <a name="permission" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.property.permission"></a>
+
+```typescript
+public readonly permission: string[];
+```
+
+- *Type:* string[]
+- *Default:* full access.
+
+The list of permissions to allow for the resource.
+
+---
+
+##### `resource`<sup>Required</sup> <a name="resource" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.property.resource"></a>
+
+```typescript
+public readonly resource: string[];
+```
+
+- *Type:* string[]
+
+The resource name, can include wildcards (*).
+
+---
+
+##### `resourceType`<sup>Required</sup> <a name="resourceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicyRule.property.resourceType"></a>
+
+```typescript
+public readonly resourceType: string;
+```
+
+- *Type:* string
+
+The resource type, either index or collection.
+
+---
+
+### OpenSearchServerlessCollectionProps <a name="OpenSearchServerlessCollectionProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps"></a>
+
+Configuration for the OpenSearchServerless collection.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessCollectionProps: consumption.OpenSearchServerlessCollectionProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.collection">collection</a></code> | <code>string</code> | The OpenSearch Serverless collection name Collection names must meet the following criteria: - Starts with a lowercase letter - Unique to your account and AWS Region - Contains between 3 and 28 characters - Contains only lowercase letters a-z, the numbers 0-9, and the hyphen (-). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.accessPolicy">accessPolicy</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy</code> | The OpenSearch Serverless collection access policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createAccessPolicy">createAccessPolicy</a></code> | <code>boolean</code> | The OpenSearch Serverless collection access policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createLifecyclePolicy">createLifecyclePolicy</a></code> | <code>boolean</code> | The OpenSearch Serverless collection lifecycle policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createSecurityEncrytionPolicy">createSecurityEncrytionPolicy</a></code> | <code>boolean</code> | The OpenSearch Serverless collection security encyrption policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createSecurityNetworkPolicy">createSecurityNetworkPolicy</a></code> | <code>boolean</code> | The OpenSearch Serverless collection network policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.description">description</a></code> | <code>string</code> | The OpenSearch Serverless collection description. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.lifecyclePolicy">lifecyclePolicy</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy</code> | The OpenSearch Serverless collection lifecycle policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlMasterBackendRole">samlMasterBackendRole</a></code> | <code>string</code> | The SAML Idp Admin GroupId as returned by {user:groups} in Idp. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlMetadataContent">samlMetadataContent</a></code> | <code>string</code> | The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlProviderId">samlProviderId</a></code> | <code>string</code> | Specify existing Saml Provider Id in saml/<AWS_ACCOINT_ID>/<myporovider> format. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlRolesKey">samlRolesKey</a></code> | <code>string</code> | The SAML Group attribute. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlSessionTimeout">samlSessionTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | The timeout of the SAML session. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlSubjectKey">samlSubjectKey</a></code> | <code>string</code> | The SAML Subject Key. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.securityEncryptionPolicy">securityEncryptionPolicy</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy</code> | The OpenSearch Serverless collection security encryption policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.securityNetworkPolicy">securityNetworkPolicy</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy[]</code> | The OpenSearch Serverless collection security network policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.standbyReplicas">standbyReplicas</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas</code> | Indicates whether to use standby replicas for the collection. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.type">type</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType</code> | The OpenSearch Serverless collection type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC to deploy the OpenSearch Serverless collection. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.vpcEndpoint">vpcEndpoint</a></code> | <code>string \| aws-cdk-lib.aws_opensearchserverless.CfnVpcEndpoint</code> | Existing VPC Endpoint for OpenSearch Serverless collection. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The VPC private Subnets to deploy the OpenSearch Serverless collection. |
+
+---
+
+##### `collection`<sup>Required</sup> <a name="collection" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.collection"></a>
+
+```typescript
+public readonly collection: string;
+```
+
+- *Type:* string
+
+The OpenSearch Serverless collection name Collection names must meet the following criteria: - Starts with a lowercase letter - Unique to your account and AWS Region - Contains between 3 and 28 characters - Contains only lowercase letters a-z, the numbers 0-9, and the hyphen (-).
+
+---
+
+##### `accessPolicy`<sup>Optional</sup> <a name="accessPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.accessPolicy"></a>
+
+```typescript
+public readonly accessPolicy: OpenSearchServerlessAccessPolicy;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessAccessPolicy
+- *Default:* creates new access policy
+
+The OpenSearch Serverless collection access policy.
+
+---
+
+##### `createAccessPolicy`<sup>Optional</sup> <a name="createAccessPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createAccessPolicy"></a>
+
+```typescript
+public readonly createAccessPolicy: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true, creates new access policy,
+
+The OpenSearch Serverless collection access policy.
+
+> [accessPolicy](accessPolicy)
+
+---
+
+##### `createLifecyclePolicy`<sup>Optional</sup> <a name="createLifecyclePolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createLifecyclePolicy"></a>
+
+```typescript
+public readonly createLifecyclePolicy: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true, creates new lifecycle policy,
+
+The OpenSearch Serverless collection lifecycle policy.
+
+> [lifecyclePolicy](lifecyclePolicy)
+
+---
+
+##### `createSecurityEncrytionPolicy`<sup>Optional</sup> <a name="createSecurityEncrytionPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createSecurityEncrytionPolicy"></a>
+
+```typescript
+public readonly createSecurityEncrytionPolicy: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true, creates new security policy,
+
+The OpenSearch Serverless collection security encyrption policy.
+
+> [securityEncryptionPolicy](securityEncryptionPolicy)
+
+---
+
+##### `createSecurityNetworkPolicy`<sup>Optional</sup> <a name="createSecurityNetworkPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.createSecurityNetworkPolicy"></a>
+
+```typescript
+public readonly createSecurityNetworkPolicy: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true, creates new network policy,
+
+The OpenSearch Serverless collection network policy.
+
+> [securityNetworkPolicy](securityNetworkPolicy)
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+- *Default:* No description
+
+The OpenSearch Serverless collection description.
+
+---
+
+##### `lifecyclePolicy`<sup>Optional</sup> <a name="lifecyclePolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.lifecyclePolicy"></a>
+
+```typescript
+public readonly lifecyclePolicy: OpenSearchServerlessLifecyclePolicy;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy
+- *Default:* creates new lifecycle policy
+
+The OpenSearch Serverless collection lifecycle policy.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `samlMasterBackendRole`<sup>Optional</sup> <a name="samlMasterBackendRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlMasterBackendRole"></a>
+
+```typescript
+public readonly samlMasterBackendRole: string;
+```
+
+- *Type:* string
+
+The SAML Idp Admin GroupId as returned by {user:groups} in Idp.
+
+---
+
+##### `samlMetadataContent`<sup>Optional</sup> <a name="samlMetadataContent" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlMetadataContent"></a>
+
+```typescript
+public readonly samlMetadataContent: string;
+```
+
+- *Type:* string
+
+The SAML Idp XML Metadata Content, needs to be downloaded from IAM Identity Center.
+
+---
+
+##### `samlProviderId`<sup>Optional</sup> <a name="samlProviderId" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlProviderId"></a>
+
+```typescript
+public readonly samlProviderId: string;
+```
+
+- *Type:* string
+- *Default:* new Saml Provider is created.
+
+Specify existing Saml Provider Id in saml/<AWS_ACCOINT_ID>/<myporovider> format.
+
+> [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchserverless.CfnSecurityConfig.html#attrid](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_opensearchserverless.CfnSecurityConfig.html#attrid)
+
+---
+
+##### `samlRolesKey`<sup>Optional</sup> <a name="samlRolesKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlRolesKey"></a>
+
+```typescript
+public readonly samlRolesKey: string;
+```
+
+- *Type:* string
+- *Default:* "group" is used
+
+The SAML Group attribute.
+
+---
+
+##### `samlSessionTimeout`<sup>Optional</sup> <a name="samlSessionTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlSessionTimeout"></a>
+
+```typescript
+public readonly samlSessionTimeout: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+- *Default:* 480 minutes
+
+The timeout of the SAML session.
+
+Max allowed value is 24 hours.
+
+---
+
+##### `samlSubjectKey`<sup>Optional</sup> <a name="samlSubjectKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.samlSubjectKey"></a>
+
+```typescript
+public readonly samlSubjectKey: string;
+```
+
+- *Type:* string
+- *Default:* No subject key is used
+
+The SAML Subject Key.
+
+---
+
+##### `securityEncryptionPolicy`<sup>Optional</sup> <a name="securityEncryptionPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.securityEncryptionPolicy"></a>
+
+```typescript
+public readonly securityEncryptionPolicy: OpenSearchServerlessEncryptionPolicy;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy
+- *Default:* creates new security encryption policy
+
+The OpenSearch Serverless collection security encryption policy.
+
+---
+
+##### `securityNetworkPolicy`<sup>Optional</sup> <a name="securityNetworkPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.securityNetworkPolicy"></a>
+
+```typescript
+public readonly securityNetworkPolicy: OpenSearchServerlessNetworkPolicy[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy[]
+- *Default:* creates new security network policy
+
+The OpenSearch Serverless collection security network policy.
+
+---
+
+##### `standbyReplicas`<sup>Optional</sup> <a name="standbyReplicas" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.standbyReplicas"></a>
+
+```typescript
+public readonly standbyReplicas: OpenSearchServerlessReplicas;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas
+- *Default:* DISABLED
+
+Indicates whether to use standby replicas for the collection.
+
+You can't update this property after the collection is already created. If you attempt to modify this property, the collection continues to use the original value.
+
+---
+
+##### `type`<sup>Optional</sup> <a name="type" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.type"></a>
+
+```typescript
+public readonly type: OpenSearchServerlessCollectionType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType
+- *Default:* SEARCH
+
+The OpenSearch Serverless collection type.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* A new VPC is created,
+
+The VPC to deploy the OpenSearch Serverless collection.
+
+VPC Endpoint will be used to provide the connectivity to the vpc.
+
+> [DataVpc](DataVpc)
+
+---
+
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.vpcEndpoint"></a>
+
+```typescript
+public readonly vpcEndpoint: string | CfnVpcEndpoint;
+```
+
+- *Type:* string | aws-cdk-lib.aws_opensearchserverless.CfnVpcEndpoint
+- *Default:* create new VPC Endpoint if private access policy exists.
+
+Existing VPC Endpoint for OpenSearch Serverless collection.
+
+Only used for VPC deployments.
+Has to be either CfnVpcEndpoint or the VPCE Id in vpce-XXXX format.
+
+---
+
+##### `vpcSubnets`<sup>Optional</sup> <a name="vpcSubnets" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionProps.property.vpcSubnets"></a>
+
+```typescript
+public readonly vpcSubnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* Single private subnet per each AZ.
+
+The VPC private Subnets to deploy the OpenSearch Serverless collection.
+
+Only used for VPC deployments.
+You must configure a VPC if you configure this parameter. Provide only one Subnet per AZ.
+
+> [DataVpc](DataVpc)
+
+---
+
+### OpenSearchServerlessEncryptionPolicy <a name="OpenSearchServerlessEncryptionPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy"></a>
+
+OpenSearch Serverless policy configuration.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessEncryptionPolicy: consumption.OpenSearchServerlessEncryptionPolicy = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.description">description</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key for encryption in OpenSearch Serverless. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.rule">rule</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule[]</code> | The OpenSearch Serverless collection security policy rules. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.useAwsEncyptionKey">useAwsEncyptionKey</a></code> | <code>boolean</code> | Use AWS Managed Encryption key. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+
+---
+
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+- *Default:* new KMS Key is created if `useAwsEncyptionKey` is `false`
+
+The KMS Key for encryption in OpenSearch Serverless.
+
+---
+
+##### `rule`<sup>Optional</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.rule"></a>
+
+```typescript
+public readonly rule: OpenSearchServerlessSecurityPolicyRule[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule[]
+- *Default:* using AWS Owned KMS key.
+
+The OpenSearch Serverless collection security policy rules.
+
+---
+
+##### `useAwsEncyptionKey`<sup>Optional</sup> <a name="useAwsEncyptionKey" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessEncryptionPolicy.property.useAwsEncyptionKey"></a>
+
+```typescript
+public readonly useAwsEncyptionKey: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Use AWS Managed Encryption key.
+
+---
+
+### OpenSearchServerlessLifecyclePolicy <a name="OpenSearchServerlessLifecyclePolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy"></a>
+
+OpenSearch Serverless lifecycle policy configuration.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessLifecyclePolicy: consumption.OpenSearchServerlessLifecyclePolicy = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.rule">rule</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.description">description</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.policyVersion">policyVersion</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.rule"></a>
+
+```typescript
+public readonly rule: OpenSearchServerlessLifecyclePolicyRule[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule[]
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+
+---
+
+##### `name`<sup>Optional</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+---
+
+##### `policyVersion`<sup>Optional</sup> <a name="policyVersion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicy.property.policyVersion"></a>
+
+```typescript
+public readonly policyVersion: string;
+```
+
+- *Type:* string
+
+---
+
+### OpenSearchServerlessLifecyclePolicyRule <a name="OpenSearchServerlessLifecyclePolicyRule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule"></a>
+
+OpenSearch Serverless lifecycle policy rule item.
+
+> [https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-lifecycle.html](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-lifecycle.html)
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessLifecyclePolicyRule: consumption.OpenSearchServerlessLifecyclePolicyRule = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.property.resource">resource</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.property.resourceType">resourceType</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.property.minIndexRetention">minIndexRetention</a></code> | <code>aws-cdk-lib.Duration</code> | *No description.* |
+
+---
+
+##### `resource`<sup>Required</sup> <a name="resource" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.property.resource"></a>
+
+```typescript
+public readonly resource: string[];
+```
+
+- *Type:* string[]
+
+---
+
+##### `resourceType`<sup>Required</sup> <a name="resourceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.property.resourceType"></a>
+
+```typescript
+public readonly resourceType: string;
+```
+
+- *Type:* string
+
+---
+
+##### `minIndexRetention`<sup>Optional</sup> <a name="minIndexRetention" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessLifecyclePolicyRule.property.minIndexRetention"></a>
+
+```typescript
+public readonly minIndexRetention: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+
+---
+
+### OpenSearchServerlessNetworkPolicy <a name="OpenSearchServerlessNetworkPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy"></a>
+
+OpenSearch Serverless network policy configuration.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessNetworkPolicy: consumption.OpenSearchServerlessNetworkPolicy = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.allowPublicAccess">allowPublicAccess</a></code> | <code>boolean</code> | Whether to allow public access to the OpenSearch Serverless collection network policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.name">name</a></code> | <code>string</code> | The name of the OpenSearch Serverless collection network policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.rule">rule</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule[]</code> | The OpenSearch Serverless collection network policy rules. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.description">description</a></code> | <code>string</code> | The description of the OpenSearch Serverless collection network policy. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.servicePrincipal">servicePrincipal</a></code> | <code>aws-cdk-lib.aws_iam.ServicePrincipal[]</code> | The list of AWS services that can connect to the OpenSearch Serverless collection. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.vpcEndpoint">vpcEndpoint</a></code> | <code>string[]</code> | The VPC Endpoint to connect to the OpenSearch Serverless collection. |
+
+---
+
+##### `allowPublicAccess`<sup>Required</sup> <a name="allowPublicAccess" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.allowPublicAccess"></a>
+
+```typescript
+public readonly allowPublicAccess: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether to allow public access to the OpenSearch Serverless collection network policy.
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the OpenSearch Serverless collection network policy.
+
+---
+
+##### `rule`<sup>Required</sup> <a name="rule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.rule"></a>
+
+```typescript
+public readonly rule: OpenSearchServerlessSecurityPolicyRule[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule[]
+- *Default:* vpc-only access for OpenSearch API, public access to OpenSearch Dashboards.
+
+The OpenSearch Serverless collection network policy rules.
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+
+The description of the OpenSearch Serverless collection network policy.
+
+---
+
+##### `servicePrincipal`<sup>Optional</sup> <a name="servicePrincipal" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.servicePrincipal"></a>
+
+```typescript
+public readonly servicePrincipal: ServicePrincipal[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.ServicePrincipal[]
+- *Default:* No service principal is created.
+
+The list of AWS services that can connect to the OpenSearch Serverless collection.
+
+---
+
+##### `vpcEndpoint`<sup>Optional</sup> <a name="vpcEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessNetworkPolicy.property.vpcEndpoint"></a>
+
+```typescript
+public readonly vpcEndpoint: string[];
+```
+
+- *Type:* string[]
+- *Default:* new VPC Endpoint is created, if allowPublicAccess property is false.
+
+The VPC Endpoint to connect to the OpenSearch Serverless collection.
+
+---
+
+### OpenSearchServerlessSecurityPolicyRule <a name="OpenSearchServerlessSecurityPolicyRule" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule"></a>
+
+OpenSearch Serverless policy rules item.
+
+> [https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-network.html](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-network.html)
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchServerlessSecurityPolicyRule: consumption.OpenSearchServerlessSecurityPolicyRule = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule.property.resource">resource</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule.property.resourceType">resourceType</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `resource`<sup>Required</sup> <a name="resource" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule.property.resource"></a>
+
+```typescript
+public readonly resource: string[];
+```
+
+- *Type:* string[]
+
+---
+
+##### `resourceType`<sup>Required</sup> <a name="resourceType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessSecurityPolicyRule.property.resourceType"></a>
+
+```typescript
+public readonly resourceType: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -19232,6 +20780,27 @@ Enum for MSK cluster types.
 ---
 
 
+### OpenSearchClusterType <a name="OpenSearchClusterType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.PROVISIONED">PROVISIONED</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.SERVERLESS">SERVERLESS</a></code> | *No description.* |
+
+---
+
+##### `PROVISIONED` <a name="PROVISIONED" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.PROVISIONED"></a>
+
+---
+
+
+##### `SERVERLESS` <a name="SERVERLESS" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.SERVERLESS"></a>
+
+---
+
+
 ### OpenSearchNodes <a name="OpenSearchNodes" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes"></a>
 
 Default Node Instances for OpenSearch cluster.
@@ -19257,6 +20826,93 @@ Default Node Instances for OpenSearch cluster.
 
 
 ##### `WARM_NODE_INSTANCE_DEFAULT` <a name="WARM_NODE_INSTANCE_DEFAULT" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchNodes.WARM_NODE_INSTANCE_DEFAULT"></a>
+
+---
+
+
+### OpenSearchServerlessCollectionType <a name="OpenSearchServerlessCollectionType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType"></a>
+
+OpenSearch Serverless collection type.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType.SEARCH">SEARCH</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType.TIMESERIES">TIMESERIES</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType.VECTORSEARCH">VECTORSEARCH</a></code> | *No description.* |
+
+---
+
+##### `SEARCH` <a name="SEARCH" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType.SEARCH"></a>
+
+---
+
+
+##### `TIMESERIES` <a name="TIMESERIES" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType.TIMESERIES"></a>
+
+---
+
+
+##### `VECTORSEARCH` <a name="VECTORSEARCH" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessCollectionType.VECTORSEARCH"></a>
+
+---
+
+
+### OpenSearchServerlessPolicyType <a name="OpenSearchServerlessPolicyType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType"></a>
+
+OpenSearch Serverless policy type.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.SECURITY_ENCRYPTION">SECURITY_ENCRYPTION</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.SECURITY_NETWORK">SECURITY_NETWORK</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.LIFECYCLE">LIFECYCLE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.ACCESS">ACCESS</a></code> | *No description.* |
+
+---
+
+##### `SECURITY_ENCRYPTION` <a name="SECURITY_ENCRYPTION" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.SECURITY_ENCRYPTION"></a>
+
+---
+
+
+##### `SECURITY_NETWORK` <a name="SECURITY_NETWORK" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.SECURITY_NETWORK"></a>
+
+---
+
+
+##### `LIFECYCLE` <a name="LIFECYCLE" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.LIFECYCLE"></a>
+
+---
+
+
+##### `ACCESS` <a name="ACCESS" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessPolicyType.ACCESS"></a>
+
+---
+
+
+### OpenSearchServerlessReplicas <a name="OpenSearchServerlessReplicas" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas"></a>
+
+OpenSearch Serverless Replicas option.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas.ENABLED">ENABLED</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas.DISABLED">DISABLED</a></code> | *No description.* |
+
+---
+
+##### `ENABLED` <a name="ENABLED" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas.ENABLED"></a>
+
+---
+
+
+##### `DISABLED` <a name="DISABLED" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchServerlessReplicas.DISABLED"></a>
 
 ---
 

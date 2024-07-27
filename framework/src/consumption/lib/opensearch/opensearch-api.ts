@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Construct } from "constructs";
-import { Context, TrackedConstruct, TrackedConstructProps } from "../../../utils";
-import { OpenSearchApiProps } from "./opensearch-api-props";
-import { DsfProvider } from "../../../utils/lib/dsf-provider";
-import path = require("path");
-import { CustomResource, Stack } from "aws-cdk-lib";
+import * as path from 'path';
+import { CustomResource, Stack } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { OpenSearchApiProps } from './opensearch-api-props';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an OpenSearch API client
@@ -17,7 +17,7 @@ export class OpenSearchApi extends TrackedConstruct {
    * Custom resource provider for the OpenSearch API client
    */
   private apiProvider: DsfProvider;
-  
+
   /**
    * The removal policy when deleting the CDK resources.
    * If DESTROY is selected, the context value '@data-solutions-framework-on-aws/removeDataOnDestroy'
@@ -27,7 +27,7 @@ export class OpenSearchApi extends TrackedConstruct {
   private removalPolicy: any;
 
   /**
-   * Internal property to keep persistent IAM roles to prevent them from being overwritten 
+   * Internal property to keep persistent IAM roles to prevent them from being overwritten
    * in subsequent API calls
    */
   private persistentRoles: {[key:string]:string[]} = {};

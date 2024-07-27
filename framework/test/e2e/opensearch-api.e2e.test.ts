@@ -47,7 +47,7 @@ const domain = new OpenSearchCluster(stack, 'OpenSearchVpc', {
 });
 
 
-const cr = domain.addRoleMapping('DashboardOsUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+const cr = domain.addRoleMapping('DashboardOsUser', 'dashboards_user', '<IAMIdentityCenterDashboardUsersGroupId>');
 
 new CfnOutput(stack, 'OpenSearchApiCr', {
   value: cr.toString(),
