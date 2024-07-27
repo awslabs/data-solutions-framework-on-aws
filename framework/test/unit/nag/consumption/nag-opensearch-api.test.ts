@@ -3,9 +3,9 @@
 
 
 /**
- * Tests OpenSearch cluster construct
+ * Tests OpenSearch API cluster construct
  *
- * @group unit/nag/consumption/opensearch
+ * @group unit/nag/consumption/opensearch-api
  */
 
 import { App, Aspects, RemovalPolicy, Stack } from 'aws-cdk-lib';
@@ -20,7 +20,7 @@ const stack = new Stack(app, 'Stack');
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 // Instantiate AccessLogsBucket Construct with default
-new OpenSearchCluster(stack, 'OpenSearch', {
+const osCluster = new OpenSearchCluster(stack, 'OpenSearch', {
   domainName: 'test',
   masterNodeInstanceCount: 3,
   dataNodeInstanceCount: 4,
@@ -30,6 +30,8 @@ new OpenSearchCluster(stack, 'OpenSearch', {
   deployInVpc: true,
   removalPolicy: RemovalPolicy.DESTROY,
 });
+
+osCluster.addRoleMapping('testMapping', 'test', 'test');
 
 Aspects.of(stack).add(new AwsSolutionsChecks({ verbose: true }));
 

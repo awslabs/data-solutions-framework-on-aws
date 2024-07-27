@@ -8,23 +8,22 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
   constructor(scope: Construct, id: string , props:cdk.StackProps) {
 
     super(scope, id, props);
+    this.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
     /// !show
     const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
       domainName:"mycluster",
       samlEntityId:'<IdpIdentityId>',
-      samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
+      samlMetadataContent:'<IdpMetadataXml>',
       samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
       deployInVpc:false,
       dataNodeInstanceType:'t3.small.search',
       dataNodeInstanceCount:1,
-      masterNodeInstanceCount:0
+      masterNodeInstanceCount:0,
+      removalPolicy:cdk.RemovalPolicy.DESTROY
     });
-    /// !hide
 
     //Add another admin
-    const adminCr = osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
-    //Overwrite construct-wide removal policy
-    adminCr.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
+    osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
 
     const indexTemplateCr = osCluster.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
     {
@@ -66,6 +65,7 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
     add2Cr.node.addDependency(indexTemplateCr);
     const add3Cr = osCluster.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
     add3Cr.node.addDependency(indexTemplateCr);
+    /// !hide
 
   }
 }
