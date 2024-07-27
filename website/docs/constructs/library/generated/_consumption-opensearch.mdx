@@ -49,14 +49,18 @@ Default configuration
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
-  domainName:"mycluster",
-  samlEntityId:'<IdpIdentityId>',
-  samlMetadataContent:'<IdpMetadataXml>',
-  samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
-  deployInVpc:true,
-  removalPolicy:cdk.RemovalPolicy.DESTROY
-});
+    const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
+      domainName:"mycluster",
+      samlEntityId:'<IdpIdentityId>',
+      samlMetadataContent:'<IdpMetadataXml>',
+      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+      deployInVpc:true,
+      removalPolicy:cdk.RemovalPolicy.DESTROY
+    });
+
+
+    osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+    osCluster.addRoleMapping('ReadAllOsRole','readall','<IAMIdentityCenterDashboardUsersGroupId>');
   ```
   
   </TabItem>
@@ -71,6 +75,9 @@ os_cluster = dsf.consumption.OpenSearchCluster(self, "MyOpenSearchCluster",
     deploy_in_vpc=True,
     removal_policy=cdk.RemovalPolicy.DESTROY
 )
+
+os_cluster.add_role_mapping("DashboardOsUser", "dashboards_user", "<IAMIdentityCenterDashboardUsersGroupId>")
+os_cluster.add_role_mapping("ReadAllOsRole", "readall", "<IAMIdentityCenterDashboardUsersGroupId>")
   ```
 
   </TabItem>
@@ -82,22 +89,25 @@ Using Client VPN Endpoint
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const vpcVpn = new dsf.utils.DataVpc(this, 'VpcWithVpn', {
-  vpcCidr:'10.0.0.0/16',
-  clientVpnEndpointProps: {
-      serverCertificateArn:"<ACMCertificateArn>",
-      samlMetadataDocument:`<IdpClientVpnApplicationMetadataXml>`,
-      selfServicePortal:false
-  }
-})
-const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
-  domainName:"mycluster",
-  samlEntityId:'<IdpIdentityId>',
-  samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
-  samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
-  deployInVpc:true,
-  vpc:vpcVpn.vpc
-});
+    const vpcVpn = new dsf.utils.DataVpc(this, 'VpcWithVpn', {
+      vpcCidr:'10.0.0.0/16',
+      clientVpnEndpointProps: {
+          serverCertificateArn:"<ACMCertificateArn>",
+          samlMetadataDocument:`<IdpClientVpnApplicationMetadataXml>`,
+          selfServicePortal:false
+      }
+    })
+    const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
+      domainName:"mycluster",
+      samlEntityId:'<IdpIdentityId>',
+      samlMetadataContent:'<IdpOpenSearchApplicationMetadataXml>',
+      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+      deployInVpc:true,
+      vpc:vpcVpn.vpc
+    });
+
+    osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+    osCluster.addRoleMapping('ReadAllOsRole','readall','<IAMIdentityCenterDashboardUsersGroupId>');
   ```
   
   </TabItem>
@@ -120,6 +130,9 @@ os_cluster = dsf.consumption.OpenSearchCluster(self, "MyOpenSearchCluster",
     deploy_in_vpc=True,
     vpc=vpc_vpn.vpc
 )
+
+os_cluster.add_role_mapping("DashboardOsUser", "dashboards_user", "<IAMIdentityCenterDashboardUsersGroupId>")
+os_cluster.add_role_mapping("ReadAllOsRole", "readall", "<IAMIdentityCenterDashboardUsersGroupId>")
   ```
 
   </TabItem>
