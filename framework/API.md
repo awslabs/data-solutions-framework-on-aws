@@ -7346,6 +7346,248 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### OpenSearchApi <a name="OpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi"></a>
+
+A construct to create an OpenSearch API client.
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+new consumption.OpenSearchApi(scope: Construct, id: string, props: OpenSearchApiProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.id">id</a></code> | <code>string</code> | unique ID for the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+unique ID for the construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping">addRoleMapping</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi">callOpenSearchApi</a></code> | Calls OpenSearch API using custom resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addRoleMapping` <a name="addRoleMapping" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping"></a>
+
+```typescript
+public addRoleMapping(id: string, name: string, role: string, persist?: boolean): CustomResource
+```
+
+> [https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles](https://opensearch.org/docs/2.9/security/access-control/users-roles/#predefined-roles)
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.name"></a>
+
+- *Type:* string
+
+OpenSearch role name.
+
+---
+
+###### `role`<sup>Required</sup> <a name="role" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.role"></a>
+
+- *Type:* string
+
+list of IAM roles.
+
+For IAM Identity center provide SAML group Id as a role
+
+---
+
+###### `persist`<sup>Optional</sup> <a name="persist" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.addRoleMapping.parameter.persist"></a>
+
+- *Type:* boolean
+
+Set to true if you want to prevent the roles to be ovewritten by subsequent PUT API calls.
+
+Default false.
+
+---
+
+##### `callOpenSearchApi` <a name="callOpenSearchApi" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi"></a>
+
+```typescript
+public callOpenSearchApi(id: string, apiPath: string, body: any, method?: string): CustomResource
+```
+
+Calls OpenSearch API using custom resource.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.id"></a>
+
+- *Type:* string
+
+The CDK resource ID.
+
+---
+
+###### `apiPath`<sup>Required</sup> <a name="apiPath" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.apiPath"></a>
+
+- *Type:* string
+
+OpenSearch API path.
+
+---
+
+###### `body`<sup>Required</sup> <a name="body" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.body"></a>
+
+- *Type:* any
+
+OpenSearch API request body.
+
+---
+
+###### `method`<sup>Optional</sup> <a name="method" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.callOpenSearchApi.parameter.method"></a>
+
+- *Type:* string
+
+Opensearch API method,.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.isConstruct"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+consumption.OpenSearchApi.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
 ### OpenSearchCluster <a name="OpenSearchCluster" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster"></a>
 
 A construct to provision Amazon OpenSearch Cluster and OpenSearch Dashboards.
@@ -16574,6 +16816,133 @@ This parameter should not be provided for MSK Serverless.
 
 ---
 
+### OpenSearchApiProps <a name="OpenSearchApiProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps"></a>
+
+Configuration for the OpenSearch API.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.Initializer"></a>
+
+```typescript
+import { consumption } from '@cdklabs/aws-data-solutions-framework'
+
+const openSearchApiProps: consumption.OpenSearchApiProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchClusterType">openSearchClusterType</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType</code> | Type of OpenSearch cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpoint">openSearchEndpoint</a></code> | <code>string</code> | The OpenSearch Cluster or Serverless collection endpoint to connect to. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpointRegion">openSearchEndpointRegion</a></code> | <code>string</code> | AWS Region openSearchEndpoint is provisioned in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this construct. |
+
+---
+
+##### `openSearchClusterType`<sup>Required</sup> <a name="openSearchClusterType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchClusterType"></a>
+
+```typescript
+public readonly openSearchClusterType: OpenSearchClusterType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType
+
+Type of OpenSearch cluster.
+
+---
+
+##### `openSearchEndpoint`<sup>Required</sup> <a name="openSearchEndpoint" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpoint"></a>
+
+```typescript
+public readonly openSearchEndpoint: string;
+```
+
+- *Type:* string
+
+The OpenSearch Cluster or Serverless collection endpoint to connect to.
+
+if you provisoned your cluster using CDK
+use domainEndpoint property of OpenSearch provisioned cluster or
+attrCollectionEndpoint property of OpenSearch Serverless collection.
+
+---
+
+##### `iamHandlerRole`<sup>Optional</sup> <a name="iamHandlerRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole"></a>
+
+```typescript
+public readonly iamHandlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* new IAMRole is created.
+
+The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal.
+
+---
+
+##### `openSearchEndpointRegion`<sup>Optional</sup> <a name="openSearchEndpointRegion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpointRegion"></a>
+
+```typescript
+public readonly openSearchEndpointRegion: string;
+```
+
+- *Type:* string
+- *Default:* same region as stack.
+
+AWS Region openSearchEndpoint is provisioned in.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `subnets`<sup>Optional</sup> <a name="subnets" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.subnets"></a>
+
+```typescript
+public readonly subnets: SubnetSelection;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.SubnetSelection
+- *Default:* One private subnet with egress is used per AZ.
+
+The subnets where the Custom Resource Lambda Function would be created in.
+
+Required if vpc parameter is provided.
+
+---
+
+##### `vpc`<sup>Optional</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: IVpc;
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.IVpc
+- *Default:* no VPC is used.
+
+Defines the virtual networking environment for this construct.
+
+Typically should use same VPC as OpenSearch cluster or serverless collection.
+Must have at least 2 subnets in two different AZs.
+
+---
+
 ### OpenSearchClusterProps <a name="OpenSearchClusterProps" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterProps"></a>
 
 Simplified configuration for the OpenSearch Cluster.
@@ -22287,6 +22656,27 @@ Enum for MSK cluster types.
 
 
 ##### `SERVERLESS` <a name="SERVERLESS" id="@cdklabs/aws-data-solutions-framework.streaming.MskClusterType.SERVERLESS"></a>
+
+---
+
+
+### OpenSearchClusterType <a name="OpenSearchClusterType" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.PROVISIONED">PROVISIONED</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.SERVERLESS">SERVERLESS</a></code> | *No description.* |
+
+---
+
+##### `PROVISIONED` <a name="PROVISIONED" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.PROVISIONED"></a>
+
+---
+
+
+##### `SERVERLESS` <a name="SERVERLESS" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType.SERVERLESS"></a>
 
 ---
 
