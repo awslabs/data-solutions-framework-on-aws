@@ -1,5 +1,5 @@
-import { RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy } from 'aws-cdk-lib';
 
 export interface DataZoneAuthorizerWorkflowProps {
-    readonly removalPolicy?: RemovalPolicy
+  readonly removalPolicy?: RemovalPolicy;
 }
