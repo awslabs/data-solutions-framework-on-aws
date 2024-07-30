@@ -1,4 +1,4 @@
-import { RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy } from 'aws-cdk-lib';
 
 export interface DataZoneMskCentralAuthorizerProps {
   /**

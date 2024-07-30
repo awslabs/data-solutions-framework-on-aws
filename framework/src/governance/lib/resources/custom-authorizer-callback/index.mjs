@@ -12,7 +12,6 @@ export const handler = async(event) => {
     const taskSuccessResponse = await stepFunctions
     .sendTaskSuccess({
       taskToken,
-      output: JSON.stringify(valuationResponse),
     })
     .promise();
     console.log(JSON.stringify({ taskSuccessResponse }, null, 2));
