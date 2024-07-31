@@ -11,7 +11,7 @@ function getIamResources(region, account, clusterName, clusterUuid, topic) {
   ]
 }
 
-const iamActions = [
+const readActions = [
   'kafka-cluster:Connect',
   'kafka-cluster:DescribeTopic',
   'kafka-cluster:DescribeGroup',
@@ -30,6 +30,7 @@ export const handler = async(event) => {
     const account = detail.metadata.producer.account;
 
     const consumerAccount = detail.metadata.consumer.account;
+    const consumerRole = detail.metadata.consumer.role;
 
     if (consumerAccount !== account) {
       
@@ -39,7 +40,7 @@ export const handler = async(event) => {
           {
             "Effect": "Allow",
             "Principal": {
-              "AWS": consumerAccount,
+              "AWS": consumerRole,
             },
             "Action": iamActions,
             "Resource": getIamResources(region, account, clusterName, clusterUuid, topic)
