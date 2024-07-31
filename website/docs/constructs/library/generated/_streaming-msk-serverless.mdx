@@ -218,3 +218,56 @@ msk.grant_consume("topic1", iam_role)
   </TabItem>
 </Tabs>
 
+### Add Cluster Policy
+
+This method allows you to add IAM resource policy to your MSK cluster. These for example can enable you to setup cross account access for your Amazon MSK cluster. 
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const msk = new MskProvisioned(stack, 'cluster');
+const cluterPolicy = new PolicyDocument(
+    {
+      statements: [
+        new PolicyStatement ({
+          actions: [
+            'kafka:CreateVpcConnection',
+            'kafka:GetBootstrapBrokers',
+            'kafka:DescribeClusterV2',
+          ],
+          resources: [msk.cluster.attrArn],
+          effect: Effect.ALLOW,
+          principals: [new ServicePrincipal('firehose.amazonaws.com')],
+        }),
+      ],
+    },
+  );
+
+msk.addClusterPolicy(cluterPolicy, 'cluterPolicy');
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+msk = MskProvisioned(stack, "cluster")
+cluter_policy = PolicyDocument(
+    statements=[
+        PolicyStatement(
+            actions=["kafka:CreateVpcConnection", "kafka:GetBootstrapBrokers", "kafka:DescribeClusterV2"
+            ],
+            resources=[msk.cluster.attr_arn],
+            effect=Effect.ALLOW,
+            principals=[ServicePrincipal("firehose.amazonaws.com")]
+        )
+    ]
+)
+
+msk.add_cluster_policy(cluter_policy, "cluterPolicy")
+  ```
+
+  </TabItem>
+</Tabs>
+
