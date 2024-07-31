@@ -5,11 +5,18 @@
     */
 
 import * as cdk from 'aws-cdk-lib';
+<<<<<<< HEAD
 import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
+=======
+import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { TestStack } from './test-stack';
+import { DataZoneMskCentralAuthorizer } from '../../src/governance';
+>>>>>>> eab4bee (change permissions on MSK cluster)
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
