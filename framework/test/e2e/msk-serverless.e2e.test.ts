@@ -9,7 +9,7 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { AccountPrincipal, Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming/lib/msk';
 import { DataVpc, Utils } from '../../src/utils';
@@ -40,6 +40,25 @@ const msk = new MskServerless(stack, 'cluster', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
+
+const cluterPolicy = new PolicyDocument(
+  {
+    statements: [
+      new PolicyStatement ({
+        actions: [
+          'kafka:CreateVpcConnection',
+          'kafka:GetBootstrapBrokers',
+          'kafka:DescribeClusterV2',
+        ],
+        resources: [msk.cluster.attrArn],
+        effect: Effect.ALLOW,
+        principals: [new ServicePrincipal('firehose.amazonaws.com')],
+      }),
+    ],
+  },
+);
+
+msk.addClusterPolicy(cluterPolicy, 'cluterPolicy');
 
 const consumerRole = new Role(stack, 'consumerRole', {
   assumedBy: new ServicePrincipal('lambda.amazonaws.com'),

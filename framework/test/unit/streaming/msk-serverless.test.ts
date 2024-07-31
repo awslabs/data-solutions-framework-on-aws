@@ -12,7 +12,7 @@
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { Role } from 'aws-cdk-lib/aws-iam';
+import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 import { MskServerless } from '../../../src/streaming/lib/msk';
 import { DataVpc } from '../../../src/utils';
@@ -48,6 +48,24 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
   msk.grantConsume('topic1', Role.fromRoleName(stack, 'consumerRole', 'consumer'));
   msk.grantProduce('topic1', Role.fromRoleName(stack, 'producerRole', 'producer'));
 
+  const cluterPolicy = new PolicyDocument(
+    {
+      statements: [
+        new PolicyStatement ({
+          actions: [
+            'kafka:CreateVpcConnection',
+            'kafka:GetBootstrapBrokers',
+            'kafka:DescribeClusterV2',
+          ],
+          resources: [msk.cluster.attrArn],
+          effect: Effect.ALLOW,
+          principals: [new ServicePrincipal('firehose.amazonaws.com')],
+        }),
+      ],
+    },
+  );
+
+  msk.addClusterPolicy(cluterPolicy, 'cluterPolicy');
 
   const template = Template.fromStack(stack, {});
 
@@ -57,6 +75,18 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
 
   test('Topic is created', () => {
     template.resourceCountIs('Custom::MskTopic', 2);
+  });
+
+  test('Test there is a cluster policy that is created', () => {
+    template.hasResourceProperties('AWS::MSK::ClusterPolicy', {
+      ClusterArn: Match.objectLike({
+        'Fn::GetAtt': [
+          'clusterCfnServerlessCluster0DEE6630',
+          'Arn',
+        ],
+      },
+      ),
+    });
   });
 
   test('MSK cluster default authentication IAM ', () => {
@@ -498,6 +528,10 @@ describe('Create an MSK serverless cluster with a provided vpc and add topic as 
 
   new MskServerless(stack, 'cluster', {
     clusterName: 'unit-test',
+  });
+
+  test('Test no cluster policy is created', () => {
+    template.resourceCountIs('AWS::MSK::ClusterPolicy', 0);
   });
 
   const template = Template.fromStack(stack, {});
