@@ -7,11 +7,11 @@ import { join } from 'path';
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Connections, ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IPrincipal, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
-import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
+import { CfnCluster, CfnClusterPolicy, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
@@ -966,6 +966,32 @@ export class MskProvisioned extends TrackedConstruct {
     aclsResources.push(adminAclGroup);
 
     return aclsResources;
+
+  }
+
+  /**
+     * Add a cluster policy
+     *
+     * @param {PolicyDocument} policy the IAM principal to grand the consume action.
+     * @param {string} id the CDK id for the Cluster Policy
+     * @return the custom resource used to grant the consumer permissions
+     */
+  public addClusterPolicy (policy: PolicyDocument, id: string): CfnClusterPolicy {
+
+
+    let validateForResourcePolicy: string [] = policy.validateForResourcePolicy();
+
+    if (validateForResourcePolicy.length) {
+      console.log(validateForResourcePolicy.length);
+      throw new Error(`Error validating Policy document ${validateForResourcePolicy.join('\n')}`);
+    }
+
+    const cfnClusterPolicy = new CfnClusterPolicy(this, id, {
+      clusterArn: this.cluster.attrArn,
+      policy: policy.toJSON(),
+    });
+
+    return cfnClusterPolicy;
 
   }
 

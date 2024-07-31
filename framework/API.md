@@ -4603,6 +4603,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy">addClusterPolicy</a></code> | Add a cluster policy. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy">deleteClusterPolicy</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers">getBootstrapBrokers</a></code> | Method to get bootstrap broker connection string based on the authentication mode. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal permissions to consume from a topic. |
@@ -4621,6 +4622,30 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `addClusterPolicy` <a name="addClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy"></a>
+
+```typescript
+public addClusterPolicy(policy: PolicyDocument, id: string): CfnClusterPolicy
+```
+
+Add a cluster policy.
+
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy.parameter.policy"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyDocument
+
+the IAM principal to grand the consume action.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for the Cluster Policy.
+
+---
 
 ##### `deleteClusterPolicy` <a name="deleteClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy"></a>
 
@@ -5445,6 +5470,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy">addClusterPolicy</a></code> | Add a cluster policy. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic">addTopic</a></code> | Creates a topic in the MSK Serverless. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
@@ -5459,6 +5485,30 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `addClusterPolicy` <a name="addClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy"></a>
+
+```typescript
+public addClusterPolicy(policy: PolicyDocument, id: string): CfnClusterPolicy
+```
+
+Add a cluster policy.
+
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy.parameter.policy"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyDocument
+
+the IAM principal to grand the consume action.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for the Cluster Policy.
+
+---
 
 ##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic"></a>
 

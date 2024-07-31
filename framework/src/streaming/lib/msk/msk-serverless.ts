@@ -3,8 +3,8 @@
 
 import { CustomResource, RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal } from 'aws-cdk-lib/aws-iam';
-import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { IPrincipal, PolicyDocument } from 'aws-cdk-lib/aws-iam';
+import { CfnClusterPolicy, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
@@ -174,5 +174,32 @@ export class MskServerless extends TrackedConstruct {
       topicName,
       Authentication.IAM,
       principal);
+  }
+
+
+  /**
+     * Add a cluster policy
+     *
+     * @param {PolicyDocument} policy the IAM principal to grand the consume action.
+     * @param {string} id the CDK id for the Cluster Policy
+     * @return the custom resource used to grant the consumer permissions
+     */
+  public addClusterPolicy (policy: PolicyDocument, id: string): CfnClusterPolicy {
+
+
+    let validateForResourcePolicy: string [] = policy.validateForResourcePolicy();
+
+    if (validateForResourcePolicy.length) {
+      console.log(validateForResourcePolicy.length);
+      throw new Error(`Error validating Policy document ${validateForResourcePolicy.join('\n')}`);
+    }
+
+    const cfnClusterPolicy = new CfnClusterPolicy(this, id, {
+      clusterArn: this.cluster.attrArn,
+      policy: policy.toJSON(),
+    });
+
+    return cfnClusterPolicy;
+
   }
 }
