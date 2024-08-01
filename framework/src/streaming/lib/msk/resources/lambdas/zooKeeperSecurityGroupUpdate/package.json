@@ -2,6 +2,6 @@
     "name": "msk-zookeeper-security-group-update",
     "version": "0.1.0",
     "dependencies": {
-        "@aws-sdk/client-kafka": "^3.521.0"
+        "@aws-sdk/client-kafka": "^3.621.0"
     }
 }
