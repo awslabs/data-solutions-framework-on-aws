@@ -13,6 +13,7 @@ import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../../src/utils';
@@ -68,6 +69,9 @@ const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
       resources: ['*'],
     }),
   ],
+  source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+    connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+  }),
 });
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
@@ -85,13 +89,6 @@ cicd.pipeline.buildPipeline();
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/TestConstruct/CodePipeline/Pipeline/Role',
-  [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
-  true,
-);
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/TestConstruct/CodePipeline/Pipeline/Source/CodeCommit/CodePipelineActionRole',
   [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
   true,
 );
@@ -128,6 +125,15 @@ NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/TestConstruct/CodePipeline/Pipeline/Build/CodeBuildSynthStep/CdkBuildProject/Resource',
   [{ id: 'AwsSolutions-CB3', reason: 'The priviledge mode is used by CDK Pipeline construct when enabling Docker' }],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  [
+    '/Stack/TestConstruct/CodePipeline/Pipeline/Source/owner_weekly-job/CodePipelineActionRole/DefaultPolicy/Resource',
+  ],
+  [{ id: 'AwsSolutions-IAM5', reason: 'Role and policy created by L2 costruct, partial wild cards are used on some actions' }],
   true,
 );
 

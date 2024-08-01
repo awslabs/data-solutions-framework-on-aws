@@ -7,7 +7,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 from aws_cdk.aws_iam import PolicyStatement
-
+from aws_cdk.pipelines import CodePipelineSource
 import cdklabs.aws_data_solutions_framework as dsf
 from stacks.application_stack import SparkApplicationStackFactory
 
@@ -40,5 +40,8 @@ class CICDPipelineStack(Stack):
                     resources=["*"]
                 )
             ],
+            source= CodePipelineSource.connection("your/repo", "branch",
+                connection_arn="arn:aws:codestar-connections:us-east-1:222222222222:connection/7d2469ff-514a-4e4f-9003-5ca4a43cdc41"
+            ),
             removal_policy=RemovalPolicy.DESTROY,
         )

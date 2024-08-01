@@ -3,6 +3,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { ApplicationStackFactory } from '../../../utils';
 import { SparkImage } from '../emr-releases';
 
@@ -65,4 +66,10 @@ export interface SparkEmrCICDPipelineProps {
    * @default - The resources are not deleted (`RemovalPolicy.RETAIN`).
    */
   readonly removalPolicy?: RemovalPolicy;
+
+  /**
+   * The connection to allow code pipeline to connect to your code repository
+   * You can learn more about connections in this [link](https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html)
+   */
+  readonly source: CodePipelineSource;
 }

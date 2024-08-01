@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Aws, CfnOutput, RemovalPolicy, ResourceEnvironment } from 'aws-cdk-lib';
-import { Repository } from 'aws-cdk-lib/aws-codecommit';
+import { RemovalPolicy, ResourceEnvironment } from 'aws-cdk-lib';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
-import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
+import { CodeBuildStep, CodePipeline } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import { SparkEmrCICDPipelineProps } from './spark-emr-cicd-pipeline-props';
 import { AccessLogsBucket } from '../../../storage';
@@ -126,10 +125,6 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   public readonly pipeline: CodePipeline;
   /**
-   * The CodeCommit Repository created as part of the Spark CICD Pipeline
-   */
-  public readonly repository: Repository;
-  /**
    * The S3 Bucket for storing the artifacts
    */
   public readonly artifactBucket: IBucket;
@@ -167,13 +162,8 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     const sparkPath = props.sparkApplicationPath ? props.sparkApplicationPath : '.';
     const sparkImage = props.sparkImage ? props.sparkImage : DEFAULT_SPARK_IMAGE;
 
-    // Create a CodeCommit repository to host the code
-    this.repository = new Repository(this, 'CodeCommitRepository', {
-      repositoryName: props.sparkApplicationName,
-    });
-
     const buildStage = new CodeBuildStep('CodeBuildSynthStep', {
-      input: CodePipelineSource.codeCommit(this.repository, 'main'),
+      input: props.source,
       commands: SparkEmrCICDPipeline.synthCommands(cdkPath, sparkPath, sparkImage),
       primaryOutputDirectory: `${cdkPath}/cdk.out`,
     });
@@ -246,10 +236,6 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       stage: CICDStage.PROD,
     }));
 
-    // Create a CfnOutput to display the CodeCommit repository URL
-    new CfnOutput(this, 'CodeCommitRepositoryCommand', {
-      value: `git remote add ${this.repository.repositoryName} codecommit::${Aws.REGION}://${this.repository.repositoryName}`,
-    });
   }
 
   /**
