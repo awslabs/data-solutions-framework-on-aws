@@ -7,16 +7,17 @@ import { join } from 'path';
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Connections, ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IPrincipal, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
-import { CfnCluster, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
+import { CfnCluster, CfnClusterPolicy, CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
+import { addClusterPolicy } from './msk-helpers';
 import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, applyClusterConfiguration } from './msk-provisioned-cluster-setup';
 import { MskProvisionedProps } from './msk-provisioned-props';
 import {
@@ -967,6 +968,18 @@ export class MskProvisioned extends TrackedConstruct {
 
     return aclsResources;
 
+  }
+
+  /**
+    * Add a cluster policy
+    *
+    * @param {PolicyDocument} policy the IAM principal to grand the consume action.
+    * @param {string} id the CDK id for the Cluster Policy
+    * @return {CfnClusterPolicy}
+    */
+  public addClusterPolicy (policy: PolicyDocument, id: string): CfnClusterPolicy {
+
+    return addClusterPolicy(this, policy, id, this.cluster);
   }
 
   /**

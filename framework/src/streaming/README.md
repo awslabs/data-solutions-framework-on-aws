@@ -112,6 +112,12 @@ In case of IAM authentication the method attachs an IAM policy as defined in the
 
 [example msk provisioned grantConsume](./examples/msk-provisioned-grant-consume.lit.ts)
 
+### addCluster Policy
+
+This method allows you to add IAM resource policy to your MSK cluster. This method can enable you for example to setup cross account access for your Amazon MSK cluster.
+
+[example msk provisioned add cluster policy](./examples/msk-provisioned-cluster-policy.lit.ts)
+
 [//]: # (streaming.msk-serverless)
 # MSK Serverless
 
@@ -177,6 +183,13 @@ This method allows to grant a `Principal` the rights to read to a kafka topic.
 The method attachs an IAM policy as defined in the [AWS documentation](https://docs.aws.amazon.com/msk/latest/developerguide/iam-access-control.html#iam-access-control-use-cases) scoped only to the topic provided.
 
 [example msk serverless grantProduce](./examples/msk-serverless-grant-consume.lit.ts)
+
+### addClusterPolicy
+
+This method allows you to add IAM resource policy to your MSK cluster. This method can enable you for example to setup cross account access for your Amazon MSK cluster. 
+
+
+[example msk serverless add cluster policy](./examples/msk-serverless-cluster-policy.lit.ts)
 
 [//]: # (streaming.kafka-api)
 # Kafka Api - Bring your own cluster

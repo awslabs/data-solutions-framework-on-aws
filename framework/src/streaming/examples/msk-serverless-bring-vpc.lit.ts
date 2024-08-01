@@ -25,6 +25,7 @@ const msk = new MskServerless(stack, 'cluster', {
     vpc: vpc,
   });
 /// !hide
+
 new cdk.CfnOutput(stack, 'mskArn', {
   value: msk.cluster.attrArn,
 });
