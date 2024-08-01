@@ -112,6 +112,12 @@ In case of IAM authentication the method attachs an IAM policy as defined in the
 
 [example msk provisioned grantConsume](./examples/msk-provisioned-grant-consume.lit.ts)
 
+### addCluster Policy
+
+This method allows you to add IAM resource policy to your MSK cluster. This method can enable you for example to setup cross account access for your Amazon MSK cluster.
+
+[example msk provisioned add cluster policy](./examples/msk-provisioned-cluster-policy.lit.ts)
+
 [//]: # (streaming.msk-serverless)
 # MSK Serverless
 
@@ -178,9 +184,9 @@ The method attachs an IAM policy as defined in the [AWS documentation](https://d
 
 [example msk serverless grantProduce](./examples/msk-serverless-grant-consume.lit.ts)
 
-### Add Cluster Policy
+### addClusterPolicy
 
-This method allows you to add IAM resource policy to your MSK cluster. These for example can enable you to setup cross account access for your Amazon MSK cluster. 
+This method allows you to add IAM resource policy to your MSK cluster. This method can enable you for example to setup cross account access for your Amazon MSK cluster. 
 
 
 [example msk serverless add cluster policy](./examples/msk-serverless-cluster-policy.lit.ts)

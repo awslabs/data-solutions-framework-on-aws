@@ -17,6 +17,7 @@ import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from '
 import { InvocationType, Trigger } from 'aws-cdk-lib/triggers';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
+import { addClusterPolicy } from './msk-helpers';
 import { clientAuthenticationSetup, createLogGroup, monitoringSetup, getVpcPermissions, updateClusterConnectivity, applyClusterConfiguration } from './msk-provisioned-cluster-setup';
 import { MskProvisionedProps } from './msk-provisioned-props';
 import {
@@ -970,29 +971,15 @@ export class MskProvisioned extends TrackedConstruct {
   }
 
   /**
-     * Add a cluster policy
-     *
-     * @param {PolicyDocument} policy the IAM principal to grand the consume action.
-     * @param {string} id the CDK id for the Cluster Policy
-     * @return the custom resource used to grant the consumer permissions
-     */
+    * Add a cluster policy
+    *
+    * @param {PolicyDocument} policy the IAM principal to grand the consume action.
+    * @param {string} id the CDK id for the Cluster Policy
+    * @return {CfnClusterPolicy}
+    */
   public addClusterPolicy (policy: PolicyDocument, id: string): CfnClusterPolicy {
 
-
-    let validateForResourcePolicy: string [] = policy.validateForResourcePolicy();
-
-    if (validateForResourcePolicy.length) {
-      console.log(validateForResourcePolicy.length);
-      throw new Error(`Error validating Policy document ${validateForResourcePolicy.join('\n')}`);
-    }
-
-    const cfnClusterPolicy = new CfnClusterPolicy(this, id, {
-      clusterArn: this.cluster.attrArn,
-      policy: policy.toJSON(),
-    });
-
-    return cfnClusterPolicy;
-
+    return addClusterPolicy(this, policy, id, this.cluster);
   }
 
   /**

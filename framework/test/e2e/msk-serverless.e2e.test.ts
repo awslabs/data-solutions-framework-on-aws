@@ -9,7 +9,7 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { AccountPrincipal, Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming/lib/msk';
 import { DataVpc, Utils } from '../../src/utils';

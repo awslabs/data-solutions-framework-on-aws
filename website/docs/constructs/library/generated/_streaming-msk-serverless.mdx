@@ -218,32 +218,33 @@ msk.grant_consume("topic1", iam_role)
   </TabItem>
 </Tabs>
 
-### Add Cluster Policy
+### addClusterPolicy
 
-This method allows you to add IAM resource policy to your MSK cluster. These for example can enable you to setup cross account access for your Amazon MSK cluster. 
+This method allows you to add IAM resource policy to your MSK cluster. This method can enable you for example to setup cross account access for your Amazon MSK cluster. 
 
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const msk = new MskProvisioned(stack, 'cluster');
+const msk = new MskServerless(stack, 'cluster');
+
 const cluterPolicy = new PolicyDocument(
-    {
-      statements: [
-        new PolicyStatement ({
-          actions: [
-            'kafka:CreateVpcConnection',
-            'kafka:GetBootstrapBrokers',
-            'kafka:DescribeClusterV2',
-          ],
-          resources: [msk.cluster.attrArn],
-          effect: Effect.ALLOW,
-          principals: [new ServicePrincipal('firehose.amazonaws.com')],
-        }),
-      ],
-    },
-  );
+  {
+    statements: [
+      new PolicyStatement({
+        actions: [
+          'kafka:CreateVpcConnection',
+          'kafka:GetBootstrapBrokers',
+          'kafka:DescribeClusterV2',
+        ],
+        resources: [msk.cluster.attrArn],
+        effect: Effect.ALLOW,
+        principals: [new ServicePrincipal('firehose.amazonaws.com')],
+      }),
+    ],
+  },
+);
 
 msk.addClusterPolicy(cluterPolicy, 'cluterPolicy');
   ```
@@ -252,7 +253,8 @@ msk.addClusterPolicy(cluterPolicy, 'cluterPolicy');
   <TabItem value="python" label="Python">
 
   ```python
-msk = MskProvisioned(stack, "cluster")
+msk = MskServerless(stack, "cluster")
+
 cluter_policy = PolicyDocument(
     statements=[
         PolicyStatement(

@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { MskServerless } from '../lib/msk';
+import { MskProvisioned } from '../lib/msk';
 import { Effect, PolicyDocument, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 
@@ -10,7 +10,7 @@ const stack = new cdk.Stack(app, 'MskProvisionedDsf');
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 /// !show
-const msk = new MskServerless(stack, 'cluster');
+const msk = new MskProvisioned(stack, 'cluster');
 
 const cluterPolicy = new PolicyDocument(
   {
