@@ -67,7 +67,11 @@ export function authorizerCentralWorkflowSetup(
       cause: JsonPath.stringAt('$.Cause'),
     }),
   });
-
+  
+  metadataCollector.addCatch(governanceFailureCallback, {
+    errors: ['States.TaskFailed'],
+  });
+  
   invokeProducerGrant.addCatch(governanceFailureCallback, {
     errors: ['States.TaskFailed'],
   });

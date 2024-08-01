@@ -7,7 +7,5 @@ export * from './data-catalog-database-props';
 export * from './data-lake-catalog-props';
 export * from './custom-authorizer-environment-helpers';
 export * from './custom-authorizer-central-helpers';
-export * from './datazone-msk-environment-authorizer';
-export * from './datazone-msk-central-authorizer';
-export * from './datazone-msk-environment-authorizer-props';
-export * from './datazone-msk-central-authorizer-props';
+export * from './datazone';
+
