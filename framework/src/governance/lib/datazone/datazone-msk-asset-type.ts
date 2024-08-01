@@ -21,19 +21,19 @@ export class DataZoneMSKAssetType extends TrackedConstruct {
     });
 
     this.mskCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType('MSKCustomAssetType', {
-      assetTypeName: 'MSKAssetType',
-      assetTypeDescription: 'Custom asset type to support MSK data assets',
+      assetTypeName: 'MskTopicAssetType',
+      assetTypeDescription: 'Custom asset type to support MSK topic asset',
       domainId: props.domainId,
       projectId: props.projectId,
       formTypes: [
         {
-          name: 'KafkaForm',
+          name: 'MskSourceReferenceForm',
           model: `
-                        structure KafkaForm {
-                            @required
-                            cluster_arn: String
-                        }
-                    `,
+                    structure KafkaForm {
+                        @required
+                        cluster_arn: String
+                    }
+                `,
           required: true,
         },
         {
