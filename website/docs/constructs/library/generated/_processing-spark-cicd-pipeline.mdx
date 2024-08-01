@@ -9,8 +9,7 @@ Self-mutable CI/CD pipeline for a Spark application based on [Amazon EMR](https:
 ## Overview
 
 The CI/CD pipeline uses [CDK Pipeline](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) and provisions all the resources needed to implement a CI/CD pipeline for a Spark application on Amazon EMR, including:
-* A CodeCommit repository to host the code
-* A CodePipeline triggered from the main branch of the CodeCommit repository to process the CI/CD tasks
+* A CodePipeline triggered from the branch of the repository you defined in the `codeconnection` to process the CI/CD tasks
 * A CodeBuild stage to build the CDK assets and run the Spark unit tests
 * A Staging stage to deploy the application stack in the staging environment and run optional integration tests
 * A Production stage to deploy the application stack in the production environment
