@@ -3,9 +3,9 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { ApplicationStackFactory } from '../../../utils';
 import { SparkImage } from '../emr-releases';
-import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 
 /**
  * Properties for the `SparkEmrCICDPipeline` construct.

@@ -12,9 +12,9 @@ import { App, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
-import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 
 
 describe('With minimal configuration, the construct', () => {
@@ -50,8 +50,8 @@ describe('With minimal configuration, the construct', () => {
     sparkApplicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
     source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
-      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
-    })
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+    }),
   });
 
   const template = Template.fromStack(stack);
@@ -98,28 +98,28 @@ describe('With minimal configuration, the construct', () => {
         Match.objectLike({
           Actions: Match.arrayWith([
             Match.objectLike({
-                ActionTypeId: {
-                  "Category": "Source",
-                  "Owner": "AWS",
-                  "Provider": "CodeStarSourceConnection",
-                  "Version": "1"
+              ActionTypeId: {
+                Category: 'Source',
+                Owner: 'AWS',
+                Provider: 'CodeStarSourceConnection',
+                Version: '1',
+              },
+              Configuration: {
+                ConnectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+                FullRepositoryId: 'owner/weekly-job',
+                BranchName: 'mainline',
+              },
+              Name: 'owner_weekly-job',
+              OutputArtifacts: [
+                {
+                  Name: 'owner_weekly_job_Source',
                 },
-                Configuration: {
-                  "ConnectionArn": "arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f",
-                  "FullRepositoryId": "owner/weekly-job",
-                  "BranchName": "mainline"
-                },
-                Name: "owner_weekly-job",
-                OutputArtifacts: [
-                  {
-                    "Name": "owner_weekly_job_Source"
-                  }
-                ],
-                RunOrder: 1
-              })
-            ]),
-            Name: "Source"
-        }
+              ],
+              RunOrder: 1,
+            }),
+          ]),
+          Name: 'Source',
+        },
 
         ),
         Match.objectLike({
@@ -342,8 +342,8 @@ describe('With custom configuration, the construct', () => {
     ],
     removalPolicy: RemovalPolicy.DESTROY,
     source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
-      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
-    })
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+    }),
   });
 
   const template = Template.fromStack(stack);
@@ -473,8 +473,8 @@ describe('With removal policy set to DESTROY and global removal policy set to tr
     applicationStackFactory: new MyStackFactory(),
     removalPolicy: RemovalPolicy.DESTROY,
     source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
-      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
-    })
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+    }),
   });
 
   const template = Template.fromStack(stack);
