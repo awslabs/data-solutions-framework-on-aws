@@ -5,9 +5,9 @@ import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
-import { authorizerCentralWorkflowSetup } from './custom-authorizer-central-helpers';
+import { authorizerCentralWorkflowSetup } from '../custom-authorizer-central-helpers';
 import { DataZoneMskCentralAuthorizerProps } from './datazone-msk-central-authorizer-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 
 export class DataZoneMskCentralAuthorizer extends TrackedConstruct {

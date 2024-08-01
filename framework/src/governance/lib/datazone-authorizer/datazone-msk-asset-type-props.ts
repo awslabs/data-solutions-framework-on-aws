@@ -1,5 +1,5 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { DataZoneCustomAssetTypeFactory } from '../datazone-custom-asset-type-factory';
+import { DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
 
 export interface DataZoneMSKAssetTypeProps {
   readonly domainId: string;
