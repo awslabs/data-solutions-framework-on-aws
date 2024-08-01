@@ -19,7 +19,7 @@ const { stack } = testStack;
 // Set the context value for global data removal policy
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-const sourceBucket = Bucket.fromBucketName(stack, 'SourceBucket', 'nyc-tlc');
+const sourceBucket = Bucket.fromBucketName(stack, 'SourceBucket', 'e2e-test-bucket-dsf');
 const bucketName = `test-${stack.region}-${stack.account}-${Utils.generateUniqueHash(stack, 'TargetBucket')}`;
 
 const targetBucket = new Bucket(stack, 'TargetBucket', {
@@ -32,8 +32,7 @@ const vpc = new Vpc(stack, 'Vpc');
 
 new S3DataCopy(stack, 'S3DataCopy', {
   sourceBucket,
-  sourceBucketPrefix: 'trip data/',
-  sourceBucketRegion: 'us-east-1',
+  sourceBucketRegion: 'eu-west-1',
   targetBucket,
   removalPolicy: RemovalPolicy.DESTROY,
   vpc,
