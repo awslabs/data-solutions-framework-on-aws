@@ -21,6 +21,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
   public readonly stateMachine: IStateMachine;
 
   private readonly removalPolicy: RemovalPolicy;
+  private static AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
 
   constructor(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -95,12 +96,17 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
         metadata: {
           domain: [props.domainId],
         },
+        data: {
+          asset: {
+            typeName: ['MskTopicAssetType']
+          }
+        }
       },
     };
 
     const customAuthorizer = authorizerCentralWorkflowSetup(this,
       'DataZoneMskCentralWorkflow',
-      'mskTopicsIam',
+      DataZoneMskCentralAuthorizer.AUTHORIZER_NAME,
       this.metadataCollectorFunction,
       this.datazoneCallbackFunction,
       datazonePattern,

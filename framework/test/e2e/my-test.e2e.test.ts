@@ -8,7 +8,7 @@ import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { DataZoneMskCentralAuthorizer } from '../../src/governance';
+import { DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
@@ -50,6 +50,11 @@ msk.addTopic('topicServerelss', {
   topic: 'dummy',
   numPartitions: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
+
+new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer',{
+  domainId: 'dzd_dc495t9ime7von',
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+})
 
 new cdk.CfnOutput(stack, 'MyOutput', {
   value: 'test',
