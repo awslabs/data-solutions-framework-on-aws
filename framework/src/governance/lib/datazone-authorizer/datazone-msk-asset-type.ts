@@ -1,8 +1,8 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { DataZoneMSKAssetTypeProps } from './datazone-msk-asset-type-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../../utils';
-import { CustomAssetType, DataZoneCustomAssetTypeFactory } from '../datazone-custom-asset-type-factory';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
 
 export class DataZoneMSKAssetType extends TrackedConstruct {
   readonly mskCustomAssetType: CustomAssetType;

@@ -16,28 +16,28 @@ export interface CustomAssetType {
 
 export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
   /**
-     * The CloudWatch Logs Log Group for the Redshift Serverless creation
-     */
+   * The CloudWatch Logs Log Group for the Redshift Serverless creation
+   */
   readonly createLogGroup: ILogGroup;
   /**
-     * The Lambda Function for the Redshift Serverless creation
-     */
+   * The Lambda Function for the Redshift Serverless creation
+   */
   readonly createFunction: IFunction;
   /**
-     * The IAM Role for the Redshift Serverless creation
-     */
+   * The IAM Role for the Redshift Serverless creation
+   */
   readonly createRole: IRole;
   /**
-     * The CloudWatch Logs Log Group for the creation status check
-     */
+   * The CloudWatch Logs Log Group for the creation status check
+   */
   readonly statusLogGroup: ILogGroup;
   /**
-     * The Lambda Function for the creation status check
-     */
+   * The Lambda Function for the creation status check
+   */
   readonly statusFunction: IFunction;
   /**
-     * The IAM Role for the creation status check
-     */
+   * The IAM Role for the creation status check
+   */
   readonly statusRole: IRole;
 
   readonly serviceToken: string;
@@ -78,8 +78,8 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
     const provider = new DsfProvider(this, 'Provider', {
       providerName: 'DataZoneCustomAssetType',
       onEventHandlerDefinition: {
-        depsLockFilePath: __dirname+'/resources/cr-dz-custom-asset-type/package-lock.json',
-        entryFile: __dirname+'/resources/cr-dz-custom-asset-type/index.mjs',
+        depsLockFilePath: __dirname+'/resources/datazone-custom-asset-type/package-lock.json',
+        entryFile: __dirname+'/resources/datazone-custom-asset-type/index.mjs',
         handler: 'index.handler',
         iamRole: handlerRole,
         timeout: Duration.minutes(5),
@@ -98,6 +98,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
     this.serviceToken = provider.serviceToken;
   }
 
+  // TODO remove interface as parameter?
   public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAssetTypeProps): CustomAssetType {
     const crResp = new CustomResource(this, id, {
       serviceToken: this.serviceToken,
@@ -109,6 +110,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
         assetTypeName: customAssetType.assetTypeName,
         assetTypeDescription: customAssetType.assetTypeDescription,
       },
+      resourceType: 'Custom::DataZoneCustomAssetType',
     });
 
     return {
