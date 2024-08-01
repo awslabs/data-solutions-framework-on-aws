@@ -9188,7 +9188,6 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit Repository created as part of the Spark CICD Pipeline. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
 
 ---
@@ -9250,18 +9249,6 @@ public readonly pipelineLogGroup: ILogGroup;
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
 The CloudWatch Log Group for storing the CodePipeline logs.
-
----
-
-##### `repository`<sup>Required</sup> <a name="repository" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository"></a>
-
-```typescript
-public readonly repository: Repository;
-```
-
-- *Type:* aws-cdk-lib.aws_codecommit.Repository
-
-The CodeCommit Repository created as part of the Spark CICD Pipeline.
 
 ---
 
@@ -15966,6 +15953,7 @@ const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.source">source</a></code> | <code>aws-cdk-lib.pipelines.CodePipelineSource</code> | The connection to allow code pipeline to connect to your code repository You can learn more about connections in this [link](https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests. |
@@ -15986,6 +15974,18 @@ public readonly applicationStackFactory: ApplicationStackFactory;
 - *Type:* @cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory
 
 The application CDK Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `source`<sup>Required</sup> <a name="source" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.source"></a>
+
+```typescript
+public readonly source: CodePipelineSource;
+```
+
+- *Type:* aws-cdk-lib.pipelines.CodePipelineSource
+
+The connection to allow code pipeline to connect to your code repository You can learn more about connections in this [link](https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html).
 
 ---
 

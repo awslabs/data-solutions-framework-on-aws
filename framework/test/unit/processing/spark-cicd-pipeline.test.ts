@@ -14,6 +14,7 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 
 
 describe('With minimal configuration, the construct', () => {
@@ -48,14 +49,13 @@ describe('With minimal configuration, the construct', () => {
   new SparkEmrCICDPipeline(stack, 'TestConstruct', {
     sparkApplicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
+    source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+    })
   });
 
   const template = Template.fromStack(stack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
-
-  test('should create a code repository', () => {
-    template.resourceCountIs('AWS::CodeCommit::Repository', 1);
-  });
+  console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a code pipeline', () => {
     template.resourceCountIs('AWS::CodePipeline::Pipeline', 1);
@@ -95,6 +95,33 @@ describe('With minimal configuration, the construct', () => {
   test('should create integration stage for Staging', () => {
     template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
       Stages: Match.arrayWith([
+        Match.objectLike({
+          Actions: Match.arrayWith([
+            Match.objectLike({
+                ActionTypeId: {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "CodeStarSourceConnection",
+                  "Version": "1"
+                },
+                Configuration: {
+                  "ConnectionArn": "arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f",
+                  "FullRepositoryId": "owner/weekly-job",
+                  "BranchName": "mainline"
+                },
+                Name: "owner_weekly-job",
+                OutputArtifacts: [
+                  {
+                    "Name": "owner_weekly_job_Source"
+                  }
+                ],
+                RunOrder: 1
+              })
+            ]),
+            Name: "Source"
+        }
+
+        ),
         Match.objectLike({
           Actions: Match.arrayWith([
             Match.objectLike({
@@ -160,32 +187,6 @@ describe('With minimal configuration, the construct', () => {
             '-',
             {
               Ref: 'AWS::Region',
-            },
-          ]),
-        ]),
-      },
-    });
-  });
-
-  test('should create the output with the git remote add command', () => {
-    template.hasOutput('*', {
-      Value: {
-        'Fn::Join': Match.arrayWith([
-          Match.arrayWith([
-            'git remote add ',
-            {
-              'Fn::GetAtt': Match.arrayWith([
-                Match.stringLikeRegexp('.*CodeCommitRepository.*'),
-              ]),
-            },
-            ' codecommit::',
-            {
-              Ref: 'AWS::Region',
-            },
-            {
-              'Fn::GetAtt': Match.arrayWith([
-                Match.stringLikeRegexp('.*CodeCommitRepository.*'),
-              ]),
             },
           ]),
         ]),
@@ -340,6 +341,9 @@ describe('With custom configuration, the construct', () => {
       }),
     ],
     removalPolicy: RemovalPolicy.DESTROY,
+    source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+    })
   });
 
   const template = Template.fromStack(stack);
@@ -468,6 +472,9 @@ describe('With removal policy set to DESTROY and global removal policy set to tr
     sparkApplicationName: 'test',
     applicationStackFactory: new MyStackFactory(),
     removalPolicy: RemovalPolicy.DESTROY,
+    source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+    })
   });
 
   const template = Template.fromStack(stack);

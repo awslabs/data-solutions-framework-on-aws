@@ -16,6 +16,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../../src/utils';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 
 const app = new App();
 const stack = new Stack(app, 'Stack', {
@@ -68,6 +69,9 @@ const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
       resources: ['*'],
     }),
   ],
+  source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+    connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+  })
 });
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
@@ -85,13 +89,6 @@ cicd.pipeline.buildPipeline();
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/TestConstruct/CodePipeline/Pipeline/Role',
-  [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
-  true,
-);
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/TestConstruct/CodePipeline/Pipeline/Source/CodeCommit/CodePipelineActionRole',
   [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
   true,
 );

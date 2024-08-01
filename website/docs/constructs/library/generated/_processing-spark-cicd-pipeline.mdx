@@ -117,6 +117,9 @@ export class CICDPipelineStack extends cdk.Stack {
     new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
       sparkApplicationName: 'SparkTest',
       applicationStackFactory: new EmrApplicationStackFactory(),
+      source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+        connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+      }),
     });
   }
 }
@@ -131,7 +134,10 @@ class CICDPipelineStack(cdk.Stack):
         super().__init__(scope, id)
         dsf.processing.SparkEmrCICDPipeline(self, "SparkCICDPipeline",
             spark_application_name="SparkTest",
-            application_stack_factory=EmrApplicationStackFactory()
+            application_stack_factory=EmrApplicationStackFactory(),
+            source=CodePipelineSource.connection("owner/weekly-job", "mainline",
+                connection_arn="arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f"
+            )
         )
   ```
 
@@ -251,6 +257,9 @@ new dsf.processing.SparkEmrCICDPipeline(this, 'SparkCICDPipeline', {
       resources: ['*'],
     }),
   ],
+  source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+    connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+  })
 });
   ```
   
@@ -271,7 +280,10 @@ dsf.processing.SparkEmrCICDPipeline(self, "SparkCICDPipeline",
             ],
             resources=["*"]
         )
-    ]
+    ],
+    source=CodePipelineSource.connection("owner/weekly-job", "mainline",
+        connection_arn="arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f"
+    )
 )
   ```
 
