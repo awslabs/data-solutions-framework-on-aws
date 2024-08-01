@@ -17,6 +17,7 @@ import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../../src/utils';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 
 const app = new App();
 const stack = new Stack(app, 'Stack', {
