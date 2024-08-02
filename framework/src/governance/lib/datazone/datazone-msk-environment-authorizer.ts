@@ -4,9 +4,9 @@ import { IRole, Role, ServicePrincipal, ManagedPolicy, PolicyDocument, PolicySta
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
-import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environment-helpers';
 import { DataZoneMskCentralAuthorizerProps } from './datazone-msk-central-authorizer-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environment-helpers';
 
 
 export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {

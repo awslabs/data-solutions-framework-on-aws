@@ -1,8 +1,8 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
 import { DataZoneMSKAssetTypeProps } from './datazone-msk-asset-type-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
 
 export class DataZoneMSKAssetType extends TrackedConstruct {
   readonly mskCustomAssetType: CustomAssetType;
@@ -29,7 +29,7 @@ export class DataZoneMSKAssetType extends TrackedConstruct {
         {
           name: 'MskSourceReferenceForm',
           model: `
-                    structure KafkaForm {
+                    structure MskSourceReferenceForm {
                         @required
                         cluster_arn: String
                     }
