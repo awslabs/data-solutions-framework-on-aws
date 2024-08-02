@@ -1,8 +1,8 @@
 import {
     DataZoneClient,
-    CreateFormTypeCommand,
-    DeleteFormTypeCommand,
-    GetFormTypeCommand
+    CreateAssetCommand,
+    DeleteAssetCommand,
+    GetAssetCommand
 } from "@aws-sdk/client-datazone";
 
 export const handler = async (event) => {
@@ -10,67 +10,65 @@ export const handler = async (event) => {
     const properties = event["ResourceProperties"];
     const domainId = properties["domainId"];
     const projectId = properties["projectId"];
-    const roleArn = properties["roleArn"]; // ARN of the Lambda execution role
+    const roleArn = properties["roleArn"];
     const name = properties["name"];
-    const modelName = properties["modelName"];
-    const model = properties["model"];
+    const typeIdentifier = properties["typeIdentifier"];
+    const formsInput = properties["formsInput"];
+    // const description = properties["description"];
+    const externalIdentifier = properties["externalIdentifier"];
+    // const glossaryTerms = properties["glossaryTerms"];
+    // const predictionConfiguration = properties["predictionConfiguration"];
+    // const typeRevision = properties["typeRevision"];
 
     console.log('Environment Properties:', {
         domainId,
         projectId,
         roleArn,
         name,
-        modelName,
-        model
+        typeIdentifier,
+        formsInput,
+        // description,
+        externalIdentifier,
+        // glossaryTerms,
+        // predictionConfiguration,
+        // typeRevision
     });
     console.log('Invocation Event:', event);
 
     try {
         if (event["RequestType"] === "Create" || event["RequestType"] === "Update") {
-            try {
-                // Check if the FormType exists
-                await client.send(new GetFormTypeCommand({
-                    domainIdentifier: domainId,
-                    formTypeIdentifier: name
-                }));
-                // FormType exists, proceed to update (create or re-create)
-                console.log(`FormType ${name} already exists, updating.`);
-            } catch (error) {
-                if (error.name === 'ResourceNotFoundException') {
-                    // FormType does not exist, proceed to create
-                    console.log(`FormType ${name} does not exist, creating.`);
-                } else {
-                    // Re-throw any other errors
-                    throw error;
-                }
-            }
 
-            // Create or re-create the FormType
-            const createResponse = await client.send(new CreateFormTypeCommand({
+            // Create or re-create the Asset
+            const createResponse = await client.send(new CreateAssetCommand({
                 domainIdentifier: domainId,
+                owningProjectIdentifier: projectId, // Ensure this is included
                 name: name,
-                model: {
-                    smithy: model
-                },
-                owningProjectIdentifier: projectId,
-                status: "ENABLED"
+                typeIdentifier: typeIdentifier,
+                formsInput: formsInput,
+                // description: description,
+                externalIdentifier: externalIdentifier,
+                // glossaryTerms: glossaryTerms,
+                // predictionConfiguration: predictionConfiguration,
+                // typeRevision: typeRevision,
             }));
+            console.log('Response Event:', createResponse);
 
             return {
                 "Data": createResponse
             };
 
         } else if (event["RequestType"] === "Delete") {
-            // Delete the FormType
-            await client.send(new DeleteFormTypeCommand({
+            // Delete the Asset
+            await client.send(new DeleteAssetCommand({
                 domainIdentifier: domainId,
-                formTypeIdentifier: name
+                name: name,
+                typeIdentifier: typeIdentifier,
             }));
 
             return {
                 statusCode: 200,
                 body: JSON.stringify({
-                    message: `FormType ${name} deleted successfully.`
+                    message: `Asset ${name} deleted successfully.`
                 })
             };
         }

@@ -54,7 +54,8 @@ msk.addTopic('topicServerelss', {
 new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer',{
   domainId: 'dzd_dc495t9ime7von',
   removalPolicy: cdk.RemovalPolicy.DESTROY,
-})
+});
+
 
 new cdk.CfnOutput(stack, 'MyOutput', {
   value: 'test',
