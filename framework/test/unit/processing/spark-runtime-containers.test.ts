@@ -9,7 +9,7 @@
 */
 
 
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
@@ -20,7 +20,7 @@ describe('With default configuration, the construct ', () => {
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV27Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -58,7 +58,7 @@ describe('With default configuration, the construct ', () => {
   test('should create an EKS cluster with correct version', () => {
     template.hasResourceProperties('Custom::AWSCDK-EKS-Cluster', {
       Config: Match.objectLike({
-        version: '1.27',
+        version: '1.30',
         name: 'data-platform',
       }),
     });
@@ -186,7 +186,7 @@ describe('With default configuration, the construct ', () => {
 
     template.hasResourceProperties('AWS::EKS::Addon', {
       AddonName: 'aws-ebs-csi-driver',
-      AddonVersion: 'v1.24.1-eksbuild.1',
+      AddonVersion: 'v1.33.0-eksbuild.1',
       ClusterName: {
         Ref: Match.stringLikeRegexp('EksCluster.*'),
       },

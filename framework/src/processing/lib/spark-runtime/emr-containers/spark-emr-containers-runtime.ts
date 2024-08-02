@@ -93,7 +93,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The default EKS version
    */
-  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
+  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_30;
   /**
    * The default name of the EKS cluster
    */
