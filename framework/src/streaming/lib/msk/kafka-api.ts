@@ -94,6 +94,14 @@ export class KafkaApi extends TrackedConstruct {
       throw Error ('VPC requires the following attributes: "vpcId", "availabilityZones", "privateSubnets" ');
     }
 
+    if(props.clientAuthentication.saslProps?.iam == true && props.serviceToken) {
+      this.mskIamServiceToken = props.serviceToken;
+    }
+
+    if(props.clientAuthentication.tlsProps?.certificateAuthorities && props.serviceToken) {
+      this.mskAclServiceToken = props.serviceToken;
+    }
+
     if (props.clientAuthentication.tlsProps?.certificateAuthorities) {
 
       const mskAclProvider = mskAclAdminProviderSetup(
