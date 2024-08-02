@@ -19268,21 +19268,15 @@ This enum allow you to set the log level
 
 ### KarpenterVersion <a name="KarpenterVersion" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion"></a>
 
-The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 v0.37.0 are supported.
+The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.37.0 is supported.
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0">V0_37_0</a></code> | *No description.* |
 
 ---
-
-##### `V0_32_1` <a name="V0_32_1" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1"></a>
-
----
-
 
 ##### `V0_37_0` <a name="V0_37_0" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0"></a>
 

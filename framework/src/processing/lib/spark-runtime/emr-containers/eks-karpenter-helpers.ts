@@ -27,7 +27,7 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
     subnetType: SubnetType.PRIVATE_WITH_EGRESS,
   }).subnets;
 
-  subnets.forEach( (subnet, index) => {
+  subnets.forEach((subnet, index) => {
     let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
@@ -59,7 +59,7 @@ export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: 
   let manifest = Utils.readYamlDocument(path);
 
   manifest = manifest.replace('{{subnet-id}}', subnet.subnetId);
-  manifest = manifest.replace( /(\{{az}})/g, subnet.availabilityZone);
+  manifest = manifest.replace(/(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', cluster.clusterName);
   manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName);
 
@@ -87,7 +87,7 @@ export function karpenterSetup(cluster: ICluster,
   nodeRole: IRole,
   karpenterRemovalPolicy: RemovalPolicy,
   karpenterVersion?: KarpenterVersion,
-): [HelmChart, IRole, IQueue, ISecurityGroup, Array<IRule> ] {
+): [HelmChart, IRole, IQueue, ISecurityGroup, Array<IRule>] {
 
   const removalPolicy = Context.revertRemovalPolicy(scope, karpenterRemovalPolicy);
 
@@ -268,7 +268,7 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['sqs:DeleteMessage', 'sqs:GetQueueAttributes', 'sqs:GetQueueUrl', 'sqs:ReceiveMessage'],
   });
 
-  const allowAPIServerEndpointDiscovery : PolicyStatement = new PolicyStatement({
+  const allowAPIServerEndpointDiscovery: PolicyStatement = new PolicyStatement({
     sid: 'AllowAPIServerEndpointDiscovery',
     effect: Effect.ALLOW,
     resources: [`arn:aws:eks:${Stack.of(scope).region}:${Stack.of(scope).account}:cluster/${clusterName}`],
@@ -381,11 +381,9 @@ export function karpenterSetup(cluster: ICluster,
         },
       },
       settings: {
-        aws: {
-          clusterName: clusterName,
-          clusterEndpoint: cluster.clusterEndpoint,
-          interruptionQueueName: karpenterInterruptionQueue.queueName,
-        },
+        clusterName: clusterName,
+        clusterEndpoint: cluster.clusterEndpoint,
+        interruptionQueueName: karpenterInterruptionQueue.queueName,
       },
 
     },
@@ -456,5 +454,5 @@ export function karpenterSetup(cluster: ICluster,
 
   manifestApply.node.addDependency(karpenterChart);
 
-  return [karpenterChart, karpenterAccount.role, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]] ;
+  return [karpenterChart, karpenterAccount.role, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]];
 }

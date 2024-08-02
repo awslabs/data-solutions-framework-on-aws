@@ -7,7 +7,7 @@
  * @group unit/best-practice/spark-runtime-containers
  */
 
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
 import { App, Aspects, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 // eslint-disable-next-line import/no-extraneous-dependencies
