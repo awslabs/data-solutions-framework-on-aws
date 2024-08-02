@@ -8,7 +8,7 @@ import * as cdk from 'aws-cdk-lib';
 // import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 // import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 // import { DefaultStackSynthesizer, Fn } from 'aws-cdk-lib';
-import {CfnProject, CfnProjectMembership} from 'aws-cdk-lib/aws-datazone';
+import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { TestStack } from './test-stack';
 import { DataZoneCustomAssetTypeFactory } from '../../src/governance';
 import { DataZoneCustomAsset } from '../../src/governance/lib/datazone/datazone-custom-asset';
@@ -67,17 +67,17 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 // });
 
 const cfnProject = new CfnProject(stack, 'MyCfnProject', {
-  domainIdentifier: 'dzd_6ptm7de4q2m2lj',
+  domainIdentifier: '',
   description: 'MSK Project',
   name: 'MSK',
 });
 
 new CfnProjectMembership(stack, 'ProjectMembership', {
   designation: 'PROJECT_CONTRIBUTOR',
-  domainIdentifier: 'dzd_6ptm7de4q2m2lj',
+  domainIdentifier: '',
   projectIdentifier: cfnProject.attrId,
   member: {
-    userIdentifier: 'arn:aws:iam::891377161433:role/Admin',
+    userIdentifier: '',
   },
 });
 
@@ -104,8 +104,8 @@ dzFactory.node.addDependency(cfnProject);
 dzFactory.createCustomAssetType('MSKCustomAssetType', {
   assetTypeName: 'MskTopicAssetType',
   assetTypeDescription: 'Custom asset type to support MSK topic asset',
-  domainId: 'dzd_6ptm7de4q2m2lj',
-  projectId: 'bdqgy3h6re8i7b',
+  domainId: '',
+  projectId: '',
   formTypes: [
     {
       name: 'MskSourceReferenceForm',
