@@ -22,6 +22,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
 
   private readonly removalPolicy: RemovalPolicy;
   private static AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
+  private static MSK_ASSET_TYPE = 'MskTopicAssetType';
 
   constructor(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps) {
     const trackedConstructProps: TrackedConstructProps = {
