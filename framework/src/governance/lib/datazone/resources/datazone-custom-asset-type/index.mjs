@@ -51,8 +51,5 @@ export const handler = async(event) => {
             identifier: properties["assetTypeName"]
         }))
 
-
-
-        return 
     }
 }
