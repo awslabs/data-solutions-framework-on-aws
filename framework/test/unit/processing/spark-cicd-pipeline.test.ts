@@ -55,7 +55,7 @@ describe('With minimal configuration, the construct', () => {
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a code pipeline', () => {
     template.resourceCountIs('AWS::CodePipeline::Pipeline', 1);
