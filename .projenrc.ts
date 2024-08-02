@@ -246,7 +246,7 @@ fwkProject.tasks.tryFind('release')!.prependSpawn(new Task('install:ci'));
 const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   name: 'spark-data-lake-infra-example',
   moduleName: 'stacks',
-  packageName: 'spark_data_lake',
+  packageName: 'spark-data-lake',
   version: '0.0.1',
   description: 'An example CDK app demonstrating the most common use cases for DSF on AWS',
   authorName: author,
@@ -427,7 +427,7 @@ opensearchQuickstart.packageTask.spawn(buildOpensearchQuickstartTask);
 const redshiftDataWarehouseExample = new awscdk.AwsCdkPythonApp({
   name: 'redshift-data-warehouse-example',
   moduleName: 'stacks',
-  packageName: 'redshift-data-warehouse-example',
+  packageName: 'redshift-data-warehouse',
   version: '0.0.1',
   description: 'An example CDK app demonstrating the most common use cases for Data Solutions Framework on AWS',
   authorName: author,
@@ -435,7 +435,7 @@ const redshiftDataWarehouseExample = new awscdk.AwsCdkPythonApp({
   license,
 
   parent: rootProject,
-  outdir: 'examples/redshift-data-warehouse-example',
+  outdir: 'examples/redshift-data-warehouse',
 
   cdkVersion: CDK_VERSION,
   constructsVersion: CDK_CONSTRUCTS_VERSION,
