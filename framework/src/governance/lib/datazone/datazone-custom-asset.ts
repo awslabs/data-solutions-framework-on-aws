@@ -1,4 +1,4 @@
-import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
+import {CustomResource, Duration, RemovalPolicy, Stack} from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import {
   Effect,
@@ -12,14 +12,11 @@ import {
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import { DataZoneFormTypeProps } from './datazone-form-type-props';
-import { buildModelString } from './datazone-model-builder';
+import { DataZoneCustomAssetProps } from './datazone-custom-asset-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
-export class DataZoneFormType extends TrackedConstruct {
-  private readonly removalPolicy: RemovalPolicy;
-
+export class DataZoneCustomAsset extends TrackedConstruct {
   readonly createLogGroup: ILogGroup;
   readonly createFunction: IFunction;
   readonly createRole: IRole;
@@ -27,20 +24,36 @@ export class DataZoneFormType extends TrackedConstruct {
   readonly statusFunction: IFunction;
   readonly statusRole: IRole;
   readonly serviceToken: string;
-  // Exposed properties
   readonly domainId: string;
   readonly projectId: string;
   readonly name: string;
-  readonly model: string;
-  readonly revision: string;
-  constructor(scope: Construct, id: string, props: DataZoneFormTypeProps) {
+  readonly typeIdentifier: string;
+  readonly formsInput: {
+    formName: string;
+    content: string;
+    typeIdentifier: string;
+    typeRevision?: string;
+  }[];
+  readonly description?: string;
+  readonly externalIdentifier?: string;
+  readonly glossaryTerms?: string[];
+  readonly predictionConfiguration?: {
+    businessNameGeneration?: {
+      enabled: boolean;
+    };
+  };
+  readonly typeRevision?: string;
+  readonly removalPolicy?: RemovalPolicy;
+
+  constructor(scope: Construct, id: string, props: DataZoneCustomAssetProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: DataZoneFormType.name,
+      trackingTag: DataZoneCustomAsset.name,
     };
 
     super(scope, id, trackedConstructProps);
 
-    this.removalPolicy = Context.revertRemovalPolicy(scope, props?.removalPolicy);
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
     const handlerRole = new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
@@ -52,9 +65,9 @@ export class DataZoneFormType extends TrackedConstruct {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: [
-                'datazone:CreateFormType',
-                'datazone:DeleteFormType',
-                'datazone:GetFormType',
+                'datazone:CreateAsset',
+                'datazone:DeleteAsset',
+                'datazone:GetAsset',
               ],
               resources: ['*'],
             }),
@@ -75,10 +88,10 @@ export class DataZoneFormType extends TrackedConstruct {
     handlerRole.applyRemovalPolicy(this.removalPolicy);
 
     const provider = new DsfProvider(this, 'Provider', {
-      providerName: 'DataZoneFormType',
+      providerName: 'DataZoneCustomAsset',
       onEventHandlerDefinition: {
-        depsLockFilePath: __dirname+'/resources/datazone-form-type/package-lock.json',
-        entryFile: __dirname+'/resources/datazone-form-type/index.mjs',
+        depsLockFilePath: __dirname + '/resources/datazone-custom-asset/package-lock.json',
+        entryFile: __dirname + '/resources/datazone-custom-asset/index.mjs',
         handler: 'index.handler',
         iamRole: handlerRole,
         timeout: Duration.minutes(5),
@@ -94,7 +107,18 @@ export class DataZoneFormType extends TrackedConstruct {
     this.statusRole = provider.isCompleteHandlerRole!;
     this.serviceToken = provider.serviceToken;
 
-    const modelString = buildModelString(props.name, props.fields);
+    // Initialize properties from props
+    this.typeIdentifier = props.typeIdentifier;
+    this.formsInput = props.formsInput;
+
+    // Fetch region and account ID from scope
+    const region = Stack.of(this).region;
+    const accountId = Stack.of(this).account;
+
+    // Optionally build the ARN if clusterName and topicName are provided
+    if (props.clusterName && props.topicName) {
+      this.externalIdentifier = buildMskTopicArn(region, accountId, props.clusterName, props.topicName);
+    }
 
     const crResp = new CustomResource(this, 'CustomResource', {
       serviceToken: this.serviceToken,
@@ -103,23 +127,35 @@ export class DataZoneFormType extends TrackedConstruct {
         roleArn: handlerRole.roleArn,
         domainId: props.domainId,
         projectId: props.projectId,
+        typeIdentifier: props.typeIdentifier,
         name: props.name,
-        model: modelString,
+        description: props.description,
+        externalIdentifier: this.externalIdentifier,
+        glossaryTerms: props.glossaryTerms,
+        predictionConfiguration: props.predictionConfiguration,
+        typeRevision: props.typeRevision,
+        formsInput: props.formsInput,
       },
     });
 
     crResp.node.addDependency(membership);
-    // Optionally, you can expose the properties here if needed
+
     // Expose the properties
     this.domainId = crResp.getAttString('domainId');
     this.projectId = props.projectId;
     this.name = crResp.getAttString('name');
-    this.model = modelString;
-    this.revision = crResp.getAttString('revision');
-
-    // You might want to handle these values or expose them in some way
-    // For example, setting as class properties or returning as part of construct initialization
   }
-  // Static method to get the CDK deployment role
-  // eslint-disable-next-line @typescript-eslint/member-ordering
+}
+
+/**
+ * Generates an ARN for an Amazon MSK topic.
+ *
+ * @param region - The AWS region where the MSK cluster is located.
+ * @param accountId - The AWS account ID.
+ * @param clusterName - The name of the MSK cluster.
+ * @param topicName - The name of the Kafka topic.
+ * @returns The ARN string for the MSK topic.
+ */
+function buildMskTopicArn(region: string, accountId: string, clusterName: string, topicName: string): string {
+  return `arn:aws:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
 }
