@@ -1,4 +1,5 @@
 import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
+import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
@@ -8,10 +9,10 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 export interface CustomAssetType {
-  domainIdentifier: string;
-  name: string;
-  projectIdentifier: string;
-  revision: string;
+  readonly domainIdentifier: string;
+  readonly name: string;
+  readonly projectIdentifier: string;
+  readonly revision: string;
 }
 
 export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
@@ -42,6 +43,12 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
 
   readonly serviceToken: string;
 
+
+  /**
+   * The role used by the custom resource
+   */
+  readonly handlerRole: IRole;
+
   private readonly removalPolicy: RemovalPolicy;
   constructor(scope: Construct, id: string, props: DataZoneCustomAssetTypeProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -50,7 +57,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
-    const handlerRole = new Role(this, 'HandlerRole', {
+    this.handlerRole = new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
@@ -73,7 +80,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
       },
     });
 
-    handlerRole.applyRemovalPolicy(this.removalPolicy);
+    this.handlerRole.applyRemovalPolicy(this.removalPolicy);
 
     const provider = new DsfProvider(this, 'Provider', {
       providerName: 'DataZoneCustomAssetType',
@@ -81,11 +88,9 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
         depsLockFilePath: __dirname+'/resources/datazone-custom-asset-type/package-lock.json',
         entryFile: __dirname+'/resources/datazone-custom-asset-type/index.mjs',
         handler: 'index.handler',
-        iamRole: handlerRole,
+        iamRole: this.handlerRole,
         timeout: Duration.minutes(5),
       },
-      queryInterval: Duration.seconds(1),
-      queryTimeout: Duration.minutes(5),
       removalPolicy: this.removalPolicy,
     });
 
@@ -100,6 +105,15 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
 
   // TODO remove interface as parameter?
   public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAssetTypeProps): CustomAssetType {
+    const projMembership = new CfnProjectMembership(this, `dz-handler-${customAssetType.domainId}-${customAssetType.projectId}-membership`, {
+      designation: 'PROJECT_OWNER',
+      domainIdentifier: customAssetType.domainId,
+      member: {
+        userIdentifier: this.handlerRole.roleArn,
+      },
+      projectIdentifier: customAssetType.projectId,
+    });
+
     const crResp = new CustomResource(this, id, {
       serviceToken: this.serviceToken,
       removalPolicy: this.removalPolicy,
@@ -112,6 +126,8 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
       },
       resourceType: 'Custom::DataZoneCustomAssetType',
     });
+
+    crResp.node.addDependency(projMembership);
 
     return {
       domainIdentifier: crResp.getAttString('domainId'),
