@@ -4,12 +4,12 @@ import { Construct } from 'constructs';
 import { CustomAssetType } from './datazone-custom-asset-type-factory';
 
 export function createSubscriptionTarget(
-  scope: Construct, 
-  customAssetType: CustomAssetType, 
-  name: string, 
-  provider: string, 
-  environmentId: string, 
-  authorizedPrincipals: IRole[], 
+  scope: Construct,
+  customAssetType: CustomAssetType,
+  name: string,
+  provider: string,
+  environmentId: string,
+  authorizedPrincipals: IRole[],
   manageAccessRole: IRole) {
 
   return new CfnSubscriptionTarget(

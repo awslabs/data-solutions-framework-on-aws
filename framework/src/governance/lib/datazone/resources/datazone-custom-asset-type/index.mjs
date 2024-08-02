@@ -22,7 +22,7 @@ export const handler = async(event) => {
             const {revision} = crFormTypeResp
             formsInput[formType.name] = {
                 typeIdentifier: formType.name,
-                typeRevisiion: revision,
+                typeRevision: revision,
                 required: formType.required
             }
         }

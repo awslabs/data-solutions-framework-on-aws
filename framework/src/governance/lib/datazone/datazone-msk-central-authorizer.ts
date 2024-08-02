@@ -5,12 +5,13 @@ import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
-import { authorizerCentralWorkflowSetup } from '../custom-authorizer-central-helpers';
 import { DataZoneMskCentralAuthorizerProps } from './datazone-msk-central-authorizer-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { authorizerCentralWorkflowSetup } from '../custom-authorizer-central-helpers';
 
 
 export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
+  private static AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
   public readonly metadataCollectorRole: IRole;
   public readonly metadataCollectorFunction: IFunction;
   public readonly datazoneCallbackRole: IRole;
@@ -21,7 +22,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
   public readonly stateMachine: IStateMachine;
 
   private readonly removalPolicy: RemovalPolicy;
-  private static AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
+
 
   constructor(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -98,9 +99,9 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
         },
         data: {
           asset: {
-            typeName: ['MskTopicAssetType']
-          }
-        }
+            typeName: ['MskTopicAssetType'],
+          },
+        },
       },
     };
 
