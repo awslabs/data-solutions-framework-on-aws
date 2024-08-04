@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@aws-sdk/client-emr-containers": "^3.490.0",
+    "@aws-sdk/client-emr-containers": "^3.623.0",
     "@aws-sdk/core": "^3.490.0"
   }
 }
