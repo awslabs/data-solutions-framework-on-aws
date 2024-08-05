@@ -37,14 +37,14 @@ class ApplicationStack(Stack):
         )
 
         # Import the S3 bucket used as the Spark job source
-        source_bucket = s3.Bucket.from_bucket_name(self, 'SourceBucket', 'nyc-tlc')
+        source_bucket = s3.Bucket.from_bucket_name(self, 'SourceBucket', 'redshift-demos')
 
         # Copy the Yellow taxi data in the silver bucket of the data lake
         dsf.utils.S3DataCopy(
             self,
             "YellowDataCopy",
             source_bucket=source_bucket,
-            source_bucket_prefix="trip data/yellow_tripdata_2019",
+            source_bucket_prefix="data/NY-Pub/year=2016/month=1/type=yellow",
             source_bucket_region="us-east-1",
             target_bucket= storage.silver_bucket,
             target_bucket_prefix="yellow-trip-data/",
@@ -56,7 +56,7 @@ class ApplicationStack(Stack):
             self,
             "GreenDataCopy",
             source_bucket=source_bucket,
-            source_bucket_prefix="trip data/green_tripdata_2019",
+            source_bucket_prefix="data/NY-Pub/year=2016/month=1/type=green",
             source_bucket_region="us-east-1",
             target_bucket= storage.silver_bucket,
             target_bucket_prefix="green-trip-data/",
