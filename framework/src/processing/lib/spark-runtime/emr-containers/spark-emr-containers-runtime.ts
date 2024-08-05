@@ -53,9 +53,9 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
  *
  * @example
  * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
- * import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+ * import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
  *
- * const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+ * const kubectlLayer = new KubectlV30Layer(this, 'kubectlLayer');
  *
  * const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
  *   publicAccessCIDRs: ['10.0.0.0/16'],
