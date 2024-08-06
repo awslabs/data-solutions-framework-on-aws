@@ -12,6 +12,8 @@ import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
 import { Context, Utils } from '../../../../utils';
 import { KarpenterVersion } from '../../karpenter-releases';
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import path = require('path');
 
 /**
  * @internal
@@ -20,27 +22,33 @@ import { KarpenterVersion } from '../../karpenter-releases';
  * @param karpenterVersion the Karpenter version to use for the provisioners
  * @param nodeRole the IAM role to use for the provisioners
  */
-export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRuntime, karpenterVersion: KarpenterVersion, nodeRole: IRole) {
+export function setDefaultKarpenterProvisioners(scope: Construct, cluster: SparkEmrContainersRuntime, karpenterVersion: KarpenterVersion, nodeRole: IRole) {
 
   const subnets = cluster.eksCluster.vpc.selectSubnets({
     onePerAz: true,
     subnetType: SubnetType.PRIVATE_WITH_EGRESS,
   }).subnets;
 
+  //Build a container image using the following Dockerfile: Dockerfile-nvme-raid0-mount and upload it to ECR
+  const dockerImageAsset = new DockerImageAsset(scope, 'NvmeRaid0MountImage', {
+      directory: path.join(__dirname, `resources/k8s/karpenter-provisioner-config/${karpenterVersion}`),
+      file: 'Dockerfile-nvme-raid0-mount',
+    });
+
   subnets.forEach((subnet, index) => {
-    let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole);
+    let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
-    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole);
+    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
 
-    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet, nodeRole);
+    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
 
-    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet, nodeRole);
+    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
 
-    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet, nodeRole);
+    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
   });
 }
@@ -54,7 +62,7 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
    * @param nodeRole the IAM role to use for the manifests
    * @return the Kubernetes manifest for Karpenter provisioned
    */
-export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole): any {
+export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole, imageUri: string): any {
 
   let manifest = Utils.readYamlDocument(path);
 
@@ -62,6 +70,7 @@ export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: 
   manifest = manifest.replace(/(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', cluster.clusterName);
   manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName);
+  manifest = manifest.replace(/(\{{REPLACE-WITH-IMAGE-ECR}})/g, imageUri);
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 

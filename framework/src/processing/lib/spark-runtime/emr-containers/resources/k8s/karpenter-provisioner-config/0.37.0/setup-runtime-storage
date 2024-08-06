@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -ex
+
+ROOT_PATH="/.bottlerocket/rootfs"
+
+# Symlinks to ephemeral disks are created here by udev
+declare -a EPHEMERAL_DISKS
+EPHEMERAL_DISKS=("${ROOT_PATH}"/dev/disk/ephemeral/*)
+
+# Exit early if there aren't ephemeral disks
+if [ "${#EPHEMERAL_DISKS[@]}" -eq 0 ]; then
+  echo "no ephemeral disks found"
+  exit 1
+fi
+
+MD_NAME="scratch"
+MD_DEVICE="/dev/md/${MD_NAME}"
+MD_CONFIG="/.bottlerocket/bootstrap-containers/current/mdadm.conf"
+
+# Create or assemble the array.
+if [ ! -s "${MD_CONFIG}" ] ; then
+  mdadm --create --force --verbose \
+    "${MD_DEVICE}" \
+      --level=0 \
+      --name="${MD_NAME}" \
+      --raid-devices="${#EPHEMERAL_DISKS[@]}" \
+      "${EPHEMERAL_DISKS[@]}"
+  mdadm --detail --scan > "${MD_CONFIG}"
+else
+  mdadm --assemble --config="${MD_CONFIG}" "${MD_DEVICE}"
+fi
+
+# Format the array if not already formatted.
+if ! blkid --match-token TYPE=ext4 "${MD_DEVICE}" ; then
+  mkfs.ext4 "${MD_DEVICE}"
+fi
+
+MOUNT_POINT="${ROOT_PATH}/mnt/${MD_NAME}"
+
+# Mount the array in the host's /mnt.
+mkdir -p "${MOUNT_POINT}"
+mount "${MD_DEVICE}" "${MOUNT_POINT}"
+
+# Keep track of whether we can unmount the array later. This depends on the
+# version of Bottlerocket.
+should_umount="no"
+
+# Bind state directories to the array, if they exist.
+for state_dir in containerd docker kubelet ; do
+  # The correct next step depends on the version of Bottlerocket, which can be
+  # inferred by inspecting the mounts available to the bootstrap container.
+  if findmnt "${ROOT_PATH}/var/lib/${state_dir}" ; then
+    # For Bottlerocket >= 1.9.0, the state directory can be bind-mounted over
+    # the host directory and the mount will propagate back to the host.
+    mkdir -p "${MOUNT_POINT}/${state_dir}"
+    mount --rbind "${MOUNT_POINT}/${state_dir}" "${ROOT_PATH}/var/lib/${state_dir}"
+    mount --make-rshared "${ROOT_PATH}/var/lib/${state_dir}"
+    should_umount="yes"
+  elif [ ! -L "${ROOT_PATH}/var/lib/${state_dir}" ] ; then
+    # For Bottlerocket < 1.9.0, the host directory needs to be replaced with a
+    # symlink to the state directory on the array. This works but can lead to
+    # unexpected behavior or incompatibilities, for example with CSI drivers.
+    if [ -d  "${ROOT_PATH}/var/lib/${state_dir}" ] ; then
+      # The host directory exists but is not a symlink, and might need to be
+      # relocated to the storage array. This depends on whether the host has
+      # been downgraded from a newer version of Bottlerocket, or whether it's
+      # the first boot of an older version.
+      if [ -d "${MOUNT_POINT}/${state_dir}" ] ; then
+        # If downgrading from a version of Bottlerocket that supported bind
+        # mounts, the directory will exist but should be empty, except for
+        # subdirectories that may have been created by tmpfiles.d before an
+        # upgrade to that version. Keep a copy of the directory just in case.
+        rm -rf "${ROOT_PATH}/var/lib/${state_dir}.bak"
+        mv "${ROOT_PATH}/var/lib/${state_dir}"{,.bak}
+      else
+        # Otherwise, treat it as the first boot of an older version, and move
+        # the directory to the array.
+        mv "${ROOT_PATH}/var/lib/${state_dir}" "${MOUNT_POINT}/${state_dir}"
+      fi
+    else
+      # The host directory does not exist, so the target directory likely needs
+      # to be created.
+      mkdir -p "${MOUNT_POINT}/${state_dir}"
+    fi
+    # Any host directory has been dealt with and the symlink can be created.
+    ln -snfT "/mnt/${MD_NAME}/${state_dir}" "${ROOT_PATH}/var/lib/${state_dir}"
+  fi
+done
+
+# When using bind mounts, the parent directory where the array is mounted can
+# be unmounted. This avoids a second, redundant mount entry under `/mnt` for
+# every new mount in one of the state directories.
+if [ "${should_umount}" == "yes" ] ; then
+  umount "${MOUNT_POINT}"
+fi

@@ -483,7 +483,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     });
 
     if (this.defaultNodes ) {
-      setDefaultKarpenterProvisioners(this, karpenterVersion, this.ec2InstanceNodeGroupRole);
+      setDefaultKarpenterProvisioners(scope, this, karpenterVersion, this.ec2InstanceNodeGroupRole);
 
       // Upload the default podTemplate to the Amazon S3 asset bucket
       this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'));
@@ -520,6 +520,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       this.podTemplateS3LocationExecutorShared=this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-executor.yaml`);
 
       this.sharedDefaultConfig = JSON.stringify(SharedDefaultConfig);
+
     }
 
     // Tags the Amazon VPC and Subnets of the Amazon EKS Cluster
