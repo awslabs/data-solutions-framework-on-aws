@@ -4064,14 +4064,14 @@ The security group for Client VPN Endpoint.
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, props: DataZoneCustomAssetTypeProps)
+new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, props: DataZoneCustomAssetTypeFactoryProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps</code> | *No description.* |
 
 ---
 
@@ -4089,7 +4089,7 @@ new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, prop
 
 ##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps
 
 ---
 
@@ -4114,7 +4114,7 @@ Returns a string representation of this construct.
 ##### `createCustomAssetType` <a name="createCustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType"></a>
 
 ```typescript
-public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAssetTypeProps): CustomAssetType
+public createCustomAssetType(id: string, customAssetType: DataZoneCustomAssetTypeProps): CustomAssetType
 ```
 
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType.parameter.id"></a>
@@ -4125,7 +4125,7 @@ public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAs
 
 ###### `customAssetType`<sup>Required</sup> <a name="customAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType.parameter.customAssetType"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps
 
 ---
 
@@ -4328,39 +4328,39 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DataZoneMSKAssetType <a name="DataZoneMSKAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType"></a>
+### DataZoneMskAssetType <a name="DataZoneMskAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType"></a>
 
-#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer"></a>
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-new governance.DataZoneMSKAssetType(scope: Construct, id: string, props: DataZoneMSKAssetTypeProps)
+new governance.DataZoneMskAssetType(scope: Construct, id: string, props: DataZoneMskAssetTypeProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.props"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps
 
 ---
 
@@ -4368,12 +4368,12 @@ new governance.DataZoneMSKAssetType(scope: Construct, id: string, props: DataZon
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4381,7 +4381,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4393,16 +4393,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.isConstruct"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-governance.DataZoneMSKAssetType.isConstruct(x: any)
+governance.DataZoneMskAssetType.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4421,7 +4421,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4433,12 +4433,12 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.mskCustomAssetType">mskCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType">mskCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | *No description.* |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4450,7 +4450,7 @@ The tree node.
 
 ---
 
-##### `mskCustomAssetType`<sup>Required</sup> <a name="mskCustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.mskCustomAssetType"></a>
+##### `mskCustomAssetType`<sup>Required</sup> <a name="mskCustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType"></a>
 
 ```typescript
 public readonly mskCustomAssetType: CustomAssetType;
@@ -4464,12 +4464,12 @@ public readonly mskCustomAssetType: CustomAssetType;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4479,7 +4479,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetType.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -13273,78 +13273,6 @@ The revision of the Amazon MSK configuration to use.
 
 ---
 
-### CreateDataZoneCustomAssetTypeProps <a name="CreateDataZoneCustomAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps"></a>
-
-#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.Initializer"></a>
-
-```typescript
-import { governance } from '@cdklabs/aws-data-solutions-framework'
-
-const createDataZoneCustomAssetTypeProps: governance.CreateDataZoneCustomAssetTypeProps = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.assetTypeName">assetTypeName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.formTypes">formTypes</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.assetTypeDescription">assetTypeDescription</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `assetTypeName`<sup>Required</sup> <a name="assetTypeName" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.assetTypeName"></a>
-
-```typescript
-public readonly assetTypeName: string;
-```
-
-- *Type:* string
-
----
-
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.domainId"></a>
-
-```typescript
-public readonly domainId: string;
-```
-
-- *Type:* string
-
----
-
-##### `formTypes`<sup>Required</sup> <a name="formTypes" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.formTypes"></a>
-
-```typescript
-public readonly formTypes: DataZoneFormType[];
-```
-
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]
-
----
-
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.projectId"></a>
-
-```typescript
-public readonly projectId: string;
-```
-
-- *Type:* string
-
----
-
-##### `assetTypeDescription`<sup>Optional</sup> <a name="assetTypeDescription" id="@cdklabs/aws-data-solutions-framework.governance.CreateDataZoneCustomAssetTypeProps.property.assetTypeDescription"></a>
-
-```typescript
-public readonly assetTypeDescription: string;
-```
-
-- *Type:* string
-
----
-
 ### CustomAssetType <a name="CustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType"></a>
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.Initializer"></a>
@@ -14236,6 +14164,34 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ---
 
+### DataZoneCustomAssetTypeFactoryProps <a name="DataZoneCustomAssetTypeFactoryProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneCustomAssetTypeFactoryProps: governance.DataZoneCustomAssetTypeFactoryProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+
+---
+
 ### DataZoneCustomAssetTypeProps <a name="DataZoneCustomAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps"></a>
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.Initializer"></a>
@@ -14250,17 +14206,61 @@ const dataZoneCustomAssetTypeProps: governance.DataZoneCustomAssetTypeProps = { 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeName">assetTypeName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes">formTypes</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription">assetTypeDescription</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.removalPolicy"></a>
+##### `assetTypeName`<sup>Required</sup> <a name="assetTypeName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeName"></a>
 
 ```typescript
-public readonly removalPolicy: RemovalPolicy;
+public readonly assetTypeName: string;
 ```
 
-- *Type:* aws-cdk-lib.RemovalPolicy
+- *Type:* string
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+---
+
+##### `formTypes`<sup>Required</sup> <a name="formTypes" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes"></a>
+
+```typescript
+public readonly formTypes: DataZoneFormType[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]
+
+---
+
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId"></a>
+
+```typescript
+public readonly projectId: string;
+```
+
+- *Type:* string
+
+---
+
+##### `assetTypeDescription`<sup>Optional</sup> <a name="assetTypeDescription" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription"></a>
+
+```typescript
+public readonly assetTypeDescription: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -14278,19 +14278,9 @@ const dataZoneFormType: governance.DataZoneFormType = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model">model</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model">model</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required">required</a></code> | <code>boolean</code> | *No description.* |
-
----
-
-##### `model`<sup>Required</sup> <a name="model" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model"></a>
-
-```typescript
-public readonly model: string;
-```
-
-- *Type:* string
 
 ---
 
@@ -14304,7 +14294,17 @@ public readonly name: string;
 
 ---
 
-##### `required`<sup>Required</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required"></a>
+##### `model`<sup>Optional</sup> <a name="model" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model"></a>
+
+```typescript
+public readonly model: DataZoneFormTypeField[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]
+
+---
+
+##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required"></a>
 
 ```typescript
 public readonly required: boolean;
@@ -14314,28 +14314,78 @@ public readonly required: boolean;
 
 ---
 
-### DataZoneMSKAssetTypeProps <a name="DataZoneMSKAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps"></a>
+### DataZoneFormTypeField <a name="DataZoneFormTypeField" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField"></a>
 
-#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.Initializer"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-const dataZoneMSKAssetTypeProps: governance.DataZoneMSKAssetTypeProps = { ... }
+const dataZoneFormTypeField: governance.DataZoneFormTypeField = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type">type</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required">required</a></code> | <code>boolean</code> | *No description.* |
 
 ---
 
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.domainId"></a>
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+---
+
+##### `type`<sup>Required</sup> <a name="type" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type"></a>
+
+```typescript
+public readonly type: string;
+```
+
+- *Type:* string
+
+---
+
+##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required"></a>
+
+```typescript
+public readonly required: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+### DataZoneMskAssetTypeProps <a name="DataZoneMskAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneMskAssetTypeProps: governance.DataZoneMskAssetTypeProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.domainId"></a>
 
 ```typescript
 public readonly domainId: string;
@@ -14345,7 +14395,7 @@ public readonly domainId: string;
 
 ---
 
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.projectId"></a>
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId"></a>
 
 ```typescript
 public readonly projectId: string;
@@ -14355,7 +14405,7 @@ public readonly projectId: string;
 
 ---
 
-##### `dzCustomAssetTypeFactory`<sup>Optional</sup> <a name="dzCustomAssetTypeFactory" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.dzCustomAssetTypeFactory"></a>
+##### `dzCustomAssetTypeFactory`<sup>Optional</sup> <a name="dzCustomAssetTypeFactory" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.dzCustomAssetTypeFactory"></a>
 
 ```typescript
 public readonly dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory;
@@ -14365,7 +14415,7 @@ public readonly dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory;
 
 ---
 
-##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMSKAssetTypeProps.property.removalPolicy"></a>
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.removalPolicy"></a>
 
 ```typescript
 public readonly removalPolicy: RemovalPolicy;

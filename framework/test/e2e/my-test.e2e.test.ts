@@ -5,10 +5,11 @@
     */
 
 import * as cdk from 'aws-cdk-lib';
+import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
+import { DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
@@ -20,6 +21,8 @@ const stack = new cdk.Stack(app, 'E2eStack');
 const testStack = new TestStack('E2eTestStack', app, stack);
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+const DOMAIN_ID = 'dzd_dc495t9ime7von';
 
 new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
   domainId: 'dzd_dc495t9ime7von',
@@ -51,11 +54,31 @@ msk.addTopic('topicServerelss', {
   numPartitions: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
-new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer',{
-  domainId: 'dzd_dc495t9ime7von',
+new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
+  domainId: DOMAIN_ID,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
+const cfnProject = new CfnProject(stack, 'MyCfnProject', {
+  domainIdentifier: DOMAIN_ID,
+  description: 'MSK Project',
+  name: 'MSK',
+});
+
+new CfnProjectMembership(stack, 'ProjectMembership', {
+  designation: 'PROJECT_CONTRIBUTOR',
+  domainIdentifier: DOMAIN_ID,
+  projectIdentifier: cfnProject.attrId,
+  member: {
+    userIdentifier: 'arn:aws:iam::632368511077:role/gromav',
+  },
+});
+
+new DataZoneMskAssetType(stack, 'MskAssetType', {
+  domainId: DOMAIN_ID,
+  projectId: cfnProject.attrId,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+});
 
 new cdk.CfnOutput(stack, 'MyOutput', {
   value: 'test',
