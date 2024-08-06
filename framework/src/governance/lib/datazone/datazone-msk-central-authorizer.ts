@@ -21,7 +21,6 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
   public readonly eventRole : IRole;
   public readonly eventRule: IRule;
   public readonly stateMachine: IStateMachine;
-
   private readonly removalPolicy: RemovalPolicy;
 
   constructor(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps) {
