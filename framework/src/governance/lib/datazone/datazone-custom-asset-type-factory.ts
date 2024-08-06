@@ -4,9 +4,15 @@ import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, Se
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import { CreateDataZoneCustomAssetTypeProps, DataZoneCustomAssetTypeProps } from './datazone-custom-asset-type-props';
+import { DataZoneCustomAssetTypeProps } from './datazone-custom-asset-type-props';
+import { buildModelString } from './datazone-helpers';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
+
+
+export interface DataZoneCustomAssetTypeFactoryProps {
+  readonly removalPolicy?: RemovalPolicy;
+}
 
 export interface CustomAssetType {
   readonly domainIdentifier: string;
@@ -50,7 +56,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
   readonly handlerRole: IRole;
 
   private readonly removalPolicy: RemovalPolicy;
-  constructor(scope: Construct, id: string, props: DataZoneCustomAssetTypeProps) {
+  constructor(scope: Construct, id: string, props: DataZoneCustomAssetTypeFactoryProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: DataZoneCustomAssetTypeFactory.name,
     };
@@ -90,6 +96,19 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
         handler: 'index.handler',
         iamRole: this.handlerRole,
         timeout: Duration.minutes(5),
+        bundling: {
+          nodeModules: [
+            '@aws-sdk/client-datazone',
+          ],
+          commandHooks: {
+            afterBundling: () => [],
+            beforeBundling: () => [
+              'npx esbuild --version',
+            ],
+            beforeInstall: () => [
+            ],
+          },
+        },
       },
       removalPolicy: this.removalPolicy,
     });
@@ -104,8 +123,8 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
   }
 
   // TODO remove interface as parameter?
-  public createCustomAssetType(id: string, customAssetType: CreateDataZoneCustomAssetTypeProps): CustomAssetType {
-    const projMembership = new CfnProjectMembership(this, `dz-handler-${customAssetType.domainId}-${customAssetType.projectId}-membership`, {
+  public createCustomAssetType(id: string, customAssetType: DataZoneCustomAssetTypeProps): CustomAssetType {
+    const projMembership = new CfnProjectMembership(this, `${id}ProjectMembership`, {
       designation: 'PROJECT_OWNER',
       domainIdentifier: customAssetType.domainId,
       member: {
@@ -120,7 +139,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
       properties: {
         domainId: customAssetType.domainId,
         projectId: customAssetType.projectId,
-        formTypes: customAssetType.formTypes,
+        formTypes: customAssetType.formTypes.map( formType => { return { ...formType, model: buildModelString(formType) };}),
         assetTypeName: customAssetType.assetTypeName,
         assetTypeDescription: customAssetType.assetTypeDescription,
       },
