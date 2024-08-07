@@ -1,7 +1,4 @@
 {
     "name": "datazone-custom-asset-type",
-    "version": "0.1.0",
-    "dependencies": {
-        "@aws-sdk/client-datazone": "^3.624.0"
-      }
+    "version": "0.1.0"
 }

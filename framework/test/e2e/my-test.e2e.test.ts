@@ -9,7 +9,7 @@ import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
+import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
@@ -74,10 +74,13 @@ new CfnProjectMembership(stack, 'ProjectMembership', {
   },
 });
 
+const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', {removalPolicy: cdk.RemovalPolicy.DESTROY});
+
 new DataZoneMskAssetType(stack, 'MskAssetType', {
   domainId: DOMAIN_ID,
   projectId: cfnProject.attrId,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
+  dzCustomAssetTypeFactory: assetFactory,
 });
 
 new cdk.CfnOutput(stack, 'MyOutput', {
