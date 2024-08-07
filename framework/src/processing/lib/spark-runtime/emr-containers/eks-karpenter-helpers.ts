@@ -34,6 +34,8 @@ export function setDefaultKarpenterProvisioners(
   }).subnets;
 
   //Build a container image using the following Dockerfile: Dockerfile-nvme-raid0-mount and upload it to ECR
+  //The container is used by bottlerocket bootstrap container to execute a
+  //userData script which strip nvme ephemeral storage to raid0 and mount it
   const dockerImageAsset = new DockerImageAsset(scope, 'NvmeRaid0MountImage', {
     directory: join(__dirname, `resources/k8s/karpenter-provisioner-config/${karpenterVersion}`),
     file: 'Dockerfile-nvme-raid0-mount',
@@ -43,16 +45,16 @@ export function setDefaultKarpenterProvisioners(
     let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
-    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
+    let sharedDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterSharedDriverManifest-${index}`, sharedDriverManifestYAML);
 
-    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
+    let sharedExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-executor-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterSharedExecutorManifest-${index}`, sharedExecutorManifestYAML);
 
-    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
+    let notebookDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-driver-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterNotebookDriverManifest-${index}`, notebookDriverManifestYAML);
 
-    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
+    let notebookExecutorManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/notebook-executor-provisioner.yml`, subnet, nodeRole);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterNotebookExecutorManifest-${index}`, notebookExecutorManifestYAML);
   });
 }
@@ -66,7 +68,7 @@ export function setDefaultKarpenterProvisioners(
    * @param nodeRole the IAM role to use for the manifests
    * @return the Kubernetes manifest for Karpenter provisioned
    */
-export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole, imageUri: string): any {
+export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole, imageUri?: string): any {
 
   let manifest = Utils.readYamlDocument(path);
 
@@ -74,7 +76,10 @@ export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: 
   manifest = manifest.replace(/(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', cluster.clusterName);
   manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName);
-  manifest = manifest.replace(/(\{{REPLACE-WITH-IMAGE-ECR}})/g, imageUri);
+
+  if (imageUri) {
+    manifest = manifest.replace(/(\{{REPLACE-WITH-IMAGE-ECR}})/g, imageUri);
+  }
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 
