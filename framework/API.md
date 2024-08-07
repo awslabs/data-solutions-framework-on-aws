@@ -9511,9 +9511,9 @@ A construct to create an EKS cluster, configure it and enable it with EMR on EKS
 
 ```typescript
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
 
-const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+const kubectlLayer = new KubectlV30Layer(this, 'kubectlLayer');
 
 const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
   publicAccessCIDRs: ['10.0.0.0/16'],
@@ -18936,6 +18936,8 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
@@ -18957,6 +18959,16 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_2` <a name="V7_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2"></a>
+
+---
+
+
+##### `V7_1` <a name="V7_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_1"></a>
+
+---
+
 
 ##### `V7_0` <a name="V7_0" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0"></a>
 
@@ -19061,6 +19073,8 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
@@ -19082,6 +19096,16 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_2` <a name="V7_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2"></a>
+
+---
+
+
+##### `V7_1` <a name="V7_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_1"></a>
+
+---
+
 
 ##### `V7_0` <a name="V7_0" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0"></a>
 
@@ -19244,17 +19268,17 @@ This enum allow you to set the log level
 
 ### KarpenterVersion <a name="KarpenterVersion" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion"></a>
 
-The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 is supported.
+The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.37.0 is supported.
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0">V0_37_0</a></code> | *No description.* |
 
 ---
 
-##### `V0_32_1` <a name="V0_32_1" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1"></a>
+##### `V0_37_0` <a name="V0_37_0" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0"></a>
 
 ---
 
@@ -19387,6 +19411,8 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2">EMR_7_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_1">EMR_7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0">EMR_7_0</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_15">EMR_6_15</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_14">EMR_6_14</a></code> | *No description.* |
@@ -19397,6 +19423,16 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
+
+##### `EMR_7_2` <a name="EMR_7_2" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2"></a>
+
+---
+
+
+##### `EMR_7_1` <a name="EMR_7_1" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_1"></a>
+
+---
+
 
 ##### `EMR_7_0` <a name="EMR_7_0" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0"></a>
 

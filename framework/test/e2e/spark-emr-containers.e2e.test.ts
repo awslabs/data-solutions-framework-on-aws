@@ -7,7 +7,7 @@
  * @group e2e/processing/spark-emr-containers
  */
 
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
 import * as cdk from 'aws-cdk-lib';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
@@ -26,7 +26,7 @@ const { stack } = testStack;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-const kubectlLayer = new KubectlV27Layer(stack, 'kubectlLayer');
+const kubectlLayer = new KubectlV30Layer(stack, 'kubectlLayer');
 const eksAdminRole = Role.fromRoleArn(stack, 'EksAdminRole', `arn:aws:iam::${stack.account}:role/role-name-with-path`);
 
 const randomName = Utils.generateUniqueHash(stack, cdk.Stack.of(stack).stackName.slice(0, 5));

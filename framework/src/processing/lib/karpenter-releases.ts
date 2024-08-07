@@ -3,10 +3,10 @@
 
 /**
  * The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases)
- * At this time only v0.32.1 is supported.
+ * At this time only v0.37.0 is supported.
  */
 export enum KarpenterVersion {
-  V0_32_1 = 'v0.32.1',
+  V0_37_0 = '0.37.0',
 }
 
-export const DEFAULT_KARPENTER_VERSION: KarpenterVersion = KarpenterVersion.V0_32_1;
+export const DEFAULT_KARPENTER_VERSION: KarpenterVersion = KarpenterVersion.V0_37_0;

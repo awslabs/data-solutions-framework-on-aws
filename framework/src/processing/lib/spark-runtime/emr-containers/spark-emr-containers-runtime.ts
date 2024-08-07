@@ -53,9 +53,9 @@ import { DEFAULT_KARPENTER_VERSION } from '../../karpenter-releases';
  *
  * @example
  * import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
- * import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+ * import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
  *
- * const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+ * const kubectlLayer = new KubectlV30Layer(this, 'kubectlLayer');
  *
  * const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
  *   publicAccessCIDRs: ['10.0.0.0/16'],
@@ -93,7 +93,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The default EKS version
    */
-  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_27;
+  public static readonly DEFAULT_EKS_VERSION = KubernetesVersion.V1_30;
   /**
    * The default name of the EKS cluster
    */
@@ -483,7 +483,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
     });
 
     if (this.defaultNodes ) {
-      setDefaultKarpenterProvisioners(this, karpenterVersion, this.ec2InstanceNodeGroupRole);
+      setDefaultKarpenterProvisioners(scope, this, karpenterVersion, this.ec2InstanceNodeGroupRole);
 
       // Upload the default podTemplate to the Amazon S3 asset bucket
       this.uploadPodTemplate('defaultPodTemplates', join(__dirname, 'resources/k8s/pod-template'));
@@ -520,6 +520,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       this.podTemplateS3LocationExecutorShared=this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/shared-executor.yaml`);
 
       this.sharedDefaultConfig = JSON.stringify(SharedDefaultConfig);
+
     }
 
     // Tags the Amazon VPC and Subnets of the Amazon EKS Cluster
