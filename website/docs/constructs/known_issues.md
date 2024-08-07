@@ -1,3 +1,8 @@
+---
+sidebar_position: 5
+sidebar_label: Known issues
+---
+
 # Known issues
 
 ## CDK Synthesis stuck on Mac M processor family 
