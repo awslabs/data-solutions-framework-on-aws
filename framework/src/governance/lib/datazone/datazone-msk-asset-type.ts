@@ -1,16 +1,16 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
-import { DataZoneMSKAssetTypeProps } from './datazone-msk-asset-type-props';
+import { DataZoneMskAssetTypeProps } from './datazone-msk-asset-type-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
-export class DataZoneMSKAssetType extends TrackedConstruct {
+export class DataZoneMskAssetType extends TrackedConstruct {
   readonly mskCustomAssetType: CustomAssetType;
 
   private readonly removalPolicy: RemovalPolicy;
-  constructor(scope: Construct, id: string, props: DataZoneMSKAssetTypeProps) {
+  constructor(scope: Construct, id: string, props: DataZoneMskAssetTypeProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: DataZoneMSKAssetType.name,
+      trackingTag: DataZoneMskAssetType.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -20,39 +20,51 @@ export class DataZoneMSKAssetType extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
 
-    this.mskCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType('MSKCustomAssetType', {
+    this.mskCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType('MskCustomAssetType', {
       assetTypeName: 'MskTopicAssetType',
       assetTypeDescription: 'Custom asset type to support MSK topic asset',
       domainId: props.domainId,
       projectId: props.projectId,
       formTypes: [
         {
+          name: 'amazon.datazone.GlueTableFormType',
+          required: true,
+        },
+        {
           name: 'MskSourceReferenceForm',
-          model: `
-                    structure MskSourceReferenceForm {
-                        @required
-                        cluster_arn: String
-                    }
-                `,
+          model: [
+            {
+              name: 'cluster_arn',
+              type: 'String',
+              required: true,
+            },
+          ],
           required: true,
         },
         {
           name: 'KafkaSchemaForm',
-          model: `
-                        structure KafkaSchemaForm {
-                            @required
-                            kafka_topic: String
-
-                            @required
-                            schema_version: Integer
-
-                            @required
-                            schema_arn: String
-
-                            @required
-                            registry_arn: String
-                        }
-                    `,
+          model: [
+            {
+              name: 'kafka_topic',
+              type: 'String',
+              required: true,
+            },
+            {
+              name: 'schema_version',
+              type: 'String',
+              required: true,
+            },
+            {
+              name: 'schema_arn',
+              type: 'String',
+              required: true,
+            },
+            {
+              name: 'registry_arn',
+              type: 'String',
+              required: true,
+            },
+          ],
           required: true,
         },
       ],
