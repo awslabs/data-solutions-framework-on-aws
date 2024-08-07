@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { join } from 'path';
 import { Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
@@ -12,8 +14,6 @@ import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from './spark-emr-containers-runtime';
 import { Context, Utils } from '../../../../utils';
 import { KarpenterVersion } from '../../karpenter-releases';
-import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-import path = require('path');
 
 /**
  * @internal
@@ -22,7 +22,11 @@ import path = require('path');
  * @param karpenterVersion the Karpenter version to use for the provisioners
  * @param nodeRole the IAM role to use for the provisioners
  */
-export function setDefaultKarpenterProvisioners(scope: Construct, cluster: SparkEmrContainersRuntime, karpenterVersion: KarpenterVersion, nodeRole: IRole) {
+export function setDefaultKarpenterProvisioners(
+  scope: Construct,
+  cluster: SparkEmrContainersRuntime,
+  karpenterVersion: KarpenterVersion,
+  nodeRole: IRole) {
 
   const subnets = cluster.eksCluster.vpc.selectSubnets({
     onePerAz: true,
@@ -31,9 +35,9 @@ export function setDefaultKarpenterProvisioners(scope: Construct, cluster: Spark
 
   //Build a container image using the following Dockerfile: Dockerfile-nvme-raid0-mount and upload it to ECR
   const dockerImageAsset = new DockerImageAsset(scope, 'NvmeRaid0MountImage', {
-      directory: path.join(__dirname, `resources/k8s/karpenter-provisioner-config/${karpenterVersion}`),
-      file: 'Dockerfile-nvme-raid0-mount',
-    });
+    directory: join(__dirname, `resources/k8s/karpenter-provisioner-config/${karpenterVersion}`),
+    file: 'Dockerfile-nvme-raid0-mount',
+  });
 
   subnets.forEach((subnet, index) => {
     let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
