@@ -47,6 +47,7 @@ export function buildModelString(formType: DataZoneFormType): string|undefined {
 
 export function createSubscriptionTarget(
   scope: Construct,
+  id: string,
   customAssetType: CustomAssetType,
   name: string,
   provider: string,
@@ -56,7 +57,7 @@ export function createSubscriptionTarget(
 
   return new CfnSubscriptionTarget(
     scope,
-    `${customAssetType.name}${environmentId}SubscriptionTarget`,
+    `${id}SubscriptionTarget`,
     {
       applicableAssetTypes: [customAssetType.name],
       authorizedPrincipals: authorizedPrincipals.map((r) => r.roleArn),
