@@ -1,4 +1,4 @@
-import {CustomResource, Duration, RemovalPolicy, Stack} from 'aws-cdk-lib';
+import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import {
   Effect,
@@ -33,7 +33,7 @@ export class DataZoneCustomAsset extends TrackedConstruct {
     content: string;
     typeIdentifier: string;
     typeRevision?: string;
-  }[];
+  }[] | undefined;
   readonly description?: string;
   readonly externalIdentifier?: string;
   readonly glossaryTerms?: string[];
@@ -111,14 +111,6 @@ export class DataZoneCustomAsset extends TrackedConstruct {
     this.typeIdentifier = props.typeIdentifier;
     this.formsInput = props.formsInput;
 
-    // Fetch region and account ID from scope
-    const region = Stack.of(this).region;
-    const accountId = Stack.of(this).account;
-
-    // Optionally build the ARN if clusterName and topicName are provided
-    if (props.clusterName && props.topicName) {
-      this.externalIdentifier = buildMskTopicArn(region, accountId, props.clusterName, props.topicName);
-    }
 
     const crResp = new CustomResource(this, 'CustomResource', {
       serviceToken: this.serviceToken,
@@ -130,7 +122,7 @@ export class DataZoneCustomAsset extends TrackedConstruct {
         typeIdentifier: props.typeIdentifier,
         name: props.name,
         description: props.description,
-        externalIdentifier: this.externalIdentifier,
+        externalIdentifier: props.externalIdentifier,
         glossaryTerms: props.glossaryTerms,
         predictionConfiguration: props.predictionConfiguration,
         typeRevision: props.typeRevision,
@@ -147,15 +139,3 @@ export class DataZoneCustomAsset extends TrackedConstruct {
   }
 }
 
-/**
- * Generates an ARN for an Amazon MSK topic.
- *
- * @param region - The AWS region where the MSK cluster is located.
- * @param accountId - The AWS account ID.
- * @param clusterName - The name of the MSK cluster.
- * @param topicName - The name of the Kafka topic.
- * @returns The ARN string for the MSK topic.
- */
-function buildMskTopicArn(region: string, accountId: string, clusterName: string, topicName: string): string {
-  return `arn:aws:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
-}
