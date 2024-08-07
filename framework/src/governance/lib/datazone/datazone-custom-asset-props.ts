@@ -7,7 +7,7 @@ export interface DataZoneCustomAssetProps {
   projectId: string; // required
   name: string; // required
   typeIdentifier: string; // required
-  formsInput: {
+  formsInput?: {
     formName: string;
     content: string;
     typeIdentifier: string;
@@ -23,6 +23,4 @@ export interface DataZoneCustomAssetProps {
   }; // optional
   typeRevision?: string; // optional
   removalPolicy?: RemovalPolicy; // optional
-  clusterName?: string; // optional
-  topicName?: string; // optional
 }

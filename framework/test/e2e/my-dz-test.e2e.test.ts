@@ -11,8 +11,10 @@ import * as cdk from 'aws-cdk-lib';
 import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { TestStack } from './test-stack';
 import { DataZoneCustomAssetTypeFactory } from '../../src/governance';
+import { aws_glue as glue } from 'aws-cdk-lib';
 import { DataZoneCustomAsset } from '../../src/governance/lib/datazone/datazone-custom-asset';
 import { DataZoneFormType } from '../../src/governance/lib/datazone/datazone-form-type';
+import { DataZoneMSKCustomAsset } from '../../src/governance/lib/datazone/datazone-msk-custom-asset';
 // import { DataZoneMskCentralAuthorizer } from '../../src/governance';
 //
 // import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
@@ -67,17 +69,17 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 // });
 
 const cfnProject = new CfnProject(stack, 'MyCfnProject', {
-  domainIdentifier: '',
+  domainIdentifier: 'dzd_6ptm7de4q2m2lj',
   description: 'MSK Project',
   name: 'MSK',
 });
 
 new CfnProjectMembership(stack, 'ProjectMembership', {
   designation: 'PROJECT_CONTRIBUTOR',
-  domainIdentifier: '',
+  domainIdentifier: cfnProject.domainIdentifier,
   projectIdentifier: cfnProject.attrId,
   member: {
-    userIdentifier: '',
+    userIdentifier: 'arn:aws:iam::891377161433:role/Admin',
   },
 });
 
@@ -86,7 +88,7 @@ new CfnProjectMembership(stack, 'ProjectMembership', {
 
 const formType = new DataZoneFormType(stack, 'TestFormType', {
   domainId: cfnProject.domainIdentifier,
-  projectId: cfnProject.attrId,
+  projectId: 'bdqgy3h6re8i7b',
   name: 'TestFormType',
   fields: [
     { name: 'field1', type: 'String', required: true },
@@ -104,8 +106,8 @@ dzFactory.node.addDependency(cfnProject);
 dzFactory.createCustomAssetType('MSKCustomAssetType', {
   assetTypeName: 'MskTopicAssetType',
   assetTypeDescription: 'Custom asset type to support MSK topic asset',
-  domainId: '',
-  projectId: '',
+  domainId: cfnProject.domainIdentifier,
+  projectId: 'bdqgy3h6re8i7b',
   formTypes: [
     {
       name: 'MskSourceReferenceForm',
@@ -142,11 +144,10 @@ dzFactory.createCustomAssetType('MSKCustomAssetType', {
 // Create a Custom Asset
 new DataZoneCustomAsset(stack, 'TestCustomAsset', {
   domainId: cfnProject.domainIdentifier,
-  projectId: cfnProject.attrId,
+  projectId: 'bdqgy3h6re8i7b',
   name: 'TestCustomAsset',
   typeIdentifier: 'MskTopicAssetType',
-  clusterName: 'mskCluster',
-  topicName: 'testCustomAsset',
+  externalIdentifier: 'arn:aws:kafka:region:account:cluster/cluster-name/cluster-id',
   formsInput: [
     {
       formName: 'MskSourceReferenceForm',
@@ -168,9 +169,64 @@ new DataZoneCustomAsset(stack, 'TestCustomAsset', {
 
 });
 
+const cfnRegistry = new glue.CfnRegistry(stack, 'MyCfnRegistry', {
+  name: 'registry',
+});
+
+const cfnSchema = new glue.CfnSchema(stack, 'MyCfnSchema', {
+  compatibility: 'BACKWARD',
+  dataFormat: 'AVRO',
+  name: 'schema',
+  schemaDefinition: JSON.stringify({
+    type: 'record',
+    name: 'MyRecord',
+    fields: [
+      { name: 'id', type: 'int' },
+      { name: 'name', type: 'string' },
+    ],
+  }),
+  registry: {
+    name: cfnRegistry.name,
+  },
+});
+
+const cfnSchema2 = new glue.CfnSchema(stack, 'MyCfnSchema2', {
+  compatibility: 'BACKWARD',
+  dataFormat: 'AVRO',
+  name: 'schema2',
+  schemaDefinition: JSON.stringify({
+    type: 'record',
+    name: 'MyRecord',
+    fields: [
+      { name: 'id', type: 'int' },
+      { name: 'name', type: 'string' },
+      { name: 'topic', type: 'string' },
+    ],
+  }),
+  registry: {
+    name: cfnRegistry.name,
+  },
+});
+
+new DataZoneMSKCustomAsset(stack, 'MSKAsset', {
+  topicName: 'schema2',
+  clusterName: 'MyCluster',
+  projectId: cfnProject.attrId,
+  domainId: cfnProject.domainIdentifier,
+  includeSchema: true,
+  schemaArn: cfnSchema2.attrArn,
+  registryArn: cfnRegistry.attrArn,
+});
+
+
 new cdk.CfnOutput(stack, 'MyOutput', {
   value: formType.name,
 });
+
+new cdk.CfnOutput(stack, 'CFnSchema', {
+  value: cfnSchema.name,
+});
+
 
 let deployResult: Record<string, string>;
 
