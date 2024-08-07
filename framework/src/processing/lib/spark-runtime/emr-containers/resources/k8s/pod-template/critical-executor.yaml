@@ -16,7 +16,7 @@ spec:
   initContainers:
   - name: volume-permissions
     image: busybox
-    command: ['/bin/sh', '-c', 'chown -R 999 /pv/tmp']
+    command: ['/bin/sh', '-c', 'chown -R 999 /mnt/scratch']
     volumeMounts:
-    - mountPath: /pv/tmp
+    - mountPath: /mnt/scratch
       name: spark-local-dir-1
