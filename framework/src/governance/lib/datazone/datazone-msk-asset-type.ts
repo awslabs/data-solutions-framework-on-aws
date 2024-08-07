@@ -27,11 +27,11 @@ export class DataZoneMskAssetType extends TrackedConstruct {
       projectId: props.projectId,
       formTypes: [
         {
-          name: 'amazon.datazone.GlueTableFormType',
+          name: 'amazon.datazone.RelationalTableFormType',
           required: true,
         },
         {
-          name: 'MskSourceReferenceForm',
+          name: 'MskSourceReferenceFormType',
           model: [
             {
               name: 'cluster_arn',
@@ -42,7 +42,7 @@ export class DataZoneMskAssetType extends TrackedConstruct {
           required: true,
         },
         {
-          name: 'KafkaSchemaForm',
+          name: 'KafkaSchemaFormType',
           model: [
             {
               name: 'kafka_topic',
