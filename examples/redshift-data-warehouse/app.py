@@ -1,6 +1,8 @@
 import os
-from aws_cdk import App, Environment
+from aws_cdk import App, Environment, Aspects
 from stacks.main import RedshiftStack
+from cdk_nag import AwsSolutionsChecks
+
 
 # for development, use account/region from cdk cli
 dev_env = Environment(
@@ -9,6 +11,7 @@ dev_env = Environment(
 )
 
 app = App()
+Aspects.of(app).add(AwsSolutionsChecks(verbose= True))
 RedshiftStack(app, "RedshiftDataWarehouseExample", env=dev_env)
 
 app.synth()
