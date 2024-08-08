@@ -15489,6 +15489,7 @@ const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupP
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The Redshift Serverless Namespace associated with the Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.configParameters">configParameters</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup.ConfigParameterProperty[]</code> | Additional parameters to set for advanced control over the Redshift Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups">extraSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | The custom port to use when connecting to workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
@@ -15531,6 +15532,22 @@ public readonly baseCapacity: number;
 - *Default:* 128 RPU
 
 The base capacity of the Redshift Serverless Workgroup in RPU.
+
+---
+
+##### `configParameters`<sup>Optional</sup> <a name="configParameters" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.configParameters"></a>
+
+```typescript
+public readonly configParameters: ConfigParameterProperty[];
+```
+
+- *Type:* aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup.ConfigParameterProperty[]
+- *Default:* `require_ssl` parameter is set to true.
+
+Additional parameters to set for advanced control over the Redshift Workgroup.
+
+See {@link https://docs.aws.amazon.com/redshift-serverless/latest/APIReference/API_CreateWorkgroup.html#redshiftserverless-CreateWorkgroup-request-configParameters}
+for more information on what parameters can be set.
 
 ---
 
