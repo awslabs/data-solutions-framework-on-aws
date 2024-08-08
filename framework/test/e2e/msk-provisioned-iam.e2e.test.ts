@@ -8,6 +8,7 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
+import { Effect, PolicyDocument, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { Authentication, MSK_DEFAULT_VERSION, MskProvisioned } from '../../src/streaming/lib/msk';
 import { Utils } from '../../src/utils';
@@ -33,6 +34,25 @@ msk.setTopic('topicProvisioned', Authentication.IAM, {
   numPartitions: 1,
   replicationFactor: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
+
+const cluterPolicy = new PolicyDocument(
+  {
+    statements: [
+      new PolicyStatement ({
+        actions: [
+          'kafka:CreateVpcConnection',
+          'kafka:GetBootstrapBrokers',
+          'kafka:DescribeClusterV2',
+        ],
+        resources: [msk.cluster.attrArn],
+        effect: Effect.ALLOW,
+        principals: [new ServicePrincipal('firehose.amazonaws.com')],
+      }),
+    ],
+  },
+);
+
+msk.addClusterPolicy(cluterPolicy, 'cluterPolicy');
 
 new cdk.CfnOutput(stack, 'MskProvisionedCluster', {
   value: msk.cluster.attrArn,

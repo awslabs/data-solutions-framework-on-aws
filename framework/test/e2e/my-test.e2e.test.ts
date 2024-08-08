@@ -9,7 +9,8 @@ import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
+import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
+import { createSubscriptionTarget } from '../../src/governance/lib/datazone/datazone-helpers';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
@@ -45,7 +46,7 @@ const msk = new MskServerless(stack, 'cluster', {
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
 
-new Role(stack, 'consumerRole', {
+const consumerRole = new Role(stack, 'consumerRole', {
   assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
 });
 
@@ -74,11 +75,23 @@ new CfnProjectMembership(stack, 'ProjectMembership', {
   },
 });
 
-new DataZoneMskAssetType(stack, 'MskAssetType', {
+const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { removalPolicy: cdk.RemovalPolicy.DESTROY });
+
+const mskAssetType = new DataZoneMskAssetType(stack, 'MskAssetType', {
   domainId: DOMAIN_ID,
   projectId: cfnProject.attrId,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
+  dzCustomAssetTypeFactory: assetFactory,
 });
+
+createSubscriptionTarget(stack, 'Consumer',
+  mskAssetType.mskCustomAssetType,
+  'testSubscription',
+  'dsf',
+  'cuym174roc3d47',
+  [consumerRole],
+  assetFactory.createRole,
+);
 
 new cdk.CfnOutput(stack, 'MyOutput', {
   value: 'test',

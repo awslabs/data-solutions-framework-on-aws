@@ -5511,6 +5511,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy">addClusterPolicy</a></code> | Add a cluster policy. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy">deleteClusterPolicy</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.getBootstrapBrokers">getBootstrapBrokers</a></code> | Method to get bootstrap broker connection string based on the authentication mode. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.grantConsume">grantConsume</a></code> | Grant a principal permissions to consume from a topic. |
@@ -5529,6 +5530,30 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `addClusterPolicy` <a name="addClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy"></a>
+
+```typescript
+public addClusterPolicy(policy: PolicyDocument, id: string): CfnClusterPolicy
+```
+
+Add a cluster policy.
+
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy.parameter.policy"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyDocument
+
+the IAM principal to grand the consume action.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.addClusterPolicy.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for the Cluster Policy.
+
+---
 
 ##### `deleteClusterPolicy` <a name="deleteClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.deleteClusterPolicy"></a>
 
@@ -6353,6 +6378,7 @@ the ID of the CDK Construct.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy">addClusterPolicy</a></code> | Add a cluster policy. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic">addTopic</a></code> | Creates a topic in the MSK Serverless. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantConsume">grantConsume</a></code> | Grant a principal the right to consume data from a topic. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.grantProduce">grantProduce</a></code> | Grant a principal to produce data to a topic. |
@@ -6367,6 +6393,30 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `addClusterPolicy` <a name="addClusterPolicy" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy"></a>
+
+```typescript
+public addClusterPolicy(policy: PolicyDocument, id: string): CfnClusterPolicy
+```
+
+Add a cluster policy.
+
+###### `policy`<sup>Required</sup> <a name="policy" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy.parameter.policy"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyDocument
+
+the IAM principal to grand the consume action.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addClusterPolicy.parameter.id"></a>
+
+- *Type:* string
+
+the CDK id for the Cluster Policy.
+
+---
 
 ##### `addTopic` <a name="addTopic" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.addTopic"></a>
 
@@ -10046,7 +10096,6 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_codecommit.Repository</code> | The CodeCommit Repository created as part of the Spark CICD Pipeline. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
 
 ---
@@ -10108,18 +10157,6 @@ public readonly pipelineLogGroup: ILogGroup;
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
 The CloudWatch Log Group for storing the CodePipeline logs.
-
----
-
-##### `repository`<sup>Required</sup> <a name="repository" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.repository"></a>
-
-```typescript
-public readonly repository: Repository;
-```
-
-- *Type:* aws-cdk-lib.aws_codecommit.Repository
-
-The CodeCommit Repository created as part of the Spark CICD Pipeline.
 
 ---
 
@@ -10382,9 +10419,9 @@ A construct to create an EKS cluster, configure it and enable it with EMR on EKS
 
 ```typescript
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlV27Layer } from '@aws-cdk/lambda-layer-kubectl-v27';
+import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
 
-const kubectlLayer = new KubectlV27Layer(this, 'kubectlLayer');
+const kubectlLayer = new KubectlV30Layer(this, 'kubectlLayer');
 
 const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
   publicAccessCIDRs: ['10.0.0.0/16'],
@@ -17372,6 +17409,7 @@ const sparkEmrCICDPipelineProps: processing.SparkEmrCICDPipelineProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack to deploy in the different CDK Pipelines Stages. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.source">source</a></code> | <code>aws-cdk-lib.pipelines.CodePipelineSource</code> | The connection to allow code pipeline to connect to your code repository You can learn more about connections in this [link](https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.sparkApplicationName">sparkApplicationName</a></code> | <code>string</code> | The name of the Spark application to be deployed. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.cdkApplicationPath">cdkApplicationPath</a></code> | <code>string</code> | The path to the folder that contains the CDK Application. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.integTestEnv">integTestEnv</a></code> | <code>{[ key: string ]: string}</code> | The environment variables to create from the Application CDK Stack outputs and to pass to the integration tests. |
@@ -17392,6 +17430,18 @@ public readonly applicationStackFactory: ApplicationStackFactory;
 - *Type:* @cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory
 
 The application CDK Stack to deploy in the different CDK Pipelines Stages.
+
+---
+
+##### `source`<sup>Required</sup> <a name="source" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipelineProps.property.source"></a>
+
+```typescript
+public readonly source: CodePipelineSource;
+```
+
+- *Type:* aws-cdk-lib.pipelines.CodePipelineSource
+
+The connection to allow code pipeline to connect to your code repository You can learn more about connections in this [link](https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html).
 
 ---
 
@@ -20342,6 +20392,8 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
@@ -20363,6 +20415,16 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_2` <a name="V7_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2"></a>
+
+---
+
+
+##### `V7_1` <a name="V7_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_1"></a>
+
+---
+
 
 ##### `V7_0` <a name="V7_0" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0"></a>
 
@@ -20467,6 +20529,8 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_15">V6_15</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V6_14">V6_14</a></code> | *No description.* |
@@ -20488,6 +20552,16 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_2` <a name="V7_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2"></a>
+
+---
+
+
+##### `V7_1` <a name="V7_1" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_1"></a>
+
+---
+
 
 ##### `V7_0` <a name="V7_0" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0"></a>
 
@@ -20650,17 +20724,17 @@ This enum allow you to set the log level
 
 ### KarpenterVersion <a name="KarpenterVersion" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion"></a>
 
-The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.32.1 is supported.
+The list of supported Karpenter versions as defined [here](https://github.com/aws/karpenter/releases) At this time only v0.37.0 is supported.
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1">V0_32_1</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0">V0_37_0</a></code> | *No description.* |
 
 ---
 
-##### `V0_32_1` <a name="V0_32_1" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_32_1"></a>
+##### `V0_37_0` <a name="V0_37_0" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0"></a>
 
 ---
 
@@ -20793,6 +20867,8 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2">EMR_7_2</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_1">EMR_7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0">EMR_7_0</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_15">EMR_6_15</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_14">EMR_6_14</a></code> | *No description.* |
@@ -20803,6 +20879,16 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
+
+##### `EMR_7_2` <a name="EMR_7_2" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2"></a>
+
+---
+
+
+##### `EMR_7_1` <a name="EMR_7_1" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_1"></a>
+
+---
+
 
 ##### `EMR_7_0` <a name="EMR_7_0" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0"></a>
 

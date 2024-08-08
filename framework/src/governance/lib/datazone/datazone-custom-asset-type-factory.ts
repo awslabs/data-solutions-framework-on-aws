@@ -78,6 +78,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
                 'datazone:CreateAssetType',
                 'datazone:DeleteAssetType',
                 'datazone:DeleteFormType',
+                'datazone:GetFormType',
               ],
               resources: ['*'],
             }),
@@ -96,19 +97,6 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
         handler: 'index.handler',
         iamRole: this.handlerRole,
         timeout: Duration.minutes(5),
-        bundling: {
-          nodeModules: [
-            '@aws-sdk/client-datazone',
-          ],
-          commandHooks: {
-            afterBundling: () => [],
-            beforeBundling: () => [
-              'npx esbuild --version',
-            ],
-            beforeInstall: () => [
-            ],
-          },
-        },
       },
       removalPolicy: this.removalPolicy,
     });

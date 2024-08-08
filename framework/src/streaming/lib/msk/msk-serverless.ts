@@ -3,11 +3,12 @@
 
 import { CustomResource, RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal } from 'aws-cdk-lib/aws-iam';
-import { CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
+import { IPrincipal, PolicyDocument } from 'aws-cdk-lib/aws-iam';
+import { CfnClusterPolicy, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
+import { addClusterPolicy } from './msk-helpers';
 import { MskServerlessProps } from './msk-serverless-props';
 import { Authentication, MskClusterType, MskTopic, ClientAuthentication, KafkaClientLogLevel } from './msk-utils';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../../../utils';
@@ -175,4 +176,18 @@ export class MskServerless extends TrackedConstruct {
       Authentication.IAM,
       principal);
   }
+
+
+  /**
+    * Add a cluster policy
+    *
+    * @param {PolicyDocument} policy the IAM principal to grand the consume action.
+    * @param {string} id the CDK id for the Cluster Policy
+    * @return {CfnClusterPolicy}
+    */
+  public addClusterPolicy (policy: PolicyDocument, id: string): CfnClusterPolicy {
+
+    return addClusterPolicy(this, policy, id, this.cluster);
+  }
+
 }

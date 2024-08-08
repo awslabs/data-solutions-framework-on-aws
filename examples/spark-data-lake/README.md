@@ -70,27 +70,38 @@ pip install -r requirements.txt
 }
 ```
 
-5. Uncomment these 2 lines in the `infra/app.py` file:
+5. Create a connection, this will server to link your code repository to Amazon Code Pipeline. You can follow the instruction in the [AWS documentation](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections.html)
+to create a connection.
+
+6. Once you create the connection, get its ARN and update the code in `infra/stacks/cicd_stack.py`. Make sure to also update the repository and the branch. The snippet below shows the code you need to update.
+
+```python
+    source= CodePipelineSource.connection("your/repo", "branch",
+              connection_arn="arn:aws:codestar-connections:us-east-1:222222222222:connection/7d2469ff-514a-4e4f-9003-5ca4a43cdc41"
+            ),
+```
+
+7. Uncomment these 2 lines in the `infra/app.py` file:
 
 ```python
     # region=os.environ["CDK_DEFAULT_REGION"],
     # account=os.environ["CDK_DEFAULT_ACCOUNT"]
 ```
    
-6. Set the environment variables for cross account deployments
+8. Set the environment variables for cross account deployments
 
 ```bash
 export CDK_DEFAULT_REGION=<DEV_REGION>
 export CDK_DEFAULT_ACCOUNT=<DEV_ACCOUNT_ID> 
 ```
 
-6. Deploy the CICD pipeline stack:
+9. Deploy the CICD pipeline stack:
 
 ```
 cdk deploy CICDPipeline
 ```
 
-7. Add the CICD pipeline Git repository as a remote. The command is provided by the `CICDPipeline` stack as an output. Then push the code to the repository:
+10. Add the CICD pipeline Git repository as a remote. The command is provided by the `CICDPipeline` stack as an output. Then push the code to the repository:
 
 ```bash
 git remote add demo codecommit::<REGION>://SparkTest

@@ -4,11 +4,37 @@
 import * as path from 'path';
 import { RemovalPolicy, Arn, ArnFormat } from 'aws-cdk-lib';
 import { SecurityGroup, IVpc, ISecurityGroup, CfnSecurityGroupIngress, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { IPrincipal, IRole, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { IPrincipal, IRole, ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { CfnCluster, CfnClusterPolicy, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
+
+export function addClusterPolicy (
+  scope: Construct,
+  policy: PolicyDocument,
+  id: string,
+  cluster: CfnServerlessCluster | CfnCluster): CfnClusterPolicy {
+
+
+  let validateForResourcePolicy: string [] = policy.validateForResourcePolicy();
+
+  if (validateForResourcePolicy.length) {
+    console.log(validateForResourcePolicy.length);
+    throw new Error(`Error validating Policy document ${validateForResourcePolicy.join('\n')}`);
+  }
+
+  const cfnClusterPolicy = new CfnClusterPolicy(scope, id, {
+    clusterArn: cluster.attrArn,
+    policy: policy.toJSON(),
+  });
+
+  cfnClusterPolicy.addDependency(cluster);
+
+  return cfnClusterPolicy;
+
+}
 
 function parseMskArn(stringArn: string): { partition: string; region: string; account: string; clusterNameUuid: string } {
 

@@ -95,3 +95,8 @@ spec:
     httpPutResponseHopLimit: 2
     httpTokens: required
   amiFamily: Bottlerocket
+  userData: |
+    [settings.bootstrap-containers.bootstrap-nvme-raid0]
+    source = "{{REPLACE-WITH-IMAGE-ECR}}"
+    mode = "once"
+    essential = true

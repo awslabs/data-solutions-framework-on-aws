@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { join } from 'path';
 import { Duration, RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
 import { SubnetType, ISubnet, SecurityGroup, Port, ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 import { HelmChart, ICluster } from 'aws-cdk-lib/aws-eks';
 import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SqsQueue } from 'aws-cdk-lib/aws-events-targets';
@@ -20,15 +22,27 @@ import { KarpenterVersion } from '../../karpenter-releases';
  * @param karpenterVersion the Karpenter version to use for the provisioners
  * @param nodeRole the IAM role to use for the provisioners
  */
-export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRuntime, karpenterVersion: KarpenterVersion, nodeRole: IRole) {
+export function setDefaultKarpenterProvisioners(
+  scope: Construct,
+  cluster: SparkEmrContainersRuntime,
+  karpenterVersion: KarpenterVersion,
+  nodeRole: IRole) {
 
   const subnets = cluster.eksCluster.vpc.selectSubnets({
     onePerAz: true,
     subnetType: SubnetType.PRIVATE_WITH_EGRESS,
   }).subnets;
 
-  subnets.forEach( (subnet, index) => {
-    let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole);
+  //Build a container image using the following Dockerfile: Dockerfile-nvme-raid0-mount and upload it to ECR
+  //The container is used by bottlerocket bootstrap container to execute a
+  //userData script which strip nvme ephemeral storage to raid0 and mount it
+  const dockerImageAsset = new DockerImageAsset(scope, 'NvmeRaid0MountImage', {
+    directory: join(__dirname, `resources/k8s/karpenter-provisioner-config/${karpenterVersion}`),
+    file: 'Dockerfile-nvme-raid0-mount',
+  });
+
+  subnets.forEach((subnet, index) => {
+    let criticalManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/critical-provisioner.yml`, subnet, nodeRole, dockerImageAsset.imageUri);
     cluster.addKarpenterNodePoolAndNodeClass(`karpenterCriticalManifest-${index}`, criticalManifestYAML);
 
     let sharedDriverManifestYAML = karpenterManifestSetup(cluster.eksCluster, `${__dirname}/resources/k8s/karpenter-provisioner-config/${karpenterVersion}/shared-driver-provisioner.yml`, subnet, nodeRole);
@@ -54,14 +68,18 @@ export function setDefaultKarpenterProvisioners(cluster: SparkEmrContainersRunti
    * @param nodeRole the IAM role to use for the manifests
    * @return the Kubernetes manifest for Karpenter provisioned
    */
-export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole): any {
+export function karpenterManifestSetup(cluster: ICluster, path: string, subnet: ISubnet, nodeRole: IRole, imageUri?: string): any {
 
   let manifest = Utils.readYamlDocument(path);
 
   manifest = manifest.replace('{{subnet-id}}', subnet.subnetId);
-  manifest = manifest.replace( /(\{{az}})/g, subnet.availabilityZone);
+  manifest = manifest.replace(/(\{{az}})/g, subnet.availabilityZone);
   manifest = manifest.replace('{{cluster-name}}', cluster.clusterName);
   manifest = manifest.replace(/(\{{ROLENAME}})/g, nodeRole.roleName);
+
+  if (imageUri) {
+    manifest = manifest.replace(/(\{{REPLACE-WITH-IMAGE-ECR}})/g, imageUri);
+  }
 
   let manfifestYAML: any = manifest.split('---').map((e: any) => Utils.loadYaml(e));
 
@@ -87,7 +105,7 @@ export function karpenterSetup(cluster: ICluster,
   nodeRole: IRole,
   karpenterRemovalPolicy: RemovalPolicy,
   karpenterVersion?: KarpenterVersion,
-): [HelmChart, IRole, IQueue, ISecurityGroup, Array<IRule> ] {
+): [HelmChart, IRole, IQueue, ISecurityGroup, Array<IRule>] {
 
   const removalPolicy = Context.revertRemovalPolicy(scope, karpenterRemovalPolicy);
 
@@ -268,7 +286,7 @@ export function karpenterSetup(cluster: ICluster,
     actions: ['sqs:DeleteMessage', 'sqs:GetQueueAttributes', 'sqs:GetQueueUrl', 'sqs:ReceiveMessage'],
   });
 
-  const allowAPIServerEndpointDiscovery : PolicyStatement = new PolicyStatement({
+  const allowAPIServerEndpointDiscovery: PolicyStatement = new PolicyStatement({
     sid: 'AllowAPIServerEndpointDiscovery',
     effect: Effect.ALLOW,
     resources: [`arn:aws:eks:${Stack.of(scope).region}:${Stack.of(scope).account}:cluster/${clusterName}`],
@@ -381,11 +399,9 @@ export function karpenterSetup(cluster: ICluster,
         },
       },
       settings: {
-        aws: {
-          clusterName: clusterName,
-          clusterEndpoint: cluster.clusterEndpoint,
-          interruptionQueueName: karpenterInterruptionQueue.queueName,
-        },
+        clusterName: clusterName,
+        clusterEndpoint: cluster.clusterEndpoint,
+        interruptionQueueName: karpenterInterruptionQueue.queueName,
       },
 
     },
@@ -456,5 +472,5 @@ export function karpenterSetup(cluster: ICluster,
 
   manifestApply.node.addDependency(karpenterChart);
 
-  return [karpenterChart, karpenterAccount.role, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]] ;
+  return [karpenterChart, karpenterAccount.role, karpenterInterruptionQueue, karpenterInstancesSg, [scheduledChangeRule, stateChangeRule]];
 }

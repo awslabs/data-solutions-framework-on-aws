@@ -9,9 +9,10 @@
 
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { TestStack } from './test-stack';
-import { SparkEmrCICDPipeline, SparkImage } from '../../lib/processing';
-import { ApplicationStackFactory, CICDStage } from '../../lib/utils';
+import { SparkEmrCICDPipeline, SparkImage } from '../../src/processing';
+import { ApplicationStackFactory, CICDStage } from '../../src/utils';
 
 jest.setTimeout(9000000);
 
@@ -64,6 +65,9 @@ const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
   },
+  source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+    connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+  }),
   removalPolicy: RemovalPolicy.DESTROY,
 });
 
