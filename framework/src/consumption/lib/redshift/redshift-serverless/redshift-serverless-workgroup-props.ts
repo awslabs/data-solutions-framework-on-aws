@@ -3,6 +3,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { SecurityGroup, SubnetSelection, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { CfnWorkgroup } from 'aws-cdk-lib/aws-redshiftserverless';
 import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
 
 /**
@@ -55,4 +56,12 @@ export interface RedshiftServerlessWorkgroupProps {
    * @default - 5439
    */
   readonly port?: number;
+
+  /**
+   * Additional parameters to set for advanced control over the Redshift Workgroup.
+   * See {@link https://docs.aws.amazon.com/redshift-serverless/latest/APIReference/API_CreateWorkgroup.html#redshiftserverless-CreateWorkgroup-request-configParameters}
+   * for more information on what parameters can be set.
+   * @default - `require_ssl` parameter is set to true.
+   */
+  readonly configParameters?: CfnWorkgroup.ConfigParameterProperty[];
 }

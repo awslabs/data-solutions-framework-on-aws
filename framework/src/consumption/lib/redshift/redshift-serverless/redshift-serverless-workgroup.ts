@@ -104,6 +104,17 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
     this.connections = initSecurityGroupDetails.primaryConnections;
     this.port = props.port || RedshiftServerlessWorkgroup.DEFAULT_PORT;
 
+    let configParameters: CfnWorkgroup.ConfigParameterProperty[] = [
+      {
+        parameterKey: 'require_ssl',
+        parameterValue: 'true',
+      },
+    ];
+
+    if (props.configParameters) {
+      configParameters = props.configParameters.concat(configParameters);
+    }
+
     this.cfnResource = new CfnWorkgroup(this, 'Workgroup', {
       workgroupName: `${props.name}${Utils.generateUniqueHash(this, id)}`,
       baseCapacity: props.baseCapacity,
@@ -113,6 +124,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
       publiclyAccessible: false,
       subnetIds: this.selectedSubnets.subnetIds,
       securityGroupIds: initSecurityGroupDetails.securityGroupIds,
+      configParameters,
     });
 
     this.cfnResource.applyRemovalPolicy(this.removalPolicy);
