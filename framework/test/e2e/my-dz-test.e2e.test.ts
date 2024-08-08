@@ -13,7 +13,6 @@ import { TestStack } from './test-stack';
 import { DataZoneCustomAssetTypeFactory } from '../../src/governance';
 import { aws_glue as glue } from 'aws-cdk-lib';
 import { DataZoneCustomAsset } from '../../src/governance/lib/datazone/datazone-custom-asset';
-import { DataZoneFormType } from '../../src/governance/lib/datazone/datazone-form-type';
 import { DataZoneMSKCustomAsset } from '../../src/governance/lib/datazone/datazone-msk-custom-asset';
 // import { DataZoneMskCentralAuthorizer } from '../../src/governance';
 //
@@ -86,16 +85,16 @@ new CfnProjectMembership(stack, 'ProjectMembership', {
 
 // cfnProject.node.addDependency(userProfile);
 
-const formType = new DataZoneFormType(stack, 'TestFormType', {
-  domainId: cfnProject.domainIdentifier,
-  projectId: 'bdqgy3h6re8i7b',
-  name: 'TestFormType',
-  fields: [
-    { name: 'field1', type: 'String', required: true },
-    { name: 'fiedl2', type: 'Integer', required: false },
-  ],
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
-});
+// const formType = new DataZoneFormType(stack, 'TestFormType', {
+//   domainId: cfnProject.domainIdentifier,
+//   projectId: 'bdqgy3h6re8i7b',
+//   name: 'TestFormType',
+//   fields: [
+//     { name: 'field1', type: 'String', required: true },
+//     { name: 'fiedl2', type: 'Integer', required: false },
+//   ],
+//   removalPolicy: cdk.RemovalPolicy.DESTROY,
+// });
 
 const dzFactory = new DataZoneCustomAssetTypeFactory(stack, 'DZCustomAssetTypeHandler', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -103,43 +102,6 @@ const dzFactory = new DataZoneCustomAssetTypeFactory(stack, 'DZCustomAssetTypeHa
 
 dzFactory.node.addDependency(cfnProject);
 
-dzFactory.createCustomAssetType('MSKCustomAssetType', {
-  assetTypeName: 'MskTopicAssetType',
-  assetTypeDescription: 'Custom asset type to support MSK topic asset',
-  domainId: cfnProject.domainIdentifier,
-  projectId: 'bdqgy3h6re8i7b',
-  formTypes: [
-    {
-      name: 'MskSourceReferenceForm',
-      model: `
-                    structure MskSourceReferenceForm {
-                        @required
-                        cluster_arn: String
-                    }
-                `,
-      required: true,
-    },
-    {
-      name: 'KafkaSchemaForm',
-      model: `
-                        structure KafkaSchemaForm {
-                            @required
-                            kafka_topic: String
-
-                            @required
-                            schema_version: Integer
-
-                            @required
-                            schema_arn: String
-
-                            @required
-                            registry_arn: String
-                        }
-                    `,
-      required: true,
-    },
-  ],
-});
 
 // Create a Custom Asset
 new DataZoneCustomAsset(stack, 'TestCustomAsset', {
@@ -173,7 +135,7 @@ const cfnRegistry = new glue.CfnRegistry(stack, 'MyCfnRegistry', {
   name: 'registry',
 });
 
-const cfnSchema = new glue.CfnSchema(stack, 'MyCfnSchema', {
+new glue.CfnSchema(stack, 'MyCfnSchema', {
   compatibility: 'BACKWARD',
   dataFormat: 'AVRO',
   name: 'schema',
@@ -208,25 +170,26 @@ const cfnSchema2 = new glue.CfnSchema(stack, 'MyCfnSchema2', {
   },
 });
 
-new DataZoneMSKCustomAsset(stack, 'MSKAsset', {
-  topicName: 'schema2',
-  clusterName: 'MyCluster',
+const mskasset = new DataZoneMSKCustomAsset(stack, 'MSKAsset', {
+  topicName: 'topic1',
+  clusterName: 'MyCluster2',
+  latestVersion: true,
   projectId: cfnProject.attrId,
   domainId: cfnProject.domainIdentifier,
+  // schemaVersion: 1,
+  registryName: cfnRegistry.name,
+  schemaName: cfnSchema2.name,
+  // schemaDefinition: '{"type":"record","name":"MyRecord","fields":[{"name":"name","type":"string"},{"name":"topic","type":"string"}]}',
   includeSchema: true,
-  schemaArn: cfnSchema2.attrArn,
-  registryArn: cfnRegistry.attrArn,
-});
-
-
-new cdk.CfnOutput(stack, 'MyOutput', {
-  value: formType.name,
 });
 
 new cdk.CfnOutput(stack, 'CFnSchema', {
-  value: cfnSchema.name,
+  value: cfnSchema2.name,
 });
 
+new cdk.CfnOutput(stack, 'asset', {
+  value: mskasset.projectId,
+});
 
 let deployResult: Record<string, string>;
 
@@ -239,5 +202,5 @@ beforeAll(async() => {
 
 it('mytest', async () => {
   // THEN
-  expect(deployResult.MyOutput).toContain('TestFormType');
+  expect(deployResult.CFnSchema).toContain('schema2');
 });

@@ -8,7 +8,11 @@ export interface DataZoneMSKCustomAssetProps {
   projectId: string;
   schemaVersion?: number;
   schemaArn?: string;
-  registryArn?: string;
+  sourceIdentifier?: string;
+  schemaDefinition?: string;
+  latestVersion?: boolean;
+  readonly registryName?: string;
+  readonly schemaName?: string | undefined;
   readonly removalPolicy?: RemovalPolicy;
 
 }
