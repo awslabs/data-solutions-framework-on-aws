@@ -1,34 +1,33 @@
-import { Stack } from 'aws-cdk-lib';
+import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
+import {
+  Effect,
+  IRole,
+  ManagedPolicy,
+  PolicyDocument,
+  PolicyStatement,
+  Role,
+  ServicePrincipal,
+} from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import { DataZoneCustomAsset } from './datazone-custom-asset';
 import { DataZoneMSKCustomAssetProps } from './datazone-msk-custom-asset-props';
-// import { GlueSchemaRegistryVersion } from './glue-schema-registry-version';
-import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
-
-interface Column {
-  columnName: string;
-  dataType: string;
-}
-
-interface FormInput {
-  formName: string;
-  typeIdentifier: string;
-  content: string;
-}
-
-interface SchemaField {
-  name: string;
-  type: any; // 'type' can be a string or a nested object
-}
-
-interface SchemaDefinition {
-  type: string;
-  name: string;
-  fields: SchemaField[];
-}
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 export class DataZoneMSKCustomAsset extends TrackedConstruct {
-  readonly MSKAsset: DataZoneCustomAsset;
+  readonly createLogGroup: ILogGroup;
+  readonly createFunction: IFunction;
+  readonly createRole: IRole;
+  readonly statusLogGroup: ILogGroup;
+  readonly statusFunction: IFunction;
+  readonly statusRole: IRole;
+  readonly serviceToken: string;
+  readonly domainId: string;
+  readonly projectId: string;
+  readonly name: string;
+  readonly removalPolicy?: RemovalPolicy;
 
   constructor(scope: Construct, id: string, props: DataZoneMSKCustomAssetProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -37,141 +36,110 @@ export class DataZoneMSKCustomAsset extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
-    // Fetch region and account ID from scope
-    const region = Stack.of(this).region;
-    const accountId = Stack.of(this).account;
+    this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    // Initialize formsInput with MskSourceReferenceForm
-    const formsInput: FormInput[] = [
-      {
-        formName: 'MskSourceReferenceForm',
-        typeIdentifier: 'MskSourceReferenceForm',
-        content: JSON.stringify({
-          cluster_arn: buildMskKafkaArn(region, accountId, props.clusterName),
+    // Validation logic
+    if (props.latestVersion && props.schemaVersion) {
+      throw new Error('If latestVersion is true, schemaVersionNumber cannot be provided.');
+    }
+
+    if (props.schemaArn && (props.registryName || props.schemaName)) {
+      throw new Error('If schemaArn is provided, neither registryName nor schemaName can be provided.');
+    }
+
+    if (props.registryName && !props.schemaName) {
+      throw new Error('If registryName is provided, schemaName must also be provided.');
+    }
+
+    const handlerRole = new Role(this, 'HandlerRole', {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [
+        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+      ],
+      inlinePolicies: {
+        DataZonePermission: new PolicyDocument({
+          statements: [
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
+                'datazone:CreateAsset',
+                'datazone:CreateAssetType',
+                'datazone:CreateFormType',
+                'datazone:GetAssetType',
+                'datazone:GetFormType',
+                'glue:GetSchemaVersion',
+                'glue:ListSchemaVersions',
+                'datazone:CreateAssetRevision',
+              ],
+              resources: ['*'],
+            }),
+          ],
         }),
       },
-    ];
-
-    // If includeSchema is true, add additional schema-related forms
-    if (props.includeSchema) {
-      // const schema = new GlueSchemaRegistryVersion(this, 'Schema', {
-      //   schemaArn: props.schemaArn,
-      //   latestVersion: true,
-      // });
-
-      const relationalFormInput = buildRelationalTableFormInput(
-        '{"type":"record","name":"MyRecord","fields":[{"name":"id","type":"int"},{"name":"name","type":"string"},{"name":"topic","type":"string"}]}'
-        , //Fn.sub('${SchemaDefinitionOutput}', { SchemaDefinitionOutput: schema.schemaDefinition }),
-        props.topicName,
-      );
-
-      // // Create CloudFormation outputs for dynamic properties
-      // const schemaArnOutput = Fn.sub('${SchemaArnOutput}', { SchemaArnOutput: String(schema.schemaArn) });
-      //
-      // const schemaVersionOutput = Fn.sub('${SchemaVersionOutput}', { SchemaVersionOutput: String(schema.schemaVersionNumber) });
-
-
-      if (relationalFormInput) { // Ensure relationalFormInput is not null
-        formsInput.push({
-          formName: relationalFormInput.formName,
-          typeIdentifier: relationalFormInput.typeIdentifier,
-          content: relationalFormInput.content,
-        });
-      }
-
-      formsInput.push({
-        formName: 'KafkaSchemaForm',
-        typeIdentifier: 'KafkaSchemaForm',
-        content: JSON.stringify({
-          kafka_topic: props.topicName,
-          schema_version: 1,
-          schema_arn: 'arn',
-          registry_arn: props.registryArn,
-        }),
-      });
-    }
-
-    this.MSKAsset = new DataZoneCustomAsset(this, 'MSKAsset', {
-      domainId: props.domainId,
-      projectId: props.projectId,
-      name: props.topicName,
-      typeIdentifier: 'MskTopicAssetType',
-      externalIdentifier: buildMskTopicArn(region, accountId, props.clusterName, props.topicName),
-      formsInput: formsInput,
     });
-  }
-}
 
-/**
- * Generates an ARN for an Amazon MSK topic.
- *
- * @param region - The AWS region where the MSK cluster is located.
- * @param accountId - The AWS account ID.
- * @param clusterName - The name of the MSK cluster.
- * @param topicName - The name of the Kafka topic.
- * @returns The ARN string for the MSK topic.
- */
-function buildMskTopicArn(region: string, accountId: string, clusterName: string, topicName: string): string {
-  return `arn:aws:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
-}
+    const membership = new CfnProjectMembership(this, 'ProjectMembership', {
+      designation: 'PROJECT_CONTRIBUTOR',
+      domainIdentifier: props.domainId,
+      projectIdentifier: props.projectId,
+      member: {
+        userIdentifier: handlerRole.roleArn,
+      },
+    });
 
-/**
- * Generates an ARN for an Amazon MSK cluster.
- *
- * @param region - The AWS region where the MSK cluster is located.
- * @param accountId - The AWS account ID.
- * @param clusterName - The name of the MSK cluster.
- * @returns The ARN string for the MSK cluster.
- */
-function buildMskKafkaArn(region: string, accountId: string, clusterName: string): string {
-  return `arn:aws:kafka:${region}:${accountId}:cluster/${clusterName}/*`;
-}
+    handlerRole.applyRemovalPolicy(this.removalPolicy);
 
-/**
- * Build a relational table form input from schema definition string
- * @param schemaDefinition JSON schema definition as a string
- * @param topicName Name of the topic to be used as the table name
- * @returns Form input object or null if there's an error
- */
-function buildRelationalTableFormInput(schemaDefinition: string, topicName: string): FormInput | null {
-  try {
-    // Parse schema definition JSON
-    const schemaJson: SchemaDefinition = JSON.parse(schemaDefinition);
+    const provider = new DsfProvider(this, 'Provider', {
+      providerName: 'DataZoneMSKCustomAsset',
+      onEventHandlerDefinition: {
+        depsLockFilePath: __dirname + '/resources/datazone-msk-custom-asset/package-lock.json',
+        entryFile: __dirname + '/resources/datazone-msk-custom-asset/index.mjs',
+        handler: 'index.handler',
+        iamRole: handlerRole,
+        timeout: Duration.minutes(5),
+      },
+      removalPolicy: this.removalPolicy,
+    });
 
-    // Initialize columns list
-    const columns: Column[] = [];
+    this.createLogGroup = provider.onEventHandlerLogGroup;
+    this.createFunction = provider.onEventHandlerFunction;
+    this.createRole = provider.onEventHandlerRole;
+    this.statusLogGroup = provider.isCompleteHandlerLog!;
+    this.statusFunction = provider.isCompleteHandlerFunction!;
+    this.statusRole = provider.isCompleteHandlerRole!;
+    this.serviceToken = provider.serviceToken;
 
-    // Check if 'fields' is present in the schema definition
-    if ('fields' in schemaJson) {
-      for (const field of schemaJson.fields) {
-        let columnType = field.type;
+    // Get region and account ID from the current stack
+    const stack = Stack.of(this);
+    const region = stack.region;
+    const accountId = stack.account;
 
-        // Adjust type if it's a nested structure
-        if (typeof columnType === 'object' && columnType !== null && 'type' in columnType) {
-          columnType = columnType.type;
-        }
+    const crResp = new CustomResource(this, 'CustomResource', {
+      serviceToken: this.serviceToken,
+      removalPolicy: this.removalPolicy,
+      properties: {
+        domainId: props.domainId,
+        accountId: accountId,
+        region: region,
+        schemaName: props.schemaName,
+        registryName: props.registryName,
+        projectId: props.projectId,
+        includeSchema: props.includeSchema,
+        topicName: props.topicName,
+        clusterName: props.clusterName,
+        schemaArn: props.schemaArn,
+        latestVersion: props.latestVersion,
+        schemaVersionNumber: props.schemaVersion,
+        sourceIdentifier: props.sourceIdentifier,
+        schemaDefinition: props.schemaDefinition,
+      },
+    });
 
-        columns.push({
-          columnName: field.name,
-          dataType: columnType,
-        });
-      }
+    crResp.node.addDependency(membership);
 
-      // Return the relational table form input
-      return {
-        formName: 'RelationalTableForm',
-        typeIdentifier: 'amazon.datazone.RelationalTableFormType',
-        content: JSON.stringify({
-          tableName: topicName, // Use topic name as table name
-          columns: columns, // Use parsed columns from schema definition
-        }),
-      };
-    } else {
-      console.error('Schema definition does not contain "fields".');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error parsing schema definition:', error);
-    return null;
+    // Expose the properties
+    this.domainId = crResp.getAttString('domainId');
+    this.projectId = props.projectId;
+    this.name = crResp.getAttString('name');
   }
 }
