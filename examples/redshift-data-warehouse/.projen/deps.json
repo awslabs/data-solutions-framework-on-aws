@@ -9,16 +9,16 @@
       "type": "devenv"
     },
     {
+      "name": "cdk-nag",
+      "type": "devenv"
+    },
+    {
       "name": "pytest",
       "type": "devenv"
     },
     {
       "name": "aws-cdk-lib",
       "version": "2.145.0",
-      "type": "runtime"
-    },
-    {
-      "name": "cdk-nag",
       "type": "runtime"
     },
     {

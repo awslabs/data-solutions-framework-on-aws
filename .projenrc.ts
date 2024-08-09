@@ -263,6 +263,7 @@ const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
+    'cdk-nag',
     "black",
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
@@ -322,6 +323,7 @@ const adsfQuickstart = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
+    'cdk-nag',
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black"
   ],
@@ -383,6 +385,7 @@ const opensearchQuickstart = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
+    'cdk-nag',
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black"
   ],
@@ -445,7 +448,8 @@ const redshiftDataWarehouseExample = new awscdk.AwsCdkPythonApp({
   devDeps: [
     "pytest",
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
-    "black"
+    "black",
+    'cdk-nag',
   ],
   pythonExec: 'python3',
   venvOptions: {

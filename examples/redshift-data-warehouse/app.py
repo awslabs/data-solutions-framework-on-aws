@@ -1,7 +1,9 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+ 
 import os
-from aws_cdk import App, Environment, Aspects
+from aws_cdk import App, Environment
 from stacks.main import RedshiftStack
-from cdk_nag import AwsSolutionsChecks
 
 
 # for development, use account/region from cdk cli
@@ -11,7 +13,6 @@ dev_env = Environment(
 )
 
 app = App()
-Aspects.of(app).add(AwsSolutionsChecks(verbose= True))
 RedshiftStack(app, "RedshiftDataWarehouseExample", env=dev_env)
 
 app.synth()

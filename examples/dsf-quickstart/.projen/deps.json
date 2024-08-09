@@ -9,6 +9,10 @@
       "type": "devenv"
     },
     {
+      "name": "cdk-nag",
+      "type": "devenv"
+    },
+    {
       "name": "pytest",
       "type": "devenv"
     },
