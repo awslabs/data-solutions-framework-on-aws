@@ -28,14 +28,6 @@ def results():
     )
 
     NagSuppressions.add_resource_suppressions_by_path(stack,
-        "/my-stack-test/MyOpenSearchCluster/Domain/Resource",
-        [
-            {'id':'AwsSolutions-OS4', 'reason':'Domain is created with single AZ and no zone-awareness to optimize costs' },
-            {'id':'AwsSolutions-OS7', 'reason':'Domain is created without dedicated master nodes to optimize costs' },
-        ]
-    )
-
-    NagSuppressions.add_resource_suppressions_by_path(stack,
         "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a",
         [
             {'id':'AwsSolutions-IAM5', 'reason':'Resource wildcard for Log Retention permission is setup by the CDK custom resource provider framework and can\'t be changed' },
