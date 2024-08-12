@@ -15489,6 +15489,7 @@ const redshiftServerlessWorkgroupProps: consumption.RedshiftServerlessWorkgroupP
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.name">name</a></code> | <code>string</code> | The name of the Redshift Serverless Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.namespace">namespace</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespace</code> | The Redshift Serverless Namespace associated with the Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.baseCapacity">baseCapacity</a></code> | <code>number</code> | The base capacity of the Redshift Serverless Workgroup in RPU. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.configParameters">configParameters</a></code> | <code>aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup.ConfigParameterProperty[]</code> | Additional parameters to set for advanced control over the Redshift Workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.extraSecurityGroups">extraSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.SecurityGroup[]</code> | The extra EC2 Security Groups to associate with the Redshift Serverless Workgroup (in addition to the primary Security Group). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.port">port</a></code> | <code>number</code> | The custom port to use when connecting to workgroup. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
@@ -15531,6 +15532,22 @@ public readonly baseCapacity: number;
 - *Default:* 128 RPU
 
 The base capacity of the Redshift Serverless Workgroup in RPU.
+
+---
+
+##### `configParameters`<sup>Optional</sup> <a name="configParameters" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupProps.property.configParameters"></a>
+
+```typescript
+public readonly configParameters: ConfigParameterProperty[];
+```
+
+- *Type:* aws-cdk-lib.aws_redshiftserverless.CfnWorkgroup.ConfigParameterProperty[]
+- *Default:* `require_ssl` parameter is set to true.
+
+Additional parameters to set for advanced control over the Redshift Workgroup.
+
+See {@link https://docs.aws.amazon.com/redshift-serverless/latest/APIReference/API_CreateWorkgroup.html#redshiftserverless-CreateWorkgroup-request-configParameters}
+for more information on what parameters can be set.
 
 ---
 
@@ -19360,6 +19377,63 @@ Namespace log export types.
 
 
 ##### `USER_ACTIVITY_LOG` <a name="USER_ACTIVITY_LOG" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport.USER_ACTIVITY_LOG"></a>
+
+---
+
+
+### RedshiftServerlessWorkgroupConfigParamKey <a name="RedshiftServerlessWorkgroupConfigParamKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.AUTO_MV">AUTO_MV</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.DATESTYLE">DATESTYLE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.ENABLE_USER_ACTIVITY_LOGGING">ENABLE_USER_ACTIVITY_LOGGING</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.QUERY_GROUP">QUERY_GROUP</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.SEARCH_PATH">SEARCH_PATH</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.MAX_QUERY_EXECUTION_TIME">MAX_QUERY_EXECUTION_TIME</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL">REQUIRE_SSL</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.USE_FIPS_SSL">USE_FIPS_SSL</a></code> | *No description.* |
+
+---
+
+##### `AUTO_MV` <a name="AUTO_MV" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.AUTO_MV"></a>
+
+---
+
+
+##### `DATESTYLE` <a name="DATESTYLE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.DATESTYLE"></a>
+
+---
+
+
+##### `ENABLE_USER_ACTIVITY_LOGGING` <a name="ENABLE_USER_ACTIVITY_LOGGING" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.ENABLE_USER_ACTIVITY_LOGGING"></a>
+
+---
+
+
+##### `QUERY_GROUP` <a name="QUERY_GROUP" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.QUERY_GROUP"></a>
+
+---
+
+
+##### `SEARCH_PATH` <a name="SEARCH_PATH" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.SEARCH_PATH"></a>
+
+---
+
+
+##### `MAX_QUERY_EXECUTION_TIME` <a name="MAX_QUERY_EXECUTION_TIME" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.MAX_QUERY_EXECUTION_TIME"></a>
+
+---
+
+
+##### `REQUIRE_SSL` <a name="REQUIRE_SSL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL"></a>
+
+---
+
+
+##### `USE_FIPS_SSL` <a name="USE_FIPS_SSL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.USE_FIPS_SSL"></a>
 
 ---
 

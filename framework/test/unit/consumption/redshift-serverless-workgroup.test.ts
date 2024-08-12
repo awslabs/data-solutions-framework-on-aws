@@ -109,6 +109,12 @@ describe('With default configuration, the construct should', () => {
         { Ref: Match.stringLikeRegexp('^DefaultWorkgroupDefaultVpcPrivateSubnet1.+') },
         { Ref: Match.stringLikeRegexp('^DefaultWorkgroupDefaultVpcPrivateSubnet2.+') },
       ]),
+      ConfigParameters: Match.arrayEquals([
+        {
+          ParameterKey: Match.exact('require_ssl'),
+          ParameterValue: Match.exact('true'),
+        },
+      ]),
       SecurityGroupIds: Match.arrayEquals([
         { 'Fn::GetAtt': [Match.stringLikeRegexp('^DefaultWorkgroupDefaultSecurityGroup.+'), 'GroupId'] },
       ]),

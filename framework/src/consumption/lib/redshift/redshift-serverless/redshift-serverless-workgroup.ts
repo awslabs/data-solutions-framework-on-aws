@@ -9,7 +9,7 @@ import { CfnWorkgroup } from 'aws-cdk-lib/aws-redshiftserverless';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
-import { RedshiftServerlessWorkgroupProps } from './redshift-serverless-workgroup-props';
+import { RedshiftServerlessWorkgroupConfigParamKey, RedshiftServerlessWorkgroupProps } from './redshift-serverless-workgroup-props';
 import { DataCatalogDatabase } from '../../../../governance';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { RedshiftDataSharing } from '../redshift/data-sharing/redshift-data-sharing';
@@ -104,6 +104,22 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
     this.connections = initSecurityGroupDetails.primaryConnections;
     this.port = props.port || RedshiftServerlessWorkgroup.DEFAULT_PORT;
 
+    const configParameters: CfnWorkgroup.ConfigParameterProperty[] = [
+      {
+        parameterKey: RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL,
+        parameterValue: 'true',
+      },
+    ];
+
+    if (props.configParameters) {
+      for (var x of props.configParameters) {
+        if (x.parameterKey != RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL
+          && (Object.values(RedshiftServerlessWorkgroupConfigParamKey) as string[]).includes(x.parameterKey!)) {
+          configParameters.push(x);
+        }
+      }
+    }
+
     this.cfnResource = new CfnWorkgroup(this, 'Workgroup', {
       workgroupName: `${props.name}${Utils.generateUniqueHash(this, id)}`,
       baseCapacity: props.baseCapacity,
@@ -113,6 +129,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
       publiclyAccessible: false,
       subnetIds: this.selectedSubnets.subnetIds,
       securityGroupIds: initSecurityGroupDetails.securityGroupIds,
+      configParameters,
     });
 
     this.cfnResource.applyRemovalPolicy(this.removalPolicy);
