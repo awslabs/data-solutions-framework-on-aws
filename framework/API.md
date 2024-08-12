@@ -19381,6 +19381,63 @@ Namespace log export types.
 ---
 
 
+### RedshiftServerlessWorkgroupConfigParamKey <a name="RedshiftServerlessWorkgroupConfigParamKey" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey"></a>
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.AUTO_MV">AUTO_MV</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.DATESTYLE">DATESTYLE</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.ENABLE_USER_ACTIVITY_LOGGING">ENABLE_USER_ACTIVITY_LOGGING</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.QUERY_GROUP">QUERY_GROUP</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.SEARCH_PATH">SEARCH_PATH</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.MAX_QUERY_EXECUTION_TIME">MAX_QUERY_EXECUTION_TIME</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL">REQUIRE_SSL</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.USE_FIPS_SSL">USE_FIPS_SSL</a></code> | *No description.* |
+
+---
+
+##### `AUTO_MV` <a name="AUTO_MV" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.AUTO_MV"></a>
+
+---
+
+
+##### `DATESTYLE` <a name="DATESTYLE" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.DATESTYLE"></a>
+
+---
+
+
+##### `ENABLE_USER_ACTIVITY_LOGGING` <a name="ENABLE_USER_ACTIVITY_LOGGING" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.ENABLE_USER_ACTIVITY_LOGGING"></a>
+
+---
+
+
+##### `QUERY_GROUP` <a name="QUERY_GROUP" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.QUERY_GROUP"></a>
+
+---
+
+
+##### `SEARCH_PATH` <a name="SEARCH_PATH" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.SEARCH_PATH"></a>
+
+---
+
+
+##### `MAX_QUERY_EXECUTION_TIME` <a name="MAX_QUERY_EXECUTION_TIME" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.MAX_QUERY_EXECUTION_TIME"></a>
+
+---
+
+
+##### `REQUIRE_SSL` <a name="REQUIRE_SSL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL"></a>
+
+---
+
+
+##### `USE_FIPS_SSL` <a name="USE_FIPS_SSL" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessWorkgroupConfigParamKey.USE_FIPS_SSL"></a>
+
+---
+
+
 ### ResourcePatternTypes <a name="ResourcePatternTypes" id="@cdklabs/aws-data-solutions-framework.streaming.ResourcePatternTypes"></a>
 
 #### Members <a name="Members" id="Members"></a>

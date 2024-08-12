@@ -9,7 +9,7 @@ import { CfnWorkgroup } from 'aws-cdk-lib/aws-redshiftserverless';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
-import { RedshiftServerlessWorkgroupProps } from './redshift-serverless-workgroup-props';
+import { RedshiftServerlessWorkgroupConfigParamKey, RedshiftServerlessWorkgroupProps } from './redshift-serverless-workgroup-props';
 import { DataCatalogDatabase } from '../../../../governance';
 import { Context, DataVpc, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { RedshiftDataSharing } from '../redshift/data-sharing/redshift-data-sharing';
@@ -104,15 +104,20 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
     this.connections = initSecurityGroupDetails.primaryConnections;
     this.port = props.port || RedshiftServerlessWorkgroup.DEFAULT_PORT;
 
-    let configParameters: CfnWorkgroup.ConfigParameterProperty[] = [
+    const configParameters: CfnWorkgroup.ConfigParameterProperty[] = [
       {
-        parameterKey: 'require_ssl',
+        parameterKey: RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL,
         parameterValue: 'true',
       },
     ];
 
     if (props.configParameters) {
-      configParameters = props.configParameters.concat(configParameters);
+      for (var x of props.configParameters) {
+        if (x.parameterKey != RedshiftServerlessWorkgroupConfigParamKey.REQUIRE_SSL
+          && (Object.values(RedshiftServerlessWorkgroupConfigParamKey) as string[]).includes(x.parameterKey!)) {
+          configParameters.push(x);
+        }
+      }
     }
 
     this.cfnResource = new CfnWorkgroup(this, 'Workgroup', {

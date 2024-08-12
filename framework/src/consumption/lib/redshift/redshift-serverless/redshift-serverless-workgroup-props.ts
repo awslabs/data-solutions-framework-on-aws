@@ -6,6 +6,17 @@ import { SecurityGroup, SubnetSelection, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { CfnWorkgroup } from 'aws-cdk-lib/aws-redshiftserverless';
 import { RedshiftServerlessNamespace } from './redshift-serverless-namespace';
 
+export enum RedshiftServerlessWorkgroupConfigParamKey {
+  AUTO_MV = 'auto_mv',
+  DATESTYLE = 'datestyle',
+  ENABLE_USER_ACTIVITY_LOGGING = 'enable_user_activity_logging',
+  QUERY_GROUP = 'query_group',
+  SEARCH_PATH = 'search_path',
+  MAX_QUERY_EXECUTION_TIME = 'max_query_execution_time',
+  REQUIRE_SSL = 'require_ssl',
+  USE_FIPS_SSL = 'use_fips_ssl'
+}
+
 /**
  * RedshiftServerlessWorkgroup properties
  */
