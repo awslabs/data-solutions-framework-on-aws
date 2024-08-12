@@ -33,7 +33,7 @@ def results():
     NagSuppressions.add_resource_suppressions_by_path(stack,
         "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource",
         [
-            {'id':'AwsSolutions-IAM5', 'reason':'Resource wildcard is needed for Log Retention permissions' },
+            {'id':'AwsSolutions-IAM5', 'reason':'Resource wildcard for Log Retention permission is setup by the CDK custom resource provider framework and can\'t be changed' },
         ]
     )
 

@@ -19,19 +19,39 @@ def results():
     # We suppress NAGs for the DSF construct because they are already tested in the framework
     suppress_nag(stack, 'MyOpenSearchCluster')
 
-    # NagSuppressions.add_resource_suppressions_by_path(stack,
-    #     "/my-stack-test/S3ReadPolicy/Resource",
-    #     "/my-stack-test/AWS679f53fac002430cb0da5b7982bd2287/Resource",
-    #     "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource",
-    #     "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource",
-    #     "/my-stack-test/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/Resource",
-    #     "/my-stack-test/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource",
-    #     "/my-stack-test/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource",
-    #     "/my-stack-test/MyOpenSearchCluster/Domain/Resource",
-    #     [
-    #         {'id':'AwsSolutions-IAM5', 'reason':'The read policy needs to contain resource wildcard to target data files in the bucket' },
-    #     ]
-    # )
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/MyOpenSearchCluster/Domain/Resource",
+        [
+            {'id':'AwsSolutions-OS4', 'reason':'Domain is created with single AZ and no zone-awareness to optimize costs' },
+            {'id':'AwsSolutions-OS7', 'reason':'Domain is created without dedicated master nodes to optimize costs' },
+        ]
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/MyOpenSearchCluster/Domain/Resource",
+        [
+            {'id':'AwsSolutions-OS4', 'reason':'Domain is created with single AZ and no zone-awareness to optimize costs' },
+            {'id':'AwsSolutions-OS7', 'reason':'Domain is created without dedicated master nodes to optimize costs' },
+        ]
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a",
+        [
+            {'id':'AwsSolutions-IAM5', 'reason':'Resource wildcard for Log Retention permission is setup by the CDK custom resource provider framework and can\'t be changed' },
+            {'id':'AwsSolutions-IAM4', 'reason':'Managed Policy for Log Retention is setup by the CDK custom resource provider framework and can\'t be changed' },
+        ],
+        True
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/AWS679f53fac002430cb0da5b7982bd2287",
+        [
+            {'id':'AwsSolutions-IAM4', 'reason':'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed' },
+            {'id':'AwsSolutions-L1', 'reason': 'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed'}
+        ],
+        True,
+    )
 
     template = Template.from_stack(stack)
     results = (stack, template)

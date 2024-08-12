@@ -46,22 +46,14 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-  [{ id: 'AwsSolutions-IAM4', reason: 'Separately handled in SLR construct' }],
+  '/Stack/OpenSearch/CreateSLR',
+  [
+    { id: 'AwsSolutions-IAM4', reason: 'Separately handled in SLR construct' },
+    { id: 'AwsSolutions-IAM5', reason: 'Separately handled in SLR construct' },
+    { id: 'AwsSolutions-L1', reason: 'Separately handled in SLR construct' },
+  ],
+  true,
 );
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'Separately handled in SLR construct' }],
-);
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/Resource',
-  [{ id: 'AwsSolutions-L1', reason: 'Separately handled in SLR construct' }],
-);
-
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
@@ -72,24 +64,19 @@ NagSuppressions.addResourceSuppressionsByPath(
 );
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource',
+  '/Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a',
   [
-    { id: 'AwsSolutions-IAM4', reason: 'AWSLambdaBasicExecutionRole this is default recommended IAM Policy to use' },
-  ],
-);
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource',
-  [
+    { id: 'AwsSolutions-IAM4', reason: 'The permissions are provided by the Custom Resource framework and can\'t be updated' },
     { id: 'AwsSolutions-IAM5', reason: 'The policy is provided by the Custom Resource framework and can\'t be updated' },
   ],
+  true,
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
   [
-    { id: 'AwsSolutions-L1', reason: 'Part of the Custom Resource framework and can\'t be updated' },
+    { id: 'AwsSolutions-L1', reason: 'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed' },
   ],
 );
 
