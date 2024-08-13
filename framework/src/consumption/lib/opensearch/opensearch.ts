@@ -106,7 +106,7 @@ export class OpenSearchCluster extends TrackedConstruct {
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
     //get or create service-linked role, required for vpc configuration
-    const slr = new CreateServiceLinkedRole(scope, 'CreateSLR', {
+    const slr = new CreateServiceLinkedRole(this, 'CreateSLR', {
       removalPolicy: this.removalPolicy,
     });
     slr.create(ServiceLinkedRoleService.OPENSEARCH);
