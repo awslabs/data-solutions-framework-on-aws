@@ -2,13 +2,16 @@ import { KafkaClient, PutClusterPolicyCommand } from "@aws-sdk/client-kafka"
 import { IAMClient, PutRolePolicyCommand } from "@aws-sdk/client-iam";
 
 
-
 function getIamResources(region, account, clusterName, clusterUuid, topic) {
   return [
     `arn:aws:kafka:${region}:${account}:topic/${clusterName}/${clusterUuid}/${topic}`,
-    `arn:aws:kafka:${region}:${account}:cluster/${clusterName}/${clusterUuid}`,
+    getClusterArn(region, account, clusterName, clusterUuid),
     `arn:aws:kafka:${region}:${account}:group/${clusterName}/${clusterUuid}/*`
   ]
+}
+
+function getClusterArn(region, account, clusterName, clusterUuid) {
+  return `arn:aws:kafka:${region}:${account}:cluster/${clusterName}/${clusterUuid}`
 }
 
 const readActions = [
@@ -16,21 +19,20 @@ const readActions = [
   'kafka-cluster:DescribeTopic',
   'kafka-cluster:DescribeGroup',
   'kafka-cluster:AlterGroup',
-  'kafka-cluster:ReadData',
+  'kafka-cluster:ReadData'
 ];
 
 export const handler = async(event) => {
+  const topic = event.detail.value.Metadata.Producer.Topic;
+  const clusterName = event.detail.value.Metadata.Producer.ClusterName;
+  const clusterUuid = event.detail.value.Metadata.Producer.ClusterUuid;
+  const region = event.detail.value.Metadata.Producer.Region;
+  const account = event.detail.value.Metadata.Producer.Account;
+
+  const consumerAccount = event.detail.value.Metadata.Consumer.Account;
+  const consumerRole = event.detail.value.Metadata.Consumer.Role;
   
-  if (event.DetailType === "producerGrant") {
-
-    const topic = detail.metadata.producer.topic;
-    const clusterName = detail.metadata.producer.clusterName;
-    const clusterUuid = detail.metadata.producer.clusterUuid;
-    const region = detail.metadata.producer.region;
-    const account = detail.metadata.producer.account;
-
-    const consumerAccount = detail.metadata.consumer.account;
-    const consumerRole = detail.metadata.consumer.role;
+  if (event['detail-type'] === "producerGrant") {
 
     if (consumerAccount !== account) {
       
@@ -40,42 +42,42 @@ export const handler = async(event) => {
           {
             "Effect": "Allow",
             "Principal": {
-              "AWS": consumerRole,
+              "AWS": consumerRole
             },
-            "Action": iamActions,
+            "Action": readActions,
             "Resource": getIamResources(region, account, clusterName, clusterUuid, topic)
           }
         ]
-      })
+      }, null, 2)
     
       const client = new KafkaClient()
       
       await client.send(new PutClusterPolicyCommand({
-        ClusterArn: clusterArn,
+        ClusterArn: getClusterArn(region, account, clusterName, clusterUuid),
         Policy: kafkaClusterPolicy
       }))
 
     } else {
       console.log("Producer and consumer are in the same account, skipping cluster policy")
     }
-  } else if (event.DetailType === 'consumerGrant') {
+  } else if (event['detail-type'] === 'consumerGrant') {
 
     const iamRolePolicy = JSON.stringify({
       "Version": "2012-10-17",
       "Statement": [
         {
           "Effect": "Allow",
-          "Action": iamActions,
+          "Action": readActions,
           "Resource": getIamResources(region, account, clusterName, clusterUuid, topic)
         }
       ]
-    })
+    }, null, 2)
 
-    const client = new IAMClient(config);
+    const client = new IAMClient();
 
     await client.send(new PutRolePolicyCommand({
-      RoleName: event.metadata.consumer.role,
-      PolicyName: event.metadata.producer.clusterName + event.metadata.producer.topic,
+      RoleName: event.detail.value.Metadata.Consumer.Role.split(':')[5].split('/')[1],
+      PolicyName: event.detail.value.Metadata.Producer.ClusterName + event.detail.value.Metadata.Producer.Topic,
       PolicyDocument: iamRolePolicy
     }))
 

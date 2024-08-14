@@ -1,15 +1,15 @@
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
-import { IRole, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
-import { DefinitionBody, IntegrationPattern, IStateMachine, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
+import { DefinitionBody, IntegrationPattern, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
 export interface AuthorizerCentralWorflow{
-  readonly stateMachine: IStateMachine;
+  readonly stateMachine: StateMachine;
   readonly deadLetterQueue: IQueue;
   readonly eventRule: IRule;
   readonly eventRole: IRole;
@@ -40,7 +40,7 @@ export function authorizerCentralWorkflowSetup(
 
   const metadataCollector = new LambdaInvoke(scope, `${id}MetadataCollector`, {
     lambdaFunction: metadataCollectorFunction,
-    resultPath: '$.metadata',
+    resultSelector: { 'Metadata.$': '$.Payload' },
     taskTimeout: Timeout.duration(Duration.minutes(2)),
   });
 
@@ -52,8 +52,8 @@ export function authorizerCentralWorkflowSetup(
     lambdaFunction: governanceCallbackFunction,
     taskTimeout: Timeout.duration(Duration.minutes(1)),
     payload: TaskInput.fromObject({
-      status: 'succeed',
-      metadata: JsonPath.stringAt('$.metadata'),
+      Status: 'success',
+      Metadata: JsonPath.stringAt('$.Metadata'),
     }),
   });
 
@@ -61,10 +61,10 @@ export function authorizerCentralWorkflowSetup(
     lambdaFunction: governanceCallbackFunction,
     taskTimeout: Timeout.duration(Duration.minutes(1)),
     payload: TaskInput.fromObject({
-      status: 'fail',
-      metadata: JsonPath.stringAt('$.metadata'),
-      error: JsonPath.stringAt('$.Error'),
-      cause: JsonPath.stringAt('$.Cause'),
+      Status: 'failure',
+      Metadata: JsonPath.stringAt('$.Metadata'),
+      Error: JsonPath.stringAt('$.Error'),
+      Cause: JsonPath.stringAt('$.Cause'),
     }),
   });
 
@@ -112,11 +112,19 @@ export function authorizerCentralWorkflowSetup(
   return { stateMachine, deadLetterQueue, eventRule, eventRole };
 }
 
+export function registerAccount(scope: Construct, accountId: string, stateMachine: StateMachine) {
+  stateMachine.addToRolePolicy(new PolicyStatement({
+    actions: ['events:PutEvents'],
+    effect: Effect.ALLOW,
+    resources: [`arn:aws:events:${Stack.of(scope).region}:${accountId}:event-bus/default`],
+  }));
+};
+
 function invokeGrant(scope: Construct, id: string, authorizerName: string, grantType: GrantType): CallAwsService {
 
   const eventBusName = grantType === GrantType.CONSUMER ?
-    JsonPath.format('arn:aws:events:{}:{}:event-bus/default', JsonPath.stringAt('$.metadata.consumer.region'), JsonPath.stringAt('$.metadata.consumer.account')) :
-    JsonPath.format('arn:aws:events:{}:{}:event-bus/default', JsonPath.stringAt('$.metadata.producer.region'), JsonPath.stringAt('$.metadata.producer.account'));
+    JsonPath.format('arn:aws:events:{}:{}:event-bus/default', JsonPath.stringAt('$.Metadata.Consumer.Region'), JsonPath.stringAt('$.Metadata.Consumer.Account')) :
+    JsonPath.format('arn:aws:events:{}:{}:event-bus/default', JsonPath.stringAt('$.Metadata.Producer.Region'), JsonPath.stringAt('$.Metadata.Producer.Account'));
 
   return new CallAwsService(scope, `${id}EventBridgePutEvents`, {
     service: 'eventbridge',
@@ -124,8 +132,8 @@ function invokeGrant(scope: Construct, id: string, authorizerName: string, grant
     parameters: {
       Entries: [{
         Detail: TaskInput.fromObject({
-          taskToken: JsonPath.taskToken,
-          metadata: JsonPath.stringAt('$.metadata'),
+          TaskToken: JsonPath.taskToken,
+          Metadata: JsonPath.objectAt('$.Metadata'),
         }),
         DetailType: grantType,
         Source: authorizerName,

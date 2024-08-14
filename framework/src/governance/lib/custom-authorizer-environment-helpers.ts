@@ -1,7 +1,7 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
-import { IRole, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { DefinitionBody, IStateMachine, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
@@ -22,6 +22,7 @@ export function authorizerEnvironmentWorkflowSetup(
   id: string,
   authorizerName: string,
   grantFunction: IFunction,
+  centralAuthorizerStateMachine: IStateMachine,
   workflowTimeout?: Duration,
   retryAttempts?: number,
   removalPolicy?: RemovalPolicy): AuthorizerEnvironmentWorflow {
@@ -37,16 +38,26 @@ export function authorizerEnvironmentWorkflowSetup(
 
   const grant = new LambdaInvoke(scope, `${id}Grant`, {
     lambdaFunction: grantFunction,
-    resultPath: '$.grantResult',
+    resultPath: '$.GrantResult',
     taskTimeout: Timeout.duration(Duration.minutes(2)),
   });
 
   const callbackRole = new Role(scope, 'LambdaCallbackRole', {
     assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+    managedPolicies: [
+      ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+    ],
   });
 
+  callbackRole.addToPolicy(
+    new PolicyStatement({
+      actions: ['states:SendTaskSuccess', 'states:SendTaskFailure'],
+      resources: [centralAuthorizerStateMachine.stateMachineArn],
+    }),
+  );
+
   const callbackFunction = new Function(scope, 'CallbackFunction', {
-    runtime: Runtime.NODEJS_LATEST,
+    runtime: Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: Code.fromAsset(__dirname+'/resources/custom-authorizer-callback/'),
     role: callbackRole,
@@ -56,10 +67,10 @@ export function authorizerEnvironmentWorkflowSetup(
   const authorizerFailureCallback = new LambdaInvoke(scope, `${id}FailureCallback`, {
     lambdaFunction: callbackFunction,
     payload: TaskInput.fromObject({
-      taskToken: '$.taskToken',
-      status: 'fail',
-      error: JsonPath.stringAt('$.Error'),
-      cause: JsonPath.stringAt('$.Cause'),
+      TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
+      Status: 'failure',
+      Error: JsonPath.stringAt('$.Error'),
+      Cause: JsonPath.stringAt('$.Cause'),
     }),
   });
 
@@ -68,8 +79,8 @@ export function authorizerEnvironmentWorkflowSetup(
   const authorizerSuccessCallback = new LambdaInvoke(scope, `${id}SuccessCallback`, {
     lambdaFunction: callbackFunction,
     payload: TaskInput.fromObject({
-      taskToken: '$.taskToken',
-      status: 'succeed',
+      TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
+      Status: 'success',
     }),
   });
 

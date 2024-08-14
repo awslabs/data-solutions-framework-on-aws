@@ -1,30 +1,30 @@
-import { DataZoneClient, UpdateSubscriptionGrantStatusCommand } from "@aws-sdk/client-datazone";
+import { DataZoneClient, UpdateSubscriptionGrantStatusCommand, SubscriptionGrantStatus } from "@aws-sdk/client-datazone";
 
 export const handler = async(event) => {
   const client = new DataZoneClient()
-  const  status = event.status;
+  const  status = event.Status;
   
-  if (status == 'fail') {
-    
+  if (status === 'failure') {
+
     await client.send(new UpdateSubscriptionGrantStatusCommand({
-      domainIdentifier: event.metadata.domainId,
-      identifier: event.metadata.subscriptionGranId,
-      assetIdentifier: event.metadata.assetId,
-      status: 'GRANT_FAILED',
+      domainIdentifier: event.Metadata.DomainId,
+      identifier: event.Metadata.SubscriptionGranId,
+      assetIdentifier: event.Metadata.AssetId,
+      status: SubscriptionGrantStatus.GRANT_FAILED,
       failureCause: {
-        message: event.cause
+        message: event.Cause
       }
     }))
     
     return {}
 
-  } else if (status == 'success') {
+  } else if (status === 'success') {
 
     await client.send(new UpdateSubscriptionGrantStatusCommand({
-      domainIdentifier: event.metadata.domainId,
-      identifier: event.metadata.subscriptionGranId,
-      assetIdentifier: event.metadata.assetId,
-      status: 'COMPLETED',
+      domainIdentifier: event.Metadata.DomainId,
+      identifier: event.Metadata.SubscriptionGrantId,
+      assetIdentifier: event.Metadata.AssetId,
+      status: SubscriptionGrantStatus.GRANTED,
     }))
 
     return {}
