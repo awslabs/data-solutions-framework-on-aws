@@ -4530,6 +4530,7 @@ new governance.DataZoneMskCentralAuthorizer(scope: Construct, id: string, props:
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount">registerAccount</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
@@ -4541,6 +4542,18 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `registerAccount` <a name="registerAccount" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount"></a>
+
+```typescript
+public registerAccount(accountId: string): void
+```
+
+###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.accountId"></a>
+
+- *Type:* string
+
+---
 
 ##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.retrieveVersion"></a>
 
@@ -4602,7 +4615,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | *No description.* |
 
 ---
 
@@ -4691,10 +4704,10 @@ public readonly metadataCollectorRole: IRole;
 ##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine"></a>
 
 ```typescript
-public readonly stateMachine: IStateMachine;
+public readonly stateMachine: StateMachine;
 ```
 
-- *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+- *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 ---
 
@@ -4702,8 +4715,20 @@ public readonly stateMachine: IStateMachine;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.AUTHORIZER_NAME">AUTHORIZER_NAME</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.MSK_ASSET_TYPE">MSK_ASSET_TYPE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `AUTHORIZER_NAME`<sup>Required</sup> <a name="AUTHORIZER_NAME" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.AUTHORIZER_NAME"></a>
+
+```typescript
+public readonly AUTHORIZER_NAME: string;
+```
+
+- *Type:* string
 
 ---
 
@@ -4727,6 +4752,16 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+##### `MSK_ASSET_TYPE`<sup>Required</sup> <a name="MSK_ASSET_TYPE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.MSK_ASSET_TYPE"></a>
+
+```typescript
+public readonly MSK_ASSET_TYPE: string;
+```
+
+- *Type:* string
+
+---
+
 ### DataZoneMskEnvironmentAuthorizer <a name="DataZoneMskEnvironmentAuthorizer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer"></a>
 
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer"></a>
@@ -4734,14 +4769,14 @@ public readonly DSF_TRACKING_CODE: string;
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-new governance.DataZoneMskEnvironmentAuthorizer(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps)
+new governance.DataZoneMskEnvironmentAuthorizer(scope: Construct, id: string, props: DataZoneMskEnvironmentAuthorizerProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps</code> | *No description.* |
 
 ---
 
@@ -4759,7 +4794,7 @@ new governance.DataZoneMskEnvironmentAuthorizer(scope: Construct, id: string, pr
 
 ##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps
 
 ---
 
@@ -12943,7 +12978,7 @@ const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | *No description.* |
 
 ---
 
@@ -12980,10 +13015,10 @@ public readonly eventRule: IRule;
 ##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine"></a>
 
 ```typescript
-public readonly stateMachine: IStateMachine;
+public readonly stateMachine: StateMachine;
 ```
 
-- *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+- *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 ---
 
@@ -14480,8 +14515,21 @@ const dataZoneMskEnvironmentAuthorizerProps: governance.DataZoneMskEnvironmentAu
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAuthorizerStateMachine">centralAuthorizerStateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The Step Function State Machine from the DataZoneMskCentralAuthorizer. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+
+---
+
+##### `centralAuthorizerStateMachine`<sup>Required</sup> <a name="centralAuthorizerStateMachine" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAuthorizerStateMachine"></a>
+
+```typescript
+public readonly centralAuthorizerStateMachine: IStateMachine;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+
+The Step Function State Machine from the DataZoneMskCentralAuthorizer.
 
 ---
 

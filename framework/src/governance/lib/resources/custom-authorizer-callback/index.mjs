@@ -1,30 +1,29 @@
-import StepFunctions from 'aws-sdk/clients/stepfunctions';
+import { SFNClient, SendTaskSuccessCommand, SendTaskFailureCommand} from '@aws-sdk/client-sfn';
 
 export const handler = async(event) => {
   
   console.log(JSON.stringify({ event }, null, 2));
   
-  const status = event.status;
-  const stepFunctions = new StepFunctions();
-  const taskToken = event.taskToken;
+  const status = event.Status;
+  const client = new SFNClient();
+  const taskToken = event.TaskToken;
   
-  if (status === 'succeed') {
-    const taskSuccessResponse = await stepFunctions
-    .sendTaskSuccess({
+  if (status === 'success') {
+    const taskSuccessResponse = await client.send(new SendTaskSuccessCommand({
       taskToken,
-    })
-    .promise();
+      output: JSON.stringify({ Status: 'success' }),
+    }));
+
     console.log(JSON.stringify({ taskSuccessResponse }, null, 2));
 
-  } else if (status === 'fail') {
+  } else if (status === 'failure') { 
 
-    const taskFailureResponse = await stepFunctions
-    .sendTaskFailure({
+    const taskFailureResponse = await client.send(SendTaskFailureCommand({
       taskToken,
-      cause: `${event.error}: ${event.cause}`,
+      cause: `${event.Error}: ${event.Cause}`,
       error: 'grant failed',
-    })
-    .promise();
+    }));
+
     console.log(JSON.stringify({ taskFailureResponse }, null, 2));
   }  
   return {}

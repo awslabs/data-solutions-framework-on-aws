@@ -3,16 +3,17 @@ import { IRule } from 'aws-cdk-lib/aws-events';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
-import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
+import { StateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizerProps } from './datazone-msk-central-authorizer-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { authorizerCentralWorkflowSetup } from '../custom-authorizer-central-helpers';
+import { authorizerCentralWorkflowSetup, registerAccount } from '../custom-authorizer-central-helpers';
+// import { CfnUserProfile } from 'aws-cdk-lib/aws-datazone';
 
 
 export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
-  private static AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
-  private static MSK_ASSET_TYPE = 'MskTopicAssetType';
+  public static readonly AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
+  public static readonly MSK_ASSET_TYPE = 'MskTopicAssetType';
   public readonly metadataCollectorRole: IRole;
   public readonly metadataCollectorFunction: IFunction;
   public readonly datazoneCallbackRole: IRole;
@@ -20,7 +21,8 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
   public readonly deadLetterQueue: IQueue;
   public readonly eventRole : IRole;
   public readonly eventRule: IRule;
-  public readonly stateMachine: IStateMachine;
+  public readonly stateMachine: StateMachine;
+  // public readonly metadataCollectorDataZoneAccess: CfnUserProfile;
   private readonly removalPolicy: RemovalPolicy;
 
   constructor(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps) {
@@ -54,7 +56,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     });
 
     this.metadataCollectorFunction = new Function(this, 'MetadataCollectorHandler', {
-      runtime: Runtime.NODEJS_LATEST,
+      runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname + '/resources/datazone-msk-authorizer-metadata-collector/'),
       role: this.metadataCollectorRole,
@@ -82,12 +84,19 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     });
 
     this.datazoneCallbackFunction = new Function(this, 'CallbackHandler', {
-      runtime: Runtime.NODEJS_LATEST,
+      runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname+'/resources/datazone-msk-authorizer-callback/'),
-      role: this.metadataCollectorRole,
+      role: this.datazoneCallbackRole,
       timeout: Duration.seconds(30),
     });
+
+    // this.metadataCollectorDataZoneAccess = new CfnUserProfile(this, 'MetadataCollectorDataZonePermission', {
+    //   domainIdentifier: props.domainId,
+    //   userIdentifier: this.metadataCollectorRole.roleArn,
+    //   status: 'ACTIVATED',
+    //   userType: 'IAM_ROLE',
+    // });
 
     const datazonePattern = {
       'source': ['aws.datazone'],
@@ -119,5 +128,9 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     this.eventRole = customAuthorizer.eventRole;
     this.eventRule = customAuthorizer.eventRule;
     this.stateMachine = customAuthorizer.stateMachine;
+  }
+
+  public registerAccount(accountId: string) {
+    registerAccount(this, accountId, this.stateMachine);
   }
 }

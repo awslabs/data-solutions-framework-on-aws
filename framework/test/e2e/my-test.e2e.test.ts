@@ -25,7 +25,7 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 
 const DOMAIN_ID = 'dzd_dc495t9ime7von';
 
-new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
+const mskAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
   domainId: 'dzd_dc495t9ime7von',
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
@@ -57,8 +57,11 @@ msk.addTopic('topicServerelss', {
 
 new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   domainId: DOMAIN_ID,
+  centralAuthorizerStateMachine: mskAuthorizer.stateMachine,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
+
+mskAuthorizer.registerAccount(cdk.Stack.of(stack).account);
 
 const cfnProject = new CfnProject(stack, 'MyCfnProject', {
   domainIdentifier: DOMAIN_ID,

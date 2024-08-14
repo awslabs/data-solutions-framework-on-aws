@@ -1,5 +1,5 @@
-import { DataZoneClient, ListEnvironmentsCommand, GetAssetCommand } from "@aws-sdk/client-datazone";
-import cluster from "cluster";
+import { DataZoneClient, GetEnvironmentCommand, GetAssetCommand } from "@aws-sdk/client-datazone";
+
 
 export const handler = async(event) => {
   const client = new DataZoneClient()
@@ -32,28 +32,27 @@ export const handler = async(event) => {
     identifier: targetEnvId
   }));
 
+  console.log(JSON.stringify(targetEnv, null, 2))
   const targetEnvResources = targetEnv.provisionedResources;
   const userRole = targetEnvResources.find((element) => element.name === "userRoleArn");
-
-  const userRoleArnParts = userRole.value.split(":");
-  const consumerAccountId = userRoleArnParts[4];
-  const consumerRegion = userRoleArnParts[3];
+  const consumerAccountId = targetEnv.awsAccountId;
+  const consumerRegion = targetEnv.awsAccountRegion;
 
   return {
-    domainId: domainId,
-    subscriptionGrantId: event.detail.metadata.id,
-    assetId: asset.id,
-    producer: {
-      region: producerRegion,
-      account: producerAccountId,
-      clusterName: clusterName,
-      clusterUuid: clusterUuid,
-      topic: topicName,
+    DomainId: domainId,
+    SubscriptionGrantId: event.detail.metadata.id,
+    AssetId: asset.id,
+    Producer: {
+      Region: producerRegion,
+      Account: producerAccountId,
+      ClusterName: clusterName,
+      ClusterUuid: clusterUuid,
+      Topic: topicName,
     },
-    consumer: {
-      region: consumerRegion,
-      account: consumerAccountId,
-      role: userRole.value,
+    Consumer: {
+      Region: consumerRegion,
+      Account: consumerAccountId,
+      Role: userRole.value,
     }
   }
 }
