@@ -26,6 +26,7 @@ import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
  * @exampleMetadata fixture=imports-only
  * @example
  * import { Bucket } from 'aws-cdk-lib/aws-s3';
+ * import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
  *
  * interface MyApplicationStackProps extends cdk.StackProps {
  *   readonly stage: dsf.utils.CICDStage;
@@ -51,6 +52,7 @@ import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
  * class MyCICDStack extends cdk.Stack {
  *   constructor(scope: Construct, id: string) {
  *     super(scope, id);
+ *
  *     new dsf.processing.SparkEmrCICDPipeline(this, 'TestConstruct', {
  *        sparkApplicationName: 'test',
  *        applicationStackFactory: new MyStackFactory(),
@@ -61,8 +63,11 @@ import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
  *        integTestEnv: {
  *          TEST_BUCKET: 'BucketName',
  *        },
- *     });
- *   }
+ *        source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+ *              connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f'
+ *        }),
+ *   });
+ * }
  * }
  */
 export class SparkEmrCICDPipeline extends TrackedConstruct {
