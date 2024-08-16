@@ -48,20 +48,20 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
-  [{ id: 'AwsSolutions-IAM4', reason: 'Separately handled in SLR construct' }],
+  '/Stack/OpenSearch/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
+  [{ id: 'AwsSolutions-IAM4', reason: 'Service role policy needed by construct' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'Separately handled in SLR construct' }],
+  '/Stack/OpenSearch/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
+  [{ id: 'AwsSolutions-IAM5', reason: 'Inherited from the SLR creation construct' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/Resource',
-  [{ id: 'AwsSolutions-L1', reason: 'Separately handled in SLR construct' }],
+  '/Stack/OpenSearch/CreateSLR/Provider/CustomResourceProvider/framework-onEvent/Resource',
+  [{ id: 'AwsSolutions-L1', reason: 'Inherited from the SLR creation construct' }],
 );
 
 
