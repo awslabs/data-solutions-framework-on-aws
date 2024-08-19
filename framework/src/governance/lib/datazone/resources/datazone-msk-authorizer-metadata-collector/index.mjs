@@ -1,30 +1,38 @@
-import { DataZoneClient, GetEnvironmentCommand, GetAssetCommand } from "@aws-sdk/client-datazone";
+import { DataZoneClient, GetEnvironmentCommand, GetListingCommand } from "@aws-sdk/client-datazone";
 
 
 export const handler = async(event) => {
+
+  console.log(`event received: ${JSON.stringify({ event }, null, 2)}`);
+
   const client = new DataZoneClient()
   
   const domainId = event.detail.metadata.domain;  
-  const assetId = event.detail.data.asset.id;
+  const listingId = event.detail.data.asset.listingId;
+  const listingVersion = event.detail.data.asset.listingVersion;
   const targetEnvId = event.detail.data.subscriptionTarget.environmentId;
   
   //get asset information
-  const asset = await client.send(new GetAssetCommand({
+  const asset = await client.send(new GetListingCommand({
     domainIdentifier: domainId,
-    identifier: assetId
+    identifier: listingId,
+    listingRevision: listingVersion,
   }))
   
-  // Get the external identifier in the form of an MSK topic ARN
-  // arn:${Partition}:kafka:${Region}:${Account}:topic/${ClusterName}/${ClusterUuid}/${TopicName}
-  const externalId = String(asset.externalIdentifier);
-  
-  const assetArnParts = externalId.split(":");
+  console.log(`GetListing result: ${JSON.stringify({ asset }, null, 2)}`);
+
+  // Get the cluster ARN from the MskSourceReferenceFormType
+  // arn:${Partition}:kafka:${Region}:${Account}:cluster/${ClusterName}/${ClusterUuid}
+  const forms = JSON.parse(asset.item.assetListing.forms);
+  const clusterArn = forms.MskSourceReferenceFormType.cluster_arn;
+  const topicName = forms.KafkaSchemaFormType.kafka_topic;
+
+  const assetArnParts = clusterArn.split(":");
   const producerAccountId = assetArnParts[4];
   const producerRegion = assetArnParts[3];
   const resourceParts = assetArnParts[5].split("/");
   const clusterName = resourceParts[1];
   const clusterUuid = resourceParts[2];
-  const topicName = resourceParts[3];
 
   //get target environment information
   const targetEnv = await client.send(new GetEnvironmentCommand({
@@ -32,16 +40,18 @@ export const handler = async(event) => {
     identifier: targetEnvId
   }));
 
+  console.log(`GetEnvironment result: ${JSON.stringify({ targetEnv }, null, 2)}`);
+
   console.log(JSON.stringify(targetEnv, null, 2))
   const targetEnvResources = targetEnv.provisionedResources;
   const userRole = targetEnvResources.find((element) => element.name === "userRoleArn");
   const consumerAccountId = targetEnv.awsAccountId;
   const consumerRegion = targetEnv.awsAccountRegion;
 
-  return {
+  const results = {
     DomainId: domainId,
     SubscriptionGrantId: event.detail.metadata.id,
-    AssetId: asset.id,
+    AssetId: asset.item.assetListing.assetId,
     Producer: {
       Region: producerRegion,
       Account: producerAccountId,
@@ -54,5 +64,9 @@ export const handler = async(event) => {
       Account: consumerAccountId,
       Role: userRole.value,
     }
-  }
+  };
+
+  console.log(`Metadata collection results: ${JSON.stringify({ results }, null, 2)}`);
+
+  return results;
 }

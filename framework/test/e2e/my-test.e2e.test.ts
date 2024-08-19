@@ -7,7 +7,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { CompositePrincipal, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
 import { createSubscriptionTarget } from '../../src/governance/lib/datazone/datazone-helpers';
@@ -47,7 +47,10 @@ const msk = new MskServerless(stack, 'cluster', {
 });
 
 const consumerRole = new Role(stack, 'consumerRole', {
-  assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+  assumedBy: new CompositePrincipal(
+    new ServicePrincipal('datazone.amazonaws.com'),
+    new ServicePrincipal('lambda.amazonaws.com'),
+  ),
 });
 
 msk.addTopic('topicServerelss', {

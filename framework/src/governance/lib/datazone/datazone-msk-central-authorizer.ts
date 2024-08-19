@@ -45,7 +45,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: [
-                'datazone:GetAsset',
+                'datazone:GetListing',
                 'datazone:GetEnvironment',
               ],
               resources: ['*'],
