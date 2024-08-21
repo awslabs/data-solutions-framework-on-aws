@@ -56,7 +56,7 @@ export class DataZoneMskAssetType extends TrackedConstruct {
             },
             {
               name: 'schema_version',
-              type: 'String',
+              type: 'Integer',
               required: true,
             },
             {
