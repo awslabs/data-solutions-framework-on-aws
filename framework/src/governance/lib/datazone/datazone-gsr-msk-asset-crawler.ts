@@ -1,5 +1,7 @@
 import { Duration, Stack } from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
+import { Rule, RuleTargetInput, Schedule } from 'aws-cdk-lib/aws-events';
+import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import {
   Effect,
   ManagedPolicy,
@@ -12,10 +14,17 @@ import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 import { DatazoneGsrMskAssetCrawlerProps } from './datazone-gsr-msk-asset-crawler-props';
 import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { Rule, RuleTargetInput } from 'aws-cdk-lib/aws-events';
-import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 
 export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
+  // Expose these properties publicly
+  readonly domainId: string;
+  readonly projectId: string;
+  readonly registryName: string;
+  readonly eventBridgeSchedule: Schedule | undefined;
+  readonly enableSchemaRegistryEvent: boolean | undefined;
+  readonly clusterArn: string;
+  readonly clusterName : string;
+  readonly region: string;
 
 
   constructor(scope: Construct, id: string, props: DatazoneGsrMskAssetCrawlerProps) {
@@ -26,8 +35,20 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
     super(scope, id, trackedConstructProps);
 
     const stack = Stack.of(this);
-    const region = stack.region;
     const accountId = stack.account;
+    this.region = stack.region;
+    this.registryName = props.registryName;
+    this.clusterName = props.clusterName;
+    this.domainId = props.domainId;
+    this.projectId = props.projectId;
+    this.enableSchemaRegistryEvent = props.enableSchemaRegistryEvent;
+    this.eventBridgeSchedule = props.eventBridgeSchedule;
+
+    this.clusterArn = `arn:aws:kafka:${this.region}:${accountId}:cluster/${props.clusterName}/*`;
+    const listClustersArn = `arn:aws:kafka:${this.region}:${accountId}:/api/v2/clusters`;
+    const glueRegistryArn = `arn:aws:glue:${this.region}:${accountId}:registry/${props.registryName}`;
+    const glueRegistrySchemasArn = `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`;
+
 
     const handlerRole = new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
@@ -45,12 +66,35 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
                 'datazone:CreateFormType',
                 'datazone:GetAssetType',
                 'datazone:GetFormType',
+                'datazone:CreateAssetRevision',
+              ],
+              resources: [
+                `arn:aws:datazone:${this.region}:${accountId}:domain/${props.domainId}`,
+                `arn:aws:datazone:${this.region}:${accountId}:project/${props.projectId}`,
+              ],
+            }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
                 'glue:GetSchemaVersion',
                 'glue:ListSchemas',
                 'glue:ListSchemaVersions',
-                'datazone:CreateAssetRevision',
               ],
-              resources: ['*'],
+              resources: [glueRegistryArn, glueRegistrySchemasArn],
+            }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
+                'kafka:DescribeClusterV2',
+              ],
+              resources: [this.clusterArn],
+            }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
+                'kafka:ListClustersV2',
+              ],
+              resources: [listClustersArn],
             }),
           ],
         }),
@@ -76,7 +120,7 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
         DOMAIN_ID: props.domainId,
         PROJECT_ID: props.projectId,
         CLUSTER_NAME: props.clusterName,
-        REGION: region,
+        REGION: this.region,
         REGISTRY_NAME: props.registryName,
         ACCOUNT_ID: accountId,
       },

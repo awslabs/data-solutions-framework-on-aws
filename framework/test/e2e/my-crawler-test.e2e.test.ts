@@ -24,6 +24,10 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 
 // const synthesizer = stack.synthesizer as DefaultStackSynthesizer;
 
+const domainID = '';
+const projectID = '';
+const clusterName = '';
+
 // const userProfile = new CfnUserProfile(stack, 'MyCfnUserProfile', {
 //   domainIdentifier: 'dzd_crma2x3flwp67b',
 //   userType: 'IAM_ROLE',
@@ -42,16 +46,16 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 
 new CfnProjectMembership(stack, 'ProjectCrawlerMembership', {
   designation: 'PROJECT_CONTRIBUTOR',
-  domainIdentifier: 'dzd_crma2x3flwp67b',
-  projectIdentifier: '4tm7gqb3gn350n',
+  domainIdentifier: domainID,
+  projectIdentifier: projectID,
   member: {
     userIdentifier: 'arn:aws:iam::891377161433:role/Admin',
   },
 });
 
 new DataZoneMskAssetType(stack, 'MSKAssetType', {
-  projectId: '4tm7gqb3gn350n',
-  domainId: 'dzd_crma2x3flwp67b',
+  projectId: projectID,
+  domainId: domainID,
 });
 
 
@@ -95,9 +99,9 @@ const schema = new glue.CfnSchema(stack, 'MyCfnSchema3', {
 });
 
 new DatazoneGsrMskAssetCrawler(stack, 'Crawler', {
-  domainId: 'dzd_crma2x3flwp67b',
-  projectId: '4tm7gqb3gn350n',
-  clusterName: 'msk-cluster',
+  domainId: domainID,
+  projectId: projectID,
+  clusterName: clusterName,
   registryName: cfnCrawlerRegistry.name,
   eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
 });
@@ -105,7 +109,6 @@ new DatazoneGsrMskAssetCrawler(stack, 'Crawler', {
 new cdk.CfnOutput(stack, 'CFnSchema', {
   value: schema.name,
 });
-
 
 let deployResult: Record<string, string>;
 
