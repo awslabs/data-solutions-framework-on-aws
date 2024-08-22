@@ -1,16 +1,19 @@
 import { DataZoneClient, CreateAssetCommand, CreateAssetRevisionCommand, GetAssetTypeCommand } from "@aws-sdk/client-datazone";
 import { GlueClient, ListSchemasCommand, GetSchemaVersionCommand } from "@aws-sdk/client-glue";
+import { KafkaClient, ListClustersV2Command, DescribeClusterV2Command } from "@aws-sdk/client-kafka";
 
 export const handler = async () => {
     const dataZoneClient = new DataZoneClient();
     const glueClient = new GlueClient();
+    const kafkaClient = new KafkaClient();
 
     const clusterName = process.env.CLUSTER_NAME;
     const region = process.env.REGION;
     const registryName = process.env.REGISTRY_NAME;
+    const accountId = process.env.ACCOUNT_ID;
 
-    if (!clusterName || !region || !registryName) {
-        throw new Error('Missing required environment variables: CLUSTER_NAME, REGION, and REGISTRY_NAME.');
+    if (!clusterName || !region || !registryName || !accountId) {
+        throw new Error('Missing required environment variables: CLUSTER_NAME, REGION, ACCOUNT_ID, and REGISTRY_NAME.');
     }
 
     try {
@@ -31,6 +34,47 @@ export const handler = async () => {
 
         if (!assetTypeExists) {
             throw new Error('MskTopicAssetType does not exist.');
+        }
+
+        // Step 1: List all clusters and find the ARN for the one with the specified name
+        let clusterArn;
+        try {
+            const listClustersCommand = new ListClustersV2Command({});
+            const listClustersResponse = await kafkaClient.send(listClustersCommand);
+
+            const cluster = listClustersResponse.ClusterInfoList.find(
+                (c) => c.ClusterName === clusterName
+            );
+
+            if (!cluster) {
+                throw new Error(`Cluster with name "${clusterName}" not found.`);
+            }
+
+            clusterArn = cluster.ClusterArn;
+            console.log(`Cluster ARN for ${clusterName} found: ${clusterArn}`);
+        } catch (err) {
+            console.error('Error listing clusters:', err);
+            throw new Error('Failed to list Kafka clusters.');
+        }
+
+        // Step 2: Describe the Kafka cluster to determine its type (PROVISIONED or SERVERLESS)
+        let clusterType;
+        try {
+            const describeClusterCommand = new DescribeClusterV2Command({
+                ClusterArn: clusterArn
+            });
+            const describeClusterResponse = await kafkaClient.send(describeClusterCommand);
+            clusterType = describeClusterResponse.ClusterInfo?.ClusterType;
+            console.log(describeClusterResponse);
+
+            if (!clusterType) {
+                throw new Error(`Failed to determine the cluster type for cluster: ${clusterName}`);
+            }
+
+            console.log(`Cluster type for ${clusterName} is ${clusterType}`);
+        } catch (err) {
+            console.error('Error describing Kafka cluster:', err);
+            throw new Error('Failed to describe Kafka cluster.');
         }
 
         // List all schemas in the registry using ListSchemasCommand
@@ -78,7 +122,8 @@ export const handler = async () => {
                     formName: 'MskSourceReferenceFormType',
                     typeIdentifier: 'MskSourceReferenceFormType',
                     content: JSON.stringify({
-                        cluster_arn: buildMskKafkaArn(region, process.env.ACCOUNT_ID, clusterName),
+                        cluster_arn: clusterArn,
+                        cluster_type: clusterType // Include the cluster type here
                     }),
                 },
                 {
@@ -119,7 +164,7 @@ export const handler = async () => {
                     name: schemaName,
                     typeIdentifier: 'MskTopicAssetType',
                     formsInput,
-                    externalIdentifier: buildMskTopicArn(region, process.env.ACCOUNT_ID, clusterName, schemaName),
+                    externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
                 }));
 
                 console.log('MSK Asset creation response:', createResponse);
@@ -138,7 +183,7 @@ export const handler = async () => {
                         identifier: assetId,
                         description: 'Updating asset with new schema or forms',
                         formsInput,
-                        externalIdentifier: buildMskTopicArn(region, process.env.ACCOUNT_ID, clusterName, schemaName),
+                        externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
                         clientToken: assetId, // Ensuring idempotency
                     }));
 
@@ -165,9 +210,6 @@ function buildMskTopicArn(region, accountId, clusterName, topicName) {
     return `arn:aws:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
 }
 
-function buildMskKafkaArn(region, accountId, clusterName) {
-    return `arn:aws:kafka:${region}:${accountId}:cluster/${clusterName}/*`;
-}
 
 function parseSchemaDefinition(schemaDefinition) {
     try {
@@ -195,3 +237,4 @@ function parseSchemaDefinition(schemaDefinition) {
         return [];
     }
 }
+
