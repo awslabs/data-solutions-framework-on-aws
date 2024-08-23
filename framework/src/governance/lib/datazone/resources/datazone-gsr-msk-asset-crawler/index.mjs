@@ -21,6 +21,9 @@ export const handler = async () => {
         throw new Error('Missing required environment variables.');
     }
 
+    const registryArn = `arn:aws:glue:${region}:${accountId}:registry/${registryName}`;
+
+
     let clusterArn;
     let clusterType;
 
@@ -129,7 +132,7 @@ export const handler = async () => {
                         kafka_topic: schemaName,
                         schema_version: versionNumber,
                         schema_arn: schemaArn,
-                        registry_arn: registryName,
+                        registry_arn: registryArn,
                     }),
                 },
                 {
@@ -164,7 +167,6 @@ export const handler = async () => {
                         description: 'Updating asset with new schema or forms',
                         formsInput,
                         externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
-                        clientToken: schemaName, // Ensuring idempotency
                     }));
 
                     console.log(`Asset revision for ${schemaName} updated.`);
