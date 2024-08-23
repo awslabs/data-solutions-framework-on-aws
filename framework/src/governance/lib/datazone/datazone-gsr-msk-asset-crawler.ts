@@ -142,9 +142,12 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
       new Rule(this, 'SchemaRegistryEventRule', {
         eventPattern: {
           source: ['aws.glue'],
-          detailType: ['Glue Schema Registry State Change'],
           detail: {
-            registryName: [props.registryName],
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['DeleteSchema', 'RegisterSchemaVersion', 'CreateSchema'],
+            responseElements: {
+              registryName: [props.registryName],
+            },
           },
         },
         targets: [
@@ -154,6 +157,7 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
         ],
       });
     }
+
 
   }
 }
