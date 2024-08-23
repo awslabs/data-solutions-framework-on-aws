@@ -1,6 +1,13 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { DataZoneClient, GetFormTypeCommand, CreateFormTypeCommand, CreateAssetTypeCommand, DeleteAssetTypeCommand, DeleteFormTypeCommand, ResourceNotFoundException } from "@aws-sdk/client-datazone";
 
+
 export const handler = async(event) => {
+
+  console.log(`event received: ${JSON.stringify({ event }, null, 2)}`
+)
   const client = new DataZoneClient()
   const properties = event["ResourceProperties"]
   const domainId = properties["domainId"]

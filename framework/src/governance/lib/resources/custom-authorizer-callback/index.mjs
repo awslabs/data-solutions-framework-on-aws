@@ -1,12 +1,16 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { SFNClient, SendTaskSuccessCommand, SendTaskFailureCommand} from '@aws-sdk/client-sfn';
+
 
 export const handler = async(event) => {
   
   console.log(JSON.stringify({ event }, null, 2));
   
-  const status = event.Status;
+  const status = event.detail.Status;
   const client = new SFNClient();
-  const taskToken = event.TaskToken;
+  const taskToken = event.detail.TaskToken;
   
   if (status === 'success') {
     const taskSuccessResponse = await client.send(new SendTaskSuccessCommand({
@@ -20,7 +24,7 @@ export const handler = async(event) => {
 
     const taskFailureResponse = await client.send(SendTaskFailureCommand({
       taskToken,
-      cause: `${event.Error}: ${event.Cause}`,
+      cause: `${event.detail.Error}: ${event.detail.Cause}`,
       error: 'grant failed',
     }));
 

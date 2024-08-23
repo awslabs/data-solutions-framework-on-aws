@@ -1,5 +1,5 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRule } from 'aws-cdk-lib/aws-events';
+import { CfnEventBusPolicy, IRule } from 'aws-cdk-lib/aws-events';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
@@ -19,10 +19,12 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
   public readonly datazoneCallbackRole: IRole;
   public readonly datazoneCallbackFunction: IFunction;
   public readonly deadLetterQueue: IQueue;
-  public readonly eventRole : IRole;
-  public readonly eventRule: IRule;
+  public readonly datazoneEventRole : IRole;
+  public readonly datazoneEventRule: IRule;
   public readonly stateMachine: StateMachine;
-  // public readonly metadataCollectorDataZoneAccess: CfnUserProfile;
+  public readonly callbackEventRule: IRule;
+  public readonly callbackFunction: IFunction;
+  public readonly callbackRole: IRole;
   private readonly removalPolicy: RemovalPolicy;
 
   constructor(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps) {
@@ -47,6 +49,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
               actions: [
                 'datazone:GetListing',
                 'datazone:GetEnvironment',
+                'datazone:UpdateSubscriptionGrantStatus',
               ],
               resources: ['*'],
             }),
@@ -91,16 +94,12 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
       timeout: Duration.seconds(30),
     });
 
-    // this.metadataCollectorDataZoneAccess = new CfnUserProfile(this, 'MetadataCollectorDataZonePermission', {
-    //   domainIdentifier: props.domainId,
-    //   userIdentifier: this.metadataCollectorRole.roleArn,
-    //   status: 'ACTIVATED',
-    //   userType: 'IAM_ROLE',
-    // });
-
     const datazonePattern = {
       'source': ['aws.datazone'],
-      'detail-type': ['Subscription Grant Requested'],
+      'detail-type': [
+        'Subscription Grant Requested',
+        'Subscription Grant Revoke Requested',
+      ],
       'detail': {
         metadata: {
           domain: [props.domainId],
@@ -125,12 +124,16 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     );
 
     this.deadLetterQueue = customAuthorizer.deadLetterQueue;
-    this.eventRole = customAuthorizer.eventRole;
-    this.eventRule = customAuthorizer.eventRule;
+    this.datazoneEventRole = customAuthorizer.datazoneEventRole;
+    this.datazoneEventRule = customAuthorizer.datazoneEventRule;
     this.stateMachine = customAuthorizer.stateMachine;
+    this.callbackEventRule = customAuthorizer.callbackEventRule;
+    this.callbackFunction = customAuthorizer.callbackFunction;
+    this.callbackRole = customAuthorizer.callbackRole;
   }
 
-  public registerAccount(accountId: string) {
-    registerAccount(this, accountId, this.stateMachine);
-  }
+  
+  public registerAccount(accountId: string): CfnEventBusPolicy {
+    return registerAccount(this, DataZoneMskCentralAuthorizer.AUTHORIZER_NAME, accountId, this.stateMachine.role);
+  };
 }

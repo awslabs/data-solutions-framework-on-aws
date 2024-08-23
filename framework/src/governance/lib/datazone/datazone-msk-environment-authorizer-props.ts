@@ -1,5 +1,4 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 
 export interface DataZoneMskEnvironmentAuthorizerProps {
   /**
@@ -7,9 +6,9 @@ export interface DataZoneMskEnvironmentAuthorizerProps {
    */
   readonly domainId: string;
   /**
-   * The Step Function State Machine from the DataZoneMskCentralAuthorizer
+   * The central account Id
    */
-  readonly centralAuthorizerStateMachine: IStateMachine;
+  readonly centralAccountId?: string;
 
   readonly removalPolicy?: RemovalPolicy;
 }

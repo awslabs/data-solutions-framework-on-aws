@@ -1,4 +1,13 @@
-import { DataZoneClient, GetEnvironmentCommand, GetListingCommand } from "@aws-sdk/client-datazone";
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import { 
+  DataZoneClient, 
+  GetEnvironmentCommand, 
+  GetListingCommand, 
+  UpdateSubscriptionGrantStatusCommand, 
+  SubscriptionGrantStatus 
+} from "@aws-sdk/client-datazone";
 
 
 export const handler = async(event) => {
@@ -11,7 +20,12 @@ export const handler = async(event) => {
   const listingId = event.detail.data.asset.listingId;
   const listingVersion = event.detail.data.asset.listingVersion;
   const targetEnvId = event.detail.data.subscriptionTarget.environmentId;
-  
+  const detailType = event['detail-type'];
+  const subscriptionGrantId = event.detail.metadata.id;
+
+  // test if it's a GRANT or REVOKE request
+  const requestType = detailType.includes('Revoke') ? 'REVOKE' : 'GRANT';
+
   //get asset information
   const asset = await client.send(new GetListingCommand({
     domainIdentifier: domainId,
@@ -21,10 +35,19 @@ export const handler = async(event) => {
   
   console.log(`GetListing result: ${JSON.stringify({ asset }, null, 2)}`);
 
+  // Update the status in DataZone
+  await client.send(new UpdateSubscriptionGrantStatusCommand({
+    domainIdentifier: domainId,
+    identifier: subscriptionGrantId,
+    assetIdentifier: asset.item.assetListing.assetId,
+    status: requestType === 'GRANT' ? SubscriptionGrantStatus.GRANT_IN_PROGRESS : SubscriptionGrantStatus.REVOKE_IN_PROGRESS,
+  }))
+
   // Get the cluster ARN from the MskSourceReferenceFormType
   // arn:${Partition}:kafka:${Region}:${Account}:cluster/${ClusterName}/${ClusterUuid}
   const forms = JSON.parse(asset.item.assetListing.forms);
   const clusterArn = forms.MskSourceReferenceFormType.cluster_arn;
+  const clusterType = forms.MskSourceReferenceFormType.cluster_type;
   const topicName = forms.KafkaSchemaFormType.kafka_topic;
 
   const assetArnParts = clusterArn.split(":");
@@ -50,12 +73,14 @@ export const handler = async(event) => {
 
   const results = {
     DomainId: domainId,
-    SubscriptionGrantId: event.detail.metadata.id,
+    SubscriptionGrantId: subscriptionGrantId,
     AssetId: asset.item.assetListing.assetId,
+    RequestType: requestType,
     Producer: {
       Region: producerRegion,
       Account: producerAccountId,
       ClusterName: clusterName,
+      ClusterType: clusterType,
       ClusterUuid: clusterUuid,
       Topic: topicName,
     },

@@ -1,5 +1,9 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { DataZoneClient, CreateAssetCommand, CreateAssetRevisionCommand, GetAssetTypeCommand } from "@aws-sdk/client-datazone";
 import { GlueClient, GetSchemaVersionCommand } from "@aws-sdk/client-glue";
+
 
 export const handler = async (event) => {
     const dataZoneClient = new DataZoneClient();

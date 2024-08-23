@@ -1,18 +1,22 @@
 import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
-import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
-import { Effect, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { CfnEventBusPolicy, EventBus, EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
+import { LambdaFunction, SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
+import { IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IFunction, Function, Code, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { DefinitionBody, IntegrationPattern, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
+import { Utils } from '../../utils';
 
 export interface AuthorizerCentralWorflow{
   readonly stateMachine: StateMachine;
   readonly deadLetterQueue: IQueue;
-  readonly eventRule: IRule;
-  readonly eventRole: IRole;
+  readonly datazoneEventRule: IRule;
+  readonly datazoneEventRole: IRole;
+  readonly callbackEventRule: IRule;
+  readonly callbackFunction: IFunction;
+  readonly callbackRole: IRole;
 }
 
 enum GrantType{
@@ -34,8 +38,19 @@ export function authorizerCentralWorkflowSetup(
   const DEFAULT_TIMEOUT = Duration.minutes(5);
   const DEFAULT_RETRY_ATTEMPTS = 0;
 
-  const eventRule = new Rule(scope, `${id}EventRule`, {
+  const datazoneEventRule = new Rule(scope, `${id}DatazoneEventRule`, {
     eventPattern,
+  });
+
+  const datazoneEventRole = new Role(scope, 'DatazoneEventRole', {
+    assumedBy: new ServicePrincipal('events.amazonaws.com'),
+  });
+
+  const callbackEventRule = new Rule(scope, `${id}CallbackEventRule`, {
+    eventPattern: {
+      source: [authorizerName],
+      detailType: ['callback'],
+    },
   });
 
   const metadataCollector = new LambdaInvoke(scope, `${id}MetadataCollector`, {
@@ -70,14 +85,17 @@ export function authorizerCentralWorkflowSetup(
 
   metadataCollector.addCatch(governanceFailureCallback, {
     errors: ['States.TaskFailed'],
+    resultPath: '$.ErrorInfo',
   });
 
   invokeProducerGrant.addCatch(governanceFailureCallback, {
     errors: ['States.TaskFailed'],
+    resultPath: '$.ErrorInfo',
   });
 
   invokeConsumerGrant.addCatch(governanceFailureCallback, {
     errors: ['States.TaskFailed'],
+    resultPath: '$.ErrorInfo',
   });
 
   const stateMachineDefinition = metadataCollector
@@ -85,39 +103,78 @@ export function authorizerCentralWorkflowSetup(
     .next(invokeConsumerGrant)
     .next(governanceSuccessCallback);
 
-  // const stateMachineRole = new Role(scope, `${id}StateMachineRole`, {
-  //   assumedBy: new ServicePrincipal('states.amazonaws.com'),
-  // });
-
   const stateMachine = new StateMachine(scope, `${id}StateMachine`, {
     definitionBody: DefinitionBody.fromChainable(stateMachineDefinition),
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
-    // role: stateMachineRole,
   });
 
   const deadLetterQueue = new Queue(scope, 'Queue');
 
-  const eventRole = new Role(scope, 'Role', {
-    assumedBy: new ServicePrincipal('events.amazonaws.com'),
-  });
-  stateMachine.grantStartExecution(eventRole);
+  stateMachine.grantStartExecution(datazoneEventRole);
 
-  eventRule.addTarget(new SfnStateMachine(stateMachine, {
+  datazoneEventRule.addTarget(new SfnStateMachine(stateMachine, {
     deadLetterQueue,
-    role: eventRole,
+    role: datazoneEventRole,
     retryAttempts: retryAttempts || DEFAULT_RETRY_ATTEMPTS,
   }));
 
-  return { stateMachine, deadLetterQueue, eventRule, eventRole };
+  const callbackRole = new Role(scope, 'LambdaCallbackRole', {
+    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+    managedPolicies: [
+      ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+    ],
+  });
+
+  callbackRole.addToPolicy(
+    new PolicyStatement({
+      actions: ['states:SendTaskSuccess', 'states:SendTaskFailure'],
+      resources: [stateMachine.stateMachineArn],
+    }),
+  );
+
+  const callbackFunction = new Function(scope, 'CallbackFunction', {
+    runtime: Runtime.NODEJS_20_X,
+    handler: 'index.handler',
+    code: Code.fromAsset(__dirname+'/resources/custom-authorizer-callback/'),
+    role: callbackRole,
+    timeout: Duration.seconds(5),
+  });
+
+  stateMachine.grantTaskResponse(callbackRole);
+
+  callbackEventRule.addTarget(new LambdaFunction(callbackFunction, {
+    deadLetterQueue,
+    maxEventAge: Duration.hours(1),
+    retryAttempts: 10,
+  }))
+
+  grantPutEvents(scope, Stack.of(scope).account,stateMachine.role);
+
+  return { stateMachine, deadLetterQueue, datazoneEventRule, datazoneEventRole, callbackEventRule, callbackFunction, callbackRole };
 }
 
-export function registerAccount(scope: Construct, accountId: string, stateMachine: StateMachine) {
-  stateMachine.addToRolePolicy(new PolicyStatement({
-    actions: ['events:PutEvents'],
-    effect: Effect.ALLOW,
-    resources: [`arn:aws:events:${Stack.of(scope).region}:${accountId}:event-bus/default`],
-  }));
+export function grantPutEvents(scope: Construct, accountId: string, role: IRole) {
+
+  const targetEventBus = EventBus.fromEventBusArn(
+    scope, 
+    `${accountId}CentralEventBus`, 
+    `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${accountId}:event-bus/default`,
+  )
+
+  targetEventBus.grantPutEventsTo(role);
+}
+
+export function registerAccount(scope: Construct, id: string, accountId: string, role: IRole): CfnEventBusPolicy {
+
+  grantPutEvents(scope, accountId, role);
+
+  return new CfnEventBusPolicy(scope, `${accountId}${id}CentralEventBusPolicy`, {
+    statementId: Utils.stringSanitizer(accountId + id),
+    action: 'events:PutEvents',
+    principal: accountId,
+    eventBusName: 'default',
+  });
 };
 
 function invokeGrant(scope: Construct, id: string, authorizerName: string, grantType: GrantType): CallAwsService {

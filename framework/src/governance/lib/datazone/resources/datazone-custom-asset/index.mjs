@@ -1,9 +1,13 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import {
     DataZoneClient,
     CreateAssetCommand,
     DeleteAssetCommand,
     GetAssetCommand
 } from "@aws-sdk/client-datazone";
+
 
 export const handler = async (event) => {
     const client = new DataZoneClient();

@@ -1,20 +1,19 @@
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRule, Rule } from 'aws-cdk-lib/aws-events';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnEventBusPolicy, EventBus, IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
-import { IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
+import { IRole, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
 import { DefinitionBody, IStateMachine, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
-import { LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
+import { EventBridgePutEvents, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
 export interface AuthorizerEnvironmentWorflow{
   readonly stateMachine: IStateMachine;
-  readonly callbackFunction: IFunction;
-  readonly callbackRole: IRole;
   readonly eventRule: IRule;
   readonly eventRole: IRole;
   readonly deadLetterQueue: IQueue;
+  readonly eventBusPolicy?: CfnEventBusPolicy;
 }
 
 export function authorizerEnvironmentWorkflowSetup(
@@ -22,7 +21,7 @@ export function authorizerEnvironmentWorkflowSetup(
   id: string,
   authorizerName: string,
   grantFunction: IFunction,
-  centralAuthorizerStateMachine: IStateMachine,
+  centralAccount?: string,
   workflowTimeout?: Duration,
   retryAttempts?: number,
   removalPolicy?: RemovalPolicy): AuthorizerEnvironmentWorflow {
@@ -33,6 +32,7 @@ export function authorizerEnvironmentWorkflowSetup(
   const eventRule = new Rule(scope, `${id}EventRule`, {
     eventPattern: {
       source: [authorizerName],
+      detailType: ['producerGrant', 'consumerGrant'],
     },
   });
 
@@ -42,56 +42,65 @@ export function authorizerEnvironmentWorkflowSetup(
     taskTimeout: Timeout.duration(Duration.minutes(2)),
   });
 
-  const callbackRole = new Role(scope, 'LambdaCallbackRole', {
-    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-    managedPolicies: [
-      ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-    ],
+  let eventBusPolicy: CfnEventBusPolicy | undefined = undefined;
+
+  if (centralAccount !== undefined) {
+    eventBusPolicy = new CfnEventBusPolicy(scope, `${centralAccount}EnvEventBusPolicy`, {
+      statementId: centralAccount,
+      action: 'events:PutEvents',
+      principal: centralAccount,
+      eventBusName: 'default',
+    });
+  }
+  const eventBusAccount = centralAccount || Stack.of(scope).account;
+
+  const centralEventBus = EventBus.fromEventBusArn(
+    scope, `
+    ${id}CentralEventBus`, 
+    `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${eventBusAccount}:event-bus/default`,
+  )
+
+  const authorizerFailureCallbackEvent = new EventBridgePutEvents(scope, `${id}FailureCallback`, {
+    entries: [{
+      detail: TaskInput.fromObject({
+        TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
+        Status: 'failure',
+        Error: JsonPath.stringAt('$.ErrorInfo.Error'),
+        Cause: JsonPath.stringAt('$.ErrorInfo.Cause'),
+      }),
+      eventBus: centralEventBus,
+      detailType: 'callback',
+      source: authorizerName,
+    }],
   });
 
-  callbackRole.addToPolicy(
-    new PolicyStatement({
-      actions: ['states:SendTaskSuccess', 'states:SendTaskFailure'],
-      resources: [centralAuthorizerStateMachine.stateMachineArn],
-    }),
-  );
-
-  const callbackFunction = new Function(scope, 'CallbackFunction', {
-    runtime: Runtime.NODEJS_20_X,
-    handler: 'index.handler',
-    code: Code.fromAsset(__dirname+'/resources/custom-authorizer-callback/'),
-    role: callbackRole,
-    timeout: Duration.seconds(5),
+  grant.addCatch(authorizerFailureCallbackEvent, {
+    errors: ['States.TaskFailed'],
+    resultPath: '$.ErrorInfo',
   });
 
-  const authorizerFailureCallback = new LambdaInvoke(scope, `${id}FailureCallback`, {
-    lambdaFunction: callbackFunction,
-    payload: TaskInput.fromObject({
-      TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
-      Status: 'failure',
-      Error: JsonPath.stringAt('$.Error'),
-      Cause: JsonPath.stringAt('$.Cause'),
-    }),
-  });
-
-  grant.addCatch(authorizerFailureCallback);
-
-  const authorizerSuccessCallback = new LambdaInvoke(scope, `${id}SuccessCallback`, {
-    lambdaFunction: callbackFunction,
-    payload: TaskInput.fromObject({
-      TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
-      Status: 'success',
-    }),
+  const authorizerSuccessCallbackEvent = new EventBridgePutEvents(scope, `${id}SuccessCallback`, {
+    entries: [{
+      detail: TaskInput.fromObject({
+        TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
+        Status: 'success',
+      }),
+      eventBus: centralEventBus,
+      detailType: 'callback',
+      source: authorizerName,
+    }],
   });
 
   const stateMachineDefinition = grant
-    .next(authorizerSuccessCallback);
+    .next(authorizerSuccessCallbackEvent);
 
   const stateMachine = new StateMachine(scope, `${id}StateMachine`, {
     definitionBody: DefinitionBody.fromChainable(stateMachineDefinition),
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
   });
+
+  centralEventBus.grantPutEventsTo(stateMachine.role);
 
   const deadLetterQueue = new Queue(scope, 'Queue');
 
@@ -106,5 +115,5 @@ export function authorizerEnvironmentWorkflowSetup(
     retryAttempts: retryAttempts || DEFAULT_RETRY_ATTEMPTS,
   }));
 
-  return { stateMachine, callbackFunction, callbackRole, eventRule, eventRole, deadLetterQueue };
+  return { stateMachine, eventRule, eventRole, deadLetterQueue, eventBusPolicy };
 }

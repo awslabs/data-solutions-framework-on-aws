@@ -1,18 +1,16 @@
 /**
-    * Testing my changes
-    *
-    * @group e2e/mytests
-    */
+ * Testing my changes
+ *
+ * @group e2e/mytests
+ */
 
 import * as cdk from 'aws-cdk-lib';
-import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
-import { CompositePrincipal, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance';
-import { createSubscriptionTarget } from '../../src/governance/lib/datazone/datazone-helpers';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
+import { Role } from 'aws-cdk-lib/aws-iam';
+import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer, createSubscriptionTarget } from '../../src/governance/index';
 
 jest.setTimeout(10000000);
 
@@ -24,11 +22,8 @@ const testStack = new TestStack('E2eTestStack', app, stack);
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const DOMAIN_ID = 'dzd_dc495t9ime7von';
-
-const mskAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
-  domainId: 'dzd_dc495t9ime7von',
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
-});
+const GOVERNANCE_PROJECT_ID = '656w78ba7fyfmv';
+const CONSUMER_ENV_ID = '4k6pd6k90ooc2v';
 
 let vpc = new DataVpc(stack, 'vpc', {
   vpcCidr: '10.0.0.0/16',
@@ -46,46 +41,31 @@ const msk = new MskServerless(stack, 'cluster', {
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
 
-const consumerRole = new Role(stack, 'consumerRole', {
-  assumedBy: new CompositePrincipal(
-    new ServicePrincipal('datazone.amazonaws.com'),
-    new ServicePrincipal('lambda.amazonaws.com'),
-  ),
-});
-
-msk.addTopic('topicServerelss', {
-  topic: 'dummy',
+msk.addTopic('topicServerless', {
+  topic: 'test-topic',
   numPartitions: 1,
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
-new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
+
+const consumerRole = Role.fromRoleArn(stack, 'consumerRole', 'arn:aws:iam::632368511077:role/consumer-role');
+
+const mskCentralAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
   domainId: DOMAIN_ID,
-  centralAuthorizerStateMachine: mskAuthorizer.stateMachine,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-mskAuthorizer.registerAccount(cdk.Stack.of(stack).account);
-
-const cfnProject = new CfnProject(stack, 'MyCfnProject', {
-  domainIdentifier: DOMAIN_ID,
-  description: 'MSK Project',
-  name: 'MSK',
+new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
+  domainId: DOMAIN_ID,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-new CfnProjectMembership(stack, 'ProjectMembership', {
-  designation: 'PROJECT_CONTRIBUTOR',
-  domainIdentifier: DOMAIN_ID,
-  projectIdentifier: cfnProject.attrId,
-  member: {
-    userIdentifier: 'arn:aws:iam::632368511077:role/gromav',
-  },
-});
+mskCentralAuthorizer.registerAccount('668876353122');
 
 const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { removalPolicy: cdk.RemovalPolicy.DESTROY });
 
 const mskAssetType = new DataZoneMskAssetType(stack, 'MskAssetType', {
   domainId: DOMAIN_ID,
-  projectId: cfnProject.attrId,
+  projectId: GOVERNANCE_PROJECT_ID,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
   dzCustomAssetTypeFactory: assetFactory,
 });
@@ -94,7 +74,7 @@ createSubscriptionTarget(stack, 'Consumer',
   mskAssetType.mskCustomAssetType,
   'testSubscription',
   'dsf',
-  'cuym174roc3d47',
+  CONSUMER_ENV_ID,
   [consumerRole],
   assetFactory.createRole,
 );

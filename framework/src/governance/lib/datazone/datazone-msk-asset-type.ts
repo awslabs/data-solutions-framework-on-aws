@@ -38,6 +38,11 @@ export class DataZoneMskAssetType extends TrackedConstruct {
               type: 'String',
               required: true,
             },
+            {
+              name: 'cluster_type',
+              type: 'String',
+              required: true,
+            },
           ],
           required: true,
         },

@@ -1,5 +1,5 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRule } from 'aws-cdk-lib/aws-events';
+import { CfnEventBusPolicy, IRule } from 'aws-cdk-lib/aws-events';
 import { IRole, Role, ServicePrincipal, ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
@@ -14,8 +14,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
 
   public readonly grantRole: IRole;
   public readonly grantFunction: IFunction;
-  public readonly callbackFunction: IFunction;
-  public readonly callbackRole: IRole;
+  public readonly eventBusPolicy?: CfnEventBusPolicy;
   public readonly deadLetterQueue: any;
   public readonly eventRole: IRole;
   public readonly eventRule: IRule;
@@ -43,6 +42,15 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
               effect: Effect.ALLOW,
               actions: [
                 'iam:PutRolePolicy',
+                'iam:DeleteRolePolicy',
+              ],
+              resources: ['*'],
+            }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
+                'kafka:GetClusterPolicy',
+                'kafka:PutClusterPolicy'
               ],
               resources: ['*'],
             }),
@@ -63,14 +71,13 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       'DataZoneMskEnvironmentWorkflow',
       DataZoneMskCentralAuthorizer.AUTHORIZER_NAME,
       this.grantFunction,
-      props.centralAuthorizerStateMachine,
+      props.centralAccountId,
       Duration.minutes(2),
       0,
       this.removalPolicy,
     );
 
-    this.callbackFunction = customAuthorizer.callbackFunction;
-    this.callbackRole = customAuthorizer.callbackRole;
+    this.eventBusPolicy = customAuthorizer.eventBusPolicy;
     this.deadLetterQueue = customAuthorizer.deadLetterQueue;
     this.eventRole = customAuthorizer.eventRole;
     this.eventRule = customAuthorizer.eventRule;
