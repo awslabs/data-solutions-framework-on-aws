@@ -49,6 +49,8 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
     const glueRegistryArn = `arn:aws:glue:${this.region}:${accountId}:registry/${props.registryName}`;
     const glueRegistrySchemasArn = `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`;
 
+    // Define SSM Parameter paths to store asset information
+    const parameterPrefix = `/datazone/${this.domainId}/${this.registryName}/asset/`;
 
     const handlerRole = new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
@@ -66,7 +68,9 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
                 'datazone:CreateFormType',
                 'datazone:GetAssetType',
                 'datazone:GetFormType',
+                'datazone:GetAsset',
                 'datazone:CreateAssetRevision',
+                'datazone:DeleteAsset',
               ],
               resources: [
                 `arn:aws:datazone:${this.region}:${accountId}:domain/${props.domainId}`,
@@ -96,6 +100,18 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
               ],
               resources: [listClustersArn],
             }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: [
+                'ssm:GetParameter',
+                'ssm:PutParameter',
+                'ssm:DeleteParameter',
+                'ssm:GetParametersByPath',
+              ],
+              resources: [
+                `arn:aws:ssm:${this.region}:${accountId}:parameter${parameterPrefix}*`,
+              ],
+            }),
           ],
         }),
       },
@@ -123,6 +139,7 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
         REGION: this.region,
         REGISTRY_NAME: props.registryName,
         ACCOUNT_ID: accountId,
+        PARAMETER_PREFIX: parameterPrefix,
       },
     },
     );

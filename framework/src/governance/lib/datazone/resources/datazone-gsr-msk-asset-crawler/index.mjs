@@ -1,50 +1,52 @@
-import { DataZoneClient, CreateAssetCommand, CreateAssetRevisionCommand, GetAssetTypeCommand } from "@aws-sdk/client-datazone";
+import { DataZoneClient, GetAssetCommand, CreateAssetCommand, CreateAssetRevisionCommand, DeleteAssetCommand } from "@aws-sdk/client-datazone";
 import { GlueClient, ListSchemasCommand, GetSchemaVersionCommand } from "@aws-sdk/client-glue";
 import { KafkaClient, ListClustersV2Command, DescribeClusterV2Command } from "@aws-sdk/client-kafka";
+import { SSMClient, GetParametersByPathCommand, DeleteParameterCommand, PutParameterCommand } from "@aws-sdk/client-ssm";
+
+// Initialize AWS SDK clients
+const ssmClient = new SSMClient();
+const dataZoneClient = new DataZoneClient();
+const glueClient = new GlueClient();
+const kafkaClient = new KafkaClient();
 
 export const handler = async () => {
-    const dataZoneClient = new DataZoneClient();
-    const glueClient = new GlueClient();
-    const kafkaClient = new KafkaClient();
-
     const clusterName = process.env.CLUSTER_NAME;
     const region = process.env.REGION;
     const registryName = process.env.REGISTRY_NAME;
+    const domainId = process.env.DOMAIN_ID;
     const accountId = process.env.ACCOUNT_ID;
+    const projectId = process.env.PROJECT_ID;
 
-    if (!clusterName || !region || !registryName || !accountId) {
-        throw new Error('Missing required environment variables: CLUSTER_NAME, REGION, ACCOUNT_ID, and REGISTRY_NAME.');
+    if (!clusterName || !region || !registryName || !domainId || !accountId || !projectId) {
+        throw new Error('Missing required environment variables.');
     }
 
+    let clusterArn;
+    let clusterType;
+
     try {
-        // Check if the MskTopicAssetType exists
-        let assetTypeExists = false;
-        try {
-            const getAssetTypeCommand = new GetAssetTypeCommand({
-                domainIdentifier: process.env.DOMAIN_ID,
-                identifier: 'MskTopicAssetType'
-            });
-            await dataZoneClient.send(getAssetTypeCommand);
-            assetTypeExists = true;
-            console.log('Asset type MskTopicAssetType exists.');
-        } catch (err) {
-            console.error('Error checking asset type existence:', err);
-            throw new Error('MskTopicAssetType is not created for this project.');
-        }
+        // Step 1: Retrieve existing parameters
+        const existingParametersResponse = await ssmClient.send(new GetParametersByPathCommand({
+            Path: `/datazone/${domainId}/${registryName}/asset/`,
+            Recursive: true,
+            WithDecryption: false
+        }));
+        const existingParameters = existingParametersResponse.Parameters || [];
+        const assetMap = new Map(); // Map to hold assetName and assetId
 
-        if (!assetTypeExists) {
-            throw new Error('MskTopicAssetType does not exist.');
+        for (const param of existingParameters) {
+            const assetName = param.Name.split('/').pop();
+            if (assetName && param.Value) {
+                assetMap.set(assetName, param.Value);
+            }
         }
+        console.log(assetMap);
 
-        // Step 1: List all clusters and find the ARN for the one with the specified name
-        let clusterArn;
+        // Step 2: List all Kafka clusters and find the ARN for the specified cluster
         try {
             const listClustersCommand = new ListClustersV2Command({});
             const listClustersResponse = await kafkaClient.send(listClustersCommand);
-
-            const cluster = listClustersResponse.ClusterInfoList.find(
-                (c) => c.ClusterName === clusterName
-            );
+            const cluster = listClustersResponse.ClusterInfoList.find(c => c.ClusterName === clusterName);
 
             if (!cluster) {
                 throw new Error(`Cluster with name "${clusterName}" not found.`);
@@ -52,78 +54,64 @@ export const handler = async () => {
 
             clusterArn = cluster.ClusterArn;
             console.log(`Cluster ARN for ${clusterName} found: ${clusterArn}`);
-        } catch (err) {
-            console.error('Error listing clusters:', err);
-            throw new Error('Failed to list Kafka clusters.');
-        }
 
-        // Step 2: Describe the Kafka cluster to determine its type (PROVISIONED or SERVERLESS)
-        let clusterType;
-        try {
-            const describeClusterCommand = new DescribeClusterV2Command({
-                ClusterArn: clusterArn
-            });
+            // Describe the Kafka cluster to determine its type
+            const describeClusterCommand = new DescribeClusterV2Command({ ClusterArn: clusterArn });
             const describeClusterResponse = await kafkaClient.send(describeClusterCommand);
             clusterType = describeClusterResponse.ClusterInfo?.ClusterType;
-            console.log(describeClusterResponse);
 
             if (!clusterType) {
                 throw new Error(`Failed to determine the cluster type for cluster: ${clusterName}`);
             }
 
             console.log(`Cluster type for ${clusterName} is ${clusterType}`);
+
         } catch (err) {
-            console.error('Error describing Kafka cluster:', err);
-            throw new Error('Failed to describe Kafka cluster.');
+            console.error('Error handling Kafka cluster:', err);
+            throw new Error('Failed to handle Kafka cluster.');
         }
 
-        // List all schemas in the registry using ListSchemasCommand
+        // Step 3: List all schemas in the registry
         const listSchemasCommand = new ListSchemasCommand({
             RegistryId: { RegistryName: registryName }
         });
-
         const schemaListResponse = await glueClient.send(listSchemasCommand);
         const schemas = schemaListResponse.Schemas || [];
 
         console.log(`Found ${schemas.length} schemas in the registry.`);
 
-        // Loop through each schema and create an MSK asset
+        // Step 4: Process each schema
         for (const schema of schemas) {
             const schemaArn = schema.SchemaArn;
             const schemaName = schema.SchemaName;
-
-            console.log(`Processing schema: ${schemaName}`);
-
-            // Retrieve the schema definition
+            const parameterName = `/datazone/${domainId}/${registryName}/asset/${schemaName}`;
             let schemaDefinition = '';
             let versionNumber = 1;
+
+            // Retrieve schema definition
             try {
                 const getSchemaVersionCommand = new GetSchemaVersionCommand({
                     SchemaId: { SchemaArn: schemaArn },
                     SchemaVersionNumber: { LatestVersion: true }
                 });
-
                 const schemaVersionResponse = await glueClient.send(getSchemaVersionCommand);
                 schemaDefinition = schemaVersionResponse.SchemaDefinition;
                 versionNumber = schemaVersionResponse.VersionNumber;
-
                 console.log('Retrieved schema definition.');
             } catch (err) {
                 console.error('Error retrieving schema definition:', err);
                 continue; // Skip to the next schema if there is an issue
             }
 
-            // Build the source identifier using the provided cluster name
+            // Build the source identifier
             const sourceIdentifier = `kafka://${clusterName}/${schemaName}`;
-
-            // Prepare forms input
             const formsInput = [
                 {
                     formName: 'MskSourceReferenceFormType',
                     typeIdentifier: 'MskSourceReferenceFormType',
                     content: JSON.stringify({
                         cluster_arn: clusterArn,
-                        cluster_type: clusterType // Include the cluster type here
+                        cluster_type: clusterType  // Ensure clusterType is correctly included
                     }),
                 },
                 {
@@ -154,45 +142,92 @@ export const handler = async () => {
                 }
             ];
 
-            console.log('Forms input prepared:', JSON.stringify(formsInput, null, 2));
+            console.log(formsInput);
 
-            // Create MSK Asset
-            try {
-                const createResponse = await dataZoneClient.send(new CreateAssetCommand({
-                    domainIdentifier: process.env.DOMAIN_ID,
-                    owningProjectIdentifier: process.env.PROJECT_ID,
-                    name: schemaName,
-                    typeIdentifier: 'MskTopicAssetType',
-                    formsInput,
-                    externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
-                }));
+            // Check if the asset already exists
+            const assetId = assetMap.get(schemaName);
+            if (assetId) {
+                console.log(`Asset ${schemaName} already exists. Creating or updating revision.`);
 
-                console.log('MSK Asset creation response:', createResponse);
+                try {
+                    // Check if asset exists in DataZone
+                    await dataZoneClient.send(new GetAssetCommand({
+                        domainIdentifier: domainId,
+                        identifier: assetId
+                    }));
 
-            } catch (error) {
-                if (error.$metadata?.httpStatusCode === 409) {
-                    // Handle asset conflict by creating a revision
-                    const assetIdMatch = error.message.match(/Conflict with asset (\w+)/);
-                    const assetId = assetIdMatch ? assetIdMatch[1] : 'unknown';
-
-                    console.log(`Asset conflict detected. Asset ID: ${assetId}`);
-
-                    const createAssetRevisionResponse = await dataZoneClient.send(new CreateAssetRevisionCommand({
+                    // Create Asset Revision
+                    await dataZoneClient.send(new CreateAssetRevisionCommand({
                         name: schemaName,
-                        domainIdentifier: process.env.DOMAIN_ID,
+                        domainIdentifier: domainId,
                         identifier: assetId,
                         description: 'Updating asset with new schema or forms',
                         formsInput,
                         externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
-                        clientToken: assetId, // Ensuring idempotency
+                        clientToken: schemaName, // Ensuring idempotency
                     }));
 
-                    console.log('Asset revision creation response:', createAssetRevisionResponse);
-                } else {
+                    console.log(`Asset revision for ${schemaName} updated.`);
+                } catch (error) {
+                    if (error.$metadata?.httpStatusCode === 404) {
+                        // If asset does not exist, it may have been deleted, so remove its parameter
+                        console.log(`Asset ${schemaName} not found in DataZone, removing parameter.`);
+                        await ssmClient.send(new DeleteParameterCommand({ Name: parameterName }));
+                        assetMap.delete(schemaName);
+                    } else {
+                        console.error('Error creating asset revision:', error);
+                    }
+                }
+            } else {
+                // Create new asset and store its ID
+                console.log(`Creating new asset ${schemaName}.`);
+                try {
+                    const createResponse = await dataZoneClient.send(new CreateAssetCommand({
+                        domainIdentifier: domainId,
+                        owningProjectIdentifier: projectId,
+                        name: schemaName,
+                        typeIdentifier: 'MskTopicAssetType',
+                        formsInput,
+                        externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
+                    }));
+
+                    const newAssetId = createResponse.id;
+
+                    // Store the new asset ID in SSM Parameter Store
+                    const putParameterCommand = new PutParameterCommand({
+                        Name: parameterName,
+                        Value: newAssetId,
+                        Type: 'String',
+                        Overwrite: true
+                    });
+
+                    await ssmClient.send(putParameterCommand);
+                    console.log(`Stored asset ID ${newAssetId} in SSM Parameter Store under ${parameterName}`);
+                } catch (error) {
                     console.error('Error creating MSK asset:', error);
                 }
             }
         }
+
+        // Step 5: Clean up old assets if necessary
+        for (const [assetName, assetId] of assetMap) {
+            if (!schemas.some(schema => schema.SchemaName === assetName)) {
+                // If the schema is not in the current list, delete the asset and its parameter
+                console.log(`Deleting stale asset ${assetName}.`);
+                try {
+                    await dataZoneClient.send(new DeleteAssetCommand({
+                        domainIdentifier: domainId,
+                        identifier: assetId
+                    }));
+
+                    await ssmClient.send(new DeleteParameterCommand({ Name: `/datazone/${domainId}/${registryName}/asset/${assetName}` }));
+                    console.log(`Deleted asset ${assetName} and its parameter.`);
+                } catch (error) {
+                    console.error('Error deleting asset or parameter:', error);
+                }
+            }
+        }
+
     } catch (error) {
         console.error('Error processing request:', error);
         return {
@@ -205,11 +240,10 @@ export const handler = async () => {
     }
 };
 
-// Utility functions (same as before, reused)
+// Utility functions
 function buildMskTopicArn(region, accountId, clusterName, topicName) {
     return `arn:aws:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
 }
-
 
 function parseSchemaDefinition(schemaDefinition) {
     try {
@@ -237,4 +271,3 @@ function parseSchemaDefinition(schemaDefinition) {
         return [];
     }
 }
-
