@@ -4,6 +4,7 @@
 import { KafkaClient, PutClusterPolicyCommand, GetClusterPolicyCommand, BadRequestException } from "@aws-sdk/client-kafka"
 import { IAMClient, PutRolePolicyCommand, DeleteRolePolicyCommand, NoSuchEntityException } from "@aws-sdk/client-iam";
 
+// TODO grant GSR
 
 // Retry mechanism with exponential backoff configuration
 const MAX_RETRIES = 20; // Maximum number of retries
@@ -113,6 +114,7 @@ export const handler = async(event) => {
 
       if (clusterType === 'PROVISIONED') {
       
+        // TODO add SID with subscription grant ID and asset ID
         const grantStatement = {
           "Effect": "Allow",
           "Principal": {
@@ -151,6 +153,7 @@ export const handler = async(event) => {
     const client = new IAMClient();
 
     const roleName = event.detail.value.Metadata.Consumer.Role.split(':')[5].split('/')[1];
+    // TODO replace with subscription grant ID and asset ID
     const policyName = event.detail.value.Metadata.Producer.ClusterName + event.detail.value.Metadata.Producer.Topic;
 
     if (requestType === 'GRANT') {

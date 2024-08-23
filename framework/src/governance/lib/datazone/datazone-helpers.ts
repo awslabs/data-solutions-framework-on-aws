@@ -55,6 +55,7 @@ export function createSubscriptionTarget(
   authorizedPrincipals: IRole[],
   manageAccessRole: IRole) {
 
+  // TODO collect env role and pass it
   return new CfnSubscriptionTarget(
     scope,
     `${id}SubscriptionTarget`,

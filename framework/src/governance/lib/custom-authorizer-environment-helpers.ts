@@ -56,9 +56,9 @@ export function authorizerEnvironmentWorkflowSetup(
 
   const centralEventBus = EventBus.fromEventBusArn(
     scope, `
-    ${id}CentralEventBus`, 
+    ${id}CentralEventBus`,
     `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${eventBusAccount}:event-bus/default`,
-  )
+  );
 
   const authorizerFailureCallbackEvent = new EventBridgePutEvents(scope, `${id}FailureCallback`, {
     entries: [{

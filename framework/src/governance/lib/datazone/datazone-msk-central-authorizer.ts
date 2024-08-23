@@ -124,15 +124,15 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     );
 
     this.deadLetterQueue = customAuthorizer.deadLetterQueue;
-    this.datazoneEventRole = customAuthorizer.datazoneEventRole;
-    this.datazoneEventRule = customAuthorizer.datazoneEventRule;
+    this.datazoneEventRole = customAuthorizer.authorizerEventRole;
+    this.datazoneEventRule = customAuthorizer.authorizerEventRule;
     this.stateMachine = customAuthorizer.stateMachine;
     this.callbackEventRule = customAuthorizer.callbackEventRule;
     this.callbackFunction = customAuthorizer.callbackFunction;
     this.callbackRole = customAuthorizer.callbackRole;
   }
 
-  
+
   public registerAccount(accountId: string): CfnEventBusPolicy {
     return registerAccount(this, DataZoneMskCentralAuthorizer.AUTHORIZER_NAME, accountId, this.stateMachine.role);
   };

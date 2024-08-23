@@ -4546,7 +4546,7 @@ Returns a string representation of this construct.
 ##### `registerAccount` <a name="registerAccount" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount"></a>
 
 ```typescript
-public registerAccount(accountId: string): void
+public registerAccount(accountId: string): CfnEventBusPolicy
 ```
 
 ###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.accountId"></a>
@@ -4608,11 +4608,14 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction">datazoneCallbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule">datazoneEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | *No description.* |
@@ -4628,6 +4631,36 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `callbackEventRule`<sup>Required</sup> <a name="callbackEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackEventRule"></a>
+
+```typescript
+public readonly callbackEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+---
+
+##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction"></a>
+
+```typescript
+public readonly callbackFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+---
+
+##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackRole"></a>
+
+```typescript
+public readonly callbackRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
 ---
 
@@ -4651,6 +4684,26 @@ public readonly datazoneCallbackRole: IRole;
 
 ---
 
+##### `datazoneEventRole`<sup>Required</sup> <a name="datazoneEventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole"></a>
+
+```typescript
+public readonly datazoneEventRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `datazoneEventRule`<sup>Required</sup> <a name="datazoneEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule"></a>
+
+```typescript
+public readonly datazoneEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+---
+
 ##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue"></a>
 
 ```typescript
@@ -4658,26 +4711,6 @@ public readonly deadLetterQueue: IQueue;
 ```
 
 - *Type:* aws-cdk-lib.aws_sqs.IQueue
-
----
-
-##### `eventRole`<sup>Required</sup> <a name="eventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.eventRole"></a>
-
-```typescript
-public readonly eventRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
----
-
-##### `eventRule`<sup>Required</sup> <a name="eventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.eventRule"></a>
-
-```typescript
-public readonly eventRule: IRule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.IRule
 
 ---
 
@@ -4868,14 +4901,13 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>any</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction">grantFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | *No description.* |
 
 ---
 
@@ -4888,26 +4920,6 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
-
----
-
-##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.callbackFunction"></a>
-
-```typescript
-public readonly callbackFunction: IFunction;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda.IFunction
-
----
-
-##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.callbackRole"></a>
-
-```typescript
-public readonly callbackRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
 
 ---
 
@@ -4968,6 +4980,16 @@ public readonly stateMachine: IStateMachine;
 ```
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+
+---
+
+##### `eventBusPolicy`<sup>Optional</sup> <a name="eventBusPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy"></a>
+
+```typescript
+public readonly eventBusPolicy: CfnEventBusPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_events.CfnEventBusPolicy
 
 ---
 
@@ -12975,10 +12997,63 @@ const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | *No description.* |
+
+---
+
+##### `authorizerEventRole`<sup>Required</sup> <a name="authorizerEventRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole"></a>
+
+```typescript
+public readonly authorizerEventRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+---
+
+##### `authorizerEventRule`<sup>Required</sup> <a name="authorizerEventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule"></a>
+
+```typescript
+public readonly authorizerEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+---
+
+##### `callbackEventRule`<sup>Required</sup> <a name="callbackEventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackEventRule"></a>
+
+```typescript
+public readonly callbackEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+---
+
+##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction"></a>
+
+```typescript
+public readonly callbackFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+---
+
+##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole"></a>
+
+```typescript
+public readonly callbackRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
 ---
 
@@ -12989,26 +13064,6 @@ public readonly deadLetterQueue: IQueue;
 ```
 
 - *Type:* aws-cdk-lib.aws_sqs.IQueue
-
----
-
-##### `eventRole`<sup>Required</sup> <a name="eventRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.eventRole"></a>
-
-```typescript
-public readonly eventRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
----
-
-##### `eventRule`<sup>Required</sup> <a name="eventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.eventRule"></a>
-
-```typescript
-public readonly eventRule: IRule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.IRule
 
 ---
 
@@ -13036,32 +13091,11 @@ const authorizerEnvironmentWorflow: governance.AuthorizerEnvironmentWorflow = { 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | *No description.* |
-
----
-
-##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.callbackFunction"></a>
-
-```typescript
-public readonly callbackFunction: IFunction;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda.IFunction
-
----
-
-##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.callbackRole"></a>
-
-```typescript
-public readonly callbackRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | *No description.* |
 
 ---
 
@@ -13102,6 +13136,16 @@ public readonly stateMachine: IStateMachine;
 ```
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+
+---
+
+##### `eventBusPolicy`<sup>Optional</sup> <a name="eventBusPolicy" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy"></a>
+
+```typescript
+public readonly eventBusPolicy: CfnEventBusPolicy;
+```
+
+- *Type:* aws-cdk-lib.aws_events.CfnEventBusPolicy
 
 ---
 
@@ -14515,21 +14559,9 @@ const dataZoneMskEnvironmentAuthorizerProps: governance.DataZoneMskEnvironmentAu
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAuthorizerStateMachine">centralAuthorizerStateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The Step Function State Machine from the DataZoneMskCentralAuthorizer. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId">centralAccountId</a></code> | <code>string</code> | The central account Id. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
-
----
-
-##### `centralAuthorizerStateMachine`<sup>Required</sup> <a name="centralAuthorizerStateMachine" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAuthorizerStateMachine"></a>
-
-```typescript
-public readonly centralAuthorizerStateMachine: IStateMachine;
-```
-
-- *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
-
-The Step Function State Machine from the DataZoneMskCentralAuthorizer.
 
 ---
 
@@ -14542,6 +14574,18 @@ public readonly domainId: string;
 - *Type:* string
 
 The DataZone Domain ID.
+
+---
+
+##### `centralAccountId`<sup>Optional</sup> <a name="centralAccountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId"></a>
+
+```typescript
+public readonly centralAccountId: string;
+```
+
+- *Type:* string
+
+The central account Id.
 
 ---
 

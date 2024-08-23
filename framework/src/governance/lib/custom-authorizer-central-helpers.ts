@@ -12,8 +12,8 @@ import { Utils } from '../../utils';
 export interface AuthorizerCentralWorflow{
   readonly stateMachine: StateMachine;
   readonly deadLetterQueue: IQueue;
-  readonly datazoneEventRule: IRule;
-  readonly datazoneEventRole: IRole;
+  readonly authorizerEventRule: IRule;
+  readonly authorizerEventRole: IRole;
   readonly callbackEventRule: IRule;
   readonly callbackFunction: IFunction;
   readonly callbackRole: IRole;
@@ -38,11 +38,11 @@ export function authorizerCentralWorkflowSetup(
   const DEFAULT_TIMEOUT = Duration.minutes(5);
   const DEFAULT_RETRY_ATTEMPTS = 0;
 
-  const datazoneEventRule = new Rule(scope, `${id}DatazoneEventRule`, {
+  const authorizerEventRule = new Rule(scope, `${id}AuthorizerEventRule`, {
     eventPattern,
   });
 
-  const datazoneEventRole = new Role(scope, 'DatazoneEventRole', {
+  const authorizerEventRole = new Role(scope, 'AuthorizerEventRole', {
     assumedBy: new ServicePrincipal('events.amazonaws.com'),
   });
 
@@ -111,11 +111,11 @@ export function authorizerCentralWorkflowSetup(
 
   const deadLetterQueue = new Queue(scope, 'Queue');
 
-  stateMachine.grantStartExecution(datazoneEventRole);
+  stateMachine.grantStartExecution(authorizerEventRole);
 
-  datazoneEventRule.addTarget(new SfnStateMachine(stateMachine, {
+  authorizerEventRule.addTarget(new SfnStateMachine(stateMachine, {
     deadLetterQueue,
-    role: datazoneEventRole,
+    role: authorizerEventRole,
     retryAttempts: retryAttempts || DEFAULT_RETRY_ATTEMPTS,
   }));
 
@@ -147,20 +147,20 @@ export function authorizerCentralWorkflowSetup(
     deadLetterQueue,
     maxEventAge: Duration.hours(1),
     retryAttempts: 10,
-  }))
+  }));
 
-  grantPutEvents(scope, Stack.of(scope).account,stateMachine.role);
+  grantPutEvents(scope, Stack.of(scope).account, stateMachine.role);
 
-  return { stateMachine, deadLetterQueue, datazoneEventRule, datazoneEventRole, callbackEventRule, callbackFunction, callbackRole };
+  return { stateMachine, deadLetterQueue, authorizerEventRule, authorizerEventRole, callbackEventRule, callbackFunction, callbackRole };
 }
 
 export function grantPutEvents(scope: Construct, accountId: string, role: IRole) {
 
   const targetEventBus = EventBus.fromEventBusArn(
-    scope, 
-    `${accountId}CentralEventBus`, 
+    scope,
+    `${accountId}CentralEventBus`,
     `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${accountId}:event-bus/default`,
-  )
+  );
 
   targetEventBus.grantPutEventsTo(role);
 }

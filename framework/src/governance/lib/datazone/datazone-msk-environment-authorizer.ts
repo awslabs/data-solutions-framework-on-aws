@@ -50,7 +50,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
               effect: Effect.ALLOW,
               actions: [
                 'kafka:GetClusterPolicy',
-                'kafka:PutClusterPolicy'
+                'kafka:PutClusterPolicy',
               ],
               resources: ['*'],
             }),

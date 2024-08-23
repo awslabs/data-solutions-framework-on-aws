@@ -6,11 +6,11 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { Role } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
+import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer, createSubscriptionTarget } from '../../src/governance/index';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
-import { Role } from 'aws-cdk-lib/aws-iam';
-import { DataZoneCustomAssetTypeFactory, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer, createSubscriptionTarget } from '../../src/governance/index';
 
 jest.setTimeout(10000000);
 

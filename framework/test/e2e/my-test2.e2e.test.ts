@@ -5,8 +5,8 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
-import { TestStack } from './test-stack';
 import { Role } from 'aws-cdk-lib/aws-iam';
+import { TestStack } from './test-stack';
 import { DataZoneMskEnvironmentAuthorizer, createSubscriptionTarget } from '../../src/governance/index';
 
 jest.setTimeout(10000000);
@@ -31,7 +31,7 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-const manageAccessRole = Role.fromRoleArn(stack, 'DzManageAccessRole', 'arn:aws:iam::668876353122:role/gromav') 
+const manageAccessRole = Role.fromRoleArn(stack, 'DzManageAccessRole', 'arn:aws:iam::668876353122:role/gromav');
 
 createSubscriptionTarget(stack, 'Consumer',
   {
