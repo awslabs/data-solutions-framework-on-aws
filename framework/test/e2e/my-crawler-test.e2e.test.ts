@@ -6,11 +6,13 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { aws_glue as glue, Duration } from 'aws-cdk-lib';
+import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { Schedule } from 'aws-cdk-lib/aws-events';
 import { TestStack } from './test-stack';
-import { DatazoneGsrMskAssetCrawler } from '../../src/governance/lib/datazone/datazone-gsr-msk-asset-crawler';
-import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { DataZoneMskAssetType } from '../../src/governance';
+import { DatazoneGsrKinesisAssetCrawler } from '../../src/governance/lib/datazone/datazone-gsr-kinesis-asset-crawler';
+import { DatazoneGsrMskAssetCrawler } from '../../src/governance/lib/datazone/datazone-gsr-msk-asset-crawler';
+import { DataZoneKinesisAssetType } from '../../src/governance/lib/datazone/datazone-kinesis-asset-type';
 
 //npx jest --group=e2e/crawlertest
 
@@ -55,6 +57,11 @@ new CfnProjectMembership(stack, 'ProjectCrawlerMembership', {
 });
 
 new DataZoneMskAssetType(stack, 'MSKAssetType', {
+  projectId: projectID,
+  domainId: domainID,
+});
+
+new DataZoneKinesisAssetType(stack, 'KinesisAssetType', {
   projectId: projectID,
   domainId: domainID,
 });
@@ -104,6 +111,35 @@ new DatazoneGsrMskAssetCrawler(stack, 'Crawler', {
   projectId: projectID,
   clusterName: clusterName,
   registryName: cfnCrawlerRegistry.name,
+  eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
+  enableSchemaRegistryEvent: true,
+});
+
+const cfnKinesisRegistry = new glue.CfnRegistry(stack, 'MyKinesisRegistryCrawler', {
+  name: 'kinesis-registry',
+});
+
+new glue.CfnSchema(stack, 'KinesisSchema', {
+  compatibility: 'BACKWARD',
+  dataFormat: 'AVRO',
+  name: 'kinesis-source',
+  schemaDefinition: JSON.stringify({
+    type: 'record',
+    name: 'MyRecord',
+    fields: [
+      { name: 'id', type: 'int' },
+      { name: 'name', type: 'string' },
+    ],
+  }),
+  registry: {
+    name: cfnKinesisRegistry.name,
+  },
+});
+
+new DatazoneGsrKinesisAssetCrawler(stack, 'KinesisCrawler', {
+  domainId: domainID,
+  projectId: projectID,
+  registryName: cfnKinesisRegistry.name,
   eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
   enableSchemaRegistryEvent: true,
 });
