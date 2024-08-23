@@ -12,6 +12,7 @@ import { DatazoneGsrMskAssetCrawler } from '../../src/governance/lib/datazone/da
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { DataZoneMskAssetType } from '../../src/governance';
 
+//npx jest --group=e2e/crawlertest
 
 jest.setTimeout(10000000);
 
@@ -24,9 +25,9 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 
 // const synthesizer = stack.synthesizer as DefaultStackSynthesizer;
 
-const domainID = '';
-const projectID = '';
-const clusterName = '';
+const domainID = 'dzd_crma2x3flwp67b';
+const projectID = '4tm7gqb3gn350n';
+const clusterName = 'msk-flink-openlineage';
 
 // const userProfile = new CfnUserProfile(stack, 'MyCfnUserProfile', {
 //   domainIdentifier: 'dzd_crma2x3flwp67b',
@@ -104,6 +105,7 @@ new DatazoneGsrMskAssetCrawler(stack, 'Crawler', {
   clusterName: clusterName,
   registryName: cfnCrawlerRegistry.name,
   eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
+  enableSchemaRegistryEvent: true,
 });
 
 new cdk.CfnOutput(stack, 'CFnSchema', {
