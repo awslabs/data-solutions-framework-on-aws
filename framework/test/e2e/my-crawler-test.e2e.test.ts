@@ -142,6 +142,7 @@ new DatazoneGsrKinesisAssetCrawler(stack, 'KinesisCrawler', {
   registryName: cfnKinesisRegistry.name,
   eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
   enableSchemaRegistryEvent: true,
+  enableKinesisEvent: true,
 });
 
 new cdk.CfnOutput(stack, 'CFnSchema', {
