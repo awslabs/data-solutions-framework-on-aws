@@ -8,7 +8,6 @@ import { aclCrudOnEvent } from "./acl-crud.mjs";
 import { topicCrudOnEvent } from "./topic-crud.mjs";
 
 
-
 // Handler functions
 export const onEventHandler = async (event) => {
   

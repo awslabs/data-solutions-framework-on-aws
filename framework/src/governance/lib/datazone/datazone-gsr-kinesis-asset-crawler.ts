@@ -166,6 +166,22 @@ export class DatazoneGsrKinesisAssetCrawler extends TrackedConstruct {
       });
     }
 
-
+    // Add EventBridge Rule for Glue Schema Registry changes (if enabled)
+    if (props.enableKinesisEvent) {
+      new Rule(this, 'KinesisEventRule', {
+        eventPattern: {
+          source: ['aws.kinesis'],
+          detail: {
+            eventSource: ['kinesis.amazonaws.com'],
+            eventName: ['CreateStream', 'UpdateStreamMode', 'DeleteStream'],
+          },
+        },
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
+      });
+    }
   }
 }

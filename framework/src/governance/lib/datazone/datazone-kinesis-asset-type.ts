@@ -48,7 +48,7 @@ export class DataZoneKinesisAssetType extends TrackedConstruct {
             },
             {
               name: 'stream_provisioned_shards',
-              type: 'String',
+              type: 'Integer',
               required: false,
             },
           ],

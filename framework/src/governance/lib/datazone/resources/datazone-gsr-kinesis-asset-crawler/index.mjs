@@ -42,6 +42,8 @@ export const handler = async () => {
         throw new Error('Missing required environment variables.');
     }
 
+    const registryArn = `arn:aws:glue:${region}:${accountId}:registry/${registryName}`;
+
     try {
         // Step 1: Retrieve existing parameters
         const existingParametersResponse = await ssmClient.send(new GetParametersByPathCommand({
@@ -50,7 +52,7 @@ export const handler = async () => {
             WithDecryption: false,
         }));
         const existingParameters = existingParametersResponse.Parameters || [];
-        const assetMap = new Map<string, string>(); // Map to hold assetName and assetId
+        const assetMap = new Map(); // Map to hold assetName and assetId
 
         for (const param of existingParameters) {
             const assetName = param.Name.split('/').pop();
@@ -114,7 +116,7 @@ export const handler = async () => {
             }
 
             // Build the source identifier
-            const sourceIdentifier = `kinesis://${streamName}/${schemaName}`;
+            const sourceIdentifier = `kinesis://${streamArn}/${schemaName}`;
             const formsInput = [
                 {
                     formName: 'KinesisSourceReferenceFormType',
@@ -140,7 +142,7 @@ export const handler = async () => {
                         stream_name: streamName,
                         schema_version: versionNumber,
                         schema_arn: schema.SchemaArn,
-                        registry_arn: registryName,
+                        registry_arn: registryArn,
                     }),
                 },
                 {
@@ -152,6 +154,8 @@ export const handler = async () => {
                     }),
                 },
             ];
+
+            console.log(formsInput)
 
             // Check if the asset already exists
             const assetId = assetMap.get(schemaName);
@@ -171,8 +175,7 @@ export const handler = async () => {
                         identifier: assetId,
                         description: 'Updating asset with new schema or forms',
                         formsInput,
-                        externalIdentifier: buildKinesisStreamArn(region, accountId, streamName, schemaName),
-                        clientToken: schemaName, // Ensuring idempotency
+                        externalIdentifier: streamArn,
                     }));
 
                     console.log(`Asset revision for ${schemaName} updated.`);
@@ -196,7 +199,7 @@ export const handler = async () => {
                         name: schemaName,
                         typeIdentifier: 'KinesisStreamAssetType',
                         formsInput,
-                        externalIdentifier: buildKinesisStreamArn(region, accountId, streamName, schemaName),
+                        externalIdentifier: streamArn,
                     }));
 
                     const newAssetId = createResponse.id;
@@ -246,12 +249,7 @@ export const handler = async () => {
     }
 };
 
-// Utility functions
-function buildKinesisStreamArn(region: string, accountId: string, streamName: string, topicName: string) {
-    return `arn:aws:kinesis:${region}:${accountId}:stream/${streamName}`;
-}
-
-function parseSchemaDefinition(schemaDefinition: string) {
+function parseSchemaDefinition(schemaDefinition) {
     try {
         const schemaJson = JSON.parse(schemaDefinition);
         const columns = [];
@@ -266,7 +264,7 @@ function parseSchemaDefinition(schemaDefinition: string) {
 
                 columns.push({
                     columnName: field.name,
-                    dataType: columnType,
+                    dataType: columnType
                 });
             }
         }
