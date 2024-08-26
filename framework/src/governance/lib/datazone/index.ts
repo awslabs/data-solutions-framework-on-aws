@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 export * from './datazone-msk-environment-authorizer';
 export * from './datazone-msk-central-authorizer';
 export * from './datazone-msk-environment-authorizer-props';

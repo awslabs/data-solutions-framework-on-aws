@@ -1,8 +1,13 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { CfnSubscriptionTarget } from 'aws-cdk-lib/aws-datazone';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { CustomAssetType } from './datazone-custom-asset-type-factory';
 import { DataZoneFormType } from './datazone-custom-asset-type-props';
+// import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
+// import { Fn, Stack } from 'aws-cdk-lib';
 
 
 const validSmithyTypes = [
@@ -52,16 +57,38 @@ export function createSubscriptionTarget(
   name: string,
   provider: string,
   environmentId: string,
-  authorizedPrincipals: IRole[],
+  authorizedPrincipals: [IRole],
   manageAccessRole: IRole) {
 
-  // TODO collect env role and pass it
+  // const stack = Stack.of(scope);
+
+  // const crApiCall = {
+  //   service: 'DataZone',
+  //   action: 'GetEnvironment',
+  //   parameters: {
+  //     domainIdentifier: customAssetType.domainIdentifier,
+  //     identifier: environmentId,
+  //   },
+  //   physicalResourceId: PhysicalResourceId.of(Date.now().toString()),
+  // };
+
+  // const environment = new AwsCustomResource(scope, 'API1', {
+  //   onCreate: crApiCall,
+  //   onUpdate: crApiCall,
+  //   onDelete: crApiCall,
+  //   policy: AwsCustomResourcePolicy.fromSdkCalls({
+  //     resources: [`arn:${stack.partition}:datazone:${stack.region}:${stack.account}:domain/${customAssetType.domainIdentifier}`],
+  //   }),
+  // });
+
+  // const userRoleArn = Fn.select(0,Fn.split('\"}',Fn.select(1,Fn.split('value\":\"',Fn.select(1,Fn.split('userRoleArn',environment.getResponseField('provisionedResources')))))));
+    
   return new CfnSubscriptionTarget(
     scope,
     `${id}SubscriptionTarget`,
     {
       applicableAssetTypes: [customAssetType.name],
-      authorizedPrincipals: authorizedPrincipals.map((r) => r.roleArn),
+      authorizedPrincipals: authorizedPrincipals.map( r => r.roleArn),
       domainIdentifier: customAssetType.domainIdentifier,
       environmentIdentifier: environmentId,
       manageAccessRole: manageAccessRole.roleArn,

@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { CustomResource, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -110,7 +113,6 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
     this.serviceToken = provider.serviceToken;
   }
 
-  // TODO remove interface as parameter?
   public createCustomAssetType(id: string, customAssetType: DataZoneCustomAssetTypeProps): CustomAssetType {
     const projMembership = new CfnProjectMembership(this, `${id}ProjectMembership`, {
       designation: 'PROJECT_OWNER',

@@ -1,4 +1,5 @@
-
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 export interface DataZoneFormTypeField {
   readonly name: string; // Field name
   readonly type: string; // Field type, e.g., 'String', 'Integer'

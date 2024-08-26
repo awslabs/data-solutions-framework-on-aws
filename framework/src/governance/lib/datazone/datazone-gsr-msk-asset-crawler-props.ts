@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { Schedule } from 'aws-cdk-lib/aws-events';
 
 export interface DatazoneGsrMskAssetCrawlerProps {

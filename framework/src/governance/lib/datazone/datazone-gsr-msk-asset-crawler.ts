@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { Duration, Stack } from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
 import { Rule, RuleTargetInput, Schedule } from 'aws-cdk-lib/aws-events';

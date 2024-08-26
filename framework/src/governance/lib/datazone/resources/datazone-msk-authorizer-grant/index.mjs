@@ -106,6 +106,9 @@ export const handler = async(event) => {
   const consumerAccount = event.detail.value.Metadata.Consumer.Account;
   const consumerRole = event.detail.value.Metadata.Consumer.Role;
 
+  const subscriptionGrantId = event.Metadata.SubscriptionGrantId;
+  const assetId = event.Metadata.AssetId;
+
   const requestType = event.detail.value.Metadata.RequestType;
   
   if (event['detail-type'] === "producerGrant") {
@@ -114,8 +117,8 @@ export const handler = async(event) => {
 
       if (clusterType === 'PROVISIONED') {
       
-        // TODO add SID with subscription grant ID and asset ID
         const grantStatement = {
+          "Sid": `${subscriptionGrantId}DSF${assetId}`,
           "Effect": "Allow",
           "Principal": {
             "AWS": consumerRole
@@ -153,8 +156,7 @@ export const handler = async(event) => {
     const client = new IAMClient();
 
     const roleName = event.detail.value.Metadata.Consumer.Role.split(':')[5].split('/')[1];
-    // TODO replace with subscription grant ID and asset ID
-    const policyName = event.detail.value.Metadata.Producer.ClusterName + event.detail.value.Metadata.Producer.Topic;
+    const policyName = `${subscriptionGrantId}_${assetId}`;
 
     if (requestType === 'GRANT') {
 

@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { CfnEventBusPolicy, EventBus, EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction, SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';

@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { CfnEventBusPolicy, IRule } from 'aws-cdk-lib/aws-events';
 import { IRole, Role, ServicePrincipal, ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
