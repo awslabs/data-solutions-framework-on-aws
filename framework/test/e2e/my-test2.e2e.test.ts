@@ -22,8 +22,10 @@ const DOMAIN_ID = 'dzd_dc495t9ime7von';
 const GOVERNANCE_PROJECT_ID = '656w78ba7fyfmv';
 const CONSUMER_ENV_ID = 'd126kap9jgs3vr';
 const CENTRAL_ACCOUNT_ID = '632368511077';
+const CONSUMER_ROLE_ARN = 'arn:aws:iam::668876353122:role/consumer-role';
+const MANAGE_ACCESS_ROLE_ARN = 'arn:aws:iam::668876353122:role/gromav';
 
-const consumerRole = Role.fromRoleArn(stack, 'consumerRole', 'arn:aws:iam::668876353122:role/consumer-role');
+const consumerRole = Role.fromRoleArn(stack, 'consumerRole', CONSUMER_ROLE_ARN);
 
 new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   domainId: DOMAIN_ID,
@@ -31,7 +33,7 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-const manageAccessRole = Role.fromRoleArn(stack, 'DzManageAccessRole', 'arn:aws:iam::668876353122:role/gromav');
+const manageAccessRole = Role.fromRoleArn(stack, 'DzManageAccessRole', MANAGE_ACCESS_ROLE_ARN);
 
 createSubscriptionTarget(stack, 'Consumer',
   {

@@ -24,6 +24,7 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 const DOMAIN_ID = 'dzd_dc495t9ime7von';
 const GOVERNANCE_PROJECT_ID = '656w78ba7fyfmv';
 const CONSUMER_ENV_ID = '4k6pd6k90ooc2v';
+const CONSUMER_ROLE_ARN = 'arn:aws:iam::632368511077:role/consumer-role';
 
 let vpc = new DataVpc(stack, 'vpc', {
   vpcCidr: '10.0.0.0/16',
@@ -47,7 +48,7 @@ msk.addTopic('topicServerless', {
 }, cdk.RemovalPolicy.DESTROY, false, 1500);
 
 
-const consumerRole = Role.fromRoleArn(stack, 'consumerRole', 'arn:aws:iam::632368511077:role/consumer-role');
+const consumerRole = Role.fromRoleArn(stack, 'consumerRole', CONSUMER_ROLE_ARN);
 
 const mskCentralAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
   domainId: DOMAIN_ID,

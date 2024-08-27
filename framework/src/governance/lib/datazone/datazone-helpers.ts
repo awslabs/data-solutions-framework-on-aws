@@ -82,7 +82,7 @@ export function createSubscriptionTarget(
   // });
 
   // const userRoleArn = Fn.select(0,Fn.split('\"}',Fn.select(1,Fn.split('value\":\"',Fn.select(1,Fn.split('userRoleArn',environment.getResponseField('provisionedResources')))))));
-    
+
   return new CfnSubscriptionTarget(
     scope,
     `${id}SubscriptionTarget`,

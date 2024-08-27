@@ -184,7 +184,6 @@ const mskasset = new DataZoneMSKCustomAsset(stack, 'MSKAsset', {
 });
 
 
-
 new cdk.CfnOutput(stack, 'CFnSchema', {
   value: cfnSchema2.name,
 });
