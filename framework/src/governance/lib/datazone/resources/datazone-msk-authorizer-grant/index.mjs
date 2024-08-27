@@ -106,8 +106,8 @@ export const handler = async(event) => {
   const consumerAccount = event.detail.value.Metadata.Consumer.Account;
   const consumerRole = event.detail.value.Metadata.Consumer.Role;
 
-  const subscriptionGrantId = event.Metadata.SubscriptionGrantId;
-  const assetId = event.Metadata.AssetId;
+  const subscriptionGrantId = event.detail.value.Metadata.SubscriptionGrantId;
+  const assetId = event.detail.value.Metadata.AssetId;
 
   const requestType = event.detail.value.Metadata.RequestType;
   
