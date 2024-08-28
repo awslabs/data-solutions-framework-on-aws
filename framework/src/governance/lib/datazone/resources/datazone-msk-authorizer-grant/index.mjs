@@ -4,7 +4,6 @@
 import { KafkaClient, PutClusterPolicyCommand, GetClusterPolicyCommand, BadRequestException } from "@aws-sdk/client-kafka"
 import { IAMClient, PutRolePolicyCommand, DeleteRolePolicyCommand, NoSuchEntityException } from "@aws-sdk/client-iam";
 
-// TODO grant GSR
 
 // Retry mechanism with exponential backoff configuration
 const MAX_RETRIES = 20; // Maximum number of retries

@@ -4,11 +4,12 @@
 import { DataZoneClient, UpdateSubscriptionGrantStatusCommand, SubscriptionGrantStatus } from "@aws-sdk/client-datazone";
 
 
+const client = new DataZoneClient()
+
 export const handler = async(event) => {
 
   console.log(`event received: ${JSON.stringify({ event }, null, 2)}`);
 
-  const client = new DataZoneClient()
   const  status = event.Status;
   const requestType = event.Metadata.RequestType;
   

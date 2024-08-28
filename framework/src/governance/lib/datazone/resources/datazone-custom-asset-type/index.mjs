@@ -3,12 +3,12 @@
 
 import { DataZoneClient, GetFormTypeCommand, CreateFormTypeCommand, CreateAssetTypeCommand, DeleteAssetTypeCommand, DeleteFormTypeCommand, ResourceNotFoundException } from "@aws-sdk/client-datazone";
 
+const client = new DataZoneClient()
 
 export const handler = async(event) => {
 
-  console.log(`event received: ${JSON.stringify({ event }, null, 2)}`
-)
-  const client = new DataZoneClient()
+  console.log(`event received: ${JSON.stringify({ event }, null, 2)}`)
+
   const properties = event["ResourceProperties"]
   const domainId = properties["domainId"]
   const projectId = properties["projectId"]
@@ -17,9 +17,12 @@ export const handler = async(event) => {
 
   if (["Create", "Update"].includes(event["RequestType"])) {
     const formsInput = {}
+
+    // iterate on creating or updating form types required by the custom asset type
     for (let formType of formTypes) {
 
       let crFormTypeResp;
+      // if the form type has a model, that means we are creating a custom form type
       if(formType.model !== undefined) {
         crFormTypeResp = await client.send(new CreateFormTypeCommand({
           domainIdentifier: domainId,
@@ -34,13 +37,13 @@ export const handler = async(event) => {
         console.log(`${formType.name} form type created`)
 
       } else {
+        // if there is no model attached, that means we are reusing an existing form type
+        // and need to get the latest revision
         crFormTypeResp = await client.send(new GetFormTypeCommand({
           domainIdentifier: domainId,
           formTypeIdentifier: formType.name,
         }))
-
         console.log(`${formType.name} form type already exists... reusing it`)
-
       }
       
       const {revision} = crFormTypeResp
@@ -51,8 +54,6 @@ export const handler = async(event) => {
         typeRevision: revision,
         required: formType.required
       }
-
-      console.log(formsInput)
     }
     
     const crAssetTypeResp = await client.send(new CreateAssetTypeCommand({
@@ -83,7 +84,9 @@ export const handler = async(event) => {
 
     console.log(`${assetTypeName} asset type deleted`)
 
+    // cleanup the form types created with the custom asset type
     for (let formType of formTypes) {
+      // We only delete form types having models, the others are shared across multiple asset types
       if(formType.model !== undefined) {
 
         try {
