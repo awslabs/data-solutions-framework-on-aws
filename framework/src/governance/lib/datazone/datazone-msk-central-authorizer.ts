@@ -52,6 +52,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
               actions: [
                 'datazone:GetListing',
                 'datazone:GetEnvironment',
+                'datazone:GetSubscriptionTarget',
                 'datazone:UpdateSubscriptionGrantStatus',
               ],
               resources: ['*'],

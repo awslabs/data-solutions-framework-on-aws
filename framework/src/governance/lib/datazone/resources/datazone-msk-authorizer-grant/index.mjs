@@ -11,16 +11,22 @@ const MAX_RETRIES = 20; // Maximum number of retries
 const INITIAL_DELAY_MS = 100; // Initial delay in milliseconds
 const MAX_DELAY_MS = 10000; // Maximum delay in milliseconds
 
-function getIamResources(region, account, clusterName, clusterUuid, topic) {
+function getMskIamResources(topicArn, clusterArn) {
   return [
-    `arn:aws:kafka:${region}:${account}:topic/${clusterName}/${clusterUuid}/${topic}`,
-    getClusterArn(region, account, clusterName, clusterUuid),
-    `arn:aws:kafka:${region}:${account}:group/${clusterName}/${clusterUuid}/*`
+    topicArn,
+    clusterArn,
+    getGroupArn(clusterArn),
   ]
 }
 
-function getClusterArn(region, account, clusterName, clusterUuid) {
-  return `arn:aws:kafka:${region}:${account}:cluster/${clusterName}/${clusterUuid}`
+function getGroupArn(clusterArn) {
+  const assetArnParts = clusterArn.split(":");
+  const partition = assetArnParts[1];
+  const account = assetArnParts[4];
+  const region = assetArnParts[3];
+  const cluster = assetArnParts[5];
+
+  return `arn:${partition}:kafka:${region}:${account}:group/${cluster}/*`
 }
 
 function calculateExponentialBackoff(retryCount, initialDelay, maxDelay) {
@@ -78,13 +84,15 @@ async function updateClusterPolicyWithRetry(client, grantStatement, requestType,
       } else {
         throw new Error("Error updating MSK cluster policy: concurrent modifications failure and maximum retries exceeded.");
       }
+    } else if (error instanceof BadRequestException && error.message.includes("The Statement Ids in the policy are not unique")) {
+        console.log("Cluster policy already exists, skipping...");
     } else {
       throw error;
     }
   }
 }
 
-const readActions = [
+const mskReadActions = [
   'kafka-cluster:Connect',
   'kafka-cluster:DescribeTopic',
   'kafka-cluster:DescribeGroup',
@@ -92,28 +100,39 @@ const readActions = [
   'kafka-cluster:ReadData'
 ];
 
+const gsrReadActions = [
+  "glue:GetRegistry",
+  "glue:ListRegistries",
+  "glue:GetSchema",
+  "glue:ListSchemas",
+  "glue:GetSchemaByDefinition",
+  "glue:GetSchemaVersion",
+  "glue:ListSchemaVersions",
+  "glue:GetSchemaVersionsDiff",
+  "glue:CheckSchemaVersionValidity",
+  "glue:QuerySchemaVersionMetadata",
+  "glue:GetTags"
+];
+
 export const handler = async(event) => {
 
   console.log(`event received: ${JSON.stringify({ event }, null, 2)}`);
 
-  const topic = event.detail.value.Metadata.Producer.Topic;
-  const clusterName = event.detail.value.Metadata.Producer.ClusterName;
+  const topicArn = event.detail.value.Metadata.Producer.TopicArn;
+  const clusterArn = event.detail.value.Metadata.Producer.ClusterArn;
   const clusterType = event.detail.value.Metadata.Producer.ClusterType;
-  const clusterUuid = event.detail.value.Metadata.Producer.ClusterUuid;
-  const region = event.detail.value.Metadata.Producer.Region;
-  const account = event.detail.value.Metadata.Producer.Account;
-
+  const producerAccount = event.detail.value.Metadata.Producer.Account;
   const consumerAccount = event.detail.value.Metadata.Consumer.Account;
-  const consumerRole = event.detail.value.Metadata.Consumer.Role;
-
+  const consumerRolesArn = event.detail.value.Metadata.Consumer.RolesArn;
   const subscriptionGrantId = event.detail.value.Metadata.SubscriptionGrantId;
   const assetId = event.detail.value.Metadata.AssetId;
-
   const requestType = event.detail.value.Metadata.RequestType;
+
+  const iamMskResources = getMskIamResources(topicArn, clusterArn);
   
   if (event['detail-type'] === "producerGrant") {
 
-    if (consumerAccount !== account) {
+    if (consumerAccount !== producerAccount) {
 
       if (clusterType === 'PROVISIONED') {
       
@@ -121,12 +140,11 @@ export const handler = async(event) => {
           "Sid": `${subscriptionGrantId}DSF${assetId}`,
           "Effect": "Allow",
           "Principal": {
-            "AWS": consumerRole
+            "AWS": consumerRolesArn,
           },
-          "Action": readActions,
-          "Resource": getIamResources(region, account, clusterName, clusterUuid, topic)
+          "Action": mskReadActions,
+          "Resource": iamMskResources,
         };
-        const clusterArn = getClusterArn(region, account, clusterName, clusterUuid);
         const client = new KafkaClient();
 
         await updateClusterPolicyWithRetry(client, grantStatement, requestType, clusterArn);
@@ -142,49 +160,62 @@ export const handler = async(event) => {
     }
   } else if (event['detail-type'] === 'consumerGrant') {
 
+    let iamActions = mskReadActions;
+    let iamResources = iamMskResources;
+    // Test if we need to grant permissions on the Glue Schema Registry
+    const schemaArn = event.detail.value.Metadata.Producer.SchemaArn;
+    if ( schemaArn !== '' && producerAccount === consumerAccount) {
+      iamActions = mskReadActions.concat(gsrReadActions);
+      iamResources = iamMskResources.concat([schemaArn, event.detail.value.Metadata.Producer.RegistryArn]);
+    }
+
     const iamRolePolicy = JSON.stringify({
       "Version": "2012-10-17",
       "Statement": [
         {
           "Effect": "Allow",
-          "Action": readActions,
-          "Resource": getIamResources(region, account, clusterName, clusterUuid, topic)
+          "Action": iamActions,
+          "Resource": iamResources,
         }
       ]
-    }, null, 2)
+    }, null, 2);
 
     const client = new IAMClient();
 
-    const roleName = event.detail.value.Metadata.Consumer.Role.split(':')[5].split('/')[1];
-    const policyName = `${subscriptionGrantId}_${assetId}`;
+    for (var role of consumerRolesArn) {
+      console.log(`Processing role: ${role}`);
 
-    if (requestType === 'GRANT') {
+      const roleName = role.split(':')[5].split('/')[1];
+      const policyName = `${subscriptionGrantId}_${assetId}`;
 
-      const result = await client.send(new PutRolePolicyCommand({
-        RoleName: roleName,
-        PolicyName: policyName,
-        PolicyDocument: iamRolePolicy
-      }));
-      console.log(`PutRolePolicy result: ${JSON.stringify({ result }, null, 2)}`);
+      if (requestType === 'GRANT') {
 
-    } else if (requestType === 'REVOKE') {
-
-      try {
-        const result = await client.send(new DeleteRolePolicyCommand({
+        const result = await client.send(new PutRolePolicyCommand({
           RoleName: roleName,
-          PolicyName: policyName
+          PolicyName: policyName,
+          PolicyDocument: iamRolePolicy
         }));
-        console.log(`DeleteRolePolicy result: ${JSON.stringify({ result }, null, 2)}`);
-      } catch (error) {
-        if (error instanceof NoSuchEntityException) {
-          console.log(`Policy ${policyName} doesn't exist... passing`);
-        } else {
-          throw error;
-        }
-      }
+        console.log(`PutRolePolicy result: ${JSON.stringify({ result }, null, 2)}`);
 
-    } else {
-      throw new Error(`Invalid request type: ${requestType}`);
+      } else if (requestType === 'REVOKE') {
+
+        try {
+          const result = await client.send(new DeleteRolePolicyCommand({
+            RoleName: roleName,
+            PolicyName: policyName
+          }));
+          console.log(`DeleteRolePolicy result: ${JSON.stringify({ result }, null, 2)}`);
+        } catch (error) {
+          if (error instanceof NoSuchEntityException) {
+            console.log(`Policy ${policyName} doesn't exist... passing`);
+          } else {
+            throw error;
+          }
+        }
+
+      } else {
+        throw new Error(`Invalid request type: ${requestType}`);
+      }
     }
   } else {
     throw new Error("Unsupported grant action")

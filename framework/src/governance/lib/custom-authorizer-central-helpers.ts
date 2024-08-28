@@ -81,8 +81,8 @@ export function authorizerCentralWorkflowSetup(
     payload: TaskInput.fromObject({
       Status: 'failure',
       Metadata: JsonPath.stringAt('$.Metadata'),
-      Error: JsonPath.stringAt('$.Error'),
-      Cause: JsonPath.stringAt('$.Cause'),
+      Error: JsonPath.stringAt('$.ErrorInfo.Error'),
+      Cause: JsonPath.stringAt('$.ErrorInfo.Cause'),
     }),
   });
 

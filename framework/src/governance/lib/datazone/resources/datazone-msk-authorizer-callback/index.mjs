@@ -16,7 +16,7 @@ export const handler = async(event) => {
 
     const results = await client.send(new UpdateSubscriptionGrantStatusCommand({
       domainIdentifier: event.Metadata.DomainId,
-      identifier: event.Metadata.SubscriptionGranId,
+      identifier: event.Metadata.SubscriptionGrantId,
       assetIdentifier: event.Metadata.AssetId,
       status: requestType === 'GRANT' ? SubscriptionGrantStatus.GRANT_FAILED : SubscriptionGrantStatus.REVOKE_FAILED,
       failureCause: {

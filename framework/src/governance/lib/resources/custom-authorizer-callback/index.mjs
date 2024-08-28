@@ -22,7 +22,7 @@ export const handler = async(event) => {
 
   } else if (status === 'failure') { 
 
-    const taskFailureResponse = await client.send(SendTaskFailureCommand({
+    const taskFailureResponse = await client.send(new SendTaskFailureCommand({
       taskToken,
       cause: `${event.detail.Error}: ${event.detail.Cause}`,
       error: 'grant failed',

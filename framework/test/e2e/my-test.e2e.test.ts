@@ -25,6 +25,7 @@ const DOMAIN_ID = 'dzd_dc495t9ime7von';
 const GOVERNANCE_PROJECT_ID = '656w78ba7fyfmv';
 const CONSUMER_ENV_ID = '4k6pd6k90ooc2v';
 const CONSUMER_ROLE_ARN = 'arn:aws:iam::632368511077:role/consumer-role';
+const CROSS_ACCOUNT_ID = '668876353122';
 
 let vpc = new DataVpc(stack, 'vpc', {
   vpcCidr: '10.0.0.0/16',
@@ -60,7 +61,7 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-mskCentralAuthorizer.registerAccount('668876353122');
+mskCentralAuthorizer.registerAccount(CROSS_ACCOUNT_ID);
 
 const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { removalPolicy: cdk.RemovalPolicy.DESTROY });
 
