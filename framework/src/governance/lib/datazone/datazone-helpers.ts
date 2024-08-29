@@ -6,15 +6,19 @@ import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { CustomAssetType } from './datazone-custom-asset-type-factory';
 import { DataZoneFormType } from './datazone-custom-asset-type-props';
-// import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
-// import { Fn, Stack } from 'aws-cdk-lib';
 
 
+// The list of valid types for specifying smithy models in typescript
 const validSmithyTypes = [
   'string', 'boolean', 'byte', 'short', 'integer', 'long', 'float', 'double',
   'bigInteger', 'bigDecimal', 'blob', 'document', 'timestamp', 'enum', 'intEnum',
 ];
 
+/**
+ * Check if a type is a valid smithy type.
+ * @param type The smithy type to check.
+ * @returns True if the type is a valid smithy type, false otherwise.
+ */
 function isValidSmithyType(type: string): boolean {
   return validSmithyTypes.includes(type.toLowerCase());
 }
@@ -50,6 +54,19 @@ export function buildModelString(formType: DataZoneFormType): string|undefined {
   }
 }
 
+/**
+ * Creates a DataZone subscription target for a custom asset type. 
+ * Subscription targets are used to automatically add asset to environments when a custom asset is subscribed by a project.
+ * @param scope The scope of the construct.
+ * @param id The id of the construct.
+ * @param customAssetType The custom asset type that can be added to the environment.
+ * @param name The name of the subscription target.
+ * @param provider The provider of the subscription target. @example dsf.
+ * @param environmentId The DataZone environment identifier.
+ * @param authorizedPrincipals The authorized principals to be granted when assets are subscribed.
+ * @param manageAccessRole The IAM role creating the subscription target.
+ * @returns The DataZone subscription target.
+ */
 export function createSubscriptionTarget(
   scope: Construct,
   id: string,

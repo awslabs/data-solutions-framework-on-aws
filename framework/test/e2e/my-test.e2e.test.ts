@@ -63,7 +63,7 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
 
 mskCentralAuthorizer.registerAccount(CROSS_ACCOUNT_ID);
 
-const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { removalPolicy: cdk.RemovalPolicy.DESTROY });
+const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { domainId: DOMAIN_ID, removalPolicy: cdk.RemovalPolicy.DESTROY });
 
 const mskAssetType = new DataZoneMskAssetType(stack, 'MskAssetType', {
   domainId: DOMAIN_ID,
