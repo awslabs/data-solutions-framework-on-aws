@@ -20,13 +20,13 @@ export class DataZoneKinesisAssetType extends TrackedConstruct {
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
     const dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory = props.dzCustomAssetTypeFactory || new DataZoneCustomAssetTypeFactory(this, 'DZCustomAssetTypeHandler', {
+      domainId: props.domainId,
       removalPolicy: this.removalPolicy,
     });
 
     this.kinesisCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType('KinesisCustomAssetType', {
       assetTypeName: 'KinesisStreamAssetType',
       assetTypeDescription: 'Custom asset type to support Kinesis Stream asset',
-      domainId: props.domainId,
       projectId: props.projectId,
       formTypes: [
         {

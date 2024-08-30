@@ -38,12 +38,14 @@ export const handler = async(event) => {
   console.log(`GetListing result: ${JSON.stringify({ asset }, null, 2)}`);
 
   // Update the status in DataZone
-  await client.send(new UpdateSubscriptionGrantStatusCommand({
+  const updateStatus = await client.send(new UpdateSubscriptionGrantStatusCommand({
     domainIdentifier: domainId,
     identifier: subscriptionGrantId,
     assetIdentifier: asset.item.assetListing.assetId,
     status: requestType === 'GRANT' ? SubscriptionGrantStatus.GRANT_IN_PROGRESS : SubscriptionGrantStatus.REVOKE_IN_PROGRESS,
   }))
+
+  console.log(`UpdateSubscriptionGrant result: ${JSON.stringify({ updateStatus }, null, 2)}`);
 
   // Get the cluster ARN from the MskSourceReferenceFormType
   const forms = JSON.parse(asset.item.assetListing.forms);
@@ -79,7 +81,7 @@ export const handler = async(event) => {
 
   console.log(`GetEnvironment result: ${JSON.stringify({ targetEnv }, null, 2)}`);
 
-  const targetEnvResources = targetEnv.provisionedResources;
+  // const targetEnvResources = targetEnv.provisionedResources;
   // const userRole = targetEnvResources.find((element) => element.name === "userRoleArn");
   const consumerAccountId = targetEnv.awsAccountId;
   const consumerRegion = targetEnv.awsAccountRegion;
@@ -89,6 +91,8 @@ export const handler = async(event) => {
     environmentIdentifier: targetEnvId,
     identifier: subscriptionTargetId,
   }));
+
+  console.log(`GetSubscriptionTarget result: ${JSON.stringify({ targetSubscription }, null, 2)}`);
 
   const consumerRolesArn = targetSubscription.authorizedPrincipals;
 

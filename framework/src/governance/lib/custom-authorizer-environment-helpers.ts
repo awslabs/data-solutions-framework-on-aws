@@ -11,14 +11,44 @@ import { DefinitionBody, IStateMachine, JsonPath, StateMachine, TaskInput, Timeo
 import { EventBridgePutEvents, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
+/**
+ * The interface representing the environment custom authorizer workflow.
+ */
 export interface AuthorizerEnvironmentWorflow{
+  /**
+   * The state machine that orchestrates the workflow.
+   */
   readonly stateMachine: IStateMachine;
+  /**
+   * The event rule that triggers the workflow.
+   */
   readonly eventRule: IRule;
+  /**
+   * The role used by the even rule to trigger the Step Function state machine.
+   */
   readonly eventRole: IRole;
+  /**
+   * The dead letter queue for failed events.
+   */
   readonly deadLetterQueue: IQueue;
+  /**
+   * The optional event bus policy for cross-account workflows.
+   */
   readonly eventBusPolicy?: CfnEventBusPolicy;
 }
 
+/**
+ *
+ * @param scope The scope of the resources created
+ * @param id The id of the resources created
+ * @param authorizerName The name of the authorizer
+ * @param grantFunction The lambda function creating the grants
+ * @param centralAccount The central account ID hosting the central authorizer workflow
+ * @param workflowTimeout The timeout for the authorizer workflow. @default - 5 minutes
+ * @param retryAttempts The number of retry attempts for the authorizer workflow. @default - No retry
+ * @param removalPolicy The removal policy for the created resources. @default - RemovalPolicy.RETAIN
+ * @returns The created AuthorizerEnvironmentWorflow
+ */
 export function authorizerEnvironmentWorkflowSetup(
   scope: Construct,
   id: string,

@@ -4059,6 +4059,17 @@ The security group for Client VPN Endpoint.
 
 ### DataZoneCustomAssetTypeFactory <a name="DataZoneCustomAssetTypeFactory" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory"></a>
 
+Factory construct providing resources to create a DataZone custom asset type.
+
+> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/datazone-msk-governance](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/datazone-msk-governance)
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneCustomAssetTypeFactory(this, 'CustomAssetTypeFactory');
+```
+
+
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer"></a>
 
 ```typescript
@@ -4069,9 +4080,9 @@ new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, prop
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps</code> | The DataZoneCustomAssetTypeFactory properties. |
 
 ---
 
@@ -4079,17 +4090,23 @@ new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, prop
 
 - *Type:* constructs.Construct
 
+the Scope of the CDK Construct.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.id"></a>
 
 - *Type:* string
 
+the ID of the CDK Construct.
+
 ---
 
 ##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps
+
+The DataZoneCustomAssetTypeFactory properties.
 
 ---
 
@@ -4098,7 +4115,7 @@ new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, prop
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType">createCustomAssetType</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType">createCustomAssetType</a></code> | Creates a DataZone custom asset type based on the provided properties. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
@@ -4117,15 +4134,21 @@ Returns a string representation of this construct.
 public createCustomAssetType(id: string, customAssetType: DataZoneCustomAssetTypeProps): CustomAssetType
 ```
 
+Creates a DataZone custom asset type based on the provided properties.
+
 ###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType.parameter.id"></a>
 
 - *Type:* string
+
+the ID of the CDK Construct.
 
 ---
 
 ###### `customAssetType`<sup>Required</sup> <a name="customAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType.parameter.customAssetType"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps
+
+the properties of the custom asset type.
 
 ---
 
@@ -4182,14 +4205,11 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the Redshift Serverless creation. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the Redshift Serverless creation. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the Redshift Serverless creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the DataZone custom asset type creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the DataZone custom asset type creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the DataZone custom asset type creation. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.handlerRole">handlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the custom resource. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.serviceToken">serviceToken</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.statusFunction">statusFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the creation status check. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.statusLogGroup">statusLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the creation status check. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.statusRole">statusRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the creation status check. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.serviceToken">serviceToken</a></code> | <code>string</code> | The service token for the custom resource. |
 
 ---
 
@@ -4213,7 +4233,7 @@ public readonly createFunction: IFunction;
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
-The Lambda Function for the Redshift Serverless creation.
+The Lambda Function for the DataZone custom asset type creation.
 
 ---
 
@@ -4225,7 +4245,7 @@ public readonly createLogGroup: ILogGroup;
 
 - *Type:* aws-cdk-lib.aws_logs.ILogGroup
 
-The CloudWatch Logs Log Group for the Redshift Serverless creation.
+The CloudWatch Logs Log Group for the DataZone custom asset type creation.
 
 ---
 
@@ -4237,7 +4257,7 @@ public readonly createRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
-The IAM Role for the Redshift Serverless creation.
+The IAM Role for the DataZone custom asset type creation.
 
 ---
 
@@ -4261,41 +4281,7 @@ public readonly serviceToken: string;
 
 - *Type:* string
 
----
-
-##### `statusFunction`<sup>Required</sup> <a name="statusFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.statusFunction"></a>
-
-```typescript
-public readonly statusFunction: IFunction;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda.IFunction
-
-The Lambda Function for the creation status check.
-
----
-
-##### `statusLogGroup`<sup>Required</sup> <a name="statusLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.statusLogGroup"></a>
-
-```typescript
-public readonly statusLogGroup: ILogGroup;
-```
-
-- *Type:* aws-cdk-lib.aws_logs.ILogGroup
-
-The CloudWatch Logs Log Group for the creation status check.
-
----
-
-##### `statusRole`<sup>Required</sup> <a name="statusRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.statusRole"></a>
-
-```typescript
-public readonly statusRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The IAM Role for the creation status check.
+The service token for the custom resource.
 
 ---
 
@@ -4945,6 +4931,18 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### DataZoneMskAssetType <a name="DataZoneMskAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType"></a>
 
+A DataZone custom asset type representing an MSK topic.
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneMskAssetType(stack, 'MskAssetType', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: '999999b3m5cpz',
+});
+```
+
+
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer"></a>
 
 ```typescript
@@ -5049,7 +5047,8 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType">mskCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType">mskCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | The custom asset type for MSK. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProjectId">owningProjectId</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProject</code> | The project owning the MSK asset type. |
 
 ---
 
@@ -5072,6 +5071,20 @@ public readonly mskCustomAssetType: CustomAssetType;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.CustomAssetType
+
+The custom asset type for MSK.
+
+---
+
+##### `owningProjectId`<sup>Optional</sup> <a name="owningProjectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProjectId"></a>
+
+```typescript
+public readonly owningProjectId: CfnProject;
+```
+
+- *Type:* aws-cdk-lib.aws_datazone.CfnProject
+
+The project owning the MSK asset type.
 
 ---
 
@@ -5106,6 +5119,22 @@ public readonly DSF_TRACKING_CODE: string;
 
 ### DataZoneMskCentralAuthorizer <a name="DataZoneMskCentralAuthorizer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer"></a>
 
+A central authorizer workflow for granting read access to Kafka topics.
+
+The workflow is triggered by an event sent to the DataZone event bus. 
+First, it collects metadata from DataZone about the Kafka topics. 
+Then, it grants access to the relevant IAM roles. 
+Finally acknowledge the subscription grant in DataZone.
+
+*Example*
+
+```typescript
+new DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
+  domainId: 'aba_dc999t9ime9sss',
+});
+```
+
+
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer"></a>
 
 ```typescript
@@ -5116,9 +5145,9 @@ new governance.DataZoneMskCentralAuthorizer(scope: Construct, id: string, props:
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps</code> | The DataZoneMskCentralAuthorizer properties. |
 
 ---
 
@@ -5126,17 +5155,23 @@ new governance.DataZoneMskCentralAuthorizer(scope: Construct, id: string, props:
 
 - *Type:* constructs.Construct
 
+the Scope of the CDK Construct.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.id"></a>
 
 - *Type:* string
 
+the ID of the CDK Construct.
+
 ---
 
 ##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.props"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps
+
+The DataZoneMskCentralAuthorizer properties.
 
 ---
 
@@ -5145,7 +5180,7 @@ new governance.DataZoneMskCentralAuthorizer(scope: Construct, id: string, props:
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount">registerAccount</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount">registerAccount</a></code> | Connect the central authorizer workflow with environment authorizer workflows in other accounts. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
@@ -5164,9 +5199,15 @@ Returns a string representation of this construct.
 public registerAccount(accountId: string): CfnEventBusPolicy
 ```
 
+Connect the central authorizer workflow with environment authorizer workflows in other accounts.
+
+This method grants the environment workflow to send events in the default Event Bridge bus for orchestration.
+
 ###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.accountId"></a>
 
 - *Type:* string
+
+The account ID to register the authorizer with.
 
 ---
 
@@ -5223,17 +5264,17 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction">datazoneCallbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule">datazoneEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to listen for producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to handle producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the Lambda function handling producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction">datazoneCallbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to acknowledge the subscription grant in DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to acknowledge the subscription grant in DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the DataZone event to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule">datazoneEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The dead letter queue for the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to collect metadata from DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to collect metadata from DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The state machine used to orchestrate the authorizer workflow. |
 
 ---
 
@@ -5257,6 +5298,8 @@ public readonly callbackEventRule: IRule;
 
 - *Type:* aws-cdk-lib.aws_events.IRule
 
+The event rule used to listen for producer and subscriber grants callback.
+
 ---
 
 ##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction"></a>
@@ -5266,6 +5309,8 @@ public readonly callbackFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function used to handle producer and subscriber grants callback.
 
 ---
 
@@ -5277,6 +5322,8 @@ public readonly callbackRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The role used by the Lambda function handling producer and subscriber grants callback.
+
 ---
 
 ##### `datazoneCallbackFunction`<sup>Required</sup> <a name="datazoneCallbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction"></a>
@@ -5286,6 +5333,8 @@ public readonly datazoneCallbackFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function used to acknowledge the subscription grant in DataZone.
 
 ---
 
@@ -5297,6 +5346,8 @@ public readonly datazoneCallbackRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The role used to acknowledge the subscription grant in DataZone.
+
 ---
 
 ##### `datazoneEventRole`<sup>Required</sup> <a name="datazoneEventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole"></a>
@@ -5306,6 +5357,8 @@ public readonly datazoneEventRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used by the DataZone event to trigger the authorizer workflow.
 
 ---
 
@@ -5317,6 +5370,8 @@ public readonly datazoneEventRule: IRule;
 
 - *Type:* aws-cdk-lib.aws_events.IRule
 
+The event rule used to trigger the authorizer workflow.
+
 ---
 
 ##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue"></a>
@@ -5326,6 +5381,8 @@ public readonly deadLetterQueue: IQueue;
 ```
 
 - *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+The dead letter queue for the authorizer workflow.
 
 ---
 
@@ -5337,6 +5394,8 @@ public readonly metadataCollectorFunction: IFunction;
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
+The Lambda function used to collect metadata from DataZone.
+
 ---
 
 ##### `metadataCollectorRole`<sup>Required</sup> <a name="metadataCollectorRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole"></a>
@@ -5346,6 +5405,8 @@ public readonly metadataCollectorRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used to collect metadata from DataZone.
 
 ---
 
@@ -5357,16 +5418,18 @@ public readonly stateMachine: StateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
+The state machine used to orchestrate the authorizer workflow.
+
 ---
 
 #### Constants <a name="Constants" id="Constants"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.AUTHORIZER_NAME">AUTHORIZER_NAME</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.AUTHORIZER_NAME">AUTHORIZER_NAME</a></code> | <code>string</code> | The name of the authorizer. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.MSK_ASSET_TYPE">MSK_ASSET_TYPE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.MSK_ASSET_TYPE">MSK_ASSET_TYPE</a></code> | <code>string</code> | The asset type for the DataZone custom asset type. |
 
 ---
 
@@ -5377,6 +5440,8 @@ public readonly AUTHORIZER_NAME: string;
 ```
 
 - *Type:* string
+
+The name of the authorizer.
 
 ---
 
@@ -5408,9 +5473,26 @@ public readonly MSK_ASSET_TYPE: string;
 
 - *Type:* string
 
+The asset type for the DataZone custom asset type.
+
 ---
 
 ### DataZoneMskEnvironmentAuthorizer <a name="DataZoneMskEnvironmentAuthorizer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer"></a>
+
+An environment authorizer workflow for granting read access to Kafka topics.
+
+The workflow is triggered by an event sent by the central authorizer construct. 
+It creates IAM policies required for the Kafka client to access the relevant topics. 
+It supports MSK provisioned and serverless, in single and cross accounts, and grant/revoke requests.
+
+*Example*
+
+```typescript
+new DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
+  domainId: 'aba_dc999t9ime9sss',
+});
+```
+
 
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer"></a>
 
@@ -5422,9 +5504,9 @@ new governance.DataZoneMskEnvironmentAuthorizer(scope: Construct, id: string, pr
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | The CDK Construct scope. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | The CDK Construct id. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps</code> | The props for the DataZoneMskEnvironmentAuthorizer construct. |
 
 ---
 
@@ -5432,17 +5514,23 @@ new governance.DataZoneMskEnvironmentAuthorizer(scope: Construct, id: string, pr
 
 - *Type:* constructs.Construct
 
+The CDK Construct scope.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.id"></a>
 
 - *Type:* string
 
+The CDK Construct id.
+
 ---
 
 ##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props"></a>
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps
+
+The props for the DataZoneMskEnvironmentAuthorizer construct.
 
 ---
 
@@ -5516,13 +5604,13 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>any</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction">grantFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>any</code> | The dead letter queue for the events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the events to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction">grantFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The lambda function used to grant access to Kafka topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to grant access to Kafka topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The state machine used to orchestrate the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | The event bus policy used to receive events from the central authorizer. |
 
 ---
 
@@ -5546,6 +5634,8 @@ public readonly deadLetterQueue: any;
 
 - *Type:* any
 
+The dead letter queue for the events.
+
 ---
 
 ##### `eventRole`<sup>Required</sup> <a name="eventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRole"></a>
@@ -5555,6 +5645,8 @@ public readonly eventRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used by the events to trigger the authorizer workflow.
 
 ---
 
@@ -5566,6 +5658,8 @@ public readonly eventRule: IRule;
 
 - *Type:* aws-cdk-lib.aws_events.IRule
 
+The event rule used to trigger the authorizer workflow.
+
 ---
 
 ##### `grantFunction`<sup>Required</sup> <a name="grantFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction"></a>
@@ -5575,6 +5669,8 @@ public readonly grantFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The lambda function used to grant access to Kafka topics.
 
 ---
 
@@ -5586,6 +5682,8 @@ public readonly grantRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The IAM role used to grant access to Kafka topics.
+
 ---
 
 ##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine"></a>
@@ -5596,6 +5694,8 @@ public readonly stateMachine: IStateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
 
+The state machine used to orchestrate the authorizer workflow.
+
 ---
 
 ##### `eventBusPolicy`<sup>Optional</sup> <a name="eventBusPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy"></a>
@@ -5605,6 +5705,8 @@ public readonly eventBusPolicy: CfnEventBusPolicy;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.CfnEventBusPolicy
+
+The event bus policy used to receive events from the central authorizer.
 
 ---
 
@@ -13948,6 +14050,8 @@ The state of the Workgroup.
 
 ### AuthorizerCentralWorflow <a name="AuthorizerCentralWorflow" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow"></a>
 
+Interface for the authorizer central workflow.
+
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.Initializer"></a>
 
 ```typescript
@@ -13960,13 +14064,13 @@ const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The authorizer event role for allowing events to invoke the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The authorizer event rule for triggering the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The callback event rule for listening to producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for handling producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role for the Lambda function handling producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The authorizer dead letter queue for failed events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The authorizer Step Functions state machine. |
 
 ---
 
@@ -13978,6 +14082,8 @@ public readonly authorizerEventRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The authorizer event role for allowing events to invoke the workflow.
+
 ---
 
 ##### `authorizerEventRule`<sup>Required</sup> <a name="authorizerEventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule"></a>
@@ -13987,6 +14093,8 @@ public readonly authorizerEventRule: IRule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.IRule
+
+The authorizer event rule for triggering the workflow.
 
 ---
 
@@ -13998,6 +14106,8 @@ public readonly callbackEventRule: IRule;
 
 - *Type:* aws-cdk-lib.aws_events.IRule
 
+The callback event rule for listening to producer and subscriber grants callback.
+
 ---
 
 ##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction"></a>
@@ -14007,6 +14117,8 @@ public readonly callbackFunction: IFunction;
 ```
 
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function for handling producer and subscriber grants callback.
 
 ---
 
@@ -14018,6 +14130,8 @@ public readonly callbackRole: IRole;
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
+The role for the Lambda function handling producer and subscriber grants callback.
+
 ---
 
 ##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue"></a>
@@ -14027,6 +14141,8 @@ public readonly deadLetterQueue: IQueue;
 ```
 
 - *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+The authorizer dead letter queue for failed events.
 
 ---
 
@@ -14038,9 +14154,13 @@ public readonly stateMachine: StateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
+The authorizer Step Functions state machine.
+
 ---
 
 ### AuthorizerEnvironmentWorflow <a name="AuthorizerEnvironmentWorflow" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow"></a>
+
+The interface representing the environment custom authorizer workflow.
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.Initializer"></a>
 
@@ -14054,11 +14174,11 @@ const authorizerEnvironmentWorflow: governance.AuthorizerEnvironmentWorflow = { 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The dead letter queue for failed events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the even rule to trigger the Step Function state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule that triggers the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The state machine that orchestrates the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | The optional event bus policy for cross-account workflows. |
 
 ---
 
@@ -14070,6 +14190,8 @@ public readonly deadLetterQueue: IQueue;
 
 - *Type:* aws-cdk-lib.aws_sqs.IQueue
 
+The dead letter queue for failed events.
+
 ---
 
 ##### `eventRole`<sup>Required</sup> <a name="eventRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRole"></a>
@@ -14079,6 +14201,8 @@ public readonly eventRole: IRole;
 ```
 
 - *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used by the even rule to trigger the Step Function state machine.
 
 ---
 
@@ -14090,6 +14214,8 @@ public readonly eventRule: IRule;
 
 - *Type:* aws-cdk-lib.aws_events.IRule
 
+The event rule that triggers the workflow.
+
 ---
 
 ##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine"></a>
@@ -14100,6 +14226,8 @@ public readonly stateMachine: IStateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
 
+The state machine that orchestrates the workflow.
+
 ---
 
 ##### `eventBusPolicy`<sup>Optional</sup> <a name="eventBusPolicy" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy"></a>
@@ -14109,6 +14237,8 @@ public readonly eventBusPolicy: CfnEventBusPolicy;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.CfnEventBusPolicy
+
+The optional event bus policy for cross-account workflows.
 
 ---
 
@@ -14317,6 +14447,8 @@ The revision of the Amazon MSK configuration to use.
 
 ### CustomAssetType <a name="CustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType"></a>
 
+Interface representing a DataZone custom asset type.
+
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.Initializer"></a>
 
 ```typescript
@@ -14329,10 +14461,10 @@ const customAssetType: governance.CustomAssetType = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainIdentifier">domainIdentifier</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.projectIdentifier">projectIdentifier</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.revision">revision</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainIdentifier">domainIdentifier</a></code> | <code>string</code> | The domain identifier of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.name">name</a></code> | <code>string</code> | The name of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.projectIdentifier">projectIdentifier</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.revision">revision</a></code> | <code>string</code> | The revision of the custom asset type. |
 
 ---
 
@@ -14344,6 +14476,8 @@ public readonly domainIdentifier: string;
 
 - *Type:* string
 
+The domain identifier of the custom asset type.
+
 ---
 
 ##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.name"></a>
@@ -14353,6 +14487,8 @@ public readonly name: string;
 ```
 
 - *Type:* string
+
+The name of the custom asset type.
 
 ---
 
@@ -14364,6 +14500,8 @@ public readonly projectIdentifier: string;
 
 - *Type:* string
 
+The project identifier owner of the custom asset type.
+
 ---
 
 ##### `revision`<sup>Required</sup> <a name="revision" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.revision"></a>
@@ -14373,6 +14511,8 @@ public readonly revision: string;
 ```
 
 - *Type:* string
+
+The revision of the custom asset type.
 
 ---
 
@@ -15208,6 +15348,8 @@ Otherwise, the removalPolicy is reverted to RETAIN.
 
 ### DataZoneCustomAssetTypeFactoryProps <a name="DataZoneCustomAssetTypeFactoryProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps"></a>
 
+Properties for the DataZoneCustomAssetTypeFactory construct.
+
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.Initializer"></a>
 
 ```typescript
@@ -15220,7 +15362,20 @@ const dataZoneCustomAssetTypeFactoryProps: governance.DataZoneCustomAssetTypeFac
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy for the custom resource. |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The DataZone domain identifier.
 
 ---
 
@@ -15231,10 +15386,15 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy for the custom resource.
 
 ---
 
 ### DataZoneCustomAssetTypeProps <a name="DataZoneCustomAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps"></a>
+
+Properties for the DataZoneCustomAssetType construct.
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.Initializer"></a>
 
@@ -15248,11 +15408,10 @@ const dataZoneCustomAssetTypeProps: governance.DataZoneCustomAssetTypeProps = { 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeName">assetTypeName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes">formTypes</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription">assetTypeDescription</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeName">assetTypeName</a></code> | <code>string</code> | The name of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes">formTypes</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]</code> | The form types of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription">assetTypeDescription</a></code> | <code>string</code> | The description of the custom asset type. |
 
 ---
 
@@ -15264,15 +15423,7 @@ public readonly assetTypeName: string;
 
 - *Type:* string
 
----
-
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.domainId"></a>
-
-```typescript
-public readonly domainId: string;
-```
-
-- *Type:* string
+The name of the custom asset type.
 
 ---
 
@@ -15284,7 +15435,16 @@ public readonly formTypes: DataZoneFormType[];
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]
 
+The form types of the custom asset type.
+
 ---
+
+*Example*
+
+```typescript
+[{ name: 'userForm', model: [{ name: 'firstName', type: 'String', required: true }] }]
+```
+
 
 ##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId"></a>
 
@@ -15293,6 +15453,8 @@ public readonly projectId: string;
 ```
 
 - *Type:* string
+
+The project identifier owner of the custom asset type.
 
 ---
 
@@ -15303,10 +15465,15 @@ public readonly assetTypeDescription: string;
 ```
 
 - *Type:* string
+- *Default:* No description provided
+
+The description of the custom asset type.
 
 ---
 
 ### DataZoneFormType <a name="DataZoneFormType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType"></a>
+
+Interface representing a DataZoneFormType.
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.Initializer"></a>
 
@@ -15320,9 +15487,9 @@ const dataZoneFormType: governance.DataZoneFormType = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model">model</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required">required</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.name">name</a></code> | <code>string</code> | The name of the form. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model">model</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]</code> | The fields of the form. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required">required</a></code> | <code>boolean</code> | Whether the form is required. |
 
 ---
 
@@ -15334,7 +15501,16 @@ public readonly name: string;
 
 - *Type:* string
 
+The name of the form.
+
 ---
+
+*Example*
+
+```typescript
+'userForm'
+```
+
 
 ##### `model`<sup>Optional</sup> <a name="model" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model"></a>
 
@@ -15344,7 +15520,16 @@ public readonly model: DataZoneFormTypeField[];
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]
 
+The fields of the form.
+
 ---
+
+*Example*
+
+```typescript
+[{ name: 'firstName', type: 'String', required: true }]
+```
+
 
 ##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required"></a>
 
@@ -15353,10 +15538,15 @@ public readonly required: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* false
+
+Whether the form is required.
 
 ---
 
 ### DataZoneFormTypeField <a name="DataZoneFormTypeField" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField"></a>
+
+Interface representing a DataZoneFormTypeField.
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.Initializer"></a>
 
@@ -15370,9 +15560,9 @@ const dataZoneFormTypeField: governance.DataZoneFormTypeField = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type">type</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required">required</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.name">name</a></code> | <code>string</code> | The name of the field. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type">type</a></code> | <code>string</code> | The type of the field. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required">required</a></code> | <code>boolean</code> | Whether the field is required. |
 
 ---
 
@@ -15384,7 +15574,16 @@ public readonly name: string;
 
 - *Type:* string
 
+The name of the field.
+
 ---
+
+*Example*
+
+```typescript
+'firstName'
+```
+
 
 ##### `type`<sup>Required</sup> <a name="type" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type"></a>
 
@@ -15394,7 +15593,16 @@ public readonly type: string;
 
 - *Type:* string
 
+The type of the field.
+
 ---
+
+*Example*
+
+```typescript
+'String'
+```
+
 
 ##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required"></a>
 
@@ -15403,6 +15611,9 @@ public readonly required: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* false
+
+Whether the field is required.
 
 ---
 
@@ -15635,6 +15846,8 @@ public readonly removalPolicy: RemovalPolicy;
 
 ### DataZoneMskAssetTypeProps <a name="DataZoneMskAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps"></a>
 
+The properties for the DataZoneMskAssetType construct.
+
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.Initializer"></a>
 
 ```typescript
@@ -15647,10 +15860,10 @@ const dataZoneMskAssetTypeProps: governance.DataZoneMskAssetTypeProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | The factory to create the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
 
 ---
 
@@ -15662,15 +15875,7 @@ public readonly domainId: string;
 
 - *Type:* string
 
----
-
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId"></a>
-
-```typescript
-public readonly projectId: string;
-```
-
-- *Type:* string
+The DataZone domain identifier.
 
 ---
 
@@ -15681,6 +15886,22 @@ public readonly dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory
+- *Default:* A new factory is created
+
+The factory to create the custom asset type.
+
+---
+
+##### `projectId`<sup>Optional</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId"></a>
+
+```typescript
+public readonly projectId: string;
+```
+
+- *Type:* string
+- *Default:* A new project called MskGovernance is created
+
+The project identifier owner of the custom asset type.
 
 ---
 
@@ -15691,10 +15912,15 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the asset type.
 
 ---
 
 ### DataZoneMskCentralAuthorizerProps <a name="DataZoneMskCentralAuthorizerProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps"></a>
+
+The properties for the DataZoneMskCentralAuthorizer construct.
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.Initializer"></a>
 
@@ -15709,7 +15935,7 @@ const dataZoneMskCentralAuthorizerProps: governance.DataZoneMskCentralAuthorizer
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
 
 ---
 
@@ -15732,6 +15958,9 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the asset type.
 
 ---
 
@@ -15751,7 +15980,7 @@ const dataZoneMskEnvironmentAuthorizerProps: governance.DataZoneMskEnvironmentAu
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId">centralAccountId</a></code> | <code>string</code> | The central account Id. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
 
 ---
 
@@ -15786,6 +16015,9 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the asset type.
 
 ---
 

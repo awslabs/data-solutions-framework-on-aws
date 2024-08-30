@@ -7,26 +7,65 @@ import { LambdaFunction, SfnStateMachine } from 'aws-cdk-lib/aws-events-targets'
 import { IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Code, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
-import { DefinitionBody, IntegrationPattern, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
+import { DefinitionBody, Fail, IntegrationPattern, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 import { Utils } from '../../utils';
 
+/**
+ * Interface for the authorizer central workflow
+ */
 export interface AuthorizerCentralWorflow{
+  /**
+   * The authorizer Step Functions state machine
+   */
   readonly stateMachine: StateMachine;
+  /**
+   * The authorizer dead letter queue for failed events
+   */
   readonly deadLetterQueue: IQueue;
+  /**
+   * The authorizer event rule for triggering the workflow
+   */
   readonly authorizerEventRule: IRule;
+  /**
+   * The authorizer event role for allowing events to invoke the workflow
+   */
   readonly authorizerEventRole: IRole;
+  /**
+   * The callback event rule for listening to producer and subscriber grants callback
+   */
   readonly callbackEventRule: IRule;
+  /**
+   * The Lambda function for handling producer and subscriber grants callback
+   */
   readonly callbackFunction: IFunction;
+  /**
+   * The role for the Lambda function handling producer and subscriber grants callback
+   */
   readonly callbackRole: IRole;
 }
-
+/**
+ * Grant type for the authorizer workflow
+ */
 enum GrantType{
   CONSUMER='consumerGrant',
   PRODUCER='producerGrant'
 }
 
+/**
+ * Create the resources used by a central authorizer workflow.
+ * @param scope The scope creating the resources
+ * @param id The id of the created resources
+ * @param authorizerName The name of the authorizer
+ * @param metadataCollectorFunction The Lambda function collecting metadata from the governance tool
+ * @param governanceCallbackFunction The Lambda function acknowledging the grant in the governance tool
+ * @param eventPattern The event pattern for triggering the authorizer workflow
+ * @param workflowTimeout The timeout for the authorizer workflow. @default - 5 minutes
+ * @param retryAttempts The number of retry attempts for the authorizer workflow. @default - No retry
+ * @param removalPolicy The removal policy for the created resources. @default - RemovalPolicy.RETAIN
+ * @returns The created AuthorizerCentralWorflow
+ */
 export function authorizerCentralWorkflowSetup(
   scope: Construct,
   id: string,
@@ -86,17 +125,21 @@ export function authorizerCentralWorkflowSetup(
     }),
   });
 
-  metadataCollector.addCatch(governanceFailureCallback, {
+  const failure = governanceFailureCallback.next(new Fail(scope, 'CentralWorfklowFailure', {
+    errorPath: '$.ErrorInfo',
+  }));
+
+  metadataCollector.addCatch(failure, {
     errors: ['States.TaskFailed'],
     resultPath: '$.ErrorInfo',
   });
 
-  invokeProducerGrant.addCatch(governanceFailureCallback, {
+  invokeProducerGrant.addCatch(failure, {
     errors: ['States.TaskFailed'],
     resultPath: '$.ErrorInfo',
   });
 
-  invokeConsumerGrant.addCatch(governanceFailureCallback, {
+  invokeConsumerGrant.addCatch(failure, {
     errors: ['States.TaskFailed'],
     resultPath: '$.ErrorInfo',
   });
@@ -157,6 +200,13 @@ export function authorizerCentralWorkflowSetup(
   return { stateMachine, deadLetterQueue, authorizerEventRule, authorizerEventRole, callbackEventRule, callbackFunction, callbackRole };
 }
 
+/**
+ * Grant a role to put events in the default Event Bridge bus of an account.
+ * This method adds an IAM role policy but doesn't modify the Event Bridge bus resource policy.
+ * @param scope The scope creating the resources
+ * @param accountId The account ID of the default Event Bridge bus
+ * @param role The role to grant access to
+ */
 export function grantPutEvents(scope: Construct, accountId: string, role: IRole) {
 
   const targetEventBus = EventBus.fromEventBusArn(
@@ -168,6 +218,14 @@ export function grantPutEvents(scope: Construct, accountId: string, role: IRole)
   targetEventBus.grantPutEventsTo(role);
 }
 
+/**
+ * Register an account into a central authorizer workflow to allow cross account communication.
+ * @param scope The scope of created resources
+ * @param id The id of the created resources
+ * @param accountId The account ID to register with the central authorizer
+ * @param role The role to grant access to
+ * @returns The CfnEventBusPolicy created to grant the account
+ */
 export function registerAccount(scope: Construct, id: string, accountId: string, role: IRole): CfnEventBusPolicy {
 
   grantPutEvents(scope, accountId, role);
@@ -180,6 +238,14 @@ export function registerAccount(scope: Construct, id: string, accountId: string,
   });
 };
 
+/**
+ * Creates a Step Functions task to invoke GRANT and REVOKE via Event Bridge events
+ * @param scope The scope of created resources
+ * @param id The id of the created resources
+ * @param authorizerName The name of the authorizer
+ * @param grantType The grant type (GRANT or REVOKE)
+ * @returns The CallAwsService task to use in the Step Functions state machine
+ */
 function invokeGrant(scope: Construct, id: string, authorizerName: string, grantType: GrantType): CallAwsService {
 
   const eventBusName = grantType === GrantType.CONSUMER ?

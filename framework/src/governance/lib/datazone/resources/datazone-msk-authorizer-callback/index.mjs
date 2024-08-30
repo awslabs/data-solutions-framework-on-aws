@@ -37,7 +37,7 @@ export const handler = async(event) => {
       status: requestType === 'GRANT' ? SubscriptionGrantStatus.GRANTED : SubscriptionGrantStatus.REVOKED,
     }))
 
-    console.log(`failure callback results: ${JSON.stringify({ results }, null, 2)}`);
+    console.log(`success callback results: ${JSON.stringify({ results }, null, 2)}`);
 
     return {}
 

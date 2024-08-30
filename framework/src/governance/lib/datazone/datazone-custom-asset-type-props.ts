@@ -19,7 +19,7 @@ export interface DataZoneFormTypeField {
    * Whether the field is required
    * @default false
    */
-  readonly required?: boolean; 
+  readonly required?: boolean;
 }
 
 /**

@@ -12,18 +12,56 @@ import { DataZoneMskEnvironmentAuthorizerProps } from './datazone-msk-environmen
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environment-helpers';
 
-
+/**
+ * An environment authorizer workflow for granting read access to Kafka topics.
+ * The workflow is triggered by an event sent by the central authorizer construct.
+ * It creates IAM policies required for the Kafka client to access the relevant topics.
+ * It supports MSK provisioned and serverless, in single and cross accounts, and grant/revoke requests.
+ *
+ * @example
+ * new DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
+ *   domainId: 'aba_dc999t9ime9sss',
+ * });
+ */
 export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
 
+  /**
+   * The IAM role used to grant access to Kafka topics
+   */
   public readonly grantRole: IRole;
+  /**
+   * The lambda function used to grant access to Kafka topics
+   */
   public readonly grantFunction: IFunction;
+  /**
+   * The event bus policy used to receive events from the central authorizer
+   */
   public readonly eventBusPolicy?: CfnEventBusPolicy;
+  /**
+   * The dead letter queue for the events
+   */
   public readonly deadLetterQueue: any;
+  /**
+   * The role used by the events to trigger the authorizer workflow
+   */
   public readonly eventRole: IRole;
+  /**
+   * The event rule used to trigger the authorizer workflow
+   */
   public readonly eventRule: IRule;
+  /**
+   * The state machine used to orchestrate the authorizer workflow
+   */
   public readonly stateMachine: IStateMachine;
+
   private readonly removalPolicy: RemovalPolicy;
 
+  /**
+   * Create an instance of the DataZoneMskEnvironmentAuthorizer construct
+   * @param scope The CDK Construct scope
+   * @param id The CDK Construct id
+   * @param props The props for the DataZoneMskEnvironmentAuthorizer construct
+   */
   constructor(scope: Construct, id: string, props: DataZoneMskEnvironmentAuthorizerProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: DataZoneMskEnvironmentAuthorizer.name,
@@ -67,7 +105,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       handler: 'index.handler',
       code: Code.fromAsset(__dirname + '/resources/datazone-msk-authorizer-grant/'),
       role: this.grantRole,
-      timeout: Duration.seconds(30),
+      timeout: Duration.seconds(60),
     });
 
     const customAuthorizer = authorizerEnvironmentWorkflowSetup(this,

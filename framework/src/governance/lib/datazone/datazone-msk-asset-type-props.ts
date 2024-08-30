@@ -14,8 +14,9 @@ export interface DataZoneMskAssetTypeProps {
   readonly domainId: string;
   /**
    * The project identifier owner of the custom asset type
+   * @default - A new project called MskGovernance is created
    */
-  readonly projectId: string;
+  readonly projectId?: string;
   /**
    * The factory to create the custom asset type
    * @default - A new factory is created

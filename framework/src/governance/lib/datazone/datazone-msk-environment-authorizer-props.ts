@@ -3,6 +3,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 
+
 export interface DataZoneMskEnvironmentAuthorizerProps {
   /**
    * The DataZone Domain ID
@@ -12,6 +13,9 @@ export interface DataZoneMskEnvironmentAuthorizerProps {
    * The central account Id
    */
   readonly centralAccountId?: string;
-
+  /**
+   * The removal policy to apply to the asset type
+   * @default - RemovalPolicy.RETAIN
+   */
   readonly removalPolicy?: RemovalPolicy;
 }

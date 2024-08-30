@@ -2,15 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
+import { CfnProject } from 'aws-cdk-lib/aws-datazone';
 import { Construct } from 'constructs';
 import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
 import { DataZoneMskAssetTypeProps } from './datazone-msk-asset-type-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
-import { CfnProject } from 'aws-cdk-lib/aws-datazone';
 
+
+/**
+ * A DataZone custom asset type representing an MSK topic.
+ *
+ * @example
+ * new dsf.governance.DataZoneMskAssetType(stack, 'MskAssetType', {
+ *   domainId: 'aba_dc999t9ime9sss',
+ *   projectId: '999999b3m5cpz',
+ * });
+ */
 export class DataZoneMskAssetType extends TrackedConstruct {
   /**
-   * The MSK asset type
+   * The custom asset type for MSK
    */
   readonly mskCustomAssetType: CustomAssetType;
   /**
@@ -77,17 +87,14 @@ export class DataZoneMskAssetType extends TrackedConstruct {
             {
               name: 'schema_version',
               type: 'Integer',
-              required: true,
             },
             {
               name: 'schema_arn',
               type: 'String',
-              required: true,
             },
             {
               name: 'registry_arn',
               type: 'String',
-              required: true,
             },
           ],
           required: true,

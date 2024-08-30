@@ -8,7 +8,7 @@ import { IAMClient, PutRolePolicyCommand, DeleteRolePolicyCommand, NoSuchEntityE
 // Retry mechanism with exponential backoff configuration
 const MAX_RETRIES = 20; // Maximum number of retries
 const INITIAL_DELAY_MS = 100; // Initial delay in milliseconds
-const MAX_DELAY_MS = 10000; // Maximum delay in milliseconds
+const MAX_DELAY_MS = 30000; // Maximum delay in milliseconds
 
 function getMskIamResources(topicArn, clusterArn) {
   return [

@@ -51,13 +51,11 @@ export interface CustomAssetType {
 
 /**
  * Factory construct providing resources to create a DataZone custom asset type.
- * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/datazone-msk-governance 
- * 
+ * @see https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/datazone-msk-governance
+ *
  * @example
- * new DataZoneCustomAssetTypeFactory(this, 'CustomAssetTypeFactory', {
- *   removalPolicy: RemovalPolicy.DESTROY
- * });
- * 
+ * new dsf.governance.DataZoneCustomAssetTypeFactory(this, 'CustomAssetTypeFactory');
+ *
  */
 export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
   /**

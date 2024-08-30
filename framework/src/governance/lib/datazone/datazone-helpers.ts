@@ -55,7 +55,7 @@ export function buildModelString(formType: DataZoneFormType): string|undefined {
 }
 
 /**
- * Creates a DataZone subscription target for a custom asset type. 
+ * Creates a DataZone subscription target for a custom asset type.
  * Subscription targets are used to automatically add asset to environments when a custom asset is subscribed by a project.
  * @param scope The scope of the construct.
  * @param id The id of the construct.
