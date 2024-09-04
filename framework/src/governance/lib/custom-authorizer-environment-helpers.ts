@@ -40,7 +40,6 @@ export interface AuthorizerEnvironmentWorflow{
 /**
  *
  * @param scope The scope of the resources created
- * @param id The id of the resources created
  * @param authorizerName The name of the authorizer
  * @param grantFunction The lambda function creating the grants
  * @param centralAccount The central account ID hosting the central authorizer workflow
@@ -51,7 +50,6 @@ export interface AuthorizerEnvironmentWorflow{
  */
 export function authorizerEnvironmentWorkflowSetup(
   scope: Construct,
-  id: string,
   authorizerName: string,
   grantFunction: IFunction,
   centralAccount?: string,
@@ -88,8 +86,8 @@ export function authorizerEnvironmentWorkflowSetup(
   const eventBusAccount = centralAccount || Stack.of(scope).account;
 
   const centralEventBus = EventBus.fromEventBusArn(
-    scope, `
-    ${id}CentralEventBus`,
+    scope,
+    'CentralEventBus',
     `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${eventBusAccount}:event-bus/default`,
   );
 
@@ -136,6 +134,7 @@ export function authorizerEnvironmentWorkflowSetup(
   centralEventBus.grantPutEventsTo(stateMachine.role);
 
   const deadLetterQueue = new Queue(scope, 'Queue', {
+    enforceSSL: true,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
   });
 

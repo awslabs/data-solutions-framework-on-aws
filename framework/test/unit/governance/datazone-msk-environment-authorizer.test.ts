@@ -3,7 +3,7 @@
 
 
 /**
- * Tests DataZoneMskCentralAuthorizer construct
+ * Tests DataZoneMskEnvironmentAuthorizer construct
  *
  * @group unit/datazone/datazone-msk-environment-authorizer
  */
@@ -345,6 +345,24 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
       Match.objectLike({
         PolicyDocument: Match.objectLike({
           Statement: [
+            {
+              Action: 'sqs:*',
+              Condition: {
+                Bool: {
+                  'aws:SecureTransport': 'false',
+                },
+              },
+              Effect: 'Deny',
+              Principal: {
+                AWS: '*',
+              },
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
+                  'Arn',
+                ],
+              },
+            },
             Match.objectLike({
               Action: 'sqs:SendMessage',
               Condition: {
@@ -382,7 +400,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
 
 });
 
-describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but without global data removal', () => {
+describe ('Creating a DataZoneMskEnvironmentAuthorizer with DELETE removal but without global data removal', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   const DOMAIN_ID = 'aba_dc999t9ime9sss';
@@ -413,7 +431,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but witho
   });
 });
 
-describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but without global data removal', () => {
+describe ('Creating a DataZoneMskEnvironmentAuthorizer with DELETE removal but without global data removal', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   const DOMAIN_ID = 'aba_dc999t9ime9sss';

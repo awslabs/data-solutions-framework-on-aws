@@ -56,7 +56,6 @@ enum GrantType{
 /**
  * Create the resources used by a central authorizer workflow.
  * @param scope The scope creating the resources
- * @param id The id of the created resources
  * @param authorizerName The name of the authorizer
  * @param metadataCollectorFunction The Lambda function collecting metadata from the governance tool
  * @param governanceCallbackFunction The Lambda function acknowledging the grant in the governance tool
@@ -68,7 +67,6 @@ enum GrantType{
  */
 export function authorizerCentralWorkflowSetup(
   scope: Construct,
-  id: string,
   authorizerName: string,
   metadataCollectorFunction: IFunction,
   governanceCallbackFunction: IFunction,
@@ -80,7 +78,7 @@ export function authorizerCentralWorkflowSetup(
   const DEFAULT_TIMEOUT = Duration.minutes(5);
   const DEFAULT_RETRY_ATTEMPTS = 0;
 
-  const authorizerEventRule = new Rule(scope, `${id}AuthorizerEventRule`, {
+  const authorizerEventRule = new Rule(scope, 'AuthorizerEventRule', {
     eventPattern,
   });
 
@@ -88,14 +86,14 @@ export function authorizerCentralWorkflowSetup(
     assumedBy: new ServicePrincipal('events.amazonaws.com'),
   });
 
-  const callbackEventRule = new Rule(scope, `${id}CallbackEventRule`, {
+  const callbackEventRule = new Rule(scope, 'CallbackEventRule', {
     eventPattern: {
       source: [authorizerName],
       detailType: ['callback'],
     },
   });
 
-  const metadataCollector = new LambdaInvoke(scope, `${id}MetadataCollector`, {
+  const metadataCollector = new LambdaInvoke(scope, 'MetadataCollector', {
     lambdaFunction: metadataCollectorFunction,
     resultSelector: { 'Metadata.$': '$.Payload' },
     taskTimeout: Timeout.duration(Duration.minutes(2)),
@@ -105,7 +103,7 @@ export function authorizerCentralWorkflowSetup(
 
   const invokeConsumerGrant = invokeGrant(scope, 'ConsumerGrant', authorizerName, GrantType.CONSUMER);
 
-  const governanceSuccessCallback = new LambdaInvoke(scope, `${id}GovernanceSuccessCallback`, {
+  const governanceSuccessCallback = new LambdaInvoke(scope, 'GovernanceSuccessCallback', {
     lambdaFunction: governanceCallbackFunction,
     taskTimeout: Timeout.duration(Duration.minutes(1)),
     payload: TaskInput.fromObject({
@@ -114,7 +112,7 @@ export function authorizerCentralWorkflowSetup(
     }),
   });
 
-  const governanceFailureCallback = new LambdaInvoke(scope, `${id}GovernanceFailureCallback`, {
+  const governanceFailureCallback = new LambdaInvoke(scope, 'GovernanceFailureCallback', {
     lambdaFunction: governanceCallbackFunction,
     taskTimeout: Timeout.duration(Duration.minutes(1)),
     payload: TaskInput.fromObject({
@@ -149,13 +147,14 @@ export function authorizerCentralWorkflowSetup(
     .next(invokeConsumerGrant)
     .next(governanceSuccessCallback);
 
-  const stateMachine = new StateMachine(scope, `${id}StateMachine`, {
+  const stateMachine = new StateMachine(scope, 'StateMachine', {
     definitionBody: DefinitionBody.fromChainable(stateMachineDefinition),
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
   });
 
   const deadLetterQueue = new Queue(scope, 'Queue', {
+    enforceSSL: true,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
   });
 
@@ -197,7 +196,7 @@ export function authorizerCentralWorkflowSetup(
     retryAttempts: 10,
   }));
 
-  grantPutEvents(scope, Stack.of(scope).account, stateMachine.role);
+  // grantPutEvents(scope, Stack.of(scope).account, stateMachine.role);
 
   return { stateMachine, deadLetterQueue, authorizerEventRule, authorizerEventRole, callbackEventRule, callbackFunction, callbackRole };
 }
@@ -268,7 +267,7 @@ function invokeGrant(scope: Construct, id: string, authorizerName: string, grant
         EventBusName: eventBusName,
       }],
     },
-    iamResources: ['*'],
+    iamResources: [`arn:aws:events:${Stack.of(scope).region}:${Stack.of(scope).region}:event-bus/default`],
     integrationPattern: IntegrationPattern.WAIT_FOR_TASK_TOKEN,
     taskTimeout: Timeout.duration(Duration.minutes(5)),
     resultPath: JsonPath.DISCARD,

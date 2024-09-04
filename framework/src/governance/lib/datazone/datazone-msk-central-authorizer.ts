@@ -176,7 +176,6 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     };
 
     const customAuthorizer = authorizerCentralWorkflowSetup(this,
-      'DataZoneMskCentralWorkflow',
       DataZoneMskCentralAuthorizer.AUTHORIZER_NAME,
       this.metadataCollectorFunction,
       this.datazoneCallbackFunction,

@@ -109,7 +109,6 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
     });
 
     const customAuthorizer = authorizerEnvironmentWorkflowSetup(this,
-      'DataZoneMskEnvironmentWorkflow',
       DataZoneMskCentralAuthorizer.AUTHORIZER_NAME,
       this.grantFunction,
       props.centralAccountId,

@@ -18,12 +18,14 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
   const stack = new Stack(app, 'Stack');
   const DOMAIN_ID = 'aba_dc999t9ime9sss';
 
-  new DataZoneMskCentralAuthorizer(stack, 'MskAuthorizer', {
+  const centralAuthorizer = new DataZoneMskCentralAuthorizer(stack, 'MskAuthorizer', {
     domainId: DOMAIN_ID,
   });
 
+  centralAuthorizer.registerAccount('999999999999');
+
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
 
   test('should create an IAM role for the metadata collector function with proper DataZone permissions ', () => {
@@ -213,7 +215,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
         Targets: [
           Match.objectLike({
             Arn: {
-              Ref: Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachine.*'),
+              Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
             },
             DeadLetterConfig: {
               Arn: {
@@ -265,7 +267,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Action: 'states:StartExecution',
               Effect: 'Allow',
               Resource: {
-                Ref: Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachine.*'),
+                Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
               },
             },
           ],
@@ -331,7 +333,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowCallbackEventRule.*'),
+            Match.stringLikeRegexp('MskAuthorizerCallbackEventRule.*'),
             'Arn',
           ],
         },
@@ -365,7 +367,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
     );
   });
 
-  test('should create proper IAM policy for the Step Functions state machine', () => {
+  test('should attach proper permissions to the state machine role', () => {
     template.hasResourceProperties('AWS::IAM::Policy',
       Match.objectLike({
         PolicyDocument: Match.objectLike({
@@ -381,7 +383,8 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                   ],
                 },
                 {
-                  'Fn::Join': Match.arrayWith([
+                  'Fn::Join': [
+                    '',
                     [
                       {
                         'Fn::GetAtt': [
@@ -391,14 +394,29 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                       },
                       ':*',
                     ],
-                  ]),
+                  ],
                 },
               ],
             },
             {
               Action: 'eventbridge:putEvents',
               Effect: 'Allow',
-              Resource: '*',
+              Resource: {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:aws:events:',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':event-bus/default',
+                  ],
+                ],
+              },
             },
             {
               Action: 'lambda:InvokeFunction',
@@ -406,12 +424,13 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Resource: [
                 {
                   'Fn::GetAtt': [
-                    Match.stringLikeRegexp('MskAuthorizerCallbackHandler.*'),
+                    'MskAuthorizerCallbackHandler948D9927',
                     'Arn',
                   ],
                 },
                 {
-                  'Fn::Join': Match.arrayWith([
+                  'Fn::Join': [
+                    '',
                     [
                       {
                         'Fn::GetAtt': [
@@ -421,7 +440,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                       },
                       ':*',
                     ],
-                  ]),
+                  ],
                 },
               ],
             },
@@ -429,7 +448,8 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Action: 'events:PutEvents',
               Effect: 'Allow',
               Resource: {
-                'Fn::Join': Match.arrayWith([
+                'Fn::Join': [
+                  '',
                   [
                     'arn:',
                     {
@@ -439,21 +459,17 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                     {
                       Ref: 'AWS::Region',
                     },
-                    ':',
-                    {
-                      Ref: 'AWS::AccountId',
-                    },
-                    ':event-bus/default',
+                    ':999999999999:event-bus/default',
                   ],
-                ]),
+                ],
               },
             },
           ],
         }),
-        PolicyName: Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachineRoleDefaultPolicy.*'),
+        PolicyName: Match.stringLikeRegexp('MskAuthorizerStateMachineRoleDefaultPolicy.*'),
         Roles: [
           {
-            Ref: Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachineRole.*'),
+            Ref: Match.stringLikeRegexp('MskAuthorizerStateMachineRole.*'),
           },
         ],
       }),
@@ -467,7 +483,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
           'Fn::Join': [
             '',
             [
-              '{"StartAt":"DataZoneMskCentralWorkflowMetadataCollector","States":{"DataZoneMskCentralWorkflowMetadataCollector":{"Next":"ProducerGrantEventBridgePutEvents","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"DataZoneMskCentralWorkflowGovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":120,"ResultSelector":{"Metadata.$":"$.Payload"},"Resource":"arn:',
+              '{"StartAt":"MetadataCollector","States":{"MetadataCollector":{"Next":"ProducerGrantEventBridgePutEvents","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"GovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":120,"ResultSelector":{"Metadata.$":"$.Payload"},"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
@@ -478,15 +494,15 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                   'Arn',
                 ],
               },
-              '","Payload.$":"$"}},"ProducerGrantEventBridgePutEvents":{"Next":"ConsumerGrantEventBridgePutEvents","Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"DataZoneMskCentralWorkflowGovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":300,"ResultPath":null,"Resource":"arn:',
+              '","Payload.$":"$"}},"ProducerGrantEventBridgePutEvents":{"Next":"ConsumerGrantEventBridgePutEvents","Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"GovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":300,"ResultPath":null,"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
-              ":states:::aws-sdk:eventbridge:putEvents.waitForTaskToken\",\"Parameters\":{\"Entries\":[{\"Detail\":{\"type\":1,\"value\":{\"TaskToken.$\":\"$$.Task.Token\",\"Metadata.$\":\"$.Metadata\"}},\"DetailType\":\"producerGrant\",\"Source\":\"dsf.MskTopicAuthorizer\",\"EventBusName.$\":\"States.Format('arn:aws:events:{}:{}:event-bus/default', $.Metadata.Producer.Region, $.Metadata.Producer.Account)\"}]}},\"ConsumerGrantEventBridgePutEvents\":{\"Next\":\"DataZoneMskCentralWorkflowGovernanceSuccessCallback\",\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"ResultPath\":\"$.ErrorInfo\",\"Next\":\"DataZoneMskCentralWorkflowGovernanceFailureCallback\"}],\"Type\":\"Task\",\"TimeoutSeconds\":300,\"ResultPath\":null,\"Resource\":\"arn:",
+              ":states:::aws-sdk:eventbridge:putEvents.waitForTaskToken\",\"Parameters\":{\"Entries\":[{\"Detail\":{\"type\":1,\"value\":{\"TaskToken.$\":\"$$.Task.Token\",\"Metadata.$\":\"$.Metadata\"}},\"DetailType\":\"producerGrant\",\"Source\":\"dsf.MskTopicAuthorizer\",\"EventBusName.$\":\"States.Format('arn:aws:events:{}:{}:event-bus/default', $.Metadata.Producer.Region, $.Metadata.Producer.Account)\"}]}},\"ConsumerGrantEventBridgePutEvents\":{\"Next\":\"GovernanceSuccessCallback\",\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"ResultPath\":\"$.ErrorInfo\",\"Next\":\"GovernanceFailureCallback\"}],\"Type\":\"Task\",\"TimeoutSeconds\":300,\"ResultPath\":null,\"Resource\":\"arn:",
               {
                 Ref: 'AWS::Partition',
               },
-              ":states:::aws-sdk:eventbridge:putEvents.waitForTaskToken\",\"Parameters\":{\"Entries\":[{\"Detail\":{\"type\":1,\"value\":{\"TaskToken.$\":\"$$.Task.Token\",\"Metadata.$\":\"$.Metadata\"}},\"DetailType\":\"consumerGrant\",\"Source\":\"dsf.MskTopicAuthorizer\",\"EventBusName.$\":\"States.Format('arn:aws:events:{}:{}:event-bus/default', $.Metadata.Consumer.Region, $.Metadata.Consumer.Account)\"}]}},\"DataZoneMskCentralWorkflowGovernanceSuccessCallback\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"TimeoutSeconds\":60,\"Resource\":\"arn:",
+              ":states:::aws-sdk:eventbridge:putEvents.waitForTaskToken\",\"Parameters\":{\"Entries\":[{\"Detail\":{\"type\":1,\"value\":{\"TaskToken.$\":\"$$.Task.Token\",\"Metadata.$\":\"$.Metadata\"}},\"DetailType\":\"consumerGrant\",\"Source\":\"dsf.MskTopicAuthorizer\",\"EventBusName.$\":\"States.Format('arn:aws:events:{}:{}:event-bus/default', $.Metadata.Consumer.Region, $.Metadata.Consumer.Account)\"}]}},\"GovernanceSuccessCallback\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"TimeoutSeconds\":60,\"Resource\":\"arn:",
               {
                 Ref: 'AWS::Partition',
               },
@@ -497,14 +513,14 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                   'Arn',
                 ],
               },
-              '","Payload":{"Status":"success","Metadata.$":"$.Metadata"}}},"DataZoneMskCentralWorkflowGovernanceFailureCallback":{"Next":"CentralWorfklowFailure","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","TimeoutSeconds":60,"Resource":"arn:',
+              '","Payload":{"Status":"success","Metadata.$":"$.Metadata"}}},"GovernanceFailureCallback":{"Next":"CentralWorfklowFailure","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","TimeoutSeconds":60,"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
               ':states:::lambda:invoke","Parameters":{"FunctionName":"',
               {
                 'Fn::GetAtt': [
-                  'MskAuthorizerCallbackHandler948D9927',
+                  Match.stringLikeRegexp('MskAuthorizerCallbackHandler.*'),
                   'Arn',
                 ],
               },
@@ -514,7 +530,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
         },
         RoleArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachineRole.*'),
+            Match.stringLikeRegexp('MskAuthorizerStateMachineRole.*'),
             'Arn',
           ],
         },
@@ -531,13 +547,31 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
       Match.objectLike({
         PolicyDocument: Match.objectLike({
           Statement: [
+            {
+              Action: 'sqs:*',
+              Condition: {
+                Bool: {
+                  'aws:SecureTransport': 'false',
+                },
+              },
+              Effect: 'Deny',
+              Principal: {
+                AWS: '*',
+              },
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
+                  'Arn',
+                ],
+              },
+            },
             Match.objectLike({
               Action: 'sqs:SendMessage',
               Condition: {
                 ArnEquals: {
                   'aws:SourceArn': {
                     'Fn::GetAtt': [
-                      Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowAuthorizerEventRule.*'),
+                      Match.stringLikeRegexp('MskAuthorizerAuthorizerEventRule.*'),
                       'Arn',
                     ],
                   },
@@ -560,7 +594,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                 ArnEquals: {
                   'aws:SourceArn': {
                     'Fn::GetAtt': [
-                      Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowCallbackEventRule.*'),
+                      Match.stringLikeRegexp('MskAuthorizerCallbackEventRule.*'),
                       'Arn',
                     ],
                   },
@@ -632,7 +666,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               ],
               Effect: 'Allow',
               Resource: {
-                Ref: Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachine.*'),
+                Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
               },
             },
             {
@@ -643,7 +677,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               ],
               Effect: 'Allow',
               Resource: {
-                Ref: Match.stringLikeRegexp('MskAuthorizerDataZoneMskCentralWorkflowStateMachine.*'),
+                Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
               },
             },
           ],

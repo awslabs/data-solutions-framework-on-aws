@@ -23,7 +23,7 @@ describe ('Creating a DataZoneCustomAssetTypeFactory with default configuration'
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
 
   test('should create an IAM role for the custom resource creating asset types', () => {
@@ -109,7 +109,7 @@ describe ('Creating a DataZoneCustomAssetTypeFactory with default configuration'
   });
 });
 
-describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but without global data removal', () => {
+describe ('Creating a DataZoneCustomAssetTypeFactory with DELETE removal but without global data removal', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   const DOMAIN_ID = 'aba_dc999t9ime9sss';
@@ -121,7 +121,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but witho
 
   const template = Template.fromStack(stack);
 
-  test('should create a Step Functions state machine with RETAIN removal policy', () => {
+  test('should create CloudWatch Log Groups with RETAIN removal policy', () => {
     template.hasResource('AWS::Logs::LogGroup',
       Match.objectLike({
         UpdateReplacePolicy: 'Retain',
@@ -131,7 +131,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but witho
   });
 });
 
-describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but without global data removal', () => {
+describe ('Creating a DataZoneCustomAssetTypeFactory with DELETE removal but without global data removal', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   const DOMAIN_ID = 'aba_dc999t9ime9sss';
@@ -145,7 +145,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but witho
 
   const template = Template.fromStack(stack);
 
-  test('should create a Step Functions state machine with RETAIN removal policy', () => {
+  test('should create CloudWatch Log Groups with RETAIN removal policy', () => {
     template.hasResource('AWS::Logs::LogGroup',
       Match.objectLike({
         UpdateReplacePolicy: 'Delete',
