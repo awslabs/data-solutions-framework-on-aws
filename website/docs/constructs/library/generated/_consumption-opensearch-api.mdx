@@ -1,0 +1,183 @@
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/consumption -->
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+OpenSearch API client that allows to prepare the data or setup access roles for existing Opensearch clusters. The construct supports both OpenSearch provisioned clusters and OpenSearch Serverless collections.
+
+## Overview
+
+The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#provider-framework) to deploy a custom resource to manage, and provide `addRoleMapping` and `callOpenSearchApi` methods. Both methods return the custom resource so that allows to enforce sequental execution of the API calls. By default all API calls will be executed simultaneously and are independent of each other. 
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+    const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
+      domainName:"mycluster",
+      samlEntityId:'<IdpIdentityId>',
+      samlMetadataContent:'<IdpMetadataXml>',
+      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
+      deployInVpc:false,
+      dataNodeInstanceType:'t3.small.search',
+      dataNodeInstanceCount:1,
+      masterNodeInstanceCount:0,
+      removalPolicy:cdk.RemovalPolicy.DESTROY
+    });
+
+    //Add another admin
+    osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
+
+    const indexTemplateCr = osCluster.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
+    {
+      "index_patterns": [
+        "movies-*"
+      ],
+      "template": {
+        "settings": {
+          "index": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0
+          }
+        },
+        "mappings": {
+          "properties": {
+            "title": {
+              "type": "text"
+            },
+            "year": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    });
+    const metadata='{ "index" : { "_index" : "movies-02"}}';
+    const bulk=`${metadata}
+    {"title": "Barbie", "year": 2023}
+    ${metadata}
+    {"title": "Openheimer", "year": 2023}`;
+
+    // add dependency on index template creation
+    const bulkCr = osCluster.callOpenSearchApi('AddBulk','_bulk',bulk+'\n\n','POST');
+    bulkCr.node.addDependency(indexTemplateCr);
+
+    const add1Cr = osCluster.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
+    add1Cr.node.addDependency(indexTemplateCr);
+    const add2Cr = osCluster.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
+    add2Cr.node.addDependency(indexTemplateCr);
+    const add3Cr = osCluster.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
+    add3Cr.node.addDependency(indexTemplateCr);
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+os_cluster = dsf.consumption.OpenSearchCluster(self, "MyOpenSearchCluster",
+    domain_name="mycluster",
+    saml_entity_id="<IdpIdentityId>",
+    saml_metadata_content="<IdpMetadataXml>",
+    saml_master_backend_role="<IAMIdentityCenterAdminGroupId>",
+    deploy_in_vpc=False,
+    data_node_instance_type="t3.small.search",
+    data_node_instance_count=1,
+    master_node_instance_count=0,
+    removal_policy=cdk.RemovalPolicy.DESTROY
+)
+
+# Add another admin
+os_cluster.add_role_mapping("AnotherAdmin", "all_access", "sometestId")
+
+index_template_cr = os_cluster.call_open_search_api("CreateIndexTemplate", "_index_template/movies", {
+    "index_patterns": ["movies-*"
+    ],
+    "template": {
+        "settings": {
+            "index": {
+                "number_of_shards": 1,
+                "number_of_replicas": 0
+            }
+        },
+        "mappings": {
+            "properties": {
+                "title": {
+                    "type": "text"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+})
+metadata = "{ \"index\" : { \"_index\" : \"movies-02\"}}"
+bulk = f"""{metadata}
+    {\"title\": \"Barbie\", \"year\": 2023}
+    {metadata}
+    {\"title\": \"Openheimer\", \"year\": 2023}"""
+
+# add dependency on index template creation
+bulk_cr = os_cluster.call_open_search_api("AddBulk", "_bulk", bulk + "\n\n", "POST")
+bulk_cr.node.add_dependency(index_template_cr)
+
+add1_cr = os_cluster.call_open_search_api("AddData1", "movies-01/_doc/1111", {"title": "Rush", "year": 2013}, "PUT")
+add1_cr.node.add_dependency(index_template_cr)
+add2_cr = os_cluster.call_open_search_api("AddData3", "movies-01/_doc/2222", {"title": "Toy Story", "year": 2014}, "PUT")
+add2_cr.node.add_dependency(index_template_cr)
+add3_cr = os_cluster.call_open_search_api("AddData4", "movies-01/_doc", {"title": "The Little Mermaid", "year": 2015}, "POST")
+add3_cr.node.add_dependency(index_template_cr)
+  ```
+
+  </TabItem>
+</Tabs>
+
+:::warning
+
+The IAM Role passed as `iamHandlerRole` property has to have all necessary permissions to execute API calls to the cluster. 
+
+:::
+
+## callOpenSearchApi
+
+Generic method to execute any Opensearch API, subject to correct permissions attached to the IAM Role. 
+
+[example OpenSearch API](./examples/opensearch-api.lit.ts)
+
+## addRoleMapping
+
+Use this method to add role mappings to OpenSearch cluster using `_security` plugin. 
+This method is only applicable to provisioned OpenSearch clusters.
+
+[OpenSearch Roles API](https://opensearch.org/docs/2.13/security/access-control/api#create-role-mapping) does not allow to update individual roles, requiring to pass array of roles that needs to be applied. 
+To avoid overwriting prevously added roles `addRoleMapping` method provides `persist` parameter to store previously added roles inside the construct. To avoid racing conditions you also need to execute multiple `addRoleMapping` calls sequentionally as shown below.
+
+```typescript
+const firstCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+const secondCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+secondCall.node.addDependency(firstCall);
+```
+
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+const firstCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+const secondCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+secondCall.node.addDependency(firstCall);
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+first_call = os_api.add_role_mapping("AnotherAdmin", "all_access", "<IAMRole>", True)
+second_call = os_api.add_role_mapping("AnotherAdmin", "all_access", "<IAMRole>", True)
+second_call.node.add_dependency(first_call)
+  ```
+
+  </TabItem>
+</Tabs>
+

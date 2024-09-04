@@ -211,3 +211,40 @@ Using Client VPN Endpoint
 [example default](examples/opensearch-saml-clientvpn.lit.ts)
 
 
+[//]: # (consumption.opensearch-api)
+# OpenSearch API - Bring you own Opensearch cluster
+
+OpenSearch API client that allows to prepare the data or setup access roles for existing Opensearch clusters. The construct supports both OpenSearch provisioned clusters and OpenSearch Serverless collections.
+
+## Overview
+
+The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#provider-framework) to deploy a custom resource to manage, and provide `addRoleMapping` and `callOpenSearchApi` methods. Both methods return the custom resource so that allows to enforce sequental execution of the API calls. By default all API calls will be executed simultaneously and are independent of each other. 
+
+[example OpenSearch API](./examples/opensearch-api.lit.ts)
+
+:::warning
+
+The IAM Role passed as `iamHandlerRole` property has to have all necessary permissions to execute API calls to the cluster. 
+
+:::
+
+## callOpenSearchApi
+
+Generic method to execute any Opensearch API, subject to correct permissions attached to the IAM Role. 
+
+[example OpenSearch API](./examples/opensearch-api.lit.ts)
+
+## addRoleMapping
+
+Use this method to add role mappings to OpenSearch cluster using `_security` plugin. 
+This method is only applicable to provisioned OpenSearch clusters.
+
+[OpenSearch Roles API](https://opensearch.org/docs/2.13/security/access-control/api#create-role-mapping) does not allow to update individual roles, requiring to pass array of roles that needs to be applied. 
+To avoid overwriting prevously added roles `addRoleMapping` method provides `persist` parameter to store previously added roles inside the construct. To avoid racing conditions you also need to execute multiple `addRoleMapping` calls sequentionally as shown below.
+
+```typescript
+const firstCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+const secondCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+secondCall.node.addDependency(firstCall);
+```
+
