@@ -3,6 +3,10 @@
 
 import * as path from 'path';
 import { CustomResource, Stack } from 'aws-cdk-lib';
+import { ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { IRole } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { OpenSearchApiProps } from './opensearch-api-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
@@ -10,8 +14,44 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
 /**
  * A construct to create an OpenSearch API client
+ *
+ * @example
+ *  const apiRole = cdk.iam.Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
+ *  const osApi = new dsf.consumption.OpensearchApi(this, 'MyOpenSearchApi',{
+ *    iamHandlerRole:apiRole,
+ *    openSearchEndpoint:'https://search-XXXXXX.XXXXXX.es.amazonaws.com',
+ *    openSearchClusterType:dsf.consumption.OpenSearchClusterType.PROVISIONED,
+ *    removalPolicy:cdk.RemovalPolicy.DESTROY
+ *  });
+ *
+ *  const roleMap = osApi.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+ *  const add1Cr = osApi.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
+ *  add1Cr.node.addDependency(roleMap);
+ *  const add2Cr = osApi.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
+ *  add2Cr.node.addDependency(roleMap);
  */
+
 export class OpenSearchApi extends TrackedConstruct {
+
+  /**
+   * The CloudWatch Log Group for the  onEventHandler Lambda Function
+   */
+  public apiLogGroup: ILogGroup;
+
+  /**
+   * The list of EC2 Security Groups used by the Lambda Functions
+   */
+  public apiSecurityGroups?: ISecurityGroup[];
+
+  /**
+   * The Lambda Function used for the onEventHandler
+   */
+  public apiFunction: IFunction;
+
+  /**
+   * The IAM Role for the onEventHandler Lambba Function
+   */
+  public apiRole: IRole;
 
   /**
    * Custom resource provider for the OpenSearch API client
@@ -51,6 +91,8 @@ export class OpenSearchApi extends TrackedConstruct {
 
     this.apiProvider = new DsfProvider(this, 'Provider', {
       providerName: 'opensearchApiProvider',
+      queryInterval: props.queryInterval ?? undefined,
+      queryTimeout: props.queryTimeout ?? undefined,
       onEventHandlerDefinition: {
         iamRole: props.iamHandlerRole,
         handler: 'handler',
@@ -73,8 +115,15 @@ export class OpenSearchApi extends TrackedConstruct {
       },
       vpc: props.vpc,
       subnets: props.subnets,
+      securityGroups: props.securityGroups,
       removalPolicy: this.removalPolicy,
     });
+
+    this.apiLogGroup = this.apiProvider.onEventHandlerLogGroup;
+    this.apiSecurityGroups = this.apiProvider.securityGroups;
+    this.apiFunction = this.apiProvider.onEventHandlerFunction;
+    this.apiRole = this.apiProvider.onEventHandlerRole;
+
   }
 
 

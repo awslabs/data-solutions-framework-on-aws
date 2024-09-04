@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: MIT-0
 
 import { RemovalPolicy, Stack, Duration, Aws, CustomResource } from 'aws-cdk-lib';
-import { EbsDeviceVolumeType, IVpc, Peer, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { EbsDeviceVolumeType, ISecurityGroup, IVpc, Peer, Port, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { AnyPrincipal, Effect, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Domain, DomainProps, IDomain, SAMLOptionsProperty } from 'aws-cdk-lib/aws-opensearchservice';
 import { AwsCustomResource, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
@@ -64,6 +65,24 @@ export class OpenSearchCluster extends TrackedConstruct {
    * IAM Role used to provision and configure OpenSearch domain
    */
   public readonly masterRole: IRole;
+
+
+  /**
+   * CloudWatch Logs Log Group to store OpenSearch API logs
+   */
+  public readonly openSearchApiLogGroup: ILogGroup;
+
+  /**
+   * Security Group for OpenSearch API Lambda Function
+   * @see OpenSearchApi
+   */
+  public readonly apiSecurityGroups?: ISecurityGroup[];
+
+  /**
+   * Lambda Function used for OpenSearch API
+   * @see OpenSearchApi
+   */
+  public readonly openSearchApiFunction: IFunction;
 
   /**
    * Opesearch API client
@@ -285,6 +304,10 @@ export class OpenSearchCluster extends TrackedConstruct {
       subnets: subnets,
       removalPolicy: this.removalPolicy,
     });
+
+    this.openSearchApiLogGroup = this.openSearchApi.apiLogGroup;
+    this.apiSecurityGroups = this.openSearchApi.apiSecurityGroups;
+    this.openSearchApiFunction = this.openSearchApi.apiFunction;
 
     const allAccessRoleLambdaCr=this.openSearchApi.addRoleMapping('AllAccessRoleLambda', 'all_access', this.masterRole.roleArn, true);
     const allAccessRoleSamlCr=this.openSearchApi.addRoleMapping('AllAccessRoleSAML', 'all_access', samlAdminGroupId, true);
