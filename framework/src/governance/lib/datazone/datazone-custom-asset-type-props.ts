@@ -7,12 +7,10 @@
 export interface DataZoneFormTypeField {
   /**
    * The name of the field
-   * @example 'firstName'
    */
   readonly name: string;
   /**
    * The type of the field
-   * @example 'String'
    */
   readonly type: string;
   /**
@@ -28,12 +26,12 @@ export interface DataZoneFormTypeField {
 export interface DataZoneFormType {
   /**
    * The name of the form
-   * @example 'userForm'
    */
   readonly name: string;
   /**
    * The fields of the form
    * @example [{ name: 'firstName', type: 'String', required: true }]
+   * @default - No model is required. The form is already configured in DataZone.
    */
   readonly model?: DataZoneFormTypeField[];
   /**

@@ -27,7 +27,7 @@ describe('With default configuration, the construct ', () => {
   });
 
   const template = Template.fromStack(stack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
+  console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create an IAM role for the copy', () => {
     template.hasResourceProperties('AWS::IAM::Role',

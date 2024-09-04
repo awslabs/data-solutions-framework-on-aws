@@ -62,14 +62,14 @@ export function authorizerEnvironmentWorkflowSetup(
   const DEFAULT_TIMEOUT = Duration.minutes(5);
   const DEFAULT_RETRY_ATTEMPTS = 0;
 
-  const eventRule = new Rule(scope, `${id}EventRule`, {
+  const eventRule = new Rule(scope, 'CentralEventRule', {
     eventPattern: {
       source: [authorizerName],
       detailType: ['producerGrant', 'consumerGrant'],
     },
   });
 
-  const grant = new LambdaInvoke(scope, `${id}Grant`, {
+  const grant = new LambdaInvoke(scope, 'GrantInvoke', {
     lambdaFunction: grantFunction,
     resultPath: '$.GrantResult',
     taskTimeout: Timeout.duration(Duration.minutes(2)),
@@ -93,7 +93,7 @@ export function authorizerEnvironmentWorkflowSetup(
     `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${eventBusAccount}:event-bus/default`,
   );
 
-  const authorizerFailureCallbackEvent = new EventBridgePutEvents(scope, `${id}FailureCallback`, {
+  const authorizerFailureCallbackEvent = new EventBridgePutEvents(scope, 'FailureCallback', {
     entries: [{
       detail: TaskInput.fromObject({
         TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
@@ -112,7 +112,7 @@ export function authorizerEnvironmentWorkflowSetup(
     resultPath: '$.ErrorInfo',
   });
 
-  const authorizerSuccessCallbackEvent = new EventBridgePutEvents(scope, `${id}SuccessCallback`, {
+  const authorizerSuccessCallbackEvent = new EventBridgePutEvents(scope, 'SuccessCallback', {
     entries: [{
       detail: TaskInput.fromObject({
         TaskToken: JsonPath.stringAt('$.detail.value.TaskToken'),
@@ -127,7 +127,7 @@ export function authorizerEnvironmentWorkflowSetup(
   const stateMachineDefinition = grant
     .next(authorizerSuccessCallbackEvent);
 
-  const stateMachine = new StateMachine(scope, `${id}StateMachine`, {
+  const stateMachine = new StateMachine(scope, 'StateMachine', {
     definitionBody: DefinitionBody.fromChainable(stateMachineDefinition),
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
@@ -135,9 +135,11 @@ export function authorizerEnvironmentWorkflowSetup(
 
   centralEventBus.grantPutEventsTo(stateMachine.role);
 
-  const deadLetterQueue = new Queue(scope, 'Queue');
+  const deadLetterQueue = new Queue(scope, 'Queue', {
+    removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
+  });
 
-  const eventRole = new Role(scope, 'Role', {
+  const eventRole = new Role(scope, 'CentralEventRole', {
     assumedBy: new ServicePrincipal('events.amazonaws.com'),
   });
   stateMachine.grantStartExecution(eventRole);

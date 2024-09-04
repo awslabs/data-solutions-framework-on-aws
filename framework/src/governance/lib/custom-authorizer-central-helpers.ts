@@ -84,7 +84,7 @@ export function authorizerCentralWorkflowSetup(
     eventPattern,
   });
 
-  const authorizerEventRole = new Role(scope, 'AuthorizerEventRole', {
+  const authorizerEventRole = new Role(scope, 'SourceEventRole', {
     assumedBy: new ServicePrincipal('events.amazonaws.com'),
   });
 
@@ -155,7 +155,9 @@ export function authorizerCentralWorkflowSetup(
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
   });
 
-  const deadLetterQueue = new Queue(scope, 'Queue');
+  const deadLetterQueue = new Queue(scope, 'Queue', {
+    removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
+  });
 
   stateMachine.grantStartExecution(authorizerEventRole);
 

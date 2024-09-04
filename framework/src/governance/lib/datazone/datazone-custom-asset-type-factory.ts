@@ -125,8 +125,6 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
       },
     });
 
-    this.handlerRole.applyRemovalPolicy(this.removalPolicy);
-
     const provider = new DsfProvider(this, 'Provider', {
       providerName: 'DataZoneCustomAssetType',
       onEventHandlerDefinition: {

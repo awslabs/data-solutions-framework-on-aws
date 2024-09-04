@@ -5121,9 +5121,9 @@ public readonly DSF_TRACKING_CODE: string;
 
 A central authorizer workflow for granting read access to Kafka topics.
 
-The workflow is triggered by an event sent to the DataZone event bus. 
-First, it collects metadata from DataZone about the Kafka topics. 
-Then, it grants access to the relevant IAM roles. 
+The workflow is triggered by an event sent to the DataZone event bus.
+First, it collects metadata from DataZone about the Kafka topics.
+Then, it grants access to the relevant IAM roles.
 Finally acknowledge the subscription grant in DataZone.
 
 *Example*
@@ -5481,8 +5481,8 @@ The asset type for the DataZone custom asset type.
 
 An environment authorizer workflow for granting read access to Kafka topics.
 
-The workflow is triggered by an event sent by the central authorizer construct. 
-It creates IAM policies required for the Kafka client to access the relevant topics. 
+The workflow is triggered by an event sent by the central authorizer construct.
+It creates IAM policies required for the Kafka client to access the relevant topics.
 It supports MSK provisioned and serverless, in single and cross accounts, and grant/revoke requests.
 
 *Example*
@@ -15505,13 +15505,6 @@ The name of the form.
 
 ---
 
-*Example*
-
-```typescript
-'userForm'
-```
-
-
 ##### `model`<sup>Optional</sup> <a name="model" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model"></a>
 
 ```typescript
@@ -15519,6 +15512,7 @@ public readonly model: DataZoneFormTypeField[];
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]
+- *Default:* No model is required. The form is already configured in DataZone.
 
 The fields of the form.
 
@@ -15578,13 +15572,6 @@ The name of the field.
 
 ---
 
-*Example*
-
-```typescript
-'firstName'
-```
-
-
 ##### `type`<sup>Required</sup> <a name="type" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type"></a>
 
 ```typescript
@@ -15596,13 +15583,6 @@ public readonly type: string;
 The type of the field.
 
 ---
-
-*Example*
-
-```typescript
-'String'
-```
-
 
 ##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required"></a>
 
