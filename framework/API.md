@@ -4061,12 +4061,12 @@ The security group for Client VPN Endpoint.
 
 Factory construct providing resources to create a DataZone custom asset type.
 
-> [https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/datazone-msk-governance](https://awslabs.github.io/data-solutions-framework-on-aws/docs/constructs/library/Governance/datazone-msk-governance)
-
 *Example*
 
 ```typescript
-new dsf.governance.DataZoneCustomAssetTypeFactory(this, 'CustomAssetTypeFactory');
+new dsf.governance.DataZoneCustomAssetTypeFactory(this, 'CustomAssetTypeFactory', {
+ domainId: 'aba_dc999t9ime9sss',
+});
 ```
 
 
@@ -4936,7 +4936,7 @@ A DataZone custom asset type representing an MSK topic.
 *Example*
 
 ```typescript
-new dsf.governance.DataZoneMskAssetType(stack, 'MskAssetType', {
+new dsf.governance.DataZoneMskAssetType(this, 'MskAssetType', {
   domainId: 'aba_dc999t9ime9sss',
   projectId: '999999b3m5cpz',
 });
@@ -5129,7 +5129,7 @@ Finally acknowledge the subscription grant in DataZone.
 *Example*
 
 ```typescript
-new DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
+new dsf.governance.DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
   domainId: 'aba_dc999t9ime9sss',
 });
 ```
@@ -5488,7 +5488,7 @@ It supports MSK provisioned and serverless, in single and cross accounts, and gr
 *Example*
 
 ```typescript
-new DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
+new dsf.governance.DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
   domainId: 'aba_dc999t9ime9sss',
 });
 ```

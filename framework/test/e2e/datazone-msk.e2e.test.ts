@@ -5,9 +5,9 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
+import { CfnDomain } from 'aws-cdk-lib/aws-datazone';
 import { TestStack } from './test-stack';
 import { DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance/index';
-import { CfnDomain } from 'aws-cdk-lib/aws-datazone';
 
 jest.setTimeout(10000000);
 

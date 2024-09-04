@@ -13,7 +13,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils
  * A DataZone custom asset type representing an MSK topic.
  *
  * @example
- * new dsf.governance.DataZoneMskAssetType(stack, 'MskAssetType', {
+ * new dsf.governance.DataZoneMskAssetType(this, 'MskAssetType', {
  *   domainId: 'aba_dc999t9ime9sss',
  *   projectId: '999999b3m5cpz',
  * });

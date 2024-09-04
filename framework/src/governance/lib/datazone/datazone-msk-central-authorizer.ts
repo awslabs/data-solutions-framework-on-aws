@@ -21,7 +21,7 @@ import { authorizerCentralWorkflowSetup, registerAccount } from '../custom-autho
  * Finally acknowledge the subscription grant in DataZone.
  *
  * @example
- * new DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
+ * new dsf.governance.DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
  *   domainId: 'aba_dc999t9ime9sss',
  * });
  */

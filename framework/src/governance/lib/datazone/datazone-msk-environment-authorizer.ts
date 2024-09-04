@@ -19,7 +19,7 @@ import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environ
  * It supports MSK provisioned and serverless, in single and cross accounts, and grant/revoke requests.
  *
  * @example
- * new DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
+ * new dsf.governance.DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
  *   domainId: 'aba_dc999t9ime9sss',
  * });
  */
