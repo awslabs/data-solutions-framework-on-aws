@@ -7350,6 +7350,25 @@ public readonly DSF_TRACKING_CODE: string;
 
 A construct to create an OpenSearch API client.
 
+*Example*
+
+```typescript
+ const apiRole = cdk.iam.Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
+ const osApi = new dsf.consumption.OpensearchApi(this, 'MyOpenSearchApi',{
+   iamHandlerRole:apiRole,
+   openSearchEndpoint:'https://search-XXXXXX.XXXXXX.es.amazonaws.com',
+   openSearchClusterType:dsf.consumption.OpenSearchClusterType.PROVISIONED,
+   removalPolicy:cdk.RemovalPolicy.DESTROY
+ });
+
+ const roleMap = osApi.addRoleMapping('DashBoardUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
+ const add1Cr = osApi.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
+ add1Cr.node.addDependency(roleMap);
+ const add2Cr = osApi.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
+ add2Cr.node.addDependency(roleMap);
+```
+
+
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.Initializer"></a>
 
 ```typescript
@@ -7544,6 +7563,10 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiFunction">apiFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function used for the onEventHandler. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiLogGroup">apiLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for the  onEventHandler Lambda Function. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiRole">apiRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the onEventHandler Lambba Function. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiSecurityGroups">apiSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of EC2 Security Groups used by the Lambda Functions. |
 
 ---
 
@@ -7556,6 +7579,54 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `apiFunction`<sup>Required</sup> <a name="apiFunction" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiFunction"></a>
+
+```typescript
+public readonly apiFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function used for the onEventHandler.
+
+---
+
+##### `apiLogGroup`<sup>Required</sup> <a name="apiLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiLogGroup"></a>
+
+```typescript
+public readonly apiLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for the  onEventHandler Lambda Function.
+
+---
+
+##### `apiRole`<sup>Required</sup> <a name="apiRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiRole"></a>
+
+```typescript
+public readonly apiRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the onEventHandler Lambba Function.
+
+---
+
+##### `apiSecurityGroups`<sup>Optional</sup> <a name="apiSecurityGroups" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApi.property.apiSecurityGroups"></a>
+
+```typescript
+public readonly apiSecurityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+The list of EC2 Security Groups used by the Lambda Functions.
 
 ---
 
@@ -7813,6 +7884,9 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used to encrypt data and logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.logGroup">logGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | CloudWatch Logs Log Group to store OpenSearch cluster logs. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.masterRole">masterRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | IAM Role used to provision and configure OpenSearch domain. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.openSearchApiFunction">openSearchApiFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | Lambda Function used for OpenSearch API. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.openSearchApiLogGroup">openSearchApiLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | CloudWatch Logs Log Group to store OpenSearch API logs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.apiSecurityGroups">apiSecurityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | Security Group for OpenSearch API Lambda Function. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | VPC OpenSearch cluster is provisioned in. |
 
 ---
@@ -7874,6 +7948,46 @@ public readonly masterRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
 IAM Role used to provision and configure OpenSearch domain.
+
+---
+
+##### `openSearchApiFunction`<sup>Required</sup> <a name="openSearchApiFunction" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.openSearchApiFunction"></a>
+
+```typescript
+public readonly openSearchApiFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+Lambda Function used for OpenSearch API.
+
+> [OpenSearchApi](OpenSearchApi)
+
+---
+
+##### `openSearchApiLogGroup`<sup>Required</sup> <a name="openSearchApiLogGroup" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.openSearchApiLogGroup"></a>
+
+```typescript
+public readonly openSearchApiLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+CloudWatch Logs Log Group to store OpenSearch API logs.
+
+---
+
+##### `apiSecurityGroups`<sup>Optional</sup> <a name="apiSecurityGroups" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchCluster.property.apiSecurityGroups"></a>
+
+```typescript
+public readonly apiSecurityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+
+Security Group for OpenSearch API Lambda Function.
+
+> [OpenSearchApi](OpenSearchApi)
 
 ---
 
@@ -16832,13 +16946,28 @@ const openSearchApiProps: consumption.OpenSearchApiProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal and have the necessary permissions to call OpenSearch API. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchClusterType">openSearchClusterType</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.OpenSearchClusterType</code> | Type of OpenSearch cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpoint">openSearchEndpoint</a></code> | <code>string</code> | The OpenSearch Cluster or Serverless collection endpoint to connect to. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpointRegion">openSearchEndpointRegion</a></code> | <code>string</code> | AWS Region openSearchEndpoint is provisioned in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.queryInterval">queryInterval</a></code> | <code>aws-cdk-lib.Duration</code> | Time between calls to the `isComplete` handler which determines if the resource has been stabilized. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.queryTimeout">queryTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | Total timeout for the entire custom resource operation. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.securityGroups">securityGroups</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The list of security groups to attach to the lambda functions. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this construct. |
+
+---
+
+##### `iamHandlerRole`<sup>Required</sup> <a name="iamHandlerRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole"></a>
+
+```typescript
+public readonly iamHandlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal and have the necessary permissions to call OpenSearch API.
 
 ---
 
@@ -16870,19 +16999,6 @@ attrCollectionEndpoint property of OpenSearch Serverless collection.
 
 ---
 
-##### `iamHandlerRole`<sup>Optional</sup> <a name="iamHandlerRole" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.iamHandlerRole"></a>
-
-```typescript
-public readonly iamHandlerRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-- *Default:* new IAMRole is created.
-
-The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal.
-
----
-
 ##### `openSearchEndpointRegion`<sup>Optional</sup> <a name="openSearchEndpointRegion" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.openSearchEndpointRegion"></a>
 
 ```typescript
@@ -16893,6 +17009,38 @@ public readonly openSearchEndpointRegion: string;
 - *Default:* same region as stack.
 
 AWS Region openSearchEndpoint is provisioned in.
+
+---
+
+##### `queryInterval`<sup>Optional</sup> <a name="queryInterval" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.queryInterval"></a>
+
+```typescript
+public readonly queryInterval: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+- *Default:* Duration.seconds(5)
+
+Time between calls to the `isComplete` handler which determines if the resource has been stabilized.
+
+> [dsf.utils.DsfProviderProps *](dsf.utils.DsfProviderProps *)
+
+---
+
+##### `queryTimeout`<sup>Optional</sup> <a name="queryTimeout" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.queryTimeout"></a>
+
+```typescript
+public readonly queryTimeout: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
+- *Default:* Duration.minutes(30)
+
+Total timeout for the entire custom resource operation.
+
+The maximum timeout is 1 hour.
+
+> [dsf.utils.DsfProviderProps *](dsf.utils.DsfProviderProps *)
 
 ---
 
@@ -16909,6 +17057,21 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `securityGroups`<sup>Optional</sup> <a name="securityGroups" id="@cdklabs/aws-data-solutions-framework.consumption.OpenSearchApiProps.property.securityGroups"></a>
+
+```typescript
+public readonly securityGroups: ISecurityGroup[];
+```
+
+- *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
+- *Default:* If `vpc` is not supplied, no security groups are attached. Otherwise, a dedicated security group is created for each function.
+
+The list of security groups to attach to the lambda functions.
+
+The security groups MUST be exclusively used by the custom resource.
 
 ---
 
