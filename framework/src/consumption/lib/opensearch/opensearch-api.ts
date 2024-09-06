@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as path from 'path';
-import { CustomResource, Stack } from 'aws-cdk-lib';
+import { CustomResource, Stack, Token } from 'aws-cdk-lib';
 import { ISecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
@@ -16,8 +16,7 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
  * A construct to create an OpenSearch API client
  *
  * @example
- *  // eslint-disable-next-line
- *  const domainEndpoint='https://search-XXXXXX.XXXXXX.es.amazonaws.com';
+ *  const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
  *  const apiRole = cdk.iam.Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
  *  const osApi = new dsf.consumption.OpensearchApi(this, 'MyOpenSearchApi',{
  *    iamHandlerRole:apiRole,
@@ -88,6 +87,7 @@ export class OpenSearchApi extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
 
+    if (!Token.isUnresolved(props.openSearchEndpoint) && ! /^([a-zA-Z0-9. _-])+$/.test(props.openSearchEndpoint)) {throw new Error(`Invalid OpenSearch Domain '${props.openSearchEndpoint}'`);}
 
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
