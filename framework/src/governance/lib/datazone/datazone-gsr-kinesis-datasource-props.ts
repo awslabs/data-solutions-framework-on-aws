@@ -33,10 +33,4 @@ export interface DatazoneGsrKinesisDatasourceProps {
    * @default - false, meaning the EventBridge listener for schema changes is disabled.
    */
   readonly enableSchemaRegistryEvent?: boolean;
-
-  /**
-   * Optional. A flag to enable or disable EventBridge listener for Kinesis Streams changes.
-   * @default - false, meaning the EventBridge listener for Kinesis Streams changes is disabled.
-   */
-  readonly enableKinesisEvent?: boolean;
 }

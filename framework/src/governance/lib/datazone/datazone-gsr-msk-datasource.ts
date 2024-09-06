@@ -18,17 +18,54 @@ import { Construct } from 'constructs';
 import { DatazoneGsrMskDatasourceProps } from './datazone-gsr-msk-datasource-props';
 import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
+/**
+ * A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
+ *
+ * @example
+ * new DatazoneGsrMskDatasource(this, 'MskDatasource', {
+ *   domainId: 'aba_dc999t9ime9sss',
+ *   projectId: '999999b3m5cpz',
+ *   registryName: 'MyRegistry',
+ *   clusterName: 'MyCluster',
+ *   eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
+ *   enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
+ * });
+ */
 export class DatazoneGsrMskDatasource extends TrackedConstruct {
-  // Expose these properties publicly
+  /**
+   * The DataZone domain identifier
+   */
   readonly domainId: string;
+  /**
+   * The DataZone project identifier
+   */
   readonly projectId: string;
+  /**
+   * The Glue Schema Registry name
+   */
   readonly registryName: string;
+  /**
+   * The schedule for EventBridge rules, if provided
+   * @default - No schedule rule is created
+   */
   readonly eventBridgeSchedule: Schedule | undefined;
+  /**
+   * Whether to enable EventBridge listener for Glue Schema Registry events
+   * @default - false
+   */
   readonly enableSchemaRegistryEvent: boolean | undefined;
+  /**
+   * The ARN of the MSK cluster
+   */
   readonly clusterArn: string;
-  readonly clusterName : string;
+  /**
+   * The name of the MSK cluster
+   */
+  readonly clusterName: string;
+  /**
+   * The AWS region where resources are deployed
+   */
   readonly region: string;
-
 
   constructor(scope: Construct, id: string, props: DatazoneGsrMskDatasourceProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -144,8 +181,7 @@ export class DatazoneGsrMskDatasource extends TrackedConstruct {
         ACCOUNT_ID: accountId,
         PARAMETER_PREFIX: parameterPrefix,
       },
-    },
-    );
+    });
 
     lambdaCrawler.node.addDependency(membership);
 
@@ -225,5 +261,4 @@ export class DatazoneGsrMskDatasource extends TrackedConstruct {
       });
     }
   }
-
 }

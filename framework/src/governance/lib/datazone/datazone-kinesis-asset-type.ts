@@ -7,10 +7,23 @@ import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-cust
 import { DataZoneKinesisAssetTypeProps } from './datazone-kinesis-asset-type-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
+/**
+ * A DataZone custom asset type representing a Kinesis Stream.
+ *
+ * @example
+ * new dsf.governance.DataZoneKinesisAssetType(this, 'KinesisAssetType', {
+ *   domainId: 'aba_dc999t9ime9sss',
+ *   projectId: '999999b3m5cpz',
+ * });
+ */
 export class DataZoneKinesisAssetType extends TrackedConstruct {
+  /**
+   * The custom asset type for Kinesis
+   */
   readonly kinesisCustomAssetType: CustomAssetType;
 
   private readonly removalPolicy: RemovalPolicy;
+
   constructor(scope: Construct, id: string, props: DataZoneKinesisAssetTypeProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: DataZoneKinesisAssetType.name,

@@ -18,15 +18,50 @@ import { Construct } from 'constructs';
 import { DatazoneGsrKinesisDatasourceProps } from './datazone-gsr-kinesis-datasource-props';
 import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
+/**
+ * A DataZone GSR (Governance, Security, and Reporting) datasource for Kinesis Streams.
+ *
+ * @example
+ * new dsf.governance.DatazoneGsrKinesisDatasource(this, 'KinesisDatasource', {
+ *   domainId: 'aba_dc999t9ime9sss',
+ *   projectId: '999999b3m5cpz',
+ *   registryName: 'myRegistry',
+ *   eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
+ *   enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
+ * });
+ */
 export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
-  // Expose these properties publicly
+  /**
+   * The DataZone domain identifier.
+   */
   readonly domainId: string;
-  readonly projectId: string;
-  readonly registryName: string;
-  readonly eventBridgeSchedule: Schedule | undefined;
-  readonly enableSchemaRegistryEvent: boolean | undefined;
-  readonly region: string;
 
+  /**
+   * The project identifier for the Kinesis datasource.
+   */
+  readonly projectId: string;
+
+  /**
+   * The name of the Glue schema registry.
+   */
+  readonly registryName: string;
+
+  /**
+   * The schedule for EventBridge rules to trigger the Lambda function.
+   * @default - No schedule is set.
+   */
+  readonly eventBridgeSchedule: Schedule | undefined;
+
+  /**
+   * Flag to enable EventBridge rule for Glue Schema Registry events.
+   * @default - false, meaning the EventBridge rule for schema registry changes is disabled.
+   */
+  readonly enableSchemaRegistryEvent: boolean | undefined;
+
+  /**
+   * The AWS region where resources are deployed.
+   */
+  readonly region: string;
 
   constructor(scope: Construct, id: string, props: DatazoneGsrKinesisDatasourceProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -50,6 +85,7 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
     // Define SSM Parameter paths to store asset information
     const parameterPrefix = `/datazone/${this.domainId}/${this.registryName}/asset/`;
 
+    // Create IAM role for Lambda function
     const handlerRole = new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
@@ -109,6 +145,7 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
       },
     });
 
+    // Define project membership
     const membership = new CfnProjectMembership(this, 'ProjectMembership', {
       designation: 'PROJECT_CONTRIBUTOR',
       domainIdentifier: props.domainId,
@@ -118,6 +155,7 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
       },
     });
 
+    // Define Lambda function for processing Kinesis data
     const lambdaCrawler = new Function(this, 'DatazoneGSRKinesisDatasource', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
@@ -132,8 +170,7 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
         ACCOUNT_ID: accountId,
         PARAMETER_PREFIX: parameterPrefix,
       },
-    },
-    );
+    });
 
     lambdaCrawler.node.addDependency(membership);
 
@@ -145,94 +182,52 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
       });
     }
 
-    // Add EventBridge Rule for Glue Schema Registry changes (if enabled)
-    if (props.enableSchemaRegistryEvent) {
-      new Rule(this, 'SchemaRegistryEventRule', {
-        eventPattern: {
-          source: ['aws.glue'],
-          detail: {
-            eventSource: ['glue.amazonaws.com'],
-            eventName: ['DeleteSchema', 'RegisterSchemaVersion', 'CreateSchema'],
-            responseElements: {
+    // Rule for RegisterSchemaVersion
+    new Rule(this, 'RegisterSchemaVersionRule', {
+      ruleName: 'RegisterSchemaVersionRule',
+      eventPattern: {
+        source: ['aws.glue'],
+        detailType: ['AWS API Call via CloudTrail'],
+        detail: {
+          eventSource: ['glue.amazonaws.com'],
+          eventName: ['RegisterSchemaVersion'],
+          requestParameters: {
+            schemaId: {
               registryName: [props.registryName],
             },
           },
         },
-        targets: [
-          new LambdaFunction(lambdaCrawler, {
-            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-          }),
-        ],
-      });
-    }
+      },
+      targets: [
+        new LambdaFunction(lambdaCrawler, {
+          event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+        }),
+      ],
+    });
 
-    // Add EventBridge Rule for Glue Schema Registry changes (if enabled)
-    if (props.enableSchemaRegistryEvent) {
-      new Rule(this, 'SchemaRegistryEventRule', {
-        eventPattern: {
-          source: ['aws.glue'],
-          detail: {
-            eventSource: ['glue.amazonaws.com'],
-            eventName: ['CreateSchema'],
-            responseElements: {
-              registryName: [props.registryName],
+    // Rule for DeleteSchema
+    new Rule(this, 'DeleteSchemaRule', {
+      ruleName: 'DeleteSchemaRule',
+      eventPattern: {
+        source: ['aws.glue'],
+        detailType: ['AWS API Call via CloudTrail'],
+        detail: {
+          eventSource: ['glue.amazonaws.com'],
+          eventName: ['DeleteSchema'],
+          requestParameters: {
+            schemaId: {
+              schemaArn: [{
+                prefix: `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`,
+              }],
             },
           },
         },
-        targets: [
-          new LambdaFunction(lambdaCrawler, {
-            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-          }),
-        ],
-      });
-      // Rule for RegisterSchemaVersion
-      new Rule(this, 'RegisterSchemaVersionRule', {
-        ruleName: 'RegisterSchemaVersionRule',
-        eventPattern: {
-          source: ['aws.glue'],
-          detailType: ['AWS API Call via CloudTrail'],
-          detail: {
-            eventSource: ['glue.amazonaws.com'],
-            eventName: ['RegisterSchemaVersion'],
-            requestParameters: {
-              schemaId: {
-                registryName: [props?.registryName],
-              },
-            },
-          },
-        },
-        targets: [
-          new LambdaFunction(lambdaCrawler, {
-            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-          }),
-        ],
-      });
-
-      // Rule for DeleteSchema
-      new Rule(this, 'DeleteSchemaRule', {
-        ruleName: 'DeleteSchemaRule',
-        eventPattern: {
-          source: ['aws.glue'],
-          detailType: ['AWS API Call via CloudTrail'],
-          detail: {
-            eventSource: ['glue.amazonaws.com'],
-            eventName: ['DeleteSchema'],
-            requestParameters: {
-              schemaId: {
-                schemaArn: [{
-                  prefix: `arn:aws:glue:${this.region}:${accountId}:schema/${props?.registryName}/*`,
-                }],
-              },
-            },
-          },
-        },
-        targets: [
-          new LambdaFunction(lambdaCrawler, {
-            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-          }),
-        ],
-      });
-    }
+      },
+      targets: [
+        new LambdaFunction(lambdaCrawler, {
+          event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+        }),
+      ],
+    });
   }
 }
-
