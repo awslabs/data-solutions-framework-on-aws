@@ -164,7 +164,7 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
           source: ['aws.glue'],
           detail: {
             eventSource: ['glue.amazonaws.com'],
-            eventName: ['DeleteSchema', 'RegisterSchemaVersion', 'CreateSchema'],
+            eventName: ['CreateSchema'],
             responseElements: {
               registryName: [props.registryName],
             },
@@ -176,8 +176,54 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
           }),
         ],
       });
+      // Rule for RegisterSchemaVersion
+      new Rule(this, 'RegisterSchemaVersionRule', {
+        ruleName: 'RegisterSchemaVersionRule',
+        eventPattern: {
+          source: ['aws.glue'],
+          detailType: ['AWS API Call via CloudTrail'],
+          detail: {
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['RegisterSchemaVersion'],
+            requestParameters: {
+              schemaId: {
+                registryName: [props?.registryName],
+              },
+            },
+          },
+        },
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
+      });
+
+      // Rule for DeleteSchema
+      new Rule(this, 'DeleteSchemaRule', {
+        ruleName: 'DeleteSchemaRule',
+        eventPattern: {
+          source: ['aws.glue'],
+          detailType: ['AWS API Call via CloudTrail'],
+          detail: {
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['DeleteSchema'],
+            requestParameters: {
+              schemaId: {
+                schemaArn: [{
+                  prefix: `arn:aws:glue:${this.region}:${accountId}:schema/${props?.registryName}/*`,
+                }],
+              },
+            },
+          },
+        },
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
+      });
     }
-
-
   }
+
 }

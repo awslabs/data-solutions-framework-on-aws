@@ -6,13 +6,22 @@
 
 import * as cdk from 'aws-cdk-lib';
 import { aws_glue as glue, Duration } from 'aws-cdk-lib';
-import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
+import { CfnProject, CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
+import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Schedule } from 'aws-cdk-lib/aws-events';
+import { Role } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
-import { DataZoneMskAssetType } from '../../src/governance';
+import {
+  createSubscriptionTarget, DataZoneCustomAssetTypeFactory,
+  DataZoneMskAssetType,
+  DataZoneMskCentralAuthorizer,
+  DataZoneMskEnvironmentAuthorizer,
+} from '../../src/governance';
 import { DatazoneGsrKinesisAssetCrawler } from '../../src/governance/lib/datazone/datazone-gsr-kinesis-asset-crawler';
 import { DatazoneGsrMskAssetCrawler } from '../../src/governance/lib/datazone/datazone-gsr-msk-asset-crawler';
 import { DataZoneKinesisAssetType } from '../../src/governance/lib/datazone/datazone-kinesis-asset-type';
+import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
+import { DataVpc, Utils } from '../../src/utils';
 
 //npx jest --group=e2e/crawlertest
 
@@ -30,6 +39,40 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 const domainID = 'dzd_crma2x3flwp67b';
 const projectID = '4tm7gqb3gn350n';
 const clusterName = 'msk-flink-openlineage';
+const CONSUMER_ENV_ID = '50lzwvsn0j4euf';
+const CONSUMER_ROLE_ARN = 'arn:aws:iam::891377161433:role/AmazonDatazone-StreamingRole';
+
+let vpc = new DataVpc(stack, 'vpc', {
+  vpcCidr: '10.0.0.0/16',
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+});
+
+let securityGroup = SecurityGroup.fromSecurityGroupId(stack, 'securityGroup', vpc.vpc.vpcDefaultSecurityGroup);
+
+const msk = new MskServerless(stack, 'cluster', {
+  clusterName: `cluster-serverless${Utils.generateHash(stack.stackName).slice(0, 3)}`,
+  vpc: vpc.vpc,
+  subnets: vpc.vpc.selectSubnets(),
+  securityGroups: [securityGroup],
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+});
+
+msk.addTopic('temperature-samples-topic', {
+  topic: 'temperature-samples',
+  numPartitions: 1,
+}, cdk.RemovalPolicy.DESTROY, false, 1500);
+
+msk.addTopic('room-temperatures-topic', {
+  topic: 'room-temperatures-topic',
+  numPartitions: 1,
+}, cdk.RemovalPolicy.DESTROY, false, 1500);
+
+msk.addTopic('room-temperatures', {
+  topic: 'room-temperatures',
+  numPartitions: 1,
+}, cdk.RemovalPolicy.DESTROY, false, 1500);
+
 
 // const userProfile = new CfnUserProfile(stack, 'MyCfnUserProfile', {
 //   domainIdentifier: 'dzd_crma2x3flwp67b',
@@ -39,25 +82,39 @@ const clusterName = 'msk-flink-openlineage';
 // });
 
 
-// const cfnCrawlerProject = new CfnProject(stack, 'CrawlerProject', {
-//   domainIdentifier: 'dzd_crma2x3flwp67b',
-//   description: 'MSK Project',
-//   name: 'MSK',
-// });
+const cfnMSKServerlessProject = new CfnProject(stack, 'ServerlessMSKProject', {
+  domainIdentifier: domainID,
+  description: 'MSK Project',
+  name: 'ServerlessMSK',
+});
 
 // cfnCrawlerProject.node.addDependency(userProfile);
 
-new CfnProjectMembership(stack, 'ProjectCrawlerMembership', {
+// new CfnProjectMembership(stack, 'ProjectCrawlerMembership', {
+//   designation: 'PROJECT_CONTRIBUTOR',
+//   domainIdentifier: domainID,
+//   projectIdentifier: cfnMSKServerlessProject.attrId,
+//   member: {
+//     userIdentifier: 'arn:aws:iam::891377161433:role/Admin',
+//   },
+// });
+
+new CfnProjectMembership(stack, 'ProjectServerlessMembership', {
   designation: 'PROJECT_CONTRIBUTOR',
   domainIdentifier: domainID,
-  projectIdentifier: projectID,
+  projectIdentifier: cfnMSKServerlessProject.attrId,
   member: {
     userIdentifier: 'arn:aws:iam::891377161433:role/Admin',
   },
 });
 
-new DataZoneMskAssetType(stack, 'MSKAssetType', {
+const mskAssetType = new DataZoneMskAssetType(stack, 'MSKAssetType', {
   projectId: projectID,
+  domainId: domainID,
+});
+
+const mskAssetTypeServerless = new DataZoneMskAssetType(stack, 'ServerlessMSKAssetType', {
+  projectId: cfnMSKServerlessProject.attrId,
   domainId: domainID,
 });
 
@@ -69,6 +126,10 @@ new DataZoneKinesisAssetType(stack, 'KinesisAssetType', {
 
 const cfnCrawlerRegistry = new glue.CfnRegistry(stack, 'MyCfnRegistryCrawler', {
   name: 'crawler-registry',
+});
+
+const cfnServerlessRegistry = new glue.CfnRegistry(stack, 'MyCfnServerlessRegistryCrawler', {
+  name: 'serverless-registry',
 });
 
 new glue.CfnSchema(stack, 'MyCfnSchema4', {
@@ -115,6 +176,15 @@ new DatazoneGsrMskAssetCrawler(stack, 'Crawler', {
   enableSchemaRegistryEvent: true,
 });
 
+new DatazoneGsrMskAssetCrawler(stack, 'Serverless-Crawler', {
+  domainId: domainID,
+  projectId: cfnMSKServerlessProject.attrId,
+  clusterName: msk.clusterName,
+  registryName: cfnServerlessRegistry.name,
+  eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
+  enableSchemaRegistryEvent: true,
+});
+
 const cfnKinesisRegistry = new glue.CfnRegistry(stack, 'MyKinesisRegistryCrawler', {
   name: 'kinesis-registry',
 });
@@ -145,9 +215,54 @@ new DatazoneGsrKinesisAssetCrawler(stack, 'KinesisCrawler', {
   enableKinesisEvent: true,
 });
 
+const consumerRole = Role.fromRoleArn(stack, 'consumerRole', CONSUMER_ROLE_ARN);
+
+const serverlessconsumerRole = Role.fromRoleArn(stack, 'ServerlessConsumerRole', 'arn:aws:iam::891377161433:role/datazone-serverless-environment');
+
+// const msfConsumerRole = Role.fromRoleArn(stack, 'MSFConsumerRole', 'arn:aws:iam::891377161433:role/datazone-msf-environment');
+
+const mskCentralAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
+  domainId: domainID,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+});
+
+new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
+  domainId: domainID,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+});
+
+mskCentralAuthorizer.registerAccount('891377161433');
+
+const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { removalPolicy: cdk.RemovalPolicy.DESTROY });
+
+
+createSubscriptionTarget(stack, 'Consumer',
+  mskAssetType.mskCustomAssetType,
+  'testSubscription',
+  'dsf',
+  CONSUMER_ENV_ID,
+  [consumerRole],
+  assetFactory.createRole,
+);
+
+createSubscriptionTarget(stack, 'MSKServerlessConsumerForMSF',
+  mskAssetTypeServerless.mskCustomAssetType,
+  'MSKServerlessSubscriptionTargetForMSF',
+  'dsf',
+  '6324yex146vt0n',
+  [serverlessconsumerRole],
+  assetFactory.createRole,
+);
+
+
 new cdk.CfnOutput(stack, 'CFnSchema', {
   value: schema.name,
 });
+
+new cdk.CfnOutput(stack, 'AssetType', {
+  value: mskAssetTypeServerless.toString(),
+});
+
 
 let deployResult: Record<string, string>;
 
