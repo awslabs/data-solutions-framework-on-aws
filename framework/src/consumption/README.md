@@ -232,8 +232,6 @@ The IAM Role passed as `iamHandlerRole` property has to have all necessary permi
 
 Generic method to execute any Opensearch API, subject to correct permissions attached to the IAM Role. 
 
-[example OpenSearch API](examples/opensearch-api.lit.ts)
-
 ## addRoleMapping
 
 Use this method to add role mappings to OpenSearch cluster using `_security` plugin. 
