@@ -99,6 +99,19 @@ const mskReadActions = [
   'kafka-cluster:ReadData'
 ];
 
+const mskVpcConsumerActions = [
+  "kafka:CreateVpcConnection",
+  "ec2:CreateTags",
+  "ec2:CreateVPCEndpoint"
+];
+
+const mskVpcClusterActions = [
+  "kafka:CreateVpcConnection",
+  "kafka:GetBootstrapBrokers",
+  "kafka:DescribeCluster",
+  "kafka:DescribeClusterV2"
+];
+
 const gsrReadActions = [
   "glue:GetRegistry",
   "glue:ListRegistries",
@@ -116,6 +129,7 @@ const gsrReadActions = [
 export const handler = async(event) => {
 
   console.log(`event received: ${JSON.stringify({ event }, null, 2)}`);
+  const grantManagedVpc = process.env.GRANT_VPC;
 
   const topicArn = event.detail.value.Metadata.Producer.TopicArn;
   const clusterArn = event.detail.value.Metadata.Producer.ClusterArn;
@@ -141,7 +155,7 @@ export const handler = async(event) => {
           "Principal": {
             "AWS": consumerRolesArn,
           },
-          "Action": mskReadActions,
+          "Action": mskReadActions.concat(mskVpcClusterActions),
           "Resource": iamMskResources,
         };
         const client = new KafkaClient();
@@ -168,15 +182,36 @@ export const handler = async(event) => {
       iamResources = iamMskResources.concat([schemaArn, event.detail.value.Metadata.Producer.RegistryArn]);
     }
 
+    let statements = [
+      {
+        "Effect": "Allow",
+        "Action": iamActions,
+        "Resource": iamResources,
+      }
+    ]
+
+    if (consumerAccount !== producerAccount) {
+
+      if (clusterType === 'PROVISIONED') {
+      
+        statements = statements.concat([
+          {
+            "Effect": "Allow",
+            "Action": mskVpcConsumerActions,
+            "Resource": "*",
+          }
+        ]);
+
+      } else if (clusterType === 'SERVERLESS') {
+        throw new Error("Cross account access is not supported for Serverless cluster");
+      } else {
+        throw new Error("Unsupported cluster type")
+      }
+    } 
+
     const iamRolePolicy = JSON.stringify({
       "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Effect": "Allow",
-          "Action": iamActions,
-          "Resource": iamResources,
-        }
-      ]
+      "Statement": statements
     }, null, 2);
 
     const client = new IAMClient();

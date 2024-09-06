@@ -106,6 +106,9 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       code: Code.fromAsset(__dirname + '/resources/datazone-msk-authorizer-grant/'),
       role: this.grantRole,
       timeout: Duration.seconds(60),
+      environment: {
+        GRANT_VPC: props.grantMskManagedVpc ? 'true' : 'false',
+      },
     });
 
     const customAuthorizer = authorizerEnvironmentWorkflowSetup(this,
