@@ -3,11 +3,39 @@
 
 import { Schedule } from 'aws-cdk-lib/aws-events';
 
+/**
+ * Properties for configuring a DataZone GSR MSK datasource.
+ */
 export interface DatazoneGsrMskDatasourceProps {
+  /**
+   * The name of the MSK (Managed Streaming for Apache Kafka) cluster to use.
+   */
   readonly clusterName: string;
+
+  /**
+   * The unique identifier for the DataZone domain where the datasource resides.
+   */
   readonly domainId: string;
+
+  /**
+   * The unique identifier for the project associated with this datasource.
+   */
   readonly projectId: string;
+
+  /**
+   * The name of the registry for schema management.
+   */
   readonly registryName: string;
-  readonly eventBridgeSchedule?: Schedule; // For cron expressions
-  readonly enableSchemaRegistryEvent?: boolean; // Toggle EventBridge listener for registry changes
+
+  /**
+   * Optional. Defines the schedule for EventBridge events, specified using cron expressions.
+   * @default - No schedule is set, meaning events are triggered based on other conditions or manually.
+   */
+  readonly eventBridgeSchedule?: Schedule;
+
+  /**
+   * Optional. A flag to enable or disable EventBridge listener for schema registry changes.
+   * @default - false, meaning the EventBridge listener for schema changes is disabled.
+   */
+  readonly enableSchemaRegistryEvent?: boolean;
 }
