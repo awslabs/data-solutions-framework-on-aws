@@ -143,8 +143,6 @@ The IAM Role passed as `iamHandlerRole` property has to have all necessary permi
 
 Generic method to execute any Opensearch API, subject to correct permissions attached to the IAM Role. 
 
-[example OpenSearch API](examples/opensearch-api.lit.ts)
-
 ## addRoleMapping
 
 Use this method to add role mappings to OpenSearch cluster using `_security` plugin. 
@@ -152,13 +150,6 @@ This method is only applicable to provisioned OpenSearch clusters.
 
 [OpenSearch Roles API](https://opensearch.org/docs/2.13/security/access-control/api#create-role-mapping) does not allow to update individual roles, requiring to pass array of roles that needs to be applied. 
 To avoid overwriting prevously added roles `addRoleMapping` method provides `persist` parameter to store previously added roles inside the construct. To avoid racing conditions you also need to execute multiple `addRoleMapping` calls sequentionally as shown below.
-
-```typescript
-const firstCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
-const secondCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
-secondCall.node.addDependency(firstCall);
-```
-
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
