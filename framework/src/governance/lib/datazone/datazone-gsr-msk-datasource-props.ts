@@ -3,7 +3,7 @@
 
 import { Schedule } from 'aws-cdk-lib/aws-events';
 
-export interface DatazoneGsrMskAssetCrawlerProps {
+export interface DatazoneGsrMskDatasourceProps {
   readonly clusterName: string;
   readonly domainId: string;
   readonly projectId: string;

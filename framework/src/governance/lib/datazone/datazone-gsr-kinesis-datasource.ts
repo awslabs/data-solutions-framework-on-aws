@@ -15,24 +15,22 @@ import {
 } from 'aws-cdk-lib/aws-iam';
 import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
-import { DatazoneGsrMskAssetCrawlerProps } from './datazone-gsr-msk-asset-crawler-props';
+import { DatazoneGsrKinesisDatasourceProps } from './datazone-gsr-kinesis-datasource-props';
 import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
-export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
+export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
   // Expose these properties publicly
   readonly domainId: string;
   readonly projectId: string;
   readonly registryName: string;
   readonly eventBridgeSchedule: Schedule | undefined;
   readonly enableSchemaRegistryEvent: boolean | undefined;
-  readonly clusterArn: string;
-  readonly clusterName : string;
   readonly region: string;
 
 
-  constructor(scope: Construct, id: string, props: DatazoneGsrMskAssetCrawlerProps) {
+  constructor(scope: Construct, id: string, props: DatazoneGsrKinesisDatasourceProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: DatazoneGsrMskAssetCrawler.name,
+      trackingTag: DatazoneGsrKinesisDatasource.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -41,14 +39,11 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
     const accountId = stack.account;
     this.region = stack.region;
     this.registryName = props.registryName;
-    this.clusterName = props.clusterName;
     this.domainId = props.domainId;
     this.projectId = props.projectId;
     this.enableSchemaRegistryEvent = props.enableSchemaRegistryEvent;
     this.eventBridgeSchedule = props.eventBridgeSchedule;
 
-    this.clusterArn = `arn:aws:kafka:${this.region}:${accountId}:cluster/${props.clusterName}/*`;
-    const listClustersArn = `arn:aws:kafka:${this.region}:${accountId}:/api/v2/clusters`;
     const glueRegistryArn = `arn:aws:glue:${this.region}:${accountId}:registry/${props.registryName}`;
     const glueRegistrySchemasArn = `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`;
 
@@ -92,16 +87,10 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: [
-                'kafka:DescribeClusterV2',
+                'kinesis:ListStreams',
+                'kinesis:DescribeStream',
               ],
-              resources: [this.clusterArn],
-            }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                'kafka:ListClustersV2',
-              ],
-              resources: [listClustersArn],
+              resources: ['*'],
             }),
             new PolicyStatement({
               effect: Effect.ALLOW,
@@ -129,16 +118,15 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
       },
     });
 
-    const lambdaCrawler = new Function(this, 'DatazoneGSRMSKCrawler', {
+    const lambdaCrawler = new Function(this, 'DatazoneGSRKinesisDatasource', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       role: handlerRole,
       timeout: Duration.minutes(5),
-      code: Code.fromAsset(__dirname + '/resources/datazone-gsr-msk-asset-crawler/'),
+      code: Code.fromAsset(__dirname + '/resources/datazone-gsr-kinesis-datasource/'),
       environment: {
         DOMAIN_ID: props.domainId,
         PROJECT_ID: props.projectId,
-        CLUSTER_NAME: props.clusterName,
         REGION: this.region,
         REGISTRY_NAME: props.registryName,
         ACCOUNT_ID: accountId,
@@ -154,6 +142,27 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
       new Rule(this, 'ScheduledRule', {
         schedule: props.eventBridgeSchedule,
         targets: [new LambdaFunction(lambdaCrawler)],
+      });
+    }
+
+    // Add EventBridge Rule for Glue Schema Registry changes (if enabled)
+    if (props.enableSchemaRegistryEvent) {
+      new Rule(this, 'SchemaRegistryEventRule', {
+        eventPattern: {
+          source: ['aws.glue'],
+          detail: {
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['DeleteSchema', 'RegisterSchemaVersion', 'CreateSchema'],
+            responseElements: {
+              registryName: [props.registryName],
+            },
+          },
+        },
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
       });
     }
 
@@ -225,5 +234,5 @@ export class DatazoneGsrMskAssetCrawler extends TrackedConstruct {
       });
     }
   }
-
 }
+
