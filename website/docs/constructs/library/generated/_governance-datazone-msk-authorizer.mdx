@@ -68,7 +68,32 @@ The `DataZoneMskCentralAuthorizer` construct work in collaboration with the `Dat
 To enable the integration, register accounts using the `registerAccount()` method on the `DataZoneMskCentralAuthorizer` object. 
 It will grant the required permissions so the central account and the environment accounts can communicate via EventBridge events. 
 
-[example register account](./examples/datazone-msk-central-authorizer-register.lit)
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+    const centralAuthorizer = new dsf.governance.DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
+      domainId: 'aba_dc999t9ime9sss',
+    });
+
+    // Add an account that is associated with the DataZone Domain
+    centralAuthorizer.registerAccount('123456789012');
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+central_authorizer = dsf.governance.DataZoneMskCentralAuthorizer(self, "MskAuthorizer",
+    domain_id="aba_dc999t9ime9sss"
+)
+
+# Add an account that is associated with the DataZone Domain
+central_authorizer.register_account("123456789012")
+  ```
+
+  </TabItem>
+</Tabs>
 
 ## DataZoneMskEnvironmentAuthorizer
 

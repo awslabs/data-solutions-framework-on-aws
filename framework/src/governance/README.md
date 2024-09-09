@@ -110,7 +110,7 @@ The `DataZoneMskCentralAuthorizer` construct work in collaboration with the `Dat
 To enable the integration, register accounts using the `registerAccount()` method on the `DataZoneMskCentralAuthorizer` object. 
 It will grant the required permissions so the central account and the environment accounts can communicate via EventBridge events. 
 
-[example register account](./examples/datazone-msk-central-authorizer-register.lit)
+[example register account](./examples/datazone-msk-central-authorizer-register.lit.ts)
 
 ## DataZoneMskEnvironmentAuthorizer
 
