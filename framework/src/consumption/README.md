@@ -37,6 +37,10 @@ A [Redshift Serverless Workgroup](https://docs.aws.amazon.com/redshift/latest/mg
 - Provide helper methods for running SQL commands via the Redshift Data API. Commands can be custom or predefined for common administration tasks like creating and granting roles.
 - Initialize a Glue Data Catalog integration with auto crawling via Glue Crawlers. This would allow tables in Redshift Serverless to appear in the [Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html) for the purposes of discovery and integration.
 
+:::warning
+The default VPC created by the construct follows the [standard implementation of the VPC L2 CDK Construct](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2-readme.html#control-over-availability-zones). As a result, if no account ID and no region are configured in the CDK Stack, the VPC will only contain 2 AZ and the [Redshift Serverless Workgroup will fail to deploy](https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-usage-considerations.html). Be sure to configure the account ID and region to create a 3 AZ VPC.
+:::
+
 ## Usage
 
 [example default usage](./examples/redshift-serverless-workgroup-default.lit.ts)
