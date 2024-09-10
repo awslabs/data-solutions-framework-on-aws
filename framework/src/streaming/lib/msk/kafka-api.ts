@@ -124,6 +124,7 @@ export class KafkaApi extends TrackedConstruct {
         this.mskAclLogGroup = mskAclProvider.onEventHandlerLogGroup;
         this.mskAclFunction = mskAclProvider.onEventHandlerFunction;
         this.mskAclSecurityGroup = mskAclProvider.securityGroups;
+        this.serviceToken = mskAclProvider.serviceToken;
       }
     }
 
@@ -147,6 +148,7 @@ export class KafkaApi extends TrackedConstruct {
         this.mskIamLogGroup = mskIamProvider.onEventHandlerLogGroup;
         this.mskIamFunction = mskIamProvider.onEventHandlerFunction;
         this.mskIamSecurityGroup = mskIamProvider.securityGroups;
+        this.serviceToken = mskIamProvider.serviceToken;
       }
     }
 

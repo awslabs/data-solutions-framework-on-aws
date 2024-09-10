@@ -643,7 +643,7 @@ export class MskProvisioned extends TrackedConstruct {
     }
     
     new CfnOutput(this, 'ServiceToken', { 
-      value: this.kafkaApi.serviceToken!,
+      value: this.serviceToken!,
       exportName: 'ServiceToken',
     });
 

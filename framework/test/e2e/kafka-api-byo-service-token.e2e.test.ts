@@ -10,12 +10,9 @@
 
 import { App, RemovalPolicy, CfnOutput } from 'aws-cdk-lib';
 
-import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
-import { CfnCluster } from 'aws-cdk-lib/aws-msk';
-import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { TestStack } from './test-stack';
-import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, ClientAuthentication, KafkaApi, KafkaClientLogLevel, MskClusterType, MskServerless, ResourcePatternTypes } from '../../src/streaming';
+import { ClientAuthentication, KafkaApi, KafkaClientLogLevel, MskClusterType, MskServerless, Authentication} from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
 
@@ -43,7 +40,7 @@ const msk = new MskServerless(stack, 'cluster', {
     kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
 });
 
-const mskApi = new KafkaApi(stack, 'kafkaApi', {
+const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
     vpc: vpc.vpc,
     clusterArn: msk.cluster.attrArn,
     subnets: vpc.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
@@ -55,10 +52,16 @@ const mskApi = new KafkaApi(stack, 'kafkaApi', {
     serviceToken: msk.serviceToken,
 });
 
-msk.addTopic('topicServerelss', {
-    topic: 'dummy',
-    numPartitions: 1,
-}, RemovalPolicy.DESTROY, false, 1500);
+
+kafkaApi.setTopic('dummyTopic',
+    Authentication.IAM,
+    {
+      topic: 'dummy',
+      numPartitions: 3,
+    },
+    RemovalPolicy.DESTROY,
+    true, 1000
+);
 
 new CfnOutput(stack, 'clusterArn', {
     value: msk.cluster.attrArn,
@@ -71,10 +74,17 @@ beforeAll(async () => {
     deployResult = await testStack.deploy();
 }, 10000000);
 
-it('Containers runtime created successfully', async () => {
+test('MSK cluster created successfully', async () => {
     // THEN
     expect(deployResult.clusterArn).toContain('arn');
 });
+
+/*
+test('Kafka API outputs service token successfully', async () => {
+    // THEN
+    expect(deployResult.ServiceToken).toContain('arn');
+});
+*/
 
 afterAll(async () => {
     await testStack.destroy();

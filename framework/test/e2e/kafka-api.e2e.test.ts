@@ -112,10 +112,6 @@ new CfnOutput(stack, 'clusterArn', {
   value: cfnCluster.attrArn,
 });
 
-new CfnOutput(stack, 'serviceToken', {
-  value: mskApi.serviceToken!,
-});
-
 let deployResult: Record<string, string>;
 
 beforeAll(async() => {
@@ -123,7 +119,7 @@ beforeAll(async() => {
   deployResult = await testStack.deploy();
 }, 10000000);
 
-it('Containers runtime created successfully', async () => {
+test('CMSK cluster created successfully', async () => {
   // THEN
   expect(deployResult.clusterArn).toContain('arn');
 });
