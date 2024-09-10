@@ -90,7 +90,7 @@ export interface KafkaApiProps {
   readonly kafkaClientLogLevel?: KafkaClientLogLevel;
 
   /**
-   * If you there is an already existing service token deployed for the custom resource
+   * If there is an already existing service token deployed for the custom resource
    * you can reuse it to reduce the number of resource created
    * @default WARN
    */

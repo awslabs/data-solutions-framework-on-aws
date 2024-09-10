@@ -15,7 +15,7 @@ import { SecurityGroup, Vpc, Subnet } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
-import { Authentication, ClientAuthentication, KafkaApi, MskClusterType } from '../../../src/streaming';
+import { Authentication, ClientAuthentication, KafkaApi, MskClusterType, KafkaClientLogLevel } from '../../../src/streaming';
 
 
 describe('Using default KafkaApi configuration with MSK provisioned and IAM and mTLS authentication should ', () => {
@@ -1248,6 +1248,66 @@ describe('Using global removal policy and DELETE construct removal policy ', () 
     template.allResources('Custom::MskAcl', {
       UpdateReplacePolicy: 'Delete',
       DeletionPolicy: 'Delete',
+    });
+  });
+});
+
+describe('Using default KafkaApi configuration with MSK provisioned and IAM and mTLS authentication should ', () => {
+
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  const brokerSecurityGroup = SecurityGroup.fromSecurityGroupId(stack, 'sg', 'sg-1234');
+  const vpc = Vpc.fromVpcAttributes(stack, 'vpc', {
+    vpcId: 'XXXXXXXX',
+    availabilityZones: ['us-east-1a'],
+    vpcCidrBlock: '10.0.0.0/16',
+    privateSubnetIds: ['XXXXXXXX'],
+  });
+
+  const cluster = new CfnCluster(stack, 'MyCluster', {
+    clientAuthentication: {
+      sasl: {
+        iam: {
+          enabled: true,
+        },
+      },
+    },
+    brokerNodeGroupInfo: {
+      clientSubnets: vpc.privateSubnets.map(s => s.subnetId),
+      instanceType: 'kafka.m5large',
+      securityGroups: [brokerSecurityGroup.securityGroupId],
+    },
+    clusterName: 'XXXXXX',
+    kafkaVersion: '3.5.1',
+    numberOfBrokerNodes: 3,
+  });
+
+  const kafkaApi = new KafkaApi(stack, 'KafkaApi', {
+    clusterArn: cluster.attrArn,
+    clusterType: MskClusterType.PROVISIONED,
+    brokerSecurityGroup,
+    vpc,
+    clientAuthentication: ClientAuthentication.sasl({
+      iam: true,
+    }),
+    kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+    serviceToken: 'arn:aws:lambda::XXXXXX:function:XXXXXX-kafkaApiMskIamProviderCustomResour-XXXXXX',
+  });
+
+  kafkaApi.setTopic('topic1',
+    Authentication.IAM,
+    {
+      topic: 'topic1',
+      numPartitions: 1,
+    },
+  );
+
+  const template = Template.fromStack(stack, {});
+
+  test('should have a service token to reuse', () => {
+    template.hasResourceProperties('Custom::MskTopic', {
+      ServiceToken: 'arn:aws:lambda::XXXXXX:function:XXXXXX-kafkaApiMskIamProviderCustomResour-XXXXXX',
     });
   });
 });

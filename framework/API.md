@@ -13388,7 +13388,7 @@ const kafkaApiProps: streaming.KafkaApiProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.mtlsHandlerRole">mtlsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to mTLS lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.serviceToken">serviceToken</a></code> | <code>string</code> | If you there is an already existing service token deploy for the custom resource You can reuse it to reduce the number of resource created. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 
 ---
@@ -13541,7 +13541,7 @@ public readonly serviceToken: string;
 - *Type:* string
 - *Default:* WARN
 
-If you there is an already existing service token deploy for the custom resource You can reuse it to reduce the number of resource created.
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
