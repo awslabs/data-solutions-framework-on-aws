@@ -116,7 +116,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    const slr = new CreateServiceLinkedRole(this, 'CreateSLR', {
+    const slr = props.serviceLinkedRoleFactory || new CreateServiceLinkedRole(this, 'CreateSLR', {
       removalPolicy: this.removalPolicy,
     });
     slr.create(ServiceLinkedRoleService.REDSHIFT);
