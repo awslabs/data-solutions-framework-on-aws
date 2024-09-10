@@ -154,12 +154,6 @@ export interface MskProvisionedProps {
    * `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`
    */
   readonly currentVersion?: string;
-
-  /**
-   * If there is an already existing service token deployed for the custom resource
-   * you can reuse it to reduce the number of resource created
-   */
-  readonly serviceToken?: string;
 }
 
 

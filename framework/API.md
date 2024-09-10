@@ -4547,6 +4547,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskIamLogGroup">mskIamLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group used by the Custom Resource provider when MSK is using IAM authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskIamRole">mskIamRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Custom Resource provider when MSK is using IAM authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskIamSecurityGroup">mskIamSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Custom Resource provider when MSK is using IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 
 ---
 
@@ -4655,6 +4656,18 @@ public readonly mskIamSecurityGroup: ISecurityGroup[];
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 The Security Group used by the Custom Resource provider when MSK is using IAM authentication.
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
@@ -5179,6 +5192,7 @@ streaming.MskProvisioned.createClusterConfiguration(scope: Construct, id: string
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclLogGroup">inClusterAclLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclRole">inClusterAclRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclSecurityGroup">inClusterAclSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating MSK Connectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole">updateConnectivityRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating MSK Connectivity. |
@@ -5415,6 +5429,18 @@ public readonly inClusterAclSecurityGroup: ISecurityGroup[];
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication.
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
@@ -5804,6 +5830,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.lambdaSecurityGroup">lambdaSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 
 ---
 
@@ -5866,6 +5893,18 @@ public readonly brokerSecurityGroup: ISecurityGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
@@ -13539,7 +13578,6 @@ public readonly serviceToken: string;
 ```
 
 - *Type:* string
-- *Default:* WARN
 
 If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
