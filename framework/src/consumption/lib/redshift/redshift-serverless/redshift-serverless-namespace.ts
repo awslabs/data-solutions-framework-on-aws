@@ -9,8 +9,9 @@ import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { ISecret, Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 import { RedshiftServerlessNamespaceProps } from './redshift-serverless-namespace-props';
-import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
+import { Context, CreateServiceLinkedRole, TrackedConstruct, TrackedConstructProps, Utils } from '../../../../utils';
 import { DsfProvider } from '../../../../utils/lib/dsf-provider';
+import { ServiceLinkedRoleService } from '../../../../utils/lib/service-linked-role-service';
 
 /**
  * Create a Redshift Serverless Namespace with the admin credentials stored in Secrets Manager
@@ -113,8 +114,14 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
       this.roles[props.defaultIAMRole.roleArn] = props.defaultIAMRole;
     }
 
-    this.dbName = props.dbName;
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
+
+    const slr = props.serviceLinkedRoleFactory || new CreateServiceLinkedRole(this, 'CreateSLR', {
+      removalPolicy: this.removalPolicy,
+    });
+    slr.create(ServiceLinkedRoleService.REDSHIFT);
+
+    this.dbName = props.dbName;
     const logExports: string[] = props.logExports || [];
     this.namespaceName = `${props.name}-${Utils.generateUniqueHash(this)}`;
     this.dataKey = props.dataKey ?? new Key(this, 'DefaultNamespaceKey', { enableKeyRotation: true, removalPolicy: this.removalPolicy });

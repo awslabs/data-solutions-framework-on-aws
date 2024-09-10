@@ -100,6 +100,16 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 ],
 true);
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  'Stack/DefaultNamespace/CreateSLR',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'Inherited from another DSF construct, not in the scope of this test' },
+    { id: 'AwsSolutions-IAM4', reason: 'Inherited from another DSF construct, not in the scope of this test' },
+    { id: 'AwsSolutions-L1', reason: 'Inherited from another DSF construct, not in the scope of this test' },
+  ],
+  true,
+);
+
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);

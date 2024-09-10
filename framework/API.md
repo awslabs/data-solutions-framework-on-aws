@@ -3059,6 +3059,146 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
+### CreateServiceLinkedRole <a name="CreateServiceLinkedRole" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole"></a>
+
+Create service linked role for the indicated service if it doesn't exists.
+
+*Example*
+
+```typescript
+const slr = new dsf.utils.CreateServiceLinkedRole(this, 'CreateSLR')
+slr.create(ServiceLinkedRoleService.REDSHIFT)
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+new utils.CreateServiceLinkedRole(scope: Construct, id: string, props?: CreateServiceLinkedRoleProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRoleProps</code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Optional</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRoleProps
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.create">create</a></code> | Creates the service linked role associated to the provided AWS service. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `create` <a name="create" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.create"></a>
+
+```typescript
+public create(slrService: ServiceLinkedRoleService): CustomResource
+```
+
+Creates the service linked role associated to the provided AWS service.
+
+###### `slrService`<sup>Required</sup> <a name="slrService" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.create.parameter.slrService"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
+
+See `ServiceLinkedRoleService` for supported service constant.
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.isConstruct"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.CreateServiceLinkedRole.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+
 ### DataCatalogDatabase <a name="DataCatalogDatabase" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase"></a>
 
 An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -12221,6 +12361,42 @@ The revision of the Amazon MSK configuration to use.
 
 ---
 
+### CreateServiceLinkedRoleProps <a name="CreateServiceLinkedRoleProps" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRoleProps"></a>
+
+The properties of the `CreateServiceLinkedRole` construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRoleProps.Initializer"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+const createServiceLinkedRoleProps: utils.CreateServiceLinkedRoleProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRoleProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRoleProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* The resources are not deleted (`RemovalPolicy.RETAIN`).
+
+The removal policy when deleting the CDK resource.
+
+If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
+Otherwise, the removalPolicy is reverted to RETAIN.
+
+---
+
 ### DataCatalogDatabaseProps <a name="DataCatalogDatabaseProps" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps"></a>
 
 Properties for the `DataCatalogDatabase` construct.
@@ -15324,6 +15500,7 @@ const redshiftServerlessNamespaceProps: consumption.RedshiftServerlessNamespaceP
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.iamRoles">iamRoles</a></code> | <code>aws-cdk-lib.aws_iam.IRole[]</code> | List of IAM Roles attached to the Redshift Serverless Namespace. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.logExports">logExports</a></code> | <code>@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceLogExport[]</code> | The type of logs to be exported. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.serviceLinkedRoleFactory">serviceLinkedRoleFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole</code> | The Factory for creating Redshift service linked role. |
 
 ---
 
@@ -15472,6 +15649,19 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise, the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `serviceLinkedRoleFactory`<sup>Optional</sup> <a name="serviceLinkedRoleFactory" id="@cdklabs/aws-data-solutions-framework.consumption.RedshiftServerlessNamespaceProps.property.serviceLinkedRoleFactory"></a>
+
+```typescript
+public readonly serviceLinkedRoleFactory: CreateServiceLinkedRole;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CreateServiceLinkedRole
+- *Default:* A factory is created
+
+The Factory for creating Redshift service linked role.
 
 ---
 
@@ -18354,6 +18544,171 @@ public readonly KAFKA_T3_SMALL: MskBrokerInstanceType;
 - *Type:* @cdklabs/aws-data-solutions-framework.streaming.MskBrokerInstanceType
 
 Borker instance type kafka.t3.small.
+
+---
+
+### ServiceLinkedRoleService <a name="ServiceLinkedRoleService" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService"></a>
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.Initializer"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+new utils.ServiceLinkedRoleService(serviceName: string, roleName: string)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.Initializer.parameter.serviceName">serviceName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.Initializer.parameter.roleName">roleName</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `serviceName`<sup>Required</sup> <a name="serviceName" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.Initializer.parameter.serviceName"></a>
+
+- *Type:* string
+
+---
+
+##### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.Initializer.parameter.roleName"></a>
+
+- *Type:* string
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.getCreateServiceLinkedRolePolicy">getCreateServiceLinkedRolePolicy</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.getRoleArn">getRoleArn</a></code> | *No description.* |
+
+---
+
+##### `getCreateServiceLinkedRolePolicy` <a name="getCreateServiceLinkedRolePolicy" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.getCreateServiceLinkedRolePolicy"></a>
+
+```typescript
+public getCreateServiceLinkedRolePolicy(account: string): PolicyStatement
+```
+
+###### `account`<sup>Required</sup> <a name="account" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.getCreateServiceLinkedRolePolicy.parameter.account"></a>
+
+- *Type:* string
+
+---
+
+##### `getRoleArn` <a name="getRoleArn" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.getRoleArn"></a>
+
+```typescript
+public getRoleArn(account: string): string
+```
+
+###### `account`<sup>Required</sup> <a name="account" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.getRoleArn.parameter.account"></a>
+
+- *Type:* string
+
+---
+
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.roleName">roleName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.serviceName">serviceName</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `roleName`<sup>Required</sup> <a name="roleName" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.roleName"></a>
+
+```typescript
+public readonly roleName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `serviceName`<sup>Required</sup> <a name="serviceName" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.serviceName"></a>
+
+```typescript
+public readonly serviceName: string;
+```
+
+- *Type:* string
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.EKS">EKS</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.EMR_CONTAINERS">EMR_CONTAINERS</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.EMR_SERVERLESS">EMR_SERVERLESS</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.KAFKA">KAFKA</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.OPENSEARCH">OPENSEARCH</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.REDSHIFT">REDSHIFT</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService</code> | *No description.* |
+
+---
+
+##### `EKS`<sup>Required</sup> <a name="EKS" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.EKS"></a>
+
+```typescript
+public readonly EKS: ServiceLinkedRoleService;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
+
+---
+
+##### `EMR_CONTAINERS`<sup>Required</sup> <a name="EMR_CONTAINERS" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.EMR_CONTAINERS"></a>
+
+```typescript
+public readonly EMR_CONTAINERS: ServiceLinkedRoleService;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
+
+---
+
+##### `EMR_SERVERLESS`<sup>Required</sup> <a name="EMR_SERVERLESS" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.EMR_SERVERLESS"></a>
+
+```typescript
+public readonly EMR_SERVERLESS: ServiceLinkedRoleService;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
+
+---
+
+##### `KAFKA`<sup>Required</sup> <a name="KAFKA" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.KAFKA"></a>
+
+```typescript
+public readonly KAFKA: ServiceLinkedRoleService;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
+
+---
+
+##### `OPENSEARCH`<sup>Required</sup> <a name="OPENSEARCH" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.OPENSEARCH"></a>
+
+```typescript
+public readonly OPENSEARCH: ServiceLinkedRoleService;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
+
+---
+
+##### `REDSHIFT`<sup>Required</sup> <a name="REDSHIFT" id="@cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService.property.REDSHIFT"></a>
+
+```typescript
+public readonly REDSHIFT: ServiceLinkedRoleService;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.ServiceLinkedRoleService
 
 ---
 

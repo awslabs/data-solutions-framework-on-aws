@@ -10,12 +10,11 @@ import { DsfProvider } from './dsf-provider';
 import { ServiceLinkedRoleService } from './service-linked-role-service';
 
 /**
- * @internal
  * Create service linked role for the indicated service if it doesn't exists
  *
  * @example
  * const slr = new dsf.utils.CreateServiceLinkedRole(this, 'CreateSLR')
- * slr.create('redshift.amazonaws.com')
+ * slr.create(ServiceLinkedRoleService.REDSHIFT)
  */
 export class CreateServiceLinkedRole extends Construct {
 

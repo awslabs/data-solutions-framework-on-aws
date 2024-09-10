@@ -17,5 +17,7 @@ export * from './s3-data-copy-props';
 export * from './architecture';
 export * from './client-vpn-endpoint-props';
 export * from './create-service-linked-role';
+export * from './create-service-linked-role-props';
+export * from './service-linked-role-service';
 
 

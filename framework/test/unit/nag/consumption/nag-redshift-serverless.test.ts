@@ -81,6 +81,16 @@ NagSuppressions.addResourceSuppressionsByPath(stack,
   ],
 );
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  'Stack/DefaultNamespace/CreateSLR',
+  [
+    { id: 'AwsSolutions-IAM5', reason: 'Inherited from another DSF construct, not in the scope of this test' },
+    { id: 'AwsSolutions-IAM4', reason: 'Inherited from another DSF construct, not in the scope of this test' },
+    { id: 'AwsSolutions-L1', reason: 'Inherited from another DSF construct, not in the scope of this test' },
+  ],
+  true,
+);
+
 NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/RedshiftWorkgroup/DataApiCheckAccessData',
   'Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a',

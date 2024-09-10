@@ -3,6 +3,7 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
+import { CreateServiceLinkedRole } from '../../../../utils';
 
 /**
  * Namespace log export types
@@ -83,4 +84,10 @@ export interface RedshiftServerlessNamespaceProps {
    * @default Indefinite final snapshot retention
    */
   readonly finalSnapshotRetentionPeriod?: number;
+
+  /**
+   * The Factory for creating Redshift service linked role
+   * @default - A factory is created
+   */
+  readonly serviceLinkedRoleFactory?: CreateServiceLinkedRole;
 }
