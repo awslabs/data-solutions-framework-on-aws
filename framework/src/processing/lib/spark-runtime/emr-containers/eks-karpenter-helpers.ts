@@ -172,15 +172,13 @@ export function karpenterSetup(cluster: ICluster,
     },
   });
 
-  const allowScopedEC2InstanceActions: PolicyStatement = new PolicyStatement({
+  const allowScopedEC2InstanceAccessActions: PolicyStatement = new PolicyStatement({
     effect: Effect.ALLOW,
     resources: [
       `arn:aws:ec2:${Stack.of(scope).region}::image/*`,
       `arn:aws:ec2:${Stack.of(scope).region}::snapshot/*`,
-      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:security-group/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:subnet/*`,
-      `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
     ],
     actions: ['ec2:RunInstances', 'ec2:CreateFleet'],
   });
@@ -193,6 +191,7 @@ export function karpenterSetup(cluster: ICluster,
       `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request`,
     ],
     actions: ['ec2:RunInstances', 'ec2:CreateFleet', 'ec2:CreateLaunchTemplate'],
     conditions: {
@@ -214,6 +213,7 @@ export function karpenterSetup(cluster: ICluster,
       `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request`,
     ],
     actions: ['ec2:CreateTags'],
     conditions: {
@@ -367,7 +367,7 @@ export function karpenterSetup(cluster: ICluster,
 
   karpenterAccount.addToPrincipalPolicy(allowSSMReadActions);
   karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActionsWithTags);
-  karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceActions);
+  karpenterAccount.addToPrincipalPolicy(allowScopedEC2InstanceAccessActions);
   karpenterAccount.addToPrincipalPolicy(allowPricingReadActions);
   karpenterAccount.addToPrincipalPolicy(allowPassingInstanceRole);
   karpenterAccount.addToPrincipalPolicy(allowScopedInstanceProfileCreationActions);
