@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RemovalPolicy } from 'aws-cdk-lib';
+import { CfnProject } from 'aws-cdk-lib/aws-datazone';
 import { Construct } from 'constructs';
 import { CustomAssetType, DataZoneCustomAssetTypeFactory } from './datazone-custom-asset-type-factory';
 import { DataZoneKinesisAssetTypeProps } from './datazone-kinesis-asset-type-props';
@@ -22,6 +23,8 @@ export class DataZoneKinesisAssetType extends TrackedConstruct {
    */
   readonly kinesisCustomAssetType: CustomAssetType;
 
+  readonly owningProjectId?: CfnProject;
+
   private readonly removalPolicy: RemovalPolicy;
 
   constructor(scope: Construct, id: string, props: DataZoneKinesisAssetTypeProps) {
@@ -37,10 +40,17 @@ export class DataZoneKinesisAssetType extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
 
+    if (props.projectId === undefined) {
+      this.owningProjectId = new CfnProject(this, 'KinesisAssetTypeProjectOwner', {
+        name: 'KinesisGovernance',
+        domainIdentifier: props.domainId,
+      });
+    }
+
     this.kinesisCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType('KinesisCustomAssetType', {
       assetTypeName: 'KinesisStreamAssetType',
       assetTypeDescription: 'Custom asset type to support Kinesis Stream asset',
-      projectId: props.projectId,
+      projectId: props.projectId || this.owningProjectId!.attrId,
       formTypes: [
         {
           name: 'amazon.datazone.RelationalTableFormType',

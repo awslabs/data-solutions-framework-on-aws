@@ -15,8 +15,9 @@ export interface DataZoneKinesisAssetTypeProps {
 
   /**
    * The unique identifier for the project associated with this asset type.
+   * @default - A new project called KinesisGovernance is created
    */
-  readonly projectId: string;
+  readonly projectId?: string;
 
   /**
    * Optional. The factory used to create the custom asset type.

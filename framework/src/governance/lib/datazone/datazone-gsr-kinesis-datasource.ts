@@ -182,52 +182,71 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
       });
     }
 
-    // Rule for RegisterSchemaVersion
-    new Rule(this, 'RegisterSchemaVersionRule', {
-      ruleName: 'RegisterSchemaVersionRule',
-      eventPattern: {
-        source: ['aws.glue'],
-        detailType: ['AWS API Call via CloudTrail'],
-        detail: {
-          eventSource: ['glue.amazonaws.com'],
-          eventName: ['RegisterSchemaVersion'],
-          requestParameters: {
-            schemaId: {
+    // Add EventBridge Rule for Glue Schema Registry changes (if enabled)
+    if (props.enableSchemaRegistryEvent) {
+      new Rule(this, 'SchemaRegistryEventRule', {
+        eventPattern: {
+          source: ['aws.glue'],
+          detail: {
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['CreateSchema'],
+            responseElements: {
               registryName: [props.registryName],
             },
           },
         },
-      },
-      targets: [
-        new LambdaFunction(lambdaCrawler, {
-          event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-        }),
-      ],
-    });
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
+      });
 
-    // Rule for DeleteSchema
-    new Rule(this, 'DeleteSchemaRule', {
-      ruleName: 'DeleteSchemaRule',
-      eventPattern: {
-        source: ['aws.glue'],
-        detailType: ['AWS API Call via CloudTrail'],
-        detail: {
-          eventSource: ['glue.amazonaws.com'],
-          eventName: ['DeleteSchema'],
-          requestParameters: {
-            schemaId: {
-              schemaArn: [{
-                prefix: `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`,
-              }],
+      // Rule for RegisterSchemaVersion
+      new Rule(this, 'RegisterSchemaVersionRule', {
+        ruleName: 'RegisterSchemaVersionRule',
+        eventPattern: {
+          source: ['aws.glue'],
+          detail: {
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['RegisterSchemaVersion'],
+            requestParameters: {
+              schemaId: {
+                registryName: [props.registryName],
+              },
             },
           },
         },
-      },
-      targets: [
-        new LambdaFunction(lambdaCrawler, {
-          event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-        }),
-      ],
-    });
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
+      });
+
+      // Rule for DeleteSchema
+      new Rule(this, 'DeleteSchemaRule', {
+        ruleName: 'DeleteSchemaRule',
+        eventPattern: {
+          source: ['aws.glue'],
+          detail: {
+            eventSource: ['glue.amazonaws.com'],
+            eventName: ['DeleteSchema'],
+            requestParameters: {
+              schemaId: {
+                schemaArn: [{
+                  prefix: `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`,
+                }],
+              },
+            },
+          },
+        },
+        targets: [
+          new LambdaFunction(lambdaCrawler, {
+            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
+          }),
+        ],
+      });
+    }
   }
 }

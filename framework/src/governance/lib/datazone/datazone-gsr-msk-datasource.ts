@@ -217,7 +217,6 @@ export class DatazoneGsrMskDatasource extends TrackedConstruct {
         ruleName: 'RegisterSchemaVersionRule',
         eventPattern: {
           source: ['aws.glue'],
-          detailType: ['AWS API Call via CloudTrail'],
           detail: {
             eventSource: ['glue.amazonaws.com'],
             eventName: ['RegisterSchemaVersion'],
@@ -240,7 +239,6 @@ export class DatazoneGsrMskDatasource extends TrackedConstruct {
         ruleName: 'DeleteSchemaRule',
         eventPattern: {
           source: ['aws.glue'],
-          detailType: ['AWS API Call via CloudTrail'],
           detail: {
             eventSource: ['glue.amazonaws.com'],
             eventName: ['DeleteSchema'],
