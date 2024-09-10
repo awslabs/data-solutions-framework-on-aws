@@ -43,6 +43,7 @@ const kafkaApi = new KafkaApi(stack, 'kafkaApi', {
     certificateAuthorities: [certificateAuthority],
   },),
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
+  serviceToken: 'arn:aws:lambda::XXXXXX:function:XXXXXX-kafkaApiMskIamProviderCustomResour-XXXXXX',
 });
 /// !hide
 

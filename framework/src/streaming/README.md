@@ -202,6 +202,8 @@ The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com
 
 [example kafka api](./examples/kafka-api-default.lit.ts)
 
+When deploying multiple stacks with the Kafka Api, if there is an already existing service token deployed for the custom resource, you can reuse it to reduce the number of resource created, therefore the number of IP assigned to the custom resources.
+
 :::warning
 
 The construct needs to be deployed in the same region as the MSK cluster.

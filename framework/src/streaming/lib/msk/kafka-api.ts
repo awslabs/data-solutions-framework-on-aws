@@ -59,6 +59,11 @@ export class KafkaApi extends TrackedConstruct {
    * The Security Group used by the Custom Resource provider when MSK is using mTLS authentication
    */
   public readonly mskAclSecurityGroup?: ISecurityGroup [];
+  /**
+   * If there is an already existing service token deployed for the custom resource
+   * you can reuse it to reduce the number of resource created
+   */
+  public readonly serviceToken?: string;
 
   private readonly mskAclServiceToken?: string;
   private readonly mskIamServiceToken?: string;

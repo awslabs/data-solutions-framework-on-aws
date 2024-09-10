@@ -28,6 +28,11 @@ export class MskServerless extends TrackedConstruct {
   public readonly brokerSecurityGroup?: ISecurityGroup;
   public readonly clusterName: string;
   public readonly lambdaSecurityGroup: ISecurityGroup;
+  /**
+   * If there is an already existing service token deployed for the custom resource
+   * you can reuse it to reduce the number of resource created
+   */
+  public readonly serviceToken?: string;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly kafkaApi: KafkaApi;
@@ -110,8 +115,10 @@ export class MskServerless extends TrackedConstruct {
       clientAuthentication: ClientAuthentication.sasl( { iam: true }),
       clusterType: MskClusterType.SERVERLESS,
       kafkaClientLogLevel: props?.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN,
+      serviceToken: props?.serviceToken,
     });
 
+    this.serviceToken = this.kafkaApi.serviceToken;
   }
 
   /**

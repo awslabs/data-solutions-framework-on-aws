@@ -112,6 +112,10 @@ new CfnOutput(stack, 'clusterArn', {
   value: cfnCluster.attrArn,
 });
 
+new CfnOutput(stack, 'serviceToken', {
+  value: mskApi.serviceToken!,
+});
+
 let deployResult: Record<string, string>;
 
 beforeAll(async() => {
