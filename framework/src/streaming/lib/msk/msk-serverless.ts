@@ -119,7 +119,7 @@ export class MskServerless extends TrackedConstruct {
 
     this.serviceToken = this.kafkaApi.serviceToken;
 
-    new CfnOutput(this, 'ServiceToken', { 
+    new CfnOutput(this, 'ServiceToken', {
       value: this.serviceToken!,
       exportName: 'ServiceToken',
     });

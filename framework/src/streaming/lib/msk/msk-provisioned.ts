@@ -641,8 +641,8 @@ export class MskProvisioned extends TrackedConstruct {
 
       }
     }
-    
-    new CfnOutput(this, 'ServiceToken', { 
+
+    new CfnOutput(this, 'ServiceToken', {
       value: this.serviceToken!,
       exportName: 'ServiceToken',
     });
