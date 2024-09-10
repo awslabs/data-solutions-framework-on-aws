@@ -15960,6 +15960,7 @@ const dataZoneMskEnvironmentAuthorizerProps: governance.DataZoneMskEnvironmentAu
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId">centralAccountId</a></code> | <code>string</code> | The central account Id. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantMskManagedVpc">grantMskManagedVpc</a></code> | <code>boolean</code> | If the authorizer is granting MSK managed VPC permissions. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
 
 ---
@@ -15985,6 +15986,19 @@ public readonly centralAccountId: string;
 - *Type:* string
 
 The central account Id.
+
+---
+
+##### `grantMskManagedVpc`<sup>Optional</sup> <a name="grantMskManagedVpc" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantMskManagedVpc"></a>
+
+```typescript
+public readonly grantMskManagedVpc: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+If the authorizer is granting MSK managed VPC permissions.
 
 ---
 

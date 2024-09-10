@@ -14,6 +14,11 @@ export interface DataZoneMskEnvironmentAuthorizerProps {
    */
   readonly centralAccountId?: string;
   /**
+   * If the authorizer is granting MSK managed VPC permissions
+   * @default - false
+   */
+  readonly grantMskManagedVpc?: boolean;
+  /**
    * The removal policy to apply to the asset type
    * @default - RemovalPolicy.RETAIN
    */
