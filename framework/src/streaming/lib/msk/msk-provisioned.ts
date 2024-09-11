@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 
-import { CfnOutput, CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnOutput, CustomResource, Duration, RemovalPolicy, Stack, Aws } from 'aws-cdk-lib';
 import { Connections, ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
@@ -644,7 +644,7 @@ export class MskProvisioned extends TrackedConstruct {
 
     new CfnOutput(this, 'ServiceToken', {
       value: this.serviceToken!,
-      exportName: 'ServiceToken',
+      exportName: `${Aws.STACK_NAME}-ServiceToken`,
     });
 
   }
