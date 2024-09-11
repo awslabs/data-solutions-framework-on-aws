@@ -119,7 +119,7 @@ beforeAll(async() => {
   deployResult = await testStack.deploy();
 }, 10000000);
 
-test('CMSK cluster created successfully', async () => {
+test('MSK cluster created successfully', async () => {
   // THEN
   expect(deployResult.clusterArn).toContain('arn');
 });
