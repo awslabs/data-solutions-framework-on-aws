@@ -15,7 +15,7 @@ import { SecurityGroup, Vpc, Subnet } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
-import { Authentication, ClientAuthentication, KafkaApi, MskClusterType, KafkaClientLogLevel } from '../../../src/streaming';
+import { Authentication, ClientAuthentication, KafkaApi, MskClusterType } from '../../../src/streaming';
 
 
 describe('Using default KafkaApi configuration with MSK provisioned and IAM and mTLS authentication should ', () => {
