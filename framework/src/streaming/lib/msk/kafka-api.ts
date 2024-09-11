@@ -102,8 +102,7 @@ export class KafkaApi extends TrackedConstruct {
     if (props.clientAuthentication.tlsProps?.certificateAuthorities) {
 
       if (props.serviceToken) {
-        this.mskAclServiceToken = props.serviceToken;
-        this.serviceToken = props.serviceToken;
+        this.mskAclServiceToken = this.serviceToken = props.serviceToken;
       } else {
         const mskAclProvider = mskAclAdminProviderSetup(
           this,
@@ -128,8 +127,7 @@ export class KafkaApi extends TrackedConstruct {
     if ( props.clientAuthentication.saslProps?.iam) {
 
       if (props.serviceToken) {
-        this.mskIamServiceToken = props.serviceToken;
-        this.serviceToken = props.serviceToken;
+        this.mskIamServiceToken = this.serviceToken = props.serviceToken;
       } else {
         const mskIamProvider = mskIamCrudProviderSetup(
           this,
