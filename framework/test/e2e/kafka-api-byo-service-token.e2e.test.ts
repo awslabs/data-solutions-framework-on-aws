@@ -78,11 +78,8 @@ const importedServiceToken = Fn.importValue(stackNewToken.stackName+'-ServiceTok
 const kafkaApiReuseServiceToken = new KafkaApi(stackReuseServiceToken, 'kafkaApiReuseServiceToken', {
   vpc: vpc.vpc,
   clusterArn: msk.cluster.attrArn,
-  subnets: vpc.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
   brokerSecurityGroup: securityGroup,
-  kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
   clusterType: MskClusterType.SERVERLESS,
-  removalPolicy: RemovalPolicy.DESTROY,
   clientAuthentication: ClientAuthentication.sasl({ iam: true }),
   serviceToken: importedServiceToken,
 });
