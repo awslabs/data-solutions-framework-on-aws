@@ -15,14 +15,16 @@ import {
 } from 'aws-cdk-lib/aws-iam';
 import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
-import { DatazoneGsrKinesisDatasourceProps } from './datazone-gsr-kinesis-datasource-props';
+import { DataZoneGsrKinesisDataSourceProps } from './datazone-gsr-kinesis-datasource-props';
 import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A DataZone GSR (Governance, Security, and Reporting) datasource for Kinesis Streams.
  *
  * @example
- * new dsf.governance.DatazoneGsrKinesisDatasource(this, 'KinesisDatasource', {
+ * import { Schedule } from 'aws-cdk-lib/aws-events';
+ *
+ * new dsf.governance.DataZoneGsrKinesisDataSource(this, 'KinesisDataSource', {
  *   domainId: 'aba_dc999t9ime9sss',
  *   projectId: '999999b3m5cpz',
  *   registryName: 'myRegistry',
@@ -30,7 +32,7 @@ import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
  *   enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
  * });
  */
-export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
+export class DataZoneGsrKinesisDataSource extends TrackedConstruct {
   /**
    * The DataZone domain identifier.
    */
@@ -63,9 +65,9 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
    */
   readonly region: string;
 
-  constructor(scope: Construct, id: string, props: DatazoneGsrKinesisDatasourceProps) {
+  constructor(scope: Construct, id: string, props: DataZoneGsrKinesisDataSourceProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: DatazoneGsrKinesisDatasource.name,
+      trackingTag: DataZoneGsrKinesisDataSource.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -156,7 +158,7 @@ export class DatazoneGsrKinesisDatasource extends TrackedConstruct {
     });
 
     // Define Lambda function for processing Kinesis data
-    const lambdaCrawler = new Function(this, 'DatazoneGSRKinesisDatasource', {
+    const lambdaCrawler = new Function(this, 'DataZoneGsrKinesisDataSource', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       role: handlerRole,

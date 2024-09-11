@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Tests DatazoneGSRKinesisDatasource construct
+ * Tests DataZoneGsrKinesisDataSource construct
  *
  * @group unit/datazone/datazone-gsr-kinesis-datasource
  */
@@ -12,7 +12,7 @@ import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 
 import { Schedule } from 'aws-cdk-lib/aws-events';
-import { DatazoneGsrKinesisDatasource } from '../../../src/governance';
+import { DataZoneGsrKinesisDataSource } from '../../../src/governance';
 
 describe('Creating a DataZone-GSR-Kinesis-Datasource with default configuration', () => {
   const app = new App();
@@ -22,7 +22,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with default configuration'
   const PROJECT_ID = '999a99aa9aaaaa';
   const PARAMETER_PREFIX = `/datazone/${DOMAIN_ID}/${REGISTRY_NAME}/asset/`;
 
-  new DatazoneGsrKinesisDatasource(stack, 'DataZoneGSRKinesisDatasource', {
+  new DataZoneGsrKinesisDataSource(stack, 'DataZoneGsrKinesisDataSource', {
     domainId: DOMAIN_ID,
     projectId: PROJECT_ID,
     registryName: REGISTRY_NAME,
@@ -182,7 +182,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with default configuration'
         Member: {
           UserIdentifier: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('DataZoneGSRKinesisDatasourceHandlerRole.*'),
+              Match.stringLikeRegexp('DataZoneGsrKinesisDataSourceHandlerRole.*'),
               'Arn',
             ],
           },
@@ -208,7 +208,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with default configuration'
         Handler: 'index.handler',
         Role: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasourceHandlerRole.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSourceHandlerRole.*'),
             'Arn',
           ],
         },
@@ -227,7 +227,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
   const REGISTRY_NAME = 'schema-registry';
   const PROJECT_ID = '999a99aa9aaaaa';
 
-  new DatazoneGsrKinesisDatasource(stack, 'DataZoneGSRKinesisDatasource', {
+  new DataZoneGsrKinesisDataSource(stack, 'DataZoneGsrKinesisDataSource', {
     domainId: DOMAIN_ID,
     projectId: PROJECT_ID,
     registryName: REGISTRY_NAME,
@@ -255,7 +255,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
                 'Arn',
               ],
             },
@@ -292,7 +292,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
                 'Arn',
               ],
             },
@@ -310,14 +310,14 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
         Action: 'lambda:InvokeFunction',
         FunctionName: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
             'Arn',
           ],
         },
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
             'Arn',
           ],
         },
@@ -355,7 +355,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
                 'Arn',
               ],
             },
@@ -373,14 +373,14 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
         Action: 'lambda:InvokeFunction',
         FunctionName: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
             'Arn',
           ],
         },
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasourceRegisterSchemaVersionRule.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSourceRegisterSchemaVersionRule.*'),
             'Arn',
           ],
         },
@@ -431,7 +431,7 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
                 'Arn',
               ],
             },
@@ -449,14 +449,14 @@ describe('Creating a DataZone-GSR-Kinesis-Datasource with GSR Events and Schedul
         Action: 'lambda:InvokeFunction',
         FunctionName: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSource.*'),
             'Arn',
           ],
         },
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRKinesisDatasourceDeleteSchemaRule.*'),
+            Match.stringLikeRegexp('DataZoneGsrKinesisDataSourceDeleteSchemaRule.*'),
             'Arn',
           ],
         },

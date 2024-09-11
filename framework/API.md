@@ -4314,39 +4314,56 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DatazoneGsrKinesisDatasource <a name="DatazoneGsrKinesisDatasource" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource"></a>
+### DataZoneGsrKinesisDataSource <a name="DataZoneGsrKinesisDataSource" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource"></a>
 
-#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer"></a>
+A DataZone GSR (Governance, Security, and Reporting) datasource for Kinesis Streams.
+
+*Example*
+
+```typescript
+import { Schedule } from 'aws-cdk-lib/aws-events';
+
+new dsf.governance.DataZoneGsrKinesisDataSource(this, 'KinesisDataSource', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: '999999b3m5cpz',
+  registryName: 'myRegistry',
+  eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
+  enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-new governance.DatazoneGsrKinesisDatasource(scope: Construct, id: string, props: DatazoneGsrKinesisDatasourceProps)
+new governance.DataZoneGsrKinesisDataSource(scope: Construct, id: string, props: DataZoneGsrKinesisDataSourceProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.Initializer.parameter.props"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps
 
 ---
 
@@ -4354,12 +4371,12 @@ new governance.DatazoneGsrKinesisDatasource(scope: Construct, id: string, props:
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4367,7 +4384,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4379,16 +4396,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.isConstruct"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-governance.DatazoneGsrKinesisDatasource.isConstruct(x: any)
+governance.DataZoneGsrKinesisDataSource.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4407,7 +4424,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4419,17 +4436,17 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.region">region</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.registryName">registryName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.projectId">projectId</a></code> | <code>string</code> | The project identifier for the Kinesis datasource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.region">region</a></code> | <code>string</code> | The AWS region where resources are deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.registryName">registryName</a></code> | <code>string</code> | The name of the Glue schema registry. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | Flag to enable EventBridge rule for Glue Schema Registry events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The schedule for EventBridge rules to trigger the Lambda function. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4441,7 +4458,7 @@ The tree node.
 
 ---
 
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.domainId"></a>
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.domainId"></a>
 
 ```typescript
 public readonly domainId: string;
@@ -4449,9 +4466,11 @@ public readonly domainId: string;
 
 - *Type:* string
 
+The DataZone domain identifier.
+
 ---
 
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.projectId"></a>
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.projectId"></a>
 
 ```typescript
 public readonly projectId: string;
@@ -4459,9 +4478,11 @@ public readonly projectId: string;
 
 - *Type:* string
 
+The project identifier for the Kinesis datasource.
+
 ---
 
-##### `region`<sup>Required</sup> <a name="region" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.region"></a>
+##### `region`<sup>Required</sup> <a name="region" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.region"></a>
 
 ```typescript
 public readonly region: string;
@@ -4469,9 +4490,11 @@ public readonly region: string;
 
 - *Type:* string
 
+The AWS region where resources are deployed.
+
 ---
 
-##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.registryName"></a>
+##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.registryName"></a>
 
 ```typescript
 public readonly registryName: string;
@@ -4479,25 +4502,33 @@ public readonly registryName: string;
 
 - *Type:* string
 
+The name of the Glue schema registry.
+
 ---
 
-##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.enableSchemaRegistryEvent"></a>
+##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.enableSchemaRegistryEvent"></a>
 
 ```typescript
 public readonly enableSchemaRegistryEvent: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* false, meaning the EventBridge rule for schema registry changes is disabled.
+
+Flag to enable EventBridge rule for Glue Schema Registry events.
 
 ---
 
-##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.eventBridgeSchedule"></a>
+##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.eventBridgeSchedule"></a>
 
 ```typescript
 public readonly eventBridgeSchedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* No schedule is set.
+
+The schedule for EventBridge rules to trigger the Lambda function.
 
 ---
 
@@ -4505,12 +4536,12 @@ public readonly eventBridgeSchedule: Schedule;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4520,7 +4551,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasource.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSource.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -4530,39 +4561,57 @@ public readonly DSF_TRACKING_CODE: string;
 
 ---
 
-### DatazoneGsrMskDatasource <a name="DatazoneGsrMskDatasource" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource"></a>
+### DataZoneGsrMskDataSource <a name="DataZoneGsrMskDataSource" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource"></a>
 
-#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer"></a>
+A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
+
+*Example*
+
+```typescript
+import { Schedule } from 'aws-cdk-lib/aws-events';
+
+new dsf.governance.DataZoneGsrMskDataSource(this, 'MskDatasource', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: '999999b3m5cpz',
+  registryName: 'MyRegistry',
+  clusterName: 'MyCluster',
+  eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
+  enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-new governance.DatazoneGsrMskDatasource(scope: Construct, id: string, props: DatazoneGsrMskDatasourceProps)
+new governance.DataZoneGsrMskDataSource(scope: Construct, id: string, props: DataZoneGsrMskDataSourceProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps</code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.props"></a>
 
-- *Type:* @cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps
 
 ---
 
@@ -4570,12 +4619,12 @@ new governance.DatazoneGsrMskDatasource(scope: Construct, id: string, props: Dat
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
 
 ---
 
-##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.toString"></a>
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.toString"></a>
 
 ```typescript
 public toString(): string
@@ -4583,7 +4632,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.retrieveVersion"></a>
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.retrieveVersion"></a>
 
 ```typescript
 public retrieveVersion(): any
@@ -4595,16 +4644,16 @@ Retrieve DSF package.json version.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.isConstruct"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-governance.DatazoneGsrMskDatasource.isConstruct(x: any)
+governance.DataZoneGsrMskDataSource.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
@@ -4623,7 +4672,7 @@ library can be accidentally installed, and `instanceof` will behave
 unpredictably. It is safest to avoid using `instanceof`, and using
 this type-testing method instead.
 
-###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -4635,19 +4684,19 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.clusterArn">clusterArn</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.region">region</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.registryName">registryName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.clusterArn">clusterArn</a></code> | <code>string</code> | The ARN of the MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.projectId">projectId</a></code> | <code>string</code> | The DataZone project identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.region">region</a></code> | <code>string</code> | The AWS region where resources are deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.registryName">registryName</a></code> | <code>string</code> | The Glue Schema Registry name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | Whether to enable EventBridge listener for Glue Schema Registry events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The schedule for EventBridge rules, if provided. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -4659,7 +4708,7 @@ The tree node.
 
 ---
 
-##### `clusterArn`<sup>Required</sup> <a name="clusterArn" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.clusterArn"></a>
+##### `clusterArn`<sup>Required</sup> <a name="clusterArn" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.clusterArn"></a>
 
 ```typescript
 public readonly clusterArn: string;
@@ -4667,9 +4716,11 @@ public readonly clusterArn: string;
 
 - *Type:* string
 
+The ARN of the MSK cluster.
+
 ---
 
-##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.clusterName"></a>
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.clusterName"></a>
 
 ```typescript
 public readonly clusterName: string;
@@ -4677,9 +4728,11 @@ public readonly clusterName: string;
 
 - *Type:* string
 
+The name of the MSK cluster.
+
 ---
 
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.domainId"></a>
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.domainId"></a>
 
 ```typescript
 public readonly domainId: string;
@@ -4687,9 +4740,11 @@ public readonly domainId: string;
 
 - *Type:* string
 
+The DataZone domain identifier.
+
 ---
 
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.projectId"></a>
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.projectId"></a>
 
 ```typescript
 public readonly projectId: string;
@@ -4697,9 +4752,11 @@ public readonly projectId: string;
 
 - *Type:* string
 
+The DataZone project identifier.
+
 ---
 
-##### `region`<sup>Required</sup> <a name="region" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.region"></a>
+##### `region`<sup>Required</sup> <a name="region" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.region"></a>
 
 ```typescript
 public readonly region: string;
@@ -4707,9 +4764,11 @@ public readonly region: string;
 
 - *Type:* string
 
+The AWS region where resources are deployed.
+
 ---
 
-##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.registryName"></a>
+##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.registryName"></a>
 
 ```typescript
 public readonly registryName: string;
@@ -4717,25 +4776,33 @@ public readonly registryName: string;
 
 - *Type:* string
 
+The Glue Schema Registry name.
+
 ---
 
-##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.enableSchemaRegistryEvent"></a>
+##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.enableSchemaRegistryEvent"></a>
 
 ```typescript
 public readonly enableSchemaRegistryEvent: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* false
+
+Whether to enable EventBridge listener for Glue Schema Registry events.
 
 ---
 
-##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.eventBridgeSchedule"></a>
+##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.eventBridgeSchedule"></a>
 
 ```typescript
 public readonly eventBridgeSchedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* No schedule rule is created
+
+The schedule for EventBridge rules, if provided.
 
 ---
 
@@ -4743,12 +4810,12 @@ public readonly eventBridgeSchedule: Schedule;
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.DSF_OWNED_TAG"></a>
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_OWNED_TAG"></a>
 
 ```typescript
 public readonly DSF_OWNED_TAG: string;
@@ -4758,7 +4825,7 @@ public readonly DSF_OWNED_TAG: string;
 
 ---
 
-##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasource.property.DSF_TRACKING_CODE"></a>
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_TRACKING_CODE"></a>
 
 ```typescript
 public readonly DSF_TRACKING_CODE: string;
@@ -4769,6 +4836,18 @@ public readonly DSF_TRACKING_CODE: string;
 ---
 
 ### DataZoneKinesisAssetType <a name="DataZoneKinesisAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType"></a>
+
+A DataZone custom asset type representing a Kinesis Stream.
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneKinesisAssetType(this, 'KinesisAssetType', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: '999999b3m5cpz',
+});
+```
+
 
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType.Initializer"></a>
 
@@ -4874,7 +4953,8 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType.property.kinesisCustomAssetType">kinesisCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType.property.kinesisCustomAssetType">kinesisCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | The custom asset type for Kinesis. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType.property.owningProjectId">owningProjectId</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProject</code> | *No description.* |
 
 ---
 
@@ -4897,6 +4977,18 @@ public readonly kinesisCustomAssetType: CustomAssetType;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.CustomAssetType
+
+The custom asset type for Kinesis.
+
+---
+
+##### `owningProjectId`<sup>Optional</sup> <a name="owningProjectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetType.property.owningProjectId"></a>
+
+```typescript
+public readonly owningProjectId: CfnProject;
+```
+
+- *Type:* aws-cdk-lib.aws_datazone.CfnProject
 
 ---
 
@@ -15597,30 +15689,31 @@ Whether the field is required.
 
 ---
 
-### DatazoneGsrKinesisDatasourceProps <a name="DatazoneGsrKinesisDatasourceProps" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps"></a>
+### DataZoneGsrKinesisDataSourceProps <a name="DataZoneGsrKinesisDataSourceProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps"></a>
 
-#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.Initializer"></a>
+Properties for configuring a DataZone GSR Kinesis datasource.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.Initializer"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-const datazoneGsrKinesisAssetCrawlerProps: governance.DatazoneGsrKinesisDatasourceProps = { ... }
+const dataZoneGsrKinesisDataSourceProps: governance.DataZoneGsrKinesisDataSourceProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.registryName">registryName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.enableKinesisEvent">enableKinesisEvent</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.domainId">domainId</a></code> | <code>string</code> | The unique identifier for the DataZone domain where the datasource resides. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.projectId">projectId</a></code> | <code>string</code> | The unique identifier for the project associated with this datasource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.registryName">registryName</a></code> | <code>string</code> | The name of the registry for schema management. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | Optional. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Optional. |
 
 ---
 
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.domainId"></a>
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.domainId"></a>
 
 ```typescript
 public readonly domainId: string;
@@ -15628,9 +15721,11 @@ public readonly domainId: string;
 
 - *Type:* string
 
+The unique identifier for the DataZone domain where the datasource resides.
+
 ---
 
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.projectId"></a>
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.projectId"></a>
 
 ```typescript
 public readonly projectId: string;
@@ -15638,9 +15733,11 @@ public readonly projectId: string;
 
 - *Type:* string
 
+The unique identifier for the project associated with this datasource.
+
 ---
 
-##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.registryName"></a>
+##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.registryName"></a>
 
 ```typescript
 public readonly registryName: string;
@@ -15648,62 +15745,66 @@ public readonly registryName: string;
 
 - *Type:* string
 
----
-
-##### `enableKinesisEvent`<sup>Optional</sup> <a name="enableKinesisEvent" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.enableKinesisEvent"></a>
-
-```typescript
-public readonly enableKinesisEvent: boolean;
-```
-
-- *Type:* boolean
+The name of the registry for schema management.
 
 ---
 
-##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.enableSchemaRegistryEvent"></a>
+##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.enableSchemaRegistryEvent"></a>
 
 ```typescript
 public readonly enableSchemaRegistryEvent: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* false, meaning the EventBridge listener for schema changes is disabled.
+
+Optional.
+
+A flag to enable or disable EventBridge listener for schema registry changes.
 
 ---
 
-##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrKinesisDatasourceProps.property.eventBridgeSchedule"></a>
+##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrKinesisDataSourceProps.property.eventBridgeSchedule"></a>
 
 ```typescript
 public readonly eventBridgeSchedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* No schedule is set, meaning events are triggered based on other conditions or manually.
+
+Optional.
+
+Defines the schedule for EventBridge events, specified using cron expressions.
 
 ---
 
-### DatazoneGsrMskDatasourceProps <a name="DatazoneGsrMskDatasourceProps" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps"></a>
+### DataZoneGsrMskDataSourceProps <a name="DataZoneGsrMskDataSourceProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps"></a>
 
-#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.Initializer"></a>
+Properties for configuring a DataZone GSR MSK datasource.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.Initializer"></a>
 
 ```typescript
 import { governance } from '@cdklabs/aws-data-solutions-framework'
 
-const datazoneGsrMskAssetCrawlerProps: governance.DatazoneGsrMskDatasourceProps = { ... }
+const dataZoneGsrMskDataSourceProps: governance.DataZoneGsrMskDataSourceProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.registryName">registryName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK (Managed Streaming for Apache Kafka) cluster to use. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.domainId">domainId</a></code> | <code>string</code> | The unique identifier for the DataZone domain where the datasource resides. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.projectId">projectId</a></code> | <code>string</code> | The unique identifier for the project associated with this datasource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.registryName">registryName</a></code> | <code>string</code> | The name of the registry for schema management. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | Optional. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.eventBridgeSchedule">eventBridgeSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Optional. |
 
 ---
 
-##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.clusterName"></a>
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.clusterName"></a>
 
 ```typescript
 public readonly clusterName: string;
@@ -15711,9 +15812,11 @@ public readonly clusterName: string;
 
 - *Type:* string
 
+The name of the MSK (Managed Streaming for Apache Kafka) cluster to use.
+
 ---
 
-##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.domainId"></a>
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.domainId"></a>
 
 ```typescript
 public readonly domainId: string;
@@ -15721,9 +15824,11 @@ public readonly domainId: string;
 
 - *Type:* string
 
+The unique identifier for the DataZone domain where the datasource resides.
+
 ---
 
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.projectId"></a>
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.projectId"></a>
 
 ```typescript
 public readonly projectId: string;
@@ -15731,9 +15836,11 @@ public readonly projectId: string;
 
 - *Type:* string
 
+The unique identifier for the project associated with this datasource.
+
 ---
 
-##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.registryName"></a>
+##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.registryName"></a>
 
 ```typescript
 public readonly registryName: string;
@@ -15741,29 +15848,43 @@ public readonly registryName: string;
 
 - *Type:* string
 
+The name of the registry for schema management.
+
 ---
 
-##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.enableSchemaRegistryEvent"></a>
+##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.enableSchemaRegistryEvent"></a>
 
 ```typescript
 public readonly enableSchemaRegistryEvent: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* false, meaning the EventBridge listener for schema changes is disabled.
+
+Optional.
+
+A flag to enable or disable EventBridge listener for schema registry changes.
 
 ---
 
-##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DatazoneGsrMskDatasourceProps.property.eventBridgeSchedule"></a>
+##### `eventBridgeSchedule`<sup>Optional</sup> <a name="eventBridgeSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.eventBridgeSchedule"></a>
 
 ```typescript
 public readonly eventBridgeSchedule: Schedule;
 ```
 
 - *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* No schedule is set, meaning events are triggered based on other conditions or manually.
+
+Optional.
+
+Defines the schedule for EventBridge events, specified using cron expressions.
 
 ---
 
 ### DataZoneKinesisAssetTypeProps <a name="DataZoneKinesisAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps"></a>
+
+Properties for configuring a DataZone Kinesis asset type.
 
 #### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.Initializer"></a>
 
@@ -15777,10 +15898,10 @@ const dataZoneKinesisAssetTypeProps: governance.DataZoneKinesisAssetTypeProps = 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | The unique identifier for the DataZone domain where the asset type resides. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | Optional. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | The unique identifier for the project associated with this asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Optional. |
 
 ---
 
@@ -15792,15 +15913,7 @@ public readonly domainId: string;
 
 - *Type:* string
 
----
-
-##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.projectId"></a>
-
-```typescript
-public readonly projectId: string;
-```
-
-- *Type:* string
+The unique identifier for the DataZone domain where the asset type resides.
 
 ---
 
@@ -15811,6 +15924,24 @@ public readonly dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory;
 ```
 
 - *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory
+- *Default:* A new factory is created if not specified.
+
+Optional.
+
+The factory used to create the custom asset type.
+
+---
+
+##### `projectId`<sup>Optional</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneKinesisAssetTypeProps.property.projectId"></a>
+
+```typescript
+public readonly projectId: string;
+```
+
+- *Type:* string
+- *Default:* A new project called KinesisGovernance is created
+
+The unique identifier for the project associated with this asset type.
 
 ---
 
@@ -15821,6 +15952,11 @@ public readonly removalPolicy: RemovalPolicy;
 ```
 
 - *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN, meaning the asset type is retained even if the stack is deleted.
+
+Optional.
+
+The removal policy to apply to the asset type.
 
 ---
 

@@ -6,7 +6,7 @@ import { Schedule } from 'aws-cdk-lib/aws-events';
 /**
  * Properties for configuring a DataZone GSR MSK datasource.
  */
-export interface DatazoneGsrMskDatasourceProps {
+export interface DataZoneGsrMskDataSourceProps {
   /**
    * The name of the MSK (Managed Streaming for Apache Kafka) cluster to use.
    */

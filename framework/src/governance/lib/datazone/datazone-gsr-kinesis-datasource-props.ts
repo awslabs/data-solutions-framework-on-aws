@@ -6,7 +6,7 @@ import { Schedule } from 'aws-cdk-lib/aws-events';
 /**
  * Properties for configuring a DataZone GSR Kinesis datasource.
  */
-export interface DatazoneGsrKinesisDatasourceProps {
+export interface DataZoneGsrKinesisDataSourceProps {
   /**
    * The unique identifier for the DataZone domain where the datasource resides.
    */

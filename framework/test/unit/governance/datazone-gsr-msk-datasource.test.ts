@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Tests DatazoneGSRMSKDatasource construct
+ * Tests DataZoneGsrMskDataSource construct
  *
  * @group unit/datazone/datazone-gsr-msk-datasource
  */
@@ -12,7 +12,7 @@ import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 
 import { Schedule } from 'aws-cdk-lib/aws-events';
-import { DatazoneGsrMskDatasource } from '../../../src/governance';
+import { DataZoneGsrMskDataSource } from '../../../src/governance';
 
 describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', () => {
   const app = new App();
@@ -23,7 +23,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
   const PROJECT_ID = '999a99aa9aaaaa';
   const PARAMETER_PREFIX = `/datazone/${DOMAIN_ID}/${REGISTRY_NAME}/asset/`;
 
-  new DatazoneGsrMskDatasource(stack, 'DataZoneGSRMSKDatasource', {
+  new DataZoneGsrMskDataSource(stack, 'DataZoneGsrMskDataSource', {
     domainId: DOMAIN_ID,
     projectId: PROJECT_ID,
     registryName: REGISTRY_NAME,
@@ -216,7 +216,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
         Member: {
           UserIdentifier: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('DataZoneGSRMSKDatasourceHandlerRole.*'),
+              Match.stringLikeRegexp('DataZoneGsrMskDataSourceHandlerRole.*'),
               'Arn',
             ],
           },
@@ -243,7 +243,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
         Handler: 'index.handler',
         Role: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceHandlerRole.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSourceHandlerRole.*'),
             'Arn',
           ],
         },
@@ -263,7 +263,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
   const CLUSTER_NAME = 'msk-cluster';
   const PROJECT_ID = '999a99aa9aaaaa';
 
-  new DatazoneGsrMskDatasource(stack, 'DataZoneGSRMSKDatasource', {
+  new DataZoneGsrMskDataSource(stack, 'DataZoneGsrMskDataSource', {
     domainId: DOMAIN_ID,
     projectId: PROJECT_ID,
     registryName: REGISTRY_NAME,
@@ -273,7 +273,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a the following resources', () => {
     template.resourceCountIs('AWS::Lambda::Function', 1);
@@ -292,7 +292,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
                 'Arn',
               ],
             },
@@ -329,7 +329,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
                 'Arn',
               ],
             },
@@ -347,14 +347,14 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
         Action: 'lambda:InvokeFunction',
         FunctionName: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
             'Arn',
           ],
         },
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceSchemaRegistryEventRule.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSourceSchemaRegistryEventRule.*'),
             'Arn',
           ],
         },
@@ -392,7 +392,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
                 'Arn',
               ],
             },
@@ -410,14 +410,14 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
         Action: 'lambda:InvokeFunction',
         FunctionName: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
             'Arn',
           ],
         },
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceRegisterSchemaVersionRule.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
             'Arn',
           ],
         },
@@ -468,7 +468,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
           Match.objectLike({
             Arn: {
               'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+                Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
                 'Arn',
               ],
             },
@@ -486,14 +486,14 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
         Action: 'lambda:InvokeFunction',
         FunctionName: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDatazoneGSRMSKDatasource.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
             'Arn',
           ],
         },
         Principal: 'events.amazonaws.com',
         SourceArn: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGSRMSKDatasourceDeleteSchemaRule.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSourceDeleteSchemaRule.*'),
             'Arn',
           ],
         },

@@ -17,8 +17,8 @@ import {
   DataZoneMskCentralAuthorizer,
   DataZoneMskEnvironmentAuthorizer,
 } from '../../src/governance';
-import { DatazoneGsrKinesisDatasource } from '../../src/governance/lib/datazone/datazone-gsr-kinesis-datasource';
-import { DatazoneGsrMskDatasource } from '../../src/governance/lib/datazone/datazone-gsr-msk-datasource';
+import { DataZoneGsrKinesisDataSource } from '../../src/governance/lib/datazone/datazone-gsr-kinesis-datasource';
+import { DataZoneGsrMskDataSource } from '../../src/governance/lib/datazone/datazone-gsr-msk-datasource';
 import { DataZoneKinesisAssetType } from '../../src/governance/lib/datazone/datazone-kinesis-asset-type';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
@@ -167,7 +167,7 @@ const schema = new glue.CfnSchema(stack, 'MyCfnSchema3', {
   },
 });
 
-new DatazoneGsrMskDatasource(stack, 'Crawler', {
+new DataZoneGsrMskDataSource(stack, 'Crawler', {
   domainId: domainID,
   projectId: projectID,
   clusterName: clusterName,
@@ -176,7 +176,7 @@ new DatazoneGsrMskDatasource(stack, 'Crawler', {
   enableSchemaRegistryEvent: true,
 });
 
-new DatazoneGsrMskDatasource(stack, 'Serverless-Crawler', {
+new DataZoneGsrMskDataSource(stack, 'Serverless-Crawler', {
   domainId: domainID,
   projectId: cfnMSKServerlessProject.attrId,
   clusterName: msk.clusterName,
@@ -206,7 +206,7 @@ new glue.CfnSchema(stack, 'KinesisSchema', {
   },
 });
 
-new DatazoneGsrKinesisDatasource(stack, 'KinesisCrawler', {
+new DataZoneGsrKinesisDataSource(stack, 'KinesisCrawler', {
   domainId: domainID,
   projectId: projectID,
   registryName: cfnKinesisRegistry.name,

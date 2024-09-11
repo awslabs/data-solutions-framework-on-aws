@@ -23,7 +23,8 @@ function getGroupArn(clusterArn) {
   const partition = assetArnParts[1];
   const account = assetArnParts[4];
   const region = assetArnParts[3];
-  const cluster = assetArnParts[5];
+  const clusterParts = assetArnParts[5].split('/');
+  const cluster = `${clusterParts[1]}/${clusterParts[2]}`;
 
   return `arn:${partition}:kafka:${region}:${account}:group/${cluster}/*`
 }
@@ -177,7 +178,7 @@ export const handler = async(event) => {
     let iamResources = iamMskResources;
     // Test if we need to grant permissions on the Glue Schema Registry
     const schemaArn = event.detail.value.Metadata.Producer.SchemaArn;
-    if ( schemaArn !== '' && producerAccount === consumerAccount) {
+    if ( schemaArn !== undefined && producerAccount === consumerAccount) {
       iamActions = mskReadActions.concat(gsrReadActions);
       iamResources = iamMskResources.concat([schemaArn, event.detail.value.Metadata.Producer.RegistryArn]);
     }

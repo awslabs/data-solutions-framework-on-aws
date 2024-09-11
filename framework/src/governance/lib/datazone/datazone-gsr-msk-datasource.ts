@@ -15,14 +15,16 @@ import {
 } from 'aws-cdk-lib/aws-iam';
 import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
-import { DatazoneGsrMskDatasourceProps } from './datazone-gsr-msk-datasource-props';
+import { DataZoneGsrMskDataSourceProps } from './datazone-gsr-msk-datasource-props';
 import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
  *
  * @example
- * new DatazoneGsrMskDatasource(this, 'MskDatasource', {
+ * import { Schedule } from 'aws-cdk-lib/aws-events';
+ *
+ * new dsf.governance.DataZoneGsrMskDataSource(this, 'MskDatasource', {
  *   domainId: 'aba_dc999t9ime9sss',
  *   projectId: '999999b3m5cpz',
  *   registryName: 'MyRegistry',
@@ -31,7 +33,7 @@ import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
  *   enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
  * });
  */
-export class DatazoneGsrMskDatasource extends TrackedConstruct {
+export class DataZoneGsrMskDataSource extends TrackedConstruct {
   /**
    * The DataZone domain identifier
    */
@@ -67,9 +69,9 @@ export class DatazoneGsrMskDatasource extends TrackedConstruct {
    */
   readonly region: string;
 
-  constructor(scope: Construct, id: string, props: DatazoneGsrMskDatasourceProps) {
+  constructor(scope: Construct, id: string, props: DataZoneGsrMskDataSourceProps) {
     const trackedConstructProps: TrackedConstructProps = {
-      trackingTag: DatazoneGsrMskDatasource.name,
+      trackingTag: DataZoneGsrMskDataSource.name,
     };
 
     super(scope, id, trackedConstructProps);
@@ -166,7 +168,7 @@ export class DatazoneGsrMskDatasource extends TrackedConstruct {
       },
     });
 
-    const lambdaCrawler = new Function(this, 'DatazoneGSRMSKDatasource', {
+    const lambdaCrawler = new Function(this, 'DataZoneGsrMskDataSource', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       role: handlerRole,
