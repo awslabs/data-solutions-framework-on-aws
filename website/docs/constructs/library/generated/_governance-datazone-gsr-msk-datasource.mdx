@@ -1,0 +1,109 @@
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/governance -->
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+DataZone Data Source for MSK Topics assets backed by Glue Schema Registry.
+
+## Overview
+
+`DataZoneGsrMskDataSource` is custom data source for DataZone that can create/update/delete MSK topics assets in DataZone based on a Glue Schema Registry definition. The custom data source can be triggered by a schedule or based on events from the Glue Schema Registry. The constructs implement:
+- EventBridge Rules triggered either on a schedule or event based.
+- A Lambda Function triggered from the EventBridge Rules and responsible for collecting metadata from The Glue Schema Registry and updating MSK Topic assets in DataZone.
+- SSM Parameter Store Parameters to store required metadata
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.governance.DataZoneGsrMskDataSource(this, 'DataZoneGsrMskDataSource', {
+  domainId: 'aba_dc999t9ime9sss',
+  registryName: 'schema-registry',
+  projectId: '999a99aa9aaaaa',
+  clusterName: 'msk-cluster'
+});
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.governance.DataZoneGsrMskDataSource(self, "DataZoneGsrMskDataSource",
+    domain_id="aba_dc999t9ime9sss",
+    registry_name="schema-registry",
+    project_id="999a99aa9aaaaa",
+    cluster_name="msk-cluster"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Data Source trigger modes
+
+The custom data source process can be triggered in two different ways. By default, if no schedule and events are not enabled, the construct creates a schedule every one hour.
+- Based on a Schedule
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.governance.DataZoneGsrMskDataSource(this, 'DataZoneGsrMskDataSource', {
+  domainId: 'aba_dc999t9ime9sss',
+  registryName: 'schema-registry',
+  projectId: '999a99aa9aaaaa',
+  clusterName: 'msk-cluster',
+  runSchedule: events.Schedule.expression('cron(0 * * * * *)'),
+});
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.governance.DataZoneGsrMskDataSource(self, "DataZoneGsrMskDataSource",
+    domain_id="aba_dc999t9ime9sss",
+    registry_name="schema-registry",
+    project_id="999a99aa9aaaaa",
+    cluster_name="msk-cluster",
+    run_schedule=events.Schedule.expression("cron(0 * * * * *)")
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+- Based on events received from the Glue Schema Registry
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.governance.DataZoneGsrMskDataSource(this, 'DataZoneGsrMskDataSource', {
+  domainId: 'aba_dc999t9ime9sss',
+  registryName: 'schema-registry',
+  projectId: '999a99aa9aaaaa',
+  clusterName: 'msk-cluster',
+  enableSchemaRegistryEvent: true,
+});
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.governance.DataZoneGsrMskDataSource(self, "DataZoneGsrMskDataSource",
+    domain_id="aba_dc999t9ime9sss",
+    registry_name="schema-registry",
+    project_id="999a99aa9aaaaa",
+    cluster_name="msk-cluster",
+    enable_schema_registry_event=True
+)
+  ```
+
+  </TabItem>
+</Tabs>
+

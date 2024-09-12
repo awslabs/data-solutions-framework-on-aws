@@ -76,6 +76,12 @@
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/processing/lib/spark-runtime/emr-containers/resources lib/processing/lib/spark-runtime/emr-containers"
         },
         {
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/governance/lib/resources lib/governance/lib"
+        },
+        {
+          "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/governance/lib/datazone/resources lib/governance/lib/datazone"
+        },
+        {
           "exec": "rsync -avr --exclude '*.ts' --exclude '*.js' src/consumption/lib/redshift/resources lib/consumption/lib/redshift"
         },
         {

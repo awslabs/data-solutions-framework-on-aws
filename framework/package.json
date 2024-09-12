@@ -62,7 +62,7 @@
     "jsii-pacmak": "^1.96.0",
     "jsii-rosetta": "~5.5.0",
     "node-libcurl": "^4.0.0",
-    "projen": "^0.83.1",
+    "projen": "^0.87.2",
     "rosetta": "^1.1.0",
     "standard-version": "^9",
     "sync-request-curl": "^3.0.0",
