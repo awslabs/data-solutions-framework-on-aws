@@ -29,9 +29,9 @@ export interface DataZoneGsrMskDataSourceProps {
 
   /**
    * Optional. Defines the schedule for EventBridge events, specified using cron expressions.
-   * @default - No schedule is set, meaning events are triggered based on other conditions or manually.
+   * @default - `cron(1 0 * * ? *)` if `enableSchemaRegistryEvent` is false or undefined, otherwise no schedule.
    */
-  readonly eventBridgeSchedule?: Schedule;
+  readonly runSchedule?: Schedule;
 
   /**
    * Optional. A flag to enable or disable EventBridge listener for schema registry changes.

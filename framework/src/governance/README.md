@@ -167,3 +167,30 @@ The construct will make the IAM custom resource Role a member of the projectto b
 By default, the `DataZoneMskAssetType` creates its own factory resources required to connect to DataZone and create the custom asset type. But it's possible to reuse a Factory across multiple Custom Asset Types to limit the number of custom resource providers and DataZone project membership:
 
 [example factory configuration](./examples/datazone-msk-asset-type-factory.lit.ts)
+
+[//]: # (governance.datazone-gsr-msk-datasource)
+# DataZoneGsrMskDataSource
+
+DataZone Data Source for MSK Topics assets backed by Glue Schema Registry.
+
+## Overview
+
+`DataZoneGsrMskDataSource` is custom data source for DataZone that can create/update/delete MSK topics assets in DataZone based on a Glue Schema Registry definition. The custom data source can be triggered by a schedule or based on events from the Glue Schema Registry. The constructs implement:
+- EventBridge Rules triggered either on a schedule or event based.
+- A Lambda Function triggered from the EventBridge Rules and responsible for collecting metadata from The Glue Schema Registry and updating MSK Topic assets in DataZone.
+- SSM Parameter Store Parameters to store required metadata
+
+## Usage
+
+[example default usage](./examples/datazone-gsr-msk-datasource-default.lit.ts)
+
+## Data Source trigger modes
+
+The custom data source process can be triggered in two different ways. By default, if no schedule and events are not enabled, the construct creates a schedule every one hour.
+- Based on a Schedule
+
+[example schedule](./examples/datazone-gsr-msk-datasource-cron.lit.ts)
+
+- Based on events received from the Glue Schema Registry
+
+[example events](./examples/datazone-gsr-msk-datasource-event.lit.ts)

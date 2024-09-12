@@ -8,7 +8,9 @@ import TabItem from '@theme/TabItem';
 
 # Quick start
 
-> :heavy_exclamation_mark: If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
+:::info
+If you're new to AWS CDK, we recommend going through a [few basic examples first](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
+:::
 
 The DSF on AWS library is available in Typescript or Python, select the right tab for code examples in your preferred language.
 

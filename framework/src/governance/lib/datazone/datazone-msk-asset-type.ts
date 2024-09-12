@@ -31,6 +31,12 @@ export class DataZoneMskAssetType extends TrackedConstruct {
 
   private readonly removalPolicy: RemovalPolicy;
 
+  /**
+   * Construct an instance of the DataZoneMskAssetType
+   * @param scope the Scope of the CDK Construct
+   * @param id the ID of the CDK Construct
+   * @param props The DataZoneMskAssetTypeProps properties
+   */
   constructor(scope: Construct, id: string, props: DataZoneMskAssetTypeProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: DataZoneMskAssetType.name,

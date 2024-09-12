@@ -12,14 +12,12 @@ import { Schedule } from 'aws-cdk-lib/aws-events';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { TestStack } from './test-stack';
 import {
-  createSubscriptionTarget, DataZoneCustomAssetTypeFactory,
+  DataZoneHelpers, DataZoneCustomAssetTypeFactory,
   DataZoneMskAssetType,
   DataZoneMskCentralAuthorizer,
   DataZoneMskEnvironmentAuthorizer,
 } from '../../src/governance';
-import { DataZoneGsrKinesisDataSource } from '../../src/governance/lib/datazone/datazone-gsr-kinesis-datasource';
 import { DataZoneGsrMskDataSource } from '../../src/governance/lib/datazone/datazone-gsr-msk-datasource';
-import { DataZoneKinesisAssetType } from '../../src/governance/lib/datazone/datazone-kinesis-asset-type';
 import { KafkaClientLogLevel, MskServerless } from '../../src/streaming';
 import { DataVpc, Utils } from '../../src/utils';
 
@@ -118,12 +116,6 @@ const mskAssetTypeServerless = new DataZoneMskAssetType(stack, 'ServerlessMSKAss
   domainId: domainID,
 });
 
-new DataZoneKinesisAssetType(stack, 'KinesisAssetType', {
-  projectId: projectID,
-  domainId: domainID,
-});
-
-
 const cfnCrawlerRegistry = new glue.CfnRegistry(stack, 'MyCfnRegistryCrawler', {
   name: 'crawler-registry',
 });
@@ -172,7 +164,7 @@ new DataZoneGsrMskDataSource(stack, 'Crawler', {
   projectId: projectID,
   clusterName: clusterName,
   registryName: cfnCrawlerRegistry.name,
-  eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
+  runSchedule: Schedule.rate(Duration.minutes(20)),
   enableSchemaRegistryEvent: true,
 });
 
@@ -181,7 +173,7 @@ new DataZoneGsrMskDataSource(stack, 'Serverless-Crawler', {
   projectId: cfnMSKServerlessProject.attrId,
   clusterName: msk.clusterName,
   registryName: cfnServerlessRegistry.name,
-  eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
+  runSchedule: Schedule.rate(Duration.minutes(20)),
   enableSchemaRegistryEvent: true,
 });
 
@@ -206,15 +198,6 @@ new glue.CfnSchema(stack, 'KinesisSchema', {
   },
 });
 
-new DataZoneGsrKinesisDataSource(stack, 'KinesisCrawler', {
-  domainId: domainID,
-  projectId: projectID,
-  registryName: cfnKinesisRegistry.name,
-  eventBridgeSchedule: Schedule.rate(Duration.minutes(20)),
-  enableSchemaRegistryEvent: true,
-  enableKinesisEvent: true,
-});
-
 const consumerRole = Role.fromRoleArn(stack, 'consumerRole', CONSUMER_ROLE_ARN);
 
 const serverlessconsumerRole = Role.fromRoleArn(stack, 'ServerlessConsumerRole', 'arn:aws:iam::891377161433:role/datazone-serverless-environment');
@@ -233,10 +216,10 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
 
 mskCentralAuthorizer.registerAccount('891377161433');
 
-const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { removalPolicy: cdk.RemovalPolicy.DESTROY });
+const assetFactory = new DataZoneCustomAssetTypeFactory(stack, 'AssetTypeFactory', { domainId: domainID, removalPolicy: cdk.RemovalPolicy.DESTROY });
 
 
-createSubscriptionTarget(stack, 'Consumer',
+DataZoneHelpers.createSubscriptionTarget(stack, 'Consumer',
   mskAssetType.mskCustomAssetType,
   'testSubscription',
   'dsf',
@@ -245,7 +228,7 @@ createSubscriptionTarget(stack, 'Consumer',
   assetFactory.createRole,
 );
 
-createSubscriptionTarget(stack, 'MSKServerlessConsumerForMSF',
+DataZoneHelpers.createSubscriptionTarget(stack, 'MSKServerlessConsumerForMSF',
   mskAssetTypeServerless.mskCustomAssetType,
   'MSKServerlessSubscriptionTargetForMSF',
   'dsf',

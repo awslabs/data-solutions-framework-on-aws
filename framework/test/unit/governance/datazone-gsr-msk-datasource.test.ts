@@ -90,7 +90,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                       'Fn::Join': [
                         '',
                         [
-                          'arn:aws:datazone:',
+                          'arn:',
+                          { Ref: 'AWS::Partition' },
+                          ':datazone:',
                           { Ref: 'AWS::Region' },
                           ':',
                           { Ref: 'AWS::AccountId' },
@@ -102,7 +104,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                       'Fn::Join': [
                         '',
                         [
-                          'arn:aws:datazone:',
+                          'arn:',
+                          { Ref: 'AWS::Partition' },
+                          ':datazone:',
                           { Ref: 'AWS::Region' },
                           ':',
                           { Ref: 'AWS::AccountId' },
@@ -124,7 +128,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                       'Fn::Join': [
                         '',
                         [
-                          'arn:aws:glue:',
+                          'arn:',
+                          { Ref: 'AWS::Partition' },
+                          ':glue:',
                           { Ref: 'AWS::Region' },
                           ':',
                           { Ref: 'AWS::AccountId' },
@@ -136,7 +142,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                       'Fn::Join': [
                         '',
                         [
-                          'arn:aws:glue:',
+                          'arn:',
+                          { Ref: 'AWS::Partition' },
+                          ':glue:',
                           { Ref: 'AWS::Region' },
                           ':',
                           { Ref: 'AWS::AccountId' },
@@ -153,7 +161,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                     'Fn::Join': [
                       '',
                       [
-                        'arn:aws:kafka:',
+                        'arn:',
+                        { Ref: 'AWS::Partition' },
+                        ':kafka:',
                         { Ref: 'AWS::Region' },
                         ':',
                         { Ref: 'AWS::AccountId' },
@@ -169,7 +179,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                     'Fn::Join': [
                       '',
                       [
-                        'arn:aws:kafka:',
+                        'arn:',
+                        { Ref: 'AWS::Partition' },
+                        ':kafka:',
                         { Ref: 'AWS::Region' },
                         ':',
                         { Ref: 'AWS::AccountId' },
@@ -190,7 +202,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                     'Fn::Join': [
                       '',
                       [
-                        'arn:aws:ssm:',
+                        'arn:',
+                        { Ref: 'AWS::Partition' },
+                        ':ssm:',
                         { Ref: 'AWS::Region' },
                         ':',
                         { Ref: 'AWS::AccountId' },
@@ -269,18 +283,18 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
     registryName: REGISTRY_NAME,
     clusterName: CLUSTER_NAME,
     enableSchemaRegistryEvent: true,
-    eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }),
+    runSchedule: Schedule.cron({ minute: '0', hour: '12' }),
   });
 
   const template = Template.fromStack(stack);
-  // console.log(JSON.stringify(template.toJSON(), null, 2));
+  console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a the following resources', () => {
     template.resourceCountIs('AWS::Lambda::Function', 1);
     template.resourceCountIs('AWS::IAM::Role', 1);
     template.resourceCountIs('AWS::DataZone::ProjectMembership', 1);
-    template.resourceCountIs('AWS::Events::Rule', 4);
-    template.resourceCountIs('AWS::Lambda::Permission', 4);
+    template.resourceCountIs('AWS::Events::Rule', 3);
+    template.resourceCountIs('AWS::Lambda::Permission', 3);
   });
 
   test('should create EventBridge Rule with correct properties', () => {
@@ -316,6 +330,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
             ],
             eventName: [
               'CreateSchema',
+              'RegisterSchemaVersion',
             ],
             responseElements: {
               registryName: [
@@ -358,48 +373,6 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
             'Arn',
           ],
         },
-      }),
-    );
-  });
-
-
-  test('should create EventBridge Rule for Glue RegisterSchemaVersion with correct properties', () => {
-    template.hasResourceProperties('AWS::Events::Rule',
-      Match.objectLike({
-        EventPattern: {
-          source: [
-            'aws.glue',
-          ],
-          detail: {
-            eventSource: [
-              'glue.amazonaws.com',
-            ],
-            eventName: [
-              'RegisterSchemaVersion',
-            ],
-            requestParameters: {
-              schemaId: {
-                registryName: [
-                  REGISTRY_NAME, // Dynamic constant for schema registry name
-                ],
-              },
-            },
-          },
-        },
-        Name: 'RegisterSchemaVersionRule',
-        State: 'ENABLED',
-        Targets: Match.arrayWith([
-          Match.objectLike({
-            Arn: {
-              'Fn::GetAtt': [
-                Match.stringLikeRegexp('DataZoneGsrMskDataSource.*'),
-                'Arn',
-              ],
-            },
-            Id: Match.stringLikeRegexp('Target.*'),
-            Input: `{"registryName":"${REGISTRY_NAME}"}`, // Correct dynamic substitution of registry name
-          }),
-        ]),
       }),
     );
   });
@@ -448,7 +421,9 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
                       'Fn::Join': [
                         '',
                         [
-                          'arn:aws:glue:',
+                          'arn:',
+                          { Ref: 'AWS::Partition' },
+                          ':glue:',
                           { Ref: 'AWS::Region' },
                           ':',
                           { Ref: 'AWS::AccountId' },

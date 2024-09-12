@@ -29,46 +29,39 @@ import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
  *   projectId: '999999b3m5cpz',
  *   registryName: 'MyRegistry',
  *   clusterName: 'MyCluster',
- *   eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
+ *   runSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
  *   enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
  * });
  */
 export class DataZoneGsrMskDataSource extends TrackedConstruct {
-  /**
-   * The DataZone domain identifier
-   */
-  readonly domainId: string;
-  /**
-   * The DataZone project identifier
-   */
-  readonly projectId: string;
-  /**
-   * The Glue Schema Registry name
-   */
-  readonly registryName: string;
-  /**
-   * The schedule for EventBridge rules, if provided
-   * @default - No schedule rule is created
-   */
-  readonly eventBridgeSchedule: Schedule | undefined;
-  /**
-   * Whether to enable EventBridge listener for Glue Schema Registry events
-   * @default - false
-   */
-  readonly enableSchemaRegistryEvent: boolean | undefined;
-  /**
-   * The ARN of the MSK cluster
-   */
-  readonly clusterArn: string;
-  /**
-   * The name of the MSK cluster
-   */
-  readonly clusterName: string;
-  /**
-   * The AWS region where resources are deployed
-   */
-  readonly region: string;
 
+  /**
+   * The IAM Role of the Lambda Function interacting with DataZone API
+   */
+  public readonly datasourceLambdaRole: Role;
+  /**
+   * The membership of the Lambda Role on the DataZone Project
+   */
+  public readonly dataZoneMembership: CfnProjectMembership;
+  /**
+   * The Event Bridge Rule for schema creation and update
+   */
+  public readonly createUpdateEventRule?: Rule;
+  /**
+   * The Event Bridge Rule for trigger the data source execution
+   */
+  public readonly scheduleRule?: Rule;
+  /**
+   * The Event Bridge Rule for schema deletion
+   */
+  public readonly deleteEventRule?: Rule;
+
+  /**
+   * Build an instance of the DataZoneGsrMskDataSource
+   * @param scope the Scope of the CDK Construct
+   * @param id the ID of the CDK Construct
+   * @param props The DataZoneGsrMskDataSourceProps properties
+   */
   constructor(scope: Construct, id: string, props: DataZoneGsrMskDataSourceProps) {
     const trackedConstructProps: TrackedConstructProps = {
       trackingTag: DataZoneGsrMskDataSource.name,
@@ -78,23 +71,18 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
 
     const stack = Stack.of(this);
     const accountId = stack.account;
-    this.region = stack.region;
-    this.registryName = props.registryName;
-    this.clusterName = props.clusterName;
-    this.domainId = props.domainId;
-    this.projectId = props.projectId;
-    this.enableSchemaRegistryEvent = props.enableSchemaRegistryEvent;
-    this.eventBridgeSchedule = props.eventBridgeSchedule;
+    const region = stack.region;
+    const partition = stack.partition;
 
-    this.clusterArn = `arn:aws:kafka:${this.region}:${accountId}:cluster/${props.clusterName}/*`;
-    const listClustersArn = `arn:aws:kafka:${this.region}:${accountId}:/api/v2/clusters`;
-    const glueRegistryArn = `arn:aws:glue:${this.region}:${accountId}:registry/${props.registryName}`;
-    const glueRegistrySchemasArn = `arn:aws:glue:${this.region}:${accountId}:schema/${props.registryName}/*`;
+    const clusterArn = `arn:${partition}:kafka:${region}:${accountId}:cluster/${props.clusterName}/*`;
+    const listClustersArn = `arn:${partition}:kafka:${region}:${accountId}:/api/v2/clusters`;
+    const glueRegistryArn = `arn:${partition}:glue:${region}:${accountId}:registry/${props.registryName}`;
+    const glueRegistrySchemasArn = `arn:${partition}:glue:${region}:${accountId}:schema/${props.registryName}/*`;
 
     // Define SSM Parameter paths to store asset information
-    const parameterPrefix = `/datazone/${this.domainId}/${this.registryName}/asset/`;
+    const parameterPrefix = `/datazone/${props.domainId}/${props.registryName}/asset/`;
 
-    const handlerRole = new Role(this, 'HandlerRole', {
+    this.datasourceLambdaRole = new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
@@ -115,8 +103,8 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
                 'datazone:DeleteAsset',
               ],
               resources: [
-                `arn:aws:datazone:${this.region}:${accountId}:domain/${props.domainId}`,
-                `arn:aws:datazone:${this.region}:${accountId}:project/${props.projectId}`,
+                `arn:${partition}:datazone:${region}:${accountId}:domain/${props.domainId}`,
+                `arn:${partition}:datazone:${region}:${accountId}:project/${props.projectId}`,
               ],
             }),
             new PolicyStatement({
@@ -133,7 +121,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
               actions: [
                 'kafka:DescribeClusterV2',
               ],
-              resources: [this.clusterArn],
+              resources: [clusterArn],
             }),
             new PolicyStatement({
               effect: Effect.ALLOW,
@@ -151,7 +139,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
                 'ssm:GetParametersByPath',
               ],
               resources: [
-                `arn:aws:ssm:${this.region}:${accountId}:parameter${parameterPrefix}*`,
+                `arn:${partition}:ssm:${region}:${accountId}:parameter${parameterPrefix}*`,
               ],
             }),
           ],
@@ -159,50 +147,51 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
       },
     });
 
-    const membership = new CfnProjectMembership(this, 'ProjectMembership', {
+    this.dataZoneMembership = new CfnProjectMembership(this, 'ProjectMembership', {
       designation: 'PROJECT_CONTRIBUTOR',
       domainIdentifier: props.domainId,
       projectIdentifier: props.projectId,
       member: {
-        userIdentifier: handlerRole.roleArn,
+        userIdentifier: this.datasourceLambdaRole.roleArn,
       },
     });
 
     const lambdaCrawler = new Function(this, 'DataZoneGsrMskDataSource', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
-      role: handlerRole,
+      role: this.datasourceLambdaRole,
       timeout: Duration.minutes(5),
       code: Code.fromAsset(__dirname + '/resources/datazone-gsr-msk-datasource/'),
       environment: {
         DOMAIN_ID: props.domainId,
         PROJECT_ID: props.projectId,
         CLUSTER_NAME: props.clusterName,
-        REGION: this.region,
+        REGION: region,
         REGISTRY_NAME: props.registryName,
         ACCOUNT_ID: accountId,
         PARAMETER_PREFIX: parameterPrefix,
+        PARTITION: partition,
       },
     });
 
-    lambdaCrawler.node.addDependency(membership);
+    lambdaCrawler.node.addDependency(this.dataZoneMembership);
 
     // Add EventBridge Rule for cron schedule (if provided)
-    if (props.eventBridgeSchedule) {
-      new Rule(this, 'ScheduledRule', {
-        schedule: props.eventBridgeSchedule,
+    if (props.runSchedule || props.enableSchemaRegistryEvent === undefined) {
+      this.scheduleRule = new Rule(this, 'ScheduledRule', {
+        schedule: props.runSchedule || Schedule.expression('cron(1 0 * * ? *)'),
         targets: [new LambdaFunction(lambdaCrawler)],
       });
     }
 
     // Add EventBridge Rule for Glue Schema Registry changes (if enabled)
     if (props.enableSchemaRegistryEvent) {
-      new Rule(this, 'SchemaRegistryEventRule', {
+      this.createUpdateEventRule = new Rule(this, 'SchemaRegistryEventRule', {
         eventPattern: {
           source: ['aws.glue'],
           detail: {
             eventSource: ['glue.amazonaws.com'],
-            eventName: ['CreateSchema'],
+            eventName: ['CreateSchema', 'RegisterSchemaVersion'],
             responseElements: {
               registryName: [props.registryName],
             },
@@ -214,30 +203,9 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
           }),
         ],
       });
-      // Rule for RegisterSchemaVersion
-      new Rule(this, 'RegisterSchemaVersionRule', {
-        ruleName: 'RegisterSchemaVersionRule',
-        eventPattern: {
-          source: ['aws.glue'],
-          detail: {
-            eventSource: ['glue.amazonaws.com'],
-            eventName: ['RegisterSchemaVersion'],
-            requestParameters: {
-              schemaId: {
-                registryName: [props?.registryName],
-              },
-            },
-          },
-        },
-        targets: [
-          new LambdaFunction(lambdaCrawler, {
-            event: RuleTargetInput.fromObject({ registryName: props.registryName }),
-          }),
-        ],
-      });
 
       // Rule for DeleteSchema
-      new Rule(this, 'DeleteSchemaRule', {
+      this.deleteEventRule = new Rule(this, 'DeleteSchemaRule', {
         ruleName: 'DeleteSchemaRule',
         eventPattern: {
           source: ['aws.glue'],
@@ -247,7 +215,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
             requestParameters: {
               schemaId: {
                 schemaArn: [{
-                  prefix: `arn:aws:glue:${this.region}:${accountId}:schema/${props?.registryName}/*`,
+                  prefix: `arn:${partition}:glue:${region}:${accountId}:schema/${props?.registryName}/*`,
                 }],
               },
             },

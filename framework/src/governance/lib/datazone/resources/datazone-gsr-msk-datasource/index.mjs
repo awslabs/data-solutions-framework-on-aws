@@ -20,12 +20,13 @@ export const handler = async () => {
   const domainId = process.env.DOMAIN_ID;
   const accountId = process.env.ACCOUNT_ID;
   const projectId = process.env.PROJECT_ID;
+  const partition = process.env.PARTITION;
   
   if (!clusterName || !region || !registryName || !domainId || !accountId || !projectId) {
     throw new Error('Missing required environment variables.');
   }
   
-  const registryArn = `arn:aws:glue:${region}:${accountId}:registry/${registryName}`;
+  const registryArn = `arn:${partition}:glue:${region}:${accountId}:registry/${registryName}`;
   
   
   let clusterArn;
@@ -170,7 +171,7 @@ export const handler = async () => {
             identifier: assetId,
             description: 'Updating asset with new schema or forms',
             formsInput,
-            externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
+            externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName, partition),
           }));
           
           console.log(`Asset revision for ${schemaName} updated.`);
@@ -194,7 +195,7 @@ export const handler = async () => {
             name: schemaName,
             typeIdentifier: 'MskTopicAssetType',
             formsInput,
-            externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName),
+            externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName, partition),
           }));
           
           const newAssetId = createResponse.id;
@@ -247,8 +248,8 @@ export const handler = async () => {
 };
 
 // Utility functions
-function buildMskTopicArn(region, accountId, clusterName, topicName) {
-  return `arn:aws:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
+function buildMskTopicArn(region, accountId, clusterName, topicName, partition) {
+  return `arn:${partition}:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
 }
 
 function parseSchemaDefinition(schemaDefinition) {
