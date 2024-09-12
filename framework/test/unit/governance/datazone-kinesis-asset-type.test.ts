@@ -88,12 +88,12 @@ describe('Creating a DataZoneKinesisAssetType with default configuration', () =>
           },
           {
             name: 'KinesisSourceReferenceFormType',
-            model: '\n      structure KinesisSourceReferenceFormType {\n        @required\nstream_arn: String\n@required\nstream_capacity_mode: String\n\nstream_provisioned_shards: Integer\n      }\n    ',
+            model: '\n        structure KinesisSourceReferenceFormType {\n          @required\nstream_arn: String\n@required\nstream_capacity_mode: String\n\nstream_provisioned_shards: Integer\n        }\n      ',
             required: true,
           },
           {
             name: 'KinesisSchemaFormType',
-            model: '\n      structure KinesisSchemaFormType {\n        @required\nstream_name: String\n@required\nschema_version: Integer\n@required\nschema_arn: String\n@required\nregistry_arn: String\n      }\n    ',
+            model: '\n        structure KinesisSchemaFormType {\n          @required\nstream_name: String\n@required\nschema_version: Integer\n@required\nschema_arn: String\n@required\nregistry_arn: String\n        }\n      ',
             required: true,
           },
         ],

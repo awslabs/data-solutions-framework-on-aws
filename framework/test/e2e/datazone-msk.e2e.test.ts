@@ -1,13 +1,14 @@
 /**
- * Testing my changes
+ * Testing DataZone MSK constructs
  *
  * @group e2e/governance/datazone-msk
  */
 
 import * as cdk from 'aws-cdk-lib';
 import { CfnDomain } from 'aws-cdk-lib/aws-datazone';
+import { Schedule } from 'aws-cdk-lib/aws-events';
 import { TestStack } from './test-stack';
-import { DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance/index';
+import { DataZoneGsrMskDataSource, DataZoneMskAssetType, DataZoneMskCentralAuthorizer, DataZoneMskEnvironmentAuthorizer } from '../../src/governance/index';
 
 jest.setTimeout(10000000);
 
@@ -44,6 +45,15 @@ const mskAssetType = new DataZoneMskAssetType(stack, 'MskAssetType', {
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
+const gsrMskDataSource = new DataZoneGsrMskDataSource(stack, 'GsrMskDataSource', {
+  domainId: cfnDomain.attrId,
+  projectId: mskAssetType.owningProject!.attrId,
+  registryName: 'testRegistry',
+  clusterName: 'testCluster',
+  eventBridgeSchedule: Schedule.cron({ minute: '0', hour: '12' }),
+  enableSchemaRegistryEvent: true,
+});
+
 // createSubscriptionTarget(stack, 'Consumer',
 //   mskAssetType.mskCustomAssetType,
 //   'testSubscription',
@@ -57,6 +67,9 @@ new cdk.CfnOutput(stack, 'MskAssetTypeName', {
   value: mskAssetType.mskCustomAssetType.name,
 });
 
+new cdk.CfnOutput(stack, 'GsrMskDataSourceOutput', {
+  value: gsrMskDataSource.registryName,
+});
 
 let deployResult: Record<string, string>;
 
@@ -70,6 +83,7 @@ beforeAll(async() => {
 it('MskTopicAssetType and DataZoneMskAuthorizers created successfully', async () => {
   // THEN
   expect(deployResult.MskAssetTypeName).toContain('MskTopicAssetType');
+  expect(deployResult.GsrMskDataSourceOutput).toContain('testRegistry');
 });
 
 afterAll(async () => {

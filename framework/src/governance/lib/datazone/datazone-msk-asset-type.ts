@@ -26,7 +26,7 @@ export class DataZoneMskAssetType extends TrackedConstruct {
   /**
    * The project owning the MSK asset type
    */
-  readonly owningProjectId?: CfnProject;
+  readonly owningProject?: CfnProject;
 
 
   private readonly removalPolicy: RemovalPolicy;
@@ -45,7 +45,7 @@ export class DataZoneMskAssetType extends TrackedConstruct {
     });
 
     if (props.projectId === undefined) {
-      this.owningProjectId = new CfnProject(this, 'MskAssetTypeProjectOwner', {
+      this.owningProject = new CfnProject(this, 'MskAssetTypeProjectOwner', {
         name: 'MskGovernance',
         domainIdentifier: props.domainId,
       });
@@ -54,7 +54,7 @@ export class DataZoneMskAssetType extends TrackedConstruct {
     this.mskCustomAssetType = dzCustomAssetTypeFactory.createCustomAssetType('MskCustomAssetType', {
       assetTypeName: 'MskTopicAssetType',
       assetTypeDescription: 'Custom asset type to support MSK topic asset',
-      projectId: props.projectId || this.owningProjectId!.attrId,
+      projectId: props.projectId || this.owningProject!.attrId,
       formTypes: [
         {
           name: 'amazon.datazone.RelationalTableFormType',

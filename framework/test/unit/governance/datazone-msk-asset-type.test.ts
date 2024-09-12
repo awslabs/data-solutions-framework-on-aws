@@ -89,12 +89,12 @@ describe ('Creating a DataZoneMskAssetType with default configuration', () => {
           },
           {
             name: 'MskSourceReferenceFormType',
-            model: '\n      structure MskSourceReferenceFormType {\n        @required\ncluster_arn: String\n@required\ncluster_type: String\n      }\n    ',
+            model: '\n        structure MskSourceReferenceFormType {\n          @required\ncluster_arn: String\n@required\ncluster_type: String\n        }\n      ',
             required: true,
           },
           {
             name: 'KafkaSchemaFormType',
-            model: '\n      structure KafkaSchemaFormType {\n        @required\nkafka_topic: String\n\nschema_version: Integer\n\nschema_arn: String\n\nregistry_arn: String\n      }\n    ',
+            model: '\n        structure KafkaSchemaFormType {\n          @required\nkafka_topic: String\n\nschema_version: Integer\n\nschema_arn: String\n\nregistry_arn: String\n        }\n      ',
             required: true,
           },
         ],

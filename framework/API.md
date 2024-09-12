@@ -5140,7 +5140,7 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType">mskCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | The custom asset type for MSK. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProjectId">owningProjectId</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProject</code> | The project owning the MSK asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProject">owningProject</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProject</code> | The project owning the MSK asset type. |
 
 ---
 
@@ -5168,10 +5168,10 @@ The custom asset type for MSK.
 
 ---
 
-##### `owningProjectId`<sup>Optional</sup> <a name="owningProjectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProjectId"></a>
+##### `owningProject`<sup>Optional</sup> <a name="owningProject" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProject"></a>
 
 ```typescript
-public readonly owningProjectId: CfnProject;
+public readonly owningProject: CfnProject;
 ```
 
 - *Type:* aws-cdk-lib.aws_datazone.CfnProject
@@ -20936,6 +20936,134 @@ public readonly tlsProps: TlsAuthProps;
 properties for TLS authentication.
 
 ---
+
+
+### DataZoneHelpers <a name="DataZoneHelpers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers"></a>
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneHelpers()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.buildModelString">buildModelString</a></code> | Build a Smithy model string from model fields. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget">createSubscriptionTarget</a></code> | Creates a DataZone subscription target for a custom asset type. |
+
+---
+
+##### `buildModelString` <a name="buildModelString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.buildModelString"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneHelpers.buildModelString(formType: DataZoneFormType)
+```
+
+Build a Smithy model string from model fields.
+
+###### `formType`<sup>Required</sup> <a name="formType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.buildModelString.parameter.formType"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormType
+
+The form type containing the model fields.
+
+---
+
+##### `createSubscriptionTarget` <a name="createSubscriptionTarget" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneHelpers.createSubscriptionTarget(scope: Construct, id: string, customAssetType: CustomAssetType, name: string, provider: string, environmentId: string, authorizedPrincipals: IRole[], manageAccessRole: IRole)
+```
+
+Creates a DataZone subscription target for a custom asset type.
+
+Subscription targets are used to automatically add asset to environments when a custom asset is subscribed by a project.
+
+*Example*
+
+```typescript
+dsf.
+```
+
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+The scope of the construct.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.id"></a>
+
+- *Type:* string
+
+The id of the construct.
+
+---
+
+###### `customAssetType`<sup>Required</sup> <a name="customAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.customAssetType"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.CustomAssetType
+
+The custom asset type that can be added to the environment.
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.name"></a>
+
+- *Type:* string
+
+The name of the subscription target.
+
+---
+
+###### `provider`<sup>Required</sup> <a name="provider" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.provider"></a>
+
+- *Type:* string
+
+The provider of the subscription target.
+
+---
+
+###### `environmentId`<sup>Required</sup> <a name="environmentId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.environmentId"></a>
+
+- *Type:* string
+
+The DataZone environment identifier.
+
+---
+
+###### `authorizedPrincipals`<sup>Required</sup> <a name="authorizedPrincipals" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.authorizedPrincipals"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole[]
+
+The authorized principals to be granted when assets are subscribed.
+
+---
+
+###### `manageAccessRole`<sup>Required</sup> <a name="manageAccessRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.manageAccessRole"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role creating the subscription target.
+
+---
+
 
 
 ### KafkaVersion <a name="KafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion"></a>

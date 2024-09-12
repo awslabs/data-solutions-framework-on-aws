@@ -8,7 +8,7 @@ import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { DataZoneCustomAssetTypeProps } from './datazone-custom-asset-type-props';
-import { buildModelString } from './datazone-helpers';
+import { DataZoneHelpers } from './datazone-helpers';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { DsfProvider } from '../../../utils/lib/dsf-provider';
 
@@ -170,7 +170,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
         domainId: this.domainId,
         projectId: customAssetType.projectId,
         // we build the smithy model based on typescript props
-        formTypes: customAssetType.formTypes.map( formType => { return { ...formType, model: buildModelString(formType) };}),
+        formTypes: customAssetType.formTypes.map( formType => { return { ...formType, model: DataZoneHelpers.buildModelString(formType) };}),
         assetTypeName: customAssetType.assetTypeName,
         assetTypeDescription: customAssetType.assetTypeDescription,
       },
