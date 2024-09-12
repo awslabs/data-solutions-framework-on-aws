@@ -206,7 +206,6 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
 
       // Rule for DeleteSchema
       this.deleteEventRule = new Rule(this, 'DeleteSchemaRule', {
-        ruleName: 'DeleteSchemaRule',
         eventPattern: {
           source: ['aws.glue'],
           detail: {

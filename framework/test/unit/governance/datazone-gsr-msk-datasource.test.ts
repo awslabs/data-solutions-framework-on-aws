@@ -437,7 +437,6 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
             },
           },
         },
-        Name: 'DeleteSchemaRule',
         State: 'ENABLED',
         Targets: Match.arrayWith([
           Match.objectLike({
