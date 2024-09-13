@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 
-import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { CfnOutput, CustomResource, Duration, RemovalPolicy, Stack, Aws } from 'aws-cdk-lib';
 import { Connections, ISecurityGroup, IVpc, SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
@@ -174,6 +174,11 @@ export class MskProvisioned extends TrackedConstruct {
    * The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication
    */
   public readonly inClusterAclSecurityGroup?: ISecurityGroup[];
+  /**
+   * If there is an already existing service token deployed for the custom resource
+   * you can reuse it to reduce the number of resource created
+   */
+  public readonly serviceToken?: string;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly region: string;
@@ -474,6 +479,8 @@ export class MskProvisioned extends TrackedConstruct {
       removalPolicy: this.removalPolicy,
     });
 
+    this.serviceToken = this.kafkaApi.serviceToken;
+
     // Create the configuration
     let clusterConfigurationInfo: ClusterConfigurationInfo;
 
@@ -532,7 +539,7 @@ export class MskProvisioned extends TrackedConstruct {
     this.updateConnectivitySecurityGroup = updateConnectivityProvider.securityGroups;
 
     // Set the CR resource that are used by IAM credentials auth CR
-    // Applly the cluster configuration if provided and the cluster is created without mTLS auth
+    // Apply the cluster configuration if provided and the cluster is created without mTLS auth
     if (this.iamAcl) {
 
       this.iamCrudAdminRole = this.kafkaApi.mskAclRole;
@@ -634,6 +641,11 @@ export class MskProvisioned extends TrackedConstruct {
 
       }
     }
+
+    new CfnOutput(this, 'ServiceToken', {
+      value: this.serviceToken!,
+      exportName: `${Aws.STACK_NAME}-ServiceToken`,
+    });
 
   }
 

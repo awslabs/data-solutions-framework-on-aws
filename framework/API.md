@@ -4547,6 +4547,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskIamLogGroup">mskIamLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group used by the Custom Resource provider when MSK is using IAM authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskIamRole">mskIamRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Custom Resource provider when MSK is using IAM authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskIamSecurityGroup">mskIamSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Custom Resource provider when MSK is using IAM authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 
 ---
 
@@ -4655,6 +4656,18 @@ public readonly mskIamSecurityGroup: ISecurityGroup[];
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 The Security Group used by the Custom Resource provider when MSK is using IAM authentication.
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
@@ -5179,6 +5192,7 @@ streaming.MskProvisioned.createClusterConfiguration(scope: Construct, id: string
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclLogGroup">inClusterAclLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclRole">inClusterAclRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the Lambda responsible for CRUD operations via mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.inClusterAclSecurityGroup">inClusterAclSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup[]</code> | The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityFunction">updateConnectivityFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function responsible for updating MSK Connectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityLogGroup">updateConnectivityLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Lambda responsible for updating MSK Connectivity. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.updateConnectivityRole">updateConnectivityRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Lambda responsible for updating MSK Connectivity. |
@@ -5415,6 +5429,18 @@ public readonly inClusterAclSecurityGroup: ISecurityGroup[];
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup[]
 
 The Security Group used by the Lambda responsible for CRUD operations via mTLS authentication.
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisioned.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
@@ -5804,6 +5830,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.lambdaSecurityGroup">lambdaSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 
 ---
 
@@ -5866,6 +5893,18 @@ public readonly brokerSecurityGroup: ISecurityGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 
@@ -13388,6 +13427,7 @@ const kafkaApiProps: streaming.KafkaApiProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.mtlsHandlerRole">mtlsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to mTLS lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy when deleting the CDK resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.subnets">subnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | The subnets where the Custom Resource Lambda Function would be created in. |
 
 ---
@@ -13528,6 +13568,18 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise the removalPolicy is reverted to RETAIN.
+
+---
+
+##### `serviceToken`<sup>Optional</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created.
 
 ---
 

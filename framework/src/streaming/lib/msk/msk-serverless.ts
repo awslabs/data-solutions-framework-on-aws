@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CustomResource, RemovalPolicy } from 'aws-cdk-lib';
+import { CfnOutput, CustomResource, RemovalPolicy, Aws } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, PolicyDocument } from 'aws-cdk-lib/aws-iam';
 import { CfnClusterPolicy, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
@@ -28,6 +28,11 @@ export class MskServerless extends TrackedConstruct {
   public readonly brokerSecurityGroup?: ISecurityGroup;
   public readonly clusterName: string;
   public readonly lambdaSecurityGroup: ISecurityGroup;
+  /**
+   * If there is an already existing service token deployed for the custom resource
+   * you can reuse it to reduce the number of resource created
+   */
+  public readonly serviceToken?: string;
 
   private readonly removalPolicy: RemovalPolicy;
   private readonly kafkaApi: KafkaApi;
@@ -112,6 +117,11 @@ export class MskServerless extends TrackedConstruct {
       kafkaClientLogLevel: props?.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN,
     });
 
+    this.serviceToken = this.kafkaApi.serviceToken;
+    new CfnOutput(this, 'ServiceToken', {
+      value: this.serviceToken!,
+      exportName: `${Aws.STACK_NAME}-ServiceToken`,
+    });
   }
 
   /**

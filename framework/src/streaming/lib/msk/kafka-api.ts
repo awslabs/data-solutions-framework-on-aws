@@ -59,6 +59,11 @@ export class KafkaApi extends TrackedConstruct {
    * The Security Group used by the Custom Resource provider when MSK is using mTLS authentication
    */
   public readonly mskAclSecurityGroup?: ISecurityGroup [];
+  /**
+   * If there is an already existing service token deployed for the custom resource
+   * you can reuse it to reduce the number of resource created
+   */
+  public readonly serviceToken?: string;
 
   private readonly mskAclServiceToken?: string;
   private readonly mskIamServiceToken?: string;
@@ -96,41 +101,51 @@ export class KafkaApi extends TrackedConstruct {
 
     if (props.clientAuthentication.tlsProps?.certificateAuthorities) {
 
-      const mskAclProvider = mskAclAdminProviderSetup(
-        this,
-        this.removalPolicy,
-        props.vpc,
-        props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-        props.brokerSecurityGroup,
-        props.clusterArn,
-        props.certficateSecret!,
-        props.mtlsHandlerRole,
-      );
+      if (props.serviceToken) {
+        this.mskAclServiceToken = props.serviceToken;
+      } else {
+        const mskAclProvider = mskAclAdminProviderSetup(
+          this,
+          this.removalPolicy,
+          props.vpc,
+          props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+          props.brokerSecurityGroup,
+          props.clusterArn,
+          props.certficateSecret!,
+          props.mtlsHandlerRole,
+        );
 
-      this.mskAclServiceToken = mskAclProvider.serviceToken;
-      this.mskAclRole = mskAclProvider.onEventHandlerRole;
-      this.mskAclLogGroup = mskAclProvider.onEventHandlerLogGroup;
-      this.mskAclFunction = mskAclProvider.onEventHandlerFunction;
-      this.mskAclSecurityGroup = mskAclProvider.securityGroups;
+        this.mskAclServiceToken = mskAclProvider.serviceToken;
+        this.mskAclRole = mskAclProvider.onEventHandlerRole;
+        this.mskAclLogGroup = mskAclProvider.onEventHandlerLogGroup;
+        this.mskAclFunction = mskAclProvider.onEventHandlerFunction;
+        this.mskAclSecurityGroup = mskAclProvider.securityGroups;
+        this.serviceToken = mskAclProvider.serviceToken;
+      }
     }
 
     if ( props.clientAuthentication.saslProps?.iam) {
 
-      const mskIamProvider = mskIamCrudProviderSetup(
-        this,
-        this.removalPolicy,
-        props.vpc,
-        props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
-        props.brokerSecurityGroup,
-        props.clusterArn,
-        props.iamHandlerRole,
-      );
+      if (props.serviceToken) {
+        this.mskIamServiceToken = props.serviceToken;
+      } else {
+        const mskIamProvider = mskIamCrudProviderSetup(
+          this,
+          this.removalPolicy,
+          props.vpc,
+          props.subnets || props.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
+          props.brokerSecurityGroup,
+          props.clusterArn,
+          props.iamHandlerRole,
+        );
 
-      this.mskIamServiceToken = mskIamProvider.serviceToken;
-      this.mskIamRole = mskIamProvider.onEventHandlerRole;
-      this.mskIamLogGroup = mskIamProvider.onEventHandlerLogGroup;
-      this.mskIamFunction = mskIamProvider.onEventHandlerFunction;
-      this.mskIamSecurityGroup = mskIamProvider.securityGroups;
+        this.mskIamServiceToken = mskIamProvider.serviceToken;
+        this.mskIamRole = mskIamProvider.onEventHandlerRole;
+        this.mskIamLogGroup = mskIamProvider.onEventHandlerLogGroup;
+        this.mskIamFunction = mskIamProvider.onEventHandlerFunction;
+        this.mskIamSecurityGroup = mskIamProvider.securityGroups;
+        this.serviceToken = mskIamProvider.serviceToken;
+      }
     }
 
   }
