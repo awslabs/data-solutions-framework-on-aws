@@ -2,15 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { CfnEventBusPolicy, IRule } from 'aws-cdk-lib/aws-events';
 import { IRole, Role, ServicePrincipal, ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
-import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizer } from './datazone-msk-central-authorizer';
 import { DataZoneMskEnvironmentAuthorizerProps } from './datazone-msk-environment-authorizer-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environment-helpers';
+import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 
 /**
  * An environment authorizer workflow for granting read access to Kafka topics.
@@ -34,23 +33,11 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
    */
   public readonly grantFunction: IFunction;
   /**
-   * The event bus policy used to receive events from the central authorizer
+   * The IAM role used by the environment authorizer State Machine
    */
-  public readonly eventBusPolicy?: CfnEventBusPolicy;
+  public readonly stateMachineRole: IRole;
   /**
-   * The dead letter queue for the events
-   */
-  public readonly deadLetterQueue: any;
-  /**
-   * The role used by the events to trigger the authorizer workflow
-   */
-  public readonly eventRole: IRole;
-  /**
-   * The event rule used to trigger the authorizer workflow
-   */
-  public readonly eventRule: IRule;
-  /**
-   * The state machine used to orchestrate the authorizer workflow
+   * The environment authorizer State Machine
    */
   public readonly stateMachine: IStateMachine;
 
@@ -71,7 +58,8 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
 
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
-    this.grantRole = new Role(this, 'GrantRole', {
+    const grantRole = new Role(this, 'GrantRole', {
+      roleName: `${DataZoneMskCentralAuthorizer.AUTHORIZER_NAME}GrantFunction`,
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
@@ -100,6 +88,8 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       },
     });
 
+    this.grantRole = grantRole;
+
     this.grantFunction = new Function(this, 'GrantFunction', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
@@ -116,15 +106,11 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       this.grantFunction,
       props.centralAccountId,
       Duration.minutes(2),
-      0,
       this.removalPolicy,
     );
 
-    this.eventBusPolicy = customAuthorizer.eventBusPolicy;
-    this.deadLetterQueue = customAuthorizer.deadLetterQueue;
-    this.eventRole = customAuthorizer.eventRole;
-    this.eventRule = customAuthorizer.eventRule;
     this.stateMachine = customAuthorizer.stateMachine;
+    this.stateMachineRole = customAuthorizer.stateMachineRole;
 
   }
 }

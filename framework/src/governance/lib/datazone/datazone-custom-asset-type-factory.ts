@@ -34,7 +34,7 @@ export interface CustomAssetType {
   /**
    * The domain identifier of the custom asset type
    */
-  readonly domainIdentifier: string;
+  readonly domainId: string;
   /**
    * The name of the custom asset type
    */
@@ -180,7 +180,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
     crResp.node.addDependency(projMembership);
 
     return {
-      domainIdentifier: crResp.getAttString('domainId'),
+      domainId: crResp.getAttString('domainId'),
       name: crResp.getAttString('name'),
       projectIdentifier: crResp.getAttString('owningProjectId'),
       revision: crResp.getAttString('revision'),

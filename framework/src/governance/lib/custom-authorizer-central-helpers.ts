@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { CfnEventBusPolicy, EventBus, EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
-import { LambdaFunction, SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
-import { IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { IFunction, Function, Code, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Arn, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
+import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
+import { AccountPrincipal, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
-import { DefinitionBody, Fail, IntegrationPattern, JsonPath, StateMachine, TaskInput, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
+import { DefinitionBody, Fail, IntegrationPattern, JsonPath, Pass, StateMachine, TaskInput, TaskRole, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { Utils } from '../../utils';
+
 
 /**
  * Interface for the authorizer central workflow
@@ -20,6 +20,14 @@ export interface AuthorizerCentralWorflow{
    * The authorizer Step Functions state machine
    */
   readonly stateMachine: StateMachine;
+  /**
+   * The IAM Role used by the State Machine
+   */
+  readonly stateMachineRole: Role;
+  /**
+   * The IAM Role used by the State Machine Call Back
+   */
+  readonly callbackRole: Role;
   /**
    * The authorizer dead letter queue for failed events
    */
@@ -32,19 +40,8 @@ export interface AuthorizerCentralWorflow{
    * The authorizer event role for allowing events to invoke the workflow
    */
   readonly authorizerEventRole: IRole;
-  /**
-   * The callback event rule for listening to producer and subscriber grants callback
-   */
-  readonly callbackEventRule: IRule;
-  /**
-   * The Lambda function for handling producer and subscriber grants callback
-   */
-  readonly callbackFunction: IFunction;
-  /**
-   * The role for the Lambda function handling producer and subscriber grants callback
-   */
-  readonly callbackRole: IRole;
 }
+
 /**
  * Grant type for the authorizer workflow
  */
@@ -86,17 +83,42 @@ export function authorizerCentralWorkflowSetup(
     assumedBy: new ServicePrincipal('events.amazonaws.com'),
   });
 
-  const callbackEventRule = new Rule(scope, 'CallbackEventRule', {
-    eventPattern: {
-      source: [authorizerName],
-      detailType: ['callback'],
-    },
-  });
-
   const metadataCollector = new LambdaInvoke(scope, 'MetadataCollector', {
     lambdaFunction: metadataCollectorFunction,
     resultSelector: { 'Metadata.$': '$.Payload' },
     taskTimeout: Timeout.duration(Duration.minutes(2)),
+  });
+
+  const envMetadataProcess = new Pass(scope, 'EnvironementMetadataProcess', {
+    parameters: {
+      Producer: {
+        StateMachineRole: JsonPath.format(
+          `arn:{}:iam::{}:role/${authorizerName}EnvironmentStateMachine`, 
+          JsonPath.stringAt('$.Metadata.Producer.Partition'), 
+          JsonPath.stringAt('$.Metadata.Producer.Account')
+        ),
+        StateMachineArn: JsonPath.format(
+          `arn:{}:states:{}:{}:stateMachine:${authorizerName}Environment`, 
+          JsonPath.stringAt('$.Metadata.Producer.Partition'), 
+          JsonPath.stringAt('$.Metadata.Producer.Region'), 
+          JsonPath.stringAt('$.Metadata.Producer.Account')
+        ),
+      },
+      Consumer: {
+        StateMachineRole: JsonPath.format(
+          `arn:{}:iam::{}:role/${authorizerName}EnvironmentStateMachine`, 
+          JsonPath.stringAt('$.Metadata.Consumer.Partition'), 
+          JsonPath.stringAt('$.Metadata.Consumer.Account')
+        ),
+        StateMachineArn: JsonPath.format(
+          `arn:{}:states:{}:{}:stateMachine:${authorizerName}Environment`, 
+          JsonPath.stringAt('$.Metadata.Consumer.Partition'), 
+          JsonPath.stringAt('$.Metadata.Consumer.Region'), 
+          JsonPath.stringAt('$.Metadata.Consumer.Account')
+        ),
+      }
+    },
+    resultPath: '$.WorkflowMetadata',
   });
 
   const invokeProducerGrant = invokeGrant(scope, 'ProducerGrant', authorizerName, GrantType.PRODUCER);
@@ -121,10 +143,12 @@ export function authorizerCentralWorkflowSetup(
       Error: JsonPath.stringAt('$.ErrorInfo.Error'),
       Cause: JsonPath.stringAt('$.ErrorInfo.Cause'),
     }),
+    resultPath: '$.CallBackResult'
   });
 
   const failure = governanceFailureCallback.next(new Fail(scope, 'CentralWorfklowFailure', {
-    errorPath: '$.ErrorInfo',
+    errorPath: '$.ErrorInfo.Error',
+    causePath: '$.ErrorInfo.Cause',
   }));
 
   metadataCollector.addCatch(failure, {
@@ -143,14 +167,22 @@ export function authorizerCentralWorkflowSetup(
   });
 
   const stateMachineDefinition = metadataCollector
+    .next(envMetadataProcess)
     .next(invokeProducerGrant)
     .next(invokeConsumerGrant)
     .next(governanceSuccessCallback);
+
+  const stateMachineRole = new Role(scope, 'StateMachineRole', {
+    assumedBy: new ServicePrincipal('states.amazonaws.com'),
+    roleName: `${authorizerName}CentralStateMachine`,
+  });
 
   const stateMachine = new StateMachine(scope, 'StateMachine', {
     definitionBody: DefinitionBody.fromChainable(stateMachineDefinition),
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
+    role: stateMachineRole,
+    stateMachineName: `${authorizerName}Central`
   });
 
   const deadLetterQueue = new Queue(scope, 'Queue', {
@@ -166,57 +198,16 @@ export function authorizerCentralWorkflowSetup(
     retryAttempts: retryAttempts || DEFAULT_RETRY_ATTEMPTS,
   }));
 
-  const callbackRole = new Role(scope, 'LambdaCallbackRole', {
-    assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-    managedPolicies: [
-      ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-    ],
-  });
-
-  callbackRole.addToPolicy(
-    new PolicyStatement({
-      actions: ['states:SendTaskSuccess', 'states:SendTaskFailure'],
-      resources: [stateMachine.stateMachineArn],
-    }),
-  );
-
-  const callbackFunction = new Function(scope, 'CallbackFunction', {
-    runtime: Runtime.NODEJS_20_X,
-    handler: 'index.handler',
-    code: Code.fromAsset(__dirname+'/resources/custom-authorizer-callback/'),
-    role: callbackRole,
-    timeout: Duration.seconds(5),
+  const callbackRole = new Role(scope, 'CallbackRole', {
+    assumedBy: new ServicePrincipal('states.amazonaws.com'),
+    roleName: `${authorizerName}CentralCallback`,
   });
 
   stateMachine.grantTaskResponse(callbackRole);
 
-  callbackEventRule.addTarget(new LambdaFunction(callbackFunction, {
-    deadLetterQueue,
-    maxEventAge: Duration.hours(1),
-    retryAttempts: 10,
-  }));
+  registerAccount(scope, 'SelfRegisterAccount', Stack.of(scope).account, authorizerName, stateMachineRole, callbackRole)
 
-  // grantPutEvents(scope, Stack.of(scope).account, stateMachine.role);
-
-  return { stateMachine, deadLetterQueue, authorizerEventRule, authorizerEventRole, callbackEventRule, callbackFunction, callbackRole };
-}
-
-/**
- * Grant a role to put events in the default Event Bridge bus of an account.
- * This method adds an IAM role policy but doesn't modify the Event Bridge bus resource policy.
- * @param scope The scope creating the resources
- * @param accountId The account ID of the default Event Bridge bus
- * @param role The role to grant access to
- */
-export function grantPutEvents(scope: Construct, accountId: string, role: IRole) {
-
-  const targetEventBus = EventBus.fromEventBusArn(
-    scope,
-    `${accountId}CentralEventBus`,
-    `arn:${Stack.of(scope).partition}:events:${Stack.of(scope).region}:${accountId}:event-bus/default`,
-  );
-
-  targetEventBus.grantPutEventsTo(role);
+  return { stateMachine, stateMachineRole, callbackRole, deadLetterQueue, authorizerEventRule, authorizerEventRole };
 }
 
 /**
@@ -227,16 +218,36 @@ export function grantPutEvents(scope: Construct, accountId: string, role: IRole)
  * @param role The role to grant access to
  * @returns The CfnEventBusPolicy created to grant the account
  */
-export function registerAccount(scope: Construct, id: string, accountId: string, role: IRole): CfnEventBusPolicy {
+export function registerAccount(scope: Construct, id: string, accountId: string, authorizerName: string, invokeRole: Role, callbackRole: Role) {
 
-  grantPutEvents(scope, accountId, role);
+  const stack = Stack.of(scope);
 
-  return new CfnEventBusPolicy(scope, `${accountId}${id}CentralEventBusPolicy`, {
-    statementId: Utils.stringSanitizer(accountId + id),
-    action: 'events:PutEvents',
-    principal: accountId,
-    eventBusName: 'default',
-  });
+  const targetRole = Role.fromRoleArn(scope, `${id}EnvironmentStateMachineRole`, 
+    Arn.format({
+      account: accountId,
+      region: '',
+      service: 'iam',
+      resource: 'role',
+      resourceName: `${authorizerName}EnvironmentStateMachine`,
+    },stack), {
+      mutable: false,
+      addGrantsToResources: true,
+    }
+  );
+
+  callbackRole.assumeRolePolicy?.addStatements(
+    new PolicyStatement({
+      actions: ['sts:AssumeRole'],
+      principals: [ stack.account !== accountId ? new AccountPrincipal(accountId) : targetRole ],
+      conditions: {
+        StringLike: {
+          'sts:ExternalId': `arn:${stack.partition}:states:*:${accountId}:stateMachine:${authorizerName}Environment`,
+        }
+      }
+    }
+  ));
+
+  targetRole.grantAssumeRole(invokeRole);
 };
 
 /**
@@ -249,25 +260,30 @@ export function registerAccount(scope: Construct, id: string, accountId: string,
  */
 function invokeGrant(scope: Construct, id: string, authorizerName: string, grantType: GrantType): CallAwsService {
 
-  const eventBusName = grantType === GrantType.CONSUMER ?
-    JsonPath.format('arn:aws:events:{}:{}:event-bus/default', JsonPath.stringAt('$.Metadata.Consumer.Region'), JsonPath.stringAt('$.Metadata.Consumer.Account')) :
-    JsonPath.format('arn:aws:events:{}:{}:event-bus/default', JsonPath.stringAt('$.Metadata.Producer.Region'), JsonPath.stringAt('$.Metadata.Producer.Account'));
-
-  return new CallAwsService(scope, `${id}EventBridgePutEvents`, {
-    service: 'eventbridge',
-    action: 'putEvents',
+  return new CallAwsService(scope, `${id}StateMachineExecution`, {
+    service: 'sfn',
+    action: 'startExecution',
     parameters: {
-      Entries: [{
-        Detail: TaskInput.fromObject({
-          TaskToken: JsonPath.taskToken,
-          Metadata: JsonPath.objectAt('$.Metadata'),
-        }),
-        DetailType: grantType,
-        Source: authorizerName,
-        EventBusName: eventBusName,
-      }],
+      StateMachineArn: JsonPath.stringAt(
+        grantType === GrantType.CONSUMER ?
+          '$.WorkflowMetadata.Consumer.StateMachineArn' :
+          '$.WorkflowMetadata.Producer.StateMachineArn'
+      ),
+      Input: { 
+        Metadata: JsonPath.objectAt('$.Metadata'),
+        GrantType: grantType,
+        AuthorizerName: authorizerName,
+        TaskToken: JsonPath.taskToken,
+      }
     },
-    iamResources: [`arn:aws:events:${Stack.of(scope).region}:${Stack.of(scope).region}:event-bus/default`],
+    credentials: { 
+      role: TaskRole.fromRoleArnJsonPath(
+        grantType === GrantType.CONSUMER ?
+          '$.WorkflowMetadata.Consumer.StateMachineRole' :
+          '$.WorkflowMetadata.Producer.StateMachineRole'
+      )
+    } ,
+    iamResources: [`arn:${Stack.of(scope).partition}:states:${Stack.of(scope).region}:*:stateMachine:${authorizerName}Environment`],
     integrationPattern: IntegrationPattern.WAIT_FOR_TASK_TOKEN,
     taskTimeout: Timeout.duration(Duration.minutes(5)),
     resultPath: JsonPath.DISCARD,

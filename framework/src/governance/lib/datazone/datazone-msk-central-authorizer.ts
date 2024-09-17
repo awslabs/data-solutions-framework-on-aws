@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { CfnEventBusPolicy, IRule } from 'aws-cdk-lib/aws-events';
+import { IRule } from 'aws-cdk-lib/aws-events';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
@@ -29,7 +29,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
   /**
    * The name of the authorizer
    */
-  public static readonly AUTHORIZER_NAME = 'dsf.MskTopicAuthorizer';
+  public static readonly AUTHORIZER_NAME = 'MskTopicAuthorizer';
   /**
    * The asset type for the DataZone custom asset type
    */
@@ -67,17 +67,13 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    */
   public readonly stateMachine: StateMachine;
   /**
-   * The event rule used to listen for producer and subscriber grants callback
+   * The IAM Role used by the authorizer workflow State Machine
    */
-  public readonly callbackEventRule: IRule;
+  public readonly stateMachineRole: Role;
   /**
-   * The Lambda function used to handle producer and subscriber grants callback
+   * The IAM Role used by the authorizer workflow callback
    */
-  public readonly callbackFunction: IFunction;
-  /**
-   * The role used by the Lambda function handling producer and subscriber grants callback
-   */
-  public readonly callbackRole: IRole;
+  public readonly stateMachineCallbackRole: Role;
 
   private readonly removalPolicy: RemovalPolicy;
 
@@ -189,19 +185,19 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     this.datazoneEventRole = customAuthorizer.authorizerEventRole;
     this.datazoneEventRule = customAuthorizer.authorizerEventRule;
     this.stateMachine = customAuthorizer.stateMachine;
-    this.callbackEventRule = customAuthorizer.callbackEventRule;
-    this.callbackFunction = customAuthorizer.callbackFunction;
-    this.callbackRole = customAuthorizer.callbackRole;
+    this.stateMachineRole = customAuthorizer.stateMachineRole;
+    this.stateMachineCallbackRole = customAuthorizer.callbackRole;
   }
 
 
   /**
    * Connect the central authorizer workflow with environment authorizer workflows in other accounts.
    * This method grants the environment workflow to send events in the default Event Bridge bus for orchestration.
+   * @param id The construct ID to use
    * @param accountId The account ID to register the authorizer with
    * @returns The CfnEventBusPolicy created to grant the account
    */
-  public registerAccount(accountId: string): CfnEventBusPolicy {
-    return registerAccount(this, DataZoneMskCentralAuthorizer.AUTHORIZER_NAME, accountId, this.stateMachine.role);
+  public registerAccount(id: string, accountId: string){
+    registerAccount(this, id, accountId, DataZoneMskCentralAuthorizer.AUTHORIZER_NAME, this.stateMachineRole, this.stateMachineCallbackRole);
   };
 }

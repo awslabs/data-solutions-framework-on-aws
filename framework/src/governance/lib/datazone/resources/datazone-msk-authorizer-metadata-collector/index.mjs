@@ -113,6 +113,7 @@ export const handler = async(event) => {
       Account: producerAccountId,
     },
     Consumer: {
+      Partition: partition,
       Region: consumerRegion,
       Account: consumerAccountId,
       RolesArn: consumerRolesArn,

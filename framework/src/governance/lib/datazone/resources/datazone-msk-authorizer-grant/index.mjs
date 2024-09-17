@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { KafkaClient, PutClusterPolicyCommand, GetClusterPolicyCommand, BadRequestException } from "@aws-sdk/client-kafka"
+import { KafkaClient, PutClusterPolicyCommand, GetClusterPolicyCommand, BadRequestException, NotFoundException } from "@aws-sdk/client-kafka"
 import { IAMClient, PutRolePolicyCommand, DeleteRolePolicyCommand, NoSuchEntityException } from "@aws-sdk/client-iam";
 
 
@@ -40,14 +40,29 @@ function delay(ms) {
 
 async function updateClusterPolicyWithRetry(client, grantStatement, requestType, clusterArn, retryCount = 0) {
   try {
-    
-    const result = await client.send(
-      new GetClusterPolicyCommand({
-        ClusterArn: clusterArn,
-      })
-    )
-    console.log(`Current policy: ${result.Policy}`);
-    let policy = JSON.parse(result.Policy);
+
+    let policy;
+    let result = undefined;
+    // Test if the cluster policy doesn't exist  
+    try {
+      result = await client.send(
+        new GetClusterPolicyCommand({
+          ClusterArn: clusterArn,
+        })
+      )
+      console.log(`Current policy: ${result.Policy}`);
+      policy = JSON.parse(result.Policy);
+    } catch(error){
+      if (error instanceof NotFoundException) {
+        console.log("Cluster policy doesn't exist, creating one...");
+        policy = {
+          Version: "2012-10-17",
+          Statement: []
+        };
+      } else {
+        throw error;
+      }
+    }
 
     if (requestType === 'GRANT') {
       // Merge policies
@@ -60,13 +75,23 @@ async function updateClusterPolicyWithRetry(client, grantStatement, requestType,
     }
     console.log(`New policy: ${JSON.stringify({ policy }, null, 2)}`);
 
-    // push the new policy with MVCC
-    const putResult  = await client.send(
-      new PutClusterPolicyCommand({
+    let putClusterPolicyArgs;
+    if (result !== undefined) {
+      putClusterPolicyArgs = {
         ClusterArn: clusterArn,
         Policy: JSON.stringify(policy),
         CurrentVersion: result.CurrentVersion,
-      })
+      }
+    } else {
+      putClusterPolicyArgs = {
+        ClusterArn: clusterArn,
+        Policy: JSON.stringify(policy),
+      }
+    }
+
+    // push the new policy with MVCC
+    const putResult  = await client.send(
+      new PutClusterPolicyCommand(putClusterPolicyArgs)
     );
     console.log(`Policy updated: ${JSON.stringify({putResult}, null, 2)}`);
 
@@ -79,7 +104,7 @@ async function updateClusterPolicyWithRetry(client, grantStatement, requestType,
         const delayMs = calculateExponentialBackoff(retryCount, INITIAL_DELAY_MS, MAX_DELAY_MS);
         console.log(`Retrying in ${delayMs} ms...`);
         await delay(delayMs);
-        await updateClusterPolicyWithRetry(client, kafkaClusterPolicy, requestType, clusterArn, retryCount + 1);
+        await updateClusterPolicyWithRetry(client, policy, requestType, clusterArn, retryCount + 1);
 
       } else {
         throw new Error("Error updating MSK cluster policy: concurrent modifications failure and maximum retries exceeded.");
@@ -131,20 +156,21 @@ export const handler = async(event) => {
 
   console.log(`event received: ${JSON.stringify({ event }, null, 2)}`);
   const grantManagedVpc = process.env.GRANT_VPC;
+  const grantType = event.GrantType;
 
-  const topicArn = event.detail.value.Metadata.Producer.TopicArn;
-  const clusterArn = event.detail.value.Metadata.Producer.ClusterArn;
-  const clusterType = event.detail.value.Metadata.Producer.ClusterType;
-  const producerAccount = event.detail.value.Metadata.Producer.Account;
-  const consumerAccount = event.detail.value.Metadata.Consumer.Account;
-  const consumerRolesArn = event.detail.value.Metadata.Consumer.RolesArn;
-  const subscriptionGrantId = event.detail.value.Metadata.SubscriptionGrantId;
-  const assetId = event.detail.value.Metadata.AssetId;
-  const requestType = event.detail.value.Metadata.RequestType;
+  const topicArn = event.Metadata.Producer.TopicArn;
+  const clusterArn = event.Metadata.Producer.ClusterArn;
+  const clusterType = event.Metadata.Producer.ClusterType;
+  const producerAccount = event.Metadata.Producer.Account;
+  const consumerAccount = event.Metadata.Consumer.Account;
+  const consumerRolesArn = event.Metadata.Consumer.RolesArn;
+  const subscriptionGrantId = event.Metadata.SubscriptionGrantId;
+  const assetId = event.Metadata.AssetId;
+  const requestType = event.Metadata.RequestType;
 
   const iamMskResources = getMskIamResources(topicArn, clusterArn);
   
-  if (event['detail-type'] === "producerGrant") {
+  if (grantType === "producerGrant") {
 
     if (consumerAccount !== producerAccount) {
 
@@ -172,15 +198,15 @@ export const handler = async(event) => {
     } else {
       console.log("Producer and consumer are in the same account, skipping cluster policy")
     }
-  } else if (event['detail-type'] === 'consumerGrant') {
+  } else if (grantType === 'consumerGrant') {
 
     let iamActions = mskReadActions;
     let iamResources = iamMskResources;
     // Test if we need to grant permissions on the Glue Schema Registry
-    const schemaArn = event.detail.value.Metadata.Producer.SchemaArn;
+    const schemaArn = event.Metadata.Producer.SchemaArn;
     if ( schemaArn !== undefined && producerAccount === consumerAccount) {
       iamActions = mskReadActions.concat(gsrReadActions);
-      iamResources = iamMskResources.concat([schemaArn, event.detail.value.Metadata.Producer.RegistryArn]);
+      iamResources = iamMskResources.concat([schemaArn, event.Metadata.Producer.RegistryArn]);
     }
 
     let statements = [

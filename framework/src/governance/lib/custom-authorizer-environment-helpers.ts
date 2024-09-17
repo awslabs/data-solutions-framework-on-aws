@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Arn, Stack } from 'aws-cdk-lib';
-import { Grant, Role } from 'aws-cdk-lib/aws-iam';
+import { Arn, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { AccountPrincipal, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { DefinitionBody, Fail, IntegrationPattern, IStateMachine, JsonPath, StateMachine, TaskRole, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
+import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
 /**
@@ -13,11 +15,11 @@ export interface AuthorizerEnvironmentWorflow{
   /**
    * The state machine that orchestrates the workflow.
    */
-  readonly lambdaInvokeGrant: Grant;
+  readonly stateMachine: IStateMachine;
   /**
-   * The event rule that triggers the workflow.
+   * The IAM Role used by the State Machine
    */
-  readonly assumeRoleGrant: Grant;
+  readonly stateMachineRole: IRole;
 }
 
 /**
@@ -33,24 +35,124 @@ export function authorizerEnvironmentWorkflowSetup(
   scope: Construct,
   authorizerName: string,
   grantFunction: IFunction,
-  centralAccount?: string) : AuthorizerEnvironmentWorflow {
+  centralAccount?: string,
+  workflowTimeout?: Duration,
+  removalPolicy?: RemovalPolicy) : AuthorizerEnvironmentWorflow {
 
-    const centralAuthorizerRole = Role.fromRoleArn(scope, 'CentraRole', 
+    const DEFAULT_TIMEOUT = Duration.minutes(5);
+
+    const stack = Stack.of(scope);
+
+    const stateMachineName = `${authorizerName}Environment`;
+
+    const grantInvoke = new LambdaInvoke(scope, 'GrantInvoke', {
+      lambdaFunction: grantFunction,
+      resultPath: '$.GrantResult',
+      taskTimeout: Timeout.duration(workflowTimeout ?? DEFAULT_TIMEOUT),
+    });
+
+    const callbackRole = Role.fromRoleArn(scope, 'CallbackRole', 
       Arn.format({
         account: centralAccount,
+        region: '',
         resource: 'role',
         service: 'iam',
-        resourceName: `${authorizerName}Role`
-      }, Stack.of(scope)), {
+        resourceName: `${authorizerName}CentralCallback`,
+      }, stack), {
         mutable: false,
         addGrantsToResources: true,
       }
     );
-    if ( grantFunction.role === undefined ) {
-      throw new Error('grantFunction.role is undefined');
-    } else {
-      const lambdaInvokeGrant = grantFunction.grantInvoke(centralAuthorizerRole);
-      const assumeRoleGrant = grantFunction.role!.grantAssumeRole(centralAuthorizerRole);
-      return { lambdaInvokeGrant, assumeRoleGrant }
-    }
+
+    const successCallback = new CallAwsService(scope, `SuccessCallback`, {
+      service: 'sfn',
+      action: 'sendTaskSuccess',
+      parameters: {
+        TaskToken: JsonPath.stringAt('$.TaskToken'),
+        Output: JsonPath.stringAt('$.GrantResult'),
+      },
+      credentials: { 
+        role: TaskRole.fromRole(callbackRole),
+      } ,
+      iamResources: [`arn:${stack.partition}:states:${stack.region}:${centralAccount || stack.account}:stateMachine:${authorizerName}Central`],
+      integrationPattern: IntegrationPattern.REQUEST_RESPONSE,
+      taskTimeout: Timeout.duration(Duration.seconds(10)),
+      resultPath: JsonPath.DISCARD,
+    });
+
+    const failureCallBack = new CallAwsService(scope, `FailureCallback`, {
+      service: 'sfn',
+      action: 'sendTaskFailure',
+      parameters: {
+        TaskToken: JsonPath.stringAt('$.TaskToken'),
+        Error: JsonPath.stringAt('$.ErrorInfo.Error'),
+        Cause: JsonPath.stringAt('$.ErrorInfo.Cause')
+      },
+      credentials: { 
+        role: TaskRole.fromRole(callbackRole),
+      } ,
+      iamResources: [`arn:${stack.partition}:states:${stack.region}:${centralAccount || stack.account}:stateMachine:${authorizerName}Central`],
+      integrationPattern: IntegrationPattern.REQUEST_RESPONSE,
+      taskTimeout: Timeout.duration(Duration.seconds(10)),
+      resultPath: JsonPath.DISCARD,
+    });
+
+    const failure = failureCallBack.next(new Fail(scope, 'EnvironmentWorkflowFailure', {
+      errorPath: '$.ErrorInfoError',
+      causePath: '$.ErrorInfo.Cause',
+    }))
+
+    grantInvoke.addCatch(failure, {
+      errors: ['States.TaskFailed'],
+      resultPath: '$.ErrorInfo',
+    });
+
+    const stateMachineRole = new Role(scope, 'StateMachineRole', {
+      assumedBy: new ServicePrincipal('states.amazonaws.com'),
+      roleName: `${authorizerName}EnvironmentStateMachine`,
+    });
+    // TODO deny all except the state machine
+    // grantFunction.addPermission()
+
+    // grantFunction.grantInvoke(stateMachineRole);
+  
+    const stateMachine = new StateMachine(scope, 'StateMachine', {
+      stateMachineName: stateMachineName,
+      definitionBody: DefinitionBody.fromChainable(grantInvoke.next(successCallback)),
+      role: stateMachineRole,
+      timeout: workflowTimeout ?? DEFAULT_TIMEOUT,
+      removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
+    });
+
+    const centralAuthorizerRole = Role.fromRoleArn(scope, 'CentralRole', 
+      Arn.format({
+        account: centralAccount,
+        region: '',
+        resource: 'role',
+        service: 'iam',
+        resourceName: `${authorizerName}CentralStateMachine`,
+      }, stack), {
+        mutable: false,
+        addGrantsToResources: true,
+      }
+    );
+
+    stateMachineRole.assumeRolePolicy?.addStatements(new PolicyStatement({
+      actions: ['sts:AssumeRole'],
+      principals: [ centralAccount ? new AccountPrincipal(centralAccount) : centralAuthorizerRole ],
+      conditions: {
+        StringLike: {
+          'sts:ExternalId': `arn:${stack.partition}:states:*:${centralAccount || stack.account}:stateMachine:${authorizerName}Central`,
+        }
+      }
+    }));
+
+    stateMachineRole.addToPolicy(new PolicyStatement({
+      actions: ['states:StartExecution'],
+      resources: [`arn:${stack.partition}:states:${stack.region}:${stack.account}:stateMachine:${stateMachineName}`],
+    }));
+
+    callbackRole.grantAssumeRole(stateMachineRole);
+    
+    return { stateMachine, stateMachineRole }
 }

@@ -67,7 +67,7 @@ export class DataZoneHelpers {
       {
         applicableAssetTypes: [customAssetType.name],
         authorizedPrincipals: authorizedPrincipals.map( r => r.roleArn),
-        domainIdentifier: customAssetType.domainIdentifier,
+        domainIdentifier: customAssetType.domainId,
         environmentIdentifier: environmentId,
         manageAccessRole: manageAccessRole.roleArn,
         name,

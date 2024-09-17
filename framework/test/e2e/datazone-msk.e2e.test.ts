@@ -35,10 +35,9 @@ const mskCentralAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, '
 
 new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   domainId: cfnDomain.attrId,
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-mskCentralAuthorizer.registerAccount('123456789012');
+mskCentralAuthorizer.registerAccount('123456789012', '123456789012');
 
 const mskAssetType = new DataZoneMskAssetType(stack, 'MskAssetType', {
   domainId: cfnDomain.attrId,
