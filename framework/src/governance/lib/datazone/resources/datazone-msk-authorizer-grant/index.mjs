@@ -1,7 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { KafkaClient, PutClusterPolicyCommand, GetClusterPolicyCommand, BadRequestException, NotFoundException } from "@aws-sdk/client-kafka"
+import { 
+  KafkaClient, 
+  PutClusterPolicyCommand, 
+  GetClusterPolicyCommand, 
+  BadRequestException, 
+  NotFoundException, 
+  DeleteClusterPolicyCommand
+} from "@aws-sdk/client-kafka"
 import { IAMClient, PutRolePolicyCommand, DeleteRolePolicyCommand, NoSuchEntityException } from "@aws-sdk/client-iam";
 
 
@@ -9,6 +16,41 @@ import { IAMClient, PutRolePolicyCommand, DeleteRolePolicyCommand, NoSuchEntityE
 const MAX_RETRIES = 20; // Maximum number of retries
 const INITIAL_DELAY_MS = 100; // Initial delay in milliseconds
 const MAX_DELAY_MS = 30000; // Maximum delay in milliseconds
+
+const mskReadActions = [
+  'kafka-cluster:Connect',
+  'kafka-cluster:DescribeTopic',
+  'kafka-cluster:DescribeGroup',
+  'kafka-cluster:AlterGroup',
+  'kafka-cluster:ReadData'
+];
+
+const mskVpcConsumerActions = [
+  "kafka:CreateVpcConnection",
+  "ec2:CreateTags",
+  "ec2:CreateVPCEndpoint"
+];
+
+const mskVpcClusterActions = [
+  "kafka:CreateVpcConnection",
+  "kafka:GetBootstrapBrokers",
+  "kafka:DescribeCluster",
+  "kafka:DescribeClusterV2"
+];
+
+const gsrReadActions = [
+  "glue:GetRegistry",
+  "glue:ListRegistries",
+  "glue:GetSchema",
+  "glue:ListSchemas",
+  "glue:GetSchemaByDefinition",
+  "glue:GetSchemaVersion",
+  "glue:ListSchemaVersions",
+  "glue:GetSchemaVersionsDiff",
+  "glue:CheckSchemaVersionValidity",
+  "glue:QuerySchemaVersionMetadata",
+  "glue:GetTags"
+];
 
 function getMskIamResources(topicArn, clusterArn) {
   return [
@@ -73,27 +115,38 @@ async function updateClusterPolicyWithRetry(client, grantStatement, requestType,
     } else {
       throw new Error(`Invalid request type: ${requestType}`);
     }
+    console.log(`statement to filter: ${JSON.stringify({grantStatement}, null, 2)}`);
     console.log(`New policy: ${JSON.stringify({ policy }, null, 2)}`);
 
-    let putClusterPolicyArgs;
-    if (result !== undefined) {
-      putClusterPolicyArgs = {
-        ClusterArn: clusterArn,
-        Policy: JSON.stringify(policy),
-        CurrentVersion: result.CurrentVersion,
-      }
-    } else {
-      putClusterPolicyArgs = {
-        ClusterArn: clusterArn,
-        Policy: JSON.stringify(policy),
-      }
-    }
+    if (policy.Statement.length ==0){
 
-    // push the new policy with MVCC
-    const putResult  = await client.send(
-      new PutClusterPolicyCommand(putClusterPolicyArgs)
-    );
-    console.log(`Policy updated: ${JSON.stringify({putResult}, null, 2)}`);
+      const deleteResult = await client.send(
+        new DeleteClusterPolicyCommand({ ClusterArn: clusterArn })
+      );
+      console.log(`Policy deleted: ${JSON.stringify({deleteResult}, null, 2)}`);
+
+    } else {
+
+      let putClusterPolicyArgs;
+      if (result !== undefined) {
+        putClusterPolicyArgs = {
+          ClusterArn: clusterArn,
+          Policy: JSON.stringify(policy),
+          CurrentVersion: result.CurrentVersion,
+        }
+      } else {
+        putClusterPolicyArgs = {
+          ClusterArn: clusterArn,
+          Policy: JSON.stringify(policy),
+        }
+      }
+
+      // push the new policy with MVCC
+      const putResult  = await client.send(
+        new PutClusterPolicyCommand(putClusterPolicyArgs)
+      );
+      console.log(`Policy updated: ${JSON.stringify({putResult}, null, 2)}`);
+    }
 
   } catch (error) {
     // MVCC retry mechanism
@@ -117,41 +170,6 @@ async function updateClusterPolicyWithRetry(client, grantStatement, requestType,
   }
 }
 
-const mskReadActions = [
-  'kafka-cluster:Connect',
-  'kafka-cluster:DescribeTopic',
-  'kafka-cluster:DescribeGroup',
-  'kafka-cluster:AlterGroup',
-  'kafka-cluster:ReadData'
-];
-
-const mskVpcConsumerActions = [
-  "kafka:CreateVpcConnection",
-  "ec2:CreateTags",
-  "ec2:CreateVPCEndpoint"
-];
-
-const mskVpcClusterActions = [
-  "kafka:CreateVpcConnection",
-  "kafka:GetBootstrapBrokers",
-  "kafka:DescribeCluster",
-  "kafka:DescribeClusterV2"
-];
-
-const gsrReadActions = [
-  "glue:GetRegistry",
-  "glue:ListRegistries",
-  "glue:GetSchema",
-  "glue:ListSchemas",
-  "glue:GetSchemaByDefinition",
-  "glue:GetSchemaVersion",
-  "glue:ListSchemaVersions",
-  "glue:GetSchemaVersionsDiff",
-  "glue:CheckSchemaVersionValidity",
-  "glue:QuerySchemaVersionMetadata",
-  "glue:GetTags"
-];
-
 export const handler = async(event) => {
 
   console.log(`event received: ${JSON.stringify({ event }, null, 2)}`);
@@ -163,7 +181,12 @@ export const handler = async(event) => {
   const clusterType = event.Metadata.Producer.ClusterType;
   const producerAccount = event.Metadata.Producer.Account;
   const consumerAccount = event.Metadata.Consumer.Account;
-  const consumerRolesArn = event.Metadata.Consumer.RolesArn;
+  let consumerRolesArn;
+  if (event.Metadata.Consumer.RolesArn.length == 1){
+    consumerRolesArn = event.Metadata.Consumer.RolesArn[0];
+  } else {
+    consumerRolesArn = event.Metadata.Consumer.RolesArn;
+  };
   const subscriptionGrantId = event.Metadata.SubscriptionGrantId;
   const assetId = event.Metadata.AssetId;
   const requestType = event.Metadata.RequestType;
@@ -171,9 +194,7 @@ export const handler = async(event) => {
   const iamMskResources = getMskIamResources(topicArn, clusterArn);
   
   if (grantType === "producerGrant") {
-
     if (consumerAccount !== producerAccount) {
-
       if (clusterType === 'PROVISIONED') {
       
         const grantStatement = {

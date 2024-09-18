@@ -80,6 +80,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
               actions: [
                 'kafka:GetClusterPolicy',
                 'kafka:PutClusterPolicy',
+                'kafka:DeleteClusterPolicy',
               ],
               resources: ['*'],
             }),
