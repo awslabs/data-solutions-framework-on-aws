@@ -4966,12 +4966,20 @@ Returns a string representation of this construct.
 ##### `registerAccount` <a name="registerAccount" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount"></a>
 
 ```typescript
-public registerAccount(accountId: string): CfnEventBusPolicy
+public registerAccount(id: string, accountId: string): void
 ```
 
 Connect the central authorizer workflow with environment authorizer workflows in other accounts.
 
 This method grants the environment workflow to send events in the default Event Bridge bus for orchestration.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.id"></a>
+
+- *Type:* string
+
+The construct ID to use.
+
+---
 
 ###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.accountId"></a>
 
@@ -5034,9 +5042,6 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to listen for producer and subscriber grants callback. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to handle producer and subscriber grants callback. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the Lambda function handling producer and subscriber grants callback. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction">datazoneCallbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to acknowledge the subscription grant in DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to acknowledge the subscription grant in DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the DataZone event to trigger the authorizer workflow. |
@@ -5045,6 +5050,8 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to collect metadata from DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to collect metadata from DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The state machine used to orchestrate the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineCallbackRole">stateMachineCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the authorizer workflow callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the authorizer workflow State Machine. |
 
 ---
 
@@ -5057,42 +5064,6 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
-
----
-
-##### `callbackEventRule`<sup>Required</sup> <a name="callbackEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackEventRule"></a>
-
-```typescript
-public readonly callbackEventRule: IRule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.IRule
-
-The event rule used to listen for producer and subscriber grants callback.
-
----
-
-##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackFunction"></a>
-
-```typescript
-public readonly callbackFunction: IFunction;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda.IFunction
-
-The Lambda function used to handle producer and subscriber grants callback.
-
----
-
-##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.callbackRole"></a>
-
-```typescript
-public readonly callbackRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The role used by the Lambda function handling producer and subscriber grants callback.
 
 ---
 
@@ -5189,6 +5160,30 @@ public readonly stateMachine: StateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 The state machine used to orchestrate the authorizer workflow.
+
+---
+
+##### `stateMachineCallbackRole`<sup>Required</sup> <a name="stateMachineCallbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineCallbackRole"></a>
+
+```typescript
+public readonly stateMachineCallbackRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the authorizer workflow callback.
+
+---
+
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the authorizer workflow State Machine.
 
 ---
 
@@ -5374,13 +5369,10 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>any</code> | The dead letter queue for the events. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the events to trigger the authorizer workflow. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to trigger the authorizer workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction">grantFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The lambda function used to grant access to Kafka topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to grant access to Kafka topics. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The state machine used to orchestrate the authorizer workflow. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | The event bus policy used to receive events from the central authorizer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The environment authorizer State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the environment authorizer State Machine. |
 
 ---
 
@@ -5393,42 +5385,6 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
-
----
-
-##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.deadLetterQueue"></a>
-
-```typescript
-public readonly deadLetterQueue: any;
-```
-
-- *Type:* any
-
-The dead letter queue for the events.
-
----
-
-##### `eventRole`<sup>Required</sup> <a name="eventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRole"></a>
-
-```typescript
-public readonly eventRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The role used by the events to trigger the authorizer workflow.
-
----
-
-##### `eventRule`<sup>Required</sup> <a name="eventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventRule"></a>
-
-```typescript
-public readonly eventRule: IRule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.IRule
-
-The event rule used to trigger the authorizer workflow.
 
 ---
 
@@ -5464,19 +5420,19 @@ public readonly stateMachine: IStateMachine;
 
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
 
-The state machine used to orchestrate the authorizer workflow.
+The environment authorizer State Machine.
 
 ---
 
-##### `eventBusPolicy`<sup>Optional</sup> <a name="eventBusPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.eventBusPolicy"></a>
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineRole"></a>
 
 ```typescript
-public readonly eventBusPolicy: CfnEventBusPolicy;
+public readonly stateMachineRole: IRole;
 ```
 
-- *Type:* aws-cdk-lib.aws_events.CfnEventBusPolicy
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
-The event bus policy used to receive events from the central authorizer.
+The IAM role used by the environment authorizer State Machine.
 
 ---
 
@@ -13550,11 +13506,10 @@ const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The authorizer event role for allowing events to invoke the workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The authorizer event rule for triggering the workflow. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackEventRule">callbackEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The callback event rule for listening to producer and subscriber grants callback. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction">callbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function for handling producer and subscriber grants callback. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role for the Lambda function handling producer and subscriber grants callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine Call Back. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The authorizer dead letter queue for failed events. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The authorizer Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine. |
 
 ---
 
@@ -13582,39 +13537,15 @@ The authorizer event rule for triggering the workflow.
 
 ---
 
-##### `callbackEventRule`<sup>Required</sup> <a name="callbackEventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackEventRule"></a>
-
-```typescript
-public readonly callbackEventRule: IRule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.IRule
-
-The callback event rule for listening to producer and subscriber grants callback.
-
----
-
-##### `callbackFunction`<sup>Required</sup> <a name="callbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackFunction"></a>
-
-```typescript
-public readonly callbackFunction: IFunction;
-```
-
-- *Type:* aws-cdk-lib.aws_lambda.IFunction
-
-The Lambda function for handling producer and subscriber grants callback.
-
----
-
 ##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole"></a>
 
 ```typescript
-public readonly callbackRole: IRole;
+public readonly callbackRole: Role;
 ```
 
-- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Type:* aws-cdk-lib.aws_iam.Role
 
-The role for the Lambda function handling producer and subscriber grants callback.
+The IAM Role used by the State Machine Call Back.
 
 ---
 
@@ -13642,6 +13573,18 @@ The authorizer Step Functions state machine.
 
 ---
 
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the State Machine.
+
+---
+
 ### AuthorizerEnvironmentWorflow <a name="AuthorizerEnvironmentWorflow" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow"></a>
 
 The interface representing the environment custom authorizer workflow.
@@ -13658,47 +13601,8 @@ const authorizerEnvironmentWorflow: governance.AuthorizerEnvironmentWorflow = { 
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The dead letter queue for failed events. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRole">eventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the even rule to trigger the Step Function state machine. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRule">eventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule that triggers the workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The state machine that orchestrates the workflow. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy">eventBusPolicy</a></code> | <code>aws-cdk-lib.aws_events.CfnEventBusPolicy</code> | The optional event bus policy for cross-account workflows. |
-
----
-
-##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.deadLetterQueue"></a>
-
-```typescript
-public readonly deadLetterQueue: IQueue;
-```
-
-- *Type:* aws-cdk-lib.aws_sqs.IQueue
-
-The dead letter queue for failed events.
-
----
-
-##### `eventRole`<sup>Required</sup> <a name="eventRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRole"></a>
-
-```typescript
-public readonly eventRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The role used by the even rule to trigger the Step Function state machine.
-
----
-
-##### `eventRule`<sup>Required</sup> <a name="eventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventRule"></a>
-
-```typescript
-public readonly eventRule: IRule;
-```
-
-- *Type:* aws-cdk-lib.aws_events.IRule
-
-The event rule that triggers the workflow.
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the State Machine. |
 
 ---
 
@@ -13714,15 +13618,15 @@ The state machine that orchestrates the workflow.
 
 ---
 
-##### `eventBusPolicy`<sup>Optional</sup> <a name="eventBusPolicy" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.eventBusPolicy"></a>
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineRole"></a>
 
 ```typescript
-public readonly eventBusPolicy: CfnEventBusPolicy;
+public readonly stateMachineRole: IRole;
 ```
 
-- *Type:* aws-cdk-lib.aws_events.CfnEventBusPolicy
+- *Type:* aws-cdk-lib.aws_iam.IRole
 
-The optional event bus policy for cross-account workflows.
+The IAM Role used by the State Machine.
 
 ---
 
@@ -13981,17 +13885,17 @@ const customAssetType: governance.CustomAssetType = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainIdentifier">domainIdentifier</a></code> | <code>string</code> | The domain identifier of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainId">domainId</a></code> | <code>string</code> | The domain identifier of the custom asset type. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.name">name</a></code> | <code>string</code> | The name of the custom asset type. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.projectIdentifier">projectIdentifier</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.revision">revision</a></code> | <code>string</code> | The revision of the custom asset type. |
 
 ---
 
-##### `domainIdentifier`<sup>Required</sup> <a name="domainIdentifier" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainIdentifier"></a>
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainId"></a>
 
 ```typescript
-public readonly domainIdentifier: string;
+public readonly domainId: string;
 ```
 
 - *Type:* string
@@ -20172,13 +20076,6 @@ governance.DataZoneHelpers.createSubscriptionTarget(scope: Construct, id: string
 Creates a DataZone subscription target for a custom asset type.
 
 Subscription targets are used to automatically add asset to environments when a custom asset is subscribed by a project.
-
-*Example*
-
-```typescript
-dsf.
-```
-
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.scope"></a>
 

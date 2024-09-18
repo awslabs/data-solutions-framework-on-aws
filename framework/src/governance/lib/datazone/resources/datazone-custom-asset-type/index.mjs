@@ -79,7 +79,7 @@ export const handler = async(event) => {
     } catch (e) {
       if (e instanceof ResourceNotFoundException){
         console.log(`${assetTypeName} asset type doesn't exist`)
-      } else throw new Error(`${assetTypeName} failed to delete: ${JSON.stringify(error)}`);
+      } else throw new Error(`${assetTypeName} failed to delete: ${JSON.stringify(e)}`);
     } 
 
     console.log(`${assetTypeName} asset type deleted`)

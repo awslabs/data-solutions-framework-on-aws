@@ -27,17 +27,18 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/MskAuthorizer/MetadataCollectorHandlerRole/Resource',
   'Stack/MskAuthorizer/CallbackHandlerRole/Resource',
-  'Stack/MskAuthorizer/LambdaCallbackRole/Resource',
 ],
 [
   { id: 'AwsSolutions-IAM4', reason: 'Recommended baseline policy for AWS Lambda Functions' },
 ]);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
-  'Stack/MskAuthorizer/StateMachine/Role/DefaultPolicy/Resource',
+  'Stack/MskAuthorizer/StateMachineRole/DefaultPolicy/Resource',
 ],
 [
   { id: 'AwsSolutions-IAM5', reason: 'Wildcard created automatically by CDK for the Step Functions role to trigger the Lambda Functions versions' },
+  { id: 'AwsSolutions-IAM5', reason: 'Wildcard used in the target Step Function ARN triggered because the account ID is not known' },
+  { id: 'AwsSolutions-IAM5', reason: 'Assume role permission with wildcard created by L2 CDK Step Function constructs' },
 ]);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [

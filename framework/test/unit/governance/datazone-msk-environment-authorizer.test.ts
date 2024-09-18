@@ -68,6 +68,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                   Action: [
                     'kafka:GetClusterPolicy',
                     'kafka:PutClusterPolicy',
+                    'kafka:DeleteClusterPolicy',
                   ],
                   Effect: 'Allow',
                   Resource: '*',
@@ -77,6 +78,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
             PolicyName: 'IamPermissions',
           },
         ],
+        RoleName: 'MskTopicAuthorizerGrantFunction',
       }),
     );
   });
@@ -92,90 +94,11 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
         },
         Runtime: 'nodejs20.x',
         Timeout: 60,
-      }),
-    );
-  });
-
-
-  test('should create an Event Bridge event rule for central authorizer events', () => {
-    template.hasResourceProperties('AWS::Events::Rule',
-      Match.objectLike({
-        EventPattern: {
-          'source': [
-            'dsf.MskTopicAuthorizer',
-          ],
-          'detail-type': [
-            'producerGrant',
-            'consumerGrant',
-          ],
-        },
-        State: 'ENABLED',
-        Targets: [
-          Match.objectLike({
-            Arn: {
-              Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
-            },
-            DeadLetterConfig: {
-              Arn: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            },
-            RetryPolicy: {
-              MaximumRetryAttempts: 0,
-            },
-            RoleArn: {
-              'Fn::GetAtt': [
-                Match.stringLikeRegexp('MskAuthorizerCentralEventRole.*'),
-                'Arn',
-              ],
-            },
-          }),
-        ],
-      }),
-    );
-  });
-
-  test('should create an IAM role for triggering the authorizer Step Functions state machine', () => {
-    template.hasResourceProperties('AWS::IAM::Role',
-      Match.objectLike({
-        AssumeRolePolicyDocument: Match.objectLike({
-          Statement: [
-            {
-              Action: 'sts:AssumeRole',
-              Effect: 'Allow',
-              Principal: {
-                Service: 'events.amazonaws.com',
-              },
-            },
-          ],
-        }),
-      }),
-    );
-  });
-
-  test('should attach proper permissions to the event rule role to trigger the state machine', () => {
-    template.hasResourceProperties('AWS::IAM::Policy',
-      Match.objectLike({
-        PolicyDocument: Match.objectLike({
-          Statement: [
-            {
-              Action: 'states:StartExecution',
-              Effect: 'Allow',
-              Resource: {
-                Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
-              },
-            },
-          ],
-        }),
-        PolicyName: Match.stringLikeRegexp('MskAuthorizerCentralEventRoleDefaultPolicy.*'),
-        Roles: [
-          {
-            Ref: Match.stringLikeRegexp('MskAuthorizerCentralEventRole.*'),
+        Environment: {
+          Variables: {
+            GRANT_VPC: 'false',
           },
-        ],
+        },
       }),
     );
   });
@@ -183,6 +106,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
   test('should create an IAM role for the Step Functions state machine', () => {
     template.hasResourceProperties('AWS::IAM::Role',
       Match.objectLike({
+        RoleName: 'MskTopicAuthorizerEnvironmentStateMachine',
         AssumeRolePolicyDocument: Match.objectLike({
           Statement: [
             {
@@ -196,6 +120,48 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                       Ref: 'AWS::Region',
                     },
                     'states',
+                  ],
+                },
+              },
+            },
+            {
+              Action: 'sts:AssumeRole',
+              Condition: {
+                StringLike: {
+                  'sts:ExternalId': {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:',
+                        {
+                          Ref: 'AWS::Partition',
+                        },
+                        ':states:*:',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        ':stateMachine:MskTopicAuthorizerCentral',
+                      ],
+                    ],
+                  },
+                },
+              },
+              Effect: 'Allow',
+              Principal: {
+                AWS: {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'arn:',
+                      {
+                        Ref: 'AWS::Partition',
+                      },
+                      ':iam::',
+                      {
+                        Ref: 'AWS::AccountId',
+                      },
+                      ':root',
+                    ],
                   ],
                 },
               },
@@ -237,7 +203,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
               ],
             },
             {
-              Action: 'events:PutEvents',
+              Action: 'states:sendTaskSuccess',
               Effect: 'Allow',
               Resource: {
                 'Fn::Join': [
@@ -247,7 +213,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                     {
                       Ref: 'AWS::Partition',
                     },
-                    ':events:',
+                    ':states:',
                     {
                       Ref: 'AWS::Region',
                     },
@@ -255,7 +221,75 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                     {
                       Ref: 'AWS::AccountId',
                     },
-                    ':event-bus/default',
+                    ':stateMachine:MskTopicAuthorizerCentral',
+                  ],
+                ],
+              },
+            },
+            {
+              Action: 'sts:AssumeRole',
+              Effect: 'Allow',
+              Resource: {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:',
+                    {
+                      Ref: 'AWS::Partition',
+                    },
+                    ':iam::',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':role/MskTopicAuthorizerCentralCallback',
+                  ],
+                ],
+              },
+            },
+            {
+              Action: 'states:sendTaskFailure',
+              Effect: 'Allow',
+              Resource: {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:',
+                    {
+                      Ref: 'AWS::Partition',
+                    },
+                    ':states:',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':stateMachine:MskTopicAuthorizerCentral',
+                  ],
+                ],
+              },
+            },
+            {
+              Action: 'states:StartExecution',
+              Effect: 'Allow',
+              Resource: {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:',
+                    {
+                      Ref: 'AWS::Partition',
+                    },
+                    ':states:',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    ':',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':stateMachine:MskTopicAuthorizerEnvironment',
                   ],
                 ],
               },
@@ -290,39 +324,31 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                   'Arn',
                 ],
               },
-              '","Payload.$":"$"}},"SuccessCallback":{"End":true,"Type":"Task","Resource":"arn:',
+              '","Payload.$":"$"}},"SuccessCallback":{"End":true,"Type":"Task","TimeoutSeconds":10,"ResultPath":null,"Credentials":{"RoleArn":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
-              ':states:::events:putEvents","Parameters":{"Entries":[{"Detail":{"TaskToken.$":"$.detail.value.TaskToken","Status":"success"},"DetailType":"callback","EventBusName":"arn:',
-              {
-                Ref: 'AWS::Partition',
-              },
-              ':events:',
-              {
-                Ref: 'AWS::Region',
-              },
-              ':',
+              ':iam::',
               {
                 Ref: 'AWS::AccountId',
               },
-              ':event-bus/default","Source":"dsf.MskTopicAuthorizer"}]}},"FailureCallback":{"End":true,"Type":"Task","Resource":"arn:',
+              ':role/MskTopicAuthorizerCentralCallback"},"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
-              ':states:::events:putEvents","Parameters":{"Entries":[{"Detail":{"TaskToken.$":"$.detail.value.TaskToken","Status":"failure","Error.$":"$.ErrorInfo.Error","Cause.$":"$.ErrorInfo.Cause"},"DetailType":"callback","EventBusName":"arn:',
+              ':states:::aws-sdk:sfn:sendTaskSuccess","Parameters":{"TaskToken.$":"$.TaskToken","Output.$":"$.GrantResult"}},"FailureCallback":{"Next":"EnvironmentWorkflowFailure","Type":"Task","TimeoutSeconds":10,"ResultPath":null,"Credentials":{"RoleArn":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
-              ':events:',
-              {
-                Ref: 'AWS::Region',
-              },
-              ':',
+              ':iam::',
               {
                 Ref: 'AWS::AccountId',
               },
-              ':event-bus/default","Source":"dsf.MskTopicAuthorizer"}]}}},"TimeoutSeconds":120}',
+              ':role/MskTopicAuthorizerCentralCallback"},"Resource":"arn:',
+              {
+                Ref: 'AWS::Partition',
+              },
+              ':states:::aws-sdk:sfn:sendTaskFailure","Parameters":{"TaskToken.$":"$.TaskToken","Error.$":"$.ErrorInfo.Error","Cause.$":"$.ErrorInfo.Cause"}},"EnvironmentWorkflowFailure":{"Type":"Fail","ErrorPath":"$.ErrorInfoError","CausePath":"$.ErrorInfo.Cause"}},"TimeoutSeconds":120}',
             ],
           ],
         },
@@ -332,71 +358,10 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
             'Arn',
           ],
         },
+        StateMachineName: 'MskTopicAuthorizerEnvironment',
       }),
     );
   });
-
-  test('should create an SAS queue as a dead letter queue for events', () => {
-    template.resourceCountIs('AWS::SQS::Queue', 1);
-  });
-
-  test('should create proper IAM policy for the dead letter queue ', () => {
-    template.hasResourceProperties('AWS::SQS::QueuePolicy',
-      Match.objectLike({
-        PolicyDocument: Match.objectLike({
-          Statement: [
-            {
-              Action: 'sqs:*',
-              Condition: {
-                Bool: {
-                  'aws:SecureTransport': 'false',
-                },
-              },
-              Effect: 'Deny',
-              Principal: {
-                AWS: '*',
-              },
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            },
-            Match.objectLike({
-              Action: 'sqs:SendMessage',
-              Condition: {
-                ArnEquals: {
-                  'aws:SourceArn': {
-                    'Fn::GetAtt': [
-                      Match.stringLikeRegexp('MskAuthorizerCentralEventRule.*'),
-                      'Arn',
-                    ],
-                  },
-                },
-              },
-              Effect: 'Allow',
-              Principal: {
-                Service: 'events.amazonaws.com',
-              },
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            }),
-          ],
-        }),
-        Queues: [
-          {
-            Ref: Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-          },
-        ],
-      }),
-    );
-  });
-
 
 });
 
@@ -421,14 +386,6 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with DELETE removal but w
     );
   });
 
-  test('should create an SQS Queue with RETAIN removal policy', () => {
-    template.hasResource('AWS::SQS::Queue',
-      Match.objectLike({
-        UpdateReplacePolicy: 'Retain',
-        DeletionPolicy: 'Retain',
-      }),
-    );
-  });
 });
 
 describe ('Creating a DataZoneMskEnvironmentAuthorizer with DELETE removal but without global data removal', () => {
@@ -454,12 +411,4 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with DELETE removal but w
     );
   });
 
-  test('should create an SQS Queue with RETAIN removal policy', () => {
-    template.hasResource('AWS::SQS::Queue',
-      Match.objectLike({
-        UpdateReplacePolicy: 'Delete',
-        DeletionPolicy: 'Delete',
-      }),
-    );
-  });
 });

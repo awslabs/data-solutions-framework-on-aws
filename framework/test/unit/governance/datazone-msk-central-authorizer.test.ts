@@ -22,7 +22,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
     domainId: DOMAIN_ID,
   });
 
-  centralAuthorizer.registerAccount('999999999999');
+  centralAuthorizer.registerAccount('AccountARegistration', '999999999999');
 
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
@@ -170,7 +170,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
     );
   });
 
-  test('should create a Lambda function for the DataZone callback function', () => {
+  test('should create a Lambda function for the datazone callback', () => {
     template.hasResourceProperties('AWS::Lambda::Function',
       Match.objectLike({
         Role: {
@@ -282,65 +282,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
     );
   });
 
-  test('should create an Event Bridge event rule for the authorizer callback events', () => {
-    template.hasResourceProperties('AWS::Events::Rule',
-      Match.objectLike({
-        EventPattern: {
-          'source': [
-            'dsf.MskTopicAuthorizer',
-          ],
-          'detail-type': [
-            'callback',
-          ],
-        },
-        State: 'ENABLED',
-        Targets: [
-          Match.objectLike({
-            Arn: {
-              'Fn::GetAtt': [
-                Match.stringLikeRegexp('MskAuthorizerCallbackFunction.*'),
-                'Arn',
-              ],
-            },
-            DeadLetterConfig: {
-              Arn: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            },
-            RetryPolicy: {
-              MaximumEventAgeInSeconds: 3600,
-              MaximumRetryAttempts: 10,
-            },
-          }),
-        ],
-      }),
-    );
-  });
-
-  test('should create Lambda function permissions for calling back', () => {
-    template.hasResourceProperties('AWS::Lambda::Permission',
-      Match.objectLike({
-        Action: 'lambda:InvokeFunction',
-        FunctionName: {
-          'Fn::GetAtt': [
-            Match.stringLikeRegexp('MskAuthorizerCallbackFunction.*'),
-            'Arn',
-          ],
-        },
-        Principal: 'events.amazonaws.com',
-        SourceArn: {
-          'Fn::GetAtt': [
-            Match.stringLikeRegexp('MskAuthorizerCallbackEventRule.*'),
-            'Arn',
-          ],
-        },
-      }),
-    );
-  });
-
   test('should create an IAM role for the Step Functions state machine', () => {
     template.hasResourceProperties('AWS::IAM::Role',
       Match.objectLike({
@@ -363,6 +304,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             },
           ],
         }),
+        RoleName: 'MskTopicAuthorizerCentralStateMachine',
       }),
     );
   });
@@ -399,24 +341,29 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               ],
             },
             {
-              Action: 'eventbridge:putEvents',
+              Action: 'states:startExecution',
               Effect: 'Allow',
               Resource: {
                 'Fn::Join': [
                   '',
                   [
-                    'arn:aws:events:',
+                    'arn:',
+                    {
+                      Ref: 'AWS::Partition',
+                    },
+                    ':states:',
                     {
                       Ref: 'AWS::Region',
                     },
-                    ':',
-                    {
-                      Ref: 'AWS::Region',
-                    },
-                    ':event-bus/default',
+                    ':*:stateMachine:MskTopicAuthorizerEnvironment',
                   ],
                 ],
               },
+            },
+            {
+              Action: 'sts:AssumeRole',
+              Effect: 'Allow',
+              Resource: '*',
             },
             {
               Action: 'lambda:InvokeFunction',
@@ -445,7 +392,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               ],
             },
             {
-              Action: 'events:PutEvents',
+              Action: 'sts:AssumeRole',
               Effect: 'Allow',
               Resource: {
                 'Fn::Join': [
@@ -455,11 +402,27 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                     {
                       Ref: 'AWS::Partition',
                     },
-                    ':events:',
+                    ':iam::',
                     {
-                      Ref: 'AWS::Region',
+                      Ref: 'AWS::AccountId',
                     },
-                    ':999999999999:event-bus/default',
+                    ':role/MskTopicAuthorizerEnvironmentStateMachine',
+                  ],
+                ],
+              },
+            },
+            {
+              Action: 'sts:AssumeRole',
+              Effect: 'Allow',
+              Resource: {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:',
+                    {
+                      Ref: 'AWS::Partition',
+                    },
+                    ':iam::999999999999:role/MskTopicAuthorizerEnvironmentStateMachine',
                   ],
                 ],
               },
@@ -483,7 +446,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
           'Fn::Join': [
             '',
             [
-              '{"StartAt":"MetadataCollector","States":{"MetadataCollector":{"Next":"ProducerGrantEventBridgePutEvents","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"GovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":120,"ResultSelector":{"Metadata.$":"$.Payload"},"Resource":"arn:',
+              '{"StartAt":"MetadataCollector","States":{"MetadataCollector":{"Next":"EnvironementMetadataProcess","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"GovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":120,"ResultSelector":{"Metadata.$":"$.Payload"},"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
@@ -494,26 +457,15 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                   'Arn',
                 ],
               },
-              '","Payload.$":"$"}},"ProducerGrantEventBridgePutEvents":{"Next":"ConsumerGrantEventBridgePutEvents","Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"GovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":300,"ResultPath":null,"Resource":"arn:',
+              "\",\"Payload.$\":\"$\"}},\"EnvironementMetadataProcess\":{\"Type\":\"Pass\",\"ResultPath\":\"$.WorkflowMetadata\",\"Parameters\":{\"Producer\":{\"StateMachineRole.$\":\"States.Format('arn:{}:iam::{}:role/MskTopicAuthorizerEnvironmentStateMachine', $.Metadata.Producer.Partition, $.Metadata.Producer.Account)\",\"StateMachineArn.$\":\"States.Format('arn:{}:states:{}:{}:stateMachine:MskTopicAuthorizerEnvironment', $.Metadata.Producer.Partition, $.Metadata.Producer.Region, $.Metadata.Producer.Account)\"},\"Consumer\":{\"StateMachineRole.$\":\"States.Format('arn:{}:iam::{}:role/MskTopicAuthorizerEnvironmentStateMachine', $.Metadata.Consumer.Partition, $.Metadata.Consumer.Account)\",\"StateMachineArn.$\":\"States.Format('arn:{}:states:{}:{}:stateMachine:MskTopicAuthorizerEnvironment', $.Metadata.Consumer.Partition, $.Metadata.Consumer.Region, $.Metadata.Consumer.Account)\"}},\"Next\":\"ProducerGrantStateMachineExecution\"},\"ProducerGrantStateMachineExecution\":{\"Next\":\"ConsumerGrantStateMachineExecution\",\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"ResultPath\":\"$.ErrorInfo\",\"Next\":\"GovernanceFailureCallback\"}],\"Type\":\"Task\",\"TimeoutSeconds\":300,\"ResultPath\":null,\"Credentials\":{\"RoleArn.$\":\"$.WorkflowMetadata.Producer.StateMachineRole\"},\"Resource\":\"arn:",
               {
                 Ref: 'AWS::Partition',
               },
-              ":states:::aws-sdk:eventbridge:putEvents.waitForTaskToken\",\"Parameters\":{\"Entries\":[{\"Detail\":{\"type\":1,\"value\":{\"TaskToken.$\":\"$$.Task.Token\",\"Metadata.$\":\"$.Metadata\"}},\"DetailType\":\"producerGrant\",\"Source\":\"dsf.MskTopicAuthorizer\",\"EventBusName.$\":\"States.Format('arn:aws:events:{}:{}:event-bus/default', $.Metadata.Producer.Region, $.Metadata.Producer.Account)\"}]}},\"ConsumerGrantEventBridgePutEvents\":{\"Next\":\"GovernanceSuccessCallback\",\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"ResultPath\":\"$.ErrorInfo\",\"Next\":\"GovernanceFailureCallback\"}],\"Type\":\"Task\",\"TimeoutSeconds\":300,\"ResultPath\":null,\"Resource\":\"arn:",
+              ':states:::aws-sdk:sfn:startExecution.waitForTaskToken","Parameters":{"StateMachineArn.$":"$.WorkflowMetadata.Producer.StateMachineArn","Input":{"Metadata.$":"$.Metadata","GrantType":"producerGrant","AuthorizerName":"MskTopicAuthorizer","TaskToken.$":"$$.Task.Token"}}},"ConsumerGrantStateMachineExecution":{"Next":"GovernanceSuccessCallback","Catch":[{"ErrorEquals":["States.TaskFailed"],"ResultPath":"$.ErrorInfo","Next":"GovernanceFailureCallback"}],"Type":"Task","TimeoutSeconds":300,"ResultPath":null,"Credentials":{"RoleArn.$":"$.WorkflowMetadata.Consumer.StateMachineRole"},"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
-              ":states:::aws-sdk:eventbridge:putEvents.waitForTaskToken\",\"Parameters\":{\"Entries\":[{\"Detail\":{\"type\":1,\"value\":{\"TaskToken.$\":\"$$.Task.Token\",\"Metadata.$\":\"$.Metadata\"}},\"DetailType\":\"consumerGrant\",\"Source\":\"dsf.MskTopicAuthorizer\",\"EventBusName.$\":\"States.Format('arn:aws:events:{}:{}:event-bus/default', $.Metadata.Consumer.Region, $.Metadata.Consumer.Account)\"}]}},\"GovernanceSuccessCallback\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"TimeoutSeconds\":60,\"Resource\":\"arn:",
-              {
-                Ref: 'AWS::Partition',
-              },
-              ':states:::lambda:invoke","Parameters":{"FunctionName":"',
-              {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerCallbackHandler.*'),
-                  'Arn',
-                ],
-              },
-              '","Payload":{"Status":"success","Metadata.$":"$.Metadata"}}},"GovernanceFailureCallback":{"Next":"CentralWorfklowFailure","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","TimeoutSeconds":60,"Resource":"arn:',
+              ':states:::aws-sdk:sfn:startExecution.waitForTaskToken","Parameters":{"StateMachineArn.$":"$.WorkflowMetadata.Consumer.StateMachineArn","Input":{"Metadata.$":"$.Metadata","GrantType":"consumerGrant","AuthorizerName":"MskTopicAuthorizer","TaskToken.$":"$$.Task.Token"}}},"GovernanceSuccessCallback":{"End":true,"Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","TimeoutSeconds":60,"Resource":"arn:',
               {
                 Ref: 'AWS::Partition',
               },
@@ -524,7 +476,18 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                   'Arn',
                 ],
               },
-              '","Payload":{"Status":"failure","Metadata.$":"$.Metadata","Error.$":"$.ErrorInfo.Error","Cause.$":"$.ErrorInfo.Cause"}}},"CentralWorfklowFailure":{"Type":"Fail","ErrorPath":"$.ErrorInfo"}},"TimeoutSeconds":300}',
+              '","Payload":{"Status":"success","Metadata.$":"$.Metadata"}}},"GovernanceFailureCallback":{"Next":"CentralWorfklowFailure","Retry":[{"ErrorEquals":["Lambda.ClientExecutionTimeoutException","Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","TimeoutSeconds":60,"ResultPath":"$.CallBackResult","Resource":"arn:',
+              {
+                Ref: 'AWS::Partition',
+              },
+              ':states:::lambda:invoke","Parameters":{"FunctionName":"',
+              {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('MskAuthorizerCallbackHandler.*'),
+                  'Arn',
+                ],
+              },
+              '","Payload":{"Status":"failure","Metadata.$":"$.Metadata","Error.$":"$.ErrorInfo.Error","Cause.$":"$.ErrorInfo.Cause"}}},"CentralWorfklowFailure":{"Type":"Fail","ErrorPath":"$.ErrorInfo.Error","CausePath":"$.ErrorInfo.Cause"}},"TimeoutSeconds":300}',
             ],
           ],
         },
@@ -538,7 +501,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
     );
   });
 
-  test('should create an SAS queue as a dead letter queue for events', () => {
+  test('should create an SQS queue as a dead letter queue for events', () => {
     template.resourceCountIs('AWS::SQS::Queue', 1);
   });
 
@@ -588,29 +551,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                 ],
               },
             }),
-            Match.objectLike({
-              Action: 'sqs:SendMessage',
-              Condition: {
-                ArnEquals: {
-                  'aws:SourceArn': {
-                    'Fn::GetAtt': [
-                      Match.stringLikeRegexp('MskAuthorizerCallbackEventRule.*'),
-                      'Arn',
-                    ],
-                  },
-                },
-              },
-              Effect: 'Allow',
-              Principal: {
-                Service: 'events.amazonaws.com',
-              },
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            }),
           ],
         }),
         Queues: [
@@ -622,7 +562,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
     );
   });
 
-  test('should create an IAM Role for the callback Lambda function', () => {
+  test('should create an IAM role for the authorizer workflow callback ', () => {
     template.hasResourceProperties('AWS::IAM::Role',
       Match.objectLike({
         AssumeRolePolicyDocument: Match.objectLike({
@@ -631,44 +571,105 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Action: 'sts:AssumeRole',
               Effect: 'Allow',
               Principal: {
-                Service: 'lambda.amazonaws.com',
+                Service: {
+                  'Fn::FindInMap': [
+                    'ServiceprincipalMap',
+                    {
+                      Ref: 'AWS::Region',
+                    },
+                    'states',
+                  ],
+                },
+              },
+            },
+            {
+              Action: 'sts:AssumeRole',
+              Condition: {
+                StringLike: {
+                  'sts:ExternalId': {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:',
+                        {
+                          Ref: 'AWS::Partition',
+                        },
+                        ':states:*:',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        ':stateMachine:MskTopicAuthorizerEnvironment',
+                      ],
+                    ],
+                  },
+                },
+              },
+              Effect: 'Allow',
+              Principal: {
+                AWS: {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'arn:',
+                      {
+                        Ref: 'AWS::Partition',
+                      },
+                      ':iam::',
+                      {
+                        Ref: 'AWS::AccountId',
+                      },
+                      ':root',
+                    ],
+                  ],
+                },
+              },
+            },
+            {
+              Action: 'sts:AssumeRole',
+              Condition: {
+                StringLike: {
+                  'sts:ExternalId': {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:',
+                        {
+                          Ref: 'AWS::Partition',
+                        },
+                        ':states:*:999999999999:stateMachine:MskTopicAuthorizerEnvironment',
+                      ],
+                    ],
+                  },
+                },
+              },
+              Effect: 'Allow',
+              Principal: {
+                AWS: {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'arn:',
+                      {
+                        Ref: 'AWS::Partition',
+                      },
+                      ':iam::999999999999:root',
+                    ],
+                  ],
+                },
               },
             },
           ],
         }),
-        ManagedPolicyArns: [
-          {
-            'Fn::Join': [
-              '',
-              [
-                'arn:',
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
-              ],
-            ],
-          },
-        ],
+        RoleName: 'MskTopicAuthorizerCentralCallback',
       }),
     );
   });
 
-  test('should create an IAM policy for the callback Lambda function', () => {
+  test('should attach proper permissions to the workflow callback role', () => {
     template.hasResourceProperties('AWS::IAM::Policy',
       Match.objectLike({
         PolicyDocument: Match.objectLike({
           Statement: [
-            {
-              Action: [
-                'states:SendTaskSuccess',
-                'states:SendTaskFailure',
-              ],
-              Effect: 'Allow',
-              Resource: {
-                Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
-              },
-            },
             {
               Action: [
                 'states:SendTaskSuccess',
@@ -682,31 +683,15 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             },
           ],
         }),
-        PolicyName: Match.stringLikeRegexp('MskAuthorizerLambdaCallbackRoleDefaultPolicy.*'),
+        PolicyName: Match.stringLikeRegexp('MskAuthorizerCallbackRoleDefaultPolicy.*'),
         Roles: [
           {
-            Ref: Match.stringLikeRegexp('MskAuthorizerLambdaCallbackRole.*'),
+            Ref: Match.stringLikeRegexp('MskAuthorizerCallbackRole.*'),
           },
         ],
       }),
     );
   });
-
-  test('should create a callback Lambda function', () => {
-    template.hasResourceProperties('AWS::Lambda::Function',
-      Match.objectLike({
-        Role: {
-          'Fn::GetAtt': [
-            Match.stringLikeRegexp('MskAuthorizerLambdaCallbackRole.*'),
-            'Arn',
-          ],
-        },
-        Runtime: 'nodejs20.x',
-        Timeout: 5,
-      }),
-    );
-  });
-
 });
 
 describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but without global data removal', () => {

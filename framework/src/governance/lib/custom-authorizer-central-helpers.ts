@@ -93,30 +93,30 @@ export function authorizerCentralWorkflowSetup(
     parameters: {
       Producer: {
         StateMachineRole: JsonPath.format(
-          `arn:{}:iam::{}:role/${authorizerName}EnvironmentStateMachine`, 
-          JsonPath.stringAt('$.Metadata.Producer.Partition'), 
-          JsonPath.stringAt('$.Metadata.Producer.Account')
+          `arn:{}:iam::{}:role/${authorizerName}EnvironmentStateMachine`,
+          JsonPath.stringAt('$.Metadata.Producer.Partition'),
+          JsonPath.stringAt('$.Metadata.Producer.Account'),
         ),
         StateMachineArn: JsonPath.format(
-          `arn:{}:states:{}:{}:stateMachine:${authorizerName}Environment`, 
-          JsonPath.stringAt('$.Metadata.Producer.Partition'), 
-          JsonPath.stringAt('$.Metadata.Producer.Region'), 
-          JsonPath.stringAt('$.Metadata.Producer.Account')
+          `arn:{}:states:{}:{}:stateMachine:${authorizerName}Environment`,
+          JsonPath.stringAt('$.Metadata.Producer.Partition'),
+          JsonPath.stringAt('$.Metadata.Producer.Region'),
+          JsonPath.stringAt('$.Metadata.Producer.Account'),
         ),
       },
       Consumer: {
         StateMachineRole: JsonPath.format(
-          `arn:{}:iam::{}:role/${authorizerName}EnvironmentStateMachine`, 
-          JsonPath.stringAt('$.Metadata.Consumer.Partition'), 
-          JsonPath.stringAt('$.Metadata.Consumer.Account')
+          `arn:{}:iam::{}:role/${authorizerName}EnvironmentStateMachine`,
+          JsonPath.stringAt('$.Metadata.Consumer.Partition'),
+          JsonPath.stringAt('$.Metadata.Consumer.Account'),
         ),
         StateMachineArn: JsonPath.format(
-          `arn:{}:states:{}:{}:stateMachine:${authorizerName}Environment`, 
-          JsonPath.stringAt('$.Metadata.Consumer.Partition'), 
-          JsonPath.stringAt('$.Metadata.Consumer.Region'), 
-          JsonPath.stringAt('$.Metadata.Consumer.Account')
+          `arn:{}:states:{}:{}:stateMachine:${authorizerName}Environment`,
+          JsonPath.stringAt('$.Metadata.Consumer.Partition'),
+          JsonPath.stringAt('$.Metadata.Consumer.Region'),
+          JsonPath.stringAt('$.Metadata.Consumer.Account'),
         ),
-      }
+      },
     },
     resultPath: '$.WorkflowMetadata',
   });
@@ -143,7 +143,7 @@ export function authorizerCentralWorkflowSetup(
       Error: JsonPath.stringAt('$.ErrorInfo.Error'),
       Cause: JsonPath.stringAt('$.ErrorInfo.Cause'),
     }),
-    resultPath: '$.CallBackResult'
+    resultPath: '$.CallBackResult',
   });
 
   const failure = governanceFailureCallback.next(new Fail(scope, 'CentralWorfklowFailure', {
@@ -182,7 +182,7 @@ export function authorizerCentralWorkflowSetup(
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
     role: stateMachineRole,
-    stateMachineName: `${authorizerName}Central`
+    stateMachineName: `${authorizerName}Central`,
   });
 
   const deadLetterQueue = new Queue(scope, 'Queue', {
@@ -205,7 +205,7 @@ export function authorizerCentralWorkflowSetup(
 
   stateMachine.grantTaskResponse(callbackRole);
 
-  registerAccount(scope, 'SelfRegisterAccount', Stack.of(scope).account, authorizerName, stateMachineRole, callbackRole)
+  registerAccount(scope, 'SelfRegisterAccount', Stack.of(scope).account, authorizerName, stateMachineRole, callbackRole);
 
   return { stateMachine, stateMachineRole, callbackRole, deadLetterQueue, authorizerEventRule, authorizerEventRole };
 }
@@ -222,30 +222,30 @@ export function registerAccount(scope: Construct, id: string, accountId: string,
 
   const stack = Stack.of(scope);
 
-  const targetRole = Role.fromRoleArn(scope, `${id}EnvironmentStateMachineRole`, 
+  const targetRole = Role.fromRoleArn(scope, `${id}EnvironmentStateMachineRole`,
     Arn.format({
       account: accountId,
       region: '',
       service: 'iam',
       resource: 'role',
       resourceName: `${authorizerName}EnvironmentStateMachine`,
-    },stack), {
+    }, stack), {
       mutable: false,
       addGrantsToResources: true,
-    }
+    },
   );
 
   callbackRole.assumeRolePolicy?.addStatements(
     new PolicyStatement({
       actions: ['sts:AssumeRole'],
-      principals: [ stack.account !== accountId ? new AccountPrincipal(accountId) : targetRole ],
+      principals: [new AccountPrincipal(accountId)],
       conditions: {
         StringLike: {
           'sts:ExternalId': `arn:${stack.partition}:states:*:${accountId}:stateMachine:${authorizerName}Environment`,
-        }
-      }
-    }
-  ));
+        },
+      },
+    },
+    ));
 
   targetRole.grantAssumeRole(invokeRole);
 };
@@ -267,22 +267,22 @@ function invokeGrant(scope: Construct, id: string, authorizerName: string, grant
       StateMachineArn: JsonPath.stringAt(
         grantType === GrantType.CONSUMER ?
           '$.WorkflowMetadata.Consumer.StateMachineArn' :
-          '$.WorkflowMetadata.Producer.StateMachineArn'
+          '$.WorkflowMetadata.Producer.StateMachineArn',
       ),
-      Input: { 
+      Input: {
         Metadata: JsonPath.objectAt('$.Metadata'),
         GrantType: grantType,
         AuthorizerName: authorizerName,
         TaskToken: JsonPath.taskToken,
-      }
+      },
     },
-    credentials: { 
+    credentials: {
       role: TaskRole.fromRoleArnJsonPath(
         grantType === GrantType.CONSUMER ?
           '$.WorkflowMetadata.Consumer.StateMachineRole' :
-          '$.WorkflowMetadata.Producer.StateMachineRole'
-      )
-    } ,
+          '$.WorkflowMetadata.Producer.StateMachineRole',
+      ),
+    },
     iamResources: [`arn:${Stack.of(scope).partition}:states:${Stack.of(scope).region}:*:stateMachine:${authorizerName}Environment`],
     integrationPattern: IntegrationPattern.WAIT_FOR_TASK_TOKEN,
     taskTimeout: Timeout.duration(Duration.minutes(5)),

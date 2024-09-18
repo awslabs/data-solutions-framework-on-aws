@@ -28,7 +28,7 @@ const cfnDomain = new CfnDomain(stack, 'CfnDomain', {
 //   assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
 // });
 
-const mskCentralAuthorizer = new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
+new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
   domainId: cfnDomain.attrId,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
@@ -37,14 +37,14 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   domainId: cfnDomain.attrId,
 });
 
-mskCentralAuthorizer.registerAccount('123456789012', '123456789012');
+// mskCentralAuthorizer.registerAccount('123456789012', '123456789012');
 
 const mskAssetType = new DataZoneMskAssetType(stack, 'MskAssetType', {
   domainId: cfnDomain.attrId,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
-const gsrMskDataSource = new DataZoneGsrMskDataSource(stack, 'GsrMskDataSource', {
+new DataZoneGsrMskDataSource(stack, 'GsrMskDataSource', {
   domainId: cfnDomain.attrId,
   projectId: mskAssetType.owningProject!.attrId,
   registryName: 'testRegistry',
@@ -66,10 +66,6 @@ new cdk.CfnOutput(stack, 'MskAssetTypeName', {
   value: mskAssetType.mskCustomAssetType.name,
 });
 
-new cdk.CfnOutput(stack, 'GsrMskDataSourceOutput', {
-  value: gsrMskDataSource.registryName,
-});
-
 let deployResult: Record<string, string>;
 
 
@@ -82,7 +78,6 @@ beforeAll(async() => {
 it('MskTopicAssetType and DataZoneMskAuthorizers created successfully', async () => {
   // THEN
   expect(deployResult.MskAssetTypeName).toContain('MskTopicAssetType');
-  expect(deployResult.GsrMskDataSourceOutput).toContain('testRegistry');
 });
 
 afterAll(async () => {

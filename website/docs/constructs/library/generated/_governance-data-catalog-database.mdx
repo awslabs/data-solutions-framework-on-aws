@@ -17,7 +17,7 @@ AWS Glue Catalog database for an Amazon S3 dataset.
 
 :::caution Data Catalog encryption
 The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` construct are not encrypted because the encryption is only available at the catalog level. Changing the encryption at the catalog level has a wide impact on existing Glue resources and producers/consumers. Similarly, changing the encryption configuration at the catalog level after this construct is deployed can break all the resources created as part of DSF on AWS.
-:::caution
+:::
 
 ## Usage
 

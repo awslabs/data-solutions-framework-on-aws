@@ -197,7 +197,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    * @param accountId The account ID to register the authorizer with
    * @returns The CfnEventBusPolicy created to grant the account
    */
-  public registerAccount(id: string, accountId: string){
+  public registerAccount(id: string, accountId: string) {
     registerAccount(this, id, accountId, DataZoneMskCentralAuthorizer.AUTHORIZER_NAME, this.stateMachineRole, this.stateMachineCallbackRole);
   };
 }

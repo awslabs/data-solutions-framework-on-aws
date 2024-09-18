@@ -16,7 +16,7 @@ class ExampleRegisterDataZoneMskCentralAuthorizerStack extends cdk.Stack {
     });
   
     // Add an account that is associated with the DataZone Domain
-    centralAuthorizer.registerAccount('123456789012');
+    centralAuthorizer.registerAccount('AccountRegistration', '123456789012');
     /// !hide
 
   }

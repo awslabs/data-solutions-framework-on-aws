@@ -4,12 +4,12 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { IRole, Role, ServicePrincipal, ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
+import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizer } from './datazone-msk-central-authorizer';
 import { DataZoneMskEnvironmentAuthorizerProps } from './datazone-msk-environment-authorizer-props';
 import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environment-helpers';
-import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 
 /**
  * An environment authorizer workflow for granting read access to Kafka topics.

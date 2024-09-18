@@ -45,7 +45,7 @@ export class DataZoneHelpers {
    * @param id The id of the construct.
    * @param customAssetType The custom asset type that can be added to the environment.
    * @param name The name of the subscription target.
-   * @param provider The provider of the subscription target. @example dsf.
+   * @param provider The provider of the subscription target.
    * @param environmentId The DataZone environment identifier.
    * @param authorizedPrincipals The authorized principals to be granted when assets are subscribed.
    * @param manageAccessRole The IAM role creating the subscription target.

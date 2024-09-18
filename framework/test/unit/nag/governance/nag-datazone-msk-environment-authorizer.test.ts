@@ -33,13 +33,6 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 ]);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
-  'Stack/MskAuthorizer/Queue/Resource',
-],
-[
-  { id: 'AwsSolutions-SQS3', reason: 'The SQS queue is used as a Dead Letter Queue' },
-]);
-
-NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/MskAuthorizer/StateMachine/Resource',
 ],
 [
@@ -48,7 +41,7 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 ]);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
-  'Stack/MskAuthorizer/StateMachine/Role/DefaultPolicy/Resource',
+  'Stack/MskAuthorizer/StateMachineRole/DefaultPolicy/Resource',
 ],
 [
   { id: 'AwsSolutions-IAM5', reason: 'Wildcard created automatically by CDK for the Step Functions role to trigger the Lambda Functions versions' },
