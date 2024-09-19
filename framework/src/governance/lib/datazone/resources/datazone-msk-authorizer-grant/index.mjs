@@ -181,12 +181,8 @@ export const handler = async(event) => {
   const clusterType = event.Metadata.Producer.ClusterType;
   const producerAccount = event.Metadata.Producer.Account;
   const consumerAccount = event.Metadata.Consumer.Account;
-  let consumerRolesArn;
-  if (event.Metadata.Consumer.RolesArn.length == 1){
-    consumerRolesArn = event.Metadata.Consumer.RolesArn[0];
-  } else {
-    consumerRolesArn = event.Metadata.Consumer.RolesArn;
-  };
+  const consumerRolesArn = event.Metadata.Consumer.RolesArn;
+
   const subscriptionGrantId = event.Metadata.SubscriptionGrantId;
   const assetId = event.Metadata.AssetId;
   const requestType = event.Metadata.RequestType;

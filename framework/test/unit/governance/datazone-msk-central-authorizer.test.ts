@@ -585,7 +585,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             {
               Action: 'sts:AssumeRole',
               Condition: {
-                StringLike: {
+                StringEquals: {
                   'sts:ExternalId': {
                     'Fn::Join': [
                       '',
@@ -594,7 +594,11 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                         {
                           Ref: 'AWS::Partition',
                         },
-                        ':states:*:',
+                        ':states:',
+                        {
+                          Ref: 'AWS::Region',
+                        },
+                        ':',
                         {
                           Ref: 'AWS::AccountId',
                         },
@@ -627,7 +631,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             {
               Action: 'sts:AssumeRole',
               Condition: {
-                StringLike: {
+                StringEquals: {
                   'sts:ExternalId': {
                     'Fn::Join': [
                       '',
@@ -636,7 +640,11 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                         {
                           Ref: 'AWS::Partition',
                         },
-                        ':states:*:999999999999:stateMachine:MskTopicAuthorizerEnvironment',
+                        ':states:',
+                        {
+                          Ref: 'AWS::Region',
+                        },
+                        ':999999999999:stateMachine:MskTopicAuthorizerEnvironment',
                       ],
                     ],
                   },

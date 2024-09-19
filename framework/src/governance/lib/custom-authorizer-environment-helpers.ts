@@ -139,10 +139,10 @@ export function authorizerEnvironmentWorkflowSetup(
 
   stateMachineRole.assumeRolePolicy?.addStatements(new PolicyStatement({
     actions: ['sts:AssumeRole'],
-    principals: [new AccountPrincipal(centralAccount || stack.account)],
+    principals: [new AccountPrincipal(centralAccount ?? stack.account)],
     conditions: {
-      StringLike: {
-        'sts:ExternalId': `arn:${stack.partition}:states:*:${centralAccount || stack.account}:stateMachine:${authorizerName}Central`,
+      StringEquals: {
+        'sts:ExternalId': `arn:${stack.partition}:states:${stack.region}:${centralAccount ?? stack.account}:stateMachine:${authorizerName}Central`,
       },
     },
   }));

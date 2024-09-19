@@ -240,8 +240,8 @@ export function registerAccount(scope: Construct, id: string, accountId: string,
       actions: ['sts:AssumeRole'],
       principals: [new AccountPrincipal(accountId)],
       conditions: {
-        StringLike: {
-          'sts:ExternalId': `arn:${stack.partition}:states:*:${accountId}:stateMachine:${authorizerName}Environment`,
+        StringEquals: {
+          'sts:ExternalId': `arn:${stack.partition}:states:${stack.region}:${accountId}:stateMachine:${authorizerName}Environment`,
         },
       },
     },

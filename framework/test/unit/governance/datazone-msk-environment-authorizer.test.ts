@@ -127,7 +127,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
             {
               Action: 'sts:AssumeRole',
               Condition: {
-                StringLike: {
+                StringEquals: {
                   'sts:ExternalId': {
                     'Fn::Join': [
                       '',
@@ -136,7 +136,11 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                         {
                           Ref: 'AWS::Partition',
                         },
-                        ':states:*:',
+                        ':states:',
+                        {
+                          Ref: 'AWS::Region',
+                        },
+                        ':',
                         {
                           Ref: 'AWS::AccountId',
                         },
