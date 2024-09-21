@@ -6,7 +6,7 @@
  * At this time only v0.37.0 is supported.
  */
 export enum KarpenterVersion {
-  V0_37_0 = '0.37.0',
+  V1_0_1 = '1.0.1',
 }
 
-export const DEFAULT_KARPENTER_VERSION: KarpenterVersion = KarpenterVersion.V0_37_0;
+export const DEFAULT_KARPENTER_VERSION: KarpenterVersion = KarpenterVersion.V1_0_1;
