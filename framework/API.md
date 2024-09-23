@@ -19703,11 +19703,11 @@ The list of supported Karpenter versions as defined [here](https://github.com/aw
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0">V0_37_0</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V1_0_1">V1_0_1</a></code> | *No description.* |
 
 ---
 
-##### `V0_37_0` <a name="V0_37_0" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V0_37_0"></a>
+##### `V1_0_1` <a name="V1_0_1" id="@cdklabs/aws-data-solutions-framework.processing.KarpenterVersion.V1_0_1"></a>
 
 ---
 

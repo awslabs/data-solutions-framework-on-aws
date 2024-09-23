@@ -1,0 +1,8 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023
+RUN dnf -y install e2fsprogs bash mdadm util-linux
+COPY setup-runtime-storage ./
+RUN chmod +x ./setup-runtime-storage
+ENTRYPOINT ["sh", "setup-runtime-storage"]
