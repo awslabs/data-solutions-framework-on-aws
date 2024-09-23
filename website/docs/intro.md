@@ -22,7 +22,7 @@ The sections below will take you through the steps of creating the CDK applicati
 ```bash
 mkdir dsf-example && cd dsf-example
 ```
-```mdx-code-block
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -42,11 +42,10 @@ mkdir dsf-example && cd dsf-example
     ```
   </TabItem>
 </Tabs>
-```
+
 
 We can now install DSF on AWS:
 
-```mdx-code-block
 
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
@@ -71,13 +70,13 @@ We can now install DSF on AWS:
     ```
   </TabItem>
 </Tabs>
-```
+
 
 ### Create a data lake storage
 
 We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-lake-storage.mdx) to create a storage layer for our data lake on AWS.
 
-```mdx-code-block
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -133,14 +132,13 @@ We will now use [***DataLakeStorage***](constructs/library/02-Storage/03-data-la
     
   </TabItem>
 </Tabs>
-```
+
 
 ### Create the EMR Serverless Application and execution role
 
 We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/spark-emr-serverless-runtime). In this step we create an EMR Serverless application, create an execution IAM role, to which we will grant read write access to the created S3 bucket.  
 
 
-```mdx-code-block
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
 
@@ -173,14 +171,12 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/
   storage.grantReadWrite(executionRole);
 
   ```
-  
-  ```mdx-code-block
+
   </TabItem>
   <TabItem value="python" label="Python">
 
     In `dsf_example/dsf_example_stack.py`
     ```python
-
     # Use DSF on AWS to create Spark EMR serverless runtime
     spark_runtime = dsf.processing.SparkEmrServerlessRuntime(
             self, "SparkProcessingRuntime", name="WordCount",
@@ -205,17 +201,15 @@ We will now use [***SparkEmrServerlessRuntime***](constructs/library/Processing/
 
     # Provide access for the execution role to write data to the created bucket
     storage.grant_read_write(processing_exec_role)
-
     ```
     
   </TabItem>
 </Tabs>
-```
 
 ### Output resource IDs and ARNs
 
 Last we will output the ARNs for the role and EMR serverless app, the ID of the EMR serverless application. These will be passed to the AWS cli when executing `StartJobRun` command.
-```mdx-code-block
+
 <Tabs>
   <TabItem value="typescript" label="TypeScript" default>
     In `lib/dsf-example-stack.ts`
@@ -224,7 +218,6 @@ Last we will output the ARNs for the role and EMR serverless app, the ID of the 
     new cdk.CfnOutput(this, "EMRServerlessApplicationARN", { value : runtimeServerless.application.attrArn });
     new cdk.CfnOutput(this, "EMRServelessExecutionRoleARN", { value : executionRole.roleArn });
     new cdk.CfnOutput(this, "BucketURI", { value : `s3://${storage.bucketName}` });
-    
     ```
   </TabItem>
 
@@ -232,7 +225,6 @@ Last we will output the ARNs for the role and EMR serverless app, the ID of the 
 
     In `dsf_example/dsf_example_stack.py`
     ```python
-
     CfnOutput(self, "EMRServerlessApplicationId", value=spark_runtime.application.attr_application_id)
     CfnOutput(self, "EMRServerlessApplicationARN", value=spark_runtime.application.attr_arn)
     CfnOutput(self, "EMRServelessExecutionRoleARN", value=processing_exec_role.role_arn)
@@ -240,7 +232,7 @@ Last we will output the ARNs for the role and EMR serverless app, the ID of the 
     ```
   </TabItem>
 </Tabs>
-```
+
 ## Deploy the CDK app
 
 If this is the first time you deploy an AWS CDK app into an environment (account/region), you can install a “bootstrap stack”.
