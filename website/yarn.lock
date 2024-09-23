@@ -1244,7 +1244,7 @@
     "@docsearch/css" "3.6.1"
     algoliasearch "^4.19.1"
 
-"@docusaurus/core@3.5.2", "@docusaurus/core@^3.0.0":
+"@docusaurus/core@3.5.2", "@docusaurus/core@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@docusaurus/core/-/core-3.5.2.tgz#3adedb90e7b6104592f1231043bd6bf91680c39c"
   integrity sha512-4Z1WkhCSkX4KO0Fw5m/Vuc7Q3NxBG53NE5u59Rs96fWkMPZVSrzEPP16/Nk6cWb/shK7xXPndTmalJtw7twL/w==
@@ -1328,7 +1328,7 @@
     postcss-sort-media-queries "^5.2.0"
     tslib "^2.6.0"
 
-"@docusaurus/logger@3.5.2", "@docusaurus/logger@^3.0.0":
+"@docusaurus/logger@3.5.2", "@docusaurus/logger@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@docusaurus/logger/-/logger-3.5.2.tgz#1150339ad56844b30734115c19c580f3b25cf5ed"
   integrity sha512-LHC540SGkeLfyT3RHK3gAMK6aS5TRqOD4R72BEU/DE2M/TY8WwEUAMY576UUc/oNJXv8pGhBmQB6N9p3pt8LQw==
@@ -1512,7 +1512,7 @@
     sitemap "^7.1.1"
     tslib "^2.6.0"
 
-"@docusaurus/preset-classic@^3.0.0":
+"@docusaurus/preset-classic@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@docusaurus/preset-classic/-/preset-classic-3.5.2.tgz#977f78510bbc556aa0539149eef960bb7ab52bd9"
   integrity sha512-3ihfXQ95aOHiLB5uCu+9PRy2gZCeSZoDcqpnDvf3B+sTrMvMTr8qRUzBvWkoIqc82yG5prCboRjk1SVILKx6sg==
@@ -1588,7 +1588,7 @@
     tslib "^2.6.0"
     utility-types "^3.10.0"
 
-"@docusaurus/theme-mermaid@^3.0.0":
+"@docusaurus/theme-mermaid@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-mermaid/-/theme-mermaid-3.5.2.tgz#7d64289e6f2493b9fc0d5f2e8f66da4c9d884db8"
   integrity sha512-7vWCnIe/KoyTN1Dc55FIyqO5hJ3YaV08Mr63Zej0L0mX1iGzt+qKSmeVUAJ9/aOalUhF0typV0RmNUSy5FAmCg==
