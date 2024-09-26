@@ -17,9 +17,11 @@ class ExampleDefaultOpenSearchStack extends cdk.Stack {
       deployInVpc:true,
       removalPolicy:cdk.RemovalPolicy.DESTROY
     });
-    /// !hide
+
+    
     osCluster.addRoleMapping('DashboardOsUser', 'dashboards_user','<IAMIdentityCenterDashboardUsersGroupId>');
     osCluster.addRoleMapping('ReadAllOsRole','readall','<IAMIdentityCenterDashboardUsersGroupId>');
+    /// !hide
   }
   
   
