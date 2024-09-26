@@ -50,6 +50,7 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/stack/cluster/KafkaApi/MskIamProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
     '/stack/cluster/KafkaApi/MskIamProvider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource',
     '/stack/cluster/KafkaApi/MskIamProvider/CustomResourceProvider/framework-onEvent/Resource',
+    '/stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
   ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },
@@ -70,6 +71,13 @@ NagSuppressions.addResourceSuppressionsByPath(
     { id: 'AwsSolutions-IAM4', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },
     { id: 'AwsSolutions-IAM5', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },
   ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/stack/cluster/LambdaSecurityGroup',
+  [{ id: 'AwsSolutions-EC23', reason: 'Handled with Egress rules' }],
   true,
 );
 

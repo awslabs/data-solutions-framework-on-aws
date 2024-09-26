@@ -5825,11 +5825,12 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.lambdaSecurityGroup">lambdaSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.cluster">cluster</a></code> | <code>aws-cdk-lib.aws_msk.CfnServerlessCluster</code> | The MSK cluster as a CloudFormation resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterBoostrapBrokers">clusterBoostrapBrokers</a></code> | <code>string</code> | The list of bootstrap servers for client to connect. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the cluster. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.lambdaSecurityGroup">lambdaSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the configuration Lambda. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | The VPC where the MSK cluster is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup">brokerSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.serviceToken">serviceToken</a></code> | <code>string</code> | If there is an already existing service token deployed for the custom resource you can reuse it to reduce the number of resource created. |
 
 ---
@@ -5854,6 +5855,20 @@ public readonly cluster: CfnServerlessCluster;
 
 - *Type:* aws-cdk-lib.aws_msk.CfnServerlessCluster
 
+The MSK cluster as a CloudFormation resource.
+
+---
+
+##### `clusterBoostrapBrokers`<sup>Required</sup> <a name="clusterBoostrapBrokers" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterBoostrapBrokers"></a>
+
+```typescript
+public readonly clusterBoostrapBrokers: string;
+```
+
+- *Type:* string
+
+The list of bootstrap servers for client to connect.
+
 ---
 
 ##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.clusterName"></a>
@@ -5863,6 +5878,8 @@ public readonly clusterName: string;
 ```
 
 - *Type:* string
+
+The name of the cluster.
 
 ---
 
@@ -5874,6 +5891,8 @@ public readonly lambdaSecurityGroup: ISecurityGroup;
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
 
+The security group used by the configuration Lambda.
+
 ---
 
 ##### `vpc`<sup>Required</sup> <a name="vpc" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.vpc"></a>
@@ -5884,6 +5903,8 @@ public readonly vpc: IVpc;
 
 - *Type:* aws-cdk-lib.aws_ec2.IVpc
 
+The VPC where the MSK cluster is deployed.
+
 ---
 
 ##### `brokerSecurityGroup`<sup>Optional</sup> <a name="brokerSecurityGroup" id="@cdklabs/aws-data-solutions-framework.streaming.MskServerless.property.brokerSecurityGroup"></a>
@@ -5893,6 +5914,8 @@ public readonly brokerSecurityGroup: ISecurityGroup;
 ```
 
 - *Type:* aws-cdk-lib.aws_ec2.ISecurityGroup
+
+The security group used by the cluster.
 
 ---
 
