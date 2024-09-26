@@ -6,6 +6,7 @@ import { ISecurityGroup, IVpc, SecurityGroup, SubnetSelection } from 'aws-cdk-li
 import { IPrincipal, PolicyDocument } from 'aws-cdk-lib/aws-iam';
 import { CfnClusterPolicy, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 
+import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { KafkaApi } from './kafka-api';
 import { addClusterPolicy } from './msk-helpers';
@@ -23,11 +24,32 @@ import { Context, DataVpc, TrackedConstruct, TrackedConstructProps } from '../..
  */
 export class MskServerless extends TrackedConstruct {
 
+  /**
+   * The MSK cluster as a CloudFormation resource
+   */
   public readonly cluster: CfnServerlessCluster;
+  /**
+   * The VPC where the MSK cluster is deployed
+   */
   public readonly vpc: IVpc;
+  /**
+   * The security group used by the cluster
+   */
   public readonly brokerSecurityGroup?: ISecurityGroup;
+  /**
+   * The name of the cluster
+   */
   public readonly clusterName: string;
+  /**
+   * The security group used by the configuration Lambda
+   */
   public readonly lambdaSecurityGroup: ISecurityGroup;
+
+  /**
+   * The list of bootstrap servers for client to connect
+   */
+  public readonly clusterBoostrapBrokers: string;
+
   /**
    * If there is an already existing service token deployed for the custom resource
    * you can reuse it to reduce the number of resource created
@@ -122,6 +144,25 @@ export class MskServerless extends TrackedConstruct {
       value: this.serviceToken!,
       exportName: `${Aws.STACK_NAME}-ServiceToken`,
     });
+
+    const clusterBootstrapBrokers = new AwsCustomResource(this, 'BootstrapBrokersIam', {
+      onUpdate: {
+        service: 'Kafka',
+        action: 'getBootstrapBrokers',
+        parameters: {
+          ClusterArn: this.cluster.attrArn,
+        },
+        physicalResourceId: PhysicalResourceId.of('BootstrapBrokers'),
+      },
+      policy: AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [this.cluster.attrArn],
+      }),
+      installLatestAwsSdk: false,
+    });
+
+    clusterBootstrapBrokers.node.addDependency(this.cluster);
+
+    this.clusterBoostrapBrokers = clusterBootstrapBrokers.getResponseField('BootstrapBrokerStringSaslIam');
   }
 
   /**
@@ -189,15 +230,14 @@ export class MskServerless extends TrackedConstruct {
 
 
   /**
-    * Add a cluster policy
-    *
-    * @param {PolicyDocument} policy the IAM principal to grand the consume action.
-    * @param {string} id the CDK id for the Cluster Policy
-    * @return {CfnClusterPolicy}
-    */
+   * Add a cluster policy
+   *
+   * @param {PolicyDocument} policy the IAM principal to grand the consume action.
+   * @param {string} id the CDK id for the Cluster Policy
+   * @return {CfnClusterPolicy}
+   */
   public addClusterPolicy (policy: PolicyDocument, id: string): CfnClusterPolicy {
 
     return addClusterPolicy(this, policy, id, this.cluster);
   }
-
 }
