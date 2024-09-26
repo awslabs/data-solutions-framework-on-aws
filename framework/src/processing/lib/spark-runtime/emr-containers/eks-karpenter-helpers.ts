@@ -286,7 +286,7 @@ export function karpenterSetup(cluster: ICluster,
       `arn:aws:ec2:${Stack.of(scope).region}:*:volume/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:network-interface/*`,
       `arn:aws:ec2:${Stack.of(scope).region}:*:launch-template/*`,
-      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request`,
+      `arn:aws:ec2:${Stack.of(scope).region}:*:spot-instances-request/*`,
     ],
     actions: ['ec2:RunInstances', 'ec2:CreateFleet', 'ec2:CreateLaunchTemplate'],
     conditions: {
