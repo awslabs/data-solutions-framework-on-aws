@@ -123,6 +123,8 @@ export class DsfProvider extends Construct {
       this.cleanUpLogGroup = this.createLogGroup('CleanUpLogGroup');
       this.cleanUpLogGroup.grantWrite(this.cleanUpRole);
 
+      props.environmentEncryption?.grantEncryptDecrypt(this.cleanUpRole);
+
       this.cleanUpFunction = new Function(this, 'CleanUpLambda', {
         runtime: DsfProvider.CR_RUNTIME,
         role: this.cleanUpRole,
@@ -134,6 +136,7 @@ export class DsfProvider extends Construct {
           SECURITY_GROUPS: this.securityGroups!.map(s => s.securityGroupId).join(','),
           SUBNETS: this.subnets.subnets!.map(s => s.subnetId).join(','),
         },
+        environmentEncryption: props.environmentEncryption,
       });
 
       const cleanUpProvider = new Provider(this, 'CleanUpProvider', {
