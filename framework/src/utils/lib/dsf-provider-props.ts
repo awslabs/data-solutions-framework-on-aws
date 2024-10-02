@@ -4,6 +4,7 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { BundlingOptions } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 
@@ -63,6 +64,11 @@ export interface DsfProviderProps {
    * @default Duration.minutes(30)
    */
   readonly queryTimeout?: Duration;
+
+  /**
+   * The AWS KMS key to use to encrypt the function environment variables.
+   */
+  readonly environmentEncryption?: Key;
 
 }
 
