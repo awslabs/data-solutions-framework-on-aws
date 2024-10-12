@@ -1,25 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Duration, Stack } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
-import { Rule, RuleTargetInput, Schedule } from 'aws-cdk-lib/aws-events';
+import { IRule, Rule, RuleTargetInput, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import {
   Effect,
-  ManagedPolicy,
+  IRole,
   PolicyDocument,
   PolicyStatement,
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
-import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
+import { Function, Runtime, Code, IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { DataZoneGsrMskDataSourceProps } from './datazone-gsr-msk-datasource-props';
-import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
 
 /**
  * A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
+ * The construct creates assets with the MskTopicAssetType in DataZone based on schema definitions in a Glue Schema Registry.
  *
  * @example
  * import { Schedule } from 'aws-cdk-lib/aws-events';
@@ -36,9 +38,9 @@ import { TrackedConstruct, TrackedConstructProps } from '../../../utils';
 export class DataZoneGsrMskDataSource extends TrackedConstruct {
 
   /**
-   * The IAM Role of the Lambda Function interacting with DataZone API
+   * The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets
    */
-  public readonly datasourceLambdaRole: Role;
+  public readonly lambdaRole: IRole;
   /**
    * The membership of the Lambda Role on the DataZone Project
    */
@@ -46,15 +48,25 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
   /**
    * The Event Bridge Rule for schema creation and update
    */
-  public readonly createUpdateEventRule?: Rule;
+  public readonly createUpdateEventRule?: IRule;
   /**
    * The Event Bridge Rule for trigger the data source execution
    */
-  public readonly scheduleRule?: Rule;
+  public readonly scheduleRule?: IRule;
   /**
    * The Event Bridge Rule for schema deletion
    */
-  public readonly deleteEventRule?: Rule;
+  public readonly deleteEventRule?: IRule;
+  /**
+   * The Log Group for the Lambda Function creating DataZone Inventory Assets
+   */
+  public readonly lambdaLogGroup: ILogGroup;
+  /**
+   * The Lambda Function creating DataZone Inventory Assets
+   */
+  public readonly lambdaFunction: IFunction;
+
+  private readonly removalPolicy: RemovalPolicy;
 
   /**
    * Build an instance of the DataZoneGsrMskDataSource
@@ -79,14 +91,18 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
     const glueRegistryArn = `arn:${partition}:glue:${region}:${accountId}:registry/${props.registryName}`;
     const glueRegistrySchemasArn = `arn:${partition}:glue:${region}:${accountId}:schema/${props.registryName}/*`;
 
+    this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
+
     // Define SSM Parameter paths to store asset information
     const parameterPrefix = `/datazone/${props.domainId}/${props.registryName}/asset/`;
 
-    this.datasourceLambdaRole = new Role(this, 'HandlerRole', {
+    this.lambdaLogGroup = new LogGroup(this, 'LambdaLogGroup', {
+      retention: RetentionDays.ONE_MONTH,
+      removalPolicy: this.removalPolicy,
+    });
+
+    this.lambdaRole = props.lambdaRole || new Role(this, 'LambdaRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
       inlinePolicies: {
         DataZonePermission: new PolicyDocument({
           statements: [
@@ -147,19 +163,21 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
       },
     });
 
+    this.lambdaLogGroup.grantWrite(this.lambdaRole);
+
     this.dataZoneMembership = new CfnProjectMembership(this, 'ProjectMembership', {
       designation: 'PROJECT_CONTRIBUTOR',
       domainIdentifier: props.domainId,
       projectIdentifier: props.projectId,
       member: {
-        userIdentifier: this.datasourceLambdaRole.roleArn,
+        userIdentifier: this.lambdaRole.roleArn,
       },
     });
 
-    const lambdaCrawler = new Function(this, 'DataZoneGsrMskDataSource', {
+    this.lambdaFunction = new Function(this, 'LambdaFunction', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
-      role: this.datasourceLambdaRole,
+      role: this.lambdaRole,
       timeout: Duration.minutes(5),
       code: Code.fromAsset(__dirname + '/resources/datazone-gsr-msk-datasource/'),
       environment: {
@@ -172,15 +190,17 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
         PARAMETER_PREFIX: parameterPrefix,
         PARTITION: partition,
       },
+      environmentEncryption: props.encryptionKey,
     });
 
-    lambdaCrawler.node.addDependency(this.dataZoneMembership);
+    this.lambdaFunction.node.addDependency(this.dataZoneMembership);
+    props.encryptionKey?.grantDecrypt(this.lambdaRole);
 
     // Add EventBridge Rule for cron schedule (if provided)
     if (props.runSchedule || props.enableSchemaRegistryEvent === undefined) {
       this.scheduleRule = new Rule(this, 'ScheduledRule', {
         schedule: props.runSchedule || Schedule.expression('cron(1 0 * * ? *)'),
-        targets: [new LambdaFunction(lambdaCrawler)],
+        targets: [new LambdaFunction(this.lambdaFunction)],
       });
     }
 
@@ -198,7 +218,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
           },
         },
         targets: [
-          new LambdaFunction(lambdaCrawler, {
+          new LambdaFunction(this.lambdaFunction, {
             event: RuleTargetInput.fromObject({ registryName: props.registryName }),
           }),
         ],
@@ -221,7 +241,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
           },
         },
         targets: [
-          new LambdaFunction(lambdaCrawler, {
+          new LambdaFunction(this.lambdaFunction, {
             event: RuleTargetInput.fromObject({ registryName: props.registryName }),
           }),
         ],

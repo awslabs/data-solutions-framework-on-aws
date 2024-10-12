@@ -42,18 +42,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             },
           ],
         }),
-        ManagedPolicyArns: [
-          {
-            'Fn::Join': Match.arrayWith([
-              Match.arrayWith([
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
-              ]),
-            ]),
-          },
-        ],
         Policies: [
           {
             PolicyDocument: Match.objectLike({
@@ -217,14 +205,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             Arn: {
               Ref: Match.stringLikeRegexp('MskAuthorizerStateMachine.*'),
             },
-            DeadLetterConfig: {
-              Arn: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            },
             RetryPolicy: {
               MaximumRetryAttempts: 0,
             },
@@ -371,7 +351,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Resource: [
                 {
                   'Fn::GetAtt': [
-                    'MskAuthorizerCallbackHandler948D9927',
+                    Match.stringLikeRegexp('MskAuthorizerCallbackHandler.*'),
                     'Arn',
                   ],
                 },
@@ -381,7 +361,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                     [
                       {
                         'Fn::GetAtt': [
-                          'MskAuthorizerCallbackHandler948D9927',
+                          Match.stringLikeRegexp('MskAuthorizerCallbackHandler.*'),
                           'Arn',
                         ],
                       },
@@ -390,6 +370,20 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
                   ],
                 },
               ],
+            },
+            {
+              Action: [
+                'logs:CreateLogDelivery',
+                'logs:GetLogDelivery',
+                'logs:UpdateLogDelivery',
+                'logs:DeleteLogDelivery',
+                'logs:ListLogDeliveries',
+                'logs:PutResourcePolicy',
+                'logs:DescribeResourcePolicies',
+                'logs:DescribeLogGroups',
+              ],
+              Effect: 'Allow',
+              Resource: '*',
             },
             {
               Action: 'sts:AssumeRole',
@@ -497,67 +491,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
             'Arn',
           ],
         },
-      }),
-    );
-  });
-
-  test('should create an SQS queue as a dead letter queue for events', () => {
-    template.resourceCountIs('AWS::SQS::Queue', 1);
-  });
-
-  test('should create proper IAM policy for the dead letter queue ', () => {
-    template.hasResourceProperties('AWS::SQS::QueuePolicy',
-      Match.objectLike({
-        PolicyDocument: Match.objectLike({
-          Statement: [
-            {
-              Action: 'sqs:*',
-              Condition: {
-                Bool: {
-                  'aws:SecureTransport': 'false',
-                },
-              },
-              Effect: 'Deny',
-              Principal: {
-                AWS: '*',
-              },
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            },
-            Match.objectLike({
-              Action: 'sqs:SendMessage',
-              Condition: {
-                ArnEquals: {
-                  'aws:SourceArn': {
-                    'Fn::GetAtt': [
-                      Match.stringLikeRegexp('MskAuthorizerAuthorizerEventRule.*'),
-                      'Arn',
-                    ],
-                  },
-                },
-              },
-              Effect: 'Allow',
-              Principal: {
-                Service: 'events.amazonaws.com',
-              },
-              Resource: {
-                'Fn::GetAtt': [
-                  Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-                  'Arn',
-                ],
-              },
-            }),
-          ],
-        }),
-        Queues: [
-          {
-            Ref: Match.stringLikeRegexp('MskAuthorizerQueue.*'),
-          },
-        ],
       }),
     );
   });
@@ -723,14 +656,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but witho
     );
   });
 
-  test('should create an SQS Queue with RETAIN removal policy', () => {
-    template.hasResource('AWS::SQS::Queue',
-      Match.objectLike({
-        UpdateReplacePolicy: 'Retain',
-        DeletionPolicy: 'Retain',
-      }),
-    );
-  });
 });
 
 describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but without global data removal', () => {
@@ -749,15 +674,6 @@ describe ('Creating a DataZoneMskCentralAuthorizer with DELETE removal but witho
 
   test('should create a Step Functions state machine with RETAIN removal policy', () => {
     template.hasResource('AWS::StepFunctions::StateMachine',
-      Match.objectLike({
-        UpdateReplacePolicy: 'Delete',
-        DeletionPolicy: 'Delete',
-      }),
-    );
-  });
-
-  test('should create an SQS Queue with RETAIN removal policy', () => {
-    template.hasResource('AWS::SQS::Queue',
       Match.objectLike({
         UpdateReplacePolicy: 'Delete',
         DeletionPolicy: 'Delete',

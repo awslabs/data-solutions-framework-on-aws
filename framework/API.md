@@ -4348,7 +4348,6 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the DataZone custom asset type creation. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the DataZone custom asset type creation. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the DataZone custom asset type creation. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.handlerRole">handlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the custom resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.serviceToken">serviceToken</a></code> | <code>string</code> | The service token for the custom resource. |
 
 ---
@@ -4401,18 +4400,6 @@ The IAM Role for the DataZone custom asset type creation.
 
 ---
 
-##### `handlerRole`<sup>Required</sup> <a name="handlerRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.handlerRole"></a>
-
-```typescript
-public readonly handlerRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The role used by the custom resource.
-
----
-
 ##### `serviceToken`<sup>Required</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.serviceToken"></a>
 
 ```typescript
@@ -4457,6 +4444,8 @@ public readonly DSF_TRACKING_CODE: string;
 ### DataZoneGsrMskDataSource <a name="DataZoneGsrMskDataSource" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource"></a>
 
 A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
+
+The construct creates assets with the MskTopicAssetType in DataZone based on schema definitions in a Glue Schema Registry.
 
 *Example*
 
@@ -4584,11 +4573,13 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.datasourceLambdaRole">datasourceLambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role of the Lambda Function interacting with DataZone API. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.dataZoneMembership">dataZoneMembership</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProjectMembership</code> | The membership of the Lambda Role on the DataZone Project. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.createUpdateEventRule">createUpdateEventRule</a></code> | <code>aws-cdk-lib.aws_events.Rule</code> | The Event Bridge Rule for schema creation and update. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.deleteEventRule">deleteEventRule</a></code> | <code>aws-cdk-lib.aws_events.Rule</code> | The Event Bridge Rule for schema deletion. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.scheduleRule">scheduleRule</a></code> | <code>aws-cdk-lib.aws_events.Rule</code> | The Event Bridge Rule for trigger the data source execution. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaFunction">lambdaFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function creating DataZone Inventory Assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaLogGroup">lambdaLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Log Group for the Lambda Function creating DataZone Inventory Assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.createUpdateEventRule">createUpdateEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for schema creation and update. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.deleteEventRule">deleteEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for schema deletion. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.scheduleRule">scheduleRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for trigger the data source execution. |
 
 ---
 
@@ -4604,18 +4595,6 @@ The tree node.
 
 ---
 
-##### `datasourceLambdaRole`<sup>Required</sup> <a name="datasourceLambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.datasourceLambdaRole"></a>
-
-```typescript
-public readonly datasourceLambdaRole: Role;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.Role
-
-The IAM Role of the Lambda Function interacting with DataZone API.
-
----
-
 ##### `dataZoneMembership`<sup>Required</sup> <a name="dataZoneMembership" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.dataZoneMembership"></a>
 
 ```typescript
@@ -4628,13 +4607,49 @@ The membership of the Lambda Role on the DataZone Project.
 
 ---
 
+##### `lambdaFunction`<sup>Required</sup> <a name="lambdaFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaFunction"></a>
+
+```typescript
+public readonly lambdaFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function creating DataZone Inventory Assets.
+
+---
+
+##### `lambdaLogGroup`<sup>Required</sup> <a name="lambdaLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaLogGroup"></a>
+
+```typescript
+public readonly lambdaLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The Log Group for the Lambda Function creating DataZone Inventory Assets.
+
+---
+
+##### `lambdaRole`<sup>Required</sup> <a name="lambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaRole"></a>
+
+```typescript
+public readonly lambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets.
+
+---
+
 ##### `createUpdateEventRule`<sup>Optional</sup> <a name="createUpdateEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.createUpdateEventRule"></a>
 
 ```typescript
-public readonly createUpdateEventRule: Rule;
+public readonly createUpdateEventRule: IRule;
 ```
 
-- *Type:* aws-cdk-lib.aws_events.Rule
+- *Type:* aws-cdk-lib.aws_events.IRule
 
 The Event Bridge Rule for schema creation and update.
 
@@ -4643,10 +4658,10 @@ The Event Bridge Rule for schema creation and update.
 ##### `deleteEventRule`<sup>Optional</sup> <a name="deleteEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.deleteEventRule"></a>
 
 ```typescript
-public readonly deleteEventRule: Rule;
+public readonly deleteEventRule: IRule;
 ```
 
-- *Type:* aws-cdk-lib.aws_events.Rule
+- *Type:* aws-cdk-lib.aws_events.IRule
 
 The Event Bridge Rule for schema deletion.
 
@@ -4655,10 +4670,10 @@ The Event Bridge Rule for schema deletion.
 ##### `scheduleRule`<sup>Optional</sup> <a name="scheduleRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.scheduleRule"></a>
 
 ```typescript
-public readonly scheduleRule: Rule;
+public readonly scheduleRule: IRule;
 ```
 
-- *Type:* aws-cdk-lib.aws_events.Rule
+- *Type:* aws-cdk-lib.aws_events.IRule
 
 The Event Bridge Rule for trigger the data source execution.
 
@@ -5043,15 +5058,17 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction">datazoneCallbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to acknowledge the subscription grant in DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackLogGroup">datazoneCallbackLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group for logging the datazone callback. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to acknowledge the subscription grant in DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the DataZone event to trigger the authorizer workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule">datazoneEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to trigger the authorizer workflow. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The dead letter queue for the authorizer workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to collect metadata from DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorLogGroup">metadataCollectorLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group for logging the metadata collector. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to collect metadata from DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The state machine used to orchestrate the authorizer workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineCallbackRole">stateMachineCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the authorizer workflow callback. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the authorizer workflow State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used to log the authorizer state machine. |
 
 ---
 
@@ -5076,6 +5093,18 @@ public readonly datazoneCallbackFunction: IFunction;
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
 The Lambda function used to acknowledge the subscription grant in DataZone.
+
+---
+
+##### `datazoneCallbackLogGroup`<sup>Required</sup> <a name="datazoneCallbackLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackLogGroup"></a>
+
+```typescript
+public readonly datazoneCallbackLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The Cloudwatch Log Group for logging the datazone callback.
 
 ---
 
@@ -5115,18 +5144,6 @@ The event rule used to trigger the authorizer workflow.
 
 ---
 
-##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue"></a>
-
-```typescript
-public readonly deadLetterQueue: IQueue;
-```
-
-- *Type:* aws-cdk-lib.aws_sqs.IQueue
-
-The dead letter queue for the authorizer workflow.
-
----
-
 ##### `metadataCollectorFunction`<sup>Required</sup> <a name="metadataCollectorFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction"></a>
 
 ```typescript
@@ -5136,6 +5153,18 @@ public readonly metadataCollectorFunction: IFunction;
 - *Type:* aws-cdk-lib.aws_lambda.IFunction
 
 The Lambda function used to collect metadata from DataZone.
+
+---
+
+##### `metadataCollectorLogGroup`<sup>Required</sup> <a name="metadataCollectorLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorLogGroup"></a>
+
+```typescript
+public readonly metadataCollectorLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The Cloudwatch Log Group for logging the metadata collector.
 
 ---
 
@@ -5184,6 +5213,18 @@ public readonly stateMachineRole: Role;
 - *Type:* aws-cdk-lib.aws_iam.Role
 
 The IAM Role used by the authorizer workflow State Machine.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used to log the authorizer state machine.
 
 ---
 
@@ -5370,8 +5411,10 @@ Any object.
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction">grantFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The lambda function used to grant access to Kafka topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantLogGroup">grantLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.LogGroup</code> | The CloudWatch Log Group used by the grant function. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to grant access to Kafka topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The environment authorizer State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Step Functions state machine. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the environment authorizer State Machine. |
 
 ---
@@ -5400,6 +5443,18 @@ The lambda function used to grant access to Kafka topics.
 
 ---
 
+##### `grantLogGroup`<sup>Required</sup> <a name="grantLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantLogGroup"></a>
+
+```typescript
+public readonly grantLogGroup: LogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.LogGroup
+
+The CloudWatch Log Group used by the grant function.
+
+---
+
 ##### `grantRole`<sup>Required</sup> <a name="grantRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole"></a>
 
 ```typescript
@@ -5421,6 +5476,18 @@ public readonly stateMachine: IStateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
 
 The environment authorizer State Machine.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Step Functions state machine.
 
 ---
 
@@ -13507,8 +13574,8 @@ const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The authorizer event role for allowing events to invoke the workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The authorizer event rule for triggering the workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine Call Back. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The authorizer dead letter queue for failed events. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The authorizer Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for logging the state machine. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine. |
 
 ---
@@ -13549,18 +13616,6 @@ The IAM Role used by the State Machine Call Back.
 
 ---
 
-##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue"></a>
-
-```typescript
-public readonly deadLetterQueue: IQueue;
-```
-
-- *Type:* aws-cdk-lib.aws_sqs.IQueue
-
-The authorizer dead letter queue for failed events.
-
----
-
 ##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine"></a>
 
 ```typescript
@@ -13570,6 +13625,18 @@ public readonly stateMachine: StateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
 
 The authorizer Step Functions state machine.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for logging the state machine.
 
 ---
 
@@ -13602,6 +13669,7 @@ const authorizerEnvironmentWorflow: governance.AuthorizerEnvironmentWorflow = { 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The state machine that orchestrates the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The log group where the state machine logs are stored. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the State Machine. |
 
 ---
@@ -13615,6 +13683,18 @@ public readonly stateMachine: IStateMachine;
 - *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
 
 The state machine that orchestrates the workflow.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The log group where the state machine logs are stored.
 
 ---
 
@@ -14787,6 +14867,7 @@ const dataZoneCustomAssetTypeFactoryProps: governance.DataZoneCustomAssetTypeFac
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Lambda role used by the custom resource provider. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy for the custom resource. |
 
 ---
@@ -14800,6 +14881,19 @@ public readonly domainId: string;
 - *Type:* string
 
 The DataZone domain identifier.
+
+---
+
+##### `lambdaRole`<sup>Optional</sup> <a name="lambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.lambdaRole"></a>
+
+```typescript
+public readonly lambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A new role is created
+
+The Lambda role used by the custom resource provider.
 
 ---
 
@@ -15041,8 +15135,11 @@ const dataZoneGsrMskDataSourceProps: governance.DataZoneGsrMskDataSourceProps = 
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.domainId">domainId</a></code> | <code>string</code> | The unique identifier for the DataZone domain where the datasource resides. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.projectId">projectId</a></code> | <code>string</code> | The unique identifier for the project associated with this datasource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.registryName">registryName</a></code> | <code>string</code> | The name of the registry for schema management. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | Optional. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.runSchedule">runSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | Optional. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | A flag to trigger the data source based on the Glue Schema Registry events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS encryption key used to encrypt lambda environment, lambda logs and SSM parameters. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The Role used by the Lambda responsible to manage DataZone MskTopicAssets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the data source. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.runSchedule">runSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The cron schedule to run the data source and synchronize DataZone assets with the Glue Schema Registry. |
 
 ---
 
@@ -15103,9 +15200,48 @@ public readonly enableSchemaRegistryEvent: boolean;
 - *Type:* boolean
 - *Default:* false, meaning the EventBridge listener for schema changes is disabled.
 
-Optional.
+A flag to trigger the data source based on the Glue Schema Registry events.
 
-A flag to enable or disable EventBridge listener for schema registry changes.
+The data source can be triggered by events independently of the schedule configured with `runSchedule`.
+
+---
+
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* AWS managed customer master key (CMK) is used
+
+The KMS encryption key used to encrypt lambda environment, lambda logs and SSM parameters.
+
+---
+
+##### `lambdaRole`<sup>Optional</sup> <a name="lambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.lambdaRole"></a>
+
+```typescript
+public readonly lambdaRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role is created
+
+The Role used by the Lambda responsible to manage DataZone MskTopicAssets.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the data source.
 
 ---
 
@@ -15118,9 +15254,9 @@ public readonly runSchedule: Schedule;
 - *Type:* aws-cdk-lib.aws_events.Schedule
 - *Default:* `cron(1 0 * * ? *)` if `enableSchemaRegistryEvent` is false or undefined, otherwise no schedule.
 
-Optional.
+The cron schedule to run the data source and synchronize DataZone assets with the Glue Schema Registry.
 
-Defines the schedule for EventBridge events, specified using cron expressions.
+The data source can be scheduled independently of the event based trigger configured with `enableSchemaRegistryEvent`.
 
 ---
 
@@ -15215,7 +15351,12 @@ const dataZoneMskCentralAuthorizerProps: governance.DataZoneMskCentralAuthorizer
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to callback DataZone and acknowledge the subscription grant. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Event Bridge event to trigger the authorizer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.logRetention">logRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | Cloudwatch Logs retention. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to collect metadata on DataZone assets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Step Function state machine. |
 
 ---
 
@@ -15231,6 +15372,58 @@ The DataZone Domain ID.
 
 ---
 
+##### `callbackRole`<sup>Optional</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.callbackRole"></a>
+
+```typescript
+public readonly callbackRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used to callback DataZone and acknowledge the subscription grant.
+
+---
+
+##### `datazoneEventRole`<sup>Optional</sup> <a name="datazoneEventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.datazoneEventRole"></a>
+
+```typescript
+public readonly datazoneEventRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used by the Event Bridge event to trigger the authorizer.
+
+---
+
+##### `logRetention`<sup>Optional</sup> <a name="logRetention" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.logRetention"></a>
+
+```typescript
+public readonly logRetention: RetentionDays;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.RetentionDays
+- *Default:* 7 days
+
+Cloudwatch Logs retention.
+
+---
+
+##### `metadataCollectorRole`<sup>Optional</sup> <a name="metadataCollectorRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.metadataCollectorRole"></a>
+
+```typescript
+public readonly metadataCollectorRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used to collect metadata on DataZone assets.
+
+---
+
 ##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy"></a>
 
 ```typescript
@@ -15241,6 +15434,19 @@ public readonly removalPolicy: RemovalPolicy;
 - *Default:* RemovalPolicy.RETAIN
 
 The removal policy to apply to the asset type.
+
+---
+
+##### `stateMachineRole`<sup>Optional</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used by the Step Function state machine.
 
 ---
 
@@ -15261,7 +15467,10 @@ const dataZoneMskEnvironmentAuthorizerProps: governance.DataZoneMskEnvironmentAu
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId">centralAccountId</a></code> | <code>string</code> | The central account Id. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantMskManagedVpc">grantMskManagedVpc</a></code> | <code>boolean</code> | If the authorizer is granting MSK managed VPC permissions. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to grant MSK topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.logRetention">logRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | Cloudwatch Logs retention. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Step Function state machine. |
 
 ---
 
@@ -15302,6 +15511,32 @@ If the authorizer is granting MSK managed VPC permissions.
 
 ---
 
+##### `grantRole`<sup>Optional</sup> <a name="grantRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantRole"></a>
+
+```typescript
+public readonly grantRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used to grant MSK topics.
+
+---
+
+##### `logRetention`<sup>Optional</sup> <a name="logRetention" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.logRetention"></a>
+
+```typescript
+public readonly logRetention: RetentionDays;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.RetentionDays
+- *Default:* 7 days
+
+Cloudwatch Logs retention.
+
+---
+
 ##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy"></a>
 
 ```typescript
@@ -15312,6 +15547,19 @@ public readonly removalPolicy: RemovalPolicy;
 - *Default:* RemovalPolicy.RETAIN
 
 The removal policy to apply to the asset type.
+
+---
+
+##### `stateMachineRole`<sup>Optional</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used by the Step Function state machine.
 
 ---
 

@@ -5,7 +5,7 @@ import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IRule } from 'aws-cdk-lib/aws-events';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
-import { IQueue } from 'aws-cdk-lib/aws-sqs';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { StateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizerProps } from './datazone-msk-central-authorizer-props';
@@ -34,6 +34,8 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    * The asset type for the DataZone custom asset type
    */
   public static readonly MSK_ASSET_TYPE = 'MskTopicAssetType';
+
+  private static DEFAULT_LOGS_RETENTION = RetentionDays.ONE_WEEK;
   /**
    * The role used to collect metadata from DataZone
    */
@@ -43,6 +45,10 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    */
   public readonly metadataCollectorFunction: IFunction;
   /**
+   * The Cloudwatch Log Group for logging the metadata collector
+   */
+  public readonly metadataCollectorLogGroup: ILogGroup;
+  /**
    * The role used to acknowledge the subscription grant in DataZone
    */
   public readonly datazoneCallbackRole: IRole;
@@ -51,9 +57,9 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    */
   public readonly datazoneCallbackFunction: IFunction;
   /**
-   * The dead letter queue for the authorizer workflow
+   * The Cloudwatch Log Group for logging the datazone callback
    */
-  public readonly deadLetterQueue: IQueue;
+  public readonly datazoneCallbackLogGroup: ILogGroup;
   /**
    * The role used by the DataZone event to trigger the authorizer workflow
    */
@@ -74,6 +80,10 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    * The IAM Role used by the authorizer workflow callback
    */
   public readonly stateMachineCallbackRole: Role;
+  /**
+   * The CloudWatch Log Group used to log the authorizer state machine
+   */
+  public stateMachineLogGroup: ILogGroup;
 
   private readonly removalPolicy: RemovalPolicy;
 
@@ -94,11 +104,13 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
 
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
-    this.metadataCollectorRole = new Role(this, 'MetadataCollectorHandlerRole', {
+    this.metadataCollectorLogGroup = new LogGroup(this, 'MetadataCollectorLogGroup', {
+      removalPolicy: this.removalPolicy,
+      retention: props.logRetention || DataZoneMskCentralAuthorizer.DEFAULT_LOGS_RETENTION,
+    });
+
+    this.metadataCollectorRole = props.metadataCollectorRole || new Role(this, 'MetadataCollectorHandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
       inlinePolicies: {
         DataZonePermissions: new PolicyDocument({
           statements: [
@@ -117,15 +129,23 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
       },
     });
 
+    this.metadataCollectorLogGroup.grantWrite(this.metadataCollectorRole);
+
     this.metadataCollectorFunction = new Function(this, 'MetadataCollectorHandler', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname + '/resources/datazone-msk-authorizer-metadata-collector/'),
       role: this.metadataCollectorRole,
       timeout: Duration.seconds(30),
+      logGroup: this.metadataCollectorLogGroup,
     });
 
-    this.datazoneCallbackRole = new Role(this, 'CallbackHandlerRole', {
+    this.datazoneCallbackLogGroup = new LogGroup(this, 'CallbackLogGroup', {
+      removalPolicy: this.removalPolicy,
+      retention: props.logRetention || DataZoneMskCentralAuthorizer.DEFAULT_LOGS_RETENTION,
+    });
+
+    this.datazoneCallbackRole = props.callbackRole || new Role(this, 'CallbackHandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
@@ -145,12 +165,15 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
       },
     });
 
+    this.datazoneCallbackLogGroup.grantRead(this.datazoneCallbackRole);
+
     this.datazoneCallbackFunction = new Function(this, 'CallbackHandler', {
       runtime: Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname+'/resources/datazone-msk-authorizer-callback/'),
       role: this.datazoneCallbackRole,
       timeout: Duration.seconds(30),
+      logGroup: this.datazoneCallbackLogGroup,
     });
 
     const datazonePattern = {
@@ -178,15 +201,19 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
       datazonePattern,
       Duration.minutes(5),
       0,
+      props.logRetention,
+      props.datazoneEventRole,
+      props.stateMachineRole,
+      props.callbackRole,
       this.removalPolicy,
     );
 
-    this.deadLetterQueue = customAuthorizer.deadLetterQueue;
     this.datazoneEventRole = customAuthorizer.authorizerEventRole;
     this.datazoneEventRule = customAuthorizer.authorizerEventRule;
     this.stateMachine = customAuthorizer.stateMachine;
     this.stateMachineRole = customAuthorizer.stateMachineRole;
     this.stateMachineCallbackRole = customAuthorizer.callbackRole;
+    this.stateMachineLogGroup = customAuthorizer.stateMachineLogGroup;
   }
 
 

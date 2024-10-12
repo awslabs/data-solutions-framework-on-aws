@@ -4,6 +4,7 @@
 import { Arn, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { AccountPrincipal, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { DefinitionBody, Fail, IntegrationPattern, IStateMachine, JsonPath, StateMachine, TaskRole, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -20,6 +21,10 @@ export interface AuthorizerEnvironmentWorflow{
    * The IAM Role used by the State Machine
    */
   readonly stateMachineRole: IRole;
+  /**
+   * The log group where the state machine logs are stored.
+   */
+  readonly stateMachineLogGroup: ILogGroup;
 }
 
 /**
@@ -28,18 +33,24 @@ export interface AuthorizerEnvironmentWorflow{
  * @param scope The scope of the resources created
  * @param authorizerName The name of the authorizer
  * @param grantFunction The lambda function creating the grants
- * @param centralAccount The central account ID hosting the central authorizer workflow
+ * @param centralAccount The central account ID hosting the central authorizer workflow @default - The same account is used
+ * @param stateMachineRole The role used by the Step Functions state machine @default - A new role is created
+ * @param workflowTimeout The timeout for the state machine workflow. @default - 5 minutes
+ * @param logRetention The retention period for the created logs. @default - 1 week
  * @returns The created AuthorizerEnvironmentWorflow
  */
 export function authorizerEnvironmentWorkflowSetup(
   scope: Construct,
   authorizerName: string,
   grantFunction: IFunction,
+  stateMachineRole?: Role,
   centralAccount?: string,
   workflowTimeout?: Duration,
+  logRetention?: RetentionDays,
   removalPolicy?: RemovalPolicy) : AuthorizerEnvironmentWorflow {
 
   const DEFAULT_TIMEOUT = Duration.minutes(5);
+  const DEFAULT_LOGS_RETENTION = RetentionDays.ONE_WEEK;
 
   const stack = Stack.of(scope);
 
@@ -107,37 +118,28 @@ export function authorizerEnvironmentWorkflowSetup(
     resultPath: '$.ErrorInfo',
   });
 
-  const stateMachineRole = new Role(scope, 'StateMachineRole', {
+  const stateRole = stateMachineRole || new Role(scope, 'StateMachineRole', {
     assumedBy: new ServicePrincipal('states.amazonaws.com'),
     roleName: `${authorizerName}EnvironmentStateMachine`,
   });
-    // TODO deny all except the state machine
-    // grantFunction.addPermission()
 
-  // grantFunction.grantInvoke(stateMachineRole);
+  const stateMachineLogGroup = new LogGroup(scope, 'StateMachineLogGroup', {
+    removalPolicy,
+    retention: logRetention || DEFAULT_LOGS_RETENTION,
+  });
 
   const stateMachine = new StateMachine(scope, 'StateMachine', {
     stateMachineName: stateMachineName,
     definitionBody: DefinitionBody.fromChainable(grantInvoke.next(successCallback)),
-    role: stateMachineRole,
+    role: stateRole,
     timeout: workflowTimeout ?? DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
+    logs: {
+      destination: stateMachineLogGroup,
+    },
   });
 
-  // const centralAuthorizerRole = Role.fromRoleArn(scope, 'CentralRole',
-  //   Arn.format({
-  //     account: centralAccount,
-  //     region: '',
-  //     resource: 'role',
-  //     service: 'iam',
-  //     resourceName: `${authorizerName}CentralStateMachine`,
-  //   }, stack), {
-  //     mutable: false,
-  //     addGrantsToResources: true,
-  //   },
-  // );
-
-  stateMachineRole.assumeRolePolicy?.addStatements(new PolicyStatement({
+  stateRole.assumeRolePolicy?.addStatements(new PolicyStatement({
     actions: ['sts:AssumeRole'],
     principals: [new AccountPrincipal(centralAccount ?? stack.account)],
     conditions: {
@@ -147,12 +149,12 @@ export function authorizerEnvironmentWorkflowSetup(
     },
   }));
 
-  stateMachineRole.addToPolicy(new PolicyStatement({
+  stateRole.addToPolicy(new PolicyStatement({
     actions: ['states:StartExecution'],
     resources: [`arn:${stack.partition}:states:${stack.region}:${stack.account}:stateMachine:${stateMachineName}`],
   }));
 
-  callbackRole.grantAssumeRole(stateMachineRole);
+  callbackRole.grantAssumeRole(stateRole);
 
-  return { stateMachine, stateMachineRole };
+  return { stateMachine, stateMachineRole: stateRole, stateMachineLogGroup };
 }

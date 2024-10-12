@@ -8,7 +8,7 @@ DataZone Data Source for MSK Topics assets backed by Glue Schema Registry.
 
 ## Overview
 
-`DataZoneGsrMskDataSource` is custom data source for DataZone that can create/update/delete MSK topics assets in DataZone based on a Glue Schema Registry definition. The custom data source can be triggered by a schedule or based on events from the Glue Schema Registry. The constructs implement:
+`DataZoneGsrMskDataSource` is custom data source for DataZone that can create/update/delete MSK topics assets in DataZone based on a Glue Schema Registry definition. The custom data source can be triggered by a schedule or based on Create or Registering a new Schema Version events from the Glue Schema Registry. The constructs implement:
 - EventBridge Rules triggered either on a schedule or event based.
 - A Lambda Function triggered from the EventBridge Rules and responsible for collecting metadata from The Glue Schema Registry and updating MSK Topic assets in DataZone.
 - SSM Parameter Store Parameters to store required metadata

@@ -40,18 +40,6 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
             },
           ],
         }),
-        ManagedPolicyArns: [
-          {
-            'Fn::Join': Match.arrayWith([
-              Match.arrayWith([
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
-              ]),
-            ]),
-          },
-        ],
         Policies: [
           {
             PolicyDocument: Match.objectLike({
@@ -273,6 +261,20 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
                   ],
                 ],
               },
+            },
+            {
+              Action: [
+                'logs:CreateLogDelivery',
+                'logs:GetLogDelivery',
+                'logs:UpdateLogDelivery',
+                'logs:DeleteLogDelivery',
+                'logs:ListLogDeliveries',
+                'logs:PutResourcePolicy',
+                'logs:DescribeResourcePolicies',
+                'logs:DescribeLogGroups',
+              ],
+              Effect: 'Allow',
+              Resource: '*',
             },
             {
               Action: 'states:StartExecution',

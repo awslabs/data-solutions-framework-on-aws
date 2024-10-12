@@ -190,28 +190,30 @@ export const handler = async(event) => {
   const iamMskResources = getMskIamResources(topicArn, clusterArn);
   
   if (grantType === "producerGrant") {
-    if (consumerAccount !== producerAccount) {
-      if (clusterType === 'PROVISIONED') {
+    // Only update the cluster policy if it's a provisioned one and in cross account
+    if (clusterType === 'PROVISIONED' && consumerAccount !== producerAccount) {
+
+      let actions = mskReadActions;
+      // Add managed VPC actions if needed
+      actions = grantManagedVpc === 'true' ?? actions.concat(mskVpcClusterActions);
       
-        const grantStatement = {
-          "Sid": `${subscriptionGrantId}DSF${assetId}`,
-          "Effect": "Allow",
-          "Principal": {
-            "AWS": consumerRolesArn,
-          },
-          "Action": mskReadActions.concat(mskVpcClusterActions),
-          "Resource": iamMskResources,
-        };
-        const client = new KafkaClient();
+      const grantStatement = {
+        "Sid": `${subscriptionGrantId}DSF${assetId}`,
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": consumerRolesArn,
+        },
+        "Action": actions,
+        "Resource": iamMskResources,
+      };
+      const client = new KafkaClient();
 
-        await updateClusterPolicyWithRetry(client, grantStatement, requestType, clusterArn);
+      await updateClusterPolicyWithRetry(client, grantStatement, requestType, clusterArn);
 
-      } else if (clusterType === 'SERVERLESS') {
-        throw new Error("Cross account access is not supported for Serverless cluster");
-      } else {
-        throw new Error("Unsupported cluster type")
-      }
-
+    } else if (clusterType === 'SERVERLESS' && consumerAccount !== producerAccount) {
+      throw new Error("Cross account access is not supported for Serverless cluster");
+    } else if (clusterType !== 'SERVERLESS' && clusterType !== 'PROVISIONED') {
+      throw new Error("Unsupported cluster type")
     } else {
       console.log("Producer and consumer are in the same account, skipping cluster policy")
     }
@@ -234,9 +236,7 @@ export const handler = async(event) => {
       }
     ]
 
-    if (consumerAccount !== producerAccount) {
-
-      if (clusterType === 'PROVISIONED') {
+    if (clusterType === 'PROVISIONED' && grantManagedVpc ) {
       
         statements = statements.concat([
           {
@@ -246,12 +246,11 @@ export const handler = async(event) => {
           }
         ]);
 
-      } else if (clusterType === 'SERVERLESS') {
-        throw new Error("Cross account access is not supported for Serverless cluster");
-      } else {
-        throw new Error("Unsupported cluster type")
-      }
-    } 
+    } else if (clusterType === 'SERVERLESS' && consumerAccount !== producerAccount) {
+      throw new Error("Cross account access is not supported for Serverless cluster");
+    } else if (clusterType !== 'SERVERLESS' && clusterType !== 'PROVISIONED') {
+      throw new Error("Unsupported cluster type")
+    }
 
     const iamRolePolicy = JSON.stringify({
       "Version": "2012-10-17",

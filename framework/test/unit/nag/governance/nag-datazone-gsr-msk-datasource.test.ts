@@ -31,7 +31,7 @@ new DataZoneGsrMskDataSource(stack, 'DataZoneGsrMskDataSource', {
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
-  'Stack/DataZoneGsrMskDataSource/HandlerRole/Resource',
+  'Stack/DataZoneGsrMskDataSource/LambdaRole/Resource',
 ],
 [
   { id: 'AwsSolutions-IAM4', reason: 'Recommended baseline policy for AWS Lambda Functions' },

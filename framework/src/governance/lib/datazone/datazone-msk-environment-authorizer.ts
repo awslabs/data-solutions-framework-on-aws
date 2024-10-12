@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRole, Role, ServicePrincipal, ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
+import { IRole, Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizer } from './datazone-msk-central-authorizer';
@@ -24,6 +25,8 @@ import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environ
  */
 export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
 
+  private static DEFAULT_LOGS_RETENTION = RetentionDays.ONE_WEEK;
+
   /**
    * The IAM role used to grant access to Kafka topics
    */
@@ -37,11 +40,20 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
    */
   public readonly stateMachineRole: IRole;
   /**
+   * The CloudWatch Log Group used by the Step Functions state machine
+   */
+  public readonly stateMachineLogGroup: ILogGroup;
+  /**
    * The environment authorizer State Machine
    */
   public readonly stateMachine: IStateMachine;
+  /**
+   * The CloudWatch Log Group used by the grant function
+   */
+  public readonly grantLogGroup: LogGroup;
 
   private readonly removalPolicy: RemovalPolicy;
+
 
   /**
    * Create an instance of the DataZoneMskEnvironmentAuthorizer construct
@@ -58,12 +70,14 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
 
     this.removalPolicy = Context.revertRemovalPolicy(this, props.removalPolicy);
 
-    const grantRole = new Role(this, 'GrantRole', {
+    this.grantLogGroup = new LogGroup(this, 'GrantLogGroup', {
+      removalPolicy: this.removalPolicy,
+      retention: props.logRetention || DataZoneMskEnvironmentAuthorizer.DEFAULT_LOGS_RETENTION,
+    });
+
+    const grantRole = props.grantRole || new Role(this, 'GrantRole', {
       roleName: `${DataZoneMskCentralAuthorizer.AUTHORIZER_NAME}GrantFunction`,
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
       inlinePolicies: {
         IamPermissions: new PolicyDocument({
           statements: [
@@ -90,6 +104,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
     });
 
     this.grantRole = grantRole;
+    this.grantLogGroup.grantWrite(this.grantRole);
 
     this.grantFunction = new Function(this, 'GrantFunction', {
       runtime: Runtime.NODEJS_20_X,
@@ -105,13 +120,16 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
     const customAuthorizer = authorizerEnvironmentWorkflowSetup(this,
       DataZoneMskCentralAuthorizer.AUTHORIZER_NAME,
       this.grantFunction,
+      props.stateMachineRole,
       props.centralAccountId,
       Duration.minutes(2),
+      props.logRetention,
       this.removalPolicy,
     );
 
     this.stateMachine = customAuthorizer.stateMachine;
     this.stateMachineRole = customAuthorizer.stateMachineRole;
+    this.stateMachineLogGroup = customAuthorizer.stateMachineLogGroup;
 
   }
 }

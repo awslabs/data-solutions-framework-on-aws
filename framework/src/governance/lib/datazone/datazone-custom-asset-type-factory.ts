@@ -3,7 +3,7 @@
 
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { CfnProjectMembership } from 'aws-cdk-lib/aws-datazone';
-import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
@@ -20,6 +20,13 @@ export interface DataZoneCustomAssetTypeFactoryProps {
    * The DataZone domain identifier
    */
   readonly domainId: string;
+
+  /**
+   * The Lambda role used by the custom resource provider
+   * @default - A new role is created
+   */
+  readonly lambdaRole?: IRole;
+
   /**
    * The removal policy for the custom resource
    * @default RemovalPolicy.RETAIN
@@ -75,10 +82,6 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
    * The service token for the custom resource
    */
   readonly serviceToken: string;
-  /**
-   * The role used by the custom resource
-   */
-  readonly handlerRole: IRole;
 
   private readonly domainId: string;
   private readonly removalPolicy: RemovalPolicy;
@@ -102,11 +105,8 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
 
     this.removalPolicy = Context.revertRemovalPolicy(scope, props.removalPolicy);
 
-    this.handlerRole = new Role(this, 'HandlerRole', {
+    this.createRole = props.lambdaRole || new Role(this, 'HandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
       inlinePolicies: {
         DataZonePermission: new PolicyDocument({
           statements: [
@@ -132,7 +132,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
         depsLockFilePath: __dirname+'/resources/datazone-custom-asset-type/package-lock.json',
         entryFile: __dirname+'/resources/datazone-custom-asset-type/index.mjs',
         handler: 'index.handler',
-        iamRole: this.handlerRole,
+        iamRole: this.createRole,
         timeout: Duration.minutes(2),
       },
       removalPolicy: this.removalPolicy,
@@ -140,7 +140,6 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
 
     this.createLogGroup = provider.onEventHandlerLogGroup;
     this.createFunction = provider.onEventHandlerFunction;
-    this.createRole = provider.onEventHandlerRole;
     this.serviceToken = provider.serviceToken;
   }
 
@@ -157,7 +156,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
       designation: 'PROJECT_OWNER',
       domainIdentifier: this.domainId,
       member: {
-        userIdentifier: this.handlerRole.roleArn,
+        userIdentifier: this.createRole.roleArn,
       },
       projectIdentifier: customAssetType.projectId,
     });

@@ -61,6 +61,7 @@ export const handler = async () => {
       }
       
       clusterArn = cluster.ClusterArn;
+      clusterUuid = cluster.ClusterArn.split('/').pop();
       console.log(`Cluster ARN for ${clusterName} found: ${clusterArn}`);
       
       // Describe the Kafka cluster to determine its type
@@ -171,7 +172,7 @@ export const handler = async () => {
             identifier: assetId,
             description: 'Updating asset with new schema or forms',
             formsInput,
-            externalIdentifier: buildMskTopicArn(region, accountId, clusterName, schemaName, partition),
+            externalIdentifier: buildMskTopicArn(region, accountId, clusterName, clusterUuid, schemaName, partition),
           }));
           
           console.log(`Asset revision for ${schemaName} updated.`);
@@ -248,8 +249,8 @@ export const handler = async () => {
 };
 
 // Utility functions
-function buildMskTopicArn(region, accountId, clusterName, topicName, partition) {
-  return `arn:${partition}:kafka:${region}:${accountId}:topic/${clusterName}/${topicName}`;
+function buildMskTopicArn(region, accountId, clusterName, clusterUuid, topicName, partition) {
+  return `arn:${partition}:kafka:${region}:${accountId}:topic/${clusterName}/${clusterUuid}/${topicName}`;
 }
 
 function parseSchemaDefinition(schemaDefinition) {

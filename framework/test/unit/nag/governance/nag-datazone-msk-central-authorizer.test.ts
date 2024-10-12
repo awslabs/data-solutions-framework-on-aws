@@ -42,13 +42,6 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 ]);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
-  'Stack/MskAuthorizer/Queue/Resource',
-],
-[
-  { id: 'AwsSolutions-SQS3', reason: 'The SQS queue is used as a Dead Letter Queue' },
-]);
-
-NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/MskAuthorizer/StateMachine/Resource',
 ],
 [

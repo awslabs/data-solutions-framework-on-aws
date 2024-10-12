@@ -56,18 +56,6 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
           ],
           Version: '2012-10-17',
         },
-        ManagedPolicyArns: [
-          {
-            'Fn::Join': [
-              '',
-              [
-                'arn:',
-                { Ref: 'AWS::Partition' },
-                ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
-              ],
-            ],
-          },
-        ],
         Policies: Match.arrayWith([
           Match.objectLike({
             PolicyName: 'DataZonePermission',
@@ -230,7 +218,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
         Member: {
           UserIdentifier: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('DataZoneGsrMskDataSourceHandlerRole.*'),
+              Match.stringLikeRegexp('DataZoneGsrMskDataSourceLambdaRole.*'),
               'Arn',
             ],
           },
@@ -257,7 +245,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
         Handler: 'index.handler',
         Role: {
           'Fn::GetAtt': [
-            Match.stringLikeRegexp('DataZoneGsrMskDataSourceHandlerRole.*'),
+            Match.stringLikeRegexp('DataZoneGsrMskDataSourceLambdaRole.*'),
             'Arn',
           ],
         },

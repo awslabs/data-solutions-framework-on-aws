@@ -40,18 +40,6 @@ describe ('Creating a DataZoneCustomAssetTypeFactory with default configuration'
             },
           ],
         }),
-        ManagedPolicyArns: [
-          {
-            'Fn::Join': Match.arrayWith([
-              Match.arrayWith([
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
-              ]),
-            ]),
-          },
-        ],
         Policies: [
           {
             PolicyDocument: Match.objectLike({

@@ -6,7 +6,7 @@ import { EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { AccountPrincipal, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-import { IQueue, Queue } from 'aws-cdk-lib/aws-sqs';
+import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { DefinitionBody, Fail, IntegrationPattern, JsonPath, Pass, StateMachine, TaskInput, TaskRole, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -25,13 +25,13 @@ export interface AuthorizerCentralWorflow{
    */
   readonly stateMachineRole: Role;
   /**
+   * The CloudWatch Log Group for logging the state machine
+   */
+  readonly stateMachineLogGroup: ILogGroup;
+  /**
    * The IAM Role used by the State Machine Call Back
    */
   readonly callbackRole: Role;
-  /**
-   * The authorizer dead letter queue for failed events
-   */
-  readonly deadLetterQueue: IQueue;
   /**
    * The authorizer event rule for triggering the workflow
    */
@@ -59,6 +59,10 @@ enum GrantType{
  * @param eventPattern The event pattern for triggering the authorizer workflow
  * @param workflowTimeout The timeout for the authorizer workflow. @default - 5 minutes
  * @param retryAttempts The number of retry attempts for the authorizer workflow. @default - No retry
+ * @param logRetention The retention period for the created logs. @default - 1 week
+ * @param authorizerEventRole The IAM role for the authorizer event rule. @default - A new role will be created
+ * @param stateMachineRole The IAM role for the authorizer workflow. @default - A new role will be created
+ * @param callbackRole The IAM role for the authorizer callback. @default - A new role will be created
  * @param removalPolicy The removal policy for the created resources. @default - RemovalPolicy.RETAIN
  * @returns The created AuthorizerCentralWorflow
  */
@@ -70,16 +74,21 @@ export function authorizerCentralWorkflowSetup(
   eventPattern: EventPattern,
   workflowTimeout?: Duration,
   retryAttempts?: number,
+  logRetention?: RetentionDays,
+  authorizerEventRole?: Role,
+  stateMachineRole?: Role,
+  callbackRole?: Role,
   removalPolicy?: RemovalPolicy): AuthorizerCentralWorflow {
 
   const DEFAULT_TIMEOUT = Duration.minutes(5);
   const DEFAULT_RETRY_ATTEMPTS = 0;
+  const DEFAULT_LOGS_RETENTION = RetentionDays.ONE_WEEK;
 
   const authorizerEventRule = new Rule(scope, 'AuthorizerEventRule', {
     eventPattern,
   });
 
-  const authorizerEventRole = new Role(scope, 'SourceEventRole', {
+  const eventRole = authorizerEventRole || new Role(scope, 'SourceEventRole', {
     assumedBy: new ServicePrincipal('events.amazonaws.com'),
   });
 
@@ -172,42 +181,52 @@ export function authorizerCentralWorkflowSetup(
     .next(invokeConsumerGrant)
     .next(governanceSuccessCallback);
 
-  const stateMachineRole = new Role(scope, 'StateMachineRole', {
+  const stateRole = stateMachineRole || new Role(scope, 'StateMachineRole', {
     assumedBy: new ServicePrincipal('states.amazonaws.com'),
     roleName: `${authorizerName}CentralStateMachine`,
+  });
+
+  const stateMachineLogGroup = new LogGroup(scope, 'StateMachineLogGroup', {
+    removalPolicy,
+    retention: logRetention || DEFAULT_LOGS_RETENTION,
   });
 
   const stateMachine = new StateMachine(scope, 'StateMachine', {
     definitionBody: DefinitionBody.fromChainable(stateMachineDefinition),
     timeout: workflowTimeout || DEFAULT_TIMEOUT,
     removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
-    role: stateMachineRole,
+    role: stateRole,
     stateMachineName: `${authorizerName}Central`,
+    logs: {
+      destination: stateMachineLogGroup,
+    },
   });
 
-  const deadLetterQueue = new Queue(scope, 'Queue', {
-    enforceSSL: true,
-    removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
-  });
 
-  stateMachine.grantStartExecution(authorizerEventRole);
+  stateMachine.grantStartExecution(eventRole);
 
   authorizerEventRule.addTarget(new SfnStateMachine(stateMachine, {
-    deadLetterQueue,
-    role: authorizerEventRole,
+    role: eventRole,
     retryAttempts: retryAttempts || DEFAULT_RETRY_ATTEMPTS,
   }));
 
-  const callbackRole = new Role(scope, 'CallbackRole', {
+  const callBackRole = callbackRole || new Role(scope, 'CallbackRole', {
     assumedBy: new ServicePrincipal('states.amazonaws.com'),
     roleName: `${authorizerName}CentralCallback`,
   });
 
-  stateMachine.grantTaskResponse(callbackRole);
+  stateMachine.grantTaskResponse(callBackRole);
 
-  registerAccount(scope, 'SelfRegisterAccount', Stack.of(scope).account, authorizerName, stateMachineRole, callbackRole);
+  registerAccount(scope, 'SelfRegisterAccount', Stack.of(scope).account, authorizerName, stateRole, callBackRole);
 
-  return { stateMachine, stateMachineRole, callbackRole, deadLetterQueue, authorizerEventRule, authorizerEventRole };
+  return {
+    stateMachine,
+    stateMachineRole: stateRole,
+    stateMachineLogGroup,
+    callbackRole: callBackRole,
+    authorizerEventRule,
+    authorizerEventRole: eventRole,
+  };
 }
 
 /**
