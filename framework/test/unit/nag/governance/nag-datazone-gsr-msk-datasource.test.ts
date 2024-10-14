@@ -39,6 +39,13 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
   { id: 'AwsSolutions-IAM5', reason: 'SSM parameter ID is based on the schema name and discovered during execution' },
 ]);
 
+NagSuppressions.addResourceSuppressionsByPath(stack, [
+  'Stack/DataZoneGsrMskDataSource/LambdaRole/DefaultPolicy/Resource',
+],
+[
+  { id: 'AwsSolutions-IAM5', reason: 'The KMS key is not known' },
+]);
+
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));

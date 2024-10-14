@@ -21,6 +21,8 @@ export const handler = async () => {
   const accountId = process.env.ACCOUNT_ID;
   const projectId = process.env.PROJECT_ID;
   const partition = process.env.PARTITION;
+  const parameterKey = process.env.PARAMETER_KEY
+  const parameterPrefix = process.env.PARAMETER_PREFIX
   
   if (!clusterName || !region || !registryName || !domainId || !accountId || !projectId) {
     throw new Error('Missing required environment variables.');
@@ -35,9 +37,9 @@ export const handler = async () => {
   try {
     // Step 1: Retrieve existing parameters
     const existingParametersResponse = await ssmClient.send(new GetParametersByPathCommand({
-      Path: `/datazone/${domainId}/${registryName}/asset/`,
+      Path: parameterPrefix,
       Recursive: true,
-      WithDecryption: false
+      WithDecryption: true
     }));
     const existingParameters = existingParametersResponse.Parameters || [];
     const assetMap = new Map(); // Map to hold assetName and assetId
@@ -205,6 +207,7 @@ export const handler = async () => {
           const putParameterCommand = new PutParameterCommand({
             Name: parameterName,
             Value: newAssetId,
+            KeyId: parameterKey,
             Type: 'String',
             Overwrite: true
           });

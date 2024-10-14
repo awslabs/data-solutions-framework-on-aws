@@ -49,6 +49,13 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
   { id: 'AwsSolutions-SF2', reason: 'X-ray not required in the state machine, logging and tracing happen in the Lambda Functions' },
 ]);
 
+NagSuppressions.addResourceSuppressionsByPath(stack, [
+  'Stack/MskAuthorizer/DeadLetterQueue/Resource',
+],
+[
+  { id: 'AwsSolutions-SQS3', reason: 'The queue is used as a Dead Letter Queur for DataZone events that fail to trigger the Authorizer State Machine' },
+]);
+
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);

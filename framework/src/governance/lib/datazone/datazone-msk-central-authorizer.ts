@@ -4,8 +4,10 @@
 import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IRule } from 'aws-cdk-lib/aws-events';
 import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { StateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizerProps } from './datazone-msk-central-authorizer-props';
@@ -84,6 +86,14 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
    * The CloudWatch Log Group used to log the authorizer state machine
    */
   public stateMachineLogGroup: ILogGroup;
+  /**
+   * The SQS Queue used as a dead letter queue for the authorizer workflow
+   */
+  public readonly deadLetterQueue: IQueue;
+  /**
+   * The key used to encrypt the dead letter queue
+   */
+  public readonly deadLetterKey: IKey;
 
   private readonly removalPolicy: RemovalPolicy;
 
@@ -205,6 +215,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
       props.datazoneEventRole,
       props.stateMachineRole,
       props.callbackRole,
+      props.deadLetterQueueKey,
       this.removalPolicy,
     );
 
@@ -214,6 +225,8 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     this.stateMachineRole = customAuthorizer.stateMachineRole;
     this.stateMachineCallbackRole = customAuthorizer.callbackRole;
     this.stateMachineLogGroup = customAuthorizer.stateMachineLogGroup;
+    this.deadLetterQueue = customAuthorizer.deadLetterQueue;
+    this.deadLetterKey = customAuthorizer.deadLetterKey;
   }
 
 

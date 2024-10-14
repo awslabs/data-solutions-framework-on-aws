@@ -318,6 +318,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
             ],
             eventName: [
               'CreateSchema',
+              'UpdateSchema',
               'RegisterSchemaVersion',
             ],
             responseElements: {

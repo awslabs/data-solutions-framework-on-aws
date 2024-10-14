@@ -27,6 +27,66 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
   const template = Template.fromStack(stack);
   // console.log(JSON.stringify(template.toJSON(), null, 2));
 
+  test('should create an SQS queue as a dead letter queue for events', () => {
+    template.resourceCountIs('AWS::SQS::Queue', 1);
+  });
+
+  test('should create proper IAM policy for the dead letter queue ', () => {
+    template.hasResourceProperties('AWS::SQS::QueuePolicy',
+      Match.objectLike({
+        PolicyDocument: Match.objectLike({
+          Statement: [
+            {
+              Action: 'sqs:*',
+              Condition: {
+                Bool: {
+                  'aws:SecureTransport': 'false',
+                },
+              },
+              Effect: 'Deny',
+              Principal: {
+                AWS: '*',
+              },
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('MskAuthorizerDeadLetterQueue.*'),
+                  'Arn',
+                ],
+              },
+            },
+            Match.objectLike({
+              Action: 'sqs:SendMessage',
+              Condition: {
+                ArnEquals: {
+                  'aws:SourceArn': {
+                    'Fn::GetAtt': [
+                      Match.stringLikeRegexp('MskAuthorizerAuthorizerEventRule.*'),
+                      'Arn',
+                    ],
+                  },
+                },
+              },
+              Effect: 'Allow',
+              Principal: {
+                Service: 'events.amazonaws.com',
+              },
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('MskAuthorizerDeadLetterQueue.*'),
+                  'Arn',
+                ],
+              },
+            }),
+          ],
+        }),
+        Queues: [
+          {
+            Ref: Match.stringLikeRegexp('MskAuthorizerDeadLetterQueue.*'),
+          },
+        ],
+      }),
+    );
+  });
 
   test('should create an IAM role for the metadata collector function with proper DataZone permissions ', () => {
     template.hasResourceProperties('AWS::IAM::Role',

@@ -5,8 +5,10 @@ import { Arn, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { EventPattern, IRule, Rule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
 import { AccountPrincipal, IRole, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { IQueue, Queue, QueueEncryption } from 'aws-cdk-lib/aws-sqs';
 import { DefinitionBody, Fail, IntegrationPattern, JsonPath, Pass, StateMachine, TaskInput, TaskRole, Timeout } from 'aws-cdk-lib/aws-stepfunctions';
 import { CallAwsService, LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -40,6 +42,14 @@ export interface AuthorizerCentralWorflow{
    * The authorizer event role for allowing events to invoke the workflow
    */
   readonly authorizerEventRole: IRole;
+  /**
+   * The SQS Dead Letter Queue receiving events failure
+   */
+  readonly deadLetterQueue: IQueue;
+  /**
+   * The KMS Key used for encryption of the Dead Letter Queue
+   */
+  readonly deadLetterKey: IKey;
 }
 
 /**
@@ -78,6 +88,7 @@ export function authorizerCentralWorkflowSetup(
   authorizerEventRole?: Role,
   stateMachineRole?: Role,
   callbackRole?: Role,
+  deadLetterQueueKey?: Key,
   removalPolicy?: RemovalPolicy): AuthorizerCentralWorflow {
 
   const DEFAULT_TIMEOUT = Duration.minutes(5);
@@ -205,8 +216,21 @@ export function authorizerCentralWorkflowSetup(
 
   stateMachine.grantStartExecution(eventRole);
 
+  const dlqKey = deadLetterQueueKey || new Key(scope, 'DeadLetterQueueKey', {
+    removalPolicy: removalPolicy,
+    enableKeyRotation: true,
+  });
+
+  const deadLetterQueue = new Queue(scope, 'DeadLetterQueue', {
+    removalPolicy: removalPolicy,
+    encryption: QueueEncryption.KMS,
+    encryptionMasterKey: dlqKey,
+    enforceSSL: true,
+  });
+
   authorizerEventRule.addTarget(new SfnStateMachine(stateMachine, {
     role: eventRole,
+    deadLetterQueue: deadLetterQueue,
     retryAttempts: retryAttempts || DEFAULT_RETRY_ATTEMPTS,
   }));
 
@@ -226,6 +250,8 @@ export function authorizerCentralWorkflowSetup(
     callbackRole: callBackRole,
     authorizerEventRule,
     authorizerEventRole: eventRole,
+    deadLetterKey: dlqKey,
+    deadLetterQueue: deadLetterQueue,
   };
 }
 

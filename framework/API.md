@@ -4577,6 +4577,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaFunction">lambdaFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function creating DataZone Inventory Assets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaLogGroup">lambdaLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Log Group for the Lambda Function creating DataZone Inventory Assets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.ssmParameterKey">ssmParameterKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the SSM Parameter storing assets information. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.createUpdateEventRule">createUpdateEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for schema creation and update. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.deleteEventRule">deleteEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for schema deletion. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.scheduleRule">scheduleRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for trigger the data source execution. |
@@ -4640,6 +4641,18 @@ public readonly lambdaRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 
 The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets.
+
+---
+
+##### `ssmParameterKey`<sup>Required</sup> <a name="ssmParameterKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.ssmParameterKey"></a>
+
+```typescript
+public readonly ssmParameterKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+The KMS Key used to encrypt the SSM Parameter storing assets information.
 
 ---
 
@@ -5062,6 +5075,8 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to acknowledge the subscription grant in DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the DataZone event to trigger the authorizer workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule">datazoneEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterKey">deadLetterKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The key used to encrypt the dead letter queue. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS Queue used as a dead letter queue for the authorizer workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to collect metadata from DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorLogGroup">metadataCollectorLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group for logging the metadata collector. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to collect metadata from DataZone. |
@@ -5141,6 +5156,30 @@ public readonly datazoneEventRule: IRule;
 - *Type:* aws-cdk-lib.aws_events.IRule
 
 The event rule used to trigger the authorizer workflow.
+
+---
+
+##### `deadLetterKey`<sup>Required</sup> <a name="deadLetterKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterKey"></a>
+
+```typescript
+public readonly deadLetterKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The key used to encrypt the dead letter queue.
+
+---
+
+##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue"></a>
+
+```typescript
+public readonly deadLetterQueue: IQueue;
+```
+
+- *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+The SQS Queue used as a dead letter queue for the authorizer workflow.
 
 ---
 
@@ -13574,6 +13613,8 @@ const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The authorizer event role for allowing events to invoke the workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The authorizer event rule for triggering the workflow. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine Call Back. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterKey">deadLetterKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for encryption of the Dead Letter Queue. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS Dead Letter Queue receiving events failure. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The authorizer Step Functions state machine. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for logging the state machine. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine. |
@@ -13613,6 +13654,30 @@ public readonly callbackRole: Role;
 - *Type:* aws-cdk-lib.aws_iam.Role
 
 The IAM Role used by the State Machine Call Back.
+
+---
+
+##### `deadLetterKey`<sup>Required</sup> <a name="deadLetterKey" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterKey"></a>
+
+```typescript
+public readonly deadLetterKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used for encryption of the Dead Letter Queue.
+
+---
+
+##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue"></a>
+
+```typescript
+public readonly deadLetterQueue: IQueue;
+```
+
+- *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+The SQS Dead Letter Queue receiving events failure.
 
 ---
 
@@ -15140,6 +15205,7 @@ const dataZoneGsrMskDataSourceProps: governance.DataZoneGsrMskDataSourceProps = 
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The Role used by the Lambda responsible to manage DataZone MskTopicAssets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the data source. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.runSchedule">runSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The cron schedule to run the data source and synchronize DataZone assets with the Glue Schema Registry. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.ssmParameterKey">ssmParameterKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the SSM parameter for storing asset information. |
 
 ---
 
@@ -15260,6 +15326,19 @@ The data source can be scheduled independently of the event based trigger config
 
 ---
 
+##### `ssmParameterKey`<sup>Optional</sup> <a name="ssmParameterKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.ssmParameterKey"></a>
+
+```typescript
+public readonly ssmParameterKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A new key is created
+
+The KMS Key used to encrypt the SSM parameter for storing asset information.
+
+---
+
 ### DataZoneMskAssetTypeProps <a name="DataZoneMskAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps"></a>
 
 The properties for the DataZoneMskAssetType construct.
@@ -15353,6 +15432,7 @@ const dataZoneMskCentralAuthorizerProps: governance.DataZoneMskCentralAuthorizer
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to callback DataZone and acknowledge the subscription grant. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Event Bridge event to trigger the authorizer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.deadLetterQueueKey">deadLetterQueueKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the SQS Dead Letter Queue receiving failed events from DataZone. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.logRetention">logRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | Cloudwatch Logs retention. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to collect metadata on DataZone assets. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
@@ -15395,6 +15475,19 @@ public readonly datazoneEventRole: Role;
 - *Default:* A new role will be created
 
 The IAM Role used by the Event Bridge event to trigger the authorizer.
+
+---
+
+##### `deadLetterQueueKey`<sup>Optional</sup> <a name="deadLetterQueueKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.deadLetterQueueKey"></a>
+
+```typescript
+public readonly deadLetterQueueKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A new Key is created
+
+The KMS Key used to encrypt the SQS Dead Letter Queue receiving failed events from DataZone.
 
 ---
 
@@ -21255,6 +21348,7 @@ new utils.Utils()
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.validateAccountId">validateAccountId</a></code> | Validate a provided string is a valid account ID. |
 
 ---
 
@@ -21389,6 +21483,24 @@ Convert a string to PascalCase.
 - *Type:* string
 
 the string to convert to PascalCase.
+
+---
+
+##### `validateAccountId` <a name="validateAccountId" id="@cdklabs/aws-data-solutions-framework.utils.Utils.validateAccountId"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.Utils.validateAccountId(accountId: string)
+```
+
+Validate a provided string is a valid account ID.
+
+###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.utils.Utils.validateAccountId.parameter.accountId"></a>
+
+- *Type:* string
+
+the account ID to validate.
 
 ---
 

@@ -57,6 +57,12 @@ export interface DataZoneGsrMskDataSourceProps {
   readonly encryptionKey?: Key;
 
   /**
+   * The KMS Key used to encrypt the SSM parameter for storing asset information
+   * @default - A new key is created
+   */
+  readonly ssmParameterKey?: Key;
+
+  /**
    * The removal policy to apply to the data source
    * @default - RemovalPolicy.RETAIN
    */

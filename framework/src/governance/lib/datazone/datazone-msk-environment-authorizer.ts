@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRole, Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
+import { IRole, Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect, ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { DataZoneMskCentralAuthorizer } from './datazone-msk-central-authorizer';
 import { DataZoneMskEnvironmentAuthorizerProps } from './datazone-msk-environment-authorizer-props';
-import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils';
+import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../../utils';
 import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environment-helpers';
 
 /**
@@ -75,6 +75,40 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       retention: props.logRetention || DataZoneMskEnvironmentAuthorizer.DEFAULT_LOGS_RETENTION,
     });
 
+    const permissionsBoundary = new ManagedPolicy(scope, 'GrantBoundary', {
+      statements: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            'kafka-cluster:Connect',
+            'kafka-cluster:DescribeTopic',
+            'kafka-cluster:DescribeGroup',
+            'kafka-cluster:AlterGroup',
+            'kafka-cluster:ReadData',
+            'kafka:CreateVpcConnection',
+            'ec2:CreateTags',
+            'ec2:CreateVPCEndpoint',
+            'kafka:CreateVpcConnection',
+            'kafka:GetBootstrapBrokers',
+            'kafka:DescribeCluster',
+            'kafka:DescribeClusterV2',
+            'glue:GetRegistry',
+            'glue:ListRegistries',
+            'glue:GetSchema',
+            'glue:ListSchemas',
+            'glue:GetSchemaByDefinition',
+            'glue:GetSchemaVersion',
+            'glue:ListSchemaVersions',
+            'glue:GetSchemaVersionsDiff',
+            'glue:CheckSchemaVersionValidity',
+            'glue:QuerySchemaVersionMetadata',
+            'glue:GetTags',
+          ],
+          resources: ['*'],
+        }),
+      ],
+    });
+
     const grantRole = props.grantRole || new Role(this, 'GrantRole', {
       roleName: `${DataZoneMskCentralAuthorizer.AUTHORIZER_NAME}GrantFunction`,
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
@@ -101,6 +135,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
           ],
         }),
       },
+      permissionsBoundary: permissionsBoundary,
     });
 
     this.grantRole = grantRole;
@@ -116,6 +151,12 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
         GRANT_VPC: props.grantMskManagedVpc ? 'true' : 'false',
       },
     });
+
+    if (props.centralAccountId !== undefined) {
+      if (Utils.validateAccountId(props.centralAccountId) === false) {
+        throw new Error(`Invalid Central Account Id: ${props.centralAccountId}`);
+      }
+    }
 
     const customAuthorizer = authorizerEnvironmentWorkflowSetup(this,
       DataZoneMskCentralAuthorizer.AUTHORIZER_NAME,

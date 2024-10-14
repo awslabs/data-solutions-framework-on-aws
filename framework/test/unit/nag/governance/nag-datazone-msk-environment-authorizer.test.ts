@@ -25,6 +25,13 @@ new DataZoneMskEnvironmentAuthorizer(stack, 'MskAuthorizer', {
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
+  'Stack/GrantBoundary/Resource',
+],
+[
+  { id: 'AwsSolutions-IAM5', reason: 'Resource not known for a permission boundary' },
+]);
+
+NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/MskAuthorizer/GrantRole/Resource',
 ],
 [

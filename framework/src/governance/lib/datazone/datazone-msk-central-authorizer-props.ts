@@ -3,6 +3,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { Role } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 
@@ -34,6 +35,11 @@ export interface DataZoneMskCentralAuthorizerProps {
    * @default - A new role will be created
    */
   readonly stateMachineRole?: Role;
+  /**
+   * The KMS Key used to encrypt the SQS Dead Letter Queue receiving failed events from DataZone
+   * @default - A new Key is created
+   */
+  readonly deadLetterQueueKey?: Key;
   /**
    * Cloudwatch Logs retention.
    * @default - 7 days

@@ -13,6 +13,7 @@ import {
   Role,
   ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { Function, Runtime, Code, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
@@ -65,8 +66,13 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
    * The Lambda Function creating DataZone Inventory Assets
    */
   public readonly lambdaFunction: IFunction;
+  /**
+   * The KMS Key used to encrypt the SSM Parameter storing assets information
+   */
+  public readonly ssmParameterKey: Key;
 
   private readonly removalPolicy: RemovalPolicy;
+
 
   /**
    * Build an instance of the DataZoneGsrMskDataSource
@@ -98,6 +104,11 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
 
     this.lambdaLogGroup = new LogGroup(this, 'LambdaLogGroup', {
       retention: RetentionDays.ONE_MONTH,
+      removalPolicy: this.removalPolicy,
+    });
+
+    this.ssmParameterKey = props.ssmParameterKey || new Key(this, 'SsmParameterKey', {
+      enableKeyRotation: true,
       removalPolicy: this.removalPolicy,
     });
 
@@ -163,6 +174,8 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
       },
     });
 
+    this.ssmParameterKey.grantEncryptDecrypt(this.lambdaRole);
+
     this.lambdaLogGroup.grantWrite(this.lambdaRole);
 
     this.dataZoneMembership = new CfnProjectMembership(this, 'ProjectMembership', {
@@ -188,6 +201,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
         REGISTRY_NAME: props.registryName,
         ACCOUNT_ID: accountId,
         PARAMETER_PREFIX: parameterPrefix,
+        PARAMETER_KEY: this.ssmParameterKey.keyId,
         PARTITION: partition,
       },
       environmentEncryption: props.encryptionKey,
@@ -211,7 +225,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
           source: ['aws.glue'],
           detail: {
             eventSource: ['glue.amazonaws.com'],
-            eventName: ['CreateSchema', 'RegisterSchemaVersion'],
+            eventName: ['CreateSchema', 'UpdateSchema', 'RegisterSchemaVersion'],
             responseElements: {
               registryName: [props.registryName],
             },
