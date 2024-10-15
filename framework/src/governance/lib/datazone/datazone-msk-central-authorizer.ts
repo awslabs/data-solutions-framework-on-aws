@@ -3,7 +3,7 @@
 
 import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IRule } from 'aws-cdk-lib/aws-events';
-import { Effect, IRole, ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Effect, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { Code, Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
@@ -157,9 +157,6 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
 
     this.datazoneCallbackRole = props.callbackRole || new Role(this, 'CallbackHandlerRole', {
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
       inlinePolicies: {
         DataZonePermissions: new PolicyDocument({
           statements: [
@@ -175,7 +172,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
       },
     });
 
-    this.datazoneCallbackLogGroup.grantRead(this.datazoneCallbackRole);
+    this.datazoneCallbackLogGroup.grantWrite(this.datazoneCallbackRole);
 
     this.datazoneCallbackFunction = new Function(this, 'CallbackHandler', {
       runtime: Runtime.NODEJS_20_X,

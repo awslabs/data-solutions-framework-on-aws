@@ -102,6 +102,14 @@ export class DataZoneMskAssetType extends TrackedConstruct {
               name: 'registry_arn',
               type: 'String',
             },
+            {
+              name: 'compatibility_mode',
+              type: 'String',
+            },
+            {
+              name: 'data_format',
+              type: 'String',
+            },
           ],
           required: true,
         },

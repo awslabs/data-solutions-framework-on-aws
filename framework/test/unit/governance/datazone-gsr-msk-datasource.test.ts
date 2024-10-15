@@ -58,7 +58,6 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
         },
         Policies: Match.arrayWith([
           Match.objectLike({
-            PolicyName: 'DataZonePermission',
             PolicyDocument: {
               Statement: Match.arrayWith([
                 Match.objectLike({
@@ -73,40 +72,31 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                     'datazone:DeleteAsset',
                   ],
                   Effect: 'Allow',
-                  Resource: [
-                    {
-                      'Fn::Join': [
-                        '',
-                        [
-                          'arn:',
-                          { Ref: 'AWS::Partition' },
-                          ':datazone:',
-                          { Ref: 'AWS::Region' },
-                          ':',
-                          { Ref: 'AWS::AccountId' },
-                          `:domain/${DOMAIN_ID}`,
-                        ],
+                  Resource: {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:',
+                        {
+                          Ref: 'AWS::Partition',
+                        },
+                        ':datazone:',
+                        {
+                          Ref: 'AWS::Region',
+                        },
+                        ':',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        `:domain/${DOMAIN_ID}`,
                       ],
-                    },
-                    {
-                      'Fn::Join': [
-                        '',
-                        [
-                          'arn:',
-                          { Ref: 'AWS::Partition' },
-                          ':datazone:',
-                          { Ref: 'AWS::Region' },
-                          ':',
-                          { Ref: 'AWS::AccountId' },
-                          `:project/${PROJECT_ID}`,
-                        ],
-                      ],
-                    },
-                  ],
+                    ],
+                  },
                 }),
                 Match.objectLike({
                   Action: [
                     'glue:GetSchemaVersion',
+                    'glue:GetSchema',
                     'glue:ListSchemas',
                     'glue:ListSchemaVersions',
                   ],
@@ -163,20 +153,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                 Match.objectLike({
                   Action: 'kafka:ListClustersV2',
                   Effect: 'Allow',
-                  Resource: {
-                    'Fn::Join': [
-                      '',
-                      [
-                        'arn:',
-                        { Ref: 'AWS::Partition' },
-                        ':kafka:',
-                        { Ref: 'AWS::Region' },
-                        ':',
-                        { Ref: 'AWS::AccountId' },
-                        ':/api/v2/clusters',
-                      ],
-                    ],
-                  },
+                  Resource: '*',
                 }),
                 Match.objectLike({
                   Action: [

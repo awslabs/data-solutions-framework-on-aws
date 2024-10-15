@@ -98,6 +98,20 @@ export const handler = async () => {
       const parameterName = `/datazone/${domainId}/${registryName}/asset/${schemaName}`;
       let schemaDefinition = '';
       let versionNumber = 1;
+
+      // Retrieve schema
+      try {
+        const getSchemaCommand = new GetSchemaCommand({
+          SchemaId: { SchemaArn: schemaArn },
+        });
+        const schemaResponse = await glueClient.send(getSchemaCommand);
+        dataFormat = schemaResponse.DataFormat;
+        compatiblityMode = schemaResponse.Compatibility;
+        console.log('Retrieved schema.');
+      } catch (err) {
+        console.error('Error retrieving schema:', err);
+        continue; // Skip to the next schema if there is an issue
+      }
       
       // Retrieve schema definition
       try {
@@ -141,6 +155,8 @@ export const handler = async () => {
             schema_version: versionNumber,
             schema_arn: schemaArn,
             registry_arn: registryArn,
+            compatiblity_mode: compatiblityMode,
+            data_format: dataFormat,
           }),
         },
         {

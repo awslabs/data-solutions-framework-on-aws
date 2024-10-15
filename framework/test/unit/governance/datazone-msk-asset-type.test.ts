@@ -94,7 +94,7 @@ describe ('Creating a DataZoneMskAssetType with default configuration', () => {
           },
           {
             name: 'KafkaSchemaFormType',
-            model: '\n        structure KafkaSchemaFormType {\n          @required\nkafka_topic: String\n\nschema_version: Integer\n\nschema_arn: String\n\nregistry_arn: String\n        }\n      ',
+            model: '\n        structure KafkaSchemaFormType {\n          @required\nkafka_topic: String\n\nschema_version: Integer\n\nschema_arn: String\n\nregistry_arn: String\n\ncompatibility_mode: String\n\ndata_format: String\n        }\n      ',
             required: true,
           },
         ],

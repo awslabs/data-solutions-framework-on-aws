@@ -23,6 +23,7 @@ import { Context, TrackedConstruct, TrackedConstructProps } from '../../../utils
 /**
  * A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
  * The construct creates assets with the MskTopicAssetType in DataZone based on schema definitions in a Glue Schema Registry.
+ * It can be either scheduled or react on Schema Registry events (Create Schema, Update Schema, Create Schema Revision).
  *
  * @example
  * import { Schedule } from 'aws-cdk-lib/aws-events';
@@ -93,7 +94,6 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
     const partition = stack.partition;
 
     const clusterArn = `arn:${partition}:kafka:${region}:${accountId}:cluster/${props.clusterName}/*`;
-    const listClustersArn = `arn:${partition}:kafka:${region}:${accountId}:/api/v2/clusters`;
     const glueRegistryArn = `arn:${partition}:glue:${region}:${accountId}:registry/${props.registryName}`;
     const glueRegistrySchemasArn = `arn:${partition}:glue:${region}:${accountId}:schema/${props.registryName}/*`;
 
@@ -131,13 +131,13 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
               ],
               resources: [
                 `arn:${partition}:datazone:${region}:${accountId}:domain/${props.domainId}`,
-                `arn:${partition}:datazone:${region}:${accountId}:project/${props.projectId}`,
               ],
             }),
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: [
                 'glue:GetSchemaVersion',
+                'glue:GetSchema',
                 'glue:ListSchemas',
                 'glue:ListSchemaVersions',
               ],
@@ -155,7 +155,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
               actions: [
                 'kafka:ListClustersV2',
               ],
-              resources: [listClustersArn],
+              resources: ['*'],
             }),
             new PolicyStatement({
               effect: Effect.ALLOW,
