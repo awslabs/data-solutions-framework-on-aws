@@ -14,7 +14,7 @@ import { ServiceLinkedRoleService } from './service-linked-role-service';
  *
  * @example
  * const slr = new dsf.utils.CreateServiceLinkedRole(this, 'CreateSLR')
- * slr.create(ServiceLinkedRoleService.REDSHIFT)
+ * slr.create(dsf.utils.ServiceLinkedRoleService.REDSHIFT)
  */
 export class CreateServiceLinkedRole extends Construct {
 

@@ -1,0 +1,105 @@
+<!-- This file is generated, do not modify directly, update the README.md in framework/src/governance -->
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+DataZone custom asset type for MSK topics.
+
+## Overview
+
+`DataZoneMskAssetType` is a custom asset type implementation for Kafka topics hosted in MSK clusters. MSK clusters can be provisioned or serverless. Topics can be linked to a Glue Schema Registry. 
+The construct is a CDK custom resource that creates the corresponding DataZone Form Types and Asset Type required to store metadata related to MSK Topics. It includes:
+- A MSK Source Reference Form Type containing metadata about the MSK Cluster including the cluster ARN and type. 
+- A Kafka Schema For Type containing metadata about the topic including the topic name, schema version, Glue Schema Registry ARN and Glue Schema ARN.
+
+![DataZone MSK asset type](../../../../static/img/datazone-msk-asset-type.png)
+
+## Usage
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.governance.DataZoneMskAssetType(this, 'DataZoneMskAssetType', {
+  domainId: 'aba_dc999t9ime9sss',
+});
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.governance.DataZoneMskAssetType(self, "DataZoneMskAssetType",
+    domain_id="aba_dc999t9ime9sss"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Reusing an existing owner project
+
+The `DataZoneMskAssetType` requires a DataZone project to own the custom asset type. By default, it will create a `MskGovernance` project within the domain but you pass an existing project. 
+The construct will make the IAM custom resource Role a member of the projectto be able to create the asset type and the form types.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+new dsf.governance.DataZoneMskAssetType(this, 'DataZoneMskAssetType', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: 'xxxxxxxxxxx'
+});
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+dsf.governance.DataZoneMskAssetType(self, "DataZoneMskAssetType",
+    domain_id="aba_dc999t9ime9sss",
+    project_id="xxxxxxxxxxx"
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Reusing a Custom Asset Type Factory
+
+By default, the `DataZoneMskAssetType` creates its own factory resources required to connect to DataZone and create the custom asset type. But it's possible to reuse a Factory across multiple Custom Asset Types to limit the number of custom resource providers and DataZone project membership:
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+    const dataZoneAssetFactory = new dsf.governance.DataZoneCustomAssetTypeFactory(this, 'DataZoneCustomAssetTypeFactory', {
+      domainId: 'aba_dc999t9ime9sss',
+    });
+
+    new dsf.governance.DataZoneMskAssetType(this, 'DataZoneMskAssetType', {
+      domainId: 'aba_dc999t9ime9sss',
+      projectId: 'xxxxxxxxxxx',
+      dzCustomAssetTypeFactory: dataZoneAssetFactory
+    });
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+data_zone_asset_factory = dsf.governance.DataZoneCustomAssetTypeFactory(self, "DataZoneCustomAssetTypeFactory",
+    domain_id="aba_dc999t9ime9sss"
+)
+
+dsf.governance.DataZoneMskAssetType(self, "DataZoneMskAssetType",
+    domain_id="aba_dc999t9ime9sss",
+    project_id="xxxxxxxxxxx",
+    dz_custom_asset_type_factory=data_zone_asset_factory
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
