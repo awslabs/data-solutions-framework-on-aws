@@ -102,6 +102,7 @@ The workflow is a Step Functions State Machine that is triggered by events emitt
 1. Grant the producer or consumer based on the request. If the event is a cross-account producer grant, a Lambda function adds an IAM policy statement to the MSK Cluster policy granting read access to the IAM consumer Role. Optionally, it can also grant the use of MSK Managed VPC.
 2. Callback the `DataZoneMskCentralAuthorizer`: an EventBridge event is sent on the central EventBridge Bus to continue the workflow on the central account using the callback mechanism of Step Functions.
 
+
 ### Usage
 
 <Tabs>
@@ -124,6 +125,60 @@ dsf.governance.DataZoneMskEnvironmentAuthorizer(self, "MskAuthorizer",
 
   </TabItem>
 </Tabs>
+
+### Restricting IAM permissions on consumer roles with IAM permissions boundary
+
+The construct is based on a Lambda Function that grants IAM Roles with policies using the IAM API `PutRolePolicy`. 
+Permissions applied to the consumer Roles can be restricted using IAM Permissions Boundaries. The `DataZoneMskEnvironmentAuthorizer` construct provides a static member containing the IAM Statement to include in the IAM permission boundary of the consumer role.
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+
+    const permissionBoundaryPolicy = new ManagedPolicy(this, 'PermissionBoundaryPolicy', {
+      statements: [
+        // example of other permissions needed by the consumer
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ['s3:*'],
+          resources: ['*'],
+        }),
+        // permissions needed to consume MSK topics and granted by the Authorizer
+        dsf.governance.DataZoneMskEnvironmentAuthorizer.PERMISSIONS_BOUNDARY_STATEMENTS
+      ],
+    })
+
+    new Role(this, 'ConsumerRole', {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      permissionsBoundary: permissionBoundaryPolicy,
+    })
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+permission_boundary_policy = ManagedPolicy(self, "PermissionBoundaryPolicy",
+    statements=[
+        # example of other permissions needed by the consumer
+        PolicyStatement(
+            effect=Effect.ALLOW,
+            actions=["s3:*"],
+            resources=["*"]
+        ), dsf.governance.DataZoneMskEnvironmentAuthorizer.PERMISSIONS_BOUNDARY_STATEMENTS
+    ]
+)
+
+Role(self, "ConsumerRole",
+    assumed_by=ServicePrincipal("lambda.amazonaws.com"),
+    permissions_boundary=permission_boundary_policy
+)
+  ```
+
+  </TabItem>
+</Tabs>
+
 
 ### Cross account workflow
 

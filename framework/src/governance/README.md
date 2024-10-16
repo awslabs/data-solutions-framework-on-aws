@@ -119,9 +119,18 @@ The workflow is a Step Functions State Machine that is triggered by events emitt
 1. Grant the producer or consumer based on the request. If the event is a cross-account producer grant, a Lambda function adds an IAM policy statement to the MSK Cluster policy granting read access to the IAM consumer Role. Optionally, it can also grant the use of MSK Managed VPC.
 2. Callback the `DataZoneMskCentralAuthorizer`: an EventBridge event is sent on the central EventBridge Bus to continue the workflow on the central account using the callback mechanism of Step Functions.
 
+
 ### Usage
 
 [example default usage](./examples/datazone-msk-environment-authorizer-default.lit.ts)
+
+### Restricting IAM permissions on consumer roles with IAM permissions boundary
+
+The construct is based on a Lambda Function that grants IAM Roles with policies using the IAM API `PutRolePolicy`. 
+Permissions applied to the consumer Roles can be restricted using IAM Permissions Boundaries. The `DataZoneMskEnvironmentAuthorizer` construct provides a static member containing the IAM Statement to include in the IAM permission boundary of the consumer role.
+
+[example permissions boundary](./examples/datazone-msk-environment-authorizzer-permissions-boundary.lit.ts)
+
 
 ### Cross account workflow
 

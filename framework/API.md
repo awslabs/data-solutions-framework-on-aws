@@ -5549,6 +5549,7 @@ The IAM role used by the environment authorizer State Machine.
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.PERMISSIONS_BOUNDARY_STATEMENTS">PERMISSIONS_BOUNDARY_STATEMENTS</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement</code> | *No description.* |
 
 ---
 
@@ -5569,6 +5570,16 @@ public readonly DSF_TRACKING_CODE: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `PERMISSIONS_BOUNDARY_STATEMENTS`<sup>Required</sup> <a name="PERMISSIONS_BOUNDARY_STATEMENTS" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.PERMISSIONS_BOUNDARY_STATEMENTS"></a>
+
+```typescript
+public readonly PERMISSIONS_BOUNDARY_STATEMENTS: PolicyStatement;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
 ---
 

@@ -25,7 +25,37 @@ import { authorizerEnvironmentWorkflowSetup } from '../custom-authorizer-environ
  */
 export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
 
-  private static DEFAULT_LOGS_RETENTION = RetentionDays.ONE_WEEK;
+  public static readonly PERMISSIONS_BOUNDARY_STATEMENTS = new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: [
+      'kafka-cluster:Connect',
+      'kafka-cluster:DescribeTopic',
+      'kafka-cluster:DescribeGroup',
+      'kafka-cluster:AlterGroup',
+      'kafka-cluster:ReadData',
+      'kafka:CreateVpcConnection',
+      'ec2:CreateTags',
+      'ec2:CreateVPCEndpoint',
+      'kafka:CreateVpcConnection',
+      'kafka:GetBootstrapBrokers',
+      'kafka:DescribeCluster',
+      'kafka:DescribeClusterV2',
+      'glue:GetRegistry',
+      'glue:ListRegistries',
+      'glue:GetSchema',
+      'glue:ListSchemas',
+      'glue:GetSchemaByDefinition',
+      'glue:GetSchemaVersion',
+      'glue:ListSchemaVersions',
+      'glue:GetSchemaVersionsDiff',
+      'glue:CheckSchemaVersionValidity',
+      'glue:QuerySchemaVersionMetadata',
+      'glue:GetTags',
+    ],
+    resources: ['*'],
+  });
+
+  private static readonly DEFAULT_LOGS_RETENTION = RetentionDays.ONE_WEEK;
 
   /**
    * The IAM role used to grant access to Kafka topics
@@ -75,40 +105,6 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       retention: props.logRetention || DataZoneMskEnvironmentAuthorizer.DEFAULT_LOGS_RETENTION,
     });
 
-    // const permissionsBoundary = new ManagedPolicy(scope, 'GrantPolicyBoundary', {
-    //   statements: [
-    //     new PolicyStatement({
-    //       effect: Effect.ALLOW,
-    //       actions: [
-    //         'kafka-cluster:Connect',
-    //         'kafka-cluster:DescribeTopic',
-    //         'kafka-cluster:DescribeGroup',
-    //         'kafka-cluster:AlterGroup',
-    //         'kafka-cluster:ReadData',
-    //         'kafka:CreateVpcConnection',
-    //         'ec2:CreateTags',
-    //         'ec2:CreateVPCEndpoint',
-    //         'kafka:CreateVpcConnection',
-    //         'kafka:GetBootstrapBrokers',
-    //         'kafka:DescribeCluster',
-    //         'kafka:DescribeClusterV2',
-    //         'glue:GetRegistry',
-    //         'glue:ListRegistries',
-    //         'glue:GetSchema',
-    //         'glue:ListSchemas',
-    //         'glue:GetSchemaByDefinition',
-    //         'glue:GetSchemaVersion',
-    //         'glue:ListSchemaVersions',
-    //         'glue:GetSchemaVersionsDiff',
-    //         'glue:CheckSchemaVersionValidity',
-    //         'glue:QuerySchemaVersionMetadata',
-    //         'glue:GetTags',
-    //       ],
-    //       resources: ['*'],
-    //     }),
-    //   ],
-    // });
-
     const grantRole = props.grantRole || new Role(this, 'GrantRole', {
       roleName: `${DataZoneMskCentralAuthorizer.AUTHORIZER_NAME}GrantFunction`,
       assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
@@ -122,11 +118,6 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
                 'iam:DeleteRolePolicy',
               ],
               resources: ['*'],
-              // conditions: {
-              //   StringEquals: {
-              //     'iam:PermissionsBoundary': permissionsBoundary.managedPolicyArn,
-              //   },
-              // },
             }),
             new PolicyStatement({
               effect: Effect.ALLOW,

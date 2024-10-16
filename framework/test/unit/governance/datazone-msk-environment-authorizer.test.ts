@@ -91,45 +91,6 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
     );
   });
 
-  // test('should create a permission boundary for the grant role', () => {
-  //   template.hasResourceProperties('AWS::IAM::ManagedPolicy',
-  //     Match.objectLike({
-  //       PolicyDocument: {
-  //         Statement: [
-  //           {
-  //             Action: [
-  //               'kafka-cluster:Connect',
-  //               'kafka-cluster:DescribeTopic',
-  //               'kafka-cluster:DescribeGroup',
-  //               'kafka-cluster:AlterGroup',
-  //               'kafka-cluster:ReadData',
-  //               'kafka:CreateVpcConnection',
-  //               'ec2:CreateTags',
-  //               'ec2:CreateVPCEndpoint',
-  //               'kafka:GetBootstrapBrokers',
-  //               'kafka:DescribeCluster',
-  //               'kafka:DescribeClusterV2',
-  //               'glue:GetRegistry',
-  //               'glue:ListRegistries',
-  //               'glue:GetSchema',
-  //               'glue:ListSchemas',
-  //               'glue:GetSchemaByDefinition',
-  //               'glue:GetSchemaVersion',
-  //               'glue:ListSchemaVersions',
-  //               'glue:GetSchemaVersionsDiff',
-  //               'glue:CheckSchemaVersionValidity',
-  //               'glue:QuerySchemaVersionMetadata',
-  //               'glue:GetTags',
-  //             ],
-  //             Effect: 'Allow',
-  //             Resource: '*',
-  //           },
-  //         ],
-  //       },
-  //     }),
-  //   );
-  // });
-
   test('should create an IAM role for the Step Functions state machine', () => {
     template.hasResourceProperties('AWS::IAM::Role',
       Match.objectLike({
