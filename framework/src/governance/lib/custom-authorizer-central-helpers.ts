@@ -198,6 +198,7 @@ export function authorizerCentralWorkflowSetup(
   });
 
   const stateMachineLogGroup = new LogGroup(scope, 'StateMachineLogGroup', {
+    logGroupName: `/aws/vendedlogs/states/${authorizerName}/central`,
     removalPolicy,
     retention: logRetention || DEFAULT_LOGS_RETENTION,
   });

@@ -205,6 +205,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
         PARTITION: partition,
       },
       environmentEncryption: props.encryptionKey,
+      logGroup: this.lambdaLogGroup,
     });
 
     this.lambdaFunction.node.addDependency(this.dataZoneMembership);
@@ -248,7 +249,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
             requestParameters: {
               schemaId: {
                 schemaArn: [{
-                  prefix: `arn:${partition}:glue:${region}:${accountId}:schema/${props?.registryName}/*`,
+                  prefix: `arn:${partition}:glue:${region}:${accountId}:schema/${props?.registryName}/`,
                 }],
               },
             },

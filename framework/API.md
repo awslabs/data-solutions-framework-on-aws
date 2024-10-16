@@ -4445,7 +4445,7 @@ public readonly DSF_TRACKING_CODE: string;
 
 A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
 
-The construct creates assets with the MskTopicAssetType in DataZone based on schema definitions in a Glue Schema Registry. 
+The construct creates assets with the MskTopicAssetType in DataZone based on schema definitions in a Glue Schema Registry.
 It can be either scheduled or react on Schema Registry events (Create Schema, Update Schema, Create Schema Revision).
 
 *Example*

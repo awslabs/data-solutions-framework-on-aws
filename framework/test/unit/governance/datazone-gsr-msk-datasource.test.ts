@@ -393,7 +393,7 @@ describe('Creating a DataZone-GSR-MSK-Datasource with GSR Events and Scheduled c
                           { Ref: 'AWS::Region' },
                           ':',
                           { Ref: 'AWS::AccountId' },
-                          `:schema/${REGISTRY_NAME}/*`,
+                          `:schema/${REGISTRY_NAME}/`,
                         ],
                       ],
                     },

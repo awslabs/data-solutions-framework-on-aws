@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { DataZoneClient, GetAssetCommand, CreateAssetCommand, CreateAssetRevisionCommand, DeleteAssetCommand } from "@aws-sdk/client-datazone";
-import { GlueClient, ListSchemasCommand, GetSchemaVersionCommand } from "@aws-sdk/client-glue";
+import { GlueClient, ListSchemasCommand, GetSchemaVersionCommand, GetSchemaCommand } from "@aws-sdk/client-glue";
 import { KafkaClient, ListClustersV2Command, DescribeClusterV2Command } from "@aws-sdk/client-kafka";
 import { SSMClient, GetParametersByPathCommand, DeleteParameterCommand, PutParameterCommand } from "@aws-sdk/client-ssm";
 
@@ -32,6 +32,7 @@ export const handler = async () => {
   
   
   let clusterArn;
+  let clusterUuid;
   let clusterType;
   
   try {
@@ -98,6 +99,8 @@ export const handler = async () => {
       const parameterName = `/datazone/${domainId}/${registryName}/asset/${schemaName}`;
       let schemaDefinition = '';
       let versionNumber = 1;
+      let compatibilityMode = '';
+      let data_format = '';
 
       // Retrieve schema
       try {
@@ -106,7 +109,7 @@ export const handler = async () => {
         });
         const schemaResponse = await glueClient.send(getSchemaCommand);
         dataFormat = schemaResponse.DataFormat;
-        compatiblityMode = schemaResponse.Compatibility;
+        compatibilityMode = schemaResponse.Compatibility;
         console.log('Retrieved schema.');
       } catch (err) {
         console.error('Error retrieving schema:', err);
@@ -155,7 +158,7 @@ export const handler = async () => {
             schema_version: versionNumber,
             schema_arn: schemaArn,
             registry_arn: registryArn,
-            compatiblity_mode: compatiblityMode,
+            compatibility_mode: compatibilityMode,
             data_format: dataFormat,
           }),
         },
@@ -224,7 +227,7 @@ export const handler = async () => {
             Name: parameterName,
             Value: newAssetId,
             KeyId: parameterKey,
-            Type: 'String',
+            Type: 'SecureString',
             Overwrite: true
           });
           

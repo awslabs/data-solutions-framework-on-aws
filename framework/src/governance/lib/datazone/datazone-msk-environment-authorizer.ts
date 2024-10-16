@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { IRole, Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect, ManagedPolicy } from 'aws-cdk-lib/aws-iam';
+import { IRole, Role, ServicePrincipal, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { IFunction, Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup, LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { IStateMachine } from 'aws-cdk-lib/aws-stepfunctions';
@@ -75,39 +75,39 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
       retention: props.logRetention || DataZoneMskEnvironmentAuthorizer.DEFAULT_LOGS_RETENTION,
     });
 
-    const permissionsBoundary = new ManagedPolicy(scope, 'GrantBoundary', {
-      statements: [
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: [
-            'kafka-cluster:Connect',
-            'kafka-cluster:DescribeTopic',
-            'kafka-cluster:DescribeGroup',
-            'kafka-cluster:AlterGroup',
-            'kafka-cluster:ReadData',
-            'kafka:CreateVpcConnection',
-            'ec2:CreateTags',
-            'ec2:CreateVPCEndpoint',
-            'kafka:CreateVpcConnection',
-            'kafka:GetBootstrapBrokers',
-            'kafka:DescribeCluster',
-            'kafka:DescribeClusterV2',
-            'glue:GetRegistry',
-            'glue:ListRegistries',
-            'glue:GetSchema',
-            'glue:ListSchemas',
-            'glue:GetSchemaByDefinition',
-            'glue:GetSchemaVersion',
-            'glue:ListSchemaVersions',
-            'glue:GetSchemaVersionsDiff',
-            'glue:CheckSchemaVersionValidity',
-            'glue:QuerySchemaVersionMetadata',
-            'glue:GetTags',
-          ],
-          resources: ['*'],
-        }),
-      ],
-    });
+    // const permissionsBoundary = new ManagedPolicy(scope, 'GrantPolicyBoundary', {
+    //   statements: [
+    //     new PolicyStatement({
+    //       effect: Effect.ALLOW,
+    //       actions: [
+    //         'kafka-cluster:Connect',
+    //         'kafka-cluster:DescribeTopic',
+    //         'kafka-cluster:DescribeGroup',
+    //         'kafka-cluster:AlterGroup',
+    //         'kafka-cluster:ReadData',
+    //         'kafka:CreateVpcConnection',
+    //         'ec2:CreateTags',
+    //         'ec2:CreateVPCEndpoint',
+    //         'kafka:CreateVpcConnection',
+    //         'kafka:GetBootstrapBrokers',
+    //         'kafka:DescribeCluster',
+    //         'kafka:DescribeClusterV2',
+    //         'glue:GetRegistry',
+    //         'glue:ListRegistries',
+    //         'glue:GetSchema',
+    //         'glue:ListSchemas',
+    //         'glue:GetSchemaByDefinition',
+    //         'glue:GetSchemaVersion',
+    //         'glue:ListSchemaVersions',
+    //         'glue:GetSchemaVersionsDiff',
+    //         'glue:CheckSchemaVersionValidity',
+    //         'glue:QuerySchemaVersionMetadata',
+    //         'glue:GetTags',
+    //       ],
+    //       resources: ['*'],
+    //     }),
+    //   ],
+    // });
 
     const grantRole = props.grantRole || new Role(this, 'GrantRole', {
       roleName: `${DataZoneMskCentralAuthorizer.AUTHORIZER_NAME}GrantFunction`,
@@ -122,6 +122,11 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
                 'iam:DeleteRolePolicy',
               ],
               resources: ['*'],
+              // conditions: {
+              //   StringEquals: {
+              //     'iam:PermissionsBoundary': permissionsBoundary.managedPolicyArn,
+              //   },
+              // },
             }),
             new PolicyStatement({
               effect: Effect.ALLOW,
@@ -135,7 +140,6 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
           ],
         }),
       },
-      permissionsBoundary: permissionsBoundary,
     });
 
     this.grantRole = grantRole;
