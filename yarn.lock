@@ -2277,9 +2277,9 @@ kind-of@^6.0.2, kind-of@^6.0.3:
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
 lerna-projen@^0.1.364:
-  version "0.1.437"
-  resolved "https://registry.yarnpkg.com/lerna-projen/-/lerna-projen-0.1.437.tgz#6826046222a1dc7348e3519fa600555e46dca417"
-  integrity sha512-D8nAnaOZiy3eoPmPvGFSgbAZwZWxTYAqtFyhQevhxhDRWmj8+2SZFURdL++p8cT4zb5EqhO3DbErJo+OhoZ0Sw==
+  version "0.1.501"
+  resolved "https://registry.yarnpkg.com/lerna-projen/-/lerna-projen-0.1.501.tgz#b7a98318122cb412e25e23b5ff67871867534912"
+  integrity sha512-pJG3xIDJU+Fk6vHlhMT2QcpBbMPxzfpwMtuyBGHcFtCk6eXfSxZc1ZGHbDvM+8xYzjr0CQZZ8c/enG+XBK9Dmw==
   dependencies:
     commander "^11.1.0"
     fs-extra "^9.1.0"
