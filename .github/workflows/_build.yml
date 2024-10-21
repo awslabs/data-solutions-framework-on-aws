@@ -28,7 +28,7 @@ jobs:
             framework/yarn.lock
             solutions/yarn.lock
       - name: Install dependencies
-        run: yarn install --check-files && npx cdk --version
+        run: yarn install --check-files && echo 'test cdk version' && npx cdk --version
       - name: Build
         run: npx projen build
       - name: Find mutations
