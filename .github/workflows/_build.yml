@@ -28,7 +28,7 @@ jobs:
             framework/yarn.lock
             solutions/yarn.lock
       - name: Install dependencies
-        run: yarn install --check-files && echo 'test cdk version' && yarn install cdk@2.145.0 aws-cdk@2.145.0 && npx aws-cdk --version
+        run: yarn install --check-files && echo 'test cdk version' && yarn add cdk@2.145.0 aws-cdk@2.145.0 && npx aws-cdk --version
       - name: Build
         run: npx projen build
       - name: Find mutations
