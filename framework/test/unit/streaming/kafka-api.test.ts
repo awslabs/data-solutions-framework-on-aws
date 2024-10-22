@@ -13,6 +13,7 @@ import { Match, Template } from 'aws-cdk-lib/assertions';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { SecurityGroup, Vpc, Subnet } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Authentication, ClientAuthentication, KafkaApi, MskClusterType } from '../../../src/streaming';
@@ -1074,6 +1075,9 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
     clientAuthentication: ClientAuthentication.saslTls({
       iam: true,
       certificateAuthorities: [certificateAuthority],
+    }),
+    environmentEncryption: new Key(stack, 'CustomKafkaApiKey', {
+      description: 'Custom KMS key for KafkaApi encryption',
     }),
   });
 

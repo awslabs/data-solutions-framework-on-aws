@@ -142,6 +142,7 @@ export class DsfProvider extends Construct {
       const cleanUpProvider = new Provider(this, 'CleanUpProvider', {
         onEventHandler: this.cleanUpFunction,
         logRetention: DsfProvider.LOG_RETENTION,
+        providerFunctionEnvEncryption: props.environmentEncryption,
       });
 
       this.cleanUpCr = new CustomResource(this, 'CleanUpCustomResource', {
@@ -190,6 +191,7 @@ export class DsfProvider extends Construct {
       securityGroups: this.securityGroups,
       totalTimeout: props.queryTimeout,
       logRetention: DsfProvider.LOG_RETENTION,
+      providerFunctionEnvEncryption: props.environmentEncryption,
     });
 
     // Scope down the `onEventHandlerFunction` to be called
@@ -245,6 +247,7 @@ export class DsfProvider extends Construct {
       vpc: this.vpc,
       vpcSubnets: this.subnets,
       securityGroups: this.securityGroups,
+      environmentEncryption: props.environmentEncryption,
     });
   }
 

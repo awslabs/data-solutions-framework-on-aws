@@ -4,7 +4,7 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IManagedPolicy, IRole } from 'aws-cdk-lib/aws-iam';
-import { Key } from 'aws-cdk-lib/aws-kms';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { BundlingOptions } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 
@@ -68,7 +68,7 @@ export interface DsfProviderProps {
   /**
    * The AWS KMS key to use to encrypt the function environment variables.
    */
-  readonly environmentEncryption?: Key;
+  readonly environmentEncryption?: IKey;
 
 }
 
@@ -113,6 +113,11 @@ export interface HandlerDefinition {
    * @default - No environment variables.
    */
   readonly environment?: { [key: string]: string };
+  /**
+   * The AWS KMS key to use to encrypt the function environment variables.
+   * * @default - No encryotion Key.
+   */
+  readonly environmentEncryption?: IKey;
   /**
    * The timeout for the lambda function.
    * @default - Duration.minutes(14)
