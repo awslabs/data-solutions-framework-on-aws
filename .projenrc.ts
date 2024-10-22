@@ -263,7 +263,7 @@ const sparkDataLakeInfraExampleApp = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
-    'cdk-nag',
+    'cdk-nag~=2.25.0',
     "black",
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`
   ],
@@ -296,7 +296,7 @@ synthTask.reset();
 synthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --ignore-installed --no-cache-dir --no-deps --no-index --find-links ../../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -323,7 +323,7 @@ const adsfQuickstart = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
-    'cdk-nag',
+    'cdk-nag~=2.25.0',
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black"
   ],
@@ -357,7 +357,7 @@ adsfQuickstartSynthTask.reset();
 adsfQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -385,7 +385,7 @@ const opensearchQuickstart = new awscdk.AwsCdkPythonApp({
   pytest: true,
   devDeps: [
     "pytest",
-    'cdk-nag',
+    'cdk-nag~=2.25.0',
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black"
   ],
@@ -420,7 +420,7 @@ opensearchQuickstartSynthTask.reset();
 opensearchQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
 const buildOpensearchQuickstartTask = opensearchQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -449,7 +449,7 @@ const redshiftDataWarehouseExample = new awscdk.AwsCdkPythonApp({
     "pytest",
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black",
-    'cdk-nag',
+    'cdk-nag~=2.25.0',
   ],
   pythonExec: 'python3',
   venvOptions: {
@@ -482,7 +482,7 @@ redshiftDataWarehouseExampleSynthTask.reset();
 redshiftDataWarehouseExampleSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
 const buildredshiftDataWarehouseExampleTask = redshiftDataWarehouseExample.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]

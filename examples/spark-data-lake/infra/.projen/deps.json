@@ -9,7 +9,7 @@
       "type": "devenv"
     },
     {
-      "name": "cdk-nag",
+      "name": "cdk-nag~=2.25.0",
       "type": "devenv"
     },
     {

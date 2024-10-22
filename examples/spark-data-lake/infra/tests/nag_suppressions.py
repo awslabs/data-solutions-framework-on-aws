@@ -23,6 +23,7 @@ def suppress_nag(scope: Construct, construct_id: str):
         {'id':'AwsSolutions-MSK6', 'reason':'Inherited from DSF, suppressed in DSF Nag tests' },
         {'id':'AwsSolutions-EC23', 'reason':'Inherited from DSF, suppressed in DSF Nag tests' },
         {'id':'AwsSolutions-S1', 'reason':'Inherited from DSF, suppressed in DSF Nag tests' },
+        {'id':'AwsSolutions-S2', 'reason':'This bucket is publicly available because it hosts test data for other workshops.' },
         {'id':'CdkNagValidationFailure', 'reason':'Tokens are used to resolve CIDR at deploy time' },
     ],True)
     
