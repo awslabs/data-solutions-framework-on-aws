@@ -3,7 +3,7 @@
 
 import * as path from 'path';
 import { Effect, IManagedPolicy, IRole, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Aws, BundlingOutput, DockerImage, RemovalPolicy, Size } from 'aws-cdk-lib/core';
@@ -129,6 +129,7 @@ export class PySparkApplicationPackage extends TrackedConstruct {
         autoDeleteObjects: removalPolicy === RemovalPolicy.DESTROY,
         serverAccessLogsBucket: this.artifactsAccessLogsBucket,
         serverAccessLogsPrefix: 'access-logs/',
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       });
     } else {
       artifactsBucket = props.artifactsBucket!;
