@@ -111,6 +111,10 @@ export class DsfProvider extends Construct {
       this.vpcPolicy = this.getVpcPermissions();
 
       this.onEventHandlerRole.addManagedPolicy(this.vpcPolicy);
+
+      // grant encrypt & decrypt to onEventHandlerRole for CMK
+      props.environmentEncryption?.grantEncryptDecrypt(this.onEventHandlerRole);
+
       // add a dependency to avoid race condition when deleting the stack
       this.onEventHandlerRole.node.addDependency(this.vpcPolicy);
 
@@ -179,6 +183,9 @@ export class DsfProvider extends Construct {
         // Dependency to schedule the ENI cleanup after lambda deletion
         this.isCompleteHandlerFunction.node.addDependency(this.cleanUpCr!);
       }
+
+      // grant encrypt & decrypt to onEventHandlerRole for CMK
+      props.environmentEncryption?.grantEncryptDecrypt(this.isCompleteHandlerRole);
     }
 
 

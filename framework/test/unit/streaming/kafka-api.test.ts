@@ -1164,6 +1164,66 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
       DeletionPolicy: 'Retain',
     });
   });
+
+  test('Lambda functions should use the custom KMS key', () => {
+
+
+    // Define the prefixes of the lambda that have env var and should be encrypted
+    const lambdaPrefixes = [
+      'KafkaApiMskIamProviderCustomResourceProviderframeworkonEvent',
+      'KafkaApiMskAclProviderCleanUpLambda',
+      'KafkaApiMskAclProviderCleanUpProviderframeworkonEvent',
+      'KafkaApiMskAclProviderCustomResourceProviderframeworkonEvent',
+      'KafkaApiMskIamProviderCleanUpLambda',
+      'KafkaApiMskIamProviderCleanUpProviderframeworkonEvent',
+    ];
+
+    const matchingResources = template.findResources('AWS::Lambda::Function');
+
+    // Count how many matching resources have the correct KmsKeyArn
+    const matchingCount = Object.entries(matchingResources).filter(([_, lambda]) => {
+      return lambda.Properties.KmsKeyArn &&
+              lambda.Properties.KmsKeyArn['Fn::GetAtt'] &&
+              lambda.Properties.KmsKeyArn['Fn::GetAtt'][0].match(/CustomKafkaApiKey.*/);
+    }).length;
+
+    // The number of matching resources should greater or equal the number of prefixes
+    expect(lambdaPrefixes.length).toBeLessThanOrEqual(matchingCount);
+  });
+
+  test('Lambda role policies should have correct KMS permissions', () => {
+    const policiesToCheck = [
+      'KafkaApiMskAclProviderOnEventHandlerRoleDefaultPolicy',
+      'KafkaApiMskAclProviderCleanUpRoleDefaultPolicy',
+      'KafkaApiMskIamProviderOnEventHandlerRoleDefaultPolicy',
+      'KafkaApiMskIamProviderCleanUpRoleDefaultPolicy',
+    ];
+
+    policiesToCheck.forEach(policyNamePrefix => {
+      template.hasResourceProperties('AWS::IAM::Policy', {
+        PolicyName: Match.stringLikeRegexp(`^${policyNamePrefix}.*`),
+        PolicyDocument: {
+          Statement: Match.arrayWith([
+            {
+              Effect: 'Allow',
+              Action: Match.arrayEquals([
+                'kms:Decrypt',
+                'kms:Encrypt',
+                'kms:ReEncrypt*',
+                'kms:GenerateDataKey*',
+              ]),
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('.*CustomKafkaApiKey.*'),
+                  'Arn',
+                ],
+              },
+            },
+          ]),
+        },
+      });
+    });
+  });
 });
 
 describe('Using global removal policy and DELETE construct removal policy ', () => {

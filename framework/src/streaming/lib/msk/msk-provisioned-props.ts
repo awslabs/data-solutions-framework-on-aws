@@ -3,6 +3,7 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import {
   BrokerLogging,
@@ -154,6 +155,11 @@ export interface MskProvisionedProps {
    * `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`
    */
   readonly currentVersion?: string;
+
+  /**
+   * The AWS KMS key to use to encrypt the function environment variables.
+   */
+  readonly environmentEncryption?: IKey;
 }
 
 
