@@ -5,6 +5,7 @@ import { CustomResource, RemovalPolicy, Stack } from 'aws-cdk-lib';
 
 import { ISecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, IRole } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
@@ -47,6 +48,10 @@ export class KafkaApi extends TrackedConstruct {
    * The IAM Role used by the Custom Resource provider when MSK is using mTLS authentication
    */
   public readonly mskAclRole?: IRole;
+  /**
+   * The AWS KMS key to use to encrypt the function environment variables.
+   */
+  public readonly environmentEncryption?: IKey;
   /**
    * The Cloudwatch Log Group used by the Custom Resource provider when MSK is using mTLS authentication
    */
@@ -92,6 +97,7 @@ export class KafkaApi extends TrackedConstruct {
     this.clusterArn = props.clusterArn;
     this.tlsCertifacateSecret = props.certficateSecret;
     this.clusterType = props.clusterType;
+    this.environmentEncryption = props.environmentEncryption;
 
     if (!props.vpc.vpcId ||
       !props.vpc?.availabilityZones ||
@@ -113,6 +119,7 @@ export class KafkaApi extends TrackedConstruct {
           props.clusterArn,
           props.certficateSecret!,
           props.mtlsHandlerRole,
+          props.environmentEncryption,
         );
 
         this.mskAclServiceToken = mskAclProvider.serviceToken;
@@ -137,6 +144,7 @@ export class KafkaApi extends TrackedConstruct {
           props.brokerSecurityGroup,
           props.clusterArn,
           props.iamHandlerRole,
+          props.environmentEncryption,
         );
 
         this.mskIamServiceToken = mskIamProvider.serviceToken;

@@ -4539,6 +4539,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.environmentEncryption">environmentEncryption</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The AWS KMS key to use to encrypt the function environment variables. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskAclFunction">mskAclFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used by the Custom Resource provider when MSK is using mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskAclLogGroup">mskAclLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group used by the Custom Resource provider when MSK is using mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskAclRole">mskAclRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Custom Resource provider when MSK is using mTLS authentication. |
@@ -4560,6 +4561,18 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `environmentEncryption`<sup>Optional</sup> <a name="environmentEncryption" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.environmentEncryption"></a>
+
+```typescript
+public readonly environmentEncryption: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The AWS KMS key to use to encrypt the function environment variables.
 
 ---
 
@@ -13446,6 +13459,7 @@ const kafkaApiProps: streaming.KafkaApiProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.clusterType">clusterType</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.MskClusterType</code> | The type of MSK cluster(provisioned or serverless). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | Defines the virtual networking environment for this cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.certficateSecret">certficateSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | This is the TLS certificate of the Principal that is used by the CDK custom resource which set ACLs and Topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.environmentEncryption">environmentEncryption</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The AWS KMS key to use to encrypt the function environment variables. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.iamHandlerRole">iamHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to IAM authentication lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.mtlsHandlerRole">mtlsHandlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role to pass to mTLS lambda handler This role must be able to be assumed with `lambda.amazonaws.com` service principal. |
@@ -13538,6 +13552,18 @@ The secret in AWS secrets manager must be a JSON in the following format
 
 You can use the following utility to generate the certificates
 https://github.com/aws-samples/amazon-msk-client-authentication
+
+---
+
+##### `environmentEncryption`<sup>Optional</sup> <a name="environmentEncryption" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApiProps.property.environmentEncryption"></a>
+
+```typescript
+public readonly environmentEncryption: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The AWS KMS key to use to encrypt the function environment variables.
 
 ---
 
@@ -13705,6 +13731,7 @@ const mskProvisionedProps: streaming.MskProvisionedProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.configuration">configuration</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.ClusterConfigurationInfo</code> | The Amazon MSK configuration to use for the cluster. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.currentVersion">currentVersion</a></code> | <code>string</code> | This parameter is required after executing the first `cdk deploy` It is the version of the MSK cluster that was deployed in the previous `cdk deploy` The cluster might fail in the subsequent updates if it is not set This parameter is obtained by running the following command `aws kafka describe-cluster --cluster-arn YOUR_CLUSTER_ARN`. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.ebsStorage">ebsStorage</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.EbsStorageInfo</code> | Information about storage volumes attached to MSK broker nodes. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.environmentEncryption">environmentEncryption</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The AWS KMS key to use to encrypt the function environment variables. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaClientLogLevel">kafkaClientLogLevel</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaClientLogLevel</code> | The log level for the lambda that support the Custom Resource for both Managing ACLs and Topics. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.kafkaVersion">kafkaVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion</code> | The version of Apache Kafka. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.logging">logging</a></code> | <code>@cdklabs/aws-data-solutions-framework.streaming.BrokerLogging</code> | Configure your MSK cluster to send broker logs to different destination types. |
@@ -13837,6 +13864,18 @@ public readonly ebsStorage: EbsStorageInfo;
 - *Default:* 100 GiB EBS volume
 
 Information about storage volumes attached to MSK broker nodes.
+
+---
+
+##### `environmentEncryption`<sup>Optional</sup> <a name="environmentEncryption" id="@cdklabs/aws-data-solutions-framework.streaming.MskProvisionedProps.property.environmentEncryption"></a>
+
+```typescript
+public readonly environmentEncryption: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The AWS KMS key to use to encrypt the function environment variables.
 
 ---
 
