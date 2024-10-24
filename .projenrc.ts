@@ -507,9 +507,12 @@ const datazoneMskGovernance = new awscdk.AwsCdkPythonApp({
   cdkVersionPinning: true,
 
   pytest: true,
+  deps: [
+    'aws-cdk.aws_lambda_python_alpha~=2.145.0a0'
+  ],
   devDeps: [
     "pytest",
-    'cdk-nag',
+    'cdk-nag~=2.25.0',
     `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     "black"
   ],

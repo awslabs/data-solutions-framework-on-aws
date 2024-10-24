@@ -86,4 +86,3 @@ cython_debug/
 /cdk.out/
 .cdk.staging/
 cdk.context.json
-resources/flink/?
