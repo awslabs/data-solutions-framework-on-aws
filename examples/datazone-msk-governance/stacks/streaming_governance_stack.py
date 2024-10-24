@@ -133,7 +133,8 @@ class StreamingGovernanceStack(Stack):
                                                 domain_id=domain_id,
                                                 project_id=producer_dz_project.attr_id,
                                                 registry_name=producer_schema_registry.name,
-                                                enable_schema_registry_event=True)
+                                                enable_schema_registry_event=True,
+                                                removal_policy=RemovalPolicy.DESTROY)
         
         producer_lambda = python.PythonFunction(self, 'ProducerLambda',
                                                 entry='./resources/lambda',
@@ -168,21 +169,21 @@ class StreamingGovernanceStack(Stack):
                                       member=datazone.CfnProjectMembership.MemberProperty(user_identifier=datazone_portal_role.role_arn),
                                       project_identifier=consumer_dz_project.attr_id)
                 
-        msk_cluster.add_topic('ConsumerTopic',
-                              topic_definition=dsf.streaming.MskTopic(
-                                  num_partitions=1,
-                                  topic=consumer_topic))
+        # msk_cluster.add_topic('ConsumerTopic',
+        #                       topic_definition=dsf.streaming.MskTopic(
+        #                           num_partitions=1,
+        #                           topic=consumer_topic))
         
-        consumer_schema_registry = glue.CfnRegistry(self, 'ConsumerRegistry', 
-                                                    name='consumer-registry')
+        # consumer_schema_registry = glue.CfnRegistry(self, 'ConsumerRegistry', 
+        #                                             name='consumer-registry')
         
-        dsf.governance.DataZoneGsrMskDataSource(self, 
-                                                'ConsumerGsrDataSource',
-                                                cluster_name=msk_cluster.cluster_name,
-                                                domain_id=domain_id,
-                                                project_id=consumer_dz_project.attr_id,
-                                                registry_name=consumer_schema_registry.name,
-                                                enable_schema_registry_event=True)
+        # dsf.governance.DataZoneGsrMskDataSource(self, 
+        #                                         'ConsumerGsrDataSource',
+        #                                         cluster_name=msk_cluster.cluster_name,
+        #                                         domain_id=domain_id,
+        #                                         project_id=consumer_dz_project.attr_id,
+        #                                         registry_name=consumer_schema_registry.name,
+        #                                         enable_schema_registry_event=True)
 
         flink_app_asset = assets.Asset(self, 'FlinkAppAsset',
                                        path="resources/flink",  # Path to the Flink application folder
@@ -198,7 +199,7 @@ class StreamingGovernanceStack(Stack):
         consumer_role = iam.Role(self, 'ConsumerRole',
                                  assumed_by=iam.CompositePrincipal(
                                      iam.ServicePrincipal('kinesisanalytics.amazonaws.com'),
-                                     iam.ServicePrincipal('emr-serverless.amazonaws.com'),
+                                    #  iam.ServicePrincipal('emr-serverless.amazonaws.com'),
                                      iam.ServicePrincipal('datazone.amazonaws.com')),
                                  inline_policies={
                                     'consumerPolicy': iam.PolicyDocument(
@@ -206,14 +207,14 @@ class StreamingGovernanceStack(Stack):
                                              iam.PolicyStatement(
                                                  actions=['datazone:PostLineageEvent'],
                                                  resources=[f'arn:{stack.partition}:datazone:{stack.region}:{stack.account}:domain/{domain_id}']),
-                                             iam.PolicyStatement(
-                                                 actions=[
-                                                    'glue:GetRegistry',
-                                                    'glue:CreateRegistry',
-                                                    'glue:UpdateRegistry',
-                                                    'glue:ListRegistries'
-                                                ],
-                                                resources=[consumer_schema_registry.attr_arn]),
+                                            #  iam.PolicyStatement(
+                                            #      actions=[
+                                            #         'glue:GetRegistry',
+                                            #         'glue:CreateRegistry',
+                                            #         'glue:UpdateRegistry',
+                                            #         'glue:ListRegistries'
+                                            #     ],
+                                            #     resources=[consumer_schema_registry.attr_arn]),
                                              iam.PolicyStatement(
                                                 actions=[
                                                     'glue:CreateSchema',
@@ -286,7 +287,7 @@ class StreamingGovernanceStack(Stack):
                                                                         'datazoneDomainID': domain_id,
                                                                         'lineageTransport': 'datazone',
                                                                         'region': self.region,
-                                                                        'sourceRegistry': consumer_schema_registry.name
+                                                                        'sourceRegistry': producer_schema_registry.name
                                                                     })]),
                                                             flink_application_configuration=kda.CfnApplication.FlinkApplicationConfigurationProperty(
                                                                 parallelism_configuration=kda.CfnApplication.ParallelismConfigurationProperty(
