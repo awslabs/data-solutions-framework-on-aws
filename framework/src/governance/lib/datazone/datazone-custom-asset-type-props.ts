@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { RemovalPolicy } from 'aws-cdk-lib';
+
 /**
  * Interface representing a DataZoneFormTypeField
  */
@@ -63,4 +65,9 @@ export interface DataZoneCustomAssetTypeProps {
    * @default - No description provided
    */
   readonly assetTypeDescription?: string;
+  /**
+   * The removal policy of the custom asset type
+   * @default - RETAIN
+   */
+  readonly removalPolicy?: RemovalPolicy;
 }

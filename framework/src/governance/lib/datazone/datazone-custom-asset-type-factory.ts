@@ -164,7 +164,7 @@ export class DataZoneCustomAssetTypeFactory extends TrackedConstruct {
     // The custom resource creating the custom asset type
     const crResp = new CustomResource(this, id, {
       serviceToken: this.serviceToken,
-      removalPolicy: this.removalPolicy,
+      removalPolicy: customAssetType.removalPolicy || RemovalPolicy.RETAIN,
       properties: {
         domainId: this.domainId,
         projectId: customAssetType.projectId,

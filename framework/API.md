@@ -15007,6 +15007,7 @@ const dataZoneCustomAssetTypeProps: governance.DataZoneCustomAssetTypeProps = { 
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes">formTypes</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]</code> | The form types of the custom asset type. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription">assetTypeDescription</a></code> | <code>string</code> | The description of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy of the custom asset type. |
 
 ---
 
@@ -15063,6 +15064,19 @@ public readonly assetTypeDescription: string;
 - *Default:* No description provided
 
 The description of the custom asset type.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN
+
+The removal policy of the custom asset type.
 
 ---
 

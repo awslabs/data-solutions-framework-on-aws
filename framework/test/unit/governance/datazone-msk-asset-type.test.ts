@@ -182,7 +182,7 @@ describe ('Creating a DataZoneMskAssetType with DELETE removal but without globa
   });
 });
 
-describe ('Creating a DataZoneMskAssetType with DELETE removal but without global data removal', () => {
+describe ('Creating a DataZoneMskAssetType with DELETE removal and with global data removal', () => {
   const app = new App();
   const stack = new Stack(app, 'Stack');
   const DOMAIN_ID = 'aba_dc999t9ime9sss';

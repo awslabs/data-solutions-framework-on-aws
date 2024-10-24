@@ -114,6 +114,7 @@ export class DataZoneMskAssetType extends TrackedConstruct {
           required: true,
         },
       ],
+      removalPolicy: this.removalPolicy,
     });
   }
 }
