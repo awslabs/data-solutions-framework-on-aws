@@ -99,4 +99,14 @@ export class Utils {
 
     return this.generateHash(components);
   }
+
+  /**
+   * Validate a provided string is a valid account ID
+   * @param accountId the account ID to validate
+   * @returns true if the account ID is valid, false otherwise
+   */
+  public static validateAccountId(accountId: string): boolean {
+    const accountIdRegex = /^\d{12}$/;
+    return accountIdRegex.test(accountId);
+  }
 }

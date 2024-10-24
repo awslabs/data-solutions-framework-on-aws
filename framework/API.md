@@ -3067,7 +3067,7 @@ Create service linked role for the indicated service if it doesn't exists.
 
 ```typescript
 const slr = new dsf.utils.CreateServiceLinkedRole(this, 'CreateSLR')
-slr.create(ServiceLinkedRoleService.REDSHIFT)
+slr.create(dsf.utils.ServiceLinkedRoleService.REDSHIFT)
 ```
 
 
@@ -4196,6 +4196,1392 @@ The security group for Client VPN Endpoint.
 
 ---
 
+
+### DataZoneCustomAssetTypeFactory <a name="DataZoneCustomAssetTypeFactory" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory"></a>
+
+Factory construct providing resources to create a DataZone custom asset type.
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneCustomAssetTypeFactory(this, 'CustomAssetTypeFactory', {
+ domainId: 'aba_dc999t9ime9sss',
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneCustomAssetTypeFactory(scope: Construct, id: string, props: DataZoneCustomAssetTypeFactoryProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps</code> | The DataZoneCustomAssetTypeFactory properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps
+
+The DataZoneCustomAssetTypeFactory properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType">createCustomAssetType</a></code> | Creates a DataZone custom asset type based on the provided properties. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `createCustomAssetType` <a name="createCustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType"></a>
+
+```typescript
+public createCustomAssetType(id: string, customAssetType: DataZoneCustomAssetTypeProps): CustomAssetType
+```
+
+Creates a DataZone custom asset type based on the provided properties.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+###### `customAssetType`<sup>Required</sup> <a name="customAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.createCustomAssetType.parameter.customAssetType"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps
+
+the properties of the custom asset type.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.isConstruct"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneCustomAssetTypeFactory.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createFunction">createFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function for the DataZone custom asset type creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createLogGroup">createLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Logs Log Group for the DataZone custom asset type creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createRole">createRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role for the DataZone custom asset type creation. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.serviceToken">serviceToken</a></code> | <code>string</code> | The service token for the custom resource. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `createFunction`<sup>Required</sup> <a name="createFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createFunction"></a>
+
+```typescript
+public readonly createFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function for the DataZone custom asset type creation.
+
+---
+
+##### `createLogGroup`<sup>Required</sup> <a name="createLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createLogGroup"></a>
+
+```typescript
+public readonly createLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Logs Log Group for the DataZone custom asset type creation.
+
+---
+
+##### `createRole`<sup>Required</sup> <a name="createRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.createRole"></a>
+
+```typescript
+public readonly createRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role for the DataZone custom asset type creation.
+
+---
+
+##### `serviceToken`<sup>Required</sup> <a name="serviceToken" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.serviceToken"></a>
+
+```typescript
+public readonly serviceToken: string;
+```
+
+- *Type:* string
+
+The service token for the custom resource.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### DataZoneGsrMskDataSource <a name="DataZoneGsrMskDataSource" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource"></a>
+
+A DataZone custom data source for MSK (Managed Streaming for Kafka) with integration for Glue Schema Registry.
+
+The construct creates assets with the MskTopicAssetType in DataZone based on schema definitions in a Glue Schema Registry.
+It can be either scheduled or react on Schema Registry events (Create Schema, Update Schema, Create Schema Revision).
+
+*Example*
+
+```typescript
+import { Schedule } from 'aws-cdk-lib/aws-events';
+
+new dsf.governance.DataZoneGsrMskDataSource(this, 'MskDatasource', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: '999999b3m5cpz',
+  registryName: 'MyRegistry',
+  clusterName: 'MyCluster',
+  runSchedule: Schedule.cron({ minute: '0', hour: '12' }), // Trigger daily at noon
+  enableSchemaRegistryEvent: true, // Enable events for Glue Schema Registry changes
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneGsrMskDataSource(scope: Construct, id: string, props: DataZoneGsrMskDataSourceProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps</code> | The DataZoneGsrMskDataSourceProps properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps
+
+The DataZoneGsrMskDataSourceProps properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.isConstruct"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneGsrMskDataSource.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.dataZoneMembership">dataZoneMembership</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProjectMembership</code> | The membership of the Lambda Role on the DataZone Project. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaFunction">lambdaFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda Function creating DataZone Inventory Assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaLogGroup">lambdaLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Log Group for the Lambda Function creating DataZone Inventory Assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.ssmParameterKey">ssmParameterKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the SSM Parameter storing assets information. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.createUpdateEventRule">createUpdateEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for schema creation and update. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.deleteEventRule">deleteEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for schema deletion. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.scheduleRule">scheduleRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The Event Bridge Rule for trigger the data source execution. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `dataZoneMembership`<sup>Required</sup> <a name="dataZoneMembership" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.dataZoneMembership"></a>
+
+```typescript
+public readonly dataZoneMembership: CfnProjectMembership;
+```
+
+- *Type:* aws-cdk-lib.aws_datazone.CfnProjectMembership
+
+The membership of the Lambda Role on the DataZone Project.
+
+---
+
+##### `lambdaFunction`<sup>Required</sup> <a name="lambdaFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaFunction"></a>
+
+```typescript
+public readonly lambdaFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda Function creating DataZone Inventory Assets.
+
+---
+
+##### `lambdaLogGroup`<sup>Required</sup> <a name="lambdaLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaLogGroup"></a>
+
+```typescript
+public readonly lambdaLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The Log Group for the Lambda Function creating DataZone Inventory Assets.
+
+---
+
+##### `lambdaRole`<sup>Required</sup> <a name="lambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.lambdaRole"></a>
+
+```typescript
+public readonly lambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role of the Lambda Function interacting with DataZone API to create inventory assets.
+
+---
+
+##### `ssmParameterKey`<sup>Required</sup> <a name="ssmParameterKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.ssmParameterKey"></a>
+
+```typescript
+public readonly ssmParameterKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+
+The KMS Key used to encrypt the SSM Parameter storing assets information.
+
+---
+
+##### `createUpdateEventRule`<sup>Optional</sup> <a name="createUpdateEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.createUpdateEventRule"></a>
+
+```typescript
+public readonly createUpdateEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+The Event Bridge Rule for schema creation and update.
+
+---
+
+##### `deleteEventRule`<sup>Optional</sup> <a name="deleteEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.deleteEventRule"></a>
+
+```typescript
+public readonly deleteEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+The Event Bridge Rule for schema deletion.
+
+---
+
+##### `scheduleRule`<sup>Optional</sup> <a name="scheduleRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.scheduleRule"></a>
+
+```typescript
+public readonly scheduleRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+The Event Bridge Rule for trigger the data source execution.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSource.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### DataZoneMskAssetType <a name="DataZoneMskAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType"></a>
+
+A DataZone custom asset type representing an MSK topic.
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneMskAssetType(this, 'MskAssetType', {
+  domainId: 'aba_dc999t9ime9sss',
+  projectId: '999999b3m5cpz',
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneMskAssetType(scope: Construct, id: string, props: DataZoneMskAssetTypeProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps</code> | The DataZoneMskAssetTypeProps properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps
+
+The DataZoneMskAssetTypeProps properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.isConstruct"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneMskAssetType.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType">mskCustomAssetType</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.CustomAssetType</code> | The custom asset type for MSK. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProject">owningProject</a></code> | <code>aws-cdk-lib.aws_datazone.CfnProject</code> | The project owning the MSK asset type. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `mskCustomAssetType`<sup>Required</sup> <a name="mskCustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.mskCustomAssetType"></a>
+
+```typescript
+public readonly mskCustomAssetType: CustomAssetType;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.CustomAssetType
+
+The custom asset type for MSK.
+
+---
+
+##### `owningProject`<sup>Optional</sup> <a name="owningProject" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.owningProject"></a>
+
+```typescript
+public readonly owningProject: CfnProject;
+```
+
+- *Type:* aws-cdk-lib.aws_datazone.CfnProject
+
+The project owning the MSK asset type.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetType.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+### DataZoneMskCentralAuthorizer <a name="DataZoneMskCentralAuthorizer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer"></a>
+
+A central authorizer workflow for granting read access to Kafka topics.
+
+The workflow is triggered by an event sent to the DataZone event bus.
+First, it collects metadata from DataZone about the Kafka topics.
+Then, it grants access to the relevant IAM roles.
+Finally acknowledge the subscription grant in DataZone.
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneMskCentralAuthorizer(this, 'MskAuthorizer', {
+  domainId: 'aba_dc999t9ime9sss',
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneMskCentralAuthorizer(scope: Construct, id: string, props: DataZoneMskCentralAuthorizerProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the Scope of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | the ID of the CDK Construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps</code> | The DataZoneMskCentralAuthorizer properties. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the Scope of the CDK Construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the ID of the CDK Construct.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps
+
+The DataZoneMskCentralAuthorizer properties.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount">registerAccount</a></code> | Connect the central authorizer workflow with environment authorizer workflows in other accounts. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `registerAccount` <a name="registerAccount" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount"></a>
+
+```typescript
+public registerAccount(id: string, accountId: string): void
+```
+
+Connect the central authorizer workflow with environment authorizer workflows in other accounts.
+
+This method grants the environment workflow to send events in the default Event Bridge bus for orchestration.
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.id"></a>
+
+- *Type:* string
+
+The construct ID to use.
+
+---
+
+###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.registerAccount.parameter.accountId"></a>
+
+- *Type:* string
+
+The account ID to register the authorizer with.
+
+---
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.isConstruct"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneMskCentralAuthorizer.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction">datazoneCallbackFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to acknowledge the subscription grant in DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackLogGroup">datazoneCallbackLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group for logging the datazone callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole">datazoneCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to acknowledge the subscription grant in DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used by the DataZone event to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule">datazoneEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The event rule used to trigger the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterKey">deadLetterKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The key used to encrypt the dead letter queue. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS Queue used as a dead letter queue for the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction">metadataCollectorFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used to collect metadata from DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorLogGroup">metadataCollectorLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group for logging the metadata collector. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role used to collect metadata from DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The state machine used to orchestrate the authorizer workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineCallbackRole">stateMachineCallbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the authorizer workflow callback. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the authorizer workflow State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used to log the authorizer state machine. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `datazoneCallbackFunction`<sup>Required</sup> <a name="datazoneCallbackFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackFunction"></a>
+
+```typescript
+public readonly datazoneCallbackFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function used to acknowledge the subscription grant in DataZone.
+
+---
+
+##### `datazoneCallbackLogGroup`<sup>Required</sup> <a name="datazoneCallbackLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackLogGroup"></a>
+
+```typescript
+public readonly datazoneCallbackLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The Cloudwatch Log Group for logging the datazone callback.
+
+---
+
+##### `datazoneCallbackRole`<sup>Required</sup> <a name="datazoneCallbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneCallbackRole"></a>
+
+```typescript
+public readonly datazoneCallbackRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used to acknowledge the subscription grant in DataZone.
+
+---
+
+##### `datazoneEventRole`<sup>Required</sup> <a name="datazoneEventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRole"></a>
+
+```typescript
+public readonly datazoneEventRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used by the DataZone event to trigger the authorizer workflow.
+
+---
+
+##### `datazoneEventRule`<sup>Required</sup> <a name="datazoneEventRule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.datazoneEventRule"></a>
+
+```typescript
+public readonly datazoneEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+The event rule used to trigger the authorizer workflow.
+
+---
+
+##### `deadLetterKey`<sup>Required</sup> <a name="deadLetterKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterKey"></a>
+
+```typescript
+public readonly deadLetterKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The key used to encrypt the dead letter queue.
+
+---
+
+##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.deadLetterQueue"></a>
+
+```typescript
+public readonly deadLetterQueue: IQueue;
+```
+
+- *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+The SQS Queue used as a dead letter queue for the authorizer workflow.
+
+---
+
+##### `metadataCollectorFunction`<sup>Required</sup> <a name="metadataCollectorFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorFunction"></a>
+
+```typescript
+public readonly metadataCollectorFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The Lambda function used to collect metadata from DataZone.
+
+---
+
+##### `metadataCollectorLogGroup`<sup>Required</sup> <a name="metadataCollectorLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorLogGroup"></a>
+
+```typescript
+public readonly metadataCollectorLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The Cloudwatch Log Group for logging the metadata collector.
+
+---
+
+##### `metadataCollectorRole`<sup>Required</sup> <a name="metadataCollectorRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.metadataCollectorRole"></a>
+
+```typescript
+public readonly metadataCollectorRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role used to collect metadata from DataZone.
+
+---
+
+##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachine"></a>
+
+```typescript
+public readonly stateMachine: StateMachine;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
+
+The state machine used to orchestrate the authorizer workflow.
+
+---
+
+##### `stateMachineCallbackRole`<sup>Required</sup> <a name="stateMachineCallbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineCallbackRole"></a>
+
+```typescript
+public readonly stateMachineCallbackRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the authorizer workflow callback.
+
+---
+
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the authorizer workflow State Machine.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used to log the authorizer state machine.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.AUTHORIZER_NAME">AUTHORIZER_NAME</a></code> | <code>string</code> | The name of the authorizer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.MSK_ASSET_TYPE">MSK_ASSET_TYPE</a></code> | <code>string</code> | The asset type for the DataZone custom asset type. |
+
+---
+
+##### `AUTHORIZER_NAME`<sup>Required</sup> <a name="AUTHORIZER_NAME" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.AUTHORIZER_NAME"></a>
+
+```typescript
+public readonly AUTHORIZER_NAME: string;
+```
+
+- *Type:* string
+
+The name of the authorizer.
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+##### `MSK_ASSET_TYPE`<sup>Required</sup> <a name="MSK_ASSET_TYPE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizer.property.MSK_ASSET_TYPE"></a>
+
+```typescript
+public readonly MSK_ASSET_TYPE: string;
+```
+
+- *Type:* string
+
+The asset type for the DataZone custom asset type.
+
+---
+
+### DataZoneMskEnvironmentAuthorizer <a name="DataZoneMskEnvironmentAuthorizer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer"></a>
+
+An environment authorizer workflow for granting read access to Kafka topics.
+
+The workflow is triggered by an event sent by the central authorizer construct.
+It creates IAM policies required for the Kafka client to access the relevant topics.
+It supports MSK provisioned and serverless, in single and cross accounts, and grant/revoke requests.
+
+*Example*
+
+```typescript
+new dsf.governance.DataZoneMskEnvironmentAuthorizer(this, 'MskAuthorizer', {
+  domainId: 'aba_dc999t9ime9sss',
+});
+```
+
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneMskEnvironmentAuthorizer(scope: Construct, id: string, props: DataZoneMskEnvironmentAuthorizerProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | The CDK Construct scope. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.id">id</a></code> | <code>string</code> | The CDK Construct id. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props">props</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps</code> | The props for the DataZoneMskEnvironmentAuthorizer construct. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+The CDK Construct scope.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+The CDK Construct id.
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.Initializer.parameter.props"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps
+
+The props for the DataZoneMskEnvironmentAuthorizer construct.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.retrieveVersion">retrieveVersion</a></code> | Retrieve DSF package.json version. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `retrieveVersion` <a name="retrieveVersion" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.retrieveVersion"></a>
+
+```typescript
+public retrieveVersion(): any
+```
+
+Retrieve DSF package.json version.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.isConstruct"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneMskEnvironmentAuthorizer.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction">grantFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The lambda function used to grant access to Kafka topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantLogGroup">grantLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.LogGroup</code> | The CloudWatch Log Group used by the grant function. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used to grant access to Kafka topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The environment authorizer State Machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group used by the Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role used by the environment authorizer State Machine. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `grantFunction`<sup>Required</sup> <a name="grantFunction" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantFunction"></a>
+
+```typescript
+public readonly grantFunction: IFunction;
+```
+
+- *Type:* aws-cdk-lib.aws_lambda.IFunction
+
+The lambda function used to grant access to Kafka topics.
+
+---
+
+##### `grantLogGroup`<sup>Required</sup> <a name="grantLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantLogGroup"></a>
+
+```typescript
+public readonly grantLogGroup: LogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.LogGroup
+
+The CloudWatch Log Group used by the grant function.
+
+---
+
+##### `grantRole`<sup>Required</sup> <a name="grantRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.grantRole"></a>
+
+```typescript
+public readonly grantRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used to grant access to Kafka topics.
+
+---
+
+##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachine"></a>
+
+```typescript
+public readonly stateMachine: IStateMachine;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+
+The environment authorizer State Machine.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group used by the Step Functions state machine.
+
+---
+
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role used by the environment authorizer State Machine.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.DSF_OWNED_TAG">DSF_OWNED_TAG</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.DSF_TRACKING_CODE">DSF_TRACKING_CODE</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.PERMISSIONS_BOUNDARY_STATEMENTS">PERMISSIONS_BOUNDARY_STATEMENTS</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement</code> | *No description.* |
+
+---
+
+##### `DSF_OWNED_TAG`<sup>Required</sup> <a name="DSF_OWNED_TAG" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.DSF_OWNED_TAG"></a>
+
+```typescript
+public readonly DSF_OWNED_TAG: string;
+```
+
+- *Type:* string
+
+---
+
+##### `DSF_TRACKING_CODE`<sup>Required</sup> <a name="DSF_TRACKING_CODE" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.DSF_TRACKING_CODE"></a>
+
+```typescript
+public readonly DSF_TRACKING_CODE: string;
+```
+
+- *Type:* string
+
+---
+
+##### `PERMISSIONS_BOUNDARY_STATEMENTS`<sup>Required</sup> <a name="PERMISSIONS_BOUNDARY_STATEMENTS" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizer.property.PERMISSIONS_BOUNDARY_STATEMENTS"></a>
+
+```typescript
+public readonly PERMISSIONS_BOUNDARY_STATEMENTS: PolicyStatement;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyStatement
+
+---
 
 ### KafkaApi <a name="KafkaApi" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi"></a>
 
@@ -12220,6 +13606,187 @@ The state of the Workgroup.
 
 ---
 
+### AuthorizerCentralWorflow <a name="AuthorizerCentralWorflow" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow"></a>
+
+Interface for the authorizer central workflow.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const authorizerCentralWorflow: governance.AuthorizerCentralWorflow = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole">authorizerEventRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The authorizer event role for allowing events to invoke the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule">authorizerEventRule</a></code> | <code>aws-cdk-lib.aws_events.IRule</code> | The authorizer event rule for triggering the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine Call Back. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterKey">deadLetterKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS Key used for encryption of the Dead Letter Queue. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue">deadLetterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS Dead Letter Queue receiving events failure. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.StateMachine</code> | The authorizer Step Functions state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for logging the state machine. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the State Machine. |
+
+---
+
+##### `authorizerEventRole`<sup>Required</sup> <a name="authorizerEventRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRole"></a>
+
+```typescript
+public readonly authorizerEventRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The authorizer event role for allowing events to invoke the workflow.
+
+---
+
+##### `authorizerEventRule`<sup>Required</sup> <a name="authorizerEventRule" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.authorizerEventRule"></a>
+
+```typescript
+public readonly authorizerEventRule: IRule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.IRule
+
+The authorizer event rule for triggering the workflow.
+
+---
+
+##### `callbackRole`<sup>Required</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.callbackRole"></a>
+
+```typescript
+public readonly callbackRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the State Machine Call Back.
+
+---
+
+##### `deadLetterKey`<sup>Required</sup> <a name="deadLetterKey" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterKey"></a>
+
+```typescript
+public readonly deadLetterKey: IKey;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.IKey
+
+The KMS Key used for encryption of the Dead Letter Queue.
+
+---
+
+##### `deadLetterQueue`<sup>Required</sup> <a name="deadLetterQueue" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.deadLetterQueue"></a>
+
+```typescript
+public readonly deadLetterQueue: IQueue;
+```
+
+- *Type:* aws-cdk-lib.aws_sqs.IQueue
+
+The SQS Dead Letter Queue receiving events failure.
+
+---
+
+##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachine"></a>
+
+```typescript
+public readonly stateMachine: StateMachine;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.StateMachine
+
+The authorizer Step Functions state machine.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The CloudWatch Log Group for logging the state machine.
+
+---
+
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerCentralWorflow.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+
+The IAM Role used by the State Machine.
+
+---
+
+### AuthorizerEnvironmentWorflow <a name="AuthorizerEnvironmentWorflow" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow"></a>
+
+The interface representing the environment custom authorizer workflow.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const authorizerEnvironmentWorflow: governance.AuthorizerEnvironmentWorflow = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine">stateMachine</a></code> | <code>aws-cdk-lib.aws_stepfunctions.IStateMachine</code> | The state machine that orchestrates the workflow. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineLogGroup">stateMachineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The log group where the state machine logs are stored. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the State Machine. |
+
+---
+
+##### `stateMachine`<sup>Required</sup> <a name="stateMachine" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachine"></a>
+
+```typescript
+public readonly stateMachine: IStateMachine;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.IStateMachine
+
+The state machine that orchestrates the workflow.
+
+---
+
+##### `stateMachineLogGroup`<sup>Required</sup> <a name="stateMachineLogGroup" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineLogGroup"></a>
+
+```typescript
+public readonly stateMachineLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+
+The log group where the state machine logs are stored.
+
+---
+
+##### `stateMachineRole`<sup>Required</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.AuthorizerEnvironmentWorflow.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM Role used by the State Machine.
+
+---
+
 ### BaseRedshiftDataSharingAccessProps <a name="BaseRedshiftDataSharingAccessProps" id="@cdklabs/aws-data-solutions-framework.consumption.BaseRedshiftDataSharingAccessProps"></a>
 
 The base interface for the different data sharing lifecycle properties.
@@ -12456,6 +14023,77 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise, the removalPolicy is reverted to RETAIN.
+
+---
+
+### CustomAssetType <a name="CustomAssetType" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType"></a>
+
+Interface representing a DataZone custom asset type.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const customAssetType: governance.CustomAssetType = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainId">domainId</a></code> | <code>string</code> | The domain identifier of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.name">name</a></code> | <code>string</code> | The name of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.projectIdentifier">projectIdentifier</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.revision">revision</a></code> | <code>string</code> | The revision of the custom asset type. |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The domain identifier of the custom asset type.
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the custom asset type.
+
+---
+
+##### `projectIdentifier`<sup>Required</sup> <a name="projectIdentifier" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.projectIdentifier"></a>
+
+```typescript
+public readonly projectIdentifier: string;
+```
+
+- *Type:* string
+
+The project identifier owner of the custom asset type.
+
+---
+
+##### `revision`<sup>Required</sup> <a name="revision" id="@cdklabs/aws-data-solutions-framework.governance.CustomAssetType.property.revision"></a>
+
+```typescript
+public readonly revision: string;
+```
+
+- *Type:* string
+
+The revision of the custom asset type.
 
 ---
 
@@ -13286,6 +14924,761 @@ The removal policy when deleting the CDK resource.
 
 If DESTROY is selected, context value `@data-solutions-framework-on-aws/removeDataOnDestroy` needs to be set to true.
 Otherwise, the removalPolicy is reverted to RETAIN.
+
+---
+
+### DataZoneCustomAssetTypeFactoryProps <a name="DataZoneCustomAssetTypeFactoryProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps"></a>
+
+Properties for the DataZoneCustomAssetTypeFactory construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneCustomAssetTypeFactoryProps: governance.DataZoneCustomAssetTypeFactoryProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Lambda role used by the custom resource provider. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy for the custom resource. |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The DataZone domain identifier.
+
+---
+
+##### `lambdaRole`<sup>Optional</sup> <a name="lambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.lambdaRole"></a>
+
+```typescript
+public readonly lambdaRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+- *Default:* A new role is created
+
+The Lambda role used by the custom resource provider.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactoryProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy for the custom resource.
+
+---
+
+### DataZoneCustomAssetTypeProps <a name="DataZoneCustomAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps"></a>
+
+Properties for the DataZoneCustomAssetType construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneCustomAssetTypeProps: governance.DataZoneCustomAssetTypeProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeName">assetTypeName</a></code> | <code>string</code> | The name of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes">formTypes</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]</code> | The form types of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription">assetTypeDescription</a></code> | <code>string</code> | The description of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy of the custom asset type. |
+
+---
+
+##### `assetTypeName`<sup>Required</sup> <a name="assetTypeName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeName"></a>
+
+```typescript
+public readonly assetTypeName: string;
+```
+
+- *Type:* string
+
+The name of the custom asset type.
+
+---
+
+##### `formTypes`<sup>Required</sup> <a name="formTypes" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.formTypes"></a>
+
+```typescript
+public readonly formTypes: DataZoneFormType[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormType[]
+
+The form types of the custom asset type.
+
+---
+
+*Example*
+
+```typescript
+[{ name: 'userForm', model: [{ name: 'firstName', type: 'String', required: true }] }]
+```
+
+
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.projectId"></a>
+
+```typescript
+public readonly projectId: string;
+```
+
+- *Type:* string
+
+The project identifier owner of the custom asset type.
+
+---
+
+##### `assetTypeDescription`<sup>Optional</sup> <a name="assetTypeDescription" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.assetTypeDescription"></a>
+
+```typescript
+public readonly assetTypeDescription: string;
+```
+
+- *Type:* string
+- *Default:* No description provided
+
+The description of the custom asset type.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RETAIN
+
+The removal policy of the custom asset type.
+
+---
+
+### DataZoneFormType <a name="DataZoneFormType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType"></a>
+
+Interface representing a DataZoneFormType.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneFormType: governance.DataZoneFormType = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.name">name</a></code> | <code>string</code> | The name of the form. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model">model</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]</code> | The fields of the form. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required">required</a></code> | <code>boolean</code> | Whether the form is required. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the form.
+
+---
+
+##### `model`<sup>Optional</sup> <a name="model" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.model"></a>
+
+```typescript
+public readonly model: DataZoneFormTypeField[];
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField[]
+- *Default:* No model is required. The form is already configured in DataZone.
+
+The fields of the form.
+
+---
+
+*Example*
+
+```typescript
+[{ name: 'firstName', type: 'String', required: true }]
+```
+
+
+##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormType.property.required"></a>
+
+```typescript
+public readonly required: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether the form is required.
+
+---
+
+### DataZoneFormTypeField <a name="DataZoneFormTypeField" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField"></a>
+
+Interface representing a DataZoneFormTypeField.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneFormTypeField: governance.DataZoneFormTypeField = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.name">name</a></code> | <code>string</code> | The name of the field. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type">type</a></code> | <code>string</code> | The type of the field. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required">required</a></code> | <code>boolean</code> | Whether the field is required. |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+The name of the field.
+
+---
+
+##### `type`<sup>Required</sup> <a name="type" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.type"></a>
+
+```typescript
+public readonly type: string;
+```
+
+- *Type:* string
+
+The type of the field.
+
+---
+
+##### `required`<sup>Optional</sup> <a name="required" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneFormTypeField.property.required"></a>
+
+```typescript
+public readonly required: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether the field is required.
+
+---
+
+### DataZoneGsrMskDataSourceProps <a name="DataZoneGsrMskDataSourceProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps"></a>
+
+Properties for configuring a DataZone GSR MSK datasource.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneGsrMskDataSourceProps: governance.DataZoneGsrMskDataSourceProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.clusterName">clusterName</a></code> | <code>string</code> | The name of the MSK (Managed Streaming for Apache Kafka) cluster to use. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.domainId">domainId</a></code> | <code>string</code> | The unique identifier for the DataZone domain where the datasource resides. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.projectId">projectId</a></code> | <code>string</code> | The unique identifier for the project associated with this datasource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.registryName">registryName</a></code> | <code>string</code> | The name of the registry for schema management. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.enableSchemaRegistryEvent">enableSchemaRegistryEvent</a></code> | <code>boolean</code> | A flag to trigger the data source based on the Glue Schema Registry events. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS encryption key used to encrypt lambda environment, lambda logs and SSM parameters. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.lambdaRole">lambdaRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The Role used by the Lambda responsible to manage DataZone MskTopicAssets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the data source. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.runSchedule">runSchedule</a></code> | <code>aws-cdk-lib.aws_events.Schedule</code> | The cron schedule to run the data source and synchronize DataZone assets with the Glue Schema Registry. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.ssmParameterKey">ssmParameterKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the SSM parameter for storing asset information. |
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+The name of the MSK (Managed Streaming for Apache Kafka) cluster to use.
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The unique identifier for the DataZone domain where the datasource resides.
+
+---
+
+##### `projectId`<sup>Required</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.projectId"></a>
+
+```typescript
+public readonly projectId: string;
+```
+
+- *Type:* string
+
+The unique identifier for the project associated with this datasource.
+
+---
+
+##### `registryName`<sup>Required</sup> <a name="registryName" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.registryName"></a>
+
+```typescript
+public readonly registryName: string;
+```
+
+- *Type:* string
+
+The name of the registry for schema management.
+
+---
+
+##### `enableSchemaRegistryEvent`<sup>Optional</sup> <a name="enableSchemaRegistryEvent" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.enableSchemaRegistryEvent"></a>
+
+```typescript
+public readonly enableSchemaRegistryEvent: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false, meaning the EventBridge listener for schema changes is disabled.
+
+A flag to trigger the data source based on the Glue Schema Registry events.
+
+The data source can be triggered by events independently of the schedule configured with `runSchedule`.
+
+---
+
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* AWS managed customer master key (CMK) is used
+
+The KMS encryption key used to encrypt lambda environment, lambda logs and SSM parameters.
+
+---
+
+##### `lambdaRole`<sup>Optional</sup> <a name="lambdaRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.lambdaRole"></a>
+
+```typescript
+public readonly lambdaRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role is created
+
+The Role used by the Lambda responsible to manage DataZone MskTopicAssets.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the data source.
+
+---
+
+##### `runSchedule`<sup>Optional</sup> <a name="runSchedule" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.runSchedule"></a>
+
+```typescript
+public readonly runSchedule: Schedule;
+```
+
+- *Type:* aws-cdk-lib.aws_events.Schedule
+- *Default:* `cron(1 0 * * ? *)` if `enableSchemaRegistryEvent` is false or undefined, otherwise no schedule.
+
+The cron schedule to run the data source and synchronize DataZone assets with the Glue Schema Registry.
+
+The data source can be scheduled independently of the event based trigger configured with `enableSchemaRegistryEvent`.
+
+---
+
+##### `ssmParameterKey`<sup>Optional</sup> <a name="ssmParameterKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneGsrMskDataSourceProps.property.ssmParameterKey"></a>
+
+```typescript
+public readonly ssmParameterKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A new key is created
+
+The KMS Key used to encrypt the SSM parameter for storing asset information.
+
+---
+
+### DataZoneMskAssetTypeProps <a name="DataZoneMskAssetTypeProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps"></a>
+
+The properties for the DataZoneMskAssetType construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneMskAssetTypeProps: governance.DataZoneMskAssetTypeProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone domain identifier. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.dzCustomAssetTypeFactory">dzCustomAssetTypeFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory</code> | The factory to create the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId">projectId</a></code> | <code>string</code> | The project identifier owner of the custom asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The DataZone domain identifier.
+
+---
+
+##### `dzCustomAssetTypeFactory`<sup>Optional</sup> <a name="dzCustomAssetTypeFactory" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.dzCustomAssetTypeFactory"></a>
+
+```typescript
+public readonly dzCustomAssetTypeFactory: DataZoneCustomAssetTypeFactory;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneCustomAssetTypeFactory
+- *Default:* A new factory is created
+
+The factory to create the custom asset type.
+
+---
+
+##### `projectId`<sup>Optional</sup> <a name="projectId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.projectId"></a>
+
+```typescript
+public readonly projectId: string;
+```
+
+- *Type:* string
+- *Default:* A new project called MskGovernance is created
+
+The project identifier owner of the custom asset type.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskAssetTypeProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the asset type.
+
+---
+
+### DataZoneMskCentralAuthorizerProps <a name="DataZoneMskCentralAuthorizerProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps"></a>
+
+The properties for the DataZoneMskCentralAuthorizer construct.
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneMskCentralAuthorizerProps: governance.DataZoneMskCentralAuthorizerProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.callbackRole">callbackRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to callback DataZone and acknowledge the subscription grant. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.datazoneEventRole">datazoneEventRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Event Bridge event to trigger the authorizer. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.deadLetterQueueKey">deadLetterQueueKey</a></code> | <code>aws-cdk-lib.aws_kms.Key</code> | The KMS Key used to encrypt the SQS Dead Letter Queue receiving failed events from DataZone. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.logRetention">logRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | Cloudwatch Logs retention. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.metadataCollectorRole">metadataCollectorRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to collect metadata on DataZone assets. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Step Function state machine. |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The DataZone Domain ID.
+
+---
+
+##### `callbackRole`<sup>Optional</sup> <a name="callbackRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.callbackRole"></a>
+
+```typescript
+public readonly callbackRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used to callback DataZone and acknowledge the subscription grant.
+
+---
+
+##### `datazoneEventRole`<sup>Optional</sup> <a name="datazoneEventRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.datazoneEventRole"></a>
+
+```typescript
+public readonly datazoneEventRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used by the Event Bridge event to trigger the authorizer.
+
+---
+
+##### `deadLetterQueueKey`<sup>Optional</sup> <a name="deadLetterQueueKey" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.deadLetterQueueKey"></a>
+
+```typescript
+public readonly deadLetterQueueKey: Key;
+```
+
+- *Type:* aws-cdk-lib.aws_kms.Key
+- *Default:* A new Key is created
+
+The KMS Key used to encrypt the SQS Dead Letter Queue receiving failed events from DataZone.
+
+---
+
+##### `logRetention`<sup>Optional</sup> <a name="logRetention" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.logRetention"></a>
+
+```typescript
+public readonly logRetention: RetentionDays;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.RetentionDays
+- *Default:* 7 days
+
+Cloudwatch Logs retention.
+
+---
+
+##### `metadataCollectorRole`<sup>Optional</sup> <a name="metadataCollectorRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.metadataCollectorRole"></a>
+
+```typescript
+public readonly metadataCollectorRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used to collect metadata on DataZone assets.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the asset type.
+
+---
+
+##### `stateMachineRole`<sup>Optional</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskCentralAuthorizerProps.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used by the Step Function state machine.
+
+---
+
+### DataZoneMskEnvironmentAuthorizerProps <a name="DataZoneMskEnvironmentAuthorizerProps" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps"></a>
+
+#### Initializer <a name="Initializer" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+const dataZoneMskEnvironmentAuthorizerProps: governance.DataZoneMskEnvironmentAuthorizerProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId">domainId</a></code> | <code>string</code> | The DataZone Domain ID. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId">centralAccountId</a></code> | <code>string</code> | The central account Id. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantMskManagedVpc">grantMskManagedVpc</a></code> | <code>boolean</code> | If the authorizer is granting MSK managed VPC permissions. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantRole">grantRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used to grant MSK topics. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.logRetention">logRetention</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | Cloudwatch Logs retention. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | The removal policy to apply to the asset type. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.stateMachineRole">stateMachineRole</a></code> | <code>aws-cdk-lib.aws_iam.Role</code> | The IAM Role used by the Step Function state machine. |
+
+---
+
+##### `domainId`<sup>Required</sup> <a name="domainId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.domainId"></a>
+
+```typescript
+public readonly domainId: string;
+```
+
+- *Type:* string
+
+The DataZone Domain ID.
+
+---
+
+##### `centralAccountId`<sup>Optional</sup> <a name="centralAccountId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.centralAccountId"></a>
+
+```typescript
+public readonly centralAccountId: string;
+```
+
+- *Type:* string
+
+The central account Id.
+
+---
+
+##### `grantMskManagedVpc`<sup>Optional</sup> <a name="grantMskManagedVpc" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantMskManagedVpc"></a>
+
+```typescript
+public readonly grantMskManagedVpc: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+If the authorizer is granting MSK managed VPC permissions.
+
+---
+
+##### `grantRole`<sup>Optional</sup> <a name="grantRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.grantRole"></a>
+
+```typescript
+public readonly grantRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used to grant MSK topics.
+
+---
+
+##### `logRetention`<sup>Optional</sup> <a name="logRetention" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.logRetention"></a>
+
+```typescript
+public readonly logRetention: RetentionDays;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.RetentionDays
+- *Default:* 7 days
+
+Cloudwatch Logs retention.
+
+---
+
+##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.removalPolicy"></a>
+
+```typescript
+public readonly removalPolicy: RemovalPolicy;
+```
+
+- *Type:* aws-cdk-lib.RemovalPolicy
+- *Default:* RemovalPolicy.RETAIN
+
+The removal policy to apply to the asset type.
+
+---
+
+##### `stateMachineRole`<sup>Optional</sup> <a name="stateMachineRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneMskEnvironmentAuthorizerProps.property.stateMachineRole"></a>
+
+```typescript
+public readonly stateMachineRole: Role;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.Role
+- *Default:* A new role will be created
+
+The IAM Role used by the Step Function state machine.
 
 ---
 
@@ -17996,6 +20389,127 @@ properties for TLS authentication.
 ---
 
 
+### DataZoneHelpers <a name="DataZoneHelpers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers"></a>
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.Initializer"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+new governance.DataZoneHelpers()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.buildModelString">buildModelString</a></code> | Build a Smithy model string from model fields. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget">createSubscriptionTarget</a></code> | Creates a DataZone subscription target for a custom asset type. |
+
+---
+
+##### `buildModelString` <a name="buildModelString" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.buildModelString"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneHelpers.buildModelString(formType: DataZoneFormType)
+```
+
+Build a Smithy model string from model fields.
+
+###### `formType`<sup>Required</sup> <a name="formType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.buildModelString.parameter.formType"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.DataZoneFormType
+
+The form type containing the model fields.
+
+---
+
+##### `createSubscriptionTarget` <a name="createSubscriptionTarget" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget"></a>
+
+```typescript
+import { governance } from '@cdklabs/aws-data-solutions-framework'
+
+governance.DataZoneHelpers.createSubscriptionTarget(scope: Construct, id: string, customAssetType: CustomAssetType, name: string, provider: string, environmentId: string, authorizedPrincipals: IRole[], manageAccessRole: IRole)
+```
+
+Creates a DataZone subscription target for a custom asset type.
+
+Subscription targets are used to automatically add asset to environments when a custom asset is subscribed by a project.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+The scope of the construct.
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.id"></a>
+
+- *Type:* string
+
+The id of the construct.
+
+---
+
+###### `customAssetType`<sup>Required</sup> <a name="customAssetType" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.customAssetType"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.governance.CustomAssetType
+
+The custom asset type that can be added to the environment.
+
+---
+
+###### `name`<sup>Required</sup> <a name="name" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.name"></a>
+
+- *Type:* string
+
+The name of the subscription target.
+
+---
+
+###### `provider`<sup>Required</sup> <a name="provider" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.provider"></a>
+
+- *Type:* string
+
+The provider of the subscription target.
+
+---
+
+###### `environmentId`<sup>Required</sup> <a name="environmentId" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.environmentId"></a>
+
+- *Type:* string
+
+The DataZone environment identifier.
+
+---
+
+###### `authorizedPrincipals`<sup>Required</sup> <a name="authorizedPrincipals" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.authorizedPrincipals"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole[]
+
+The authorized principals to be granted when assets are subscribed.
+
+---
+
+###### `manageAccessRole`<sup>Required</sup> <a name="manageAccessRole" id="@cdklabs/aws-data-solutions-framework.governance.DataZoneHelpers.createSubscriptionTarget.parameter.manageAccessRole"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The IAM role creating the subscription target.
+
+---
+
+
+
 ### KafkaVersion <a name="KafkaVersion" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaVersion"></a>
 
 Kafka cluster version.
@@ -18860,6 +21374,7 @@ new utils.Utils()
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.readYamlDocument">readYamlDocument</a></code> | Read a YAML file from the path provided and return it. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.stringSanitizer">stringSanitizer</a></code> | Sanitize a string by removing upper case and replacing special characters except underscore. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.toPascalCase">toPascalCase</a></code> | Convert a string to PascalCase. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.Utils.validateAccountId">validateAccountId</a></code> | Validate a provided string is a valid account ID. |
 
 ---
 
@@ -18994,6 +21509,24 @@ Convert a string to PascalCase.
 - *Type:* string
 
 the string to convert to PascalCase.
+
+---
+
+##### `validateAccountId` <a name="validateAccountId" id="@cdklabs/aws-data-solutions-framework.utils.Utils.validateAccountId"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.Utils.validateAccountId(accountId: string)
+```
+
+Validate a provided string is a valid account ID.
+
+###### `accountId`<sup>Required</sup> <a name="accountId" id="@cdklabs/aws-data-solutions-framework.utils.Utils.validateAccountId.parameter.accountId"></a>
+
+- *Type:* string
+
+the account ID to validate.
 
 ---
 

@@ -25,7 +25,7 @@
       "name": "build-example",
       "steps": [
         {
-          "exec": "pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework"
+          "exec": "pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework"
         },
         {
           "spawn": "synth:silent"
