@@ -112,7 +112,7 @@ export class DsfProvider extends Construct {
 
       this.onEventHandlerRole.addManagedPolicy(this.vpcPolicy);
 
-      // grant encrypt & decrypt to onEventHandlerRole for CMK
+      // grant encrypt & decrypt to onEventHandlerRole for Env encryption KMS Key
       props.environmentEncryption?.grantEncryptDecrypt(this.onEventHandlerRole);
 
       // add a dependency to avoid race condition when deleting the stack
@@ -184,7 +184,7 @@ export class DsfProvider extends Construct {
         this.isCompleteHandlerFunction.node.addDependency(this.cleanUpCr!);
       }
 
-      // grant encrypt & decrypt to onEventHandlerRole for CMK
+      // grant encrypt & decrypt to onEventHandlerRole for Env encryption KMS Key
       props.environmentEncryption?.grantEncryptDecrypt(this.isCompleteHandlerRole);
     }
 

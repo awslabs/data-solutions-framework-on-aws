@@ -9,7 +9,7 @@ The construct creates an MSK Provisioned Cluster, with the latest Kafka version 
 
 ![MSK Provisioned High level architecture](../../../website/static/img/msk-provisioned.png)
 
-The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluster or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group that is attached to the brokers. It's also possible to encrypt the environment variables of the Lambda functions used within this construct using a specific AWS KMS Customer Master Key (CMK) through the `environmentEncryption` property. Note that you need to ensure the key policy does not block access for these Lambda roles, as this could prevent successful encryption and decryption operations.
+The construct can create a VPC on your behalf that is used to deploy MSK Provisioned cluster or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group that is attached to the brokers. It's also possible to encrypt the environment variables of the Lambda functions used within this construct using a specific AWS KMS Key through the `environmentEncryption` property. Note that you need to ensure the key policy does not block access for these Lambda roles, as this could prevent successful encryption and decryption operations.
 
 ### Construct cluster setup
 
@@ -203,7 +203,7 @@ The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com
 [example kafka api](./examples/kafka-api-default.lit.ts)
 
 When deploying multiple stacks with the Kafka Api, if there is an already existing service token deployed for the custom resource, you can reuse it to reduce the number of resources created like lambdas and ENI that are used to create and manage the lifecycle the custom resources, like ACLs and Topics.
-It's also possible to encrypt the environment variables of the Lambda functions used within this construct using a specific AWS KMS Customer Master Key (CMK) through the `environmentEncryption` property. Note that you need to ensure the key policy does not block access for these Lambda roles, as this could prevent successful encryption and decryption operations.
+It's also possible to encrypt the environment variables of the Lambda functions used within this construct using a specific AWS KMS Key through the `environmentEncryption` property. Note that you need to ensure the key policy does not block access for these Lambda roles, as this could prevent successful encryption and decryption operations.
 
 :::warning
 
