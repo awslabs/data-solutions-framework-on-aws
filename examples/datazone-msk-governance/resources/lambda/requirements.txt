@@ -1,0 +1,7 @@
+boto3
+openlineage-python
+pyyaml
+numpy
+aws-glue-schema-registry
+kafka-python
+aws-msk-iam-sasl-signer-python

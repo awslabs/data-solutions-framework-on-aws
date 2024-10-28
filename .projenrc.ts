@@ -489,6 +489,70 @@ const buildredshiftDataWarehouseExampleTask = redshiftDataWarehouseExample.addTa
 });
 redshiftDataWarehouseExample.packageTask.spawn(buildredshiftDataWarehouseExampleTask);
 
+const datazoneMskGovernance = new awscdk.AwsCdkPythonApp({
+  name: 'datazone-msk-governance',
+  moduleName: 'stacks',
+  packageName: 'datazone-msk-governance',
+  version: '0.0.1',
+  description: 'An example CDK app demonstrating MSK topics governance in DataZone',
+  authorName: author,
+  authorEmail: authorAddress,
+  license,
+
+  parent: rootProject,
+  outdir: 'examples/datazone-msk-governance',
+
+  cdkVersion: CDK_VERSION,
+  constructsVersion: CDK_CONSTRUCTS_VERSION,
+  cdkVersionPinning: true,
+
+  pytest: true,
+  deps: [
+    'aws-cdk.aws_lambda_python_alpha~=2.145.0a0'
+  ],
+  devDeps: [
+    "pytest",
+    'cdk-nag~=2.25.0',
+    `aws-cdk.lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
+    "black"
+  ],
+  pythonExec: 'python3',
+  venvOptions: {
+    envdir: '.venv'
+  },
+  context: {
+    '@data-solutions-framework-on-aws/removeDataOnDestroy': true,
+  }
+});
+
+datazoneMskGovernance.addGitIgnore('cdk.context.json');
+datazoneMskGovernance.removeTask('deploy');
+datazoneMskGovernance.removeTask('destroy');
+datazoneMskGovernance.removeTask('diff');
+datazoneMskGovernance.removeTask('watch');
+datazoneMskGovernance.removeTask('synth');
+datazoneMskGovernance.testTask.reset();
+datazoneMskGovernance.postCompileTask.reset();
+datazoneMskGovernance.addTask('test:unit', {
+  description: 'Run unit tests',
+  exec: 'pytest -k "not e2e"'
+});
+datazoneMskGovernance.addTask('test:e2e', {
+  description: 'Run end-to-end tests',
+  exec: 'pytest -k e2e'
+});
+const datazoneMskGovernanceSynthTask = datazoneMskGovernance.tasks.tryFind('synth:silent')!;
+datazoneMskGovernanceSynthTask.reset();
+datazoneMskGovernanceSynthTask.exec(`DOMAIN_ID=2222 DATAZONE_PORTAL_ROLE_NAME=admin npx aws-cdk@${CDK_VERSION} synth -q`);
+const buildDatazoneMskGovernanceTask = datazoneMskGovernance.addTask('build-example', {
+  steps: [
+    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { spawn: 'synth:silent' },
+    { spawn: 'test:unit' },
+  ]
+});
+datazoneMskGovernance.packageTask.spawn(buildDatazoneMskGovernanceTask);
+
 rootProject.addTask('test:e2e', {
   description: 'Run end-to-end tests'
 });
