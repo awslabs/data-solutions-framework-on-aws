@@ -100,7 +100,7 @@ export const handler = async () => {
       let schemaDefinition = '';
       let versionNumber = 1;
       let compatibilityMode = '';
-      let data_format = '';
+      let dataFormat = '';
 
       // Retrieve schema
       try {
