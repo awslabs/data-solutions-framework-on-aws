@@ -5,7 +5,7 @@ import os
 
 import aws_cdk as cdk
 
-from stacks.streaming_governance_stack import StreamingGovernanceStack
+from stacks.main import StreamingGovernanceStack
 
 
 app = cdk.App()

@@ -526,6 +526,7 @@ const datazoneMskGovernance = new awscdk.AwsCdkPythonApp({
 });
 
 datazoneMskGovernance.addGitIgnore('cdk.context.json');
+datazoneMskGovernance.addGitIgnore('resources/flink/?');
 datazoneMskGovernance.removeTask('deploy');
 datazoneMskGovernance.removeTask('destroy');
 datazoneMskGovernance.removeTask('diff');
