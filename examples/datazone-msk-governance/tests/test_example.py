@@ -6,13 +6,13 @@ from aws_cdk import App, Aspects
 from aws_cdk.assertions import Template, Annotations, Match
 from cdk_nag import NagSuppressions, AwsSolutionsChecks
 from constructs import Construct, Node
-from stacks.main import RedshiftStack
+from stacks.main import StreamingGovernanceStack
 from tests.nag_suppressions import suppress_nag
 
 @pytest.fixture(scope='module')
 def results():
     app = App()
-    stack = RedshiftStack(app, "my-stack-test")
+    stack = StreamingGovernanceStack(app, "my-stack-test", domain_id='2222222', datazone_portal_role_name='1111111')
     Aspects.of(stack).add(AwsSolutionsChecks(verbose=True))
 
     # We suppress NAGs for the DSF construct because they are already tested in the framework
