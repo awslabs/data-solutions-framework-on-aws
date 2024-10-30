@@ -19,22 +19,48 @@ def results():
     suppress_nag(stack, 'DataZoneMskAssetType')
     suppress_nag(stack, 'CentralAuthorizer')
     suppress_nag(stack, 'EnvironmentAuthorizer')
-    suppress_nag(stack, 'ProducerTopic')
     suppress_nag(stack, 'ProducerGsrDataSource')
+    suppress_nag(stack, 'MskServerless')
 
-    # NagSuppressions.add_resource_suppressions_by_path(stack,
-    #     "/my-stack-test/LakeRole/DefaultPolicy/Resource",
-    #     [
-    #         {'id':'AwsSolutions-IAM5', 'reason':'Permission created by native CDK function "grant_read()"' },
-    #     ]
-    # )
 
-    # NagSuppressions.add_resource_suppressions_by_path(stack,
-    #     "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource",
-    #     [
-    #         {'id':'AwsSolutions-IAM5', 'reason':'Resource wildcard for Log Retention permission is setup by the CDK custom resource provider framework and can\'t be changed' },
-    #     ]
-    # )
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource",
+        [
+            {'id':'AwsSolutions-IAM5', 'reason':'Wildcard used in Log Retention policy is setup by the CDK framework and can\'t be changed' },
+        ]
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource",
+        [
+            {'id':'AwsSolutions-IAM4', 'reason':'Managed Policy for Log Retention role is setup by the CDK framework and can\'t be changed' },
+        ]
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/AWS679f53fac002430cb0da5b7982bd2287",
+        [
+            {'id':'AwsSolutions-IAM4', 'reason':'Managed Policy for Custom Resource provider framework role is setup by the CDK framework and can\'t be changed' },
+            {'id':'AwsSolutions-L1', 'reason':'Lambda Function for Custom Resource provider framework is setup by the CDK framework and can\'t be changed' },
+        ],
+        True,
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/ProducerRole",
+        [
+            {'id':'AwsSolutions-IAM5', 'reason':'Wildcards are required for ENI and Glue Schema which can\'t be scoped down (not predictable or listing all resources required)' },
+        ],
+        True
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/ConsumerRole",
+        [
+            {'id':'AwsSolutions-IAM5', 'reason':'Wildcards are required for ENI and Glue Schema which can\'t be scoped down (not predictable or listing all resources required)' },
+        ],
+        True,
+    )
 
     template = Template.from_stack(stack)
     results = (stack, template)

@@ -15,6 +15,7 @@ from aws_cdk import (
     DockerImage,
     BundlingOutput,
     aws_kinesisanalyticsv2 as kda,
+    aws_logs as logs,
 )
 from constructs import Construct
 from cdklabs import aws_data_solutions_framework as dsf
@@ -77,7 +78,6 @@ class StreamingGovernanceStack(Stack):
         
         producer_role = iam.Role(self, 'ProducerRole',
                                  assumed_by=iam.ServicePrincipal('lambda.amazonaws.com'),
-                                 managed_policies=[iam.ManagedPolicy.from_aws_managed_policy_name('service-role/AWSLambdaBasicExecutionRole')],
                                  inline_policies={
                                     'network': iam.PolicyDocument(
                                         statements=[
@@ -136,6 +136,12 @@ class StreamingGovernanceStack(Stack):
                                                 enable_schema_registry_event=True,
                                                 removal_policy=RemovalPolicy.DESTROY)
         
+        producer_log_group = logs.LogGroup(self, 'ProducerLogGroup',
+                                           removal_policy=RemovalPolicy.DESTROY,
+                                           retention=logs.RetentionDays.ONE_DAY)
+        
+        producer_log_group.grant_write(producer_role)
+        
         producer_lambda = python.PythonFunction(self, 'ProducerLambda',
                                                 entry='./resources/lambda',
                                                 runtime=ldba.Runtime.PYTHON_3_9,
@@ -146,6 +152,7 @@ class StreamingGovernanceStack(Stack):
                                                 vpc_subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS),
                                                 security_groups=[default_security_group],
                                                 role=producer_role,
+                                                log_group=producer_log_group,
                                                 memory_size=512,
                                                 timeout=Duration.minutes(15),
                                                 environment={
