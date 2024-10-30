@@ -1,0 +1,9 @@
+@namespace("com.amazonaws.services.msf.avro")
+protocol Out {
+	record RoomTemperature {
+		string room;
+		float temperature;
+		int sampleCount;
+		string lastSampleTime;
+	}
+}

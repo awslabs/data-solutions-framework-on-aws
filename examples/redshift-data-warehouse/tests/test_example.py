@@ -37,6 +37,13 @@ def results():
         ]
     )
 
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource",
+        [
+            {'id':'AwsSolutions-IAM4', 'reason':'Managed Policy for Log Retention permission is setup by the CDK custom resource provider framework and can\'t be changed' },
+        ]
+    )
+
     template = Template.from_stack(stack)
     results = (stack, template)
     yield results

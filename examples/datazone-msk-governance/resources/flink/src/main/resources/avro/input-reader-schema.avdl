@@ -1,0 +1,7 @@
+@namespace("com.amazonaws.services.msf.avro")
+protocol In {
+	record User {
+		string name;
+		int favorite_number;
+	}
+}

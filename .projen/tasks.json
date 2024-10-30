@@ -168,6 +168,9 @@
         },
         {
           "exec": "lerna-projen copy-dist examples/redshift-data-warehouse/undefined dist"
+        },
+        {
+          "exec": "lerna-projen copy-dist examples/datazone-msk-governance/undefined dist"
         }
       ]
     },
