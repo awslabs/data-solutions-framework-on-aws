@@ -13,6 +13,7 @@ import { Match, Template } from 'aws-cdk-lib/assertions';
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { SecurityGroup, Vpc, Subnet } from 'aws-cdk-lib/aws-ec2';
 import { Role } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Authentication, ClientAuthentication, KafkaApi, MskClusterType } from '../../../src/streaming';
@@ -1075,6 +1076,9 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
       iam: true,
       certificateAuthorities: [certificateAuthority],
     }),
+    environmentEncryption: new Key(stack, 'CustomKafkaApiKey', {
+      description: 'Custom KMS key for KafkaApi encryption',
+    }),
   });
 
   kafkaApi.setTopic('topic1',
@@ -1158,6 +1162,66 @@ describe('Using custom KafkaApi configuration with MSK serverless and DELETE rem
     template.allResources('Custom::MskAcl', {
       UpdateReplacePolicy: 'Retain',
       DeletionPolicy: 'Retain',
+    });
+  });
+
+  test('Lambda functions should use the custom KMS key', () => {
+
+
+    // Define the prefixes of the lambda that have env var and should be encrypted
+    const lambdaPrefixes = [
+      'KafkaApiMskIamProviderCustomResourceProviderframeworkonEvent',
+      'KafkaApiMskAclProviderCleanUpLambda',
+      'KafkaApiMskAclProviderCleanUpProviderframeworkonEvent',
+      'KafkaApiMskAclProviderCustomResourceProviderframeworkonEvent',
+      'KafkaApiMskIamProviderCleanUpLambda',
+      'KafkaApiMskIamProviderCleanUpProviderframeworkonEvent',
+    ];
+
+    const matchingResources = template.findResources('AWS::Lambda::Function');
+
+    // Count how many matching resources have the correct KmsKeyArn
+    const matchingCount = Object.entries(matchingResources).filter(([_, lambda]) => {
+      return lambda.Properties.KmsKeyArn &&
+              lambda.Properties.KmsKeyArn['Fn::GetAtt'] &&
+              lambda.Properties.KmsKeyArn['Fn::GetAtt'][0].match(/CustomKafkaApiKey.*/);
+    }).length;
+
+    // The number of matching resources should greater or equal the number of prefixes
+    expect(lambdaPrefixes.length).toBeLessThanOrEqual(matchingCount);
+  });
+
+  test('Lambda role policies should have correct KMS permissions', () => {
+    const policiesToCheck = [
+      'KafkaApiMskAclProviderOnEventHandlerRoleDefaultPolicy',
+      'KafkaApiMskAclProviderCleanUpRoleDefaultPolicy',
+      'KafkaApiMskIamProviderOnEventHandlerRoleDefaultPolicy',
+      'KafkaApiMskIamProviderCleanUpRoleDefaultPolicy',
+    ];
+
+    policiesToCheck.forEach(policyNamePrefix => {
+      template.hasResourceProperties('AWS::IAM::Policy', {
+        PolicyName: Match.stringLikeRegexp(`^${policyNamePrefix}.*`),
+        PolicyDocument: {
+          Statement: Match.arrayWith([
+            {
+              Effect: 'Allow',
+              Action: Match.arrayEquals([
+                'kms:Decrypt',
+                'kms:Encrypt',
+                'kms:ReEncrypt*',
+                'kms:GenerateDataKey*',
+              ]),
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('.*CustomKafkaApiKey.*'),
+                  'Arn',
+                ],
+              },
+            },
+          ]),
+        },
+      });
     });
   });
 });

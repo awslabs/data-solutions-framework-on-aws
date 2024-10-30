@@ -456,6 +456,7 @@ export class MskProvisioned extends TrackedConstruct {
         vpcSubnets: this.placeClusterHandlerInVpc ? this.vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
         logGroup: this.updateZookepeerLogGroup,
         securityGroups: this.placeClusterHandlerInVpc ? [this.updateZookepeerSecurityGroup] : undefined,
+        environmentEncryption: props?.environmentEncryption,
       });
 
       this.updateZookepeerFunction = updateZookepeerLambda;
@@ -477,6 +478,7 @@ export class MskProvisioned extends TrackedConstruct {
       kafkaClientLogLevel: props?.kafkaClientLogLevel,
       clusterType: MskClusterType.PROVISIONED,
       removalPolicy: this.removalPolicy,
+      environmentEncryption: props?.environmentEncryption,
     });
 
     this.serviceToken = this.kafkaApi.serviceToken;
@@ -514,6 +516,7 @@ export class MskProvisioned extends TrackedConstruct {
       this.encryptionAtRestKey,
       clusterConfigurationInfo,
       this.placeClusterHandlerInVpc,
+      props?.environmentEncryption,
     );
 
     this.applyConfigurationLogGroup = applyClusterConfigurationProvider.isCompleteHandlerLog;
@@ -530,7 +533,8 @@ export class MskProvisioned extends TrackedConstruct {
         this.subnetSelectionIds,
         this.removalPolicy,
         this.encryptionAtRestKey,
-        this.placeClusterHandlerInVpc);
+        this.placeClusterHandlerInVpc,
+        props?.environmentEncryption);
 
 
     this.updateConnectivityFunction = updateConnectivityProvider.onEventHandlerFunction;

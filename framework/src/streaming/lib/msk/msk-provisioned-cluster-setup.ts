@@ -181,7 +181,8 @@ export function updateClusterConnectivity (
   subnetSelectionIds: string[],
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
-  placeClusterHandlerInVpc?: boolean) : DsfProvider {
+  placeClusterHandlerInVpc?: boolean,
+  environmentEncryption?: IKey) : DsfProvider {
 
   const lambdaPolicy = [
     new PolicyStatement({
@@ -249,6 +250,7 @@ export function updateClusterConnectivity (
         MSK_CLUSTER_ARN: cluster.attrArn,
         REGION: Stack.of(scope).region,
       },
+      environmentEncryption: environmentEncryption,
     },
     // We are making the update a fire and forget because it would break the custom resource timeout of 1 hour
     // isCompleteHandlerDefinition: {
@@ -265,6 +267,7 @@ export function updateClusterConnectivity (
     subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
     securityGroups: placeClusterHandlerInVpc ? [securityGroupUpdateConnectivity] : undefined,
     removalPolicy,
+    environmentEncryption: environmentEncryption,
     // queryTimeout: Duration.minutes(59),
     // queryInterval: Duration.minutes(1),
   });
@@ -284,7 +287,8 @@ export function applyClusterConfiguration (
   removalPolicy: RemovalPolicy,
   brokerAtRestEncryptionKey: IKey,
   configuration: ClusterConfigurationInfo,
-  placeClusterHandlerInVpc?: boolean) : DsfProvider {
+  placeClusterHandlerInVpc?: boolean,
+  environmentEncryption?:IKey) : DsfProvider {
 
   const setClusterConfigurationLambdaSecurityGroup = new SecurityGroup(scope, 'setClusterConfigurationLambdaSecurityGroup', {
     vpc: vpc,
@@ -342,6 +346,10 @@ export function applyClusterConfiguration (
   roleUpdateConnectivityLambda.addManagedPolicy(lambdaExecutionRolePolicy);
   roleUpdateConnectivityLambda.addManagedPolicy(vpcPolicyLambda);
 
+  if (environmentEncryption) {
+    environmentEncryption.grantEncryptDecrypt(roleUpdateConnectivityLambda);
+  }
+
   const provider = new DsfProvider(scope, 'SetClusterConfigurationProvider', {
     providerName: 'set-cluster-configuration',
     onEventHandlerDefinition: {
@@ -352,6 +360,7 @@ export function applyClusterConfiguration (
       environment: {
         REGION: Stack.of(scope).region,
       },
+      environmentEncryption: environmentEncryption,
     },
     isCompleteHandlerDefinition: {
       handler: 'index.isCompleteHandler',
@@ -361,6 +370,7 @@ export function applyClusterConfiguration (
       environment: {
         REGION: Stack.of(scope).region,
       },
+      environmentEncryption: environmentEncryption,
     },
     vpc: placeClusterHandlerInVpc ? vpc : undefined,
     subnets: placeClusterHandlerInVpc ? vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }) : undefined,
@@ -368,6 +378,7 @@ export function applyClusterConfiguration (
     removalPolicy,
     queryTimeout: Duration.minutes(59),
     queryInterval: Duration.minutes(1),
+    environmentEncryption: environmentEncryption,
   });
 
   return provider;

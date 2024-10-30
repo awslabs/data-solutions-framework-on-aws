@@ -111,6 +111,10 @@ export class DsfProvider extends Construct {
       this.vpcPolicy = this.getVpcPermissions();
 
       this.onEventHandlerRole.addManagedPolicy(this.vpcPolicy);
+
+      // grant encrypt & decrypt to onEventHandlerRole for Env encryption KMS Key
+      props.environmentEncryption?.grantEncryptDecrypt(this.onEventHandlerRole);
+
       // add a dependency to avoid race condition when deleting the stack
       this.onEventHandlerRole.node.addDependency(this.vpcPolicy);
 
@@ -123,6 +127,8 @@ export class DsfProvider extends Construct {
       this.cleanUpLogGroup = this.createLogGroup('CleanUpLogGroup');
       this.cleanUpLogGroup.grantWrite(this.cleanUpRole);
 
+      props.environmentEncryption?.grantEncryptDecrypt(this.cleanUpRole);
+
       this.cleanUpFunction = new Function(this, 'CleanUpLambda', {
         runtime: DsfProvider.CR_RUNTIME,
         role: this.cleanUpRole,
@@ -134,11 +140,13 @@ export class DsfProvider extends Construct {
           SECURITY_GROUPS: this.securityGroups!.map(s => s.securityGroupId).join(','),
           SUBNETS: this.subnets.subnets!.map(s => s.subnetId).join(','),
         },
+        environmentEncryption: props.environmentEncryption,
       });
 
       const cleanUpProvider = new Provider(this, 'CleanUpProvider', {
         onEventHandler: this.cleanUpFunction,
         logRetention: DsfProvider.LOG_RETENTION,
+        providerFunctionEnvEncryption: props.environmentEncryption,
       });
 
       this.cleanUpCr = new CustomResource(this, 'CleanUpCustomResource', {
@@ -175,6 +183,9 @@ export class DsfProvider extends Construct {
         // Dependency to schedule the ENI cleanup after lambda deletion
         this.isCompleteHandlerFunction.node.addDependency(this.cleanUpCr!);
       }
+
+      // grant encrypt & decrypt to onEventHandlerRole for Env encryption KMS Key
+      props.environmentEncryption?.grantEncryptDecrypt(this.isCompleteHandlerRole);
     }
 
 
@@ -187,6 +198,7 @@ export class DsfProvider extends Construct {
       securityGroups: this.securityGroups,
       totalTimeout: props.queryTimeout,
       logRetention: DsfProvider.LOG_RETENTION,
+      providerFunctionEnvEncryption: props.environmentEncryption,
     });
 
     // Scope down the `onEventHandlerFunction` to be called
@@ -242,6 +254,7 @@ export class DsfProvider extends Construct {
       vpc: this.vpc,
       vpcSubnets: this.subnets,
       securityGroups: this.securityGroups,
+      environmentEncryption: props.environmentEncryption,
     });
   }
 

@@ -5,6 +5,7 @@ import * as path from 'path';
 import { RemovalPolicy, Arn, ArnFormat } from 'aws-cdk-lib';
 import { SecurityGroup, IVpc, ISecurityGroup, CfnSecurityGroupIngress, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IPrincipal, IRole, ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { CfnCluster, CfnClusterPolicy, CfnServerlessCluster } from 'aws-cdk-lib/aws-msk';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
@@ -65,7 +66,9 @@ export function mskIamCrudProviderSetup(
   subnets: SubnetSelection,
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string,
-  iamHandlerRole?: IRole): DsfProvider {
+  iamHandlerRole?: IRole,
+  environmentEncryption?: IKey,
+): DsfProvider {
 
   const { partition, region, account, clusterNameUuid } = parseMskArn(clusterArn);
 
@@ -144,6 +147,7 @@ export function mskIamCrudProviderSetup(
     vpc,
     subnets,
     securityGroups: [lambdaProviderSecurityGroup],
+    environmentEncryption: environmentEncryption,
     removalPolicy,
   });
 
@@ -160,7 +164,8 @@ export function mskAclAdminProviderSetup(
   brokerSecurityGroup: ISecurityGroup,
   clusterArn: string,
   secret: ISecret,
-  mtlsHandlerRole?: IRole): DsfProvider {
+  mtlsHandlerRole?: IRole,
+  environmentEncryption?: IKey): DsfProvider {
 
   let lambdaProviderSecurityGroup: SecurityGroup = new SecurityGroup(scope, 'MskAclSecurityGroup', {
     vpc,
@@ -224,6 +229,7 @@ export function mskAclAdminProviderSetup(
     vpc,
     subnets,
     securityGroups: [lambdaProviderSecurityGroup],
+    environmentEncryption: environmentEncryption,
     removalPolicy,
   });
 

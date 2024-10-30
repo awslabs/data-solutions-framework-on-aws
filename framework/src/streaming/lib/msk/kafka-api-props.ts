@@ -4,6 +4,7 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { IRole } from 'aws-cdk-lib/aws-iam';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { KafkaClientLogLevel, ClientAuthentication, MskClusterType } from './msk-utils';
 
@@ -94,4 +95,12 @@ export interface KafkaApiProps {
    * you can reuse it to reduce the number of resource created
    */
   readonly serviceToken?: string;
+
+  /**
+   * The AWS KMS key to use to encrypt  enviornment variable of lambda supporting the
+   * MSK Custom Resources creation
+   */
+  readonly environmentEncryption?: IKey;
+
 }
+
