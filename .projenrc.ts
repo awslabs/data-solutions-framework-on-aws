@@ -536,7 +536,7 @@ datazoneMskGovernance.testTask.reset();
 datazoneMskGovernance.postCompileTask.reset();
 datazoneMskGovernance.addTask('test:unit', {
   description: 'Run unit tests',
-  exec: 'pytest -k "not e2e"'
+  exec: 'pytest -k "not e2e" --ignore=./cdk.out'
 });
 datazoneMskGovernance.addTask('test:e2e', {
   description: 'Run end-to-end tests',

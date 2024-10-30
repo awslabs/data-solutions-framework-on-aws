@@ -102,7 +102,7 @@
       "description": "Run unit tests",
       "steps": [
         {
-          "exec": "pytest -k \"not e2e\""
+          "exec": "pytest -k \"not e2e\" --ignore=./cdk.out"
         }
       ]
     }
