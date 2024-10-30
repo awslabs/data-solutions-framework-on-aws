@@ -4,6 +4,7 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
 import { KafkaClientLogLevel } from './msk-utils';
+import { IKey } from 'aws-cdk-lib/aws-kms';
 
 /**
  * Properties for the `MskServerlessCluster` construct
@@ -43,6 +44,12 @@ export interface MskServerlessProps {
    * @default WARN
    */
   readonly kafkaClientLogLevel?: KafkaClientLogLevel;
+
+  /**
+   * The AWS KMS key to use to encrypt  enviornment variable of lambda supporting the
+   * MSK Custom Resources creation
+   */
+  readonly lambdaEnvironmentEncryptionKey?: IKey;
 
   /**
    * The removal policy when deleting the CDK resource.
