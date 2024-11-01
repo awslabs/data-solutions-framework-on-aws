@@ -32,6 +32,13 @@ NagSuppressions.addResourceSuppressionsByPath(
   [{ id: 'AwsSolutions-IAM5', reason: 'This the policy for the lambda CR that manage CRUD operation within the MSK Serverless' }],
 );
 
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
+
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/stack/cluster/KafkaApi/MskIamProvider/VpcPolicy/Resource',

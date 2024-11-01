@@ -5,7 +5,7 @@
 /**
 * Tests DataZoneGsrMskDataSource
 *
-* @group unit/best-practice/datazone-gsr-msk-data-source
+* @group unit/best-practice/governance/datazone-gsr-msk-data-source
 */
 
 

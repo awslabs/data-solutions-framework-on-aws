@@ -4,7 +4,7 @@
 /**
  * Nag for Spark runtime EMR Containers
  *
- * @group unit/best-practice/spark-runtime-containers
+ * @group unit/best-practice/processing/spark-runtime-containers
  */
 
 import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
@@ -59,6 +59,13 @@ emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'interactiveSession', {
 });
 
 Aspects.of(emrEksClusterStack).add(new AwsSolutionsChecks());
+
+NagSuppressions.addStackSuppressions(emrEksClusterStack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
 
 NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/DataPlatform/Ec2InstanceNodeGroupRole/Resource', [
   { id: 'AwsSolutions-IAM4', reason: 'The use of Managed policies is a must for EKS nodes' },

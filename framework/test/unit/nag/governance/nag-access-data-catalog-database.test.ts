@@ -5,7 +5,7 @@
 /**
  * Tests DataCatalogDatabase
  *
- * @group unit/best-practice/data-catalog/access-data-catalog-database
+ * @group unit/best-practice/governance/access-data-catalog-database
  */
 
 

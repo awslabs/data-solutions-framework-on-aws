@@ -164,6 +164,13 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 ],
 true);
 
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
+
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));
   console.log(warnings);

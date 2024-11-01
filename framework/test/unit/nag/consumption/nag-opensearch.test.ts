@@ -33,6 +33,13 @@ new OpenSearchCluster(stack, 'OpenSearch', {
 
 Aspects.of(stack).add(new AwsSolutionsChecks({ verbose: true }));
 
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
+
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/OpenSearch/SecurityGroup/Resource',

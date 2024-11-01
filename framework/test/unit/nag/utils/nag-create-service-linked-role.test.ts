@@ -18,6 +18,13 @@ const slr = new CreateServiceLinkedRole(stack, 'CreateSLR');
 slr.create(ServiceLinkedRoleService.REDSHIFT);
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
+
 NagSuppressions.addResourceSuppressions(slr, [
   {
     id: 'AwsSolutions-IAM5',

@@ -3,7 +3,7 @@
 
 /**
  * Test RedshiftServerlessWorkgroup
- * @group unit/best-practice/consumption/redshift-data
+ * @group unit/best-practice/consumption/redshift-data-api
  */
 
 import { App, Aspects, Duration, RemovalPolicy, SecretValue, Stack } from 'aws-cdk-lib';

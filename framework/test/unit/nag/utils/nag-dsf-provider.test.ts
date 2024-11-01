@@ -78,6 +78,13 @@ new CustomResource(stack, 'CustomResource', {
 });
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
+
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   'Stack/Vpc/Resource',

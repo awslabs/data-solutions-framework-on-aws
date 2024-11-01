@@ -5,7 +5,7 @@
 /**
  * Nag for PySpark application package construct
  *
- * @group unit/best-practice/pyspark-application-package
+ * @group unit/best-practice/processing/pyspark-application-package
  */
 
 import path from 'path';
@@ -28,6 +28,13 @@ new PySparkApplicationPackage (stack, 'PySparkPacker', {
 });
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
+
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,

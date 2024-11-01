@@ -952,7 +952,7 @@ Create a mutable `IBucket` based on a low-level `CfnBucket`.
 ```typescript
 import { storage } from '@cdklabs/aws-data-solutions-framework'
 
-storage.AccessLogsBucket.validateBucketName(physicalName: string)
+storage.AccessLogsBucket.validateBucketName(physicalName: string, allowLegacyBucketNaming?: boolean)
 ```
 
 Thrown an exception if the given bucket name is not valid.
@@ -962,6 +962,14 @@ Thrown an exception if the given bucket name is not valid.
 - *Type:* string
 
 name of the bucket.
+
+---
+
+###### `allowLegacyBucketNaming`<sup>Optional</sup> <a name="allowLegacyBucketNaming" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.validateBucketName.parameter.allowLegacyBucketNaming"></a>
+
+- *Type:* boolean
+
+allow legacy bucket naming style, default is false.
 
 ---
 
@@ -2115,7 +2123,7 @@ Create a mutable `IBucket` based on a low-level `CfnBucket`.
 ```typescript
 import { storage } from '@cdklabs/aws-data-solutions-framework'
 
-storage.AnalyticsBucket.validateBucketName(physicalName: string)
+storage.AnalyticsBucket.validateBucketName(physicalName: string, allowLegacyBucketNaming?: boolean)
 ```
 
 Thrown an exception if the given bucket name is not valid.
@@ -2125,6 +2133,14 @@ Thrown an exception if the given bucket name is not valid.
 - *Type:* string
 
 name of the bucket.
+
+---
+
+###### `allowLegacyBucketNaming`<sup>Optional</sup> <a name="allowLegacyBucketNaming" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.validateBucketName.parameter.allowLegacyBucketNaming"></a>
+
+- *Type:* boolean
+
+allow legacy bucket naming style, default is false.
 
 ---
 

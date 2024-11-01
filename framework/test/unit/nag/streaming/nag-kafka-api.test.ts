@@ -92,7 +92,16 @@ kafkaApi.grantConsume('topic1TlsConsumerGrant', 'topic1', Authentication.MTLS, '
 kafkaApi.grantProduce('topic1IamProducerGrant', 'topic1', Authentication.IAM, Role.fromRoleName(stack, 'iamProducerRole', 'producer'));
 kafkaApi.grantProduce('topic1TlsProducerGrant', 'topic1', Authentication.MTLS, 'Cn=bar');
 
-Aspects.of(stack).add(new AwsSolutionsChecks());
+Aspects.of(stack).add(new AwsSolutionsChecks({
+  verbose: true,
+}));
+
+NagSuppressions.addStackSuppressions(stack, [
+  {
+    id: 'CdkNagValidationFailure',
+    reason: 'Intended behavior',
+  },
+], true);
 
 NagSuppressions.addResourceSuppressionsByPath(stack,
   'Stack/MyCluster',

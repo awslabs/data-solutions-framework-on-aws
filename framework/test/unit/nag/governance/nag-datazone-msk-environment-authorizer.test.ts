@@ -5,7 +5,7 @@
 /**
 * Tests DataZoneMskEnvironmentAuthorizer
 *
-* @group unit/best-practice/datazone-msk-environment-authorizer
+* @group unit/best-practice/governance/datazone-msk-environment-authorizer
 */
 
 
