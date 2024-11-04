@@ -89,7 +89,7 @@ describe ('Creating a DataZoneMskAssetType with default configuration', () => {
           },
           {
             name: 'MskSourceReferenceFormType',
-            model: '\n        structure MskSourceReferenceFormType {\n          @required\ncluster_arn: String\n@required\ncluster_type: String\n        }\n      ',
+            model: '\n        structure MskSourceReferenceFormType {\n          @required\ncluster_arn: String\n@required\ncluster_type: String\n@required\nbootstrap_brokers: String\n        }\n      ',
             required: true,
           },
           {

@@ -79,6 +79,11 @@ export class DataZoneMskAssetType extends TrackedConstruct {
               type: 'String',
               required: true,
             },
+            {
+              name: 'bootstrap_brokers',
+              type: 'String',
+              required: true,
+            },
           ],
           required: true,
         },

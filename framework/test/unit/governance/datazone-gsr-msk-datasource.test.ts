@@ -151,7 +151,10 @@ describe('Creating a DataZone-GSR-MSK-Datasource with default configuration', ()
                   },
                 }),
                 Match.objectLike({
-                  Action: 'kafka:ListClustersV2',
+                  Action: [
+                    'kafka:ListClustersV2',
+                    'kafka:GetBootstrapBrokers',
+                  ],
                   Effect: 'Allow',
                   Resource: '*',
                 }),

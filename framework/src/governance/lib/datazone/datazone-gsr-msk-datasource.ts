@@ -154,6 +154,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
               effect: Effect.ALLOW,
               actions: [
                 'kafka:ListClustersV2',
+                'kafka:GetBootstrapBrokers',
               ],
               resources: ['*'],
             }),

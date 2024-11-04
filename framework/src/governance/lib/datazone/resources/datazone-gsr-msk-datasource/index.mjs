@@ -3,7 +3,7 @@
 
 import { DataZoneClient, GetAssetCommand, CreateAssetCommand, CreateAssetRevisionCommand, DeleteAssetCommand } from "@aws-sdk/client-datazone";
 import { GlueClient, ListSchemasCommand, GetSchemaVersionCommand, GetSchemaCommand } from "@aws-sdk/client-glue";
-import { KafkaClient, ListClustersV2Command, DescribeClusterV2Command } from "@aws-sdk/client-kafka";
+import { KafkaClient, ListClustersV2Command, DescribeClusterV2Command, GetBootstrapBrokersCommand } from "@aws-sdk/client-kafka";
 import { SSMClient, GetParametersByPathCommand, DeleteParameterCommand, PutParameterCommand } from "@aws-sdk/client-ssm";
 
 
@@ -34,6 +34,7 @@ export const handler = async () => {
   let clusterArn;
   let clusterUuid;
   let clusterType;
+  let bootstrapBrokers;
   
   try {
     // Step 1: Retrieve existing parameters
@@ -53,7 +54,7 @@ export const handler = async () => {
     }
     console.log(assetMap);
     
-    // Step 2: List all Kafka clusters and find the ARN for the specified cluster
+    // Step 2: List all Kafka clusters, find the ARN and the bootstrap brokers for the specified cluster
     try {
       const listClustersCommand = new ListClustersV2Command({});
       const listClustersResponse = await kafkaClient.send(listClustersCommand);
@@ -77,6 +78,10 @@ export const handler = async () => {
       }
       
       console.log(`Cluster type for ${clusterName} is ${clusterType}`);
+
+      const getBootstrapBrokersCommand = new GetBootstrapBrokersCommand({ ClusterArn: clusterArn });
+      const getBootstrapBrokersResponse = await kafkaClient.send(getBootstrapBrokersCommand);
+      bootstrapBrokers = getBootstrapBrokersResponse.BootstrapBrokerStringSaslIam;
       
     } catch (err) {
       console.error('Error handling Kafka cluster:', err);
@@ -139,7 +144,8 @@ export const handler = async () => {
           typeIdentifier: 'MskSourceReferenceFormType',
           content: JSON.stringify({
             cluster_arn: clusterArn,
-            cluster_type: clusterType  // Ensure clusterType is correctly included
+            cluster_type: clusterType,
+            bootstrap_brokers: bootstrapBrokers
           }),
         },
         {
