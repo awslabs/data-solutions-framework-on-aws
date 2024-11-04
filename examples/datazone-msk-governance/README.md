@@ -76,7 +76,8 @@ cdk deploy
 ## Create a custom environment in the consumer project
 
 1. Enable the [custom AWS service blueprint](https://docs.aws.amazon.com/datazone/latest/userguide/enable-custom-blueprint.html)
-2. Create a [custom environment](https://docs.aws.amazon.com/datazone/latest/userguide/create-custom-environment.html) in the `consumer` project
+2. Create a [custom environment](https://docs.aws.amazon.com/datazone/latest/userguide/create-custom-environment.html) in the `consumer` project. 
+You can use any IAM Role that can be assumed by DataZone but for simplicity the CDK Stack provides the `StreamingGovernanceStack-ConsumerRole`.
 
 ## Create a subscription target on the custom environment
 
