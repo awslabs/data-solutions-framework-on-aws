@@ -117,7 +117,8 @@ export const handler = async(event) => {
       Region: consumerRegion,
       Account: consumerAccountId,
       RolesArn: consumerRolesArn,
-    }
+    },
+    MetadataVersion: 1
   };
 
   console.log(`Metadata collection results: ${JSON.stringify({ results }, null, 2)}`);
