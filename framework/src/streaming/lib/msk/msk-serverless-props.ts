@@ -3,8 +3,8 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { ISecurityGroup, IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
-import { KafkaClientLogLevel } from './msk-utils';
 import { IKey } from 'aws-cdk-lib/aws-kms';
+import { KafkaClientLogLevel } from './msk-utils';
 
 /**
  * Properties for the `MskServerlessCluster` construct
