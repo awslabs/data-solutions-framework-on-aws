@@ -5941,7 +5941,6 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.environmentEncryption">environmentEncryption</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The AWS KMS key to use to encrypt the function environment variables. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskAclFunction">mskAclFunction</a></code> | <code>aws-cdk-lib.aws_lambda.IFunction</code> | The Lambda function used by the Custom Resource provider when MSK is using mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskAclLogGroup">mskAclLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Cloudwatch Log Group used by the Custom Resource provider when MSK is using mTLS authentication. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.mskAclRole">mskAclRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by the Custom Resource provider when MSK is using mTLS authentication. |
@@ -5963,18 +5962,6 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
-
----
-
-##### `environmentEncryption`<sup>Optional</sup> <a name="environmentEncryption" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi.property.environmentEncryption"></a>
-
-```typescript
-public readonly environmentEncryption: IKey;
-```
-
-- *Type:* aws-cdk-lib.aws_kms.IKey
-
-The AWS KMS key to use to encrypt the function environment variables.
 
 ---
 
