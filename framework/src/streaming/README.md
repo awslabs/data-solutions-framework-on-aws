@@ -130,7 +130,7 @@ The construct creates an MSK Serverless Cluster, with the latest Kafka version i
 ![MSK Serverless High level architecture](../../../website/static/img/msk-serverless.png)
 
 
-The construct can create a VPC on your behalf that is used to deploy MSK Serverless cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for that is attached to the brokers.
+The construct can create a VPC on your behalf that is used to deploy MSK Serverless cluser or you can provide your own VPC definition through the `vpcConfigs` property when you initialize the construct. The VPC that is created on your behalf has `10.0.0.0/16` CIDR range, and comes with an S3 VPC Endpoint Gateway attached to it. The construct also creates a security group for that is attached to the brokers. It's also possible to encrypt the environment variables of the Lambda functions used within this construct using a specific AWS KMS Key through the `environmentEncryption` property. Note that you need to ensure the key policy does not block access for these Lambda roles, as this could prevent successful encryption and decryption operations.
 
 The construct has the following interfaces, you will usage examples in the new sections: 
     *  setTopic: Perform create, update, and delete operations on Topics
