@@ -48,7 +48,7 @@ export class KafkaApi extends TrackedConstruct {
    * The IAM Role used by the Custom Resource provider when MSK is using mTLS authentication
    */
   public readonly mskAclRole?: IRole;
-  
+
   /**
    * The Cloudwatch Log Group used by the Custom Resource provider when MSK is using mTLS authentication
    */
