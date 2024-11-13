@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from openlineage.client import OpenLineageClient
 from openlineage.client.run import RunEvent, RunState, Run, Job, Dataset
 from openlineage.client.facet import SchemaDatasetFacet
