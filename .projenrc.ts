@@ -527,6 +527,7 @@ const datazoneMskGovernance = new awscdk.AwsCdkPythonApp({
 
 datazoneMskGovernance.addGitIgnore('cdk.context.json');
 datazoneMskGovernance.addGitIgnore('resources/flink/?');
+datazoneMskGovernance.addGitIgnore('resources/flink/dependency-reduced-pom.xml');
 datazoneMskGovernance.removeTask('deploy');
 datazoneMskGovernance.removeTask('destroy');
 datazoneMskGovernance.removeTask('diff');
