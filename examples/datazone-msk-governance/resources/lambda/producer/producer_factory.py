@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import yaml
 from kafka import KafkaProducer
 from aws_msk_iam_sasl_signer import MSKAuthTokenProvider

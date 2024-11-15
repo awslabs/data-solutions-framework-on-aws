@@ -87,3 +87,4 @@ cython_debug/
 .cdk.staging/
 cdk.context.json
 resources/flink/?
+resources/flink/dependency-reduced-pom.xml
