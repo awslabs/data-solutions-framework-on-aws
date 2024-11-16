@@ -14,83 +14,78 @@ The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-    const osCluster = new dsf.consumption.OpenSearchCluster(this, 'MyOpenSearchCluster',{
-      domainName:"mycluster",
-      samlEntityId:'<IdpIdentityId>',
-      samlMetadataContent:'<IdpMetadataXml>',
-      samlMasterBackendRole:'<IAMIdentityCenterAdminGroupId>',
-      deployInVpc:false,
-      dataNodeInstanceType:'t3.small.search',
-      dataNodeInstanceCount:1,
-      masterNodeInstanceCount:0,
+    const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
+    const apiRole = Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
+    const osApi = new dsf.consumption.OpenSearchApi(this, 'MyOpenSearchApi',{
+      iamHandlerRole:apiRole,
+      openSearchEndpoint:domainEndpoint,
+      openSearchClusterType:dsf.consumption.OpenSearchClusterType.PROVISIONED,
       removalPolicy:cdk.RemovalPolicy.DESTROY
     });
-
     //Add another admin
-    osCluster.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
+    osApi.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
 
-    const indexTemplateCr = osCluster.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
-    {
-      "index_patterns": [
-        "movies-*"
-      ],
-      "template": {
-        "settings": {
-          "index": {
-            "number_of_shards": 1,
-            "number_of_replicas": 0
-          }
-        },
-        "mappings": {
-          "properties": {
-            "title": {
-              "type": "text"
-            },
-            "year": {
-              "type": "integer"
+    //create index template
+    const indexTemplateCr = osApi.callOpenSearchApi('CreateIndexTemplate','_index_template/movies',
+      {
+        "index_patterns": [
+          "movies-*"
+        ],
+        "template": {
+          "settings": {
+            "index": {
+              "number_of_shards": 1,
+              "number_of_replicas": 0
+            }
+          },
+          "mappings": {
+            "properties": {
+              "title": {
+                "type": "text"
+              },
+              "year": {
+                "type": "integer"
+              }
             }
           }
         }
-      }
-    });
-    const metadata='{ "index" : { "_index" : "movies-02"}}';
-    const bulk=`${metadata}
-    {"title": "Barbie", "year": 2023}
-    ${metadata}
-    {"title": "Openheimer", "year": 2023}`;
+      });
+      const metadata='{ "index" : { "_index" : "movies-02"}}';
+      const bulk=`${metadata}
+      {"title": "Barbie", "year": 2023}
+      ${metadata}
+      {"title": "Openheimer", "year": 2023}`;
 
-    // add dependency on index template creation
-    const bulkCr = osCluster.callOpenSearchApi('AddBulk','_bulk',bulk+'\n\n','POST');
-    bulkCr.node.addDependency(indexTemplateCr);
+      // bulk ingestion using POST
+      const bulkCr = osApi.callOpenSearchApi('AddBulk','_bulk',bulk+'\n\n','POST');
+      //dependency to enforce sequential API calls
+      bulkCr.node.addDependency(indexTemplateCr);
 
-    const add1Cr = osCluster.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
-    add1Cr.node.addDependency(indexTemplateCr);
-    const add2Cr = osCluster.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
-    add2Cr.node.addDependency(indexTemplateCr);
-    const add3Cr = osCluster.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
-    add3Cr.node.addDependency(indexTemplateCr);
+      const add1Cr = osApi.callOpenSearchApi('AddData1', 'movies-01/_doc/1111',{"title": "Rush", "year": 2013}, 'PUT');
+      add1Cr.node.addDependency(indexTemplateCr);
+      const add2Cr = osApi.callOpenSearchApi('AddData3', 'movies-01/_doc/2222',{"title": "Toy Story", "year": 2014}, 'PUT');
+      add2Cr.node.addDependency(indexTemplateCr);
+      const add3Cr = osApi.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
+      add3Cr.node.addDependency(indexTemplateCr);
   ```
   
   </TabItem>
   <TabItem value="python" label="Python">
 
   ```python
-os_cluster = dsf.consumption.OpenSearchCluster(self, "MyOpenSearchCluster",
-    domain_name="mycluster",
-    saml_entity_id="<IdpIdentityId>",
-    saml_metadata_content="<IdpMetadataXml>",
-    saml_master_backend_role="<IAMIdentityCenterAdminGroupId>",
-    deploy_in_vpc=False,
-    data_node_instance_type="t3.small.search",
-    data_node_instance_count=1,
-    master_node_instance_count=0,
+domain_endpoint = "search-XXXXXX.XXXXXX.es.amazonaws.com"
+api_role = Role.from_role_name(self, "ApiRole", "<IAMRoleWithOpenSearchPermissions>")
+os_api = dsf.consumption.OpenSearchApi(self, "MyOpenSearchApi",
+    iam_handler_role=api_role,
+    open_search_endpoint=domain_endpoint,
+    open_search_cluster_type=dsf.consumption.OpenSearchClusterType.PROVISIONED,
     removal_policy=cdk.RemovalPolicy.DESTROY
 )
-
 # Add another admin
-os_cluster.add_role_mapping("AnotherAdmin", "all_access", "sometestId")
+os_api.add_role_mapping("AnotherAdmin", "all_access", "sometestId")
 
-index_template_cr = os_cluster.call_open_search_api("CreateIndexTemplate", "_index_template/movies", {
+# create index template
+index_template_cr = os_api.call_open_search_api("CreateIndexTemplate", "_index_template/movies", {
     "index_patterns": ["movies-*"
     ],
     "template": {
@@ -114,19 +109,20 @@ index_template_cr = os_cluster.call_open_search_api("CreateIndexTemplate", "_ind
 })
 metadata = "{ \"index\" : { \"_index\" : \"movies-02\"}}"
 bulk = f"""{metadata}
-    {\"title\": \"Barbie\", \"year\": 2023}
-    {metadata}
-    {\"title\": \"Openheimer\", \"year\": 2023}"""
+      {\"title\": \"Barbie\", \"year\": 2023}
+      {metadata}
+      {\"title\": \"Openheimer\", \"year\": 2023}"""
 
-# add dependency on index template creation
-bulk_cr = os_cluster.call_open_search_api("AddBulk", "_bulk", bulk + "\n\n", "POST")
+# bulk ingestion using POST
+bulk_cr = os_api.call_open_search_api("AddBulk", "_bulk", bulk + "\n\n", "POST")
+# dependency to enforce sequential API calls
 bulk_cr.node.add_dependency(index_template_cr)
 
-add1_cr = os_cluster.call_open_search_api("AddData1", "movies-01/_doc/1111", {"title": "Rush", "year": 2013}, "PUT")
+add1_cr = os_api.call_open_search_api("AddData1", "movies-01/_doc/1111", {"title": "Rush", "year": 2013}, "PUT")
 add1_cr.node.add_dependency(index_template_cr)
-add2_cr = os_cluster.call_open_search_api("AddData3", "movies-01/_doc/2222", {"title": "Toy Story", "year": 2014}, "PUT")
+add2_cr = os_api.call_open_search_api("AddData3", "movies-01/_doc/2222", {"title": "Toy Story", "year": 2014}, "PUT")
 add2_cr.node.add_dependency(index_template_cr)
-add3_cr = os_cluster.call_open_search_api("AddData4", "movies-01/_doc", {"title": "The Little Mermaid", "year": 2015}, "POST")
+add3_cr = os_api.call_open_search_api("AddData4", "movies-01/_doc", {"title": "The Little Mermaid", "year": 2015}, "POST")
 add3_cr.node.add_dependency(index_template_cr)
   ```
 
@@ -155,17 +151,39 @@ To avoid overwriting prevously added roles `addRoleMapping` method provides `per
   <TabItem value="typescript" label="TypeScript" default>
 
   ```typescript
-const firstCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
-const secondCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
-secondCall.node.addDependency(firstCall);
+    const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
+    const apiRole = Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
+    const osApi = new dsf.consumption.OpenSearchApi(this, 'MyOpenSearchApi',{
+      iamHandlerRole:apiRole,
+      openSearchEndpoint:domainEndpoint,
+      openSearchClusterType:dsf.consumption.OpenSearchClusterType.PROVISIONED,
+      removalPolicy:cdk.RemovalPolicy.DESTROY
+    });
+
+    const firstCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+    const secondCall = osApi.addRoleMapping('AnotherAdmin', 'all_access','<IAMRole>', true);
+
+    //dependency to enforce sequential API calls
+    secondCall.node.addDependency(firstCall);
   ```
   
   </TabItem>
   <TabItem value="python" label="Python">
 
   ```python
+domain_endpoint = "search-XXXXXX.XXXXXX.es.amazonaws.com"
+api_role = Role.from_role_name(self, "ApiRole", "<IAMRoleWithOpenSearchPermissions>")
+os_api = dsf.consumption.OpenSearchApi(self, "MyOpenSearchApi",
+    iam_handler_role=api_role,
+    open_search_endpoint=domain_endpoint,
+    open_search_cluster_type=dsf.consumption.OpenSearchClusterType.PROVISIONED,
+    removal_policy=cdk.RemovalPolicy.DESTROY
+)
+
 first_call = os_api.add_role_mapping("AnotherAdmin", "all_access", "<IAMRole>", True)
 second_call = os_api.add_role_mapping("AnotherAdmin", "all_access", "<IAMRole>", True)
+
+# dependency to enforce sequential API calls
 second_call.node.add_dependency(first_call)
   ```
 
