@@ -9,7 +9,8 @@
 
 import { Stack, App, RemovalPolicy } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { OpenSearchCluster } from '../../../src/consumption';
+import { Role } from 'aws-cdk-lib/aws-iam';
+import { OpenSearchApi, OpenSearchCluster, OpenSearchClusterType } from '../../../src/consumption';
 
 
 describe('default configuration', () => {
@@ -49,5 +50,52 @@ describe('default configuration', () => {
     });
   });
 
+});
+
+describe('standalone api initialization', () => {
+  const app = new App();
+  const stack = new Stack(app, 'Stack');
+
+  // Set context value for global data removal policy
+  stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
+
+  // Instantiate OpenSearchCluster with standalone API
+  const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
+  const apiRole = Role.fromRoleName(stack, 'ApiRole', 'IAMRoleWithOpenSearchPermissions');
+  const osApi = new OpenSearchApi(stack, 'MyOpenSearchApi', {
+    iamHandlerRole: apiRole,
+    openSearchEndpoint: domainEndpoint,
+    openSearchClusterType: OpenSearchClusterType.PROVISIONED,
+    removalPolicy: RemovalPolicy.DESTROY,
+  });
+
+  //Add another admin
+  osApi.addRoleMapping('AnotherAdmin', 'all_access', 'sometestId');
+
+  const template = Template.fromStack(stack);
+
+
+  test('should create opensearch api lambda', () => {
+    template.hasResourceProperties('AWS::Lambda::Function', {
+      Timeout: 840,
+      Tags: Match.arrayWith([
+        {
+          Key: 'data-solutions-fwk:owned',
+          Value: 'true',
+        },
+      ]),
+    });
+  });
+
+  test('should create the API provider', () => {
+    template.hasResourceProperties('Custom::OpenSearchAPI', {
+      ServiceToken: {
+        'Fn::GetAtt': [
+          Match.stringLikeRegexp('MyOpenSearchApiProviderCustomResourceProviderframeworkonEvent.*'),
+          'Arn',
+        ],
+      },
+    });
+  });
 });
 
