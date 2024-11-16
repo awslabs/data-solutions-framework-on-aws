@@ -7355,7 +7355,7 @@ A construct to create an OpenSearch API client.
 ```typescript
  const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
  const apiRole = cdk.iam.Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
- const osApi = new dsf.consumption.OpensearchApi(this, 'MyOpenSearchApi',{
+ const osApi = new dsf.consumption.OpenSearchApi(this, 'MyOpenSearchApi',{
    iamHandlerRole:apiRole,
    openSearchEndpoint:domainEndpoint,
    openSearchClusterType:dsf.consumption.OpenSearchClusterType.PROVISIONED,
