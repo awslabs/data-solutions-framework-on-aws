@@ -19,6 +19,7 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
       openSearchClusterType:dsf.consumption.OpenSearchClusterType.PROVISIONED,
       removalPolicy:cdk.RemovalPolicy.DESTROY
     });
+    /// !hide
     //Add another admin
     osApi.addRoleMapping('AnotherAdmin', 'all_access','sometestId');
 
@@ -64,7 +65,7 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
       add2Cr.node.addDependency(indexTemplateCr);
       const add3Cr = osApi.callOpenSearchApi('AddData4', 'movies-01/_doc',{"title": "The Little Mermaid", "year": 2015}, 'POST');
       add3Cr.node.addDependency(indexTemplateCr);
-    /// !hide
+    
 
   }
 }
