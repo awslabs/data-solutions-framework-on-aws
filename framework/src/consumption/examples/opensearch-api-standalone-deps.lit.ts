@@ -4,7 +4,7 @@ import * as dsf from '../../index';
 import { Role } from 'aws-cdk-lib/aws-iam';
 
 
-class ExampleOpenSearchApiStack extends cdk.Stack {
+class ExampleOpenSearchApiStackDeps extends cdk.Stack {
 
   constructor(scope: Construct, id: string , props:cdk.StackProps) {
 
@@ -31,4 +31,4 @@ class ExampleOpenSearchApiStack extends cdk.Stack {
 }
 
 const app = new cdk.App();
-new ExampleOpenSearchApiStack(app, 'ExampleOpenSearchApiStandaloneDepsStack', { env: {region:'us-east-1'} });
+new ExampleOpenSearchApiStackDeps(app, 'ExampleOpenSearchApiStandaloneDepsStack', { env: {region:'us-east-1'} });

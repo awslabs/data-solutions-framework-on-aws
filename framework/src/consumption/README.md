@@ -220,7 +220,7 @@ OpenSearch API client that allows to prepare the data or setup access roles for 
 
 The construct leverages the [CDK Provider Framework](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.custom_resources-readme.html#provider-framework) to deploy a custom resource to manage, and provide `addRoleMapping` and `callOpenSearchApi` methods. Both methods return the custom resource so that allows to enforce sequental execution of the API calls. By default all API calls will be executed simultaneously and are independent of each other. 
 
-[example OpenSearch API](examples/opensearch-api-standalone.lit.ts)
+[example OpenSearch API](examples/opensearch-api-standalone-constructor.lit.ts)
 
 :::warning
 
@@ -231,6 +231,8 @@ The IAM Role passed as `iamHandlerRole` property has to have all necessary permi
 ## callOpenSearchApi
 
 Generic method to execute any Opensearch API, subject to correct permissions attached to the IAM Role. 
+
+[example OpenSearch API](examples/opensearch-api-standalone-constructor-callopensearchapi.lit.ts)
 
 ## addRoleMapping
 
