@@ -6,6 +6,7 @@
  */
 
 export enum EmrRuntimeVersion {
+  V7_3= 'emr-7.3.0',
   V7_2= 'emr-7.2.0',
   V7_1= 'emr-7.1.0',
   V7_0 = 'emr-7.0.0',
@@ -30,6 +31,7 @@ export enum EmrRuntimeVersion {
 }
 
 export enum EmrContainersRuntimeVersion {
+  V7_3 = 'emr-7.3.0-latest',
   V7_2 = 'emr-7.2.0-latest',
   V7_1 = 'emr-7.1.0-latest',
   V7_0 = 'emr-7.0.0-latest',
@@ -59,6 +61,7 @@ const EMR_EKS_IMAGE_URL = 'public.ecr.aws/emr-on-eks/spark/';
  * The list of supported Spark images to use in the SparkCICDPipeline.
  */
 export enum SparkImage {
+  EMR_7_3 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V7_3 + ':latest',
   EMR_7_2 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V7_2 + ':latest',
   EMR_7_1 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V7_1 + ':latest',
   EMR_7_0 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V7_0 + ':latest',
@@ -71,8 +74,8 @@ export enum SparkImage {
   EMR_6_9 = EMR_EKS_IMAGE_URL + EmrRuntimeVersion.V6_9 + ':latest',
 }
 
-export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V7_0;
-export const EMR_CONTAINERS_DEFAULT_VERSION: EmrContainersRuntimeVersion = EmrContainersRuntimeVersion.V7_0;
+export const EMR_DEFAULT_VERSION: EmrRuntimeVersion = EmrRuntimeVersion.V7_3;
+export const EMR_CONTAINERS_DEFAULT_VERSION: EmrContainersRuntimeVersion = EmrContainersRuntimeVersion.V7_3;
 
 /**
  * The default Spark image to run the unit tests

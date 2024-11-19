@@ -27,8 +27,8 @@ export interface SparkEmrContainersRuntimeInteractiveSessionProps {
    */
   readonly emrOnEksVersion?: EmrContainersRuntimeVersion;
   /**
-   * The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint
-   * @default - Configuration related to the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR}
+   * The JSON object to [override the configuration of EMR on EKS managed endpoint]{@link https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/create-managed-endpoint.html}.
+   * @default - Configuration associated with the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR}
    */
   readonly configurationOverrides?: any;
 

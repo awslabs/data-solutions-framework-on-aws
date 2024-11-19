@@ -195,7 +195,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
   /**
    * The configuration override for the spark application to use with the default nodes dedicated for notebooks
    */
-  public readonly notebookDefaultConfig?: any;
+  public readonly notebookDefaultConfig?: string;
   /**
    * The configuration override for the spark application to use with the default nodes for criticale jobs
    */
@@ -497,7 +497,7 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
       this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/notebook-executor.yaml`);
       this.podTemplateS3LocationNotebookExecutor = this.assetBucket.s3UrlForObject(`${this.podTemplateLocation.objectKey}/notebook-executor.yaml`);
 
-      this.notebookDefaultConfig = JSON.parse(JSON.stringify(NotebookDefaultConfig));
+      this.notebookDefaultConfig = JSON.stringify(NotebookDefaultConfig);
 
       // Replace the pod template location for driver and executor with the correct Amazon S3 path in the critical default config
       CriticalDefaultConfig.applicationConfiguration[0].properties['spark.kubernetes.driver.podTemplateFile'] =
@@ -697,8 +697,15 @@ export class SparkEmrContainersRuntime extends TrackedConstruct {
 
     let jsonConfigurationOverrides: any | undefined;
 
-    jsonConfigurationOverrides =
-     interactiveSessionOptions.configurationOverrides ? interactiveSessionOptions.configurationOverrides : this.notebookDefaultConfig;
+    if (interactiveSessionOptions.configurationOverrides === undefined) {
+      jsonConfigurationOverrides = this.notebookDefaultConfig? JSON.parse(this.notebookDefaultConfig) : undefined;
+    } else {
+      if (typeof interactiveSessionOptions.configurationOverrides == 'string') {
+        jsonConfigurationOverrides = JSON.parse(interactiveSessionOptions.configurationOverrides);
+      } else {
+        jsonConfigurationOverrides = interactiveSessionOptions.configurationOverrides;
+      }
+    }
 
     // Create custom resource with async waiter until the Amazon EMR Managed Endpoint is created
     const cr = new CustomResource(scope, id, {

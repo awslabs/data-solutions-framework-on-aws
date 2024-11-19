@@ -9,7 +9,7 @@ const client = new EMRContainersClient();
 // Handler functions
 export const onEventHandler =  async (event) => {
 
-  console.info('======Recieved for Event=======');
+  console.info('======Received for Event=======');
   console.info(event);
 
   let physicalResourceId
@@ -17,27 +17,25 @@ export const onEventHandler =  async (event) => {
   switch (event.RequestType) {
     case 'Create':
     case 'Update':
-      console.info(event.RequestType);
-      physicalResourceId = (await onCreate(event)).PhysicalResourceId;
+      physicalResourceId = await onCreate(event);
 
-      console.info( {
-        PhysicalResourceId : physicalResourceId,
-      });
-
+      console.info(`PhysicalResourceId : ${physicalResourceId}`);
       return {
         PhysicalResourceId : physicalResourceId,
       };
 
     case 'Delete':
-      console.info(event.RequestType);
-      physicalResourceId =  (await onDelete(event)).PhysicalResourceId;
-      return { 
+      physicalResourceId =  await onDelete(event);
+
+      console.info(`PhysicalResourceId : ${physicalResourceId}`);
+      return {
         PhysicalResourceId : physicalResourceId,
       };
 
     default:
       throw new Error(`invalid request type: ${event.RequestType}`);
   }
+
 }
 
 const onCreate = async (event) => {
@@ -50,42 +48,37 @@ const onCreate = async (event) => {
     executionRoleArn: event.ResourceProperties.executionRoleArn,
     tags: {
       'data-solutions-fwk:owned' : 'true'
-    }
+    },
+    configurationOverrides: event.ResourceProperties.configurationOverrides,
   });
 
   let response = await client.send(command);
 
   console.info(response);
 
-  console.info(response.id);
-
-  const physicalResourceId = response.id
-
-  return { 
-    PhysicalResourceId : physicalResourceId,
-  };
+  return response.id;
 
 }
 
 const onDelete = async (event) => {
 
-  console.info('======Recieved for delete=======');
-  console.info(event);
-
   const command = new DeleteManagedEndpointCommand({
     virtualClusterId: event.ResourceProperties.clusterId,
     id: event.PhysicalResourceId
   });
-  
-  let response = await client.send(command);
 
-  console.info(response);
-  console.info(response.id);
-
-  return {
-    PhysicalResourceId: event.PhysicalResourceId,
-  };
-
+  try {
+    let response = await client.send(command);
+    console.info(response);
+    return event.PhysicalResourceId;
+  } catch (e) {
+    if (e.name === 'ValidationException' && e.message.includes('Endpoint is already terminated')) {
+      console.info('Endpoint was already terminated, continuing...');
+      return event.PhysicalResourceId;
+    } else {
+      throw e;
+    }
+  }
 }
 
 export const isCompleteHandler = async (event) => {
