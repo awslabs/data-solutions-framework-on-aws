@@ -45,6 +45,34 @@ def results():
         True,
     )
 
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/OpenSearchApi/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource",
+        [
+            {'id':'AwsSolutions-IAM4', 'reason':'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed' },
+            {'id':'AwsSolutions-L1', 'reason': 'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed'}
+        ],
+        True,
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/OpenSearchApi/Provider/CustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource",
+        [
+            {'id':'AwsSolutions-IAM5', 'reason':'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed' },
+            {'id':'AwsSolutions-L1', 'reason': 'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed'}
+        ],
+        True,
+    )
+
+    NagSuppressions.add_resource_suppressions_by_path(stack,
+        "/my-stack-test/OpenSearchApi/Provider/CustomResourceProvider/framework-onEvent/Resource",
+        [
+            {'id':'AwsSolutions-L1', 'reason': 'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed'}
+        ],
+        True,
+    )
+    
+
+
     template = Template.from_stack(stack)
     results = (stack, template)
     yield results
