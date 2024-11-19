@@ -11811,7 +11811,7 @@ the EMR Virtual Cluster ARN to which the job is submitted.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterIrsaRole">karpenterIrsaRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM role created for the Karpenter controller. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterQueue">karpenterQueue</a></code> | <code>aws-cdk-lib.aws_sqs.IQueue</code> | The SQS queue used by Karpenter to receive critical events from AWS services which may affect your nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.karpenterSecurityGroup">karpenterSecurityGroup</a></code> | <code>aws-cdk-lib.aws_ec2.ISecurityGroup</code> | The security group used by the EC2NodeClass of the default nodes. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>any</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig">notebookDefaultConfig</a></code> | <code>string</code> | The configuration override for the spark application to use with the default nodes dedicated for notebooks. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalDriver">podTemplateS3LocationCriticalDriver</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for critical nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationCriticalExecutor">podTemplateS3LocationCriticalExecutor</a></code> | <code>string</code> | The S3 location holding the executor pod tempalte for critical nodes. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.podTemplateS3LocationDriverShared">podTemplateS3LocationDriverShared</a></code> | <code>string</code> | The S3 location holding the driver pod tempalte for shared nodes. |
@@ -12042,10 +12042,10 @@ The security group used by the EC2NodeClass of the default nodes.
 ##### `notebookDefaultConfig`<sup>Optional</sup> <a name="notebookDefaultConfig" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntime.property.notebookDefaultConfig"></a>
 
 ```typescript
-public readonly notebookDefaultConfig: any;
+public readonly notebookDefaultConfig: string;
 ```
 
-- *Type:* any
+- *Type:* string
 
 The configuration override for the spark application to use with the default nodes dedicated for notebooks.
 
@@ -19679,7 +19679,7 @@ const sparkEmrContainersRuntimeInteractiveSessionProps: processing.SparkEmrConta
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.executionRole">executionRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The Amazon IAM role used as the execution role, this role must provide access to all the AWS resource a user will interact with These can be S3, DynamoDB, Glue Catalog. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.managedEndpointName">managedEndpointName</a></code> | <code>string</code> | The name of the EMR managed endpoint. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.virtualClusterId">virtualClusterId</a></code> | <code>string</code> | The Id of the Amazon EMR virtual cluster containing the managed endpoint. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.configurationOverrides">configurationOverrides</a></code> | <code>any</code> | The JSON object to [override the configuration of EMR on EKS managed endpoint]{@link https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/create-managed-endpoint.html}. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrContainersRuntimeInteractiveSessionProps.property.emrOnEksVersion">emrOnEksVersion</a></code> | <code>@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion</code> | The Amazon EMR version to use. |
 
 ---
@@ -19727,9 +19727,9 @@ public readonly configurationOverrides: any;
 ```
 
 - *Type:* any
-- *Default:* Configuration related to the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR }
+- *Default:* Configuration associated with the [default nodegroup for notebook]{@link EmrEksNodegroup.NOTEBOOK_EXECUTOR }
 
-The JSON configuration overrides for Amazon EMR on EKS configuration attached to the managed endpoint.
+The JSON object to [override the configuration of EMR on EKS managed endpoint]{@link https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/create-managed-endpoint.html}.
 
 ---
 
@@ -22454,6 +22454,7 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_3">V7_3</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
@@ -22477,6 +22478,11 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_3` <a name="V7_3" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_3"></a>
+
+---
+
 
 ##### `V7_2` <a name="V7_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2"></a>
 
@@ -22591,6 +22597,7 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_3">V7_3</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_0">V7_0</a></code> | *No description.* |
@@ -22614,6 +22621,11 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_3` <a name="V7_3" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_3"></a>
+
+---
+
 
 ##### `V7_2` <a name="V7_2" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2"></a>
 
@@ -23007,6 +23019,7 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_3">EMR_7_3</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2">EMR_7_2</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_1">EMR_7_1</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_0">EMR_7_0</a></code> | *No description.* |
@@ -23019,6 +23032,11 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
+
+##### `EMR_7_3` <a name="EMR_7_3" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_3"></a>
+
+---
+
 
 ##### `EMR_7_2` <a name="EMR_7_2" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2"></a>
 
