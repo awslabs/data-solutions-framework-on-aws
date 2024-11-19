@@ -40,7 +40,7 @@ def results():
         "/my-stack-test/AWS679f53fac002430cb0da5b7982bd2287",
         [
             {'id':'AwsSolutions-IAM4', 'reason':'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed' },
-            {'id':'AwsSolutions-L1', 'reason': 'The Lambda is part of the CDK custom resource framework for SDK calls and can\'t be changed'}
+            {'id':'CdkNagValidationFailure', 'reason':'Lambda Function for Custom Resource provider framework is setup by the CDK framework and can\'t be resolved' },
         ],
         True,
     )
