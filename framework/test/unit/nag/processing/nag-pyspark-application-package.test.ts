@@ -29,12 +29,6 @@ new PySparkApplicationPackage (stack, 'PySparkPacker', {
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
-NagSuppressions.addStackSuppressions(stack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,

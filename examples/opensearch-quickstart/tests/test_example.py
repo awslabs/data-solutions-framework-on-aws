@@ -18,6 +18,7 @@ def results():
 
     # We suppress NAGs for the DSF construct because they are already tested in the framework
     suppress_nag(stack, 'MyOpenSearchCluster')
+    suppress_nag(stack, 'OpenSearchApi')
 
     NagSuppressions.add_resource_suppressions_by_path(stack,
         "/my-stack-test/MyOpenSearchCluster/Domain/Resource",

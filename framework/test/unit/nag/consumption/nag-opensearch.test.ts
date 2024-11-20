@@ -33,13 +33,6 @@ new OpenSearchCluster(stack, 'OpenSearch', {
 
 Aspects.of(stack).add(new AwsSolutionsChecks({ verbose: true }));
 
-NagSuppressions.addStackSuppressions(stack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
-
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/OpenSearch/SecurityGroup/Resource',
@@ -124,6 +117,18 @@ NagSuppressions.addResourceSuppressionsByPath(
     { id: 'AwsSolutions-IAM5', reason: 'Resource is not part of the test scope' },
     { id: 'AwsSolutions-IAM4', reason: 'Resource is not part of the test scope' },
     { id: 'AwsSolutions-L1', reason: 'Resource is not part of the test scope' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/OpenSearchApi/Provider',
+    '/Stack/AWS679f53fac002430cb0da5b7982bd2287',
+    '/Stack/OpenSearch/CreateSLR/Provider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
   ],
   true,
 );

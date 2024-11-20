@@ -24,12 +24,15 @@ new DataZoneCustomAssetTypeFactory(stack, 'DataZoneCustomAssetTypeFactory', {
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
-NagSuppressions.addStackSuppressions(stack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/DataZoneCustomAssetTypeFactory/Provider/CustomResourceProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a',

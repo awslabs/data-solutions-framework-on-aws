@@ -60,12 +60,18 @@ emrEksCluster.addInteractiveEndpoint(emrEksClusterStack, 'interactiveSession', {
 
 Aspects.of(emrEksClusterStack).add(new AwsSolutionsChecks());
 
-NagSuppressions.addStackSuppressions(emrEksClusterStack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
+NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack,
+  [
+    '/nagStack/InteractiveSessionProvider/CustomResourceProvider',
+    '/nagStack/InteractiveSessionProvider/CleanUpProvider',
+    '/nagStack/@aws-cdk--aws-eks.ClusterResourceProvider',
+    '/nagStack/@aws-cdk--aws-eks.KubectlProvider/Provider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
 
 NagSuppressions.addResourceSuppressionsByPath(emrEksClusterStack, 'nagStack/DataPlatform/Ec2InstanceNodeGroupRole/Resource', [
   { id: 'AwsSolutions-IAM4', reason: 'The use of Managed policies is a must for EKS nodes' },

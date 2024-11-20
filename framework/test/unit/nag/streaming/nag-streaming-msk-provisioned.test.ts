@@ -109,13 +109,6 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/stack/cluster/UpdateVpcConnectivityProvider/CleanUpProvider/framework-onEvent/Resource',
     '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onEvent/ServiceRole/Resource',
     '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onEvent/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-isComplete/ServiceRole/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-isComplete/ServiceRole/DefaultPolicy/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-isComplete/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onTimeout/ServiceRole/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onTimeout/ServiceRole/DefaultPolicy/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/waiter-state-machine/Role/DefaultPolicy/Resource',
-    // '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider/framework-onTimeout/Resource',
   ],
   [
     { id: 'AwsSolutions-IAM4', reason: 'Managed by the L2 resource for Custom Resources we cannot modify it' },
@@ -164,12 +157,23 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
 ],
 true);
 
-NagSuppressions.addStackSuppressions(stack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/stack/cluster/UpdateVpcConnectivityProvider/CustomResourceProvider',
+    '/stack/cluster/SetClusterConfigurationProvider/CustomResourceProvider',
+    '/stack/cluster/KafkaApi/MskIamProvider/CustomResourceProvider',
+    '/stack/cluster/UpdateVpcConnectivityProvider/CleanUpProvider',
+    '/stack/cluster/SetClusterConfigurationProvider/CleanUpProvider',
+    '/stack/cluster/KafkaApi/MskIamProvider/CleanUpProvider',
+    '/stack/cluster/KafkaApi/MskAclProvider/CustomResourceProvider',
+    '/stack/cluster/KafkaApi/MskAclProvider/CleanUpProvider',
+
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));

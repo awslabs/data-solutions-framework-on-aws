@@ -96,12 +96,18 @@ Aspects.of(stack).add(new AwsSolutionsChecks({
   verbose: true,
 }));
 
-NagSuppressions.addStackSuppressions(stack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/KafkaApi/MskIamProvider/CustomResourceProvider',
+    '/Stack/KafkaApi/MskIamProvider/CleanUpProvider',
+    '/Stack/KafkaApi/MskAclProvider/CustomResourceProvider',
+    '/Stack/KafkaApi/MskAclProvider/CleanUpProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
 
 NagSuppressions.addResourceSuppressionsByPath(stack,
   'Stack/MyCluster',
