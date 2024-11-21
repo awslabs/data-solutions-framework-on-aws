@@ -41,6 +41,7 @@ jobs:
         with:
           name: build-artifact
           path: framework/dist
+          include-hidden-files: true
       - name: Backup examples permissions
         working-directory: examples
         if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
