@@ -32,6 +32,19 @@ NagSuppressions.addResourceSuppressionsByPath(
   [{ id: 'AwsSolutions-IAM5', reason: 'This the policy for the lambda CR that manage CRUD operation within the MSK Serverless' }],
 );
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
+    '/stack/cluster/KafkaApi/MskIamProvider/CustomResourceProvider',
+    '/stack/cluster/KafkaApi/MskIamProvider/CleanUpProvider',
+
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
+
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/stack/cluster/KafkaApi/MskIamProvider/VpcPolicy/Resource',

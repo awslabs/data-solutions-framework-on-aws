@@ -5,8 +5,8 @@ import { Transform } from "projen/lib/javascript";
 import { dirname } from 'path';
 import { globSync } from 'glob';
 
-const CDK_VERSION = '2.145.0';
-const CDK_CONSTRUCTS_VERSION = '10.3.0';
+const CDK_VERSION = '2.165.0';
+const CDK_CONSTRUCTS_VERSION = '10.4.2';
 const JSII_VERSION = '~5.5.0';
 const KUBECTL_LAYER_VERSION='v30';
 

@@ -3,7 +3,7 @@
 
 /**
  * Test RedshiftServerlessWorkgroup
- * @group unit/best-practice/consumption/redshift-data
+ * @group unit/best-practice/consumption/redshift-data-api
  */
 
 import { App, Aspects, Duration, RemovalPolicy, SecretValue, Stack } from 'aws-cdk-lib';
@@ -65,12 +65,21 @@ dataApi.mergeToTargetTable('TestMerge', 'dev', 'testsourcetable', 'testtargettab
 
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
-NagSuppressions.addStackSuppressions(stack, [
-  {
-    id: 'CdkNagValidationFailure',
-    reason: 'Intended behavior',
-  },
-], true);
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/RedshiftData/CrProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
+
+NagSuppressions.addResourceSuppressionsByPath(
+  stack,
+  '/Stack/RedshiftData/InterfaceVpcEndpointSecurityGroup/Resource',
+  [{ id: 'CdkNagValidationFailure', reason: 'VPC can be created or supplied as props, so CIDR block is not known in advance' }],
+);
 
 NagSuppressions.addResourceSuppressionsByPath(stack, [
   'Stack/Vpc',

@@ -92,7 +92,22 @@ kafkaApi.grantConsume('topic1TlsConsumerGrant', 'topic1', Authentication.MTLS, '
 kafkaApi.grantProduce('topic1IamProducerGrant', 'topic1', Authentication.IAM, Role.fromRoleName(stack, 'iamProducerRole', 'producer'));
 kafkaApi.grantProduce('topic1TlsProducerGrant', 'topic1', Authentication.MTLS, 'Cn=bar');
 
-Aspects.of(stack).add(new AwsSolutionsChecks());
+Aspects.of(stack).add(new AwsSolutionsChecks({
+  verbose: true,
+}));
+
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/KafkaApi/MskIamProvider/CustomResourceProvider',
+    '/Stack/KafkaApi/MskIamProvider/CleanUpProvider',
+    '/Stack/KafkaApi/MskAclProvider/CustomResourceProvider',
+    '/Stack/KafkaApi/MskAclProvider/CleanUpProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
 
 NagSuppressions.addResourceSuppressionsByPath(stack,
   'Stack/MyCluster',

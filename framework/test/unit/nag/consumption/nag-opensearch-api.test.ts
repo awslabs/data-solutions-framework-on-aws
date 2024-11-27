@@ -38,7 +38,7 @@ Aspects.of(stack).add(new AwsSolutionsChecks({ verbose: true }));
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/OpenSearch/SecurityGroup/Resource',
-  [{ id: 'CdkNagValidationFailure', reason: 'VPC can be created or supplied as props, so cidr block is not known in advance' }],
+  [{ id: 'CdkNagValidationFailure', reason: 'VPC can be created or supplied as props, so CIDR block is not known in advance' }],
 );
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
@@ -109,6 +109,18 @@ NagSuppressions.addResourceSuppressionsByPath(
     { id: 'AwsSolutions-IAM5', reason: 'Role needs access to all OpenSearch APIs' },
     { id: 'AwsSolutions-IAM4', reason: 'Role needs access to all OpenSearch APIs' },
   ],
+);
+
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/OpenSearchApi/Provider',
+    '/Stack/AWS679f53fac002430cb0da5b7982bd2287/Resource',
+    '/Stack/OpenSearch/CreateSLR/Provider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
 );
 
 //recommendaed FGAC https://docs.aws.amazon.com/opensearch-service/latest/developerguide/fgac.html

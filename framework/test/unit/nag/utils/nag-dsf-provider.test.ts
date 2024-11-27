@@ -78,6 +78,17 @@ new CustomResource(stack, 'CustomResource', {
 });
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/Provider/CustomResourceProvider',
+    '/Stack/Provider/CleanUpProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
+
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   'Stack/Vpc/Resource',

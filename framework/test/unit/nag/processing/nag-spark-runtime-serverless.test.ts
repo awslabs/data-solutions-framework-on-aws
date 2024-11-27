@@ -5,7 +5,7 @@
 /**
  * Nag for Spark runtime EMR Serverless
  *
- * @group unit/best-practice/spark-runtime-serverless
+ * @group unit/best-practice/processing/spark-runtime-serverless
  */
 
 import { App, Aspects, Stack } from 'aws-cdk-lib';

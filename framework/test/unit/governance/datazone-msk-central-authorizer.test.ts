@@ -319,15 +319,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Action: 'sts:AssumeRole',
               Effect: 'Allow',
               Principal: {
-                Service: {
-                  'Fn::FindInMap': [
-                    'ServiceprincipalMap',
-                    {
-                      Ref: 'AWS::Region',
-                    },
-                    'states',
-                  ],
-                },
+                Service: 'states.amazonaws.com',
               },
             },
           ],
@@ -552,15 +544,7 @@ describe ('Creating a DataZoneMskCentralAuthorizer with default configuration', 
               Action: 'sts:AssumeRole',
               Effect: 'Allow',
               Principal: {
-                Service: {
-                  'Fn::FindInMap': [
-                    'ServiceprincipalMap',
-                    {
-                      Ref: 'AWS::Region',
-                    },
-                    'states',
-                  ],
-                },
+                Service: 'states.amazonaws.com',
               },
             },
             {

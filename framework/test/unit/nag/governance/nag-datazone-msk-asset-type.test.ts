@@ -5,7 +5,7 @@
 /**
 * Tests DataZoneMskAssetType
 *
-* @group unit/best-practice/datazone-msk-asset-type
+* @group unit/best-practice/governance/datazone-msk-asset-type
 */
 
 
@@ -42,6 +42,15 @@ NagSuppressions.addResourceSuppressionsByPath(stack, [
   { id: 'AwsSolutions-IAM4', reason: 'Inherited from the DataZoneCustomAssetTypeFactory construct, not in the scope of this test' },
 ]);
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/MskAssetType/DZCustomAssetTypeHandler/Provider/CustomResourceProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));

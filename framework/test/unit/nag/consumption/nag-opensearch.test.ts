@@ -121,6 +121,18 @@ NagSuppressions.addResourceSuppressionsByPath(
   true,
 );
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/OpenSearchApi/Provider',
+    '/Stack/AWS679f53fac002430cb0da5b7982bd2287',
+    '/Stack/OpenSearch/CreateSLR/Provider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
+
 
 test('No unsuppressed Warnings', () => {
   const warnings = Annotations.fromStack(stack).findWarning('*', Match.stringLikeRegexp('AwsSolutions-.*'));

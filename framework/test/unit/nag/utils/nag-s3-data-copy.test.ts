@@ -37,6 +37,17 @@ new S3DataCopy(stack, 'S3DataCopy', {
 });
 Aspects.of(stack).add(new AwsSolutionsChecks());
 
+NagSuppressions.addResourceSuppressionsByPath(stack,
+  [
+    '/Stack/S3DataCopy/Provider/CustomResourceProvider',
+    '/Stack/S3DataCopy/Provider/CleanUpProvider',
+  ],
+  [
+    { id: 'CdkNagValidationFailure', reason: 'CDK custom resource provider framework is using intrinsic function to get latest node runtime per region which makes the NAG validation fails' },
+  ],
+  true,
+);
+
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   'Stack/S3DataCopy/Provider/OnEventHandlerRole/DefaultPolicy/Resource',
