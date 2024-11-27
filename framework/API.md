@@ -22454,6 +22454,8 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_5">V7_5</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_4">V7_4</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_3">V7_3</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
@@ -22478,6 +22480,16 @@ Per Topic Per Partition metrics help you understand consumer group lag at the to
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_5` <a name="V7_5" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_5"></a>
+
+---
+
+
+##### `V7_4` <a name="V7_4" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_4"></a>
+
+---
+
 
 ##### `V7_3` <a name="V7_3" id="@cdklabs/aws-data-solutions-framework.processing.EmrContainersRuntimeVersion.V7_3"></a>
 
@@ -22597,6 +22609,8 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_5">V7_5</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_4">V7_4</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_3">V7_3</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_2">V7_2</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_1">V7_1</a></code> | *No description.* |
@@ -22621,6 +22635,16 @@ Enum defining the EMR version as defined in the [Amazon EMR documentation](https
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V5_32">V5_32</a></code> | *No description.* |
 
 ---
+
+##### `V7_5` <a name="V7_5" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_5"></a>
+
+---
+
+
+##### `V7_4` <a name="V7_4" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_4"></a>
+
+---
+
 
 ##### `V7_3` <a name="V7_3" id="@cdklabs/aws-data-solutions-framework.processing.EmrRuntimeVersion.V7_3"></a>
 
@@ -23019,6 +23043,8 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_5">EMR_7_5</a></code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_4">EMR_7_4</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_3">EMR_7_3</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_2">EMR_7_2</a></code> | *No description.* |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_1">EMR_7_1</a></code> | *No description.* |
@@ -23032,6 +23058,16 @@ The list of supported Spark images to use in the SparkCICDPipeline.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_6_9">EMR_6_9</a></code> | *No description.* |
 
 ---
+
+##### `EMR_7_5` <a name="EMR_7_5" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_5"></a>
+
+---
+
+
+##### `EMR_7_4` <a name="EMR_7_4" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_4"></a>
+
+---
+
 
 ##### `EMR_7_3` <a name="EMR_7_3" id="@cdklabs/aws-data-solutions-framework.processing.SparkImage.EMR_7_3"></a>
 
