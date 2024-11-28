@@ -117,7 +117,7 @@ account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 ##### `addEventNotification` <a name="addEventNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification"></a>
 
 ```typescript
-public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
+public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: ...NotificationKeyFilter[]): void
 ```
 
 Adds a bucket notification event destination.
@@ -151,7 +151,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addEventNotification.parameter.filters"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
+- *Type:* ...aws-cdk-lib.aws_s3.NotificationKeyFilter[]
 
 S3 object key filter rules to determine which objects trigger this event.
 
@@ -164,7 +164,7 @@ for details about allowed filter rules.
 ##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
-public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
+public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: ...NotificationKeyFilter[]): void
 ```
 
 Subscribes a destination to receive notifications when an object is created in the bucket.
@@ -182,7 +182,7 @@ The notification destination (see onEvent).
 
 ###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
+- *Type:* ...aws-cdk-lib.aws_s3.NotificationKeyFilter[]
 
 Filters (see onEvent).
 
@@ -191,7 +191,7 @@ Filters (see onEvent).
 ##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
-public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
+public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: ...NotificationKeyFilter[]): void
 ```
 
 Subscribes a destination to receive notifications when an object is removed from the bucket.
@@ -209,7 +209,7 @@ The notification destination (see onEvent).
 
 ###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
+- *Type:* ...aws-cdk-lib.aws_s3.NotificationKeyFilter[]
 
 Filters (see onEvent).
 
@@ -305,7 +305,7 @@ Parameter type is `any` but `string` should be passed in.
 ##### `grantPublicAccess` <a name="grantPublicAccess" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess"></a>
 
 ```typescript
-public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
+public grantPublicAccess(allowedActions: ...string[], keyPrefix?: string): Grant
 ```
 
 Allows unrestricted access to objects from this bucket.
@@ -331,7 +331,7 @@ impossible to modify the policy of an existing bucket.
 
 ###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 the set of S3 actions to allow.
 
@@ -1288,7 +1288,7 @@ account for data recovery and cleanup later (`RemovalPolicy.RETAIN`).
 ##### `addEventNotification` <a name="addEventNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification"></a>
 
 ```typescript
-public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
+public addEventNotification(event: EventType, dest: IBucketNotificationDestination, filters: ...NotificationKeyFilter[]): void
 ```
 
 Adds a bucket notification event destination.
@@ -1322,7 +1322,7 @@ The notification destination (Lambda, SNS Topic or SQS Queue).
 
 ###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addEventNotification.parameter.filters"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
+- *Type:* ...aws-cdk-lib.aws_s3.NotificationKeyFilter[]
 
 S3 object key filter rules to determine which objects trigger this event.
 
@@ -1335,7 +1335,7 @@ for details about allowed filter rules.
 ##### `addObjectCreatedNotification` <a name="addObjectCreatedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification"></a>
 
 ```typescript
-public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
+public addObjectCreatedNotification(dest: IBucketNotificationDestination, filters: ...NotificationKeyFilter[]): void
 ```
 
 Subscribes a destination to receive notifications when an object is created in the bucket.
@@ -1353,7 +1353,7 @@ The notification destination (see onEvent).
 
 ###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectCreatedNotification.parameter.filters"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
+- *Type:* ...aws-cdk-lib.aws_s3.NotificationKeyFilter[]
 
 Filters (see onEvent).
 
@@ -1362,7 +1362,7 @@ Filters (see onEvent).
 ##### `addObjectRemovedNotification` <a name="addObjectRemovedNotification" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification"></a>
 
 ```typescript
-public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: NotificationKeyFilter): void
+public addObjectRemovedNotification(dest: IBucketNotificationDestination, filters: ...NotificationKeyFilter[]): void
 ```
 
 Subscribes a destination to receive notifications when an object is removed from the bucket.
@@ -1380,7 +1380,7 @@ The notification destination (see onEvent).
 
 ###### `filters`<sup>Required</sup> <a name="filters" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.addObjectRemovedNotification.parameter.filters"></a>
 
-- *Type:* aws-cdk-lib.aws_s3.NotificationKeyFilter
+- *Type:* ...aws-cdk-lib.aws_s3.NotificationKeyFilter[]
 
 Filters (see onEvent).
 
@@ -1476,7 +1476,7 @@ Parameter type is `any` but `string` should be passed in.
 ##### `grantPublicAccess` <a name="grantPublicAccess" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess"></a>
 
 ```typescript
-public grantPublicAccess(allowedActions: string, keyPrefix?: string): Grant
+public grantPublicAccess(allowedActions: ...string[], keyPrefix?: string): Grant
 ```
 
 Allows unrestricted access to objects from this bucket.
@@ -1502,7 +1502,7 @@ impossible to modify the policy of an existing bucket.
 
 ###### `allowedActions`<sup>Required</sup> <a name="allowedActions" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPublicAccess.parameter.allowedActions"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 the set of S3 actions to allow.
 
