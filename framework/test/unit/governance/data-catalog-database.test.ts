@@ -163,7 +163,7 @@ describe('DataCatalogDatabase with multiple org location prefix', () => {
     bucketName: dbBucketName,
   });
 
-  const locationPrefix = '/org1/database/';
+  const locationPrefix = '/org1/database';
   const dbName = 'sample';
   new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
@@ -213,7 +213,7 @@ describe('DataCatalogDatabase default construct', () => {
     assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
     roleName: testPrincipalRoleName,
   });
-  const locationPrefix = '/database/';
+  const locationPrefix = '/database';
   const dbName = 'sample';
   const catalogDb = new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
@@ -483,7 +483,7 @@ describe('DataCatalogDatabase with disabled crawler', () => {
   const dbBucket = new Bucket(stack, 'dbBucket', {
     bucketName: dbBucketName,
   });
-  const locationPrefix = '/database/';
+  const locationPrefix = '/database';
   const dbName = 'sample';
   new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
@@ -520,7 +520,7 @@ describe('DataCatalogDatabase with missing leading slash in the prefix and globa
   const dbBucket = new Bucket(stack, 'dbBucket', {
     bucketName: dbBucketName,
   });
-  const locationPrefix = 'database/';
+  const locationPrefix = 'database';
   const dbName = 'sample';
   new DataCatalogDatabase(stack, 'database', {
     locationBucket: dbBucket,
