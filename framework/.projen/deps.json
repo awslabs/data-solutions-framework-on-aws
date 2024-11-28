@@ -132,6 +132,10 @@
       "type": "bundled"
     },
     {
+      "name": "@types/semver",
+      "type": "bundled"
+    },
+    {
       "name": "js-yaml",
       "type": "bundled"
     },

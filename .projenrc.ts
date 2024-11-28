@@ -162,7 +162,8 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     'js-yaml',
     '@types/js-yaml',
     'simple-base',
-    'semver'
+    'semver',
+    '@types/semver'
   ],
 
   jestOptions: {
