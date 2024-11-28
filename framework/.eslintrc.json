@@ -8,6 +8,7 @@
   "plugins": [
     "@typescript-eslint",
     "import",
+    "@stylistic",
     "eslint-plugin-local-rules"
   ],
   "parser": "@typescript-eslint/parser",
@@ -46,7 +47,7 @@
     "indent": [
       "off"
     ],
-    "@typescript-eslint/indent": [
+    "@stylistic/indent": [
       "error",
       2
     ],
@@ -117,7 +118,7 @@
       "multi-line",
       "consistent"
     ],
-    "@typescript-eslint/member-delimiter-style": [
+    "@stylistic/member-delimiter-style": [
       "error"
     ],
     "semi": [
@@ -169,7 +170,7 @@
         }
       }
     ],
-    "no-duplicate-imports": [
+    "import/no-duplicates": [
       "error"
     ],
     "no-shadow": [

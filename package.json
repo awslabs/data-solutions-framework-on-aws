@@ -25,17 +25,17 @@
     "organization": true
   },
   "devDependencies": {
-    "@types/node": "16.0.0",
-    "constructs": "^10.0.0",
+    "@types/node": "18.0.0",
+    "constructs": "10.4.2",
     "glob": "^10.3.6",
-    "lerna": "^8.1.2",
-    "lerna-projen": "^0.1.364",
-    "projen": "^0.80.10",
+    "lerna": "8.1.9",
+    "lerna-projen": "0.1.524",
+    "projen": "0.90.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "5.5.4"
   },
   "peerDependencies": {
-    "@types/node": "^16"
+    "@types/node": "^18"
   },
   "resolutions": {
     "wide-align": "1.1.5"
