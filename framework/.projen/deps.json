@@ -14,6 +14,11 @@
       "type": "build"
     },
     {
+      "name": "@stylistic/eslint-plugin",
+      "version": "^2",
+      "type": "build"
+    },
+    {
       "name": "@types/eslint",
       "type": "build"
     },
@@ -23,22 +28,26 @@
     },
     {
       "name": "@types/node",
-      "version": "^18",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
-      "version": "^6",
+      "version": "^8",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
-      "version": "^6",
+      "version": "^8",
       "type": "build"
     },
     {
       "name": "cdk-nag",
       "version": "^2.0.0",
+      "type": "build"
+    },
+    {
+      "name": "commit-and-tag-version",
+      "version": "^12",
       "type": "build"
     },
     {
@@ -59,7 +68,7 @@
     },
     {
       "name": "eslint",
-      "version": "^8",
+      "version": "^9",
       "type": "build"
     },
     {
@@ -81,6 +90,7 @@
     },
     {
       "name": "jsii-docgen",
+      "version": "^10.5.0",
       "type": "build"
     },
     {
@@ -102,16 +112,7 @@
       "type": "build"
     },
     {
-      "name": "projen",
-      "type": "build"
-    },
-    {
       "name": "rosetta",
-      "type": "build"
-    },
-    {
-      "name": "standard-version",
-      "version": "^9",
       "type": "build"
     },
     {
@@ -128,10 +129,6 @@
     },
     {
       "name": "@types/js-yaml",
-      "type": "bundled"
-    },
-    {
-      "name": "esbuild",
       "type": "bundled"
     },
     {
