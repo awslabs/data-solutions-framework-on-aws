@@ -18,14 +18,17 @@ export default {
             schema: [],
         },
         create: function (context) {
+
+            const sourceCode = context.sourceCode ?? context.getSourceCode();
+
             return {
                 NewExpression: function (node) { 
                     if (node.callee.type != 'Identifier') {
                         return;
                     }
-
-                    const typeChecker = context.parserServices.program.getTypeChecker();
-                    const typescriptNode = <ts.Node>context.parserServices.esTreeNodeToTSNodeMap.get(node);
+                    
+                    const typeChecker = sourceCode.parserServices.program.getTypeChecker();
+                    const typescriptNode = <ts.Node>sourceCode.parserServices.esTreeNodeToTSNodeMap.get(node);
                     const instantiatedType = <ts.Type>typeChecker.getTypeAtLocation(typescriptNode);
                     const baseTypes = instantiatedType.getBaseTypes();
 
