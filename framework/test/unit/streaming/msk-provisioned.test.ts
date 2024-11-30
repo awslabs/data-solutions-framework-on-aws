@@ -15,6 +15,7 @@ import { Match, Template } from 'aws-cdk-lib/assertions';
 
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { Role } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { AclOperationTypes, AclPermissionTypes, AclResourceTypes, Authentication, ClientAuthentication, KafkaClientLogLevel, KafkaVersion, MskBrokerInstanceType, MskProvisioned, ResourcePatternTypes, VpcClientAuthentication } from '../../../src/streaming/lib/msk';
@@ -351,6 +352,9 @@ describe('Create an MSK Provisioned cluster using 3.7.X.Kraft version', () => {
   const msk = new MskProvisioned(stack, 'cluster', {
     kafkaVersion: KafkaVersion.V3_7_X_KRAFT,
     removalPolicy: RemovalPolicy.DESTROY,
+    environmentEncryption: new Key(stack, 'CustomKafkaApiKey', {
+      description: 'Custom KMS key for KafkaApi encryption',
+    }),
   });
 
   msk.setTopic('topic1',
@@ -381,4 +385,70 @@ describe('Create an MSK Provisioned cluster using 3.7.X.Kraft version', () => {
     template.resourceCountIs('Custom::Trigger', 0);
   });
 
+  test('Lambda functions should use the custom KMS key', () => {
+    // Define the prefixes of the lambda that have env var and should be encrypted
+    const lambdaPrefixes = [
+      'clusterKafkaApiMskIamProviderCleanUpLambda',
+      'clusterKafkaApiMskIamProviderCleanUpProviderframeworkonEvent',
+      'clusterKafkaApiMskIamProviderCustomResourceProviderframeworkonEvent',
+      'clusterSetClusterConfigurationProviderCleanUpLambda',
+      'clusterSetClusterConfigurationProviderCleanUpProviderframeworkonEvent',
+      'clusterSetClusterConfigurationProviderOnEventHandlerFunction',
+      'clusterSetClusterConfigurationProviderIsCompleteHandlerFunction',
+      'clusterSetClusterConfigurationProviderCustomResourceProviderframeworkonEvent',
+      'clusterSetClusterConfigurationProviderCustomResourceProviderframeworkisComplete',
+      'clusterSetClusterConfigurationProviderCustomResourceProviderframeworkonTimeout',
+      'clusterUpdateVpcConnectivityProviderCleanUpLambda',
+      'clusterUpdateVpcConnectivityProviderCleanUpProviderframeworkonEvent',
+      'clusterUpdateVpcConnectivityProviderOnEventHandlerFunction',
+      'clusterUpdateVpcConnectivityProviderCustomResourceProviderframeworkonEvent',
+    ];
+
+    const matchingResources = template.findResources('AWS::Lambda::Function');
+
+    // Count how many matching resources have the correct KmsKeyArn
+    const matchingCount = Object.entries(matchingResources).filter(([_, lambda]) => {
+      return lambda.Properties.KmsKeyArn &&
+             lambda.Properties.KmsKeyArn['Fn::GetAtt'] &&
+             lambda.Properties.KmsKeyArn['Fn::GetAtt'][0].match(/CustomKafkaApiKey.*/);
+    }).length;
+
+    // The number of matching resources should greater or equal the number of prefixes
+    expect(lambdaPrefixes.length).toBeLessThanOrEqual(matchingCount);
+  });
+
+
+  test('Lambda role policies should have correct KMS permissions', () => {
+    // Define the policy names we want to check (without the hash)
+    const policiesToCheck = [
+      'clusterKafkaApiMskIamProviderOnEventHandlerRoleDefaultPolicy',
+      'clusterKafkaApiMskIamProviderCleanUpRoleDefaultPolicy',
+      'clusterSetClusterConfigurationLambdaExecutionRoleDefaultPolicy',
+    ];
+    // Loop over maching policy to check if the KMS encryption/decryption permissions are granted
+    policiesToCheck.forEach(policyNamePrefix => {
+      template.hasResourceProperties('AWS::IAM::Policy', {
+        PolicyName: Match.stringLikeRegexp(`^${policyNamePrefix}.*`),
+        PolicyDocument: {
+          Statement: Match.arrayWith([
+            {
+              Effect: 'Allow',
+              Action: Match.arrayEquals([
+                'kms:Decrypt',
+                'kms:Encrypt',
+                'kms:ReEncrypt*',
+                'kms:GenerateDataKey*',
+              ]),
+              Resource: {
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('.*CustomKafkaApiKey.*'),
+                  'Arn',
+                ],
+              },
+            },
+          ]),
+        },
+      });
+    });
+  });
 });
