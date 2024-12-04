@@ -53,10 +53,11 @@ export function registerS3Location(
   locationBucket: IBucket,
   locationPrefix: string,
   accessMode?: PermissionModel,
+  dataAccessRole?: IRole,
 ) : [IRole, CfnResource] {
 
   // create the IAM role for LF data access
-  const lfDataAccessRole = new Role(scope, `${id}DataAccessRole`, {
+  const lfDataAccessRole = dataAccessRole || new Role(scope, `${id}DataAccessRole`, {
     assumedBy: new ServicePrincipal('lakeformation.amazonaws.com'),
   });
 

@@ -131,7 +131,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
         if (props.permissionModel === PermissionModel.LAKE_FORMATION) {
           // Create a role for the AwsCustomResource to revoke IAMAllowedPrincipal
-          this.lfRevokeRole = new Role(this, 'LfRevokeRole', {
+          this.lfRevokeRole = props.lakeFormationConfigurationRole || new Role(this, 'LfRevokeRole', {
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
           });
           lfAdmins.push(this.lfRevokeRole);
@@ -147,6 +147,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
             props.locationBucket,
             this.cleanedLocationPrefix,
             props.permissionModel,
+            props.lakeFormationDataAccessRole,
           );
           this.lfDataAccessRole.node.addDependency(this.dataLakeSettings!);
 
@@ -407,7 +408,6 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(s3Props.locationPrefix);
     const grantPrefix = s3Props.locationPrefix == '/' ? '' : s3Props.locationPrefix;
-    props.locationBucket!.grantRead(this.crawlerRole!, grantPrefix+'*');
 
     let useLakeFormation = false;
     let lfDbGrant: CfnPrincipalPermissions | undefined;
@@ -441,6 +441,8 @@ export class DataCatalogDatabase extends TrackedConstruct {
       // lfLocationGrant.node.addDependency(this.cdkLfLocationGrant!);
       lfDbGrant.node.addDependency(this.database);
       lfTablesGrant.node.addDependency(this.database);
+    } else {
+      props.locationBucket!.grantRead(this.crawlerRole!, grantPrefix+'*');
     }
 
     const crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
