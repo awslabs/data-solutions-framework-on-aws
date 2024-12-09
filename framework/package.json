@@ -40,16 +40,18 @@
     "@aws-cdk/cli-lib-alpha": "2.165.0-alpha.0",
     "@aws-cdk/lambda-layer-kubectl-v30": "^2.0.0",
     "@jest/globals": "^29.7.0",
+    "@stylistic/eslint-plugin": "^2",
     "@types/eslint": "^8.56.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^18",
-    "@typescript-eslint/eslint-plugin": "^6",
-    "@typescript-eslint/parser": "^6",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
     "aws-cdk-lib": "2.165.0",
     "cdk-nag": "^2.0.0",
+    "commit-and-tag-version": "^12",
     "constructs": "10.4.2",
     "esbuild": "^0.21.0",
-    "eslint": "^8",
+    "eslint": "^9",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-local-rules": "^2.0.1",
@@ -58,13 +60,11 @@
     "jest-runner-groups": "^2.2.0",
     "jsii": "~5.5.0",
     "jsii-diff": "^1.96.0",
-    "jsii-docgen": "^10.3.26",
+    "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.96.0",
     "jsii-rosetta": "~5.5.0",
     "node-libcurl": "^4.0.0",
-    "projen": "^0.87.2",
     "rosetta": "^1.1.0",
-    "standard-version": "^9",
     "sync-request-curl": "^3.0.0",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.4"
@@ -76,14 +76,14 @@
   "dependencies": {
     "@aws-cdk/lambda-layer-kubectl-v30": "^2.0.0",
     "@types/js-yaml": "^4.0.9",
-    "esbuild": "^0.21.0",
+    "@types/semver": "^7.5.8",
     "js-yaml": "^4.1.0",
     "semver": "^7.6.0",
     "simple-base": "^1.0.0"
   },
   "bundledDependencies": [
     "@types/js-yaml",
-    "esbuild",
+    "@types/semver",
     "js-yaml",
     "semver",
     "simple-base"
@@ -102,6 +102,7 @@
   "homepage": "https://awslabs.github.io/data-solutions-framework-on-aws/",
   "version": "0.0.0",
   "jest": {
+    "coverageProvider": "v8",
     "runner": "groups",
     "transform": {
       "^.+\\.[t]sx?$": [
@@ -121,8 +122,8 @@
       "ts-jest": null
     },
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
+      "<rootDir>/@(src|test)/**/*(*.)@(spec|test).ts?(x)",
+      "<rootDir>/@(src|test)/**/__tests__/**/*.ts?(x)"
     ],
     "clearMocks": true,
     "collectCoverage": true,
