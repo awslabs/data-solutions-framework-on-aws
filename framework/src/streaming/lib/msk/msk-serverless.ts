@@ -137,6 +137,7 @@ export class MskServerless extends TrackedConstruct {
       clientAuthentication: ClientAuthentication.sasl( { iam: true }),
       clusterType: MskClusterType.SERVERLESS,
       kafkaClientLogLevel: props?.kafkaClientLogLevel ?? KafkaClientLogLevel.WARN,
+      environmentEncryption: props?.lambdaEnvironmentEncryptionKey,
     });
 
     this.serviceToken = this.kafkaApi.serviceToken;

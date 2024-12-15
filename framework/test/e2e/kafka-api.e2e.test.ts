@@ -12,6 +12,7 @@ import { App, RemovalPolicy, CfnOutput } from 'aws-cdk-lib';
 
 import { CertificateAuthority } from 'aws-cdk-lib/aws-acmpca';
 import { SecurityGroup, SubnetType } from 'aws-cdk-lib/aws-ec2';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { CfnCluster } from 'aws-cdk-lib/aws-msk';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { TestStack } from './test-stack';
@@ -95,6 +96,9 @@ const mskApi = new KafkaApi(stack, 'kafkaApi', {
   kafkaClientLogLevel: KafkaClientLogLevel.DEBUG,
   clusterType: MskClusterType.PROVISIONED,
   removalPolicy: RemovalPolicy.DESTROY,
+  environmentEncryption: new Key(stack, 'CustomKafkaApiKey', {
+    description: 'Custom KMS key for KafkaApi encryption',
+  }),
 });
 
 mskApi.setAcl('acl1',
