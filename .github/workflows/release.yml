@@ -53,6 +53,7 @@ jobs:
         with:
           name: examples-artifact
           path: examples
+          include-hidden-files: true
   release_github:
     name: Publish to GitHub Releases
     needs: release
