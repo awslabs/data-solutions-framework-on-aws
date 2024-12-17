@@ -1105,10 +1105,10 @@
     "@typescript-eslint/types" "8.16.0"
     eslint-visitor-keys "^4.2.0"
 
-"@xmldom/xmldom@^0.9.5":
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.9.5.tgz#a2c08c3a0c5931daae67dd0385edf2f464d1fee4"
-  integrity sha512-6g1EwSs8cr8JhP1iBxzyVAWM6BIDvx9Y3FZRIQiMDzgG43Pxi8YkWOZ0nQj2NHgNzgXDZbJewFx/n+YAvMZrfg==
+"@xmldom/xmldom@^0.9.6":
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.9.6.tgz#3eaefb585c1f920e06fb35e6dcb8d505445621c0"
+  integrity sha512-Su4xcxR0CPGwlDHNmVP09fqET9YxbyDXHaSob6JlBH7L6reTYaeim6zbk9o08UarO0L5GTRo3uzl0D+9lSxmvw==
 
 JSONStream@^1.3.5:
   version "1.3.5"
@@ -3964,13 +3964,13 @@ jsii-reflect@^1.105.0:
     yargs "^16.2.0"
 
 jsii-rosetta@~5.5.0:
-  version "5.5.15"
-  resolved "https://registry.yarnpkg.com/jsii-rosetta/-/jsii-rosetta-5.5.15.tgz#75c9930676f4be5e25ee3f7ec8de2977ea3fe5af"
-  integrity sha512-t6attnVrlty/2tnRJO/Qvky4WILAOIH6A3vdOHLGQUjLxCTxEtlsVbdPMgmxDdtia8JCM1lH4asJhB8I82wc3Q==
+  version "5.5.18"
+  resolved "https://registry.yarnpkg.com/jsii-rosetta/-/jsii-rosetta-5.5.18.tgz#d07fa457c169e7cf62bec6479567a620320db87e"
+  integrity sha512-1Q66bCPbKEcALxlZ5vP6xAxSkQ3NusBuMT4+86R16N0kLzHjzyJlW4zp32MvaqDT3MfOQPDu9fkJeThvgzMJ+w==
   dependencies:
     "@jsii/check-node" "1.105.0"
     "@jsii/spec" "^1.105.0"
-    "@xmldom/xmldom" "^0.9.5"
+    "@xmldom/xmldom" "^0.9.6"
     chalk "^4"
     commonmark "^0.31.2"
     fast-glob "^3.3.2"
