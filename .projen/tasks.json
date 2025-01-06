@@ -123,7 +123,7 @@
       "name": "license",
       "description": "Overwrite LICENSE file with correct copyrightPeriod and cpyrightOwner",
       "env": {
-        "PERIOD": "2021-2024",
+        "PERIOD": "2021-2025",
         "OWNER": "Amazon.com, Inc. or its affiliates. All Rights Reserved."
       },
       "steps": [
