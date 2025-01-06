@@ -16,6 +16,7 @@ import { Key } from 'aws-cdk-lib/aws-kms';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 import { DataCatalogDatabase } from '../../../../src/governance';
 import { AnalyticsBucket } from '../../../../src/storage';
+import { PermissionModel } from '../../../../src/utils';
 
 const app = new App();
 const stack = new Stack(app, 'Stack');
@@ -40,6 +41,20 @@ const db = new DataCatalogDatabase(stack, 'TestCatalogDatabase', {
   locationBucket: bucket,
   locationPrefix: 'sample',
   name: 'sample-db',
+});
+
+new DataCatalogDatabase(stack, 'TestLfCatalogDatabase', {
+  locationBucket: bucket,
+  locationPrefix: 'sample',
+  name: 'sample-db',
+  permissionModel: PermissionModel.LAKE_FORMATION
+});
+
+new DataCatalogDatabase(stack, 'TestHybridCatalogDatabase', {
+  locationBucket: bucket,
+  locationPrefix: 'sample',
+  name: 'sample-db',
+  permissionModel: PermissionModel.HYBRID
 });
 
 db.grantReadOnlyAccess(role);
