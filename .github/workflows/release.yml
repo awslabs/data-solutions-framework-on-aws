@@ -35,12 +35,16 @@ jobs:
         if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
         run: cd dist && getfacl -R . > permissions-backup.acl
         continue-on-error: true
+      - name: Clean artifact
+        working-directory: framework
+        if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
+        run: rm -Rf node_modules
       - name: Upload artifact
         if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: build-artifact
-          path: framework/dist
+          path: framework
           include-hidden-files: true
       - name: Backup examples permissions
         working-directory: examples
@@ -69,7 +73,7 @@ jobs:
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: build-artifact
-          path: framework/dist
+          path: framework
       - name: Download examples artifact
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
@@ -83,12 +87,6 @@ jobs:
         working-directory: examples
         run: setfacl --restore=permissions-backup.acl
         continue-on-error: true
-      - name: Prepare Repository
-        working-directory: framework
-        run: mv dist .repo
-      - name: Collect GitHub Metadata
-        working-directory: framework
-        run: mv .repo/dist dist
       - name: Release
         working-directory: framework
         env:
@@ -118,25 +116,13 @@ jobs:
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: build-artifact
-          path: framework/dist
+          path: framework
       - name: Restore build artifact permissions
         working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
-      - name: Prepare Repository
-        working-directory: framework
-        run: mv dist .repo
-      - name: Install Dependencies
-        working-directory: framework
-        run: cd .repo && yarn install --check-files --frozen-lockfile
-      - name: Create js artifact
-        working-directory: framework
-        run: cd .repo && npx projen package:js
-      - name: Collect js Artifact
-        working-directory: framework
-        run: mv .repo/dist dist
       - name: Release
-        working-directory: framework
+        working-directory: framework/dist
         env:
           NPM_DIST_TAG: latest
           NPM_REGISTRY: registry.npmjs.org
@@ -162,23 +148,11 @@ jobs:
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: build-artifact
-          path: framework/dist
+          path: framework
       - name: Restore build artifact permissions
         working-directory: framework
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
-      - name: Prepare Repository
-        working-directory: framework
-        run: mv dist .repo
-      - name: Install Dependencies
-        working-directory: framework
-        run: cd .repo && yarn install --check-files --frozen-lockfile
-      - name: Create python artifact
-        working-directory: framework
-        run: cd .repo && npx projen package:python
-      - name: Collect python Artifact
-        working-directory: framework
-        run: mv .repo/dist dist
       - name: Release
         uses: pypa/gh-action-pypi-publish@2f6f737ca5f74c637829c0f5c3acd0e29ea5e8bf #v1.8.11
         with:
