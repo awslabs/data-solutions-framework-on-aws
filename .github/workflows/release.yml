@@ -122,7 +122,7 @@ jobs:
         run: cd dist && setfacl --restore=permissions-backup.acl
         continue-on-error: true
       - name: Release
-        working-directory: framework/dist
+        working-directory: framework
         env:
           NPM_DIST_TAG: latest
           NPM_REGISTRY: registry.npmjs.org
