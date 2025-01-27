@@ -131,7 +131,7 @@ export class RedshiftServerlessNamespace extends TrackedConstruct {
     this.namespaceParameters = {
       namespaceName: this.namespaceName,
       managedAdminPasswordKeyId: this.adminSecretKey.keyId,
-      adminUsername: 'admin',
+      adminUsername: props.adminUsername || 'admin',
       dbName: props.dbName,
       defaultIamRoleArn: props.defaultIAMRole ? props.defaultIAMRole.roleArn : undefined,
       iamRoles: this.roles ? Object.keys(this.roles) : undefined,
