@@ -206,6 +206,35 @@ You need to also provide the accounts information in the cdk.json in the form of
 }
 ```
 
+## User Defined Stages
+
+To define multiple stages (which can also be deployed in different AWS accounts by following the bootstrap command in the previous section), configure the `cdk.json` file with the following:
+
+```json
+{
+  "environments": [
+    {
+      "stageName": "<STAGE_NAME_1>",
+      "account": "<STAGE_ACCOUNT_ID>",
+      "region": "<REGION>",
+      "triggerIntegTest": "<OPTIONAL_BOOLEAN_CAN_BE_OMMITTED>"
+    },
+    {
+      "stageName": "<STAGE_NAME_2>",
+      "account": "<STAGE_ACCOUNT_ID>",
+      "region": "<REGION>",
+      "triggerIntegTest": "<OPTIONAL_BOOLEAN_CAN_BE_OMMITTED>"
+    },
+    {
+      "stageName": "<STAGE_NAME_3>",
+      "account": "<STAGE_ACCOUNT_ID>",
+      "region": "<REGION>",
+      "triggerIntegTest": "<OPTIONAL_BOOLEAN_CAN_BE_OMMITTED>"
+    }
+  ]
+}
+```
+
 ## Defining a CDK Stack for the Spark application
 
 The `SparkCICDPipeline` construct deploys an application stack, which contains your business logic, into staging and production environments.

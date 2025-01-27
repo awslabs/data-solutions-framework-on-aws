@@ -10,9 +10,31 @@ import { ApplicationStackFactory } from './application-stack-factory';
 /**
  * The list of CICD Stages used in CICD Pipelines.
  */
-export enum CICDStage {
-  STAGING = 'staging',
-  PROD = 'prod',
+export class CICDStage {
+
+  /**
+   * Prod stage
+   */
+  public static readonly PROD = CICDStage.of('PROD');
+
+  /**
+   * Staging stage
+   */
+  public static readonly STAGING = CICDStage.of('STAGING');
+
+  /**
+   * Custom stage
+   * @param stage the stage inside the pipeline
+   * @returns
+   */
+  public static of(stage: string) {
+    return new CICDStage(stage);
+  }
+
+  /**
+   * @param stage the stage inside the pipeline
+   */
+  private constructor(public readonly stage: string) {}
 }
 
 /**
