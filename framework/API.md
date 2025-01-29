@@ -3294,7 +3294,7 @@ public grantReadOnlyAccess(principal: IPrincipal): AddToPrincipalPolicyResult
 
 Grants read access via identity based policy to the principal.
 
-This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables. 
+This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables.
 Only valid for IAM permission model.
 
 ###### `principal`<sup>Required</sup> <a name="principal" id="@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabase.grantReadOnlyAccess.parameter.principal"></a>
