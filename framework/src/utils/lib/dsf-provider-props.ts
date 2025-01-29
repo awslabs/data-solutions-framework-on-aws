@@ -81,7 +81,7 @@ export interface HandlerDefinition {
    */
   readonly bundling?: BundlingOptions;
   /**
-   * The role used by the lamnda function
+   * The role used by the lambda function
    * @default - A new role is created.
    */
   readonly iamRole?: IRole;

@@ -51,7 +51,7 @@ export function registerS3Location(
   scope: Construct,
   id: string,
   locationBucket: IBucket,
-  locationPrefix: string,
+  locationPrefix?: string,
   accessMode?: PermissionModel,
   dataAccessRole?: IRole,
 ) : [IRole, CfnResource] {
@@ -67,7 +67,7 @@ export function registerS3Location(
     hybridAccessEnabled: accessMode === PermissionModel.HYBRID ? true : false,
     useServiceLinkedRole: false,
     roleArn: lfDataAccessRole.roleArn,
-    resourceArn: locationBucket.arnForObjects(locationPrefix),
+    resourceArn: locationPrefix ? locationBucket.arnForObjects(locationPrefix) : locationBucket.bucketArn,
   });
 
   dataLakeLocation.node.addDependency(grantReadWrite);

@@ -3,10 +3,10 @@
 
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { CfnCrawler } from 'aws-cdk-lib/aws-glue';
+import { IRole } from 'aws-cdk-lib/aws-iam';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { DataLakeStorage } from '../../storage';
 import { PermissionModel } from '../../utils';
-import { IRole } from 'aws-cdk-lib/aws-iam';
 
 /**
  * Properties for the `DataLakeCatalog` Construct
@@ -71,7 +71,7 @@ export interface DataLakeCatalogProps {
   readonly lakeFormationDataAccessRole?: IRole;
 
   /**
-   * The IAM Role used to perform Lake Formation configuration. 
+   * The IAM Role used to perform Lake Formation configuration.
    * Only needed when permissionModel is set to Lake Formation or Hybrid
    * @default - A new role is created for the entire Data Lake
    */

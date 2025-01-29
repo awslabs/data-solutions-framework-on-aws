@@ -10,10 +10,10 @@
 
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { DataLakeCatalog } from '../../../src/governance';
 import { DataLakeStorage } from '../../../src/storage';
 import { PermissionModel } from '../../../src/utils';
-import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 describe ('Create catalog for bronze, silver, gold with no provided databaseName', () => {
   const app = new App();
@@ -396,35 +396,35 @@ describe('Create catalog for data lake with lake formation permission and other 
         AssumeRolePolicyDocument: {
           Statement: [
             {
-              Action: "sts:AssumeRole",
-              Effect: "Allow",
+              Action: 'sts:AssumeRole',
+              Effect: 'Allow',
               Principal: {
-                Service: "lakeformation.amazonaws.com"
-              }
-            }
+                Service: 'lakeformation.amazonaws.com',
+              },
+            },
           ],
         },
       }),
-      1
+      1,
     );
   });
 
-  test('should create one IAM role for lake formation configuration', () => {
+  test('should create two IAM roles for lake formation configuration', () => {
     template.resourcePropertiesCountIs('AWS::IAM::Role',
       Match.objectLike({
         AssumeRolePolicyDocument: {
           Statement: [
             {
-              Action: "sts:AssumeRole",
-              Effect: "Allow",
+              Action: 'sts:AssumeRole',
+              Effect: 'Allow',
               Principal: {
-                Service: "lambda.amazonaws.com"
-              }
-            }
+                Service: 'lambda.amazonaws.com',
+              },
+            },
           ],
         },
       }),
-      1
+      2,
     );
   });
 
@@ -435,245 +435,245 @@ describe('Create catalog for data lake with lake formation permission and other 
           Statement: [
             Match.objectLike({
               Action: [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
+                's3:GetObject*',
+                's3:GetBucket*',
+                's3:List*',
+                's3:DeleteObject*',
+                's3:PutObject',
+                's3:PutObjectLegalHold',
+                's3:PutObjectRetention',
+                's3:PutObjectTagging',
+                's3:PutObjectVersionTagging',
+                's3:Abort*',
               ],
-              "Resource": [
+              Resource: [
                 {
-                  "Fn::GetAtt": [
-                    Match.stringLikeRegexp("ExampleDLStorageBronzeBucket.*"),
-                    "Arn"
-                  ]
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('ExampleDLStorageBronzeBucket.*'),
+                    'Arn',
+                  ],
                 },
                 {
-                  "Fn::Join": [
-                    "",
+                  'Fn::Join': [
+                    '',
                     [
                       {
-                        "Fn::GetAtt": [
-                          Match.stringLikeRegexp("ExampleDLStorageBronzeBucket.*"),
-                          "Arn"
-                        ]
+                        'Fn::GetAtt': [
+                          Match.stringLikeRegexp('ExampleDLStorageBronzeBucket.*'),
+                          'Arn',
+                        ],
                       },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
+                      '/*',
+                    ],
+                  ],
+                },
+              ],
             }),
             Match.objectLike({
               Action: [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*"
+                'kms:Decrypt',
+                'kms:DescribeKey',
+                'kms:Encrypt',
+                'kms:ReEncrypt*',
+                'kms:GenerateDataKey*',
               ],
               Resource: {
-                "Fn::GetAtt": [
-                  Match.stringLikeRegexp("ExampleDLStorageDataKey.*"),
-                  "Arn"
-                ]
-              }
+                'Fn::GetAtt': [
+                  Match.stringLikeRegexp('ExampleDLStorageDataKey.*'),
+                  'Arn',
+                ],
+              },
             }),
             Match.objectLike({
               Action: [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
+                's3:GetObject*',
+                's3:GetBucket*',
+                's3:List*',
+                's3:DeleteObject*',
+                's3:PutObject',
+                's3:PutObjectLegalHold',
+                's3:PutObjectRetention',
+                's3:PutObjectTagging',
+                's3:PutObjectVersionTagging',
+                's3:Abort*',
               ],
               Resource: [
                 {
-                  "Fn::GetAtt": [
-                    Match.stringLikeRegexp("ExampleDLStorageSilverBucket.*"),
-                    "Arn"
-                  ]
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('ExampleDLStorageSilverBucket.*'),
+                    'Arn',
+                  ],
                 },
                 {
-                  "Fn::Join": [
-                    "",
+                  'Fn::Join': [
+                    '',
                     [
                       {
-                        "Fn::GetAtt": [
-                          Match.stringLikeRegexp("ExampleDLStorageSilverBucket.*"),
-                          "Arn"
-                        ]
+                        'Fn::GetAtt': [
+                          Match.stringLikeRegexp('ExampleDLStorageSilverBucket.*'),
+                          'Arn',
+                        ],
                       },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
+                      '/*',
+                    ],
+                  ],
+                },
+              ],
             }),
             Match.objectLike({
               Action: [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
+                's3:GetObject*',
+                's3:GetBucket*',
+                's3:List*',
+                's3:DeleteObject*',
+                's3:PutObject',
+                's3:PutObjectLegalHold',
+                's3:PutObjectRetention',
+                's3:PutObjectTagging',
+                's3:PutObjectVersionTagging',
+                's3:Abort*',
               ],
               Resource: [
                 {
-                  "Fn::GetAtt": [
-                    Match.stringLikeRegexp("ExampleDLStorageGoldBucket.*"),
-                    "Arn"
-                  ]
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('ExampleDLStorageGoldBucket.*'),
+                    'Arn',
+                  ],
                 },
                 {
-                  "Fn::Join": [
-                    "",
+                  'Fn::Join': [
+                    '',
                     [
                       {
-                        "Fn::GetAtt": [
-                          Match.stringLikeRegexp("ExampleDLStorageGoldBucket.*"),
-                          "Arn"
-                        ]
+                        'Fn::GetAtt': [
+                          Match.stringLikeRegexp('ExampleDLStorageGoldBucket.*'),
+                          'Arn',
+                        ],
                       },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
+                      '/*',
+                    ],
+                  ],
+                },
+              ],
             }),
             Match.objectLike({
               Action: [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
+                's3:GetObject*',
+                's3:GetBucket*',
+                's3:List*',
+                's3:DeleteObject*',
+                's3:PutObject',
+                's3:PutObjectLegalHold',
+                's3:PutObjectRetention',
+                's3:PutObjectTagging',
+                's3:PutObjectVersionTagging',
+                's3:Abort*',
               ],
               Resource: [
                 {
-                  "Fn::GetAtt": [
-                    Match.stringLikeRegexp("ExampleDLStorageBronzeBucket.*"),
-                    "Arn"
-                  ]
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('ExampleDLStorageBronzeBucket.*'),
+                    'Arn',
+                  ],
                 },
                 {
-                  "Fn::Join": [
-                    "",
+                  'Fn::Join': [
+                    '',
                     [
                       {
-                        "Fn::GetAtt": [
-                          Match.stringLikeRegexp("ExampleDLStorageBronzeBucket.*"),
-                          "Arn"
-                        ]
+                        'Fn::GetAtt': [
+                          Match.stringLikeRegexp('ExampleDLStorageBronzeBucket.*'),
+                          'Arn',
+                        ],
                       },
-                      "/exampledb"
-                    ]
-                  ]
-                }
-              ]
+                      '/exampledb',
+                    ],
+                  ],
+                },
+              ],
             }),
             Match.objectLike({
               Action: [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
+                's3:GetObject*',
+                's3:GetBucket*',
+                's3:List*',
+                's3:DeleteObject*',
+                's3:PutObject',
+                's3:PutObjectLegalHold',
+                's3:PutObjectRetention',
+                's3:PutObjectTagging',
+                's3:PutObjectVersionTagging',
+                's3:Abort*',
               ],
               Resource: [
                 {
-                  "Fn::GetAtt": [
-                    Match.stringLikeRegexp("ExampleDLStorageSilverBucket.*"),
-                    "Arn"
-                  ]
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('ExampleDLStorageSilverBucket.*'),
+                    'Arn',
+                  ],
                 },
                 {
-                  "Fn::Join": [
-                    "",
+                  'Fn::Join': [
+                    '',
                     [
                       {
-                        "Fn::GetAtt": [
-                          Match.stringLikeRegexp("ExampleDLStorageSilverBucket.*"),
-                          "Arn"
-                        ]
+                        'Fn::GetAtt': [
+                          Match.stringLikeRegexp('ExampleDLStorageSilverBucket.*'),
+                          'Arn',
+                        ],
                       },
-                      "/exampledb"
-                    ]
-                  ]
-                }
-              ]
+                      '/exampledb',
+                    ],
+                  ],
+                },
+              ],
             }),
             Match.objectLike({
               Action: [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
+                's3:GetObject*',
+                's3:GetBucket*',
+                's3:List*',
+                's3:DeleteObject*',
+                's3:PutObject',
+                's3:PutObjectLegalHold',
+                's3:PutObjectRetention',
+                's3:PutObjectTagging',
+                's3:PutObjectVersionTagging',
+                's3:Abort*',
               ],
               Resource: [
                 {
-                  "Fn::GetAtt": [
-                    Match.stringLikeRegexp("ExampleDLStorageGoldBucket.*"),
-                    "Arn"
-                  ]
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('ExampleDLStorageGoldBucket.*'),
+                    'Arn',
+                  ],
                 },
                 {
-                  "Fn::Join": [
-                    "",
+                  'Fn::Join': [
+                    '',
                     [
                       {
-                        "Fn::GetAtt": [
-                          Match.stringLikeRegexp("ExampleDLStorageGoldBucket.*"),
-                          "Arn"
-                        ]
+                        'Fn::GetAtt': [
+                          Match.stringLikeRegexp('ExampleDLStorageGoldBucket.*'),
+                          'Arn',
+                        ],
                       },
-                      "/exampledb"
-                    ]
-                  ]
-                }
-              ]
-            })
+                      '/exampledb',
+                    ],
+                  ],
+                },
+              ],
+            }),
           ],
         },
-        PolicyName: Match.stringLikeRegexp(".*LakeFormationDataAccessRoleDefaultPolicy.*"),
+        PolicyName: Match.stringLikeRegexp('.*LakeFormationDataAccessRoleDefaultPolicy.*'),
         Roles: [
           {
-            Ref: Match.stringLikeRegexp(".*LakeFormationDataAccessRole.*")
-          }
-        ]
+            Ref: Match.stringLikeRegexp('.*LakeFormationDataAccessRole.*'),
+          },
+        ],
       }),
-      1
+      1,
     );
   });
 });
@@ -697,7 +697,7 @@ describe('Create catalog for data lake with lake formation permission and non de
   });
 
   const template = Template.fromStack(stack);
-  console.log(JSON.stringify(template.toJSON(), null, 2));
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
 
   test('should create a KMS Key with RETAIN removal policy', () => {
     template.hasResource('AWS::KMS::Key',

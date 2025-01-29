@@ -102,7 +102,7 @@ export interface DataCatalogDatabaseProps {
   readonly lakeFormationDataAccessRole?: IRole;
 
   /**
-   * The IAM Role used to perform Lake Formation configuration. 
+   * The IAM Role used to perform Lake Formation configuration.
    * Only needed when permissionModel is set to Lake Formation or Hybrid
    * @default - A new role is created
    */

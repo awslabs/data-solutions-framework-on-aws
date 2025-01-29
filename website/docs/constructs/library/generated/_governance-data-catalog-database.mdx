@@ -12,6 +12,7 @@ AWS Glue Catalog database for an Amazon S3 dataset.
 - The database default location is pointing to an S3 bucket location `s3://<locationBucket>/<locationPrefix>/`
 - The database can store various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`
 - By default, a database level crawler is scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
+- The permission model of the database can use IAM, LakeFormation or Hybrid mode.
 
 ![Data Catalog Database](../../../../static/img/adsf-data-catalog.png)
 
@@ -52,6 +53,57 @@ class ExampleDefaultDataCatalogDatabaseStack(cdk.Stack):
             location_bucket=bucket,
             location_prefix="/databasePath",
             name="example-db"
+        )
+  ```
+
+  </TabItem>
+</Tabs>
+
+## Using Lake Formation permission model
+
+You can change the default permission model of the database to use [Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html) exclusively or [hybrid mode](https://docs.aws.amazon.com/lake-formation/latest/dg/hybrid-access-mode.html).
+
+Changing the permission model to Lake Formation or Hybrid has the following impact:
+* The CDK provisioning role is added as a Lake Formation administrator so it can perform Lake Formation operations
+* The IAMAllowedPrincipal grant is removed from the database to enforce Lake Formation as the unique permission model (only for Lake Formation permission model)
+
+:::caution Lake Formation Data Lake Settings
+Lake Formation and Hybrid permission models are configured using PutDataLakeSettings API call. Concurrent API calls can lead to throttling. If you create multiple `DataCatalogDatabases`, it's recommended to create dependencies between the `dataLakeSettings` that are exposed in each database to avoid concurrent calls. See the example in the `DataLakeCatalog`construct [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/governance/lib/data-lake-catalog.ts#L137)
+:::
+
+<Tabs>
+  <TabItem value="typescript" label="TypeScript" default>
+
+  ```typescript
+class ExampleDefaultDataCatalogDatabaseStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    const bucket = new Bucket(this, 'DataCatalogBucket');
+
+    new dsf.governance.DataCatalogDatabase(this, 'DataCatalogDatabase', {
+      locationBucket: bucket,
+      locationPrefix: '/databasePath',
+      name: 'example-db',
+      permissionModel: dsf.utils.PermissionModel.LAKE_FORMATION,
+    });
+  }
+}
+  ```
+  
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+  ```python
+class ExampleDefaultDataCatalogDatabaseStack(cdk.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+        bucket = Bucket(self, "DataCatalogBucket")
+
+        dsf.governance.DataCatalogDatabase(self, "DataCatalogDatabase",
+            location_bucket=bucket,
+            location_prefix="/databasePath",
+            name="example-db",
+            permission_model=dsf.utils.PermissionModel.LAKE_FORMATION
         )
   ```
 

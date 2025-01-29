@@ -47,7 +47,7 @@ const database2 = new DataCatalogDatabase(stack, 'TestDatabase2', {
 
 const database3 = new DataCatalogDatabase(stack, 'TestDatabase3', {
   locationBucket: bucket,
-  locationPrefix: 'test_database3',
+  // locationPrefix: 'test_database3',
   name: 'test_database3',
   removalPolicy: RemovalPolicy.DESTROY,
   permissionModel: PermissionModel.LAKE_FORMATION,

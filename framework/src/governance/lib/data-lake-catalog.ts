@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Fn } from 'aws-cdk-lib';
+import { IRole, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { DataCatalogDatabase } from './data-catalog-database';
 import { DataLakeCatalogProps } from './data-lake-catalog-props';
 import { AnalyticsBucket } from '../../storage';
 import { Context, PermissionModel, TrackedConstruct, TrackedConstructProps } from '../../utils';
-import { IRole, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 /**
 * Creates a Data Lake Catalog on top of a `DataLakeStorage`.
@@ -77,7 +77,7 @@ export class DataLakeCatalog extends TrackedConstruct {
       props.dataLakeStorage.goldBucket.grantReadWrite(dataAccessRole);
 
       configurationRole = props.lakeFormationConfigurationRole || new Role(this, 'LakeFormationConfigurationRole', {
-        assumedBy: new ServicePrincipal('lamnda')
+        assumedBy: new ServicePrincipal('lambda'),
       });
     }
 
@@ -132,6 +132,11 @@ export class DataLakeCatalog extends TrackedConstruct {
       lakeFormationDataAccessRole: dataAccessRole,
       lakeFormationConfigurationRole: configurationRole,
     });
+
+    if (props.permissionModel === PermissionModel.HYBRID || props.permissionModel === PermissionModel.LAKE_FORMATION) {
+      this.silverCatalogDatabase.dataLakeSettings!.addDependency(this.bronzeCatalogDatabase.dataLakeSettings!);
+      this.goldCatalogDatabase.dataLakeSettings!.addDependency(this.silverCatalogDatabase.dataLakeSettings!);
+    }
   }
 
   /**

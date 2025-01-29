@@ -74,6 +74,7 @@ const rootProject = new LernaProject({
     'cdk.out',
     '.DS_Store',
     'LICENSE.bak',
+    'framework/test/e2e/mytest.e2e.test.ts',
   ],
 
   projenrcTs: true,
