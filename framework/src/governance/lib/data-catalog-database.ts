@@ -8,6 +8,7 @@ import { IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { DataCatalogDatabaseProps } from './data-catalog-database-props';
 import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
+import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -422,8 +423,32 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     return crawler;
   }
-}
 
+  public generateTableStatistics (id: string, tableName: string,  role: IRole, securityConfiguration: any, sampleSize?: number) : AwsCustomResource {
+    return new AwsCustomResource(this, id, {
+      policy: AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [
+          `arn:aws:glue:${Stack.of(this).region}:${Stack.of(this).account}:table/${this.databaseName}/${tableName}`,
+          `arn:aws:glue:${Stack.of(this).region}:${Stack.of(this).account}:database/${this.databaseName}` 
+        ],
+      }),
+      onCreate: {
+        service: 'Glue',
+        action: ' StartColumnStatisticsTaskRun',
+        parameters: {
+          DatabaseName: this.databaseName,
+          TableName: tableName,
+          Role: role.roleArn,
+          SampleSize: sampleSize,
+          CatalogID : Stack.of(this).account,
+          SecurityConfiguration : securityConfiguration
+        },
+        physicalResourceId: PhysicalResourceId.of('ColumnStatisticsTaskRunId'),
+      },
+    });
+  }
+  
+}
 /**
  * Enum used by the method that determines the type of catalog target based on the paramters passed
  */
