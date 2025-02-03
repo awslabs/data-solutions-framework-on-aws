@@ -24,7 +24,7 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
               actions: [
                 's3:GetObject',
               ],
-              resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+              resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
             })],
           });
 

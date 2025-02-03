@@ -43,7 +43,7 @@ const policy = new ManagedPolicy(emrEksClusterStack, 'testPolicy', {
   document: new PolicyDocument({
     statements: [
       new PolicyStatement({
-        resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+        resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
         actions: ['s3:GetObject'],
       }),
     ],

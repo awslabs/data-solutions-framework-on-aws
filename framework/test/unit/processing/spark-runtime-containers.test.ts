@@ -38,7 +38,7 @@ describe('With default configuration, the construct ', () => {
     document: new PolicyDocument({
       statements: [
         new PolicyStatement({
-          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
           actions: ['s3:GetObject'],
         }),
       ],
@@ -514,7 +514,7 @@ describe('With default configuration, the construct ', () => {
         Match.objectLike({
           Action: 's3:GetObject',
           Effect: 'Allow',
-          Resource: 'arn:aws:s3:::aws-data-analytics-workshop',
+          Resource: 'arn:aws:s3:::aws-data-analytics-workshops',
         }),
       ]),
     }),
@@ -969,7 +969,7 @@ describe('Test for interactive endpoint', () => {
     document: new PolicyDocument({
       statements: [
         new PolicyStatement({
-          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
           actions: ['s3:GetObject'],
         }),
       ],
@@ -1039,7 +1039,7 @@ describe('Test for interactive endpoint without default karpenter nodepool', () 
     document: new PolicyDocument({
       statements: [
         new PolicyStatement({
-          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
           actions: ['s3:GetObject'],
         }),
       ],
@@ -1088,7 +1088,7 @@ describe('Test for grant job execution', () => {
     document: new PolicyDocument({
       statements: [
         new PolicyStatement({
-          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
           actions: ['s3:GetObject'],
         }),
       ],
@@ -1149,7 +1149,7 @@ describe('Remove resource when deletion protection is disable and set removal is
     document: new PolicyDocument({
       statements: [
         new PolicyStatement({
-          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
           actions: ['s3:GetObject'],
         }),
       ],
@@ -1206,7 +1206,7 @@ describe('Retain resource when removal is set to retain', () => {
     document: new PolicyDocument({
       statements: [
         new PolicyStatement({
-          resources: ['arn:aws:s3:::aws-data-analytics-workshop'],
+          resources: ['arn:aws:s3:::aws-data-analytics-workshops'],
           actions: ['s3:GetObject'],
         }),
       ],
