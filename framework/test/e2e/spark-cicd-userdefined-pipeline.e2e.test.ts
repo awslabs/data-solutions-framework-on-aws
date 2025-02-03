@@ -4,7 +4,7 @@
 /**
  * E2E test for SparkCICDPipeline
  *
- * @group e2e/processing/spark-cicd-userdefined
+ * @group e2e/processing/userdefined-spark-cicd
  */
 
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';
@@ -18,7 +18,7 @@ jest.setTimeout(9000000);
 
 // GIVEN
 const app = new App();
-const cicdStack = new Stack(app, 'CICDStack', {
+const cicdStack = new Stack(app, 'UserDefinedCICDStack', {
   env: {
     region: 'eu-west-1',
   },
@@ -30,14 +30,14 @@ stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', tr
 stack.node.setContext('environments', [
   {
     stageName: 'userdefined1',
-    account: '111111111111',
-    region: 'eu-west-1',
+    account: stack.account,
+    region: stack.region,
     triggerIntegTest: true,
   },
   {
     stageName: 'userdefined2',
-    account: '222222222222',
-    region: 'eu-west-1',
+    account: stack.account,
+    region: stack.region,
     triggerIntegTest: false,
   },
 ]);
