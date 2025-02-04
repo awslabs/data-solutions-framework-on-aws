@@ -18,6 +18,9 @@ import {
 } from '../../../utils';
 import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
+const MISSING_ENVIRONMENTS_ERROR = 'MissingEnvironmentsError';
+const DUPLICATE_STAGE_NAME_ERROR = 'DuplicateStageNameError';
+
 /**
  * User defined CI/CD environment stages
  */
@@ -230,6 +233,11 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
         }, e.triggerIntegTest || false, buildStage, props);
       }
     } catch (e) {
+      const error = e as Error;
+      if (error.name === DUPLICATE_STAGE_NAME_ERROR) {
+        throw e;
+      }
+
       this.integrationTestStage = this.attachStageToPipeline('Staging', this.getAccountFromContext('staging'), true, buildStage, props);
       this.attachStageToPipeline('Prod', this.getAccountFromContext('prod'), false, buildStage, props);
     }
@@ -291,7 +299,23 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     const environments = this.node.tryGetContext('environments') as CICDEnvironment[];
 
     if (!environments) {
-      throw new Error('Missing context variable environments');
+      const missingContextError = new Error('Missing context variable environments');
+      missingContextError.name = MISSING_ENVIRONMENTS_ERROR;
+      throw missingContextError;
+    } else {
+      //check for duplicates
+
+      const stageNameTracker = [];
+
+      for (let e of environments) {
+        if (stageNameTracker.indexOf(e.stageName) != -1) {
+          const duplicateStageError = new Error('Duplicate stage name found');
+          duplicateStageError.name = DUPLICATE_STAGE_NAME_ERROR;
+          throw duplicateStageError;
+        }
+
+        stageNameTracker.push(e.stageName);
+      }
     }
 
     return environments;

@@ -16,6 +16,65 @@ import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
 
+describe("With multiple environment configuration with duplicate stage name, the construct", () => {
+  const app = new App();
+  const stack = new Stack(app, 'TestStack', {
+    env: {
+      region: 'us-east-1',
+    },
+  });
+  stack.node.setContext('environments', [
+    {
+      stageName: 'userdefined1',
+      account: '111111111111',
+      region: 'us-east-1',
+      triggerIntegTest: true,
+    },
+    {
+      stageName: 'userdefined1',
+      account: '222222222222',
+      region: 'us-east-1',
+      triggerIntegTest: true,
+    },
+    {
+      stageName: 'userdefined3',
+      account: '333333333333',
+      region: 'us-east-1',
+      triggerIntegTest: false,
+    },
+  ]);
+
+  class MyApplicationStack extends Stack {
+
+    constructor(scope: Stack, id: string) {
+      super(scope, id);
+
+      new Bucket(this, 'TestBucket', {
+        autoDeleteObjects: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+      });
+    }
+  }
+
+  class MyStackFactory implements ApplicationStackFactory {
+    createStack(scope: Stack): Stack {
+      return new MyApplicationStack(scope, 'MyApplication');
+    }
+  }
+
+  test('should throw an error', () => {
+    expect(() => {
+      new SparkEmrCICDPipeline(stack, 'TestConstruct', {
+        sparkApplicationName: 'test',
+        applicationStackFactory: new MyStackFactory(),
+        source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+          connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+        }),
+      })
+    }).toThrow('Duplicate stage name found')
+    
+  });
+})
 
 describe('With multiple environment configuration, the construct', () => {
   const app = new App();
