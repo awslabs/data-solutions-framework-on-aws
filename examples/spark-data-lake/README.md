@@ -72,6 +72,8 @@ pip install -r requirements.txt
 
 Alternatively, if further customization is necessary, the following allows multiple different environments to be created:
 
+**Stage names must be unique**
+
 ```json
 {
   "environments": [
