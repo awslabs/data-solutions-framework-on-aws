@@ -261,7 +261,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       // Extract the path and script name from the integration tests script path
       const [integPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
 
-      integrationTestStage = new CodeBuildStep(`${stageName}-IntegrationTests`, {
+      integrationTestStage = new CodeBuildStep(`${stageName}IntegrationTests`, {
         input: buildStage.addOutputDirectory(integPath),
         commands: [`chmod +x ${integScript} && ./${integScript}`],
         envFromCfnOutputs: applicationStage.stackOutputsEnv,

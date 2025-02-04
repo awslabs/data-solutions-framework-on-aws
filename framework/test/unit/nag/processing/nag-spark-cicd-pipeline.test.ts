@@ -102,7 +102,7 @@ NagSuppressions.addResourceSuppressionsByPath(
 
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
-  '/Stack/TestConstruct/CodePipeline/Pipeline/Staging/Staging-IntegrationTests/Staging-IntegrationTests/Role',
+  '/Stack/TestConstruct/CodePipeline/Pipeline/Staging/StagingIntegrationTests/StagingIntegrationTests/Role',
   [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
   true,
 );

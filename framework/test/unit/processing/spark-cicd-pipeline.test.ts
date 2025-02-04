@@ -614,7 +614,7 @@ describe('With custom configuration, the construct', () => {
               Configuration: Match.objectLike({
                 EnvironmentVariables: Match.stringLikeRegexp('.*TEST_BUCKET.*BucketName.*'),
               }),
-              Name: 'Staging-IntegrationTests',
+              Name: 'StagingIntegrationTests',
             }),
           ]),
           Name: 'Staging',
