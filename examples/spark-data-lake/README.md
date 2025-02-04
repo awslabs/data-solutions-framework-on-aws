@@ -70,6 +70,35 @@ pip install -r requirements.txt
 }
 ```
 
+Alternatively, if further customization is necessary, the following allows multiple different environments to be created:
+
+**Stage names must be unique**
+
+```json
+{
+  "environments": [
+    {
+      "stageName": "<STAGE_NAME_1>",
+      "account": "<STAGE_ACCOUNT_ID>",
+      "region": "<REGION>",
+      "triggerIntegTest": "<OPTIONAL_BOOLEAN_CAN_BE_OMMITTED>"
+    },
+    {
+      "stageName": "<STAGE_NAME_2>",
+      "account": "<STAGE_ACCOUNT_ID>",
+      "region": "<REGION>",
+      "triggerIntegTest": "<OPTIONAL_BOOLEAN_CAN_BE_OMMITTED>"
+    },
+    {
+      "stageName": "<STAGE_NAME_3>",
+      "account": "<STAGE_ACCOUNT_ID>",
+      "region": "<REGION>",
+      "triggerIntegTest": "<OPTIONAL_BOOLEAN_CAN_BE_OMMITTED>"
+    }
+  ]
+}
+```
+
 5. Create a connection, this will server to link your code repository to Amazon Code Pipeline. You can follow the instruction in the [AWS documentation](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections.html)
 to create a connection.
 

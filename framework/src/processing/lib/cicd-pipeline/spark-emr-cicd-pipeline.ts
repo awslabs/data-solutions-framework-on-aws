@@ -18,6 +18,18 @@ import {
 } from '../../../utils';
 import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
+const MISSING_ENVIRONMENTS_ERROR = 'MissingEnvironmentsError';
+const DUPLICATE_STAGE_NAME_ERROR = 'DuplicateStageNameError';
+
+/**
+ * User defined CI/CD environment stages
+ */
+interface CICDEnvironment {
+  stageName: string;
+  account: string;
+  region: string;
+  triggerIntegTest?: boolean;
+}
 
 /**
  * A CICD Pipeline to test and deploy a Spark application on Amazon EMR in cross-account environments using CDK Pipelines.
@@ -211,36 +223,63 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
       },
     });
 
-    // Create the Staging stage of the CICD
-    const staging = new ApplicationStage(this, 'Staging', {
-      env: this.getAccountFromContext('staging'),
-      applicationStackFactory: props.applicationStackFactory,
-      outputsEnv: props.integTestEnv,
-      stage: CICDStage.STAGING,
-    });
-    const stagingDeployment = this.pipeline.addStage(staging);
+    try {
+      const environments = this.getUserDefinedEnvironmentsFromContext();
 
-    if (props.integTestScript) {
+      for (const e of environments) {
+        this.integrationTestStage = this.attachStageToPipeline(e.stageName.toUpperCase(), {
+          account: e.account,
+          region: e.region,
+        }, e.triggerIntegTest || false, buildStage, props);
+      }
+    } catch (e) {
+      const error = e as Error;
+      if (error.name === DUPLICATE_STAGE_NAME_ERROR) {
+        throw e;
+      }
+
+      this.integrationTestStage = this.attachStageToPipeline('Staging', this.getAccountFromContext('staging'), true, buildStage, props);
+      this.attachStageToPipeline('Prod', this.getAccountFromContext('prod'), false, buildStage, props);
+    }
+  }
+
+  /**
+   * Attaches the given stage to the pipeline
+   * @param stageName
+   * @param resourceEnvironment
+   * @param attachIntegTest
+   * @param buildStage
+   * @param props
+   * @returns {CodeBuildStep|undefined} if integration step is configured, this returns the corresponding `CodeBuildStep` for the test
+   */
+  private attachStageToPipeline(stageName: string, resourceEnvironment: ResourceEnvironment
+    , attachIntegTest: boolean, buildStage: CodeBuildStep
+    , props: SparkEmrCICDPipelineProps): CodeBuildStep|undefined {
+    const applicationStage = new ApplicationStage(this, stageName, {
+      env: resourceEnvironment,
+      applicationStackFactory: props.applicationStackFactory,
+      outputsEnv: (attachIntegTest && props.integTestScript) ? props.integTestEnv : undefined,
+      stage: CICDStage.of(stageName.toUpperCase()),
+    });
+    const stageDeployment = this.pipeline.addStage(applicationStage);
+
+    let integrationTestStage:CodeBuildStep|undefined = undefined;
+
+    if (attachIntegTest && props.integTestScript) {
       // Extract the path and script name from the integration tests script path
       const [integPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
 
-      this.integrationTestStage = new CodeBuildStep('IntegrationTests', {
+      integrationTestStage = new CodeBuildStep(`${stageName}IntegrationTests`, {
         input: buildStage.addOutputDirectory(integPath),
         commands: [`chmod +x ${integScript} && ./${integScript}`],
-        envFromCfnOutputs: staging.stackOutputsEnv,
+        envFromCfnOutputs: applicationStage.stackOutputsEnv,
         rolePolicyStatements: props.integTestPermissions,
       });
       // Add a post step to run the integration tests
-      stagingDeployment.addPost(this.integrationTestStage);
+      stageDeployment.addPost(integrationTestStage);
     }
 
-    // Create the Production stage of the CICD
-    this.pipeline.addStage(new ApplicationStage(this, 'Production', {
-      env: this.getAccountFromContext('prod'),
-      applicationStackFactory: props.applicationStackFactory,
-      stage: CICDStage.PROD,
-    }));
-
+    return integrationTestStage;
   }
 
   /**
@@ -250,5 +289,35 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     const account = this.node.tryGetContext(name) as ResourceEnvironment;
     if (!account) throw new Error(`Missing context variable ${name}`);
     return account;
+  }
+
+  /**
+   * Retrieves the list of user defined environments from the context
+   * @returns {CICDEnvironment[]} list of user defined environments
+   */
+  private getUserDefinedEnvironmentsFromContext(): CICDEnvironment[] {
+    const environments = this.node.tryGetContext('environments') as CICDEnvironment[];
+
+    if (!environments) {
+      const missingContextError = new Error('Missing context variable environments');
+      missingContextError.name = MISSING_ENVIRONMENTS_ERROR;
+      throw missingContextError;
+    } else {
+      //check for duplicates
+
+      const stageNameTracker = [];
+
+      for (let e of environments) {
+        if (stageNameTracker.indexOf(e.stageName) != -1) {
+          const duplicateStageError = new Error('Duplicate stage name found');
+          duplicateStageError.name = DUPLICATE_STAGE_NAME_ERROR;
+          throw duplicateStageError;
+        }
+
+        stageNameTracker.push(e.stageName);
+      }
+    }
+
+    return environments;
   }
 }

@@ -4,7 +4,7 @@
 /**
  * E2E test for SparkCICDPipeline
  *
- * @group e2e/processing/default-spark-cicd
+ * @group e2e/processing/userdefined-spark-cicd
  */
 
 import { RemovalPolicy, CfnOutput, Stack, StackProps, App } from 'aws-cdk-lib';
@@ -18,17 +18,29 @@ jest.setTimeout(9000000);
 
 // GIVEN
 const app = new App();
-const cicdStack = new Stack(app, 'DefaultCICDStack', {
+const cicdStack = new Stack(app, 'UserDefinedCICDStack', {
   env: {
     region: 'eu-west-1',
   },
 });
-const testStack = new TestStack('SparkCICDPipelineTestStack', app, cicdStack);
+const testStack = new TestStack('SparkCICDUserDefinedPipelineTestStack', app, cicdStack);
 const { stack } = testStack;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
-stack.node.setContext('staging', { accountId: stack.account, region: stack.region });
-stack.node.setContext('prod', { accountId: stack.account, region: stack.region });
+stack.node.setContext('environments', [
+  {
+    stageName: 'userdefined1',
+    account: stack.account,
+    region: stack.region,
+    triggerIntegTest: true,
+  },
+  {
+    stageName: 'userdefined2',
+    account: stack.account,
+    region: stack.region,
+    triggerIntegTest: false,
+  },
+]);
 
 interface MyApplicationStackProps extends StackProps {
   readonly prodBoolean: Boolean;

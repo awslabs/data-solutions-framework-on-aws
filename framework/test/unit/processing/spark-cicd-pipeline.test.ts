@@ -16,6 +16,294 @@ import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
 
+describe('With multiple environment configuration with duplicate stage name, the construct', () => {
+  const app = new App();
+  const stack = new Stack(app, 'TestStack', {
+    env: {
+      region: 'us-east-1',
+    },
+  });
+  stack.node.setContext('environments', [
+    {
+      stageName: 'userdefined1',
+      account: '111111111111',
+      region: 'us-east-1',
+      triggerIntegTest: true,
+    },
+    {
+      stageName: 'userdefined1',
+      account: '222222222222',
+      region: 'us-east-1',
+      triggerIntegTest: true,
+    },
+    {
+      stageName: 'userdefined3',
+      account: '333333333333',
+      region: 'us-east-1',
+      triggerIntegTest: false,
+    },
+  ]);
+
+  class MyApplicationStack extends Stack {
+
+    constructor(scope: Stack, id: string) {
+      super(scope, id);
+
+      new Bucket(this, 'TestBucket', {
+        autoDeleteObjects: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+      });
+    }
+  }
+
+  class MyStackFactory implements ApplicationStackFactory {
+    createStack(scope: Stack): Stack {
+      return new MyApplicationStack(scope, 'MyApplication');
+    }
+  }
+
+  test('should throw an error', () => {
+    expect(() => {
+      new SparkEmrCICDPipeline(stack, 'TestConstruct', {
+        sparkApplicationName: 'test',
+        applicationStackFactory: new MyStackFactory(),
+        source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+          connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+        }),
+      });
+    }).toThrow('Duplicate stage name found');
+
+  });
+});
+
+describe('With multiple environment configuration, the construct', () => {
+  const app = new App();
+  const stack = new Stack(app, 'TestStack', {
+    env: {
+      region: 'us-east-1',
+    },
+  });
+  stack.node.setContext('environments', [
+    {
+      stageName: 'userdefined1',
+      account: '111111111111',
+      region: 'us-east-1',
+      triggerIntegTest: true,
+    },
+    {
+      stageName: 'userdefined2',
+      account: '222222222222',
+      region: 'us-east-1',
+      triggerIntegTest: true,
+    },
+    {
+      stageName: 'userdefined3',
+      account: '333333333333',
+      region: 'us-east-1',
+      triggerIntegTest: false,
+    },
+  ]);
+
+  class MyApplicationStack extends Stack {
+
+    constructor(scope: Stack, id: string) {
+      super(scope, id);
+
+      new Bucket(this, 'TestBucket', {
+        autoDeleteObjects: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+      });
+    }
+  }
+
+  class MyStackFactory implements ApplicationStackFactory {
+    createStack(scope: Stack): Stack {
+      return new MyApplicationStack(scope, 'MyApplication');
+    }
+  }
+
+  new SparkEmrCICDPipeline(stack, 'TestConstruct', {
+    sparkApplicationName: 'test',
+    applicationStackFactory: new MyStackFactory(),
+    source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
+      connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+    }),
+  });
+
+  const template = Template.fromStack(stack);
+  // console.log(JSON.stringify(template.toJSON(), null, 2));
+
+  test('should create a code pipeline', () => {
+    template.resourceCountIs('AWS::CodePipeline::Pipeline', 1);
+  });
+
+  test('should create 3 code build projects', () => {
+    template.resourceCountIs('AWS::CodeBuild::Project', 3);
+  });
+
+  test('should create a synth stage with the proper build commands based on the operating system', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*npm run build.*'),
+      },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
+    });
+  });
+
+  test('should create a synth stage with the proper cdk project default path', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*cd \..*'),
+      },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
+    });
+  });
+
+  test('should run the unit tests with EMR 6.15 as the default', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-on-eks/spark/emr-6.15.0:latest.*'),
+      },
+      Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
+    });
+  });
+
+  test('should create integration stage for USERDEFINED1', () => {
+    template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
+      Stages: Match.arrayWith([
+        Match.objectLike({
+          Actions: Match.arrayWith([
+            Match.objectLike({
+              ActionTypeId: {
+                Category: 'Source',
+                Owner: 'AWS',
+                Provider: 'CodeStarSourceConnection',
+                Version: '1',
+              },
+              Configuration: {
+                ConnectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
+                FullRepositoryId: 'owner/weekly-job',
+                BranchName: 'mainline',
+              },
+              Name: 'owner_weekly-job',
+              OutputArtifacts: [
+                {
+                  Name: 'owner_weekly_job_Source',
+                },
+              ],
+              RunOrder: 1,
+            }),
+          ]),
+          Name: 'Source',
+        },
+
+        ),
+        Match.objectLike({
+          Actions: Match.arrayWith([
+            Match.objectLike({
+              ActionTypeId: Match.objectLike({
+                Category: 'Deploy',
+                Owner: 'AWS',
+                Provider: 'CloudFormation',
+              }),
+              Configuration: Match.objectLike({
+                StackName: 'USERDEFINED1-MyApplication',
+              }),
+              InputArtifacts: [
+                {
+                  Name: 'CodeBuildSynthStep_Output',
+                },
+              ],
+              Name: 'Deploy',
+            }),
+          ]),
+          Name: 'USERDEFINED1',
+        }),
+      ]),
+    });
+  });
+
+  test('should create integration stage for USERDEFINED2', () => {
+    template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
+      Stages: Match.arrayWith([
+        Match.objectLike({
+          Actions: [
+            {
+              ActionTypeId: Match.objectLike({
+                Category: 'Deploy',
+                Owner: 'AWS',
+                Provider: 'CloudFormation',
+              }),
+              Configuration: Match.objectLike({
+                StackName: 'USERDEFINED2-MyApplication',
+              }),
+              InputArtifacts: [
+                {
+                  Name: 'CodeBuildSynthStep_Output',
+                },
+              ],
+              Name: 'Deploy',
+            },
+          ],
+          Name: 'USERDEFINED2',
+        }),
+      ]),
+    });
+  });
+
+  test('should create integration stage for USERDEFINED3', () => {
+    template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
+      Stages: Match.arrayWith([
+        Match.objectLike({
+          Actions: [
+            {
+              ActionTypeId: Match.objectLike({
+                Category: 'Deploy',
+                Owner: 'AWS',
+                Provider: 'CloudFormation',
+              }),
+              Configuration: Match.objectLike({
+                StackName: 'USERDEFINED3-MyApplication',
+              }),
+              InputArtifacts: [
+                {
+                  Name: 'CodeBuildSynthStep_Output',
+                },
+              ],
+              Name: 'Deploy',
+            },
+          ],
+          Name: 'USERDEFINED3',
+        }),
+      ]),
+    });
+  });
+
+  test('should create cross account and cross region deployments policy', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          {
+            Action: 'sts:AssumeRole',
+            Effect: 'Allow',
+            Resource: [
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*111111111111.*'),
+              },
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*222222222222.*'),
+              },
+              {
+                'Fn::Sub': Match.stringLikeRegexp('.*333333333333.*'),
+              },
+            ],
+          },
+        ]),
+      }),
+      PolicyName: Match.stringLikeRegexp('.*CodePipelineAssetsFileRoleDefaultPolicy.*'),
+    });
+  });
+});
 
 describe('With minimal configuration, the construct', () => {
 
@@ -159,7 +447,7 @@ describe('With minimal configuration, the construct', () => {
                 Provider: 'CloudFormation',
               }),
               Configuration: Match.objectLike({
-                StackName: 'Production-MyApplication',
+                StackName: 'Prod-MyApplication',
               }),
               InputArtifacts: [
                 {
@@ -169,7 +457,7 @@ describe('With minimal configuration, the construct', () => {
               Name: 'Deploy',
             },
           ],
-          Name: 'Production',
+          Name: 'Prod',
         }),
       ]),
     });
@@ -385,7 +673,7 @@ describe('With custom configuration, the construct', () => {
               Configuration: Match.objectLike({
                 EnvironmentVariables: Match.stringLikeRegexp('.*TEST_BUCKET.*BucketName.*'),
               }),
-              Name: 'IntegrationTests',
+              Name: 'StagingIntegrationTests',
             }),
           ]),
           Name: 'Staging',
@@ -413,7 +701,7 @@ describe('With custom configuration, the construct', () => {
           }),
         ]),
       },
-      PolicyName: Match.stringLikeRegexp('.*CodePipelineStagingIntegrationTestsRoleDefaultPolicy.*'),
+      PolicyName: Match.stringLikeRegexp('.*CodePipelineStagingStagingIntegrationTestsRoleDefaultPolicy.*'),
     });
   });
 

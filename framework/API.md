@@ -20880,6 +20880,90 @@ the name of the bucket.
 
 
 
+### CICDStage <a name="CICDStage" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage"></a>
+
+The list of CICD Stages used in CICD Pipelines.
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.of">of</a></code> | Custom stage. |
+
+---
+
+##### `of` <a name="of" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.of"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.CICDStage.of(stage: string)
+```
+
+Custom stage.
+
+###### `stage`<sup>Required</sup> <a name="stage" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.of.parameter.stage"></a>
+
+- *Type:* string
+
+the stage inside the pipeline.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.property.stage">stage</a></code> | <code>string</code> | the stage inside the pipeline. |
+
+---
+
+##### `stage`<sup>Required</sup> <a name="stage" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.property.stage"></a>
+
+```typescript
+public readonly stage: string;
+```
+
+- *Type:* string
+
+the stage inside the pipeline.
+
+---
+
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.property.PROD">PROD</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | Prod stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.property.STAGING">STAGING</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | Staging stage. |
+
+---
+
+##### `PROD`<sup>Required</sup> <a name="PROD" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.property.PROD"></a>
+
+```typescript
+public readonly PROD: CICDStage;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CICDStage
+
+Prod stage.
+
+---
+
+##### `STAGING`<sup>Required</sup> <a name="STAGING" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.property.STAGING"></a>
+
+```typescript
+public readonly STAGING: CICDStage;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CICDStage
+
+Staging stage.
+
+---
+
 ### ClientAuthentication <a name="ClientAuthentication" id="@cdklabs/aws-data-solutions-framework.streaming.ClientAuthentication"></a>
 
 Configuration properties for client authentication.
@@ -22431,29 +22515,6 @@ List of supported CPU architecture, either  X86_64 or ARM64.
 
 
 ##### `MTLS` <a name="MTLS" id="@cdklabs/aws-data-solutions-framework.streaming.Authentication.MTLS"></a>
-
----
-
-
-### CICDStage <a name="CICDStage" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage"></a>
-
-The list of CICD Stages used in CICD Pipelines.
-
-#### Members <a name="Members" id="Members"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.STAGING">STAGING</a></code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.CICDStage.PROD">PROD</a></code> | *No description.* |
-
----
-
-##### `STAGING` <a name="STAGING" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.STAGING"></a>
-
----
-
-
-##### `PROD` <a name="PROD" id="@cdklabs/aws-data-solutions-framework.utils.CICDStage.PROD"></a>
 
 ---
 
