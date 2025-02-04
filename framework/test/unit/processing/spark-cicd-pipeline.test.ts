@@ -16,7 +16,7 @@ import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
 import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
 
-describe("With multiple environment configuration with duplicate stage name, the construct", () => {
+describe('With multiple environment configuration with duplicate stage name, the construct', () => {
   const app = new App();
   const stack = new Stack(app, 'TestStack', {
     env: {
@@ -70,11 +70,11 @@ describe("With multiple environment configuration with duplicate stage name, the
         source: CodePipelineSource.connection('owner/weekly-job', 'mainline', {
           connectionArn: 'arn:aws:codeconnections:eu-west-1:123456789012:connection/aEXAMPLE-8aad-4d5d-8878-dfcab0bc441f',
         }),
-      })
-    }).toThrow('Duplicate stage name found')
-    
+      });
+    }).toThrow('Duplicate stage name found');
+
   });
-})
+});
 
 describe('With multiple environment configuration, the construct', () => {
   const app = new App();
