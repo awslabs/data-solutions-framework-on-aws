@@ -95,14 +95,14 @@ export interface DataCatalogDatabaseProps {
   readonly permissionModel?: PermissionModel;
 
   /**
-   * The IAM Role used by Lake Formation for data access.
+   * The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html).
    * Only needed when permissionModel is set to Lake Formation or Hybrid
    * @default - A new role is created
    */
   readonly lakeFormationDataAccessRole?: IRole;
 
   /**
-   * The IAM Role used to perform Lake Formation configuration.
+   * The IAM Role assumed by the construct resources to perform Lake Formation configuration.
    * Only needed when permissionModel is set to Lake Formation or Hybrid
    * @default - A new role is created
    */
