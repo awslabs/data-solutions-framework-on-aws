@@ -101,6 +101,7 @@ class ApplicationStack(Stack):
             self, 
             "SparkProcessingRuntime", 
             name="TaxiAggregation",
+            release_label=dsf.processing.EmrRuntimeVersion.V6_15,
             runtime_configuration=[
                 {
                     "classification": "spark-defaults",
