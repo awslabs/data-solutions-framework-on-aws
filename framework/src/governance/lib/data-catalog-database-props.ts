@@ -95,7 +95,8 @@ export interface DataCatalogDatabaseProps {
   readonly permissionModel?: PermissionModel;
 
   /**
-   * The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html).
+   * The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/registration-role.html).
+   * The role is assumed by Lake Formation to provide temporary credentials to query engines.
    * Only needed when permissionModel is set to Lake Formation or Hybrid
    * @default - A new role is created
    */
@@ -103,6 +104,7 @@ export interface DataCatalogDatabaseProps {
 
   /**
    * The IAM Role assumed by the construct resources to perform Lake Formation configuration.
+   * The role is assumed by Lambda functions to perform Lake Formation related operations.
    * Only needed when permissionModel is set to Lake Formation or Hybrid
    * @default - A new role is created
    */

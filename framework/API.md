@@ -14602,7 +14602,7 @@ const dataCatalogDatabaseProps: governance.DataCatalogDatabaseProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecret">jdbcSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | The secret associated with the JDBC connection. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.jdbcSecretKMSKey">jdbcSecretKMSKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The KMS key used by the JDBC secret. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.lakeFormationConfigurationRole">lakeFormationConfigurationRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role assumed by the construct resources to perform Lake Formation configuration. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.lakeFormationDataAccessRole">lakeFormationDataAccessRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html). Only needed when permissionModel is set to Lake Formation or Hybrid. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.lakeFormationDataAccessRole">lakeFormationDataAccessRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/registration-role.html). The role is assumed by Lake Formation to provide temporary credentials to query engines. Only needed when permissionModel is set to Lake Formation or Hybrid. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationBucket">locationBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | S3 bucket where data is stored. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.locationPrefix">locationPrefix</a></code> | <code>string</code> | Top level location where table data is stored. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.governance.DataCatalogDatabaseProps.property.permissionModel">permissionModel</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.PermissionModel</code> | The permission model to apply to the Glue Database. |
@@ -14754,6 +14754,7 @@ public readonly lakeFormationConfigurationRole: IRole;
 
 The IAM Role assumed by the construct resources to perform Lake Formation configuration.
 
+The role is assumed by Lambda functions to perform Lake Formation related operations.
 Only needed when permissionModel is set to Lake Formation or Hybrid
 
 ---
@@ -14767,7 +14768,7 @@ public readonly lakeFormationDataAccessRole: IRole;
 - *Type:* aws-cdk-lib.aws_iam.IRole
 - *Default:* A new role is created
 
-The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html). Only needed when permissionModel is set to Lake Formation or Hybrid.
+The IAM Role used by Lake Formation for [data access](https://docs.aws.amazon.com/lake-formation/latest/dg/registration-role.html). The role is assumed by Lake Formation to provide temporary credentials to query engines. Only needed when permissionModel is set to Lake Formation or Hybrid.
 
 ---
 

@@ -113,6 +113,10 @@ export class DataCatalogDatabase extends TrackedConstruct {
     this.permissionModel = props.permissionModel || DataCatalogDatabase.DEFAULT_PERMISSION_MODEL;
     const useLakeFormation = this.permissionModel === PermissionModel.LAKE_FORMATION || this.permissionModel === PermissionModel.HYBRID;
 
+    if (!useLakeFormation && (props.lakeFormationDataAccessRole !== undefined || props.lakeFormationConfigurationRole !== undefined)) {
+      throw new Error('Lake Formation Data Access Role and Configuration Role are only used when the permission model is Lake Formation or Hybrid');
+    }
+
     if (catalogType === CatalogType.INVALID) {
       throw new Error("Data catalog type can't be determined. Please check `DataCatalogDatabase` properties.");
     }
