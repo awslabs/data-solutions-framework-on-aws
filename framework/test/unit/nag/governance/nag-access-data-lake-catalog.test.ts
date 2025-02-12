@@ -69,7 +69,7 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/Stack/ExampleLfDLCatalog/LakeFormationDataAccessRole/DefaultPolicy/Resource',
     '/Stack/ExampleHbDLCatalog/LakeFormationDataAccessRole/DefaultPolicy/Resource',
   ],
-  [{ id: 'AwsSolutions-IAM5', reason: 'Using AppSec approved managed policy provided by the Bucket interface' }],
+  [{ id: 'AwsSolutions-IAM5', reason: 'Using managed policy provided by CDK in the Bucket interface' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(

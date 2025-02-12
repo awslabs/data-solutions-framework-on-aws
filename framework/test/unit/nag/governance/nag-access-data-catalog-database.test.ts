@@ -64,7 +64,7 @@ Aspects.of(stack).add(new AwsSolutionsChecks());
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/TestPrincipal/DefaultPolicy/Resource',
-  [{ id: 'AwsSolutions-IAM5', reason: 'Using AppSec approved managed policy provided by the Bucket interface' }],
+  [{ id: 'AwsSolutions-IAM5', reason: 'Using managed policy provided by CDK in the Bucket interface' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
@@ -90,7 +90,7 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/Stack/TestLfCatalogDatabase/CrawlerRole/DefaultPolicy/Resource',
     '/Stack/TestHybridCatalogDatabase/CrawlerRole/DefaultPolicy/Resource',
   ],
-  [{ id: 'AwsSolutions-IAM5', reason: 'Using AppSec approved managed policy provided by the Bucket interface' }],
+  [{ id: 'AwsSolutions-IAM5', reason: 'Using managed policy provided by CDK in the Bucket interface' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
@@ -111,7 +111,7 @@ NagSuppressions.addResourceSuppressionsByPath(
     '/Stack/TestLfCatalogDatabase/LakeFormationRegistrationDataAccessRole/DefaultPolicy/Resource',
     '/Stack/TestHybridCatalogDatabase/LakeFormationRegistrationDataAccessRole/DefaultPolicy/Resource',
   ],
-  [{ id: 'AwsSolutions-IAM5', reason: 'Using AppSec approved managed policy provided by the Bucket interface' }],
+  [{ id: 'AwsSolutions-IAM5', reason: 'Using managed policy provided by CDK in the Bucket interface' }],
 );
 
 NagSuppressions.addResourceSuppressionsByPath(
