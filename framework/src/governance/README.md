@@ -9,6 +9,7 @@ AWS Glue Catalog database for an Amazon S3 dataset.
 - The database default location is pointing to an S3 bucket location `s3://<locationBucket>/<locationPrefix>/`
 - The database can store various tables structured in their respective prefixes, for example: `s3://<locationBucket>/<locationPrefix>/<table_prefix>/`
 - By default, a database level crawler is scheduled to run once a day (00:01h local timezone). The crawler can be disabled and the schedule/frequency of the crawler can be modified with a cron expression.
+- The permission model of the database can use IAM, LakeFormation or Hybrid mode.
 
 ![Data Catalog Database](../../../website/static/img/adsf-data-catalog.png)
 
@@ -19,6 +20,20 @@ The AWS Glue Data Catalog resources created by the `DataCatalogDatabase` constru
 ## Usage
 
 [example default usage](./examples/data-catalog-database-default.lit.ts)
+
+## Using Lake Formation permission model
+
+You can change the default permission model of the database to use [Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html) exclusively or [hybrid mode](https://docs.aws.amazon.com/lake-formation/latest/dg/hybrid-access-mode.html).
+
+Changing the permission model to Lake Formation or Hybrid has the following impact:
+* The CDK provisioning role is added as a Lake Formation administrator so it can perform Lake Formation operations
+* The IAMAllowedPrincipal grant is removed from the database to enforce Lake Formation as the unique permission model (only for Lake Formation permission model)
+
+:::caution Lake Formation Data Lake Settings
+Lake Formation and Hybrid permission models are configured using PutDataLakeSettings API call. Concurrent API calls can lead to throttling. If you create multiple `DataCatalogDatabases`, it's recommended to create dependencies between the `dataLakeSettings` that are exposed in each database to avoid concurrent calls. See the example in the `DataLakeCatalog`construct [here](https://github.com/awslabs/data-solutions-framework-on-aws/blob/main/framework/src/governance/lib/data-lake-catalog.ts#L137)
+:::
+
+[example lake formation permission model](./examples/data-catalog-database-permissions.lit.ts)
 
 ## Modifying the crawler behavior
 

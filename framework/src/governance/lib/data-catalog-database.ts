@@ -5,9 +5,12 @@ import { Stack } from 'aws-cdk-lib';
 import { CfnCrawler, CfnDatabase, CfnSecurityConfiguration } from 'aws-cdk-lib/aws-glue';
 import { AddToPrincipalPolicyResult, Effect, IPrincipal, IRole, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { CfnDataLakeSettings, CfnPrincipalPermissions, CfnResource } from 'aws-cdk-lib/aws-lakeformation';
+import { AwsCustomResource } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { DataCatalogDatabaseProps } from './data-catalog-database-props';
-import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
+import { grantCrawler, grantDataLakeLocation, putDataLakeSettings, registerS3Location, revokeIamAllowedPrincipal } from './lake-formation-helpers';
+import { Context, PermissionModel, TrackedConstruct, TrackedConstructProps, Utils } from '../../utils';
 
 /**
  * An AWS Glue Data Catalog Database configured with the location and a crawler.
@@ -23,6 +26,10 @@ import { Context, TrackedConstruct, TrackedConstructProps, Utils } from '../../u
  * });
  */
 export class DataCatalogDatabase extends TrackedConstruct {
+  /**
+   * Default permission model for the DataCatalogDatabase
+   */
+  private static readonly DEFAULT_PERMISSION_MODEL = PermissionModel.IAM;
   /**
    * The Glue Crawler created when `autoCrawl` is set to `true` (default value). This property can be undefined if `autoCrawl` is set to `false`.
    */
@@ -48,9 +55,53 @@ export class DataCatalogDatabase extends TrackedConstruct {
    */
   readonly crawlerLogEncryptionKey?: IKey;
   /**
+   * The DataLakeSettings for Lake Formation
+   */
+  readonly dataLakeSettings?: CfnDataLakeSettings;
+  /**
+   * The IAM Role used by Lake Formation to access data.
+   */
+  readonly lakeFormationDataAccessRole?: IRole;
+  /**
+   * The Lake Formation data lake location
+   */
+  readonly dataLakeLocation?: CfnResource;
+  /**
+   * The custom resource for revoking IAM permissions from the database
+   */
+  readonly revokeIamAllowedPrincipal?: AwsCustomResource;
+  /**
+   * The Lake Formation grant on the database for the Crawler when Lake Formation or Hybrid is used
+   */
+  readonly crawlerLakeFormationDatabaseGrant?: CfnPrincipalPermissions;
+  /**
+   * The Lake Formation grant on the tables for the Crawler when Lake Formation or Hybrid is used
+   */
+  readonly crawlerLakeFormationTablesGrant?: CfnPrincipalPermissions;
+  /**
+   * The Lake Formation grant on the data location for the Crawler when Lake Formation or Hybrid is used
+   */
+  readonly crawlerLakeFormationLocationGrant?: CfnPrincipalPermissions;
+  /**
+   * The IAM Role used to revoke LakeFormation IAMAllowedPrincipals
+   */
+  readonly lakeFormationRevokeRole?: IRole;
+  /**
    * Caching constructor properties for internal reuse by constructor methods
    */
   private dataCatalogDatabaseProps: DataCatalogDatabaseProps;
+  /**
+   * The location prefix without trailing slash
+   */
+  private cleanedLocationPrefix?: string;
+  /**
+   * The location S3 URI
+   */
+  private s3LocationUri?: string;
+  /**
+   * The permission model
+   */
+  private permissionModel: PermissionModel;
 
   constructor(scope: Construct, id: string, props: DataCatalogDatabaseProps) {
     const trackedConstructProps: TrackedConstructProps = {
@@ -59,6 +110,12 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     super(scope, id, trackedConstructProps);
     const catalogType = this.determineCatalogType(props);
+    this.permissionModel = props.permissionModel || DataCatalogDatabase.DEFAULT_PERMISSION_MODEL;
+    const useLakeFormation = this.permissionModel === PermissionModel.LAKE_FORMATION || this.permissionModel === PermissionModel.HYBRID;
+
+    if (!useLakeFormation && (props.lakeFormationDataAccessRole !== undefined || props.lakeFormationConfigurationRole !== undefined)) {
+      throw new Error('Lake Formation Data Access Role and Configuration Role are only used when the permission model is Lake Formation or Hybrid');
+    }
 
     if (catalogType === CatalogType.INVALID) {
       throw new Error("Data catalog type can't be determined. Please check `DataCatalogDatabase` properties.");
@@ -70,25 +127,62 @@ export class DataCatalogDatabase extends TrackedConstruct {
     const hash = Utils.generateUniqueHash(this);
     this.databaseName = props.name + '_' + hash.toLowerCase();
 
-    let s3LocationUri: string|undefined, locationPrefix: string|undefined;
-
     if (catalogType === CatalogType.S3) {
-      locationPrefix = props.locationPrefix;
 
-      if (!locationPrefix!.endsWith('/')) {
-        locationPrefix += '/';
+      this.cleanedLocationPrefix = props.locationPrefix === undefined ? undefined : props.locationPrefix.replace(/\/$/g, '');
+      this.s3LocationUri = props.locationBucket!.s3UrlForObject(this.cleanedLocationPrefix);
+
+      if (useLakeFormation) {
+
+        const lakeFormationAdmins: IRole[]=[];
+        const cdkRole = Utils.getCdkDeploymentRole(this);
+        lakeFormationAdmins.push(cdkRole);
+
+        if (props.permissionModel === PermissionModel.LAKE_FORMATION) {
+          // Create a role for the AwsCustomResource to revoke IAMAllowedPrincipal
+          this.lakeFormationRevokeRole = props.lakeFormationConfigurationRole || new Role(this, 'LfRevokeRole', {
+            assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+          });
+          lakeFormationAdmins.push(this.lakeFormationRevokeRole);
+        }
+
+        this.dataLakeSettings = putDataLakeSettings(this, 'DataLakeSettings', lakeFormationAdmins);
+
+        if (props.permissionModel === PermissionModel.LAKE_FORMATION) {
+          this.dataLakeSettings.node.addDependency(this.lakeFormationRevokeRole!);
+        }
+
+        // register location
+        if (props.locationBucket) {
+
+          [this.lakeFormationDataAccessRole, this.dataLakeLocation] = registerS3Location(
+            this, 'LakeFormationRegistration',
+            props.locationBucket,
+            this.cleanedLocationPrefix,
+            props.permissionModel,
+            props.lakeFormationDataAccessRole,
+          );
+          this.lakeFormationDataAccessRole.node.addDependency(this.dataLakeSettings!);
+
+        }
       }
-
-      s3LocationUri = props.locationBucket!.s3UrlForObject(locationPrefix);
     }
 
     this.database = new CfnDatabase(this, 'GlueDatabase', {
       catalogId: Stack.of(this).account,
       databaseInput: {
         name: this.databaseName,
-        locationUri: s3LocationUri,
+        locationUri: this.s3LocationUri,
       },
     });
+    this.database.applyRemovalPolicy(removalPolicy);
+
+    if (catalogType === CatalogType.S3 && props.permissionModel === PermissionModel.LAKE_FORMATION) {
+
+      this.revokeIamAllowedPrincipal =
+      revokeIamAllowedPrincipal(this, 'IamRevoke', this.databaseName, this.lakeFormationRevokeRole!, removalPolicy);
+      this.revokeIamAllowedPrincipal.node.addDependency(this.database);
+    }
 
     let autoCrawl = props.autoCrawl;
 
@@ -103,49 +197,62 @@ export class DataCatalogDatabase extends TrackedConstruct {
     const currentStack = Stack.of(this);
 
     if (autoCrawl) {
+
+      const statements = [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            'glue:BatchCreatePartition',
+            'glue:BatchDeletePartition',
+            'glue:BatchDeleteTable',
+            'glue:BatchDeleteTableVersion',
+            'glue:BatchGetPartition',
+            'glue:BatchUpdatePartition',
+            'glue:CreatePartition',
+            'glue:CreateTable',
+            'glue:DeletePartition',
+            'glue:DeleteTable',
+            'glue:GetDatabase',
+            'glue:GetDatabases',
+            'glue:GetPartition',
+            'glue:GetPartitions',
+            'glue:GetTable',
+            'glue:GetTables',
+            'glue:UpdateDatabase',
+            'glue:UpdatePartition',
+            'glue:UpdateTable',
+          ],
+          resources: [
+            `arn:aws:glue:${currentStack.region}:${currentStack.account}:catalog`,
+            `arn:aws:glue:${currentStack.region}:${currentStack.account}:database/${this.databaseName}`,
+            `arn:aws:glue:${currentStack.region}:${currentStack.account}:table/${this.databaseName}/*`,
+          ],
+        }),
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            'glue:GetSecurityConfigurations',
+            'glue:GetSecurityConfiguration',
+          ],
+          resources: ['*'],
+        }),
+      ];
+
+      if (useLakeFormation) {
+        statements.push(new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: [
+            'lakeformation:GetDataAccess',
+          ],
+          resources: ['*'],
+        }));
+      };
+
       this.crawlerRole = props.crawlerRole || new Role(this, 'CrawlerRole', {
         assumedBy: new ServicePrincipal('glue.amazonaws.com'),
         inlinePolicies: {
           crawlerPermissions: new PolicyDocument({
-            statements: [
-              new PolicyStatement({
-                effect: Effect.ALLOW,
-                actions: [
-                  'glue:BatchCreatePartition',
-                  'glue:BatchDeletePartition',
-                  'glue:BatchDeleteTable',
-                  'glue:BatchDeleteTableVersion',
-                  'glue:BatchGetPartition',
-                  'glue:BatchUpdatePartition',
-                  'glue:CreatePartition',
-                  'glue:CreateTable',
-                  'glue:DeletePartition',
-                  'glue:DeleteTable',
-                  'glue:GetDatabase',
-                  'glue:GetDatabases',
-                  'glue:GetPartition',
-                  'glue:GetPartitions',
-                  'glue:GetTable',
-                  'glue:GetTables',
-                  'glue:UpdateDatabase',
-                  'glue:UpdatePartition',
-                  'glue:UpdateTable',
-                ],
-                resources: [
-                  `arn:aws:glue:${currentStack.region}:${currentStack.account}:catalog`,
-                  `arn:aws:glue:${currentStack.region}:${currentStack.account}:database/${this.databaseName}`,
-                  `arn:aws:glue:${currentStack.region}:${currentStack.account}:table/${this.databaseName}/*`,
-                ],
-              }),
-              new PolicyStatement({
-                effect: Effect.ALLOW,
-                actions: [
-                  'glue:GetSecurityConfigurations',
-                  'glue:GetSecurityConfiguration',
-                ],
-                resources: ['*'],
-              }),
-            ],
+            statements,
           }),
         },
       });
@@ -211,12 +318,13 @@ export class DataCatalogDatabase extends TrackedConstruct {
       const crawlerName = `${props.name}-${hash.toLowerCase()}-crawler`;
 
       if (catalogType === CatalogType.S3) {
-        this.crawler = this.handleS3TypeCrawler(props, {
+        [this.crawler, this.crawlerLakeFormationDatabaseGrant, this.crawlerLakeFormationTablesGrant, this.crawlerLakeFormationLocationGrant] =
+        this.handleS3TypeCrawler(props, {
           autoCrawlSchedule,
           crawlerName,
           crawlerSecurityConfigurationName: this.crawlerSecurityConfiguration.name,
-          locationPrefix: locationPrefix!,
-          s3LocationUri: s3LocationUri!,
+          locationPrefix: this.cleanedLocationPrefix!,
+          s3LocationUri: this.s3LocationUri!,
         });
       } else if (catalogType === CatalogType.JDBC) {
         this.crawler = this.handleJDBCTypeCrawler(props, {
@@ -229,7 +337,9 @@ export class DataCatalogDatabase extends TrackedConstruct {
   }
 
   /**
-   * Grants read access via identity based policy to the principal. This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables.
+   * Grants read access via identity based policy to the principal.
+   * This would attach an IAM Policy to the principal allowing read access to the Glue Database and all its Glue Tables.
+   * Only valid for IAM permission model.
    * @param principal Principal to attach the Glue Database read access to
    * @returns `AddToPrincipalPolicyResult`
    */
@@ -238,7 +348,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
 
     const catalogType = this.determineCatalogType(this.dataCatalogDatabaseProps);
 
-    if (catalogType === CatalogType.S3) {
+    if (catalogType === CatalogType.S3 || this.permissionModel === PermissionModel.IAM) {
       let locationPrefix = this.dataCatalogDatabaseProps.locationPrefix;
 
       if (!locationPrefix!.endsWith('/')) {
@@ -273,17 +383,21 @@ export class DataCatalogDatabase extends TrackedConstruct {
    * @returns `number`
    */
   private calculateDefaultTableLevelDepth(locationPrefix: string): number {
-    const baseCount = 2;
+    if (locationPrefix === undefined) {
+      return 1;
+    } else {
+      const baseCount = 2;
 
-    const locationTokens = locationPrefix.split('/');
+      const locationTokens = locationPrefix.split('/');
 
-    let ctrValidToken = 0;
+      let ctrValidToken = 0;
 
-    locationTokens.forEach((token) => {
-      ctrValidToken += (token) ? 1 : 0;
-    });
+      locationTokens.forEach((token) => {
+        ctrValidToken += (token) ? 1 : 0;
+      });
 
-    return ctrValidToken + baseCount;
+      return ctrValidToken + baseCount;
+    }
   }
 
   /**
@@ -292,7 +406,7 @@ export class DataCatalogDatabase extends TrackedConstruct {
    * @returns `CatalogType`
    */
   private determineCatalogType(props: DataCatalogDatabaseProps): CatalogType {
-    if (props.locationBucket && props.locationPrefix) {
+    if (props.locationBucket) {
       return CatalogType.S3;
     } else if (props.glueConnectionName && props.jdbcSecret && props.jdbcSecretKMSKey && props.jdbcPath) {
       return CatalogType.JDBC;
@@ -307,12 +421,37 @@ export class DataCatalogDatabase extends TrackedConstruct {
    * @param s3Props `S3CrawlerProps`
    * @returns `CfnCrawler`
    */
-  private handleS3TypeCrawler(props: DataCatalogDatabaseProps, s3Props: S3CrawlerProps): CfnCrawler {
+  private handleS3TypeCrawler(
+    props: DataCatalogDatabaseProps,
+    s3Props: S3CrawlerProps,
+  ): [CfnCrawler, CfnPrincipalPermissions | undefined, CfnPrincipalPermissions | undefined, CfnPrincipalPermissions | undefined] {
+
     const tableLevel = props.crawlerTableLevelDepth || this.calculateDefaultTableLevelDepth(s3Props.locationPrefix);
     const grantPrefix = s3Props.locationPrefix == '/' ? '' : s3Props.locationPrefix;
-    props.locationBucket!.grantRead(this.crawlerRole!, grantPrefix+'*');
 
-    return new CfnCrawler(this, 'DatabaseAutoCrawler', {
+    const useLakeFormation = props.permissionModel === PermissionModel.HYBRID || props.permissionModel === PermissionModel.LAKE_FORMATION;
+    let lakeFormationDbGrant: CfnPrincipalPermissions | undefined;
+    let lakeFormationTablesGrant: CfnPrincipalPermissions | undefined;
+    let lakeFormationLocationGrant: CfnPrincipalPermissions | undefined;
+
+    if (useLakeFormation) {
+
+      lakeFormationLocationGrant = grantDataLakeLocation(
+        this, 'CrawlerLfLocationGrant',
+        this.cleanedLocationPrefix ? props.locationBucket!.arnForObjects(this.cleanedLocationPrefix) : props.locationBucket!.bucketArn,
+        this.crawlerRole!,
+      );
+
+      [lakeFormationDbGrant, lakeFormationTablesGrant] = grantCrawler(this, 'DbCrawler', this.databaseName, this.crawlerRole!);
+
+      lakeFormationLocationGrant.node.addDependency(this.dataLakeLocation!);
+      lakeFormationDbGrant.node.addDependency(this.database);
+      lakeFormationTablesGrant.node.addDependency(this.database);
+    } else {
+      props.locationBucket!.grantRead(this.crawlerRole!, grantPrefix+'*');
+    }
+
+    const crawler = new CfnCrawler(this, 'DatabaseAutoCrawler', {
       role: this.crawlerRole!.roleArn,
       targets: {
         s3Targets: [{
@@ -329,7 +468,19 @@ export class DataCatalogDatabase extends TrackedConstruct {
           TableLevelConfiguration: tableLevel,
         },
       }),
+      lakeFormationConfiguration: {
+        useLakeFormationCredentials: useLakeFormation,
+      },
     });
+    crawler.node.addDependency(this.database);
+
+    if (useLakeFormation) {
+      crawler.node.addDependency(lakeFormationDbGrant!);
+      crawler.node.addDependency(lakeFormationTablesGrant!);
+      crawler.node.addDependency(lakeFormationLocationGrant!);
+    }
+
+    return [crawler, lakeFormationDbGrant, lakeFormationTablesGrant, lakeFormationLocationGrant];
   }
 
   /**

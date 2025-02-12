@@ -37,6 +37,7 @@ __pycache__
 cdk.out
 .DS_Store
 LICENSE.bak
+framework/test/e2e/mytest.e2e.test.ts
 !/.mergify.yml
 !/.github/dependabot.yml
 .jsii.tabl.json
