@@ -443,7 +443,7 @@ export class MskProvisioned extends TrackedConstruct {
       const updateZookepeerLambda = new Function(this, 'UpdateZookeeperSg', {
         handler: 'index.onEventHandler',
         code: Code.fromAsset(join(__dirname, './resources/lambdas/zooKeeperSecurityGroupUpdate')),
-        runtime: Runtime.NODEJS_20_X,
+        runtime: Runtime.NODEJS_22_X,
         environment: {
           MSK_CLUSTER_ARN: this.cluster.attrArn,
           REGION: this.region,

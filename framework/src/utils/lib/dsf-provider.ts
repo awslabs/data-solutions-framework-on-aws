@@ -18,7 +18,7 @@ import { DsfProviderProps, HandlerDefinition } from './dsf-provider-props';
  */
 export class DsfProvider extends Construct {
 
-  private static readonly CR_RUNTIME = Runtime.NODEJS_20_X;
+  private static readonly CR_RUNTIME = Runtime.NODEJS_22_X;
   private static readonly LOG_RETENTION = RetentionDays.ONE_WEEK;
   private static readonly FUNCTION_TIMEOUT = Duration.minutes(14);
 

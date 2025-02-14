@@ -137,7 +137,7 @@ export class DataZoneMskEnvironmentAuthorizer extends TrackedConstruct {
     this.grantLogGroup.grantWrite(this.grantRole);
 
     this.grantFunction = new Function(this, 'GrantFunction', {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_22_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname + '/resources/datazone-msk-authorizer-grant/'),
       role: this.grantRole,
