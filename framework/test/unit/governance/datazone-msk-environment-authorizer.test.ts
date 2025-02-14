@@ -80,7 +80,7 @@ describe ('Creating a DataZoneMskEnvironmentAuthorizer with default configuratio
             'Arn',
           ],
         },
-        Runtime: 'nodejs20.x',
+        Runtime: 'nodejs22.x',
         Timeout: 60,
         Environment: {
           Variables: {
