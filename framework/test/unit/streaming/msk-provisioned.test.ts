@@ -250,7 +250,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
       ExecuteOnHandlerChange: true,
       InvocationType: 'RequestResponse',
       ServiceToken: { 'Fn::GetAtt': ['AWSCDKTriggerCustomResourceProviderCustomResourceProviderHandler97BECD91', 'Arn'] },
-      HandlerArn: { Ref: 'clusterUpdateZookeeperSgCurrentVersion6BC0411Da09a8dad02386cf9ab1285840130679b' },
+      HandlerArn: { Ref: 'clusterUpdateZookeeperSgCurrentVersion6BC0411D2747637397a3d69ea0310e668a586892' },
     });
   });
 
@@ -323,7 +323,7 @@ describe('Create an MSK Provisioned cluster with mTlS auth, provided vpc and add
     template.hasResourceProperties('Custom::Trigger', {
       ExecuteOnHandlerChange: true,
       InvocationType: 'RequestResponse',
-      HandlerArn: { Ref: 'clusterUpdateZookeeperSgCurrentVersion6BC0411Da09a8dad02386cf9ab1285840130679b' },
+      HandlerArn: { Ref: 'clusterUpdateZookeeperSgCurrentVersion6BC0411D2747637397a3d69ea0310e668a586892' },
     });
   });
 

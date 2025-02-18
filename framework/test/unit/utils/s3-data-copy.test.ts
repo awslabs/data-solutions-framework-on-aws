@@ -65,7 +65,7 @@ describe('With default configuration, the construct ', () => {
             Match.stringLikeRegexp('S3DataCopyProviderOnEventHandlerRole.*'),
           ]),
         },
-        Runtime: 'nodejs20.x',
+        Runtime: 'nodejs22.x',
       }),
     );
   });

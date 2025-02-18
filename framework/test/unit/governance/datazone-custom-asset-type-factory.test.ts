@@ -90,7 +90,7 @@ describe ('Creating a DataZoneCustomAssetTypeFactory with default configuration'
             'Arn',
           ],
         },
-        Runtime: 'nodejs20.x',
+        Runtime: 'nodejs22.x',
         Timeout: 120,
       }),
     );

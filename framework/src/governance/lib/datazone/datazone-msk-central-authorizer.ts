@@ -142,7 +142,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     this.metadataCollectorLogGroup.grantWrite(this.metadataCollectorRole);
 
     this.metadataCollectorFunction = new Function(this, 'MetadataCollectorHandler', {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_22_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname + '/resources/datazone-msk-authorizer-metadata-collector/'),
       role: this.metadataCollectorRole,
@@ -175,7 +175,7 @@ export class DataZoneMskCentralAuthorizer extends TrackedConstruct {
     this.datazoneCallbackLogGroup.grantWrite(this.datazoneCallbackRole);
 
     this.datazoneCallbackFunction = new Function(this, 'CallbackHandler', {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_22_X,
       handler: 'index.handler',
       code: Code.fromAsset(__dirname+'/resources/datazone-msk-authorizer-callback/'),
       role: this.datazoneCallbackRole,

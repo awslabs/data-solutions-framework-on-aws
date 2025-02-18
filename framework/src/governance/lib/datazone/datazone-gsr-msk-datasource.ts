@@ -189,7 +189,7 @@ export class DataZoneGsrMskDataSource extends TrackedConstruct {
     });
 
     this.lambdaFunction = new Function(this, 'LambdaFunction', {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_22_X,
       handler: 'index.handler',
       role: this.lambdaRole,
       timeout: Duration.minutes(5),

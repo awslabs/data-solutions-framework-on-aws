@@ -144,7 +144,7 @@ describe('With default configuration, the construct ', () => {
             'Arn',
           ],
         },
-        Runtime: 'nodejs20.x',
+        Runtime: 'nodejs22.x',
         Timeout: 840,
       }),
     );
@@ -461,7 +461,7 @@ describe('With isComplete handler configuration configuration, the construct ', 
             'Arn',
           ],
         },
-        Runtime: 'nodejs20.x',
+        Runtime: 'nodejs22.x',
         Timeout: 840,
       }),
     );
@@ -667,7 +667,7 @@ describe('With custom configuration, the construct should', () => {
               'Arn',
             ],
           },
-          Runtime: 'nodejs20.x',
+          Runtime: 'nodejs22.x',
           Timeout: 5,
           VpcConfig: {
             SecurityGroupIds: [
@@ -705,7 +705,7 @@ describe('With custom configuration, the construct should', () => {
               'Arn',
             ],
           },
-          Runtime: 'nodejs20.x',
+          Runtime: 'nodejs22.x',
           Timeout: 5,
           VpcConfig: {
             SecurityGroupIds: [
@@ -770,7 +770,7 @@ describe('With custom configuration, the construct should', () => {
             'Arn',
           ],
         },
-        Runtime: 'nodejs20.x',
+        Runtime: 'nodejs22.x',
         Timeout: 120,
       }),
     );
