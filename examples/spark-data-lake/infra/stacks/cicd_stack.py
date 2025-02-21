@@ -42,8 +42,8 @@ class CICDPipelineStack(Stack):
                     resources=["*"]
                 )
             ],
-            source= CodePipelineSource.connection("vgkowski/spark-data-lake-example", "main",
-                connection_arn="arn:aws:codeconnections:us-east-1:632368511077:connection/84f1c621-a895-449a-b661-ff7f0e437ab4"
+            source= CodePipelineSource.connection("your/repo", "branch",
+                connection_arn="arn:aws:codestar-connections:us-east-1:222222222222:connection/7d2469ff-514a-4e4f-9003-5ca4a43cdc41"
             ),
             removal_policy=RemovalPolicy.DESTROY,
         )
