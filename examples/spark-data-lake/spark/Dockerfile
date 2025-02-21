@@ -1,9 +1,9 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:2 AS base
+FROM --platform=linux/amd64 public.ecr.aws/amazonlinux/amazonlinux:2023-minimal AS base
 
-RUN yum install -y python3
+RUN dnf install -y gcc python3 python3-devel
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV

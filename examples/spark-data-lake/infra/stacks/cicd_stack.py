@@ -20,6 +20,8 @@ class CICDPipelineStack(Stack):
             self,
             "SparkCICDPipeline",
             spark_application_name="SparkTest",
+            # The Spark image to use in the CICD
+            spark_image=dsf.processing.SparkImage.EMR_7_5,
             # Pass the factory class to dynamically pass the Application Stack
             application_stack_factory=SparkApplicationStackFactory(),
             # Path of the CDK python application to be used by the CICD build and deploy phases
@@ -40,8 +42,8 @@ class CICDPipelineStack(Stack):
                     resources=["*"]
                 )
             ],
-            source= CodePipelineSource.connection("your/repo", "branch",
-                connection_arn="arn:aws:codestar-connections:us-east-1:222222222222:connection/7d2469ff-514a-4e4f-9003-5ca4a43cdc41"
+            source= CodePipelineSource.connection("vgkowski/spark-data-lake-example", "main",
+                connection_arn="arn:aws:codeconnections:us-east-1:632368511077:connection/84f1c621-a895-449a-b661-ff7f0e437ab4"
             ),
             removal_policy=RemovalPolicy.DESTROY,
         )

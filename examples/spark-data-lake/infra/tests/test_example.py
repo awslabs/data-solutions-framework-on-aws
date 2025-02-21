@@ -61,7 +61,7 @@ def test_buckets_found(results):
 
 def test_e2e_example(results):
     # this method is an example for an E2E test - just include 'e2e' in the test function name
-    results[1].resource_count_is("AWS::S3::Bucket", 6)
+    results[1].resource_count_is("AWS::S3::Bucket", 8)
 
 def test_nag_warnings(results):
     warnings = Annotations.from_stack(results[0]).find_warning('*', Match.string_like_regexp('AwsSolutions-.*'))

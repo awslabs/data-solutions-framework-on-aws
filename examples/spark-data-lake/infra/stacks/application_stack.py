@@ -80,12 +80,14 @@ class ApplicationStack(Stack):
             iam.PolicyStatement(
                 effect=iam.Effect.ALLOW,
                 actions=[
-                'glue:CreateTable',
-                'glue:GetTable',
-                'glue:GetTables',
-                'glue:BatchGetPartition',
-                'glue:GetDatabase',
-                'glue:GetDatabases',
+                    'glue:CreateTable',
+                    'glue:GetTable',
+                    'glue:GetTables',
+                    'glue:BatchGetPartition',
+                    'glue:GetDatabase',
+                    'glue:GetDatabases',
+                    'glue:GetPartitions',
+                    'glue:DeleteTable'
                 ],
                 resources=[
                     f"arn:aws:glue:{region}:{account}:catalog",
@@ -101,7 +103,7 @@ class ApplicationStack(Stack):
             self, 
             "SparkProcessingRuntime", 
             name="TaxiAggregation",
-            release_label=dsf.processing.EmrRuntimeVersion.V6_15,
+            release_label=dsf.processing.EmrRuntimeVersion.V7_5,
             runtime_configuration=[
                 {
                     "classification": "spark-defaults",
