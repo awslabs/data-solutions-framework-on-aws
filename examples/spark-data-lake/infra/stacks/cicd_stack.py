@@ -20,6 +20,8 @@ class CICDPipelineStack(Stack):
             self,
             "SparkCICDPipeline",
             spark_application_name="SparkTest",
+            # The Spark image to use in the CICD
+            spark_image=dsf.processing.SparkImage.EMR_7_5,
             # Pass the factory class to dynamically pass the Application Stack
             application_stack_factory=SparkApplicationStackFactory(),
             # Path of the CDK python application to be used by the CICD build and deploy phases

@@ -7,7 +7,7 @@ name = "spark"
 version = "0.0.1"
 
 dependencies = [
-  'great-expectations==0.15.6'
+  'great-expectations'
 ]
 
 [project.optional-dependencies]
