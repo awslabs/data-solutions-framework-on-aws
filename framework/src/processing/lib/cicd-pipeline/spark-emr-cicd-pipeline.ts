@@ -16,6 +16,7 @@ import {
   TrackedConstruct,
   TrackedConstructProps,
 } from '../../../utils';
+import { IntegrationTestStack } from '../../../utils/lib/integration-test-stack';
 import { DEFAULT_SPARK_IMAGE, SparkImage } from '../emr-releases';
 
 const MISSING_ENVIRONMENTS_ERROR = 'MissingEnvironmentsError';
@@ -154,9 +155,9 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   public readonly pipelineLogGroup: ILogGroup;
   /**
-   * The CodeBuild Step for the staging stage
+   * The ApplicationStage for the Integration Test
    */
-  public readonly integrationTestStage?: CodeBuildStep;
+  public readonly integrationTestStack?: IntegrationTestStack;
 
   /**
    * Construct a new instance of the SparkCICDPipeline class.
@@ -225,12 +226,11 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
 
     try {
       const environments = this.getUserDefinedEnvironmentsFromContext();
-
       for (const e of environments) {
-        this.integrationTestStage = this.attachStageToPipeline(e.stageName.toUpperCase(), {
+        this.integrationTestStack = this.attachStageToPipeline(e.stageName.toUpperCase(), {
           account: e.account,
           region: e.region,
-        }, e.triggerIntegTest || false, buildStage, props);
+        }, e.triggerIntegTest || false, props);
       }
     } catch (e) {
       const error = e as Error;
@@ -238,8 +238,8 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
         throw e;
       }
 
-      this.integrationTestStage = this.attachStageToPipeline('Staging', this.getAccountFromContext('staging'), true, buildStage, props);
-      this.attachStageToPipeline('Prod', this.getAccountFromContext('prod'), false, buildStage, props);
+      this.integrationTestStack = this.attachStageToPipeline('Staging', this.getAccountFromContext('staging'), true, props);
+      this.attachStageToPipeline('Prod', this.getAccountFromContext('prod'), false, props);
     }
   }
 
@@ -248,36 +248,36 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    * @param stageName
    * @param resourceEnvironment
    * @param attachIntegTest
-   * @param buildStage
    * @param props
-   * @returns {CodeBuildStep|undefined} if integration step is configured, this returns the corresponding `CodeBuildStep` for the test
+   * @returns {IntegrationTestStack|undefined} if integration step is configured, this returns the corresponding `ApplicationStage` for the test
    */
   private attachStageToPipeline(stageName: string, resourceEnvironment: ResourceEnvironment
-    , attachIntegTest: boolean, buildStage: CodeBuildStep
-    , props: SparkEmrCICDPipelineProps): CodeBuildStep|undefined {
+    , attachIntegTest: boolean
+    , props: SparkEmrCICDPipelineProps): IntegrationTestStack|undefined {
+
+    const currentStage = CICDStage.of(stageName.toUpperCase());
+    const stageProps: Record<string, any> = {};
+    let finalIntegTestDecision = false;
+    if (attachIntegTest && props.integTestScript) {
+      const [integScriptPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
+      finalIntegTestDecision = true;
+      stageProps.integScriptPath = integScriptPath;
+      stageProps.integTestScript = props.integTestScript;
+      stageProps.integTestCommand = `chmod +x ${integScript} && ./${integScript}`;
+      stageProps.integTestPermissions = props.integTestPermissions;
+    }
+
     const applicationStage = new ApplicationStage(this, stageName, {
       env: resourceEnvironment,
       applicationStackFactory: props.applicationStackFactory,
       outputsEnv: (attachIntegTest && props.integTestScript) ? props.integTestEnv : undefined,
-      stage: CICDStage.of(stageName.toUpperCase()),
+      stage: currentStage,
+      attachIntegrationTest: finalIntegTestDecision,
+      stageProps,
     });
-    const stageDeployment = this.pipeline.addStage(applicationStage);
+    this.pipeline.addStage(applicationStage);
 
-    let integrationTestStage:CodeBuildStep|undefined = undefined;
-
-    if (attachIntegTest && props.integTestScript) {
-      // Extract the path and script name from the integration tests script path
-      const [integPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
-
-      integrationTestStage = new CodeBuildStep(`${stageName}IntegrationTests`, {
-        input: buildStage.addOutputDirectory(integPath),
-        commands: [`chmod +x ${integScript} && ./${integScript}`],
-        envFromCfnOutputs: applicationStage.stackOutputsEnv,
-        rolePolicyStatements: props.integTestPermissions,
-      });
-      // Add a post step to run the integration tests
-      stageDeployment.addPost(integrationTestStage);
-    }
+    let integrationTestStage:IntegrationTestStack|undefined = applicationStage.integrationTestStack;
 
     return integrationTestStage;
   }
@@ -297,7 +297,6 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   private getUserDefinedEnvironmentsFromContext(): CICDEnvironment[] {
     const environments = this.node.tryGetContext('environments') as CICDEnvironment[];
-
     if (!environments) {
       const missingContextError = new Error('Missing context variable environments');
       missingContextError.name = MISSING_ENVIRONMENTS_ERROR;

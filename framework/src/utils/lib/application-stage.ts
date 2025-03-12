@@ -3,8 +3,10 @@
 
 
 import { CfnOutput, Stage, StageProps } from 'aws-cdk-lib';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { ApplicationStackFactory } from './application-stack-factory';
+import { IntegrationTestStack } from './integration-test-stack';
 
 
 /**
@@ -57,6 +59,13 @@ export interface ApplicationStageProps extends StageProps {
    * @default - No stage is passed to the application stack
    */
   readonly stage: CICDStage;
+
+  readonly attachIntegrationTest?: boolean;
+
+  /**
+   * Optional parameters that are passed down
+   */
+  readonly stageProps?: Record<string, any>;
 }
 
 /**
@@ -69,6 +78,11 @@ export class ApplicationStage extends Stage {
    * The list of CfnOutputs created by the CDK Stack
    */
   public readonly stackOutputsEnv?: Record<string, CfnOutput>;
+
+  /**
+   * The created integration test stack
+   */
+  public readonly integrationTestStack?: IntegrationTestStack;
 
   /**
    * Construct a new instance of the SparkCICDStage class.
@@ -90,5 +104,32 @@ export class ApplicationStage extends Stage {
         this.stackOutputsEnv[key] = applicationStack.node.children.find(v => (v as CfnOutput)?.logicalId?.includes(outputName)) as CfnOutput;;
       }
     }
+
+    //handle integration test
+    if (props.attachIntegrationTest) {
+      this.integrationTestStack = this.createIntegrationTestStack(props);
+      this.integrationTestStack.addDependency(applicationStack);
+    }
+  }
+
+  private createIntegrationTestStack(props: ApplicationStageProps) {
+    const stackProps = props.stageProps;
+    if (stackProps) {
+      if (stackProps.integTestScript && stackProps.integTestCommand) {
+        const integTestCommand = stackProps.integTestCommand;
+        const integScriptPath = stackProps.integScriptPath;
+        const integTestPermissions = stackProps.integTestPermissions ? stackProps.integTestPermissions as PolicyStatement[] : undefined;
+
+        return new IntegrationTestStack(this
+          , 'IntegrationTestStack'
+          , props.stage
+          , integScriptPath
+          , integTestCommand
+          , this.stackOutputsEnv
+          , integTestPermissions);
+      }
+    }
+
+    throw new Error('Missing integration test specific parameters');
   }
 }

@@ -9,7 +9,6 @@ from constructs import Construct
 import cdklabs.aws_data_solutions_framework as dsf
 from aws_cdk.aws_s3 import Bucket
 
-
 class SparkApplicationStackFactory(dsf.utils.ApplicationStackFactory):
     """Implements ApplicationStackFactory from DSF on AWS to create a self-mutable CICD pipeline for Spark app.
     See Spark CICD docs for more details."""
@@ -87,7 +86,8 @@ class ApplicationStack(Stack):
                     'glue:GetDatabase',
                     'glue:GetDatabases',
                     'glue:GetPartitions',
-                    'glue:DeleteTable'
+                    'glue:DeleteTable',
+                    'glue:CreateDatabase'
                 ],
                 resources=[
                     f"arn:aws:glue:{region}:{account}:catalog",
