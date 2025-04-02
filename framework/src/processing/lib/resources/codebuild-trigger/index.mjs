@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { CodeBuildClient, StartBuildCommand, BatchGetBuildsCommand } from "@aws-sdk/client-codebuild"
 
 const client = new CodeBuildClient()
@@ -35,7 +38,7 @@ export const isCompleteHandler = async(event) => {
 
     let isComplete = false
 
-    if (builds && builds.length > 0) {
+    if (builds !== null && builds !== undefined && builds.length > 0) {
         const build = builds[0]
         const {buildStatus} = build
 
@@ -46,7 +49,7 @@ export const isCompleteHandler = async(event) => {
 
             for (let phase of phases) {
                 if (phase.phaseStatus === buildStatus) {
-                    throw new Error(phase.context[0].message)
+                    throw new Error(`Error with Build ID (${buildId}): ${phase.context[0].message}`)
                 }
             }
         }

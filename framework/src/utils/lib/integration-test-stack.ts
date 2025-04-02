@@ -1,3 +1,6 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import { CfnOutput, CustomResource, Duration, Stack } from 'aws-cdk-lib';
 import { BuildEnvironmentVariable, BuildSpec, Project, Source } from 'aws-cdk-lib/aws-codebuild';
 import { Effect, ManagedPolicy, Policy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -6,9 +9,27 @@ import { Construct } from 'constructs';
 import { CICDStage } from './application-stage';
 import { DsfProvider } from './dsf-provider';
 
+/**
+ * Stack that contains resources related to running the
+ * integration test.
+ */
 export class IntegrationTestStack extends Stack {
+  /**
+   * The CodeBuild Project that's going to run the
+   * integration test.
+   */
   readonly integrationTestCodeBuildProject: Project;
 
+  /**
+   * Constructor for the IntegrationTestStack
+   * @param scope the scope of the construct
+   * @param id the id of the construct
+   * @param stage the stage in the CI/CD pipeline
+   * @param integScriptPath the path of the integration test script
+   * @param integTestCommand the command to be used to run the integration test script
+   * @param stackOutputsEnv the output from the application stack to use as input to the test script
+   * @param integTestPermissions IAM permissions for the integration test script
+   */
   constructor(scope: Construct, id: string
     , stage: CICDStage
     , integScriptPath: string
@@ -36,7 +57,7 @@ export class IntegrationTestStack extends Stack {
 
     const envVariables: Record<string, BuildEnvironmentVariable> = {};
 
-    if (stackOutputsEnv) {
+    if (stackOutputsEnv !== null && stackOutputsEnv !== undefined) {
       for (let k in stackOutputsEnv) {
         const v = stackOutputsEnv[k];
 

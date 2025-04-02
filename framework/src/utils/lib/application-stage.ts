@@ -60,10 +60,15 @@ export interface ApplicationStageProps extends StageProps {
    */
   readonly stage: CICDStage;
 
+  /**
+   * Whether to attach the integration test with this stage or not.
+   * @default - No integration test is attached with this stage
+   */
   readonly attachIntegrationTest?: boolean;
 
   /**
-   * Optional parameters that are passed down
+   * (Optional) These are parameters that are passed down to the integration test stack.
+   * For example: the integration test script and where the test script is located.
    */
   readonly stageProps?: Record<string, any>;
 }
@@ -114,8 +119,9 @@ export class ApplicationStage extends Stage {
 
   private createIntegrationTestStack(props: ApplicationStageProps) {
     const stackProps = props.stageProps;
-    if (stackProps) {
-      if (stackProps.integTestScript && stackProps.integTestCommand) {
+    if (stackProps !== null && stackProps !== undefined) {
+      if (stackProps.integTestScript !== null && stackProps.integTestScript !== undefined
+        && stackProps.integTestCommand !== null && stackProps.integTestCommand !== undefined) {
         const integTestCommand = stackProps.integTestCommand;
         const integScriptPath = stackProps.integScriptPath;
         const integTestPermissions = stackProps.integTestPermissions ? stackProps.integTestPermissions as PolicyStatement[] : undefined;

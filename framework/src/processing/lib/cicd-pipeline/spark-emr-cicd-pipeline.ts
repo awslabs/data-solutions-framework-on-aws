@@ -245,11 +245,11 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
 
   /**
    * Attaches the given stage to the pipeline
-   * @param stageName
-   * @param resourceEnvironment
-   * @param attachIntegTest
-   * @param props
-   * @returns {IntegrationTestStack|undefined} if integration step is configured, this returns the corresponding `ApplicationStage` for the test
+   * @param stageName name of the stage in the CI/CD pipeline
+   * @param resourceEnvironment the environment details which AWS account/region to deploy
+   * @param attachIntegTest whether the integration test should be attached or not
+   * @param props the props of the SparkEmrCICDPipeline construct
+   * @returns {IntegrationTestStack|undefined} if integration step is configured, this returns the corresponding stack of the integration test
    */
   private attachStageToPipeline(stageName: string, resourceEnvironment: ResourceEnvironment
     , attachIntegTest: boolean
@@ -258,7 +258,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     const currentStage = CICDStage.of(stageName.toUpperCase());
     const stageProps: Record<string, any> = {};
     let finalIntegTestDecision = false;
-    if (attachIntegTest && props.integTestScript) {
+    if (attachIntegTest === true && props.integTestScript !== null && props.integTestScript !== undefined) {
       const [integScriptPath, integScript] = SparkEmrCICDPipeline.extractPath(props.integTestScript);
       finalIntegTestDecision = true;
       stageProps.integScriptPath = integScriptPath;
@@ -277,9 +277,9 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
     });
     this.pipeline.addStage(applicationStage);
 
-    let integrationTestStage:IntegrationTestStack|undefined = applicationStage.integrationTestStack;
+    let integrationTestStack:IntegrationTestStack|undefined = applicationStage.integrationTestStack;
 
-    return integrationTestStage;
+    return integrationTestStack;
   }
 
   /**
@@ -297,7 +297,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   private getUserDefinedEnvironmentsFromContext(): CICDEnvironment[] {
     const environments = this.node.tryGetContext('environments') as CICDEnvironment[];
-    if (!environments) {
+    if (environments === null || environments === undefined) {
       const missingContextError = new Error('Missing context variable environments');
       missingContextError.name = MISSING_ENVIRONMENTS_ERROR;
       throw missingContextError;

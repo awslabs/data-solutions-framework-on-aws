@@ -5807,6 +5807,8 @@ public readonly PERMISSIONS_BOUNDARY_STATEMENTS: PolicyStatement;
 
 ### IntegrationTestStack <a name="IntegrationTestStack" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack"></a>
 
+Stack that contains resources related to running the integration test.
+
 #### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer"></a>
 
 ```typescript
@@ -5817,13 +5819,13 @@ new utils.IntegrationTestStack(scope: Construct, id: string, stage: CICDStage, i
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integScriptPath">integScriptPath</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestCommand">integTestCommand</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | *No description.* |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the scope of the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.id">id</a></code> | <code>string</code> | the id of the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | the stage in the CI/CD pipeline. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integScriptPath">integScriptPath</a></code> | <code>string</code> | the path of the integration test script. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestCommand">integTestCommand</a></code> | <code>string</code> | the command to be used to run the integration test script. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | the output from the application stack to use as input to the test script. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | IAM permissions for the integration test script. |
 
 ---
 
@@ -5831,11 +5833,15 @@ new utils.IntegrationTestStack(scope: Construct, id: string, stage: CICDStage, i
 
 - *Type:* constructs.Construct
 
+the scope of the construct.
+
 ---
 
 ##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.id"></a>
 
 - *Type:* string
+
+the id of the construct.
 
 ---
 
@@ -5843,11 +5849,15 @@ new utils.IntegrationTestStack(scope: Construct, id: string, stage: CICDStage, i
 
 - *Type:* @cdklabs/aws-data-solutions-framework.utils.CICDStage
 
+the stage in the CI/CD pipeline.
+
 ---
 
 ##### `integScriptPath`<sup>Required</sup> <a name="integScriptPath" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integScriptPath"></a>
 
 - *Type:* string
+
+the path of the integration test script.
 
 ---
 
@@ -5855,17 +5865,23 @@ new utils.IntegrationTestStack(scope: Construct, id: string, stage: CICDStage, i
 
 - *Type:* string
 
+the command to be used to run the integration test script.
+
 ---
 
 ##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stackOutputsEnv"></a>
 
 - *Type:* {[ key: string ]: aws-cdk-lib.CfnOutput}
 
+the output from the application stack to use as input to the test script.
+
 ---
 
 ##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestPermissions"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement[]
+
+IAM permissions for the integration test script.
 
 ---
 
@@ -6386,7 +6402,7 @@ The construct to start the search from.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nestedStackParent">nestedStackParent</a></code> | <code>aws-cdk-lib.Stack</code> | If this is a nested stack, returns it's parent stack. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nestedStackResource">nestedStackResource</a></code> | <code>aws-cdk-lib.CfnResource</code> | If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether termination protection is enabled for this stack. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.integrationTestCodeBuildProject">integrationTestCodeBuildProject</a></code> | <code>aws-cdk-lib.aws_codebuild.Project</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.integrationTestCodeBuildProject">integrationTestCodeBuildProject</a></code> | <code>aws-cdk-lib.aws_codebuild.Project</code> | The CodeBuild Project that's going to run the integration test. |
 
 ---
 
@@ -6727,6 +6743,8 @@ public readonly integrationTestCodeBuildProject: Project;
 ```
 
 - *Type:* aws-cdk-lib.aws_codebuild.Project
+
+The CodeBuild Project that's going to run the integration test.
 
 ---
 
@@ -14737,9 +14755,9 @@ const applicationStageProps: utils.ApplicationStageProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack Factory used to create application Stacks. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | The Stage to deploy the application CDK Stack in. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.attachIntegrationTest">attachIntegrationTest</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.attachIntegrationTest">attachIntegrationTest</a></code> | <code>boolean</code> | Whether to attach the integration test with this stage or not. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageProps">stageProps</a></code> | <code>{[ key: string ]: any}</code> | Optional parameters that are passed down. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageProps">stageProps</a></code> | <code>{[ key: string ]: any}</code> | (Optional) These are parameters that are passed down to the integration test stack. |
 
 ---
 
@@ -14875,6 +14893,9 @@ public readonly attachIntegrationTest: boolean;
 ```
 
 - *Type:* boolean
+- *Default:* No integration test is attached with this stage
+
+Whether to attach the integration test with this stage or not.
 
 ---
 
@@ -14899,7 +14920,9 @@ public readonly stageProps: {[ key: string ]: any};
 
 - *Type:* {[ key: string ]: any}
 
-Optional parameters that are passed down.
+(Optional) These are parameters that are passed down to the integration test stack.
+
+For example: the integration test script and where the test script is located.
 
 ---
 
