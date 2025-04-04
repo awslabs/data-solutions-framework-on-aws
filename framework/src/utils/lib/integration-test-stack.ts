@@ -48,7 +48,7 @@ export class IntegrationTestStack extends Stack {
       assumedBy: new ServicePrincipal('codebuild.amazonaws.com'),
     });
 
-    if (integTestPermissions) {
+    if (integTestPermissions !== undefined) {
       // eslint-disable-next-line local-rules/no-tokens-in-construct-id
       codebuildProjectRole.attachInlinePolicy(new Policy(this, `${stage.stage}IntegrationTestPermissionPolicy`, {
         statements: integTestPermissions,

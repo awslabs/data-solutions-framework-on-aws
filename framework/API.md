@@ -12304,7 +12304,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStack">integrationTestStack</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack</code> | The ApplicationStage for the Integration Test. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStack">integrationTestStack</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack</code> | The IntegrationTestStack containing resources for the running the integration tests. |
 
 ---
 
@@ -12376,7 +12376,7 @@ public readonly integrationTestStack: IntegrationTestStack;
 
 - *Type:* @cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack
 
-The ApplicationStage for the Integration Test.
+The IntegrationTestStack containing resources for the running the integration tests.
 
 ---
 

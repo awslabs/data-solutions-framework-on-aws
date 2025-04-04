@@ -155,7 +155,7 @@ export class SparkEmrCICDPipeline extends TrackedConstruct {
    */
   public readonly pipelineLogGroup: ILogGroup;
   /**
-   * The ApplicationStage for the Integration Test
+   * The IntegrationTestStack containing resources for the running the integration tests
    */
   public readonly integrationTestStack?: IntegrationTestStack;
 
