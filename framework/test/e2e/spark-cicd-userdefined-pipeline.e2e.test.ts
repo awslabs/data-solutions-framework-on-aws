@@ -73,7 +73,7 @@ const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
   cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
   sparkImage: SparkImage.EMR_6_10,
-  integTestScript: 'cdk/integ-test.sh',
+  integTestScript: __dirname+'/../unit/processing/integ-test.sh',
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
   },

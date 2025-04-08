@@ -2587,6 +2587,7 @@ on a nested stage, returns its parent.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.account">account</a></code> | <code>string</code> | The default account for all resources defined within this stage. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.integrationTestStack">integrationTestStack</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack</code> | The created integration test stack. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | The list of CfnOutputs created by the CDK Stack. |
 
 ---
@@ -2707,6 +2708,18 @@ public readonly region: string;
 - *Type:* string
 
 The default region for all resources defined within this stage.
+
+---
+
+##### `integrationTestStack`<sup>Optional</sup> <a name="integrationTestStack" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage.property.integrationTestStack"></a>
+
+```typescript
+public readonly integrationTestStack: IntegrationTestStack;
+```
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack
+
+The created integration test stack.
 
 ---
 
@@ -5791,6 +5804,950 @@ public readonly PERMISSIONS_BOUNDARY_STATEMENTS: PolicyStatement;
 - *Type:* aws-cdk-lib.aws_iam.PolicyStatement
 
 ---
+
+### IntegrationTestStack <a name="IntegrationTestStack" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack"></a>
+
+Stack that contains resources related to running the integration test.
+
+#### Initializers <a name="Initializers" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+new utils.IntegrationTestStack(scope: Construct, id: string, stage: CICDStage, integScriptPath: string, integTestCommand: string, stackOutputsEnv?: {[ key: string ]: CfnOutput}, integTestPermissions?: PolicyStatement[])
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | the scope of the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.id">id</a></code> | <code>string</code> | the id of the construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | the stage in the CI/CD pipeline. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integScriptPath">integScriptPath</a></code> | <code>string</code> | the path of the integration test script. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestCommand">integTestCommand</a></code> | <code>string</code> | the command to be used to run the integration test script. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stackOutputsEnv">stackOutputsEnv</a></code> | <code>{[ key: string ]: aws-cdk-lib.CfnOutput}</code> | the output from the application stack to use as input to the test script. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestPermissions">integTestPermissions</a></code> | <code>aws-cdk-lib.aws_iam.PolicyStatement[]</code> | IAM permissions for the integration test script. |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+the scope of the construct.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+the id of the construct.
+
+---
+
+##### `stage`<sup>Required</sup> <a name="stage" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stage"></a>
+
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.CICDStage
+
+the stage in the CI/CD pipeline.
+
+---
+
+##### `integScriptPath`<sup>Required</sup> <a name="integScriptPath" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integScriptPath"></a>
+
+- *Type:* string
+
+the path of the integration test script.
+
+---
+
+##### `integTestCommand`<sup>Required</sup> <a name="integTestCommand" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestCommand"></a>
+
+- *Type:* string
+
+the command to be used to run the integration test script.
+
+---
+
+##### `stackOutputsEnv`<sup>Optional</sup> <a name="stackOutputsEnv" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.stackOutputsEnv"></a>
+
+- *Type:* {[ key: string ]: aws-cdk-lib.CfnOutput}
+
+the output from the application stack to use as input to the test script.
+
+---
+
+##### `integTestPermissions`<sup>Optional</sup> <a name="integTestPermissions" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.Initializer.parameter.integTestPermissions"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.PolicyStatement[]
+
+IAM permissions for the integration test script.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addMetadata">addMetadata</a></code> | Adds an arbitrary key-value pair, with information you want to record about the stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportStringListValue">exportStringListValue</a></code> | Create a CloudFormation Export for a string list value. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a string value. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.splitArn">splitArn</a></code> | Splits the provided ARN into its components. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toJsonString">toJsonString</a></code> | Convert an object, potentially containing tokens, to a JSON string. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toYamlString">toYamlString</a></code> | Convert an object, potentially containing tokens, to a YAML string. |
+
+---
+
+##### `toString` <a name="toString" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `addDependency` <a name="addDependency" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addDependency"></a>
+
+```typescript
+public addDependency(target: Stack, reason?: string): void
+```
+
+Add a dependency between this stack and another stack.
+
+This can be used to define dependencies between any two stacks within an
+app, and also supports nested stacks.
+
+###### `target`<sup>Required</sup> <a name="target" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addDependency.parameter.target"></a>
+
+- *Type:* aws-cdk-lib.Stack
+
+---
+
+###### `reason`<sup>Optional</sup> <a name="reason" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addDependency.parameter.reason"></a>
+
+- *Type:* string
+
+---
+
+##### `addMetadata` <a name="addMetadata" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addMetadata"></a>
+
+```typescript
+public addMetadata(key: string, value: any): void
+```
+
+Adds an arbitrary key-value pair, with information you want to record about the stack.
+
+These get translated to the Metadata section of the generated template.
+
+> [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/metadata-section-structure.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/metadata-section-structure.html)
+
+###### `key`<sup>Required</sup> <a name="key" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addMetadata.parameter.key"></a>
+
+- *Type:* string
+
+---
+
+###### `value`<sup>Required</sup> <a name="value" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addMetadata.parameter.value"></a>
+
+- *Type:* any
+
+---
+
+##### `addTransform` <a name="addTransform" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addTransform"></a>
+
+```typescript
+public addTransform(transform: string): void
+```
+
+Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template.
+
+Duplicate values are removed when stack is synthesized.
+
+> [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html)
+
+*Example*
+
+```typescript
+declare const stack: Stack;
+
+stack.addTransform('AWS::Serverless-2016-10-31')
+```
+
+
+###### `transform`<sup>Required</sup> <a name="transform" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addTransform.parameter.transform"></a>
+
+- *Type:* string
+
+The transform to add.
+
+---
+
+##### `exportStringListValue` <a name="exportStringListValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportStringListValue"></a>
+
+```typescript
+public exportStringListValue(exportedValue: any, options?: ExportValueOptions): string[]
+```
+
+Create a CloudFormation Export for a string list value.
+
+Returns a string list representing the corresponding `Fn.importValue()`
+expression for this Export. The export expression is automatically wrapped with an
+`Fn::Join` and the import value with an `Fn::Split`, since CloudFormation can only
+export strings. You can control the name for the export by passing the `name` option.
+
+If you don't supply a value for `name`, the value you're exporting must be
+a Resource attribute (for example: `bucket.bucketName`) and it will be
+given the same name as the automatic cross-stack reference that would be created
+if you used the attribute in another Stack.
+
+One of the uses for this method is to *remove* the relationship between
+two Stacks established by automatic cross-stack references. It will
+temporarily ensure that the CloudFormation Export still exists while you
+remove the reference from the consuming stack. After that, you can remove
+the resource and the manual export.
+
+See `exportValue` for an example of this process.
+
+###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportStringListValue.parameter.exportedValue"></a>
+
+- *Type:* any
+
+---
+
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportStringListValue.parameter.options"></a>
+
+- *Type:* aws-cdk-lib.ExportValueOptions
+
+---
+
+##### `exportValue` <a name="exportValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportValue"></a>
+
+```typescript
+public exportValue(exportedValue: any, options?: ExportValueOptions): string
+```
+
+Create a CloudFormation Export for a string value.
+
+Returns a string representing the corresponding `Fn.importValue()`
+expression for this Export. You can control the name for the export by
+passing the `name` option.
+
+If you don't supply a value for `name`, the value you're exporting must be
+a Resource attribute (for example: `bucket.bucketName`) and it will be
+given the same name as the automatic cross-stack reference that would be created
+if you used the attribute in another Stack.
+
+One of the uses for this method is to *remove* the relationship between
+two Stacks established by automatic cross-stack references. It will
+temporarily ensure that the CloudFormation Export still exists while you
+remove the reference from the consuming stack. After that, you can remove
+the resource and the manual export.
+
+Here is how the process works. Let's say there are two stacks,
+`producerStack` and `consumerStack`, and `producerStack` has a bucket
+called `bucket`, which is referenced by `consumerStack` (perhaps because
+an AWS Lambda Function writes into it, or something like that).
+
+It is not safe to remove `producerStack.bucket` because as the bucket is being
+deleted, `consumerStack` might still be using it.
+
+Instead, the process takes two deployments:
+
+**Deployment 1: break the relationship**:
+
+- Make sure `consumerStack` no longer references `bucket.bucketName` (maybe the consumer
+  stack now uses its own bucket, or it writes to an AWS DynamoDB table, or maybe you just
+  remove the Lambda Function altogether).
+- In the `ProducerStack` class, call `this.exportValue(this.bucket.bucketName)`. This
+  will make sure the CloudFormation Export continues to exist while the relationship
+  between the two stacks is being broken.
+- Deploy (this will effectively only change the `consumerStack`, but it's safe to deploy both).
+
+**Deployment 2: remove the bucket resource**:
+
+- You are now free to remove the `bucket` resource from `producerStack`.
+- Don't forget to remove the `exportValue()` call as well.
+- Deploy again (this time only the `producerStack` will be changed -- the bucket will be deleted).
+
+###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportValue.parameter.exportedValue"></a>
+
+- *Type:* any
+
+---
+
+###### `options`<sup>Optional</sup> <a name="options" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportValue.parameter.options"></a>
+
+- *Type:* aws-cdk-lib.ExportValueOptions
+
+---
+
+##### `formatArn` <a name="formatArn" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.formatArn"></a>
+
+```typescript
+public formatArn(components: ArnComponents): string
+```
+
+Creates an ARN from components.
+
+If `partition`, `region` or `account` are not specified, the stack's
+partition, region and account will be used.
+
+If any component is the empty string, an empty string will be inserted
+into the generated ARN at the location that component corresponds to.
+
+The ARN will be formatted as follows:
+
+  arn:{partition}:{service}:{region}:{account}:{resource}{sep}{resource-name}
+
+The required ARN pieces that are omitted will be taken from the stack that
+the 'scope' is attached to. If all ARN pieces are supplied, the supplied scope
+can be 'undefined'.
+
+###### `components`<sup>Required</sup> <a name="components" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.formatArn.parameter.components"></a>
+
+- *Type:* aws-cdk-lib.ArnComponents
+
+---
+
+##### `getLogicalId` <a name="getLogicalId" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.getLogicalId"></a>
+
+```typescript
+public getLogicalId(element: CfnElement): string
+```
+
+Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource.
+
+This method is called when a `CfnElement` is created and used to render the
+initial logical identity of resources. Logical ID renames are applied at
+this stage.
+
+This method uses the protected method `allocateLogicalId` to render the
+logical ID for an element. To modify the naming scheme, extend the `Stack`
+class and override this method.
+
+###### `element`<sup>Required</sup> <a name="element" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.getLogicalId.parameter.element"></a>
+
+- *Type:* aws-cdk-lib.CfnElement
+
+The CloudFormation element for which a logical identity is needed.
+
+---
+
+##### `regionalFact` <a name="regionalFact" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.regionalFact"></a>
+
+```typescript
+public regionalFact(factName: string, defaultValue?: string): string
+```
+
+Look up a fact value for the given fact for the region of this stack.
+
+Will return a definite value only if the region of the current stack is resolved.
+If not, a lookup map will be added to the stack and the lookup will be done at
+CDK deployment time.
+
+What regions will be included in the lookup map is controlled by the
+`@aws-cdk/core:target-partitions` context value: it must be set to a list
+of partitions, and only regions from the given partitions will be included.
+If no such context key is set, all regions will be included.
+
+This function is intended to be used by construct library authors. Application
+builders can rely on the abstractions offered by construct libraries and do
+not have to worry about regional facts.
+
+If `defaultValue` is not given, it is an error if the fact is unknown for
+the given region.
+
+###### `factName`<sup>Required</sup> <a name="factName" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.regionalFact.parameter.factName"></a>
+
+- *Type:* string
+
+---
+
+###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.regionalFact.parameter.defaultValue"></a>
+
+- *Type:* string
+
+---
+
+##### `renameLogicalId` <a name="renameLogicalId" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.renameLogicalId"></a>
+
+```typescript
+public renameLogicalId(oldId: string, newId: string): void
+```
+
+Rename a generated logical identities.
+
+To modify the naming scheme strategy, extend the `Stack` class and
+override the `allocateLogicalId` method.
+
+###### `oldId`<sup>Required</sup> <a name="oldId" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.renameLogicalId.parameter.oldId"></a>
+
+- *Type:* string
+
+---
+
+###### `newId`<sup>Required</sup> <a name="newId" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.renameLogicalId.parameter.newId"></a>
+
+- *Type:* string
+
+---
+
+##### `reportMissingContextKey` <a name="reportMissingContextKey" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.reportMissingContextKey"></a>
+
+```typescript
+public reportMissingContextKey(report: MissingContext): void
+```
+
+Indicate that a context key was expected.
+
+Contains instructions which will be emitted into the cloud assembly on how
+the key should be supplied.
+
+###### `report`<sup>Required</sup> <a name="report" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.reportMissingContextKey.parameter.report"></a>
+
+- *Type:* aws-cdk-lib.cloud_assembly_schema.MissingContext
+
+The set of parameters needed to obtain the context.
+
+---
+
+##### `resolve` <a name="resolve" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.resolve"></a>
+
+```typescript
+public resolve(obj: any): any
+```
+
+Resolve a tokenized value in the context of the current stack.
+
+###### `obj`<sup>Required</sup> <a name="obj" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.resolve.parameter.obj"></a>
+
+- *Type:* any
+
+---
+
+##### `splitArn` <a name="splitArn" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.splitArn"></a>
+
+```typescript
+public splitArn(arn: string, arnFormat: ArnFormat): ArnComponents
+```
+
+Splits the provided ARN into its components.
+
+Works both if 'arn' is a string like 'arn:aws:s3:::bucket',
+and a Token representing a dynamic CloudFormation expression
+(in which case the returned components will also be dynamic CloudFormation expressions,
+encoded as Tokens).
+
+###### `arn`<sup>Required</sup> <a name="arn" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.splitArn.parameter.arn"></a>
+
+- *Type:* string
+
+the ARN to split into its components.
+
+---
+
+###### `arnFormat`<sup>Required</sup> <a name="arnFormat" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.splitArn.parameter.arnFormat"></a>
+
+- *Type:* aws-cdk-lib.ArnFormat
+
+the expected format of 'arn' - depends on what format the service 'arn' represents uses.
+
+---
+
+##### `toJsonString` <a name="toJsonString" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toJsonString"></a>
+
+```typescript
+public toJsonString(obj: any, space?: number): string
+```
+
+Convert an object, potentially containing tokens, to a JSON string.
+
+###### `obj`<sup>Required</sup> <a name="obj" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toJsonString.parameter.obj"></a>
+
+- *Type:* any
+
+---
+
+###### `space`<sup>Optional</sup> <a name="space" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toJsonString.parameter.space"></a>
+
+- *Type:* number
+
+---
+
+##### `toYamlString` <a name="toYamlString" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toYamlString"></a>
+
+```typescript
+public toYamlString(obj: any): string
+```
+
+Convert an object, potentially containing tokens, to a YAML string.
+
+###### `obj`<sup>Required</sup> <a name="obj" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toYamlString.parameter.obj"></a>
+
+- *Type:* any
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.isStack">isStack</a></code> | Return whether the given object is a Stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.of">of</a></code> | Looks up the first stack scope in which `construct` is defined. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.isConstruct"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.IntegrationTestStack.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+##### `isStack` <a name="isStack" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.isStack"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.IntegrationTestStack.isStack(x: any)
+```
+
+Return whether the given object is a Stack.
+
+We do attribute detection since we can't reliably use 'instanceof'.
+
+###### `x`<sup>Required</sup> <a name="x" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.isStack.parameter.x"></a>
+
+- *Type:* any
+
+---
+
+##### `of` <a name="of" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.of"></a>
+
+```typescript
+import { utils } from '@cdklabs/aws-data-solutions-framework'
+
+utils.IntegrationTestStack.of(construct: IConstruct)
+```
+
+Looks up the first stack scope in which `construct` is defined.
+
+Fails if there is no stack up the tree.
+
+###### `construct`<sup>Required</sup> <a name="construct" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.of.parameter.construct"></a>
+
+- *Type:* constructs.IConstruct
+
+The construct to start the search from.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.account">account</a></code> | <code>string</code> | The AWS account into which this stack will be deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.artifactId">artifactId</a></code> | <code>string</code> | The ID of the cloud assembly artifact for this stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.availabilityZones">availabilityZones</a></code> | <code>string[]</code> | Returns the list of AZs that are available in the AWS environment (account/region) associated with this stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.bundlingRequired">bundlingRequired</a></code> | <code>boolean</code> | Indicates whether the stack requires bundling or not. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.dependencies">dependencies</a></code> | <code>aws-cdk-lib.Stack[]</code> | Return the stacks this stack depends on. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.environment">environment</a></code> | <code>string</code> | The environment coordinates in which this stack is deployed. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nested">nested</a></code> | <code>boolean</code> | Indicates if this is a nested stack, in which case `parentStack` will include a reference to it's parent. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.notificationArns">notificationArns</a></code> | <code>string[]</code> | Returns the list of notification Amazon Resource Names (ARNs) for the current stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.partition">partition</a></code> | <code>string</code> | The partition in which this stack is defined. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.region">region</a></code> | <code>string</code> | The AWS region into which this stack will be deployed (e.g. `us-west-2`). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.stackId">stackId</a></code> | <code>string</code> | The ID of the stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.stackName">stackName</a></code> | <code>string</code> | The concrete CloudFormation physical stack name. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method for this stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.tags">tags</a></code> | <code>aws-cdk-lib.TagManager</code> | Tags to be applied to the stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.templateFile">templateFile</a></code> | <code>string</code> | The name of the CloudFormation template file emitted to the output directory during synthesis. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.templateOptions">templateOptions</a></code> | <code>aws-cdk-lib.ITemplateOptions</code> | Options for CloudFormation template (like version, transform, description). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.urlSuffix">urlSuffix</a></code> | <code>string</code> | The Amazon domain suffix for the region in which this stack is defined. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nestedStackParent">nestedStackParent</a></code> | <code>aws-cdk-lib.Stack</code> | If this is a nested stack, returns it's parent stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nestedStackResource">nestedStackResource</a></code> | <code>aws-cdk-lib.CfnResource</code> | If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether termination protection is enabled for this stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.integrationTestCodeBuildProject">integrationTestCodeBuildProject</a></code> | <code>aws-cdk-lib.aws_codebuild.Project</code> | The CodeBuild Project that's going to run the integration test. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `account`<sup>Required</sup> <a name="account" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.account"></a>
+
+```typescript
+public readonly account: string;
+```
+
+- *Type:* string
+
+The AWS account into which this stack will be deployed.
+
+This value is resolved according to the following rules:
+
+1. The value provided to `env.account` when the stack is defined. This can
+   either be a concrete account (e.g. `585695031111`) or the
+   `Aws.ACCOUNT_ID` token.
+3. `Aws.ACCOUNT_ID`, which represents the CloudFormation intrinsic reference
+   `{ "Ref": "AWS::AccountId" }` encoded as a string token.
+
+Preferably, you should use the return value as an opaque string and not
+attempt to parse it to implement your logic. If you do, you must first
+check that it is a concrete value an not an unresolved token. If this
+value is an unresolved token (`Token.isUnresolved(stack.account)` returns
+`true`), this implies that the user wishes that this stack will synthesize
+into a **account-agnostic template**. In this case, your code should either
+fail (throw an error, emit a synth error using `Annotations.of(construct).addError()`) or
+implement some other region-agnostic behavior.
+
+---
+
+##### `artifactId`<sup>Required</sup> <a name="artifactId" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.artifactId"></a>
+
+```typescript
+public readonly artifactId: string;
+```
+
+- *Type:* string
+
+The ID of the cloud assembly artifact for this stack.
+
+---
+
+##### `availabilityZones`<sup>Required</sup> <a name="availabilityZones" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.availabilityZones"></a>
+
+```typescript
+public readonly availabilityZones: string[];
+```
+
+- *Type:* string[]
+
+Returns the list of AZs that are available in the AWS environment (account/region) associated with this stack.
+
+If the stack is environment-agnostic (either account and/or region are
+tokens), this property will return an array with 2 tokens that will resolve
+at deploy-time to the first two availability zones returned from CloudFormation's
+`Fn::GetAZs` intrinsic function.
+
+If they are not available in the context, returns a set of dummy values and
+reports them as missing, and let the CLI resolve them by calling EC2
+`DescribeAvailabilityZones` on the target environment.
+
+To specify a different strategy for selecting availability zones override this method.
+
+---
+
+##### `bundlingRequired`<sup>Required</sup> <a name="bundlingRequired" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.bundlingRequired"></a>
+
+```typescript
+public readonly bundlingRequired: boolean;
+```
+
+- *Type:* boolean
+
+Indicates whether the stack requires bundling or not.
+
+---
+
+##### `dependencies`<sup>Required</sup> <a name="dependencies" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.dependencies"></a>
+
+```typescript
+public readonly dependencies: Stack[];
+```
+
+- *Type:* aws-cdk-lib.Stack[]
+
+Return the stacks this stack depends on.
+
+---
+
+##### `environment`<sup>Required</sup> <a name="environment" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.environment"></a>
+
+```typescript
+public readonly environment: string;
+```
+
+- *Type:* string
+
+The environment coordinates in which this stack is deployed.
+
+In the form
+`aws://account/region`. Use `stack.account` and `stack.region` to obtain
+the specific values, no need to parse.
+
+You can use this value to determine if two stacks are targeting the same
+environment.
+
+If either `stack.account` or `stack.region` are not concrete values (e.g.
+`Aws.ACCOUNT_ID` or `Aws.REGION`) the special strings `unknown-account` and/or
+`unknown-region` will be used respectively to indicate this stack is
+region/account-agnostic.
+
+---
+
+##### `nested`<sup>Required</sup> <a name="nested" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nested"></a>
+
+```typescript
+public readonly nested: boolean;
+```
+
+- *Type:* boolean
+
+Indicates if this is a nested stack, in which case `parentStack` will include a reference to it's parent.
+
+---
+
+##### `notificationArns`<sup>Required</sup> <a name="notificationArns" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.notificationArns"></a>
+
+```typescript
+public readonly notificationArns: string[];
+```
+
+- *Type:* string[]
+
+Returns the list of notification Amazon Resource Names (ARNs) for the current stack.
+
+---
+
+##### `partition`<sup>Required</sup> <a name="partition" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.partition"></a>
+
+```typescript
+public readonly partition: string;
+```
+
+- *Type:* string
+
+The partition in which this stack is defined.
+
+---
+
+##### `region`<sup>Required</sup> <a name="region" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.region"></a>
+
+```typescript
+public readonly region: string;
+```
+
+- *Type:* string
+
+The AWS region into which this stack will be deployed (e.g. `us-west-2`).
+
+This value is resolved according to the following rules:
+
+1. The value provided to `env.region` when the stack is defined. This can
+   either be a concrete region (e.g. `us-west-2`) or the `Aws.REGION`
+   token.
+3. `Aws.REGION`, which is represents the CloudFormation intrinsic reference
+   `{ "Ref": "AWS::Region" }` encoded as a string token.
+
+Preferably, you should use the return value as an opaque string and not
+attempt to parse it to implement your logic. If you do, you must first
+check that it is a concrete value an not an unresolved token. If this
+value is an unresolved token (`Token.isUnresolved(stack.region)` returns
+`true`), this implies that the user wishes that this stack will synthesize
+into a **region-agnostic template**. In this case, your code should either
+fail (throw an error, emit a synth error using `Annotations.of(construct).addError()`) or
+implement some other region-agnostic behavior.
+
+---
+
+##### `stackId`<sup>Required</sup> <a name="stackId" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.stackId"></a>
+
+```typescript
+public readonly stackId: string;
+```
+
+- *Type:* string
+
+The ID of the stack.
+
+---
+
+*Example*
+
+```typescript
+// After resolving, looks like
+'arn:aws:cloudformation:us-west-2:123456789012:stack/teststack/51af3dc0-da77-11e4-872e-1234567db123'
+```
+
+
+##### `stackName`<sup>Required</sup> <a name="stackName" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.stackName"></a>
+
+```typescript
+public readonly stackName: string;
+```
+
+- *Type:* string
+
+The concrete CloudFormation physical stack name.
+
+This is either the name defined explicitly in the `stackName` prop or
+allocated based on the stack's location in the construct tree. Stacks that
+are directly defined under the app use their construct `id` as their stack
+name. Stacks that are defined deeper within the tree will use a hashed naming
+scheme based on the construct path to ensure uniqueness.
+
+If you wish to obtain the deploy-time AWS::StackName intrinsic,
+you can use `Aws.STACK_NAME` directly.
+
+---
+
+##### `synthesizer`<sup>Required</sup> <a name="synthesizer" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.synthesizer"></a>
+
+```typescript
+public readonly synthesizer: IStackSynthesizer;
+```
+
+- *Type:* aws-cdk-lib.IStackSynthesizer
+
+Synthesis method for this stack.
+
+---
+
+##### `tags`<sup>Required</sup> <a name="tags" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.tags"></a>
+
+```typescript
+public readonly tags: TagManager;
+```
+
+- *Type:* aws-cdk-lib.TagManager
+
+Tags to be applied to the stack.
+
+---
+
+##### `templateFile`<sup>Required</sup> <a name="templateFile" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.templateFile"></a>
+
+```typescript
+public readonly templateFile: string;
+```
+
+- *Type:* string
+
+The name of the CloudFormation template file emitted to the output directory during synthesis.
+
+Example value: `MyStack.template.json`
+
+---
+
+##### `templateOptions`<sup>Required</sup> <a name="templateOptions" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.templateOptions"></a>
+
+```typescript
+public readonly templateOptions: ITemplateOptions;
+```
+
+- *Type:* aws-cdk-lib.ITemplateOptions
+
+Options for CloudFormation template (like version, transform, description).
+
+---
+
+##### `urlSuffix`<sup>Required</sup> <a name="urlSuffix" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.urlSuffix"></a>
+
+```typescript
+public readonly urlSuffix: string;
+```
+
+- *Type:* string
+
+The Amazon domain suffix for the region in which this stack is defined.
+
+---
+
+##### `nestedStackParent`<sup>Optional</sup> <a name="nestedStackParent" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nestedStackParent"></a>
+
+```typescript
+public readonly nestedStackParent: Stack;
+```
+
+- *Type:* aws-cdk-lib.Stack
+
+If this is a nested stack, returns it's parent stack.
+
+---
+
+##### `nestedStackResource`<sup>Optional</sup> <a name="nestedStackResource" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.nestedStackResource"></a>
+
+```typescript
+public readonly nestedStackResource: CfnResource;
+```
+
+- *Type:* aws-cdk-lib.CfnResource
+
+If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource.
+
+`undefined` for top-level (non-nested) stacks.
+
+---
+
+##### `terminationProtection`<sup>Required</sup> <a name="terminationProtection" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.terminationProtection"></a>
+
+```typescript
+public readonly terminationProtection: boolean;
+```
+
+- *Type:* boolean
+
+Whether termination protection is enabled for this stack.
+
+---
+
+##### `integrationTestCodeBuildProject`<sup>Required</sup> <a name="integrationTestCodeBuildProject" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.property.integrationTestCodeBuildProject"></a>
+
+```typescript
+public readonly integrationTestCodeBuildProject: Project;
+```
+
+- *Type:* aws-cdk-lib.aws_codebuild.Project
+
+The CodeBuild Project that's going to run the integration test.
+
+---
+
 
 ### KafkaApi <a name="KafkaApi" id="@cdklabs/aws-data-solutions-framework.streaming.KafkaApi"></a>
 
@@ -11347,7 +12304,7 @@ Any object.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.artifactBucket">artifactBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | The S3 Bucket for storing the artifacts. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.pipelines.CodePipeline</code> | The CodePipeline created as part of the Spark CICD Pipeline. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.pipelineLogGroup">pipelineLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The CloudWatch Log Group for storing the CodePipeline logs. |
-| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage">integrationTestStage</a></code> | <code>aws-cdk-lib.pipelines.CodeBuildStep</code> | The CodeBuild Step for the staging stage. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStack">integrationTestStack</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack</code> | The IntegrationTestStack containing resources for the running the integration tests. |
 
 ---
 
@@ -11411,15 +12368,15 @@ The CloudWatch Log Group for storing the CodePipeline logs.
 
 ---
 
-##### `integrationTestStage`<sup>Optional</sup> <a name="integrationTestStage" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStage"></a>
+##### `integrationTestStack`<sup>Optional</sup> <a name="integrationTestStack" id="@cdklabs/aws-data-solutions-framework.processing.SparkEmrCICDPipeline.property.integrationTestStack"></a>
 
 ```typescript
-public readonly integrationTestStage: CodeBuildStep;
+public readonly integrationTestStack: IntegrationTestStack;
 ```
 
-- *Type:* aws-cdk-lib.pipelines.CodeBuildStep
+- *Type:* @cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack
 
-The CodeBuild Step for the staging stage.
+The IntegrationTestStack containing resources for the running the integration tests.
 
 ---
 
@@ -13798,7 +14755,9 @@ const applicationStageProps: utils.ApplicationStageProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack Factory used to create application Stacks. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | The Stage to deploy the application CDK Stack in. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.attachIntegrationTest">attachIntegrationTest</a></code> | <code>boolean</code> | Whether to attach the integration test with this stage or not. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv">outputsEnv</a></code> | <code>{[ key: string ]: string}</code> | The list of values to create CfnOutputs. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageProps">stageProps</a></code> | <code>{[ key: string ]: any}</code> | (Optional) These are parameters that are passed down to the integration test stack. |
 
 ---
 
@@ -13927,6 +14886,19 @@ The Stage to deploy the application CDK Stack in.
 
 ---
 
+##### `attachIntegrationTest`<sup>Optional</sup> <a name="attachIntegrationTest" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.attachIntegrationTest"></a>
+
+```typescript
+public readonly attachIntegrationTest: boolean;
+```
+
+- *Type:* boolean
+- *Default:* No integration test is attached with this stage
+
+Whether to attach the integration test with this stage or not.
+
+---
+
 ##### `outputsEnv`<sup>Optional</sup> <a name="outputsEnv" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outputsEnv"></a>
 
 ```typescript
@@ -13937,6 +14909,20 @@ public readonly outputsEnv: {[ key: string ]: string};
 - *Default:* No CfnOutputs are created
 
 The list of values to create CfnOutputs.
+
+---
+
+##### `stageProps`<sup>Optional</sup> <a name="stageProps" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageProps"></a>
+
+```typescript
+public readonly stageProps: {[ key: string ]: any};
+```
+
+- *Type:* {[ key: string ]: any}
+
+(Optional) These are parameters that are passed down to the integration test stack.
+
+For example: the integration test script and where the test script is located.
 
 ---
 

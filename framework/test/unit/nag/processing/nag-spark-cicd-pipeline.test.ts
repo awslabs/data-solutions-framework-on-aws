@@ -59,7 +59,7 @@ const cicd = new SparkEmrCICDPipeline(stack, 'TestConstruct', {
   cdkApplicationPath: 'cdk/',
   sparkApplicationPath: 'spark/',
   sparkImage: SparkImage.EMR_6_11,
-  integTestScript: 'cdk/integ-test.sh',
+  integTestScript: __dirname + '/../../processing/integ-test.sh',
   integTestEnv: {
     TEST_BUCKET: 'BucketName',
   },
@@ -96,13 +96,6 @@ NagSuppressions.addResourceSuppressionsByPath(
 NagSuppressions.addResourceSuppressionsByPath(
   stack,
   '/Stack/TestConstruct/CodePipeline/Pipeline/Build/CodeBuildSynthStep/CdkBuildProject/Role',
-  [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
-  true,
-);
-
-NagSuppressions.addResourceSuppressionsByPath(
-  stack,
-  '/Stack/TestConstruct/CodePipeline/Pipeline/Staging/StagingIntegrationTests/StagingIntegrationTests/Role',
   [{ id: 'AwsSolutions-IAM5', reason: 'This role is provided by CDK Pipeline construt' }],
   true,
 );

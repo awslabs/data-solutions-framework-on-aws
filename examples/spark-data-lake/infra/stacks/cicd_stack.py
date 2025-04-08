@@ -29,7 +29,7 @@ class CICDPipelineStack(Stack):
             # Path of the Spark application to be built and unit tested in the CICD
             spark_application_path="spark",
             # Path of the bash script responsible to run integration tests 
-            integ_test_script='./infra/resources/integ-test.sh',
+            integ_test_script='./resources/integ-test.sh',
             # Environment variables used by the integration test script
             integ_test_env={
                 "STEP_FUNCTION_ARN": "ProcessingStateMachineArn"

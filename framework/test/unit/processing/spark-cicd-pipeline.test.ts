@@ -14,7 +14,77 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import { SparkEmrCICDPipeline, SparkImage } from '../../../src/processing';
-import { ApplicationStackFactory, CICDStage } from '../../../src/utils';
+import { ApplicationStackFactory, CICDStage, IntegrationTestStack } from '../../../src/utils';
+
+describe('With the provided example integration test configuration, the construct', () => {
+  const app = new App();
+  const stack = new Stack(app, 'TestStack', {
+    env: {
+      region: 'us-east-1',
+    },
+  });
+
+  const bucket = new Bucket(stack, 'TestBucket', {
+    autoDeleteObjects: true,
+    removalPolicy: RemovalPolicy.DESTROY,
+    bucketName: 'testbucket',
+  });
+
+  const bucketOutput = new CfnOutput(stack, 'TestBucketOutput', {
+    value: bucket.bucketArn,
+  });
+
+  const integTestPolicy = new PolicyStatement({
+    actions: [
+      's3:GetObject',
+    ],
+    resources: ['*'],
+  });
+
+  const integTestStack = new IntegrationTestStack(stack
+    , 'IntegrationTestStack'
+    , CICDStage.STAGING
+    , __dirname+'/integ-test.sh'
+    , 'chmod +x integ-test.sh && ./integ-test.sh'
+    , { TestBucketArn: bucketOutput }
+    , [integTestPolicy]);
+
+  const template = Template.fromStack(integTestStack);
+
+  test('should pass the CfnOutput from the application stack to the Integration Test CodeBuild environment variable', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Environment: Match.objectLike({
+        EnvironmentVariables: Match.arrayWith([
+          Match.objectLike({
+            Name: 'TestBucketArn',
+          }),
+        ]),
+      }),
+    });
+  });
+
+  test('should create a CodeBuild project for integration tests with the proper script paths for running the test', () => {
+    template.hasResourceProperties('AWS::CodeBuild::Project', {
+      Source: {
+        BuildSpec: Match.stringLikeRegexp('.*chmod \\+x integ-test\.sh && \./integ-test.sh.*'),
+      },
+    });
+  });
+
+  test('should create an IAM Policy with the configured permissions for the Staging stage role', () => {
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: 's3:GetObject',
+            Resource: '*',
+          }),
+        ]),
+      },
+      PolicyName: Match.stringLikeRegexp('STAGINGIntegrationTestPermissionPolicy.+'),
+    });
+  });
+});
 
 describe('With multiple environment configuration with duplicate stage name, the construct', () => {
   const app = new App();
@@ -616,7 +686,7 @@ describe('With custom configuration, the construct', () => {
     cdkApplicationPath: 'cdk/',
     sparkApplicationPath: 'spark/',
     sparkImage: SparkImage.EMR_6_11,
-    integTestScript: 'cdk/integ-test.sh',
+    integTestScript: __dirname+'/integ-test.sh',
     integTestEnv: {
       TEST_BUCKET: 'BucketName',
     },
@@ -661,47 +731,6 @@ describe('With custom configuration, the construct', () => {
         BuildSpec: Match.stringLikeRegexp('.*--name pytest public.ecr.aws/emr-on-eks/spark/emr-6.11.0:latest.*'),
       },
       Description: Match.stringLikeRegexp('.*CodeBuildSynthStep.*'),
-    });
-  });
-
-  test('should get the CfnOutput from the application stack and use it in the integration tests stage', () => {
-    template.hasResourceProperties('AWS::CodePipeline::Pipeline', {
-      Stages: Match.arrayWith([
-        Match.objectLike({
-          Actions: Match.arrayWith([
-            Match.objectLike({
-              Configuration: Match.objectLike({
-                EnvironmentVariables: Match.stringLikeRegexp('.*TEST_BUCKET.*BucketName.*'),
-              }),
-              Name: 'StagingIntegrationTests',
-            }),
-          ]),
-          Name: 'Staging',
-        }),
-      ]),
-    });
-  });
-
-  test('should create a CodeBuild project for integration tests with the proper script paths for running the test', () => {
-    template.hasResourceProperties('AWS::CodeBuild::Project', {
-      Source: {
-        BuildSpec: Match.stringLikeRegexp('.*chmod \\+x integ-test\.sh && \./integ-test.sh.*'),
-      },
-      Description: Match.stringLikeRegexp('.*IntegrationTests.*'),
-    });
-  });
-
-  test('should create an IAM Policy with the configured permissions for the Staging stage role', () => {
-    template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyDocument: {
-        Statement: Match.arrayWith([
-          Match.objectLike({
-            Action: 's3:GetObject',
-            Resource: '*',
-          }),
-        ]),
-      },
-      PolicyName: Match.stringLikeRegexp('.*CodePipelineStagingStagingIntegrationTestsRoleDefaultPolicy.*'),
     });
   });
 
