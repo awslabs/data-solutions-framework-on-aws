@@ -125,7 +125,7 @@ export function authorizerEnvironmentWorkflowSetup(
 
   const stateMachineLogGroup = new LogGroup(scope, 'StateMachineLogGroup', {
     logGroupName: `/aws/vendedlogs/states/${authorizerName}/environment`,
-    removalPolicy,
+    removalPolicy: removalPolicy || RemovalPolicy.RETAIN,
     retention: logRetention || DEFAULT_LOGS_RETENTION,
   });
 

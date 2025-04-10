@@ -14,13 +14,13 @@ jest.setTimeout(10000000);
 
 // GIVEN
 const app = new cdk.App();
-const testStack = new TestStack('E2eTestStack', app);
+const testStack = new TestStack('DataZoneMskTestStack', app);
 const { stack } = testStack;
 
 stack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
 const cfnDomain = new CfnDomain(stack, 'CfnDomain', {
-  domainExecutionRole: 'arn:aws:iam::145388625860:role/service-role/AmazonDataZoneDomainExecution',
+  domainExecutionRole: `arn:aws:iam::${stack.account}:role/service-role/AmazonDataZoneDomainExecution`,
   name: 'dsfE2eTest',
 });
 
@@ -35,6 +35,7 @@ new DataZoneMskCentralAuthorizer(testStack.stack, 'MskAuthorizer', {
 
 new DataZoneMskEnvironmentAuthorizer(stack, 'MskEnvAuthorizer', {
   domainId: cfnDomain.attrId,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
 // mskCentralAuthorizer.registerAccount('123456789012', '123456789012');
@@ -51,6 +52,7 @@ new DataZoneGsrMskDataSource(stack, 'GsrMskDataSource', {
   clusterName: 'testCluster',
   runSchedule: Schedule.cron({ minute: '0', hour: '12' }),
   enableSchemaRegistryEvent: true,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 
 // createSubscriptionTarget(stack, 'Consumer',
