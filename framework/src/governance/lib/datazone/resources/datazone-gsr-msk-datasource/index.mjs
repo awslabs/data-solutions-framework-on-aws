@@ -150,10 +150,9 @@ export const handler = async () => {
         },
         {
           formName: 'AssetCommonDetailsForm',
-          typeIdentifier: 'default',
+          typeIdentifier: 'amazon.datazone.AssetCommonDetailsFormType',
           content: JSON.stringify({
             sourceIdentifier: sourceIdentifier,
-            schemaDefinition: schemaDefinition || ''
           }),
         },
         {

@@ -3,6 +3,7 @@
 
 import yaml
 from kafka import KafkaProducer
+from kafka.sasl.oauth import AbstractTokenProvider
 from aws_msk_iam_sasl_signer import MSKAuthTokenProvider
 from openlineage.client import OpenLineageClient
 from utils.schema_registry import create_schema_registry_client, create_kafka_serializer, load_avro_schema
@@ -90,7 +91,7 @@ class ProducerFactory:
 
         try:
             # Define MSK Token Provider inside the factory
-            class MSKTokenProvider:
+            class MSKTokenProvider(AbstractTokenProvider):
                 def __init__(self, region):
                     self.region = region
 

@@ -12,7 +12,7 @@ from tests.nag_suppressions import suppress_nag
 @pytest.fixture(scope='module')
 def results():
     app = App()
-    stack = StreamingGovernanceStack(app, "my-stack-test", domain_id='2222222', datazone_portal_role_name='1111111')
+    stack = StreamingGovernanceStack(app, "my-stack-test", datazone_portal_role_name='1111111')
     Aspects.of(stack).add(AwsSolutionsChecks(verbose=True))
 
     # We suppress NAGs for the DSF construct because they are already tested in the framework

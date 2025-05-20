@@ -15,8 +15,6 @@ cdk bootstrap \
 aws://<ACCOUNT_ID>/<REGION>
 ```
 
-4. An existing DataZone domain
-
 ## Getting started
 
 1. Download the DataZone MSK example from the Data Solutions Framework on AWS Github and unzip it:
@@ -30,8 +28,8 @@ cd datazone-msk-governance-example
 2. Modify the `./requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
 
 ```
-aws-cdk-lib==2.145.0
-aws-cdk.aws_lambda_python_alpha~=2.145.0a0
+aws-cdk-lib==2.178.0
+aws-cdk.aws_lambda_python_alpha~=2.178.0a0
 constructs>=10.3.0, <11.0.0
 cdklabs.aws_data_solutions_framework
 ```
@@ -63,7 +61,6 @@ pip install -r requirements.txt
 5. Set the environment variables for DataZone
 
 ```bash
-export DOMAIN_ID=<DATAZONE_DOMAIN_ID>
 export DATAZONE_PORTAL_ROLE_NAME=<ROLE_USED_FOR_DATAZONE_UI> 
 ```
 
@@ -73,47 +70,10 @@ export DATAZONE_PORTAL_ROLE_NAME=<ROLE_USED_FOR_DATAZONE_UI>
 cdk deploy
 ```
 
-## Create a custom environment in the consumer project
-
-1. Enable the [custom AWS service blueprint](https://docs.aws.amazon.com/datazone/latest/userguide/enable-custom-blueprint.html)
-2. Create a [custom environment](https://docs.aws.amazon.com/datazone/latest/userguide/create-custom-environment.html) in the `consumer` project. 
-You can use any IAM Role that can be assumed by DataZone but for simplicity the CDK Stack provides the `StreamingGovernanceStack-ConsumerRole`.
-
-## Create a subscription target on the custom environment
-
-1. In the `streaming_governance_stack.py` file, uncomment the subscription target code at the end of the file
-
-```python
-dsf.governance.DataZoneHelpers.create_subscription_target(self, 'ConsumerSubscriptionTarget',
-                                                          custom_asset_type=msk_asset_type.msk_custom_asset_type,
-                                                          name='MskTopicsTarget',
-                                                          provider='dsf',
-                                                          environment_id=environment_id,
-                                                          authorized_principals=[consumer_role],
-                                                          manage_access_role=datazone_portal_role)
-```
-
-2. In the `app.py` file, uncomment the `environment_id` parameter
-
-```python
-    environment_id=os.getenv('ENVIRONMENT_ID'),
-```
-
-3. Export the `ENVIRONMENT_ID` variable using the custom environment ID created in the previous step
-
-```bash
-export ENVIRONMENT_ID=<CUSTOM_ENVIRONMENT_ID>
-```
-
-4. Redeploy the stack
-
-```
-cdk deploy
-```
-
 ## Verify the example is working
 
-1. In the DataZone portal, request access to the `streaming_data_product` in the `consumer` project
+1. In the AWS Lambda console, search for the `ProducerLambda` and run a test with the default test event
+2. In the DataZone portal, request access to the `producer_data_product` in the `consumer` project
 2. From the `producer` project, approve the subscription request
 3. In the `consumer` project, check the asset is added to the custom environment
 4. From the Amazon Managed Steaming for Apache Flink console, start the `flink-consumer` application

@@ -22,7 +22,7 @@
       "type": "runtime"
     },
     {
-      "name": "aws-cdk.aws_lambda_python_alpha~=2.145.0a0",
+      "name": "aws-cdk.aws_lambda_python_alpha~=2.178.0a0",
       "type": "runtime"
     },
     {
