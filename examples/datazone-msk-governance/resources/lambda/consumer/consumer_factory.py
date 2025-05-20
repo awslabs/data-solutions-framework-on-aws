@@ -3,6 +3,7 @@
 
 import logging
 from kafka import KafkaConsumer
+from kafka.sasl.oauth import AbstractTokenProvider
 from aws_schema_registry import SchemaRegistryClient
 from aws_schema_registry.adapter.kafka import KafkaDeserializer
 from utils.schema_registry import create_schema_registry_client, get_schema_from_glue
@@ -95,7 +96,7 @@ class ConsumerFactory:
     def _initialize_iam_consumer(self):
         try:
             # Define MSK Token Provider inside the factory
-            class MSKTokenProvider:
+            class MSKTokenProvider(AbstractTokenProvider):
                 def __init__(self, region):
                     self.region = region
 

@@ -3,6 +3,7 @@
 
 from aws_cdk import (
     BundlingOptions,
+    CfnOutput,
     CfnParameterProps,
     Duration,
     RemovalPolicy,
@@ -26,7 +27,7 @@ from cdklabs import aws_data_solutions_framework as dsf
 
 class StreamingGovernanceStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, domain_id: str, datazone_portal_role_name: str, environment_id: str ='', **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, datazone_portal_role_name: str, environment_id: str ='', **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         stack = Stack.of(self)
@@ -38,26 +39,36 @@ class StreamingGovernanceStack(Stack):
 
         ### Central components for streaming governance
 
-        msk_asset_type = dsf.governance.DataZoneMskAssetType(self, 
-                                            "DataZoneMskAssetType",
-                                            domain_id=domain_id,
-                                            removal_policy=RemovalPolicy.DESTROY)
+        domain = datazone.CfnDomain(self, 'MskGovernanceDomain',
+                                    domain_execution_role=f'arn:aws:iam::{self.account}:role/service-role/AmazonDataZoneDomainExecution',
+                                    name='msk-governance')
+        
+        custom_blueprint = datazone.CfnEnvironmentBlueprintConfiguration(self, 'CustomBlueprint',
+                                                                         domain_identifier=domain.attr_id,
+                                                                         enabled_regions=[self.region],
+                                                                         environment_blueprint_identifier='CustomAwsService')
+
+        msk_asset_type = dsf.governance.DataZoneMskAssetType(self, "DataZoneMskAssetType",
+                                                             domain_id=domain.attr_id,
+                                                             removal_policy=RemovalPolicy.DESTROY)
         
         central_authorizer = dsf.governance.DataZoneMskCentralAuthorizer(self, 
                                                                          'CentralAuthorizer',
-                                                                         domain_id=domain_id,
+                                                                         domain_id=domain.attr_id,
                                                                          removal_policy=RemovalPolicy.DESTROY)
         
         dsf.governance.DataZoneMskEnvironmentAuthorizer(self, 
                                                         'EnvironmentAuthorizer',
-                                                        domain_id=domain_id,
-                                                        grant_msk_managed_vpc=True)
+                                                        domain_id=domain.attr_id,
+                                                        grant_msk_managed_vpc=True,
+                                                        removal_policy=RemovalPolicy.DESTROY)
         
         ### Components for producer and consumer environments
 
         vpc = dsf.utils.DataVpc(self, 
                                 'EnvironmentsVpc',
-                                vpc_cidr='10.0.0.0/16')
+                                vpc_cidr='10.0.0.0/16',
+                                removal_policy=RemovalPolicy.DESTROY)
         
         default_security_group = ec2.SecurityGroup.from_security_group_id(self, 'DefaultSecurityGroup', vpc.vpc.vpc_default_security_group)
         
@@ -92,7 +103,7 @@ class StreamingGovernanceStack(Stack):
                                     'datazone': iam.PolicyDocument(
                                          statements=[
                                              iam.PolicyStatement(actions=['datazone:PostLineageEvent'],
-                                         resources=[f'arn:{stack.partition}:datazone:{stack.region}:{stack.account}:domain/{domain_id}'])]),
+                                         resources=[f'arn:{stack.partition}:datazone:{stack.region}:{stack.account}:domain/{domain.attr_id}'])]),
                                     'gsr': iam.PolicyDocument(
                                         statements=[
                                             iam.PolicyStatement(
@@ -122,18 +133,18 @@ class StreamingGovernanceStack(Stack):
         
         msk_cluster.grant_produce(producer_topic, producer_role)
         
-        producer_dz_project = datazone.CfnProject(self, 'ProducerProject', domain_identifier=domain_id, name='producer')
+        producer_dz_project = datazone.CfnProject(self, 'ProducerProject', domain_identifier=domain.attr_id, name='producer')
 
         datazone.CfnProjectMembership(self, 'AdminProducerMembership', 
                                       designation='PROJECT_OWNER', 
-                                      domain_identifier=domain_id, 
+                                      domain_identifier=domain.attr_id, 
                                       member=datazone.CfnProjectMembership.MemberProperty(user_identifier=datazone_portal_role.role_arn),
                                       project_identifier=producer_dz_project.attr_id)
         
         dsf.governance.DataZoneGsrMskDataSource(self, 
                                                 'ProducerGsrDataSource',
                                                 cluster_name=msk_cluster.cluster_name,
-                                                domain_id=domain_id,
+                                                domain_id=domain.attr_id,
                                                 project_id=producer_dz_project.attr_id,
                                                 registry_name=producer_schema_registry.name,
                                                 enable_schema_registry_event=True,
@@ -164,18 +175,18 @@ class StreamingGovernanceStack(Stack):
                                                     'KAFKA_BOOTSTRAP': msk_cluster.cluster_boostrap_brokers,
                                                     'KAFKA_TOPIC': producer_topic,
                                                     'GLUE_REGISTRY_NAME': producer_schema_registry.name,
-                                                    'DZ_DOMAIN_ID': domain_id,
+                                                    'DZ_DOMAIN_ID': domain.attr_id,
                                                 })
         
         msk_cluster.broker_security_group.add_ingress_rule(peer=default_security_group, connection=ec2.Port.tcp(9098))
 
         ### Consumer environment
 
-        consumer_dz_project = datazone.CfnProject(self, 'ConsumerProject', domain_identifier=domain_id, name='consumer')
+        consumer_dz_project = datazone.CfnProject(self, 'ConsumerProject', domain_identifier=domain.attr_id, name='consumer')
 
         datazone.CfnProjectMembership(self, 'AdminConsumerMembership', 
                                       designation='PROJECT_OWNER', 
-                                      domain_identifier=domain_id, 
+                                      domain_identifier=domain.attr_id, 
                                       member=datazone.CfnProjectMembership.MemberProperty(user_identifier=datazone_portal_role.role_arn),
                                       project_identifier=consumer_dz_project.attr_id)
                 
@@ -216,7 +227,7 @@ class StreamingGovernanceStack(Stack):
                                         statements=[
                                              iam.PolicyStatement(
                                                  actions=['datazone:PostLineageEvent'],
-                                                 resources=[f'arn:{stack.partition}:datazone:{stack.region}:{stack.account}:domain/{domain_id}']),
+                                                 resources=[f'arn:{stack.partition}:datazone:{stack.region}:{stack.account}:domain/{domain.attr_id}']),
                                             #  iam.PolicyStatement(
                                             #      actions=[
                                             #         'glue:GetRegistry',
@@ -294,7 +305,7 @@ class StreamingGovernanceStack(Stack):
                                                                         'bootstrap.servers': msk_cluster.cluster_boostrap_brokers,
                                                                         'source.topic': producer_topic,
                                                                         'sourceClusterName': msk_cluster.cluster_name,
-                                                                        'datazoneDomainID': domain_id,
+                                                                        'datazoneDomainID': domain.attr_id,
                                                                         'lineageTransport': 'datazone',
                                                                         'region': self.region,
                                                                         'sourceRegistry': producer_schema_registry.name
@@ -309,11 +320,26 @@ class StreamingGovernanceStack(Stack):
                                                                     configuration_type="CUSTOM",
                                                                     metrics_level="APPLICATION",
                                                                     log_level="INFO"))))
-                
-        # dsf.governance.DataZoneHelpers.create_subscription_target(self, 'ConsumerSubscriptionTarget',
-        #                                                           custom_asset_type=msk_asset_type.msk_custom_asset_type,
-        #                                                           name='MskTopicsTarget',
-        #                                                           provider='dsf',
-        #                                                           environment_id=environment_id,
-        #                                                           authorized_principals=[consumer_role],
-        #                                                           manage_access_role=datazone_portal_role)
+
+        custom_environment = datazone.CfnEnvironment(self, 'Environment',
+                                                     name='custom-environment',
+                                                     domain_identifier=domain.attr_id,
+                                                     project_identifier=consumer_dz_project.attr_id,
+                                                     environment_role_arn=consumer_role.role_arn,
+                                                     environment_profile_identifier='',
+                                                     environment_account_identifier=self.account,
+                                                     environment_account_region=self.region)
+
+        custom_environment.add_property_override('EnvironmentBlueprintId',custom_blueprint.attr_environment_blueprint_id)
+        
+        dsf.governance.DataZoneHelpers.create_subscription_target(self, 'ConsumerSubscriptionTarget',
+                                                                  custom_asset_type=msk_asset_type.msk_custom_asset_type,
+                                                                  name='MskTopicsTarget',
+                                                                  provider='dsf',
+                                                                  environment_id=custom_environment.attr_id,
+                                                                  authorized_principals=[consumer_role],
+                                                                  manage_access_role=datazone_portal_role)
+        
+        producer_lambda_output = CfnOutput(self, 'ProducerLambdaOutput', value=producer_lambda.function_arn)
+        
+        

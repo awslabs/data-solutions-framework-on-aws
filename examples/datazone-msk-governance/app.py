@@ -10,8 +10,6 @@ from stacks.main import StreamingGovernanceStack
 
 app = cdk.App()
 StreamingGovernanceStack(app, "StreamingGovernanceStack",
-    domain_id=os.getenv('DOMAIN_ID'),
-    # environment_id=os.getenv('ENVIRONMENT_ID'),
     datazone_portal_role_name=os.getenv('DATAZONE_PORTAL_ROLE_NAME')
 )
 

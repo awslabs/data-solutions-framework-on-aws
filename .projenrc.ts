@@ -6,6 +6,8 @@ import { dirname } from 'path';
 import { globSync } from 'glob';
 
 const CDK_VERSION = '2.178.2';
+// Alpha lib is only used in examples, not in the framework
+const CDK_ALPHA_VERSION = '2.178.0a0';
 const CDK_CONSTRUCTS_VERSION = '10.4.2';
 const JSII_VERSION = '~5.6.0';
 const KUBECTL_LAYER_VERSION='v30';
@@ -509,7 +511,7 @@ const datazoneMskGovernance = new awscdk.AwsCdkPythonApp({
 
   pytest: true,
   deps: [
-    'aws-cdk.aws_lambda_python_alpha~=2.145.0a0'
+    `aws-cdk.aws_lambda_python_alpha~=${CDK_ALPHA_VERSION}`
   ],
   devDeps: [
     "pytest",
