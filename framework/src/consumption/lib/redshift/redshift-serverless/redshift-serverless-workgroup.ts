@@ -354,7 +354,7 @@ export class RedshiftServerlessWorkgroup extends TrackedConstruct implements ICo
    * @param targetRole The IAM role to assign the Redshift DB roles to
    */
   public assignDbRolesToIAMRole(dbRoles: string[], targetRole: IRole) {
-    const idHash = Utils.generateHash(JSON.stringify(dbRoles) + ' ' + JSON.stringify(targetRole));
+    const idHash = Utils.generateHash(JSON.stringify(dbRoles) + ' ' + targetRole.node.id);
     this.accessData(`${idHash}AccessData`).assignDbRolesToIAMRole(dbRoles, targetRole);
   }
 
