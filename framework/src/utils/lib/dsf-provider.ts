@@ -249,7 +249,10 @@ export class DsfProvider extends Construct {
       logGroup: logGroup,
       role: role,
       bundling: props.bundling,
-      environment: props.environment,
+      environment: {
+        ...props.environment,
+        DSF_RUNTIME_VERSION: DsfProvider.CR_RUNTIME.toString(),
+      },
       timeout: props.timeout ?? DsfProvider.FUNCTION_TIMEOUT,
       vpc: this.vpc,
       vpcSubnets: this.subnets,

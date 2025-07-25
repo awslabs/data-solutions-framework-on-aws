@@ -6,6 +6,7 @@ import { App, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { SecurityGroup, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ManagedPolicy, PolicyDocument, PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
+
 import { DsfProvider } from '../../../src/utils/lib/dsf-provider';
 
 /**
@@ -146,6 +147,19 @@ describe('With default configuration, the construct ', () => {
         },
         Runtime: 'nodejs22.x',
         Timeout: 840,
+      }),
+    );
+  });
+
+  test('should set DSF_RUNTIME_VERSION environment variable', () => {
+    template.hasResourceProperties('AWS::Lambda::Function',
+      Match.objectLike({
+        Handler: 'on-event.handler',
+        Environment: {
+          Variables: Match.objectLike({
+            DSF_RUNTIME_VERSION: Match.anyValue(),
+          }),
+        },
       }),
     );
   });
@@ -463,6 +477,19 @@ describe('With isComplete handler configuration configuration, the construct ', 
         },
         Runtime: 'nodejs22.x',
         Timeout: 840,
+      }),
+    );
+  });
+
+  test('should set DSF_RUNTIME_VERSION environment variable for isComplete handler', () => {
+    template.hasResourceProperties('AWS::Lambda::Function',
+      Match.objectLike({
+        Handler: 'is-complete.handler',
+        Environment: {
+          Variables: Match.objectLike({
+            DSF_RUNTIME_VERSION: Match.anyValue(),
+          }),
+        },
       }),
     );
   });
