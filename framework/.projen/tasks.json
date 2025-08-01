@@ -292,13 +292,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-cdk/lambda-layer-kubectl-v30,@jest/globals,@types/eslint,@types/jest,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-local-rules,jest,jest-runner-groups,jsii-diff,jsii-pacmak,node-libcurl,rosetta,sync-request-curl,ts-jest,typescript,@types/js-yaml,@types/semver,js-yaml,semver,simple-base"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-cdk/lambda-layer-kubectl-v33,@jest/globals,@types/eslint,@types/jest,@types/node,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-local-rules,jest,jest-runner-groups,jsii-diff,jsii-pacmak,node-libcurl,rosetta,sync-request-curl,ts-jest,typescript,@types/js-yaml,@types/semver,js-yaml,semver,simple-base"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-cdk/cli-lib-alpha @aws-cdk/lambda-layer-kubectl-v30 @jest/globals @stylistic/eslint-plugin @types/eslint @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag commit-and-tag-version esbuild eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-local-rules eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii node-libcurl rosetta sync-request-curl ts-jest typescript @types/js-yaml @types/semver js-yaml semver simple-base aws-cdk-lib constructs"
+          "exec": "yarn upgrade @aws-cdk/cli-lib-alpha @aws-cdk/lambda-layer-kubectl-v33 @jest/globals @stylistic/eslint-plugin @types/eslint @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdk-nag commit-and-tag-version esbuild eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-local-rules eslint jest jest-junit jest-runner-groups jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii node-libcurl rosetta sync-request-curl ts-jest typescript @types/js-yaml @types/semver js-yaml semver simple-base aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

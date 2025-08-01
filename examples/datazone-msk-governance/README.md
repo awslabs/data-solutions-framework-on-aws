@@ -28,8 +28,8 @@ cd datazone-msk-governance-example
 2. Modify the `./requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
 
 ```
-aws-cdk-lib==2.178.0
-aws-cdk.aws_lambda_python_alpha~=2.178.0a0
+aws-cdk-lib==2.208.0
+aws-cdk.aws_lambda_python_alpha~=2.208.0a0
 constructs>=10.3.0, <11.0.0
 cdklabs.aws_data_solutions_framework
 ```

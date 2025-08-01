@@ -16,8 +16,9 @@ import { DsfProvider } from '../../../utils/lib/dsf-provider';
  * A construct to create an OpenSearch API client
  *
  * @example
+ * import { Role } from 'aws-cdk-lib/aws-iam';
  *  const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
- *  const apiRole = cdk.iam.Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
+ *  const apiRole = Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
  *  const osApi = new dsf.consumption.OpenSearchApi(this, 'MyOpenSearchApi',{
  *    iamHandlerRole:apiRole,
  *    openSearchEndpoint:domainEndpoint,

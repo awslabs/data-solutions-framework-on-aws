@@ -62,7 +62,7 @@ describe('default configuration', () => {
       },
       DomainEndpointOptions: {
         EnforceHTTPS: true,
-        TLSSecurityPolicy: 'Policy-Min-TLS-1-0-2019-07',
+        TLSSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
       },
       DomainName: 'mycluster2',
       EBSOptions: {
@@ -122,7 +122,7 @@ describe('non vpc config', () => {
       },
       DomainEndpointOptions: {
         EnforceHTTPS: true,
-        TLSSecurityPolicy: 'Policy-Min-TLS-1-0-2019-07',
+        TLSSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
       },
       DomainName: 'mycluster2-public',
       EBSOptions: {

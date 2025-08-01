@@ -31,7 +31,7 @@ cd spark-data-lake-example
 2. Modify the `./requirements.txt` to add the `cdklabs.aws_data_solutions_framework` library as a dependency:
 
 ```
-aws-cdk-lib
+aws-cdk-lib==2.208.0
 constructs>=10.3.0, <11.0.0
 cdklabs.aws_data_solutions_framework
 ```

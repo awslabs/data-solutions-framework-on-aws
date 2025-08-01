@@ -9,7 +9,7 @@
 */
 
 
-import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
+import { KubectlV33Layer } from '@aws-cdk/lambda-layer-kubectl-v33';
 import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { Cluster, KubernetesVersion } from 'aws-cdk-lib/aws-eks';
@@ -20,7 +20,7 @@ describe('With default configuration, the construct ', () => {
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -310,7 +310,7 @@ describe('With default configuration, the construct ', () => {
     template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 1);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 1);
-    template.resourceCountIs('AWS::Logs::LogGroup', 5);
+    template.resourceCountIs('AWS::Logs::LogGroup', 4);
     template.resourcePropertiesCountIs('AWS::IAM::Role', {
       AssumeRolePolicyDocument: Match.objectLike({
         Statement: [
@@ -760,7 +760,7 @@ describe('With DESTROY removal policy and global data removal set to TRUE, the c
   // Set context value for global data removal policy
   emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -819,7 +819,7 @@ describe('With DESTROY removal policy and global data removal unset, the constru
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -878,13 +878,14 @@ describe('With provided EKS cluster, the construct ', () => {
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
   const cluster = new Cluster(emrEksClusterStack, 'Cluster', {
     clusterName: 'myName',
-    version: KubernetesVersion.V1_28,
+    version: KubernetesVersion.V1_33,
+    kubectlLayer,
   });
 
   SparkEmrContainersRuntime.getOrCreate(emrEksClusterStack, {
@@ -911,7 +912,7 @@ describe('With provided EKS cluster, the construct ', () => {
     template.resourceCountIs('AWS::EC2::VPCGatewayAttachment', 1);
     template.resourceCountIs('AWS::EC2::FlowLog', 0);
     template.resourceCountIs('AWS::EC2::VPCEndpoint', 0);
-    template.resourceCountIs('AWS::Logs::LogGroup', 4);
+    template.resourceCountIs('AWS::Logs::LogGroup', 3);
   });
 
   test('should not configure the cluster with cert managed, EBS CSI driver and Karpenter', () => {
@@ -948,7 +949,7 @@ describe('Test for interactive endpoint', () => {
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -1020,7 +1021,7 @@ describe('Test for interactive endpoint without default karpenter nodepool', () 
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -1070,7 +1071,7 @@ describe('Test for grant job execution', () => {
 
   const emrEksClusterStack = new Stack();
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -1130,7 +1131,7 @@ describe('Remove resource when deletion protection is disable and set removal is
 
   emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 
@@ -1187,7 +1188,7 @@ describe('Retain resource when removal is set to retain', () => {
 
   emrEksClusterStack.node.setContext('@data-solutions-framework-on-aws/removeDataOnDestroy', true);
 
-  const kubectlLayer = new KubectlV30Layer(emrEksClusterStack, 'kubectlLayer');
+  const kubectlLayer = new KubectlV33Layer(emrEksClusterStack, 'kubectlLayer');
 
   const adminRole = Role.fromRoleArn(emrEksClusterStack, 'AdminRole', 'arn:aws:iam::123445678901:role/eks-admin');
 

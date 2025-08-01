@@ -70,6 +70,7 @@ new storage.AccessLogsBucket(scope: Construct, id: string, props?: BucketProps)
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReplicationPermission">grantReplicationPermission</a></code> | Grant replication permission to a principal. This method allows the principal to perform replication operations on this bucket. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
@@ -488,6 +489,33 @@ use the `grantPutAcl` method.
 ###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
+
+---
+
+##### `grantReplicationPermission` <a name="grantReplicationPermission" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReplicationPermission"></a>
+
+```typescript
+public grantReplicationPermission(identity: IGrantable, props: GrantReplicationPermissionProps): Grant
+```
+
+Grant replication permission to a principal. This method allows the principal to perform replication operations on this bucket.
+
+Note that when calling this function for source or destination buckets that support KMS encryption,
+you need to specify the KMS key for encryption and the KMS key for decryption, respectively.
+
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReplicationPermission.parameter.identity"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IGrantable
+
+The principal to grant replication permission to.
+
+---
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.grantReplicationPermission.parameter.props"></a>
+
+- *Type:* aws-cdk-lib.aws_s3.GrantReplicationPermissionProps
+
+The properties of the replication source and destination buckets.
 
 ---
 
@@ -1203,6 +1231,25 @@ Role used to set up permissions on this bucket for replication.
 
 ---
 
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.PROPERTY_INJECTION_ID">PROPERTY_INJECTION_ID</a></code> | <code>string</code> | Uniquely identifies this class. |
+
+---
+
+##### `PROPERTY_INJECTION_ID`<sup>Required</sup> <a name="PROPERTY_INJECTION_ID" id="@cdklabs/aws-data-solutions-framework.storage.AccessLogsBucket.property.PROPERTY_INJECTION_ID"></a>
+
+```typescript
+public readonly PROPERTY_INJECTION_ID: string;
+```
+
+- *Type:* string
+
+Uniquely identifies this class.
+
+---
 
 ### AnalyticsBucket <a name="AnalyticsBucket" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket"></a>
 
@@ -1285,6 +1332,7 @@ new storage.AnalyticsBucket(scope: Construct, id: string, props: AnalyticsBucket
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantPutAcl">grantPutAcl</a></code> | Grant the given IAM identity permissions to modify the ACLs of objects in the given Bucket. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantRead">grantRead</a></code> | Grant read permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite">grantReadWrite</a></code> | Grants read/write permissions for this bucket and it's contents to an IAM principal (Role/Group/User). |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReplicationPermission">grantReplicationPermission</a></code> | Grant replication permission to a principal. This method allows the principal to perform replication operations on this bucket. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantWrite">grantWrite</a></code> | Grant write permissions to this bucket to an IAM principal. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailEvent">onCloudTrailEvent</a></code> | Define a CloudWatch event that triggers when something happens to this repository. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.onCloudTrailPutObject">onCloudTrailPutObject</a></code> | Defines an AWS CloudWatch event that triggers when an object is uploaded to the specified paths (keys) in this bucket using the PutObject API call. |
@@ -1703,6 +1751,33 @@ use the `grantPutAcl` method.
 ###### `objectsKeyPattern`<sup>Optional</sup> <a name="objectsKeyPattern" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReadWrite.parameter.objectsKeyPattern"></a>
 
 - *Type:* any
+
+---
+
+##### `grantReplicationPermission` <a name="grantReplicationPermission" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReplicationPermission"></a>
+
+```typescript
+public grantReplicationPermission(identity: IGrantable, props: GrantReplicationPermissionProps): Grant
+```
+
+Grant replication permission to a principal. This method allows the principal to perform replication operations on this bucket.
+
+Note that when calling this function for source or destination buckets that support KMS encryption,
+you need to specify the KMS key for encryption and the KMS key for decryption, respectively.
+
+###### `identity`<sup>Required</sup> <a name="identity" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReplicationPermission.parameter.identity"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IGrantable
+
+The principal to grant replication permission to.
+
+---
+
+###### `props`<sup>Required</sup> <a name="props" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.grantReplicationPermission.parameter.props"></a>
+
+- *Type:* aws-cdk-lib.aws_s3.GrantReplicationPermissionProps
+
+The properties of the replication source and destination buckets.
 
 ---
 
@@ -2418,6 +2493,25 @@ Role used to set up permissions on this bucket for replication.
 
 ---
 
+#### Constants <a name="Constants" id="Constants"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.PROPERTY_INJECTION_ID">PROPERTY_INJECTION_ID</a></code> | <code>string</code> | Uniquely identifies this class. |
+
+---
+
+##### `PROPERTY_INJECTION_ID`<sup>Required</sup> <a name="PROPERTY_INJECTION_ID" id="@cdklabs/aws-data-solutions-framework.storage.AnalyticsBucket.property.PROPERTY_INJECTION_ID"></a>
+
+```typescript
+public readonly PROPERTY_INJECTION_ID: string;
+```
+
+- *Type:* string
+
+Uniquely identifies this class.
+
+---
 
 ### ApplicationStage <a name="ApplicationStage" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStage"></a>
 
@@ -5892,12 +5986,14 @@ IAM permissions for the integration test script.
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addMetadata">addMetadata</a></code> | Adds an arbitrary key-value pair, with information you want to record about the stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addStackTag">addStackTag</a></code> | Configure a stack tag. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportStringListValue">exportStringListValue</a></code> | Create a CloudFormation Export for a string list value. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a string value. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.removeStackTag">removeStackTag</a></code> | Remove a stack tag. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
@@ -5959,6 +6055,28 @@ These get translated to the Metadata section of the generated template.
 ###### `value`<sup>Required</sup> <a name="value" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addMetadata.parameter.value"></a>
 
 - *Type:* any
+
+---
+
+##### `addStackTag` <a name="addStackTag" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addStackTag"></a>
+
+```typescript
+public addStackTag(tagName: string, tagValue: string): void
+```
+
+Configure a stack tag.
+
+At deploy time, CloudFormation will automatically apply all stack tags to all resources in the stack.
+
+###### `tagName`<sup>Required</sup> <a name="tagName" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addStackTag.parameter.tagName"></a>
+
+- *Type:* string
+
+---
+
+###### `tagValue`<sup>Required</sup> <a name="tagValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.addStackTag.parameter.tagValue"></a>
+
+- *Type:* string
 
 ---
 
@@ -6173,6 +6291,22 @@ the given region.
 ---
 
 ###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.regionalFact.parameter.defaultValue"></a>
+
+- *Type:* string
+
+---
+
+##### `removeStackTag` <a name="removeStackTag" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.removeStackTag"></a>
+
+```typescript
+public removeStackTag(tagName: string): void
+```
+
+Remove a stack tag.
+
+At deploy time, CloudFormation will automatically apply all stack tags to all resources in the stack.
+
+###### `tagName`<sup>Required</sup> <a name="tagName" id="@cdklabs/aws-data-solutions-framework.utils.IntegrationTestStack.removeStackTag.parameter.tagName"></a>
 
 - *Type:* string
 
@@ -6441,9 +6575,9 @@ attempt to parse it to implement your logic. If you do, you must first
 check that it is a concrete value an not an unresolved token. If this
 value is an unresolved token (`Token.isUnresolved(stack.account)` returns
 `true`), this implies that the user wishes that this stack will synthesize
-into a **account-agnostic template**. In this case, your code should either
+into an **account-agnostic template**. In this case, your code should either
 fail (throw an error, emit a synth error using `Annotations.of(construct).addError()`) or
-implement some other region-agnostic behavior.
+implement some other account-agnostic behavior.
 
 ---
 
@@ -8519,8 +8653,9 @@ A construct to create an OpenSearch API client.
 *Example*
 
 ```typescript
+import { Role } from 'aws-cdk-lib/aws-iam';
  const domainEndpoint='search-XXXXXX.XXXXXX.es.amazonaws.com';
- const apiRole = cdk.iam.Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
+ const apiRole = Role.fromRoleName(this, 'ApiRole', '<IAMRoleWithOpenSearchPermissions>');
  const osApi = new dsf.consumption.OpenSearchApi(this, 'MyOpenSearchApi',{
    iamHandlerRole:apiRole,
    openSearchEndpoint:domainEndpoint,
@@ -12627,9 +12762,9 @@ A construct to create an EKS cluster, configure it and enable it with EMR on EKS
 
 ```typescript
 import { ManagedPolicy, PolicyDocument, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
+import { KubectlV33Layer } from '@aws-cdk/lambda-layer-kubectl-v33';
 
-const kubectlLayer = new KubectlV30Layer(this, 'kubectlLayer');
+const kubectlLayer = new KubectlV33Layer(this, 'kubectlLayer');
 
 const emrEksCluster = dsf.processing.SparkEmrContainersRuntime.getOrCreate(this, {
   publicAccessCIDRs: ['10.0.0.0/16'],
@@ -14752,6 +14887,7 @@ const applicationStageProps: utils.ApplicationStageProps = { ... }
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.outdir">outdir</a></code> | <code>string</code> | The output directory into which to emit synthesized artifacts. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.policyValidationBeta1">policyValidationBeta1</a></code> | <code>aws-cdk-lib.IPolicyValidationPluginBeta1[]</code> | Validation plugins to run during synthesis. |
+| <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.propertyInjectors">propertyInjectors</a></code> | <code>aws-cdk-lib.IPropertyInjector[]</code> | A list of IPropertyInjector attached to this Stage. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stageName">stageName</a></code> | <code>string</code> | Name of this stage. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.applicationStackFactory">applicationStackFactory</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.ApplicationStackFactory</code> | The application CDK Stack Factory used to create application Stacks. |
 | <code><a href="#@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.stage">stage</a></code> | <code>@cdklabs/aws-data-solutions-framework.utils.CICDStage</code> | The Stage to deploy the application CDK Stack in. |
@@ -14830,6 +14966,20 @@ public readonly permissionsBoundary: PermissionsBoundary;
 
 Options for applying a permissions boundary to all IAM Roles and Users created within this Stage.
 
+Be aware that this feature uses Aspects, and the Aspects are applied at the
+Stack level with a priority of `MUTATING` (if the feature flag
+`@aws-cdk/core:aspectPrioritiesMutating` is set) or `DEFAULT` (if the flag
+is not set). This is relevant if you are both using your own Aspects to
+assign Permissions Boundaries, as well as specifying this property.  The
+Aspect added by this property will overwrite the Permissions Boundary
+assigned by your own Aspect if both: (a) your Aspect has a lower or equal
+priority to the automatic Aspect, and (b) your Aspect is applied *above*
+the Stack level.  If either of those conditions are not true, your own
+Aspect will win.
+
+We recommend assigning Permissions Boundaries only using the provided APIs,
+and not using custom Aspects.
+
 ---
 
 ##### `policyValidationBeta1`<sup>Optional</sup> <a name="policyValidationBeta1" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.policyValidationBeta1"></a>
@@ -14845,6 +14995,19 @@ Validation plugins to run during synthesis.
 
 If any plugin reports any violation,
 synthesis will be interrupted and the report displayed to the user.
+
+---
+
+##### `propertyInjectors`<sup>Optional</sup> <a name="propertyInjectors" id="@cdklabs/aws-data-solutions-framework.utils.ApplicationStageProps.property.propertyInjectors"></a>
+
+```typescript
+public readonly propertyInjectors: IPropertyInjector[];
+```
+
+- *Type:* aws-cdk-lib.IPropertyInjector[]
+- *Default:* no PropertyInjectors
+
+A list of IPropertyInjector attached to this Stage.
 
 ---
 
