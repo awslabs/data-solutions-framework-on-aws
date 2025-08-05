@@ -5,7 +5,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { SparkEmrContainersRuntime } from '../lib';
-import { KubectlV30Layer } from '@aws-cdk/lambda-layer-kubectl-v30';
+import { KubectlV33Layer } from '@aws-cdk/lambda-layer-kubectl-v33';
 
 
 class ExampleSparkEmrContainersStack extends cdk.Stack {
@@ -13,7 +13,7 @@ class ExampleSparkEmrContainersStack extends cdk.Stack {
     super(scope, id);
     
     //Layer must be changed according to the Kubernetes version used
-    const kubectlLayer = new KubectlV30Layer(this, 'kubectlLayer');
+    const kubectlLayer = new KubectlV33Layer(this, 'kubectlLayer');
     
     /// !show
     const emrEksCluster = SparkEmrContainersRuntime.getOrCreate(this, {

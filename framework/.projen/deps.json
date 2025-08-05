@@ -2,11 +2,11 @@
   "dependencies": [
     {
       "name": "@aws-cdk/cli-lib-alpha",
-      "version": "2.178.2-alpha.0",
+      "version": "2.1023.0-alpha.0",
       "type": "build"
     },
     {
-      "name": "@aws-cdk/lambda-layer-kubectl-v30",
+      "name": "@aws-cdk/lambda-layer-kubectl-v33",
       "type": "build"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "name": "jsii-rosetta",
-      "version": "~5.6.0",
+      "version": "~5.8.0",
       "type": "build"
     },
     {
       "name": "jsii",
-      "version": "~5.6.0",
+      "version": "~5.8.0",
       "type": "build"
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.178.2",
+      "version": "^2.208.0",
       "type": "peer"
     },
     {
@@ -159,7 +159,7 @@
       "type": "peer"
     },
     {
-      "name": "@aws-cdk/lambda-layer-kubectl-v30",
+      "name": "@aws-cdk/lambda-layer-kubectl-v33",
       "type": "runtime"
     }
   ],

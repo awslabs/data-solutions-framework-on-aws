@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import data from './.jsii.tabl.json' assert { type: 'json' };
+import data from './.jsii.tabl.json' with { type: 'json' };
 
 const GENERATED_MD_PATH = '../website/docs/constructs/library/generated/_';
 const IMAGE_FULL_PATH = "website/static/img";

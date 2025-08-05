@@ -1,7 +1,7 @@
 {
   "dependencies": [
     {
-      "name": "aws-cdk.lambda-layer-kubectl-v30",
+      "name": "aws-cdk.lambda-layer-kubectl-v33",
       "type": "devenv"
     },
     {
@@ -18,11 +18,11 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.178.2",
+      "version": "2.208.0",
       "type": "runtime"
     },
     {
-      "name": "aws-cdk.aws_lambda_python_alpha~=2.178.0a0",
+      "name": "aws-cdk.aws_lambda_python_alpha~=2.208.0a0",
       "type": "runtime"
     },
     {
