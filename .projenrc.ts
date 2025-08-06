@@ -5,12 +5,11 @@ import { Transform } from "projen/lib/javascript";
 import { dirname } from 'path';
 import { globSync } from 'glob';
 
-const CDK_VERSION = '2.178.2';
-// Alpha lib is only used in examples, not in the framework
-const CDK_ALPHA_VERSION = '2.178.0a0';
+const CDK_VERSION = '2.208.0';
+const CDK_CLI_VERSION = '2.1023.0';
 const CDK_CONSTRUCTS_VERSION = '10.4.2';
-const JSII_VERSION = '~5.6.0';
-const KUBECTL_LAYER_VERSION='v30';
+const JSII_VERSION = '~5.8.0';
+const KUBECTL_LAYER_VERSION='v33';
 
 const repositoryUrl = 'https://github.com/awslabs/data-solutions-framework-on-aws.git';
 const homepage = 'https://awslabs.github.io/data-solutions-framework-on-aws/';
@@ -39,7 +38,7 @@ const rootProject = new LernaProject({
     'lerna-projen',
     'ts-node',
     'typescript',
-    'glob@^10.3.6'
+    'glob@^11.0.3'
   ],
   peerDeps: [
     '@types/node@^16',
@@ -151,7 +150,7 @@ const fwkProject = new awscdk.AwsCdkConstructLibrary({
     '@jest/globals',
     'ts-jest',
     'jest-runner-groups',
-    `@aws-cdk/cli-lib-alpha@${CDK_VERSION}-alpha.0`,
+    `@aws-cdk/cli-lib-alpha@${CDK_CLI_VERSION}-alpha.0`,
     'rosetta',
     `@aws-cdk/lambda-layer-kubectl-${KUBECTL_LAYER_VERSION}`,
     '@types/eslint',
@@ -296,10 +295,10 @@ sparkDataLakeInfraExampleApp.addTask('test:e2e', {
 });
 const synthTask = sparkDataLakeInfraExampleApp.tasks.tryFind('synth:silent')!;
 synthTask.reset();
-synthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
+synthTask.exec(`npx aws-cdk@${CDK_CLI_VERSION} synth -q -c prod=PLACEHOLDER -c staging=PLACEHOLDER`);
 const buildExampleTask = sparkDataLakeInfraExampleApp.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-cache-dir --no-deps --no-index --find-links ../../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --force-reinstall --no-cache-dir --no-deps --no-index --find-links ../../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -357,10 +356,10 @@ adsfQuickstart.addTask('test:e2e', {
 });
 const adsfQuickstartSynthTask = adsfQuickstart.tasks.tryFind('synth:silent')!;
 adsfQuickstartSynthTask.reset();
-adsfQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
+adsfQuickstartSynthTask.exec(`npx aws-cdk@${CDK_CLI_VERSION} synth -q`);
 const buildAdsfQuickstartTask = adsfQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --force-reinstall --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -420,10 +419,10 @@ opensearchQuickstart.addTask('test:e2e', {
 
 const opensearchQuickstartSynthTask = opensearchQuickstart.tasks.tryFind('synth:silent')!;
 opensearchQuickstartSynthTask.reset();
-opensearchQuickstartSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
+opensearchQuickstartSynthTask.exec(`npx aws-cdk@${CDK_CLI_VERSION} synth -q`);
 const buildOpensearchQuickstartTask = opensearchQuickstart.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --force-reinstall --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -482,10 +481,10 @@ redshiftDataWarehouseExample.addTask('test:e2e', {
 
 const redshiftDataWarehouseExampleSynthTask = redshiftDataWarehouseExample.tasks.tryFind('synth:silent')!;
 redshiftDataWarehouseExampleSynthTask.reset();
-redshiftDataWarehouseExampleSynthTask.exec(`npx aws-cdk@${CDK_VERSION} synth -q`);
+redshiftDataWarehouseExampleSynthTask.exec(`npx aws-cdk@${CDK_CLI_VERSION} synth -q`);
 const buildredshiftDataWarehouseExampleTask = redshiftDataWarehouseExample.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --force-reinstall --no-deps --no-cache-dir --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]
@@ -511,7 +510,7 @@ const datazoneMskGovernance = new awscdk.AwsCdkPythonApp({
 
   pytest: true,
   deps: [
-    `aws-cdk.aws_lambda_python_alpha~=${CDK_ALPHA_VERSION}`
+    `aws-cdk.aws_lambda_python_alpha~=${CDK_VERSION}a0`
   ],
   devDeps: [
     "pytest",
@@ -548,10 +547,10 @@ datazoneMskGovernance.addTask('test:e2e', {
 });
 const datazoneMskGovernanceSynthTask = datazoneMskGovernance.tasks.tryFind('synth:silent')!;
 datazoneMskGovernanceSynthTask.reset();
-datazoneMskGovernanceSynthTask.exec(`DOMAIN_ID=2222 DATAZONE_PORTAL_ROLE_NAME=admin npx aws-cdk@${CDK_VERSION} synth -q`);
+datazoneMskGovernanceSynthTask.exec(`DOMAIN_ID=2222 DATAZONE_PORTAL_ROLE_NAME=admin npx aws-cdk@${CDK_CLI_VERSION} synth -q`);
 const buildDatazoneMskGovernanceTask = datazoneMskGovernance.addTask('build-example', {
   steps: [
-    { exec: `pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
+    { exec: `pip install --force-reinstall --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework` },
     { spawn: 'synth:silent' },
     { spawn: 'test:unit' },
   ]

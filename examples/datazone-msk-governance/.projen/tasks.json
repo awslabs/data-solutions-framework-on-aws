@@ -25,7 +25,7 @@
       "name": "build-example",
       "steps": [
         {
-          "exec": "pip install --ignore-installed --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework"
+          "exec": "pip install --force-reinstall --no-deps --no-index --find-links ../../framework/dist/python cdklabs.aws_data_solutions_framework"
         },
         {
           "spawn": "synth:silent"
@@ -80,7 +80,7 @@
       "description": "Synthesizes your cdk app into cdk.out and suppresses the template in stdout (part of \"yarn build\")",
       "steps": [
         {
-          "exec": "DOMAIN_ID=2222 DATAZONE_PORTAL_ROLE_NAME=admin npx aws-cdk@2.178.2 synth -q"
+          "exec": "DOMAIN_ID=2222 DATAZONE_PORTAL_ROLE_NAME=admin npx aws-cdk@2.1023.0 synth -q"
         }
       ]
     },

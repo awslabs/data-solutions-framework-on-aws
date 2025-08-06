@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/node": "16.0.0",
     "constructs": "^10.0.0",
-    "glob": "^10.3.6",
+    "glob": "^11.0.3",
     "lerna": "8.1.9",
     "lerna-projen": "0.1.562",
     "projen": "0.91.9",
